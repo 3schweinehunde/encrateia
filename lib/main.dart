@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/edit_athlete.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,28 +26,26 @@ class Dashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (true) {
       widget = ListView(padding: EdgeInsets.all(20), children: <Widget>[
-      Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-              leading: Icon(Icons.help),
-              title: Text('Welcome to Encrateia!'),
-              subtitle: Text('Maybe you want to learn more about Encrateia.'
-              'We have provided some introductory help for you.')
-          ),
-          ButtonTheme.bar(
-              child: ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    child: const Text('HELP'),
-                    onPressed: () {},
-                  )
-                ],
-              ))
-        ],
-      )),
-
+        Card(
+            child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            ListTile(
+                leading: Icon(Icons.help),
+                title: Text('Welcome to Encrateia!'),
+                subtitle: Text('Maybe you want to learn more about Encrateia.'
+                    'We have provided some introductory help for you.')),
+            ButtonTheme.bar(
+                child: ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: const Text('HELP'),
+                  onPressed: () {},
+                )
+              ],
+            ))
+          ],
+        )),
         Card(
             child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -62,7 +61,13 @@ class Dashboard extends StatelessWidget {
               children: <Widget>[
                 FlatButton(
                   child: const Text('CREATE NEW ATHLETE'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditAthleteScreen()),
+                    );
+                  },
                 )
               ],
             ))

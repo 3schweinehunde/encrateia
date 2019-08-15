@@ -12,6 +12,7 @@ dependencies:
   flutter_launcher_icons: ^0.7.2
   cupertino_icons: ^0.1.2
   jaguar_query_sqflite: ^2.2.10
+  scoped_model: ^1.0.1
 
 
 dev_dependencies:

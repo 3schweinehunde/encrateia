@@ -1,9 +1,10 @@
 import 'package:jaguar_query/jaguar_query.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 part 'athlete.jorm.dart';
 
-class Athlete {
+class Athlete extends Model {
   @PrimaryKey()
   String id;
   String name;
