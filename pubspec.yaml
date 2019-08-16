@@ -13,14 +13,13 @@ dependencies:
   cupertino_icons: ^0.1.2
   jaguar_query_sqflite: ^2.2.10
   scoped_model: ^1.0.1
-
+  strava_flutter: ^1.0.11+30
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner:
   jaguar_orm_gen: 2.2.27
-
 
 flutter:
   uses-material-design: true

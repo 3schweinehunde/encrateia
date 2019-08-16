@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'strava/strava_login2.dart';
 
 class EditAthleteScreen extends StatelessWidget {
   @override
@@ -39,7 +40,13 @@ class EditAthleteScreen extends StatelessWidget {
                                 children: <Widget>[
                                   FlatButton(
                                     child: const Text('CONNECT TO STRAVA'),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => StravaFlutterPage()),
+                                      );
+                                    },
                                   )
                                 ],
                               ))

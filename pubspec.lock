@@ -340,6 +340,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.2"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.0"
   pedantic:
     dependency: transitive
     description:
@@ -396,6 +403,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  shared_preferences:
+    dependency: transitive
+    description:
+      name: shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.3+4"
   shelf:
     dependency: transitive
     description:
@@ -443,6 +457,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.3"
+  strava_flutter:
+    dependency: "direct main"
+    description:
+      name: strava_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.11+30"
   stream_channel:
     dependency: transitive
     description:
@@ -499,6 +520,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
+  url_launcher:
+    dependency: transitive
+    description:
+      name: url_launcher
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "5.1.2"
   vector_math:
     dependency: transitive
     description:
@@ -536,4 +564,4 @@ packages:
     version: "2.1.16"
 sdks:
   dart: ">=2.4.0 <3.0.0"
-  flutter: ">=1.2.1 <2.0.0"
+  flutter: ">=1.5.0 <2.0.0"
