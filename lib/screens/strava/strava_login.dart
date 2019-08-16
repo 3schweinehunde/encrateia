@@ -19,12 +19,12 @@ class _StravaLoginState extends State<StravaLogin> {
 
   @override
   void initState() {
+    loginToStrava();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    loginToStrava();
 
     return WillPopScope(
         onWillPop: () {
@@ -34,20 +34,21 @@ class _StravaLoginState extends State<StravaLogin> {
           appBar: AppBar(title: Text('Create Athlete')),
           body: Container(child:
             Text("isAuthOk ${isAuthOk} \n"
-                 "stravaAthlete ${stravaAthlete}"))
+                 "stravaAthlete ${stravaAthlete?.firstname}"))
         )
     );
   }
 
   loginToStrava() async {
-    strava = Strava(true, secret);
-
+    strava = Strava(false, secret);
     final prompt = 'auto';
+
     final auth = await strava.oauth(
         clientId,
         'activity:write,activity:read_all,profile:read_all,profile:write',
         secret,
         prompt);
+    print(auth);
     final athlete = await strava.getLoggedInAthlete();
 
     setState(() {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'strava/strava_login2.dart';
+import 'strava/strava_login.dart';
 
 class EditAthleteScreen extends StatelessWidget {
   @override
@@ -44,7 +44,7 @@ class EditAthleteScreen extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => StravaFlutterPage()),
+                                            builder: (context) => StravaLogin()),
                                       );
                                     },
                                   )
