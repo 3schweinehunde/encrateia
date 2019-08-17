@@ -15,6 +15,11 @@ class Athlete extends Model {
 
   static const String tableName = '_athlete';
   String toString() => '$firstName ($id)';
+
+  void setData({firstName}) {
+    this.firstName = firstName;
+    notifyListeners();
+  }
 }
 
 @GenBean()

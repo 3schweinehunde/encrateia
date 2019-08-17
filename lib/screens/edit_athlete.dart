@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'strava/strava_get_user.dart';
 
 class EditAthleteScreen extends StatelessWidget {
@@ -15,17 +14,14 @@ class EditAthleteScreen extends StatelessWidget {
             appBar: AppBar(
               title: Text('Create Athlete'),
             ),
-            body: ScopedModel<Athlete>(
-                model: athlete,
-                child: ScopedModelDescendant<Athlete>(
-                    builder: (context, child, athlete) =>
+            body:
                         ListView(padding: EdgeInsets.all(20), children: <
                             Widget>[
                           TextField(
                               onChanged: (value) => athlete.firstName = value,
                               decoration: InputDecoration(labelText: 'First Name')),
 
-                          // Strava Connection
+                          // Strava Connection Card
                           Card(
                               child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -45,7 +41,7 @@ class EditAthleteScreen extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => StravaGetUser(athlete)),
+                                            builder: (context) => StravaGetUser(athlete: athlete)),
                                       );
                                     },
                                   )
@@ -54,7 +50,7 @@ class EditAthleteScreen extends StatelessWidget {
                             ],
                           )),
 
-                          // Cancel and Save
+                          // Cancel and Save Card
                           Padding(
                               padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                               child: Row(
@@ -85,6 +81,6 @@ class EditAthleteScreen extends StatelessWidget {
                                   ),
                                 ],
                               )),
-                        ])))));
+                        ])));
   }
 }

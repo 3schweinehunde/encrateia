@@ -4,42 +4,40 @@ import 'package:strava_flutter/strava.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:encrateia/models/athlete.dart';
 
-class StravaGetUser extends StatefulWidget {
+class StravaGetUser extends StatelessWidget {
   final String title = "Strava Login";
   Athlete athlete;
-
-  StravaGetUser(this.athlete) {}
-
-  @override
-  _StravaGetUserState createState() => _StravaGetUserState();
-}
-
-class _StravaGetUserState extends State<StravaGetUser> {
   Strava strava;
 
-  @override
-  void initState() {
-    loginToStrava();
-    super.initState();
-  }
+  StravaGetUser({this.athlete});
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () {
-          Navigator.pop(context, true);
-        },
-        child: Scaffold(
-            appBar: AppBar(title: Text('Create Athlete')),
-            body: ScopedModelDescendant<Athlete>(
-                builder: (context, child, model) {
-              widget.athlete = model;
-              Container(child: Text("Athlete ${widget.athlete.firstName}"));
-            })));
+    return ScopedModel<Athlete>(
+        model: athlete,
+        child: WillPopScope(
+          onWillPop: () {
+            Navigator.pop(context, true);
+          },
+          child: Scaffold(
+              appBar: AppBar(title: Text('Create Athlete')),
+              body:  ScopedModelDescendant<Athlete>(
+                      builder: (context, child, athlete) {
+                        if (strava == null) {
+                          loginToStrava();
+                        };
+                        return Container(child:
+                          Text("Athlete ${athlete.firstName}")
+                        );
+                      }
+                  )
+          )
+        )
+    );
   }
 
   loginToStrava() async {
-    strava = Strava(true, secret);
+    this.strava = Strava(true, secret);
     final prompt = 'auto';
 
     final auth = await strava.oauth(
@@ -50,8 +48,6 @@ class _StravaGetUserState extends State<StravaGetUser> {
     print(auth);
     final stravaAthlete = await strava.getLoggedInAthlete();
 
-    setState(() {
-      widget.athlete.firstName = stravaAthlete.firstname;
-    });
+    athlete.setData(firstName: stravaAthlete.firstname);
   }
 }
