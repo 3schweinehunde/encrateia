@@ -7,14 +7,14 @@ part 'athlete.jorm.dart';
 class Athlete extends Model {
   @PrimaryKey()
   String id;
-  String name;
+  String firstName;
   int stravaId;
 
   Athlete();
-  Athlete.make(this.id, this.name, this.stravaId);
+  Athlete.make(this.id, this.firstName, this.stravaId);
 
   static const String tableName = '_athlete';
-  String toString() => '$name ($id)';
+  String toString() => '$firstName ($id)';
 }
 
 @GenBean()

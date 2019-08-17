@@ -21,8 +21,8 @@ class EditAthleteScreen extends StatelessWidget {
                         new ListView(padding: EdgeInsets.all(20), children: <
                             Widget>[
                           TextField(
-                              onChanged: (value) => athlete.name = value,
-                              decoration: InputDecoration(labelText: 'Name')),
+                              onChanged: (value) => athlete.firstName = value,
+                              decoration: InputDecoration(labelText: 'First Name')),
 
                           // Strava Connection
                           Card(

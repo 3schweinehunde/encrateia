@@ -8,18 +8,18 @@ part of 'athlete.dart';
 
 abstract class _AthleteBean implements Bean<Athlete> {
   final id = StrField('id');
-  final name = StrField('name');
+  final firstName = StrField('first_name');
   final stravaId = IntField('strava_id');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
-        name.name: name,
+        firstName.name: firstName,
         stravaId.name: stravaId,
       };
   Athlete fromMap(Map map) {
     Athlete model = Athlete();
     model.id = adapter.parseValue(map['id']);
-    model.name = adapter.parseValue(map['name']);
+    model.firstName = adapter.parseValue(map['first_name']);
     model.stravaId = adapter.parseValue(map['strava_id']);
 
     return model;
@@ -31,18 +31,19 @@ abstract class _AthleteBean implements Bean<Athlete> {
 
     if (only == null && !onlyNonNull) {
       ret.add(id.set(model.id));
-      ret.add(name.set(model.name));
+      ret.add(firstName.set(model.firstName));
       ret.add(stravaId.set(model.stravaId));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
-      if (only.contains(name.name)) ret.add(name.set(model.name));
+      if (only.contains(firstName.name))
+        ret.add(firstName.set(model.firstName));
       if (only.contains(stravaId.name)) ret.add(stravaId.set(model.stravaId));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
         ret.add(id.set(model.id));
       }
-      if (model.name != null) {
-        ret.add(name.set(model.name));
+      if (model.firstName != null) {
+        ret.add(firstName.set(model.firstName));
       }
       if (model.stravaId != null) {
         ret.add(stravaId.set(model.stravaId));
@@ -55,7 +56,7 @@ abstract class _AthleteBean implements Bean<Athlete> {
   Future<void> createTable({bool ifNotExists = false}) async {
     final st = Sql.create(tableName, ifNotExists: ifNotExists);
     st.addStr(id.name, primary: true, isNullable: false);
-    st.addStr(name.name, isNullable: false);
+    st.addStr(firstName.name, isNullable: false);
     st.addInt(stravaId.name, isNullable: false);
     return adapter.createTable(st);
   }

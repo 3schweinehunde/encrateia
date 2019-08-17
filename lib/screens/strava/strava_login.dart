@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/strava.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
+import 'package:strava_flutter/Models/activity.dart';
 
 class StravaLogin  extends StatefulWidget {
   final String title = "Strava Login";
@@ -15,7 +16,8 @@ class StravaLogin  extends StatefulWidget {
 class _StravaLoginState extends State<StravaLogin> {
   bool isAuthOk = false;
   Strava strava;
-  DetailedAthlete stravaAthlete;
+  DetailedAthlete athlete;
+  List<SummaryActivity> activities;
 
   @override
   void initState() {
@@ -34,13 +36,14 @@ class _StravaLoginState extends State<StravaLogin> {
           appBar: AppBar(title: Text('Create Athlete')),
           body: Container(child:
             Text("isAuthOk ${isAuthOk} \n"
-                 "stravaAthlete ${stravaAthlete?.firstname}"))
+                 "stravaAthlete ${athlete?.firstname} \n"
+                 "activities ${activities?.length}"))
         )
     );
   }
 
   loginToStrava() async {
-    strava = Strava(false, secret);
+    strava = Strava(true, secret);
     final prompt = 'auto';
 
     final auth = await strava.oauth(
@@ -49,11 +52,17 @@ class _StravaLoginState extends State<StravaLogin> {
         secret,
         prompt);
     print(auth);
-    final athlete = await strava.getLoggedInAthlete();
+    final stravaAthlete = await strava.getLoggedInAthlete();
+//    final now = DateTime.now().microsecondsSinceEpoch ~/ 1000 ;
+//    final yesterday = now - 1550;
+//    final stravaActivities = await strava.getLoggedInAthleteActivities(
+//        now,
+//        yesterday
+//    );
 
     setState(() {
       isAuthOk = auth;
-      stravaAthlete = athlete;
+      athlete = stravaAthlete;
     });
   }
 }
