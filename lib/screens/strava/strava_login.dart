@@ -7,7 +7,7 @@ import 'package:strava_flutter/Models/activity.dart';
 class StravaLogin  extends StatefulWidget {
   final String title = "Strava Login";
 
-  StravaLogin() {}
+  StravaLogin();
 
   @override
   _StravaLoginState createState() => _StravaLoginState();
@@ -35,7 +35,7 @@ class _StravaLoginState extends State<StravaLogin> {
         child: Scaffold(
           appBar: AppBar(title: Text('Create Athlete')),
           body: Container(child:
-            Text("isAuthOk ${isAuthOk} \n"
+            Text("isAuthOk $isAuthOk \n"
                  "stravaAthlete ${athlete?.firstname} \n"
                  "activities ${activities?.length}"))
         )
