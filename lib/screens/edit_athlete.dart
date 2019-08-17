@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'strava/strava_login.dart';
+import 'strava/strava_get_user.dart';
 
 class EditAthleteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Athlete athlete = Athlete();
     return WillPopScope(
         onWillPop: () {
           Navigator.pop(context, true);
@@ -15,10 +16,10 @@ class EditAthleteScreen extends StatelessWidget {
               title: Text('Create Athlete'),
             ),
             body: ScopedModel<Athlete>(
-                model: new Athlete(),
-                child: new ScopedModelDescendant<Athlete>(
+                model: athlete,
+                child: ScopedModelDescendant<Athlete>(
                     builder: (context, child, athlete) =>
-                        new ListView(padding: EdgeInsets.all(20), children: <
+                        ListView(padding: EdgeInsets.all(20), children: <
                             Widget>[
                           TextField(
                               onChanged: (value) => athlete.firstName = value,
@@ -44,7 +45,7 @@ class EditAthleteScreen extends StatelessWidget {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => StravaLogin()),
+                                            builder: (context) => StravaGetUser(athlete)),
                                       );
                                     },
                                   )
