@@ -6,8 +6,7 @@ import 'package:encrateia/models/athlete.dart';
 
 class StravaGetUser extends StatelessWidget {
   final String title = "Strava Login";
-  Athlete athlete;
-  Strava strava;
+  final Athlete athlete;
 
   StravaGetUser({this.athlete});
 
@@ -23,9 +22,7 @@ class StravaGetUser extends StatelessWidget {
               appBar: AppBar(title: Text('Create Athlete')),
               body:  ScopedModelDescendant<Athlete>(
                       builder: (context, child, athlete) {
-                        if (strava == null) {
-                          loginToStrava();
-                        };
+                        if (athlete.firstName == null) loginToStrava();
                         return Container(child:
                           Text("Athlete ${athlete.firstName}")
                         );
@@ -37,7 +34,7 @@ class StravaGetUser extends StatelessWidget {
   }
 
   loginToStrava() async {
-    this.strava = Strava(true, secret);
+    Strava strava = Strava(true, secret);
     final prompt = 'auto';
 
     final auth = await strava.oauth(
