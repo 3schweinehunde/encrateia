@@ -13,23 +13,20 @@ class StravaGetUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScopedModel<Athlete>(
-        model: athlete,
-        child: WillPopScope(
-          onWillPop: () {
-            Navigator.pop(context, true);
-          },
-          child: Scaffold(
-              appBar: AppBar(title: Text('Create Athlete')),
-              body:  ScopedModelDescendant<Athlete>(
-                      builder: (context, child, athlete) {
-                        if (athlete.firstName == null) loginToStrava();
-                        return Container(child:
-                          Text("Athlete ${athlete.firstName}")
-                        );
-                      }
-                  )
-          )
-        )
+      model: athlete,
+      child: Scaffold(
+        appBar: AppBar(title: Text('Create Athlete')),
+        body:
+            ScopedModelDescendant<Athlete>(builder: (context, child, athlete) {
+          if (athlete.firstName == null) loginToStrava();
+          return Container(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(athlete.stateText),
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -42,9 +39,15 @@ class StravaGetUser extends StatelessWidget {
         'activity:write,activity:read_all,profile:read_all,profile:write',
         secret,
         prompt);
-    print(auth);
     final stravaAthlete = await strava.getLoggedInAthlete();
 
-    athlete.setData(firstName: stravaAthlete.firstname);
+    athlete.set(
+      firstName: stravaAthlete.firstname,
+      lastName: stravaAthlete.lastname,
+      stravaId: stravaAthlete.id,
+      stravaUsername: stravaAthlete.username,
+      photoPath: stravaAthlete.profile,
+      state: "loaded",
+    );
   }
 }

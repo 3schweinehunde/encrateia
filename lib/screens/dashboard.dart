@@ -11,41 +11,44 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-        ),
-        body: ListView(padding: EdgeInsets.all(20), children: <Widget>[
+      appBar: AppBar(title: Text(title)),
+      body: ListView(
+        padding: EdgeInsets.all(20),
+        children: <Widget>[
           Card(
-              child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
                   leading: Icon(Icons.help),
                   title: Text('Welcome to Encrateia!'),
                   subtitle: Text('Maybe you want to learn more about Encrateia.'
-                      'We have provided some introductory help for you.')),
-              ButtonTheme.bar(
+                      'We have provided some introductory help for you.'),
+                ),
+                ButtonTheme.bar(
                   child: ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    child: const Text('HELP'),
-                    onPressed: () {},
-                  )
-                ],
-              ))
-            ],
-          )),
+                    children: <Widget>[
+                      FlatButton(
+                        child: const Text('HELP'),
+                        onPressed: () {},
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
           Card(
               child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                  leading: Icon(Icons.face),
-                  title: Text('Who are you?'),
-                  subtitle:
-                      Text('This app stores date associated to one athlete '
-                          '(you) or many athletes (if you act as a trainer).'
-                          '\n Please create your first athlete!')),
+                leading: Icon(Icons.face),
+                title: Text('Who are you?'),
+                subtitle: Text('This app stores date associated to one athlete '
+                    '(you) or many athletes (if you act as a trainer).'
+                    '\n Please create your first athlete!'),
+              ),
               ButtonTheme.bar(
                   child: ButtonBar(
                 children: <Widget>[
@@ -55,8 +58,11 @@ class Dashboard extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ScopedModel<Athlete>(
-                                model: Athlete(), child: EditAthleteScreen())),
+                          builder: (context) => ScopedModel<Athlete>(
+                                model: Athlete(),
+                                child: EditAthleteScreen(),
+                              ),
+                        ),
                       );
                     },
                   )
@@ -64,6 +70,8 @@ class Dashboard extends StatelessWidget {
               ))
             ],
           ))
-        ]));
+        ],
+      ),
+    );
   }
 }
