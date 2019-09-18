@@ -1,6 +1,8 @@
 import 'package:jaguar_query/jaguar_query.dart';
+import 'package:flutter/material.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:encrateia/utils/database.dart';
 
 part 'athlete.jorm.dart';
 
@@ -12,24 +14,22 @@ class Athlete extends Model {
   String state = "";
   String stravaUsername;
   String photoPath;
-
   int stravaId;
 
   Athlete();
 
-  Athlete.make(this.id, this.firstName, this.stravaId);
-
   static const String tableName = '_athlete';
 
-  String toString() => '$firstName ($id)';
+  String toString() => '$firstName $lastName ($id)';
 
   void set({firstName, lastName, state, stravaId, stravaUsername, photoPath}) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.state = state;
-    this.stravaId = stravaId;
-    this.stravaUsername = stravaUsername;
-    this.photoPath = photoPath;
+    this
+      ..firstName = firstName
+      ..lastName = lastName
+      ..state = state
+      ..stravaId = stravaId
+      ..stravaUsername = stravaUsername
+      ..photoPath = photoPath;
     notifyListeners();
   }
 
@@ -47,6 +47,13 @@ class Athlete extends Model {
     }
     return text;
   }
+
+  persist() async{
+    var connection = await Database.connection();
+    AthleteBean(connection).insert(this);
+  }
+
+  static Athlete of(BuildContext context) => ScopedModel.of<Athlete>(context);
 }
 
 @GenBean()

@@ -34,7 +34,7 @@ class StravaGetUser extends StatelessWidget {
     Strava strava = Strava(true, secret);
     final prompt = 'auto';
 
-    final auth = await strava.oauth(
+    await strava.oauth(
         clientId,
         'activity:write,activity:read_all,profile:read_all,profile:write',
         secret,
