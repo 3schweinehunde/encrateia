@@ -2,13 +2,13 @@ import 'package:jaguar_query/jaguar_query.dart';
 import 'package:flutter/material.dart';
 import 'package:jaguar_orm/jaguar_orm.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:encrateia/utils/database.dart';
+import 'package:encrateia/utils/database_helper.dart';
 
 part 'athlete.jorm.dart';
 
 class Athlete extends Model {
   @PrimaryKey()
-  String id;
+  int id;
   String firstName;
   String lastName;
   String state = "";
@@ -24,6 +24,7 @@ class Athlete extends Model {
 
   void set({firstName, lastName, state, stravaId, stravaUsername, photoPath}) {
     this
+      ..id = stravaId
       ..firstName = firstName
       ..lastName = lastName
       ..state = state
@@ -49,8 +50,9 @@ class Athlete extends Model {
   }
 
   persist() async{
-    var connection = await Database.connection();
-    AthleteBean(connection).insert(this);
+    var databaseHelper = DatabaseHelper();
+    var adapter = await databaseHelper.adapter;
+    AthleteBean(adapter).insert(this);
   }
 
   static Athlete of(BuildContext context) => ScopedModel.of<Athlete>(context);

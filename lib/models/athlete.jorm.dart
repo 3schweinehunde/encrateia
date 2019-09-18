@@ -7,19 +7,31 @@ part of 'athlete.dart';
 // **************************************************************************
 
 abstract class _AthleteBean implements Bean<Athlete> {
-  final id = StrField('id');
+  final id = IntField('id');
   final firstName = StrField('first_name');
+  final lastName = StrField('last_name');
+  final state = StrField('state');
+  final stravaUsername = StrField('strava_username');
+  final photoPath = StrField('photo_path');
   final stravaId = IntField('strava_id');
   Map<String, Field> _fields;
   Map<String, Field> get fields => _fields ??= {
         id.name: id,
         firstName.name: firstName,
+        lastName.name: lastName,
+        state.name: state,
+        stravaUsername.name: stravaUsername,
+        photoPath.name: photoPath,
         stravaId.name: stravaId,
       };
   Athlete fromMap(Map map) {
     Athlete model = Athlete();
     model.id = adapter.parseValue(map['id']);
     model.firstName = adapter.parseValue(map['first_name']);
+    model.lastName = adapter.parseValue(map['last_name']);
+    model.state = adapter.parseValue(map['state']);
+    model.stravaUsername = adapter.parseValue(map['strava_username']);
+    model.photoPath = adapter.parseValue(map['photo_path']);
     model.stravaId = adapter.parseValue(map['strava_id']);
 
     return model;
@@ -32,11 +44,21 @@ abstract class _AthleteBean implements Bean<Athlete> {
     if (only == null && !onlyNonNull) {
       ret.add(id.set(model.id));
       ret.add(firstName.set(model.firstName));
+      ret.add(lastName.set(model.lastName));
+      ret.add(state.set(model.state));
+      ret.add(stravaUsername.set(model.stravaUsername));
+      ret.add(photoPath.set(model.photoPath));
       ret.add(stravaId.set(model.stravaId));
     } else if (only != null) {
       if (only.contains(id.name)) ret.add(id.set(model.id));
       if (only.contains(firstName.name))
         ret.add(firstName.set(model.firstName));
+      if (only.contains(lastName.name)) ret.add(lastName.set(model.lastName));
+      if (only.contains(state.name)) ret.add(state.set(model.state));
+      if (only.contains(stravaUsername.name))
+        ret.add(stravaUsername.set(model.stravaUsername));
+      if (only.contains(photoPath.name))
+        ret.add(photoPath.set(model.photoPath));
       if (only.contains(stravaId.name)) ret.add(stravaId.set(model.stravaId));
     } else /* if (onlyNonNull) */ {
       if (model.id != null) {
@@ -44,6 +66,18 @@ abstract class _AthleteBean implements Bean<Athlete> {
       }
       if (model.firstName != null) {
         ret.add(firstName.set(model.firstName));
+      }
+      if (model.lastName != null) {
+        ret.add(lastName.set(model.lastName));
+      }
+      if (model.state != null) {
+        ret.add(state.set(model.state));
+      }
+      if (model.stravaUsername != null) {
+        ret.add(stravaUsername.set(model.stravaUsername));
+      }
+      if (model.photoPath != null) {
+        ret.add(photoPath.set(model.photoPath));
       }
       if (model.stravaId != null) {
         ret.add(stravaId.set(model.stravaId));
@@ -55,8 +89,12 @@ abstract class _AthleteBean implements Bean<Athlete> {
 
   Future<void> createTable({bool ifNotExists = false}) async {
     final st = Sql.create(tableName, ifNotExists: ifNotExists);
-    st.addStr(id.name, primary: true, isNullable: false);
+    st.addInt(id.name, primary: true, isNullable: false);
     st.addStr(firstName.name, isNullable: false);
+    st.addStr(lastName.name, isNullable: false);
+    st.addStr(state.name, isNullable: false);
+    st.addStr(stravaUsername.name, isNullable: false);
+    st.addStr(photoPath.name, isNullable: false);
     st.addInt(stravaId.name, isNullable: false);
     return adapter.createTable(st);
   }
@@ -129,13 +167,13 @@ abstract class _AthleteBean implements Bean<Athlete> {
     return;
   }
 
-  Future<Athlete> find(String id,
+  Future<Athlete> find(int id,
       {bool preload = false, bool cascade = false}) async {
     final Find find = finder.where(this.id.eq(id));
     return await findOne(find);
   }
 
-  Future<int> remove(String id) async {
+  Future<int> remove(int id) async {
     final Remove remove = remover.where(this.id.eq(id));
     return adapter.remove(remove);
   }
