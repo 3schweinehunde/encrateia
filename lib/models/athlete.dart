@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:encrateia/utils/db.dart';
 import 'package:encrateia/model/model.dart';
+import 'package:strava_flutter/Models/detailedAthlete.dart';
 
 class Athlete extends Model {
   int id;
@@ -13,16 +14,16 @@ class Athlete extends Model {
   int stravaId;
 
   Athlete();
-  String toString() => '$firstName $lastName ($id)';
+  String toString() => '$firstName $lastName ($stravaId)';
 
-  void set({firstName, lastName, state, stravaId, stravaUsername, photoPath}) {
-    this
-      ..firstName = firstName
-      ..lastName = lastName
-      ..state = state
-      ..stravaId = stravaId
-      ..stravaUsername = stravaUsername
-      ..photoPath = photoPath;
+  updateFromStravaAthlete(DetailedAthlete athlete) {
+    firstName = athlete.firstname;
+    lastName = athlete.lastname;
+    state = athlete.state;
+    stravaId = athlete.id;
+    stravaUsername = athlete.username;
+    photoPath = athlete.profile;
+    state = "unsaved";
     notifyListeners();
   }
 
@@ -36,7 +37,7 @@ class Athlete extends Model {
         text = "Strava data loaded successfully.";
         break;
       default:
-        text = "Unknown State, should have never come here.";
+        text = "Unknown state, should have never come here.";
     }
     return text;
   }

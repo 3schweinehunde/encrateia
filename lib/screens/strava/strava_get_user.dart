@@ -41,13 +41,6 @@ class StravaGetUser extends StatelessWidget {
         prompt);
     final stravaAthlete = await strava.getLoggedInAthlete();
 
-    athlete.set(
-      firstName: stravaAthlete.firstname,
-      lastName: stravaAthlete.lastname,
-      stravaId: stravaAthlete.id,
-      stravaUsername: stravaAthlete.username,
-      photoPath: stravaAthlete.profile,
-      state: "unsaved",
-    );
+    athlete.updateFromStravaAthlete(stravaAthlete);
   }
 }
