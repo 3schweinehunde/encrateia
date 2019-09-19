@@ -47,7 +47,7 @@ class StravaGetUser extends StatelessWidget {
       stravaId: stravaAthlete.id,
       stravaUsername: stravaAthlete.username,
       photoPath: stravaAthlete.profile,
-      state: "loaded",
+      state: "unsaved",
     );
   }
 }

@@ -11,15 +11,17 @@ dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.7.2
   cupertino_icons: ^0.1.2
-  jaguar_query_sqflite: ^2.2.10
   scoped_model: ^1.0.1
   strava_flutter: ^1.0.11+32
+  sqfentity: ^1.1.0
+  sqfentity_base: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner:
-  jaguar_orm_gen: 2.2.27
+  build_runner: ^1.6.5
+  build_verify: ^1.1.0
+  sqfentity_gen: ^1.0.0
 
 flutter:
   uses-material-design: true
