@@ -4,7 +4,9 @@ class Db {
   static Db _dB;
   static bool _isConnected = false;
 
-  factory Db() {
+  Db();
+
+  factory Db.create() {
     if (_dB == null) _dB = Db();
     return _dB;
   }

@@ -43,14 +43,15 @@ class Athlete extends Model {
   }
 
   persist() async {
-    await Db().connect();
-    await DbAthlete(
+    await Db.create().connect();
+    var dbAthlete = DbAthlete(
             firstName: firstName,
             lastName: lastName,
             stravaId: stravaId,
             stravaUsername: stravaUsername,
-            photoPath: photoPath)
-        .save();
+            photoPath: photoPath);
+    int id = await dbAthlete.save();
+    print(id);
   }
 
   static Athlete of(BuildContext context) => ScopedModel.of<Athlete>(context);
