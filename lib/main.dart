@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange, // #ff9800
       ),
-      home: Dashboard(title: 'Encrateia Dashboard'),
+      home: Dashboard(),
     );
   }
 }
