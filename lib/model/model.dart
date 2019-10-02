@@ -1,3 +1,5 @@
+// flutter pub run build_runner build --delete-conflicting-outputs
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -18,14 +20,34 @@ const tableAthlete = SqfEntityTable(
       SqfEntityField('stravaUsername', DbType.text),
       SqfEntityField('photoPath', DbType.text),
       SqfEntityField('stravaId', DbType.integer),
-    ]
-);
+    ]);
+
+const tableActivity = SqfEntityTable(
+    tableName: 'activities',
+    primaryKeyName: 'id',
+    primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+    useSoftDeleting: false,
+    modelName: 'DbActivity',
+    fields: [
+      SqfEntityField('downloaded', DbType.bool, defaultValue: false),
+      SqfEntityField('path', DbType.text),
+      SqfEntityField('parsed', DbType.bool, defaultValue: false),
+      SqfEntityField('stravaId', DbType.integer),
+      SqfEntityField('name', DbType.text),
+      SqfEntityField('movingTime', DbType.integer),
+      SqfEntityField('type', DbType.text),
+      SqfEntityField('startDateTime', DbType.text),
+      SqfEntityField('distance', DbType.integer),
+      SqfEntityFieldRelationship(
+          parentTable: tableAthlete,
+          deleteRule: DeleteRule.CASCADE,
+          defaultValue: '0'),
+    ]);
 
 @SqfEntityBuilder(encrateia)
 const encrateia = SqfEntityModel(
     modelName: 'DbEncrateia', // optional
     databaseName: 'encrateia.db',
-    databaseTables: [tableAthlete],
+    databaseTables: [tableAthlete, tableActivity],
     sequences: [],
-    bundledDatabasePath: null
-);
+    bundledDatabasePath: null);
