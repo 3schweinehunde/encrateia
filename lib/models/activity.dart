@@ -38,7 +38,7 @@ class Activity extends Model {
       startDateTime: startDateTime.toIso8601String(),
       distance: distance
     );
-    int id = await dbActivity.save();
+    await dbActivity.save();
   }
 
   static Activity of(BuildContext context) => ScopedModel.of<Activity>(context);

@@ -51,7 +51,7 @@ class Athlete extends Model {
             stravaId: stravaId,
             stravaUsername: stravaUsername,
             photoPath: photoPath);
-    int id = await dbAthlete.save();
+    await dbAthlete.save();
   }
 
   static Athlete of(BuildContext context) => ScopedModel.of<Athlete>(context);

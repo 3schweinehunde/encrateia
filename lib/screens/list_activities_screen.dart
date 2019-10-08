@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 
 class ListActivitiesScreen extends StatefulWidget {
-  DbAthlete athlete;
+  final DbAthlete athlete;
   ListActivitiesScreen({this.athlete});
 
   @override
