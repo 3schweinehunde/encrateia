@@ -1,3 +1,4 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 
@@ -22,6 +23,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
           ListTile(
             leading: Icon(Icons.cloud_download),
             title: Text("Download Activities from Strava"),
+            onTap: () {Activity.queryStrava(); },
           )
         ],
       ),

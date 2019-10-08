@@ -43,7 +43,7 @@ class Activity extends Model {
 
   static Activity of(BuildContext context) => ScopedModel.of<Activity>(context);
 
-  queryStrava() async {
+  static queryStrava() async {
     Strava strava = Strava(true, secret);
     final prompt = 'auto';
 
@@ -57,13 +57,14 @@ class Activity extends Model {
         .now()
         .microsecondsSinceEpoch ~/ 1000;
 
-    final yesterday = now - 86400;
+    final startDate = now - 7 * 86400;
 
     List<SummaryActivity> summaryActivities = await strava
-        .getLoggedInAthleteActivities(now, yesterday);
+        .getLoggedInAthleteActivities(now, startDate);
 
     for(SummaryActivity summaryActivity in summaryActivities) {
-      Activity.fromStrava(summaryActivity).persist();
+      Activity activity = Activity.fromStrava(summaryActivity);
+      activity.persist();
     }
 
     print("Hello");

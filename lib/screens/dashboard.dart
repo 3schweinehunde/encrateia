@@ -105,21 +105,20 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     for (DbAthlete athlete in snapshot.data)
                       ListTile(
-                          leading: Image.network(athlete.photoPath),
-                          title:
-                              Text("${athlete.firstName} ${athlete.lastName}"),
-                          subtitle: Text("${athlete.stravaId}"),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ScopedModel<Athlete>(
-                                  model: Athlete(),
-                                  child: ListActivitiesScreen(athlete: athlete),
-                                ),
+                        leading: Image.network(athlete.photoPath),
+                        title: Text("${athlete.firstName} ${athlete.lastName}"),
+                        subtitle: Text("${athlete.stravaId}"),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ListActivitiesScreen(
+                                athlete: athlete,
                               ),
-                            );
-                          },)
+                            ),
+                          );
+                        },
+                      )
                   ],
                 );
               }
