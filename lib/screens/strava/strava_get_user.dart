@@ -3,6 +3,7 @@ import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/strava.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:strava_flutter/Models/detailedAthlete.dart';
 
 class StravaGetUser extends StatelessWidget {
   final String title = "Strava Login";
@@ -39,8 +40,7 @@ class StravaGetUser extends StatelessWidget {
         'activity:write,activity:read_all,profile:read_all,profile:write',
         secret,
         prompt);
-    final stravaAthlete = await strava.getLoggedInAthlete();
-
+    DetailedAthlete stravaAthlete = await strava.getLoggedInAthlete();
     athlete.updateFromStravaAthlete(stravaAthlete);
   }
 }

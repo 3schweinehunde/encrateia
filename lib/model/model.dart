@@ -1,3 +1,4 @@
+// To update model.g.dart and model.g.form.dart run in the console:
 // flutter pub run build_runner build --delete-conflicting-outputs
 
 import 'dart:convert';
@@ -29,9 +30,8 @@ const tableActivity = SqfEntityTable(
     useSoftDeleting: false,
     modelName: 'DbActivity',
     fields: [
-      SqfEntityField('downloaded', DbType.bool, defaultValue: false),
+      SqfEntityField('state', DbType.text, defaultValue: "new"),
       SqfEntityField('path', DbType.text),
-      SqfEntityField('parsed', DbType.bool, defaultValue: false),
       SqfEntityField('stravaId', DbType.integer),
       SqfEntityField('name', DbType.text),
       SqfEntityField('movingTime', DbType.integer),

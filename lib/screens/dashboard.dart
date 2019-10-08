@@ -5,6 +5,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/utils/db.dart';
+import 'list_activities_screen.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard();
@@ -107,7 +108,18 @@ class _DashboardState extends State<Dashboard> {
                           leading: Image.network(athlete.photoPath),
                           title:
                               Text("${athlete.firstName} ${athlete.lastName}"),
-                          subtitle: Text("${athlete.stravaId}"))
+                          subtitle: Text("${athlete.stravaId}"),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ScopedModel<Athlete>(
+                                  model: Athlete(),
+                                  child: ListActivitiesScreen(athlete: athlete),
+                                ),
+                              ),
+                            );
+                          },)
                   ],
                 );
               }

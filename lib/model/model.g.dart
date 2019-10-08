@@ -57,9 +57,8 @@ class TableDbActivity extends SqfEntityTableBase {
 
     // declare fields
     fields = [
-      SqfEntityFieldBase('downloaded', DbType.bool, defaultValue: false),
+      SqfEntityFieldBase('state', DbType.text, defaultValue: 'new'),
       SqfEntityFieldBase('path', DbType.text),
-      SqfEntityFieldBase('parsed', DbType.bool, defaultValue: false),
       SqfEntityFieldBase('stravaId', DbType.integer),
       SqfEntityFieldBase('name', DbType.text),
       SqfEntityFieldBase('movingTime', DbType.integer),
@@ -1049,9 +1048,8 @@ class DbAthleteManager extends SqfEntityProvider {
 class DbActivity {
   DbActivity(
       {this.id,
-      this.downloaded,
+      this.state,
       this.path,
-      this.parsed,
       this.stravaId,
       this.name,
       this.movingTime,
@@ -1062,9 +1060,8 @@ class DbActivity {
     setDefaultValues();
   }
   DbActivity.withFields(
-      this.downloaded,
+      this.state,
       this.path,
-      this.parsed,
       this.stravaId,
       this.name,
       this.movingTime,
@@ -1076,9 +1073,8 @@ class DbActivity {
   }
   DbActivity.withId(
       this.id,
-      this.downloaded,
+      this.state,
       this.path,
-      this.parsed,
       this.stravaId,
       this.name,
       this.movingTime,
@@ -1090,11 +1086,9 @@ class DbActivity {
   }
   DbActivity.fromMap(Map<String, dynamic> o) {
     id = o['id'] as int;
-    downloaded = o['downloaded'] != null ? o['downloaded'] == 1 : null;
+    state = o['state'] as String;
 
     path = o['path'] as String;
-
-    parsed = o['parsed'] != null ? o['parsed'] == 1 : null;
 
     stravaId = o['stravaId'] as int;
 
@@ -1112,9 +1106,8 @@ class DbActivity {
   }
   // FIELDS
   int id;
-  bool downloaded;
+  String state;
   String path;
-  bool parsed;
   int stravaId;
   String name;
   int movingTime;
@@ -1147,16 +1140,12 @@ class DbActivity {
     if (id != null) {
       map['id'] = id;
     }
-    if (downloaded != null) {
-      map['downloaded'] = forQuery ? (downloaded ? 1 : 0) : downloaded;
+    if (state != null) {
+      map['state'] = state;
     }
 
     if (path != null) {
       map['path'] = path;
-    }
-
-    if (parsed != null) {
-      map['parsed'] = forQuery ? (parsed ? 1 : 0) : parsed;
     }
 
     if (stravaId != null) {
@@ -1196,16 +1185,12 @@ class DbActivity {
     if (id != null) {
       map['id'] = id;
     }
-    if (downloaded != null) {
-      map['downloaded'] = forQuery ? (downloaded ? 1 : 0) : downloaded;
+    if (state != null) {
+      map['state'] = state;
     }
 
     if (path != null) {
       map['path'] = path;
-    }
-
-    if (parsed != null) {
-      map['parsed'] = forQuery ? (parsed ? 1 : 0) : parsed;
     }
 
     if (stravaId != null) {
@@ -1252,9 +1237,8 @@ class DbActivity {
   List<dynamic> toArgs() {
     return [
       id,
-      downloaded,
+      state,
       path,
-      parsed,
       stravaId,
       name,
       movingTime,
@@ -1351,7 +1335,7 @@ class DbActivity {
   /// <returns> Returns a <List<BoolResult>> </returns>
   Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
     final results = _mnDbActivity.saveAll(
-        'INSERT OR REPLACE INTO activities (id,  downloaded, path, parsed, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -1362,12 +1346,11 @@ class DbActivity {
   /// <returns>Returns id</returns>
   Future<int> _upsert() async {
     return id = await _mnDbActivity.rawInsert(
-        'INSERT OR REPLACE INTO activities (id,  downloaded, path, parsed, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
         [
           id,
-          downloaded,
+          state,
           path,
-          parsed,
           stravaId,
           name,
           movingTime,
@@ -1385,7 +1368,7 @@ class DbActivity {
   /// <returns> Returns a <List<BoolResult>> </returns>
   Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,  downloaded, path, parsed, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -1421,8 +1404,7 @@ class DbActivity {
   }
 
   void setDefaultValues() {
-    downloaded = downloaded ?? false;
-    parsed = parsed ?? false;
+    state = state ?? 'new';
     athletesId = athletesId ?? 0;
   }
   //end methods
@@ -1747,19 +1729,14 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return _id = setField(_id, 'id', DbType.integer);
   }
 
-  DbActivityField _downloaded;
-  DbActivityField get downloaded {
-    return _downloaded = setField(_downloaded, 'downloaded', DbType.bool);
+  DbActivityField _state;
+  DbActivityField get state {
+    return _state = setField(_state, 'state', DbType.text);
   }
 
   DbActivityField _path;
   DbActivityField get path {
     return _path = setField(_path, 'path', DbType.text);
-  }
-
-  DbActivityField _parsed;
-  DbActivityField get parsed {
-    return _parsed = setField(_parsed, 'parsed', DbType.bool);
   }
 
   DbActivityField _stravaId;
@@ -2071,21 +2048,15 @@ class DbActivityFields {
     return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
   }
 
-  static TableField _fDownloaded;
-  static TableField get downloaded {
-    return _fDownloaded = _fDownloaded ??
-        SqlSyntax.setField(_fDownloaded, 'downloaded', DbType.bool);
+  static TableField _fState;
+  static TableField get state {
+    return _fState =
+        _fState ?? SqlSyntax.setField(_fState, 'state', DbType.text);
   }
 
   static TableField _fPath;
   static TableField get path {
     return _fPath = _fPath ?? SqlSyntax.setField(_fPath, 'path', DbType.text);
-  }
-
-  static TableField _fParsed;
-  static TableField get parsed {
-    return _fParsed =
-        _fParsed ?? SqlSyntax.setField(_fParsed, 'parsed', DbType.bool);
   }
 
   static TableField _fStravaId;
