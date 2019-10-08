@@ -35,8 +35,7 @@ class Activity extends Model {
       name: name,
       movingTime: movingTime.inSeconds,
       type: type,
-      startDateTime: startDateTime.toIso8601String(),
-      distance: distance
+      distance: distance,
     );
     await dbActivity.save();
   }
@@ -55,9 +54,9 @@ class Activity extends Model {
 
     final now = DateTime
         .now()
-        .microsecondsSinceEpoch ~/ 1000;
+        .millisecondsSinceEpoch ~/ 1000;
 
-    final startDate = now - 7 * 86400;
+    final startDate = now - 2 * 86400;
 
     List<SummaryActivity> summaryActivities = await strava
         .getLoggedInAthleteActivities(now, startDate);
