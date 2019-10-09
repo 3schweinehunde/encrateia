@@ -32,6 +32,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.data.length > 0) {
+            final activities = snapshot.data.map((dbActivity) => Activity.fromDb(dbActivity));
             return ListView(
               padding: EdgeInsets.all(20),
               children: <Widget>[
@@ -42,13 +43,13 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                     Activity.queryStrava();
                   },
                 ),
-                for (DbActivity activity in snapshot.data)
+                for (Activity activity in activities)
                   ListTile(
-                    leading: Icon(Icons.person),
+                    leading: Icon(Icons.directions_run),
                     title: Text("${activity.type} "
                         "${activity.stravaId}"),
                     subtitle: Text(activity.name),
-                    trailing: Text(activity.state),
+                    trailing: stateIcon(activity),
                   )
               ],
             );
@@ -69,5 +70,18 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
         },
       ),
     );
+  }
+
+  static stateIcon(Activity activity) {
+    switch (activity.state) {
+      case "new":
+        return IconButton(
+          icon: Icon(Icons.cloud_download),
+          onPressed: () => activity.download,
+        );
+        break;
+      default:
+        return Text(activity.state);
+    }
   }
 }

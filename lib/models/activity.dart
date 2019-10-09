@@ -27,6 +27,18 @@ class Activity extends Model {
         type = activity.type,
         distance = activity.distance.toInt();
 
+  Activity.fromDb(DbActivity dbActivity)
+      : id = dbActivity.id,
+        stravaId = dbActivity.stravaId,
+        name = dbActivity.name,
+        movingTime = Duration(seconds: dbActivity.movingTime),
+        type = dbActivity.type,
+        distance = dbActivity.distance;
+
+  download() {
+    // TODO
+  }
+
   persist() async {
     await Db.create().connect();
 
@@ -52,16 +64,14 @@ class Activity extends Model {
         secret,
         prompt);
 
-    final now = DateTime
-        .now()
-        .millisecondsSinceEpoch ~/ 1000;
+    final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
     final startDate = now - 2 * 86400;
 
-    List<SummaryActivity> summaryActivities = await strava
-        .getLoggedInAthleteActivities(now, startDate);
+    List<SummaryActivity> summaryActivities =
+        await strava.getLoggedInAthleteActivities(now, startDate);
 
-    for(SummaryActivity summaryActivity in summaryActivities) {
+    for (SummaryActivity summaryActivity in summaryActivities) {
       Activity activity = Activity.fromStrava(summaryActivity);
       activity.persist();
     }
@@ -69,4 +79,3 @@ class Activity extends Model {
     print("Hello");
   }
 }
-
