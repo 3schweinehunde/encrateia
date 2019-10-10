@@ -1,3 +1,4 @@
+import 'package:encrateia/models/fit_download.dart';
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:encrateia/utils/db.dart';
@@ -33,10 +34,11 @@ class Activity extends Model {
         name = dbActivity.name,
         movingTime = Duration(seconds: dbActivity.movingTime),
         type = dbActivity.type,
-        distance = dbActivity.distance;
+        distance = dbActivity.distance,
+        state = dbActivity.state;
 
-  download() {
-    // TODO
+  download() async {
+    FitDownload.byId(stravaId.toString());
   }
 
   persist() async {
@@ -66,7 +68,7 @@ class Activity extends Model {
 
     final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-    final startDate = now - 2 * 86400;
+    final startDate = now - 20 * 86400;
 
     List<SummaryActivity> summaryActivities =
         await strava.getLoggedInAthleteActivities(now, startDate);
@@ -75,7 +77,5 @@ class Activity extends Model {
       Activity activity = Activity.fromStrava(summaryActivity);
       activity.persist();
     }
-
-    print("Hello");
   }
 }

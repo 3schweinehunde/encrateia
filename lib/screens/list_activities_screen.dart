@@ -40,7 +40,9 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                   leading: Icon(Icons.cloud_download),
                   title: Text("Download Activities from Strava"),
                   onTap: () {
-                    Activity.queryStrava();
+                    setState(() {
+                      Activity.queryStrava();
+                    });
                   },
                 ),
                 for (Activity activity in activities)
@@ -61,7 +63,9 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                   leading: Icon(Icons.cloud_download),
                   title: Text("Download Activities from Strava"),
                   onTap: () {
-                    Activity.queryStrava();
+                    setState(() {
+                      Activity.queryStrava();
+                    });
                   },
                 ),
               ],
@@ -77,7 +81,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
       case "new":
         return IconButton(
           icon: Icon(Icons.cloud_download),
-          onPressed: () => activity.download,
+          onPressed: () => activity.download(),
         );
         break;
       default:
