@@ -8,7 +8,7 @@ abstract class FitDownload {
   static byId(String id) async {
 
     final uri = 'https://www.strava.com/activities/#{id}/export_original';
-    var rep = await http.get(uri, headers: _header);
+    var rep = await http.get(uri);
 
     if (rep.statusCode == 200) {
       final file = await _localFile(id);
