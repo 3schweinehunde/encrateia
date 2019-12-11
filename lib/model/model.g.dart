@@ -63,11 +63,11 @@ class TableDbActivity extends SqfEntityTableBase {
       SqfEntityFieldBase('name', DbType.text),
       SqfEntityFieldBase('movingTime', DbType.integer),
       SqfEntityFieldBase('type', DbType.text),
-      SqfEntityFieldBase('startDateTime', DbType.text),
+      SqfEntityFieldBase('startTime', DbType.text),
       SqfEntityFieldBase('distance', DbType.integer),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
-          defaultValue: '0'),
+          defaultValue: 0, fieldName: 'athletesId'),
     ];
     super.init();
   }
@@ -84,14 +84,19 @@ class TableDbActivity extends SqfEntityTableBase {
 // BEGIN DATABASE MODEL
 class DbEncrateia extends SqfEntityModelProvider {
   DbEncrateia() {
-    databaseName = 'encrateia.db';
+    databaseName = encrateia.databaseName;
     databaseTables = [
       TableDbAthlete.getInstance,
       TableDbActivity.getInstance,
     ];
 
-    bundledDatabasePath =
-        null; //'assets/sample.db'; // This value is optional. When bundledDatabasePath is empty then EntityBase creats a new database when initializing the database
+    bundledDatabasePath = encrateia
+        .bundledDatabasePath; //'assets/sample.db'; // This value is optional. When bundledDatabasePath is empty then EntityBase creats a new database when initializing the database
+  }
+  Map<String, dynamic> getControllers() {
+    final controllers = Map<String, dynamic>();
+
+    return controllers;
   }
 }
 // END DATABASE MODEL
@@ -106,38 +111,37 @@ class DbAthlete {
       this.stravaUsername,
       this.photoPath,
       this.stravaId}) {
-    setDefaultValues();
+    _setDefaultValues();
   }
   DbAthlete.withFields(this.firstName, this.lastName, this.stravaUsername,
       this.photoPath, this.stravaId) {
-    setDefaultValues();
+    _setDefaultValues();
   }
   DbAthlete.withId(this.id, this.firstName, this.lastName, this.stravaUsername,
       this.photoPath, this.stravaId) {
-    setDefaultValues();
+    _setDefaultValues();
   }
   DbAthlete.fromMap(Map<String, dynamic> o) {
     id = o['id'] as int;
     firstName = o['firstName'] as String;
-
     lastName = o['lastName'] as String;
-
     stravaUsername = o['stravaUsername'] as String;
-
     photoPath = o['photoPath'] as String;
-
     stravaId = o['stravaId'] as int;
   }
-  // FIELDS
+  // FIELDS (DbAthlete)
   int id;
   String firstName;
   String lastName;
   String stravaUsername;
   String photoPath;
   int stravaId;
-  // end FIELDS
 
-// COLLECTIONS
+  BoolResult saveResult;
+  // end FIELDS (DbAthlete)
+
+// COLLECTIONS (DbAthlete)
+  /// get DbActivity(s) filtered by athletesId=id
   DbActivityFilterBuilder getDbActivities(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbActivity()
@@ -146,7 +150,7 @@ class DbAthlete {
         .equals(id)
         .and;
   }
-// END COLLECTIONS
+// END COLLECTIONS (DbAthlete)
 
   static const bool _softDeleteActivated = false;
   DbAthleteManager __mnDbAthlete;
@@ -155,8 +159,8 @@ class DbAthlete {
     return __mnDbAthlete = __mnDbAthlete ?? DbAthleteManager();
   }
 
-  // methods
-  Map<String, dynamic> toMap({bool forQuery = false}) {
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
     final map = Map<String, dynamic>();
     if (id != null) {
       map['id'] = id;
@@ -184,8 +188,8 @@ class DbAthlete {
     return map;
   }
 
-  // methods
-  Future<Map<String, dynamic>> toMapWithChilds([bool forQuery = false]) async {
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
     final map = Map<String, dynamic>();
     if (id != null) {
       map['id'] = id;
@@ -210,23 +214,23 @@ class DbAthlete {
       map['stravaId'] = stravaId;
     }
 
-// COLLECTIONS
+// COLLECTIONS (DbAthlete)
     if (!forQuery) {
-      map['activitieses'] = await getDbActivities().toMapList();
+      map['DbActivities'] = await getDbActivities().toMapList();
     }
-// END COLLECTIONS
+// END COLLECTIONS (DbAthlete)
 
     return map;
   }
 
   /// This method always returns Json String
   String toJson() {
-    return json.encode(toMap());
+    return json.encode(toMap(forJson: true));
   }
 
   /// This method always returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds());
+    return json.encode(await toMapWithChilds(false, true));
   }
 
   List<dynamic> toArgs() {
@@ -260,62 +264,61 @@ class DbAthlete {
   }
 
   static Future<List<DbAthlete>> fromObjectList(Future<List<dynamic>> o) async {
-    final dbathletesList = List<DbAthlete>();
     final data = await o;
-    for (int i = 0; i < data.length; i++) {
-      dbathletesList.add(DbAthlete.fromMap(data[i] as Map<String, dynamic>));
-    }
-    return dbathletesList;
+    return await DbAthlete.fromMapList(data);
   }
 
-  static List<DbAthlete> fromMapList(List<Map<String, dynamic>> query) {
-    final List<DbAthlete> dbathletes = List<DbAthlete>();
-    for (Map map in query) {
-      dbathletes.add(DbAthlete.fromMap(map as Map<String, dynamic>));
+  static Future<List<DbAthlete>> fromMapList(List<dynamic> data) async {
+    final List<DbAthlete> objList = List<DbAthlete>();
+    for (final Map map in data as List<Map>) {
+      final obj = DbAthlete.fromMap(map as Map<String, dynamic>);
+
+      objList.add(obj);
     }
-    return dbathletes;
+    return objList;
   }
 
   /// returns DbAthlete by ID if exist, otherwise returns null
   /// <param name='id'>Primary Key Value</param>
-  /// <returns>returns DbAthlete if exist, otherwise returns null</returns>
+  /// <returns>returns DbAthlete if exist, otherwise returns null
   Future<DbAthlete> getById(int id) async {
-    DbAthlete dbathleteObj;
+    if (id == null) {
+      return null;
+    }
+    DbAthlete obj;
     final data = await _mnDbAthlete.getById(id);
     if (data.length != 0) {
-      dbathleteObj = DbAthlete.fromMap(data[0] as Map<String, dynamic>);
+      obj = DbAthlete.fromMap(data[0] as Map<String, dynamic>);
     } else {
-      dbathleteObj = null;
+      obj = null;
     }
-    return dbathleteObj;
+    return obj;
   }
 
-  /// <summary>
   /// Saves the object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
-  /// </summary>
-  /// <returns>Returns id</returns>
+
+  /// <returns>Returns id
   Future<int> save() async {
     if (id == null || id == 0) {
       id = await _mnDbAthlete.insert(this);
     } else {
       id = await _upsert();
     }
+
     return id;
   }
 
-  /// <summary>
   /// saveAs DbAthlete. Returns a new Primary Key value of DbAthlete
-  /// </summary>
-  /// <returns>Returns a new Primary Key value of DbAthlete</returns>
+
+  /// <returns>Returns a new Primary Key value of DbAthlete
   Future<int> saveAs() async {
     id = null;
+
     return save();
   }
 
-  /// <summary>
-  /// saveAll method saves the sent List<DbAthlete> as a batch in one transaction
-  /// </summary>
-  /// <returns> Returns a <List<BoolResult>> </returns>
+  /// saveAll method saves the sent List<DbAthlete> as a bulk in one transaction
+  /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbAthlete> dbathletes) async {
     final results = _mnDbAthlete.saveAll(
         'INSERT OR REPLACE INTO athletes (id,  firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?)',
@@ -323,21 +326,29 @@ class DbAthlete {
     return results;
   }
 
-  /// <summary>
   /// Updates if the record exists, otherwise adds a new row
-  /// </summary>
-  /// <returns>Returns id</returns>
+
+  /// <returns>Returns id
   Future<int> _upsert() async {
-    return id = await _mnDbAthlete.rawInsert(
-        'INSERT OR REPLACE INTO athletes (id,  firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?)',
-        [id, firstName, lastName, stravaUsername, photoPath, stravaId]);
+    try {
+      id = await _mnDbAthlete.rawInsert(
+          'INSERT OR REPLACE INTO athletes (id,  firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?)',
+          [id, firstName, lastName, stravaUsername, photoPath, stravaId]);
+      saveResult = BoolResult(
+          success: true,
+          successMessage: 'DbAthlete id=$id updated successfuly');
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbAthlete Save failed. Error: ${e.toString()}');
+      return 0;
+    }
   }
 
-  /// <summary>
-  /// inserts or replaces the sent List<Todo> as a batch in one transaction.
+  /// inserts or replaces the sent List<<DbAthlete>> as a bulk in one transaction.
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
-  /// </summary>
-  /// <returns> Returns a <List<BoolResult>> </returns>
+  /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
         'INSERT OR REPLACE INTO athletes (id,  firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?)',
@@ -345,10 +356,9 @@ class DbAthlete {
     return results;
   }
 
-  /// <summary>
   /// Deletes DbAthlete
-  /// </summary>
-  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted</returns>
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete DbAthlete invoked (id=$id)');
     var result = BoolResult();
@@ -358,11 +368,14 @@ class DbAthlete {
     }
     if (!result.success) {
       return result;
-    } else if (!_softDeleteActivated || hardDelete) {
-      return _mnDbAthlete.delete(QueryParams(whereString: 'id=$id'));
-    } else {
+    }
+    if (!_softDeleteActivated || hardDelete) {
       return _mnDbAthlete
-          .updateBatch(QueryParams(whereString: 'id=$id'), {'isDeleted': 1});
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbAthlete.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
     }
   }
 
@@ -382,8 +395,27 @@ class DbAthlete {
       ..qparams.distinct = true;
   }
 
-  void setDefaultValues() {}
-  //end methods
+  void _setDefaultValues() {}
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
 }
 // endregion dbathlete
 
@@ -408,6 +440,19 @@ class DbAthleteField extends SearchCriteria {
             dbathleteFB._addedBlocks)
         : setCriteria(pValue, dbathleteFB.parameters, param,
             SqlSyntax.NotEQuals, dbathleteFB._addedBlocks);
+    _waitingNot = '';
+    dbathleteFB._addedBlocks.needEndBlock[dbathleteFB._blockIndex] =
+        dbathleteFB._addedBlocks.retVal;
+    return dbathleteFB;
+  }
+
+  DbAthleteFilterBuilder equalsOrNull(var pValue) {
+    param.expression = '=';
+    dbathleteFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbathleteFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbathleteFB._addedBlocks)
+        : setCriteria(pValue, dbathleteFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbathleteFB._addedBlocks);
     _waitingNot = '';
     dbathleteFB._addedBlocks.needEndBlock[dbathleteFB._blockIndex] =
         dbathleteFB._addedBlocks.retVal;
@@ -597,6 +642,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   int _pagesize;
   int _page;
 
+  /// put the sql keyword 'AND'
   DbAthleteFilterBuilder get and {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' AND ';
@@ -604,6 +650,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// put the sql keyword 'OR'
   DbAthleteFilterBuilder get or {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' OR ';
@@ -611,6 +658,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// open parentheses
   DbAthleteFilterBuilder get startBlock {
     _addedBlocks.waitingStartBlock.add(true);
     _addedBlocks.needEndBlock.add(false);
@@ -619,6 +667,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
   DbAthleteFilterBuilder where(String whereCriteria) {
     if (whereCriteria != null && whereCriteria != '') {
       final DbParameter param = DbParameter();
@@ -629,12 +678,16 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
   DbAthleteFilterBuilder page(int page, int pagesize) {
     if (page > 0) _page = page;
     if (pagesize > 0) _pagesize = pagesize;
     return this;
   }
 
+  /// int count = LIMIT
   DbAthleteFilterBuilder top(int count) {
     if (count > 0) {
       _pagesize = count;
@@ -642,6 +695,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// close parentheses
   DbAthleteFilterBuilder get endBlock {
     if (_addedBlocks.needEndBlock[_blockIndex]) {
       parameters[parameters.length - 1].whereString += ' ) ';
@@ -652,6 +706,11 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
   DbAthleteFilterBuilder orderBy(var argFields) {
     if (argFields != null) {
       if (argFields is String) {
@@ -665,6 +724,11 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
   DbAthleteFilterBuilder orderByDesc(var argFields) {
     if (argFields != null) {
       if (argFields is String) {
@@ -678,6 +742,11 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
   DbAthleteFilterBuilder groupBy(var argFields) {
     if (argFields != null) {
       if (argFields is String) {
@@ -758,15 +827,33 @@ class DbAthleteFilterBuilder extends SearchCriteria {
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
-        switch (param.dbType) {
-          case DbType.bool:
-            if (param.value != null) param.value = param.value == true ? 1 : 0;
-            break;
-          default:
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
         }
-
-        if (param.value != null) whereArguments.add(param.value);
-        if (param.value2 != null) whereArguments.add(param.value2);
       } else {
         whereString += param.whereString;
       }
@@ -789,10 +876,9 @@ class DbAthleteFilterBuilder extends SearchCriteria {
       ..orderBy = orderByList.join(',');
   }
 
-  /// <summary>
-  /// Deletes List<DbAthlete> batch by query
-  /// </summary>
-  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted</returns>
+  /// Deletes List<DbAthlete> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
@@ -804,32 +890,42 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return r;
   }
 
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
   Future<BoolResult> update(Map<String, dynamic> values) {
     _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from athletes ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
     return _obj._mnDbAthlete.updateBatch(qparams, values);
   }
 
   /// This method always returns DbAthleteObj if exist, otherwise returns null
-  /// <returns>List<DbAthlete></returns>
+  /// <returns>List<DbAthlete>
   Future<DbAthlete> toSingle([VoidCallback dbathlete(DbAthlete o)]) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbAthlete.toList(qparams);
     final data = await objFuture;
-    DbAthlete retVal;
+    DbAthlete obj;
     if (data.isNotEmpty) {
-      retVal = DbAthlete.fromMap(data[0] as Map<String, dynamic>);
+      obj = DbAthlete.fromMap(data[0] as Map<String, dynamic>);
     } else {
-      retVal = null;
+      obj = null;
     }
     if (dbathlete != null) {
-      dbathlete(retVal);
+      dbathlete(obj);
     }
-    return retVal;
+    return obj;
   }
 
   /// This method always returns int.
-  /// <returns>int</returns>
+  ///
+  /// <returns>int
   Future<int> toCount([VoidCallback dbathleteCount(int c)]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
@@ -842,15 +938,11 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   }
 
   /// This method always returns List<DbAthlete>.
-  /// <returns>List<DbAthlete></returns>
+  /// <returns>List<DbAthlete>
   Future<List<DbAthlete>> toList(
       [VoidCallback dbathleteList(List<DbAthlete> o)]) async {
-    final List<DbAthlete> dbathletesData = List<DbAthlete>();
     final data = await toMapList();
-    final int count = data.length;
-    for (int i = 0; i < count; i++) {
-      dbathletesData.add(DbAthlete.fromMap(data[i] as Map<String, dynamic>));
-    }
+    final List<DbAthlete> dbathletesData = await DbAthlete.fromMapList(data);
     if (dbathleteList != null) dbathleteList(dbathletesData);
     return dbathletesData;
   }
@@ -860,7 +952,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     final list = List<dynamic>();
     final data = await toList();
     for (var o in data) {
-      list.add(o.toMap());
+      list.add(o.toMap(forJson: true));
     }
     return json.encode(list);
   }
@@ -870,13 +962,14 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     final list = List<dynamic>();
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds());
+      list.add(await o.toMapWithChilds(false, true));
     }
     return json.encode(list);
   }
 
   /// This method always returns List<dynamic>.
-  /// <returns>List<dynamic></returns>
+  ///
+  /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbAthlete.toList(qparams);
@@ -940,7 +1033,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   }
 
   /// This method always returns Primary Key List<int>.
-  /// <returns>List<int></returns>
+  /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
     final List<int> idData = List<int>();
@@ -955,6 +1048,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   }
 
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject(
       [VoidCallback listObject(List<dynamic> o)]) async {
@@ -975,6 +1069,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   }
 
   /// Returns List<String> for selected first column
+  ///
   /// Sample usage: await DbAthlete.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
       [VoidCallback listString(List<String> o)]) async {
@@ -1054,10 +1149,10 @@ class DbActivity {
       this.name,
       this.movingTime,
       this.type,
-      this.startDateTime,
+      this.startTime,
       this.distance,
       this.athletesId}) {
-    setDefaultValues();
+    _setDefaultValues();
   }
   DbActivity.withFields(
       this.state,
@@ -1066,10 +1161,10 @@ class DbActivity {
       this.name,
       this.movingTime,
       this.type,
-      this.startDateTime,
+      this.startTime,
       this.distance,
       this.athletesId) {
-    setDefaultValues();
+    _setDefaultValues();
   }
   DbActivity.withId(
       this.id,
@@ -1079,32 +1174,24 @@ class DbActivity {
       this.name,
       this.movingTime,
       this.type,
-      this.startDateTime,
+      this.startTime,
       this.distance,
       this.athletesId) {
-    setDefaultValues();
+    _setDefaultValues();
   }
   DbActivity.fromMap(Map<String, dynamic> o) {
     id = o['id'] as int;
     state = o['state'] as String;
-
     path = o['path'] as String;
-
     stravaId = o['stravaId'] as int;
-
     name = o['name'] as String;
-
     movingTime = o['movingTime'] as int;
-
     type = o['type'] as String;
-
-    startDateTime = o['startDateTime'] as String;
-
+    startTime = o['startTime'] as String;
     distance = o['distance'] as int;
-
     athletesId = o['athletesId'] as int;
   }
-  // FIELDS
+  // FIELDS (DbActivity)
   int id;
   String state;
   String path;
@@ -1112,20 +1199,23 @@ class DbActivity {
   String name;
   int movingTime;
   String type;
-  String startDateTime;
+  String startTime;
   int distance;
   int athletesId;
-  // end FIELDS
 
-// RELATIONSHIPS
+  BoolResult saveResult;
+  // end FIELDS (DbActivity)
+
+// RELATIONSHIPS (DbActivity)
+  /// get DbAthlete By AthletesId
   Future<DbAthlete> getDbAthlete([VoidCallback dbathlete(DbAthlete o)]) async {
-    final obj = await DbAthlete().getById(athletesId);
+    final _obj = await DbAthlete().getById(athletesId);
     if (dbathlete != null) {
-      dbathlete(obj);
+      dbathlete(_obj);
     }
-    return obj;
+    return _obj;
   }
-  // END RELATIONSHIPS
+  // END RELATIONSHIPS (DbActivity)
 
   static const bool _softDeleteActivated = false;
   DbActivityManager __mnDbActivity;
@@ -1134,8 +1224,8 @@ class DbActivity {
     return __mnDbActivity = __mnDbActivity ?? DbActivityManager();
   }
 
-  // methods
-  Map<String, dynamic> toMap({bool forQuery = false}) {
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
     final map = Map<String, dynamic>();
     if (id != null) {
       map['id'] = id;
@@ -1164,8 +1254,8 @@ class DbActivity {
       map['type'] = type;
     }
 
-    if (startDateTime != null) {
-      map['startDateTime'] = startDateTime;
+    if (startTime != null) {
+      map['startTime'] = startTime;
     }
 
     if (distance != null) {
@@ -1179,8 +1269,8 @@ class DbActivity {
     return map;
   }
 
-  // methods
-  Future<Map<String, dynamic>> toMapWithChilds([bool forQuery = false]) async {
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
     final map = Map<String, dynamic>();
     if (id != null) {
       map['id'] = id;
@@ -1209,8 +1299,8 @@ class DbActivity {
       map['type'] = type;
     }
 
-    if (startDateTime != null) {
-      map['startDateTime'] = startDateTime;
+    if (startTime != null) {
+      map['startTime'] = startTime;
     }
 
     if (distance != null) {
@@ -1226,12 +1316,12 @@ class DbActivity {
 
   /// This method always returns Json String
   String toJson() {
-    return json.encode(toMap());
+    return json.encode(toMap(forJson: true));
   }
 
   /// This method always returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds());
+    return json.encode(await toMapWithChilds(false, true));
   }
 
   List<dynamic> toArgs() {
@@ -1243,7 +1333,7 @@ class DbActivity {
       name,
       movingTime,
       type,
-      startDateTime,
+      startTime,
       distance,
       athletesId
     ];
@@ -1277,113 +1367,121 @@ class DbActivity {
 
   static Future<List<DbActivity>> fromObjectList(
       Future<List<dynamic>> o) async {
-    final dbactivitysList = List<DbActivity>();
     final data = await o;
-    for (int i = 0; i < data.length; i++) {
-      dbactivitysList.add(DbActivity.fromMap(data[i] as Map<String, dynamic>));
-    }
-    return dbactivitysList;
+    return await DbActivity.fromMapList(data);
   }
 
-  static List<DbActivity> fromMapList(List<Map<String, dynamic>> query) {
-    final List<DbActivity> dbactivitys = List<DbActivity>();
-    for (Map map in query) {
-      dbactivitys.add(DbActivity.fromMap(map as Map<String, dynamic>));
+  static Future<List<DbActivity>> fromMapList(List<dynamic> data) async {
+    final List<DbActivity> objList = List<DbActivity>();
+    for (final Map map in data as List<Map>) {
+      final obj = DbActivity.fromMap(map as Map<String, dynamic>);
+
+      objList.add(obj);
     }
-    return dbactivitys;
+    return objList;
   }
 
   /// returns DbActivity by ID if exist, otherwise returns null
   /// <param name='id'>Primary Key Value</param>
-  /// <returns>returns DbActivity if exist, otherwise returns null</returns>
+  /// <returns>returns DbActivity if exist, otherwise returns null
   Future<DbActivity> getById(int id) async {
-    DbActivity dbactivityObj;
+    if (id == null) {
+      return null;
+    }
+    DbActivity obj;
     final data = await _mnDbActivity.getById(id);
     if (data.length != 0) {
-      dbactivityObj = DbActivity.fromMap(data[0] as Map<String, dynamic>);
+      obj = DbActivity.fromMap(data[0] as Map<String, dynamic>);
     } else {
-      dbactivityObj = null;
+      obj = null;
     }
-    return dbactivityObj;
+    return obj;
   }
 
-  /// <summary>
   /// Saves the object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
-  /// </summary>
-  /// <returns>Returns id</returns>
+
+  /// <returns>Returns id
   Future<int> save() async {
     if (id == null || id == 0) {
       id = await _mnDbActivity.insert(this);
     } else {
       id = await _upsert();
     }
+
     return id;
   }
 
-  /// <summary>
   /// saveAs DbActivity. Returns a new Primary Key value of DbActivity
-  /// </summary>
-  /// <returns>Returns a new Primary Key value of DbActivity</returns>
+
+  /// <returns>Returns a new Primary Key value of DbActivity
   Future<int> saveAs() async {
     id = null;
+
     return save();
   }
 
-  /// <summary>
-  /// saveAll method saves the sent List<DbActivity> as a batch in one transaction
-  /// </summary>
-  /// <returns> Returns a <List<BoolResult>> </returns>
+  /// saveAll method saves the sent List<DbActivity> as a bulk in one transaction
+  /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
     final results = _mnDbActivity.saveAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
 
-  /// <summary>
   /// Updates if the record exists, otherwise adds a new row
-  /// </summary>
-  /// <returns>Returns id</returns>
+
+  /// <returns>Returns id
   Future<int> _upsert() async {
-    return id = await _mnDbActivity.rawInsert(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
-        [
-          id,
-          state,
-          path,
-          stravaId,
-          name,
-          movingTime,
-          type,
-          startDateTime,
-          distance,
-          athletesId
-        ]);
+    try {
+      id = await _mnDbActivity.rawInsert(
+          'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+          [
+            id,
+            state,
+            path,
+            stravaId,
+            name,
+            movingTime,
+            type,
+            startTime,
+            distance,
+            athletesId
+          ]);
+      saveResult = BoolResult(
+          success: true,
+          successMessage: 'DbActivity id=$id updated successfuly');
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbActivity Save failed. Error: ${e.toString()}');
+      return 0;
+    }
   }
 
-  /// <summary>
-  /// inserts or replaces the sent List<Todo> as a batch in one transaction.
+  /// inserts or replaces the sent List<<DbActivity>> as a bulk in one transaction.
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
-  /// </summary>
-  /// <returns> Returns a <List<BoolResult>> </returns>
+  /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startDateTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
 
-  /// <summary>
   /// Deletes DbActivity
-  /// </summary>
-  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted</returns>
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete DbActivity invoked (id=$id)');
     if (!_softDeleteActivated || hardDelete) {
-      return _mnDbActivity.delete(QueryParams(whereString: 'id=$id'));
-    } else {
       return _mnDbActivity
-          .updateBatch(QueryParams(whereString: 'id=$id'), {'isDeleted': 1});
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbActivity.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
     }
   }
 
@@ -1403,11 +1501,30 @@ class DbActivity {
       ..qparams.distinct = true;
   }
 
-  void setDefaultValues() {
+  void _setDefaultValues() {
     state = state ?? 'new';
     athletesId = athletesId ?? 0;
   }
-  //end methods
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
 }
 // endregion dbactivity
 
@@ -1432,6 +1549,19 @@ class DbActivityField extends SearchCriteria {
             dbactivityFB._addedBlocks)
         : setCriteria(pValue, dbactivityFB.parameters, param,
             SqlSyntax.NotEQuals, dbactivityFB._addedBlocks);
+    _waitingNot = '';
+    dbactivityFB._addedBlocks.needEndBlock[dbactivityFB._blockIndex] =
+        dbactivityFB._addedBlocks.retVal;
+    return dbactivityFB;
+  }
+
+  DbActivityFilterBuilder equalsOrNull(var pValue) {
+    param.expression = '=';
+    dbactivityFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbactivityFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbactivityFB._addedBlocks)
+        : setCriteria(pValue, dbactivityFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbactivityFB._addedBlocks);
     _waitingNot = '';
     dbactivityFB._addedBlocks.needEndBlock[dbactivityFB._blockIndex] =
         dbactivityFB._addedBlocks.retVal;
@@ -1621,6 +1751,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   int _pagesize;
   int _page;
 
+  /// put the sql keyword 'AND'
   DbActivityFilterBuilder get and {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' AND ';
@@ -1628,6 +1759,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// put the sql keyword 'OR'
   DbActivityFilterBuilder get or {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' OR ';
@@ -1635,6 +1767,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// open parentheses
   DbActivityFilterBuilder get startBlock {
     _addedBlocks.waitingStartBlock.add(true);
     _addedBlocks.needEndBlock.add(false);
@@ -1643,6 +1776,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
   DbActivityFilterBuilder where(String whereCriteria) {
     if (whereCriteria != null && whereCriteria != '') {
       final DbParameter param = DbParameter();
@@ -1653,12 +1787,16 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
   DbActivityFilterBuilder page(int page, int pagesize) {
     if (page > 0) _page = page;
     if (pagesize > 0) _pagesize = pagesize;
     return this;
   }
 
+  /// int count = LIMIT
   DbActivityFilterBuilder top(int count) {
     if (count > 0) {
       _pagesize = count;
@@ -1666,6 +1804,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// close parentheses
   DbActivityFilterBuilder get endBlock {
     if (_addedBlocks.needEndBlock[_blockIndex]) {
       parameters[parameters.length - 1].whereString += ' ) ';
@@ -1676,6 +1815,11 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
   DbActivityFilterBuilder orderBy(var argFields) {
     if (argFields != null) {
       if (argFields is String) {
@@ -1689,6 +1833,11 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
   DbActivityFilterBuilder orderByDesc(var argFields) {
     if (argFields != null) {
       if (argFields is String) {
@@ -1702,6 +1851,11 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return this;
   }
 
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
   DbActivityFilterBuilder groupBy(var argFields) {
     if (argFields != null) {
       if (argFields is String) {
@@ -1759,10 +1913,9 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return _type = setField(_type, 'type', DbType.text);
   }
 
-  DbActivityField _startDateTime;
-  DbActivityField get startDateTime {
-    return _startDateTime =
-        setField(_startDateTime, 'startDateTime', DbType.text);
+  DbActivityField _startTime;
+  DbActivityField get startTime {
+    return _startTime = setField(_startTime, 'startTime', DbType.text);
   }
 
   DbActivityField _distance;
@@ -1803,15 +1956,33 @@ class DbActivityFilterBuilder extends SearchCriteria {
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
-        switch (param.dbType) {
-          case DbType.bool:
-            if (param.value != null) param.value = param.value == true ? 1 : 0;
-            break;
-          default:
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
         }
-
-        if (param.value != null) whereArguments.add(param.value);
-        if (param.value2 != null) whereArguments.add(param.value2);
       } else {
         whereString += param.whereString;
       }
@@ -1834,10 +2005,9 @@ class DbActivityFilterBuilder extends SearchCriteria {
       ..orderBy = orderByList.join(',');
   }
 
-  /// <summary>
-  /// Deletes List<DbActivity> batch by query
-  /// </summary>
-  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted</returns>
+  /// Deletes List<DbActivity> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
@@ -1849,32 +2019,42 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return r;
   }
 
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
   Future<BoolResult> update(Map<String, dynamic> values) {
     _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from activities ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
     return _obj._mnDbActivity.updateBatch(qparams, values);
   }
 
   /// This method always returns DbActivityObj if exist, otherwise returns null
-  /// <returns>List<DbActivity></returns>
+  /// <returns>List<DbActivity>
   Future<DbActivity> toSingle([VoidCallback dbactivity(DbActivity o)]) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbActivity.toList(qparams);
     final data = await objFuture;
-    DbActivity retVal;
+    DbActivity obj;
     if (data.isNotEmpty) {
-      retVal = DbActivity.fromMap(data[0] as Map<String, dynamic>);
+      obj = DbActivity.fromMap(data[0] as Map<String, dynamic>);
     } else {
-      retVal = null;
+      obj = null;
     }
     if (dbactivity != null) {
-      dbactivity(retVal);
+      dbactivity(obj);
     }
-    return retVal;
+    return obj;
   }
 
   /// This method always returns int.
-  /// <returns>int</returns>
+  ///
+  /// <returns>int
   Future<int> toCount([VoidCallback dbactivityCount(int c)]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
@@ -1887,15 +2067,12 @@ class DbActivityFilterBuilder extends SearchCriteria {
   }
 
   /// This method always returns List<DbActivity>.
-  /// <returns>List<DbActivity></returns>
+  /// <returns>List<DbActivity>
   Future<List<DbActivity>> toList(
       [VoidCallback dbactivityList(List<DbActivity> o)]) async {
-    final List<DbActivity> dbactivitiesData = List<DbActivity>();
     final data = await toMapList();
-    final int count = data.length;
-    for (int i = 0; i < count; i++) {
-      dbactivitiesData.add(DbActivity.fromMap(data[i] as Map<String, dynamic>));
-    }
+    final List<DbActivity> dbactivitiesData =
+        await DbActivity.fromMapList(data);
     if (dbactivityList != null) dbactivityList(dbactivitiesData);
     return dbactivitiesData;
   }
@@ -1905,7 +2082,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     final list = List<dynamic>();
     final data = await toList();
     for (var o in data) {
-      list.add(o.toMap());
+      list.add(o.toMap(forJson: true));
     }
     return json.encode(list);
   }
@@ -1915,13 +2092,14 @@ class DbActivityFilterBuilder extends SearchCriteria {
     final list = List<dynamic>();
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds());
+      list.add(await o.toMapWithChilds(false, true));
     }
     return json.encode(list);
   }
 
   /// This method always returns List<dynamic>.
-  /// <returns>List<dynamic></returns>
+  ///
+  /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbActivity.toList(qparams);
@@ -1985,7 +2163,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   }
 
   /// This method always returns Primary Key List<int>.
-  /// <returns>List<int></returns>
+  /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
     final List<int> idData = List<int>();
@@ -2000,6 +2178,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   }
 
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject(
       [VoidCallback listObject(List<dynamic> o)]) async {
@@ -2020,6 +2199,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   }
 
   /// Returns List<String> for selected first column
+  ///
   /// Sample usage: await DbActivity.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
       [VoidCallback listString(List<String> o)]) async {
@@ -2081,10 +2261,10 @@ class DbActivityFields {
     return _fType = _fType ?? SqlSyntax.setField(_fType, 'type', DbType.text);
   }
 
-  static TableField _fStartDateTime;
-  static TableField get startDateTime {
-    return _fStartDateTime = _fStartDateTime ??
-        SqlSyntax.setField(_fStartDateTime, 'startDateTime', DbType.text);
+  static TableField _fStartTime;
+  static TableField get startTime {
+    return _fStartTime = _fStartTime ??
+        SqlSyntax.setField(_fStartTime, 'startTime', DbType.text);
   }
 
   static TableField _fDistance;
@@ -2110,7 +2290,7 @@ class DbActivityManager extends SqfEntityProvider {
 }
 
 //endregion DbActivityManager
-class SequenceManager extends SqfEntityProvider {
-  SequenceManager() : super(DbEncrateia());
+class DbEncrateiaSequenceManager extends SqfEntityProvider {
+  DbEncrateiaSequenceManager() : super(DbEncrateia());
 }
 // END OF ENTITIES

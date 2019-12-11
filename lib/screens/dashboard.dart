@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'edit_athlete.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/model/model.dart';
-import 'package:encrateia/utils/db.dart';
 import 'list_activities_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -15,12 +12,11 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  Future<List<DbAthlete>> athletes;
+  Future<List<Athlete>> athletes;
 
   @override
   void initState() {
-    Db.create().connect();
-    athletes = DbAthlete().select().toList();
+    athletes = Athlete.all();
     super.initState();
   }
 
@@ -28,7 +24,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Encrateia Dashboard")),
-      body: FutureBuilder<List<DbAthlete>>(
+      body: FutureBuilder<List<Athlete>>(
           future: athletes,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -81,9 +77,8 @@ class _DashboardState extends State<Dashboard> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ScopedModel<Athlete>(
-                                      model: Athlete(),
-                                      child: EditAthleteScreen(),
+                                    builder: (context) => EditAthleteScreen(
+                                      athlete: Athlete(),
                                     ),
                                   ),
                                 );
@@ -99,26 +94,42 @@ class _DashboardState extends State<Dashboard> {
                 return ListView(
                   padding: EdgeInsets.all(40),
                   children: <Widget>[
-                    Text(
-                      "Select the athlete to analyze:",
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    for (DbAthlete athlete in snapshot.data)
+                    for (Athlete athlete in snapshot.data)
                       ListTile(
-                        leading: Image.network(athlete.photoPath),
-                        title: Text("${athlete.firstName} ${athlete.lastName}"),
-                        subtitle: Text("${athlete.stravaId}"),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ListActivitiesScreen(
-                                athlete: athlete,
-                              ),
+                        leading: Image.network(athlete.db.photoPath),
+                        title: Text(
+                            "${athlete.db.firstName} ${athlete.db.lastName} - ${athlete.db.stravaId}"),
+                        subtitle: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ListActivitiesScreen(
+                                      athlete: athlete,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Text("Analyze"),
                             ),
-                          );
-                        },
-                      )
+                            RaisedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) {
+                                    athlete.read_credentials();
+                                    return EditAthleteScreen(athlete: athlete);
+                                  }),
+                                );
+                              },
+                              child: Icon(Icons.edit),
+                            ),
+                          ],
+                        ),
+                      ),
                   ],
                 );
               }

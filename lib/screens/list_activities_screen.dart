@@ -1,24 +1,26 @@
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
-import 'package:encrateia/utils/db.dart';
 
 class ListActivitiesScreen extends StatefulWidget {
-  final DbAthlete athlete;
-  ListActivitiesScreen({this.athlete});
+  final Athlete athlete;
+
+  const ListActivitiesScreen({
+    Key key,
+    this.athlete,
+  }) : super(key: key);
 
   @override
   _ListActivitiesScreenState createState() => _ListActivitiesScreenState();
 }
 
 class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
-  Future<List<DbActivity>> activities;
+  Future<List<Activity>> activities;
 
   @override
   void initState() {
-    Db.create().connect();
-    activities = DbActivity().select().toList();
     super.initState();
+    activities = Activity.all();
   }
 
   @override
@@ -27,12 +29,12 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
       appBar: AppBar(
         title: Text('Activities'),
       ),
-      body: FutureBuilder<List<DbActivity>>(
+      body: FutureBuilder<List<Activity>>(
         future: activities,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               snapshot.data.length > 0) {
-            final activities = snapshot.data.map((dbActivity) => Activity.fromDb(dbActivity));
+            final activities = snapshot.data.map((activity) => activity);
             return ListView(
               padding: EdgeInsets.all(20),
               children: <Widget>[
@@ -48,10 +50,10 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                 for (Activity activity in activities)
                   ListTile(
                     leading: Icon(Icons.directions_run),
-                    title: Text("${activity.type} "
-                        "${activity.stravaId}"),
-                    subtitle: Text(activity.name),
-                    trailing: stateIcon(activity),
+                    title: Text("${activity.db.type} "
+                        "${activity.db.stravaId}"),
+                    subtitle: Text(activity.db.name ?? "Activity"),
+                    trailing: stateIcon(activity, widget.athlete),
                   )
               ],
             );
@@ -76,16 +78,32 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
     );
   }
 
-  static stateIcon(Activity activity) {
+  stateIcon(Activity activity, Athlete athlete) {
     switch (activity.state) {
       case "new":
         return IconButton(
           icon: Icon(Icons.cloud_download),
-          onPressed: () => activity.download(),
+          onPressed: () {
+            setState(() {
+              activity.download(athlete: athlete);
+            });
+          },
+          tooltip: 'Download',
+        );
+        break;
+      case "downloaded":
+        return IconButton(
+          icon: Icon(Icons.save_alt),
+          onPressed: () {
+            setState(() {
+              activity.download();
+            });
+          },
+          tooltip: 'Parse .fit-file',
         );
         break;
       default:
-        return Text(activity.state);
+        return Icon(Icons.error);
     }
   }
 }

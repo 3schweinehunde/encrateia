@@ -1,29 +1,63 @@
 import 'dart:io';
 
-import 'package:http/http.dart' as http;
-import 'dart:async';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:encrateia/models/athlete.dart';
+import 'package:html/parser.dart' show parse;
 
 abstract class FitDownload {
-  static byId(String id) async {
+  static Future<int> byId({String id, Athlete athlete}) async {
+    String baseUri = "https://www.strava.com/";
+    String loginUri = baseUri + "login";
+    String sessionUri = baseUri + "session";
+    String dashboardUri = baseUri + "dashboard";
+    String exportUri = baseUri + 'activities/$id/export_original';
+    Directory appDocDir = await getApplicationDocumentsDirectory();
 
-    final uri = 'https://www.strava.com/activities/#{id}/export_original';
-    var rep = await http.get(uri);
+    var dio = Dio();
+    var cookieJar = CookieJar();
+    dio.interceptors.add(CookieManager(cookieJar));
 
-    if (rep.statusCode == 200) {
-      final file = await _localFile(id);
-      file.writeAsString(rep.body);
+    Map<String, String> headers = {
+      Headers.acceptHeader:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    };
 
-      return rep.contentLength.toString() + " Bytes written";
-    } else {
-      return rep.statusCode.toString() + rep.reasonPhrase;
-    }
-  }
+    var homePageResponse = await dio.get(
+      loginUri,
+      options: Options(headers: headers),
+    );
+    var document = parse(homePageResponse.data);
+    var csrfParam =
+        document.querySelector('meta[name="csrf-param"]').attributes["content"];
+    var csrfToken =
+        document.querySelector('meta[name="csrf-token"]').attributes["content"];
 
-  static Future<File> _localFile(id) async {
-    final directory = await getApplicationDocumentsDirectory();
-    File file = File(directory.path + id + '.fit');
-    return file;
+    Map<String, String> postData = {
+      "email": athlete.email,
+      "password": athlete.password,
+      "remember_me": "on",
+      csrfParam: csrfToken,
+    };
+
+    await dio.post(
+      sessionUri,
+      options: Options(headers: headers, validateStatus: (int status) => true),
+      data: postData,
+    );
+
+    await dio.get(
+      dashboardUri,
+      options: Options(headers: headers, validateStatus: (int status) => true),
+    );
+
+    print("Started Download for $exportUri");
+    var downloadResponse =
+        await dio.download(exportUri, appDocDir.path + '/$id.fit');
+
+    print("Downloaded fit file for activity $id.");
+    return downloadResponse.statusCode;
   }
 }
-

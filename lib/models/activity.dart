@@ -1,60 +1,45 @@
 import 'package:encrateia/models/fit_download.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:encrateia/utils/db.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';
-import 'package:strava_flutter/Models/activity.dart';
+import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
+import 'package:encrateia/models/athlete.dart';
 
-class Activity extends Model {
-  int id;
+class Activity extends ChangeNotifier {
   String state;
-  String path;
-  int stravaId;
-  String name;
-  Duration movingTime;
-  String type;
-  DateTime startDateTime;
-  int distance;
+  DbActivity db;
 
   Activity();
-  String toString() => '$name $startDateTime';
 
-  Activity.fromStrava(SummaryActivity activity)
-      : stravaId = activity.id,
-        name = activity.name,
-        movingTime = Duration(seconds: activity.movingTime),
-        type = activity.type,
-        distance = activity.distance.toInt();
-
-  Activity.fromDb(DbActivity dbActivity)
-      : id = dbActivity.id,
-        stravaId = dbActivity.stravaId,
-        name = dbActivity.name,
-        movingTime = Duration(seconds: dbActivity.movingTime),
-        type = dbActivity.type,
-        distance = dbActivity.distance,
-        state = dbActivity.state;
-
-  download() async {
-    FitDownload.byId(stravaId.toString());
+  Activity.fromStrava(StravaActivity.SummaryActivity summaryActivity) {
+    this.db
+      ..name = summaryActivity.name
+      ..movingTime = summaryActivity.movingTime
+      ..type = summaryActivity.type
+      ..distance = summaryActivity.distance.toInt();
   }
 
-  persist() async {
-    await Db.create().connect();
+  Activity.fromDb(DbActivity dbActivity) {
+    this
+      ..db = dbActivity
+      ..state = "fromDatabase";
+  }
 
-    var dbActivity = DbActivity(
-      stravaId: stravaId,
-      name: name,
-      movingTime: movingTime.inSeconds,
-      type: type,
-      distance: distance,
+  String toString() => '$db.name $db.startTime';
+
+  Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
+  DateTime startDateTime() => DateTime.parse(db.startTime);
+
+  download({Athlete athlete}) async {
+    int statusCode = await FitDownload.byId(
+      id: db.stravaId.toString(),
+      athlete: athlete,
     );
-    await dbActivity.save();
+    this.state = "downloaded";
+    print("Download status code $statusCode.");
+    notifyListeners();
   }
-
-  static Activity of(BuildContext context) => ScopedModel.of<Activity>(context);
 
   static queryStrava() async {
     Strava strava = Strava(true, secret);
@@ -67,15 +52,20 @@ class Activity extends Model {
         prompt);
 
     final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-
     final startDate = now - 20 * 86400;
 
-    List<SummaryActivity> summaryActivities =
+    List<StravaActivity.SummaryActivity> summaryActivities =
         await strava.getLoggedInAthleteActivities(now, startDate);
 
-    for (SummaryActivity summaryActivity in summaryActivities) {
-      Activity activity = Activity.fromStrava(summaryActivity);
-      activity.persist();
+    for (StravaActivity.SummaryActivity summaryActivity in summaryActivities) {
+      Activity.fromStrava(summaryActivity).db.save;
     }
+  }
+
+  static Future<List<Activity>> all() async {
+    List<DbActivity> dbActivityList = await DbActivity().select().toList();
+    return dbActivityList
+        .map((dbActivity) => Activity.fromDb(dbActivity))
+        .toList();
   }
 }

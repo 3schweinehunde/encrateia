@@ -1,29 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:encrateia/utils/db.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class Athlete extends Model {
-  int id;
-  String firstName;
-  String lastName;
+class Athlete extends ChangeNotifier {
   String state = "undefined";
-  String stravaUsername;
-  String photoPath;
-  int stravaId;
+  String email;
+  String password;
+  DbAthlete db;
 
   Athlete();
-  String toString() => '$firstName $lastName ($stravaId)';
+
+  Athlete.fromDb(DbAthlete dbAthlete) {
+    this..db = dbAthlete
+        ..state = "fromDatabase";
+  }
+
+  String toString() => '$db.firstName $db.lastName ($db.stravaId)';
 
   updateFromStravaAthlete(DetailedAthlete athlete) {
-    firstName = athlete.firstname;
-    lastName = athlete.lastname;
+    db.firstName = athlete.firstname;
+    db.lastName = athlete.lastname;
+    db.stravaId = athlete.id;
+    db.stravaUsername = athlete.username;
+    db.photoPath = athlete.profile;
     state = athlete.state;
-    stravaId = athlete.id;
-    stravaUsername = athlete.username;
-    photoPath = athlete.profile;
-    state = "unsaved";
     notifyListeners();
   }
 
@@ -42,17 +43,20 @@ class Athlete extends Model {
     return text;
   }
 
-  persist() async {
-    await Db.create().connect();
-
-    var dbAthlete = DbAthlete(
-            firstName: firstName,
-            lastName: lastName,
-            stravaId: stravaId,
-            stravaUsername: stravaUsername,
-            photoPath: photoPath);
-    await dbAthlete.save();
+  store_credentials() async {
+    final storage = new FlutterSecureStorage();
+    await storage.write(key: "email", value: email);
+    await storage.write(key: "password", value: password);
   }
 
-  static Athlete of(BuildContext context) => ScopedModel.of<Athlete>(context);
+  Future<Athlete> read_credentials() async {
+    final storage = new FlutterSecureStorage();
+    email = await storage.read(key: "email");
+    password = await storage.read(key: "password");
+  }
+
+  static Future<List<Athlete>> all() async {
+    List<DbAthlete> dbAthleteList = await DbAthlete().select().toList();
+    return dbAthleteList.map((dbAthlete) => Athlete.fromDb(dbAthlete)).toList();
+  }
 }

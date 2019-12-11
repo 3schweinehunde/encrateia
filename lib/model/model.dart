@@ -36,7 +36,7 @@ const tableActivity = SqfEntityTable(
       SqfEntityField('name', DbType.text),
       SqfEntityField('movingTime', DbType.integer),
       SqfEntityField('type', DbType.text),
-      SqfEntityField('startDateTime', DbType.text),
+      SqfEntityField('startTime', DbType.text),
       SqfEntityField('distance', DbType.integer),
       SqfEntityFieldRelationship(
           parentTable: tableAthlete,

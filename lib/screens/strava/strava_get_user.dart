@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/strava.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:provider/provider.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 
@@ -13,13 +13,13 @@ class StravaGetUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<Athlete>(
-      model: athlete,
+    return ChangeNotifierProvider(
+      create: (context) => athlete,
       child: Scaffold(
         appBar: AppBar(title: Text('Create Athlete')),
         body:
-            ScopedModelDescendant<Athlete>(builder: (context, child, athlete) {
-          if (athlete.firstName == null) loginToStrava();
+            Consumer<Athlete>(builder: (context, athlete, _child) {
+          if (athlete.db.firstName == null) loginToStrava();
           return Container(
             child: Padding(
               padding: EdgeInsets.all(20),
