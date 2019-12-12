@@ -28,17 +28,16 @@ abstract class FitDownload {
     // print("Logged in: ${globals.loggedInToStravaWeb}");
 
     if (globals.loggedInToStravaWeb == false) {
+      print("Logging in to Strava");
       var homePageResponse = await dio.get(
         loginUri,
         options: Options(headers: headers),
       );
       var document = parse(homePageResponse.data);
-      var csrfParam =
-      document
+      var csrfParam = document
           .querySelector('meta[name="csrf-param"]')
           .attributes["content"];
-      var csrfToken =
-      document
+      var csrfToken = document
           .querySelector('meta[name="csrf-token"]')
           .attributes["content"];
 
@@ -52,23 +51,27 @@ abstract class FitDownload {
       await dio.post(
         sessionUri,
         options: Options(
-            headers: headers, validateStatus: (int status) => true),
+          headers: headers,
+          validateStatus: (int status) => true,
+        ),
         data: postData,
       );
 
       await dio.get(
         dashboardUri,
         options: Options(
-            headers: headers, validateStatus: (int status) => true),
+          headers: headers,
+          validateStatus: (int status) => true,
+        ),
       );
       globals.loggedInToStravaWeb = true;
     }
 
-    print("Started Download for $exportUri");
+    print("Starting download for $exportUri");
     var downloadResponse =
         await dio.download(exportUri, appDocDir.path + '/$id.fit');
+    print("Download fit file for activity $id completed.");
 
-    print("Downloaded fit file for activity $id.");
     return downloadResponse.statusCode;
   }
 }
