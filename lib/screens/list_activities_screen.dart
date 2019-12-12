@@ -91,19 +91,19 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
           tooltip: 'Download',
         );
         break;
-      case "downloaded":
+      case "fromDatabase":
         return IconButton(
           icon: Icon(Icons.save_alt),
           onPressed: () {
             setState(() {
-              activity.download();
+              activity.download(athlete: athlete);
             });
           },
           tooltip: 'Parse .fit-file',
         );
         break;
       default:
-        return Icon(Icons.error);
+        return Text(activity.state);
     }
   }
 }

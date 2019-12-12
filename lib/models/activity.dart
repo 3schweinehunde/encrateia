@@ -31,7 +31,7 @@ class Activity extends ChangeNotifier {
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
   DateTime startDateTime() => DateTime.parse(db.startTime);
 
-  download({Athlete athlete}) async {
+  download({@required Athlete athlete}) async {
     int statusCode = await FitDownload.byId(
       id: db.stravaId.toString(),
       athlete: athlete,
