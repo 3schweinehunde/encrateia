@@ -1,6 +1,7 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ListActivitiesScreen extends StatefulWidget {
   final Athlete athlete;
@@ -18,61 +19,40 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   Future<List<Activity>> activities;
 
   @override
-  void initState() {
-    super.initState();
-    activities = Activity.all();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Activities'),
       ),
       body: FutureBuilder<List<Activity>>(
-        future: activities,
+        future: Activity.all(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.data.length > 0) {
-            final activities = snapshot.data.map((activity) => activity);
-            return ListView(
-              padding: EdgeInsets.all(20),
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.cloud_download),
-                  title: Text("Download Activities from Strava"),
-                  onTap: () {
-                    setState(() {
-                      Activity.queryStrava();
-                    });
-                  },
-                ),
-                for (Activity activity in activities)
+          return ListView(
+            padding: EdgeInsets.all(20),
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.cloud_download),
+                title: Text("Download Activities from Strava"),
+                onTap: () => Activity.queryStrava(),
+              ),
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.data.length > 0)
+                for (Activity activity in snapshot.data)
                   ListTile(
                     leading: Icon(Icons.directions_run),
                     title: Text("${activity.db.type} "
                         "${activity.db.stravaId}"),
                     subtitle: Text(activity.db.name ?? "Activity"),
-                    trailing: stateIcon(activity, widget.athlete),
-                  )
-              ],
-            );
-          } else {
-            return ListView(
-              padding: EdgeInsets.all(20),
-              children: <Widget>[
-                ListTile(
-                  leading: Icon(Icons.cloud_download),
-                  title: Text("Download Activities from Strava"),
-                  onTap: () {
-                    setState(() {
-                      Activity.queryStrava();
-                    });
-                  },
-                ),
-              ],
-            );
-          }
+                    trailing: ChangeNotifierProvider.value(
+                      value: activity,
+                      child: Consumer<Activity>(
+                        builder: (context, activity, _child) =>
+                            stateIcon(activity, widget.athlete),
+                      ),
+                    ),
+                  ),
+            ],
+          );
         },
       ),
     );
@@ -83,22 +63,14 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
       case "new":
         return IconButton(
           icon: Icon(Icons.cloud_download),
-          onPressed: () {
-            setState(() {
-              activity.download(athlete: athlete);
-            });
-          },
+          onPressed: () => activity.download(athlete: athlete),
           tooltip: 'Download',
         );
         break;
-      case "fromDatabase":
+      case "downloaded":
         return IconButton(
           icon: Icon(Icons.save_alt),
-          onPressed: () {
-            setState(() {
-              activity.download(athlete: athlete);
-            });
-          },
+          onPressed: () => activity.download(athlete: athlete),
           tooltip: 'Parse .fit-file',
         );
         break;
