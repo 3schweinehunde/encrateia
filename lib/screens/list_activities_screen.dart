@@ -79,7 +79,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   }
 
   stateIcon(Activity activity, Athlete athlete) {
-    switch (activity.state) {
+    switch (activity.db.state) {
       case "new":
         return IconButton(
           icon: Icon(Icons.cloud_download),
@@ -103,7 +103,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
         );
         break;
       default:
-        return Text(activity.state);
+        return Text(activity.db.state);
     }
   }
 }

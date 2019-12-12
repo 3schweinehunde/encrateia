@@ -4,43 +4,35 @@ import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Athlete extends ChangeNotifier {
-  String state = "undefined";
   String email;
   String password;
   DbAthlete db;
 
   Athlete();
-
-  Athlete.fromDb(DbAthlete dbAthlete) {
-    this..db = dbAthlete
-        ..state = "fromDatabase";
-  }
+  Athlete.fromDb(this.db);
 
   String toString() => '$db.firstName $db.lastName ($db.stravaId)';
 
   updateFromStravaAthlete(DetailedAthlete athlete) {
-    db.firstName = athlete.firstname;
-    db.lastName = athlete.lastname;
-    db.stravaId = athlete.id;
-    db.stravaUsername = athlete.username;
-    db.photoPath = athlete.profile;
-    state = athlete.state;
+    db
+      ..firstName = athlete.firstname
+      ..lastName = athlete.lastname
+      ..stravaId = athlete.id
+      ..stravaUsername = athlete.username
+      ..photoPath = athlete.profile
+      ..state = athlete.state;
     notifyListeners();
   }
 
   String get stateText {
-    String text;
-    switch (state) {
+    switch (db.state) {
       case "undefined":
-        text = "Loading athlete data from Strava ...";
-        break;
+        return "Loading athlete data from Strava ...";
       case "unsaved":
-        text = "Strava data loaded successfully.";
-        break;
+        return "Strava data loaded successfully.";
       default:
-        text = "Unknown state, should have never come here.";
+        return "Unknown state, should have never come here.";
     }
-    return text;
   }
 
   store_credentials() async {

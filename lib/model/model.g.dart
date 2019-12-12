@@ -31,6 +31,7 @@ class TableDbAthlete extends SqfEntityTableBase {
 
     // declare fields
     fields = [
+      SqfEntityFieldBase('state', DbType.text, defaultValue: 'new'),
       SqfEntityFieldBase('firstName', DbType.text),
       SqfEntityFieldBase('lastName', DbType.text),
       SqfEntityFieldBase('stravaUsername', DbType.text),
@@ -106,6 +107,7 @@ class DbEncrateia extends SqfEntityModelProvider {
 class DbAthlete {
   DbAthlete(
       {this.id,
+      this.state,
       this.firstName,
       this.lastName,
       this.stravaUsername,
@@ -113,16 +115,17 @@ class DbAthlete {
       this.stravaId}) {
     _setDefaultValues();
   }
-  DbAthlete.withFields(this.firstName, this.lastName, this.stravaUsername,
-      this.photoPath, this.stravaId) {
+  DbAthlete.withFields(this.state, this.firstName, this.lastName,
+      this.stravaUsername, this.photoPath, this.stravaId) {
     _setDefaultValues();
   }
-  DbAthlete.withId(this.id, this.firstName, this.lastName, this.stravaUsername,
-      this.photoPath, this.stravaId) {
+  DbAthlete.withId(this.id, this.state, this.firstName, this.lastName,
+      this.stravaUsername, this.photoPath, this.stravaId) {
     _setDefaultValues();
   }
   DbAthlete.fromMap(Map<String, dynamic> o) {
     id = o['id'] as int;
+    state = o['state'] as String;
     firstName = o['firstName'] as String;
     lastName = o['lastName'] as String;
     stravaUsername = o['stravaUsername'] as String;
@@ -131,6 +134,7 @@ class DbAthlete {
   }
   // FIELDS (DbAthlete)
   int id;
+  String state;
   String firstName;
   String lastName;
   String stravaUsername;
@@ -165,6 +169,10 @@ class DbAthlete {
     if (id != null) {
       map['id'] = id;
     }
+    if (state != null) {
+      map['state'] = state;
+    }
+
     if (firstName != null) {
       map['firstName'] = firstName;
     }
@@ -194,6 +202,10 @@ class DbAthlete {
     if (id != null) {
       map['id'] = id;
     }
+    if (state != null) {
+      map['state'] = state;
+    }
+
     if (firstName != null) {
       map['firstName'] = firstName;
     }
@@ -234,7 +246,15 @@ class DbAthlete {
   }
 
   List<dynamic> toArgs() {
-    return [id, firstName, lastName, stravaUsername, photoPath, stravaId];
+    return [
+      id,
+      state,
+      firstName,
+      lastName,
+      stravaUsername,
+      photoPath,
+      stravaId
+    ];
   }
 
   static Future<List<DbAthlete>> fromWebUrl(String url) async {
@@ -321,7 +341,7 @@ class DbAthlete {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbAthlete> dbathletes) async {
     final results = _mnDbAthlete.saveAll(
-        'INSERT OR REPLACE INTO athletes (id,  firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -332,8 +352,16 @@ class DbAthlete {
   Future<int> _upsert() async {
     try {
       id = await _mnDbAthlete.rawInsert(
-          'INSERT OR REPLACE INTO athletes (id,  firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?)',
-          [id, firstName, lastName, stravaUsername, photoPath, stravaId]);
+          'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?,?)',
+          [
+            id,
+            state,
+            firstName,
+            lastName,
+            stravaUsername,
+            photoPath,
+            stravaId
+          ]);
       saveResult = BoolResult(
           success: true,
           successMessage: 'DbAthlete id=$id updated successfuly');
@@ -351,7 +379,7 @@ class DbAthlete {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
-        'INSERT OR REPLACE INTO athletes (id,  firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -395,7 +423,9 @@ class DbAthlete {
       ..qparams.distinct = true;
   }
 
-  void _setDefaultValues() {}
+  void _setDefaultValues() {
+    state = state ?? 'new';
+  }
   // END METHODS
   // CUSTOM CODES
   /*
@@ -773,6 +803,11 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return _id = setField(_id, 'id', DbType.integer);
   }
 
+  DbAthleteField _state;
+  DbAthleteField get state {
+    return _state = setField(_state, 'state', DbType.text);
+  }
+
   DbAthleteField _firstName;
   DbAthleteField get firstName {
     return _firstName = setField(_firstName, 'firstName', DbType.text);
@@ -1096,6 +1131,12 @@ class DbAthleteFields {
   static TableField _fId;
   static TableField get id {
     return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fState;
+  static TableField get state {
+    return _fState =
+        _fState ?? SqlSyntax.setField(_fState, 'state', DbType.text);
   }
 
   static TableField _fFirstName;

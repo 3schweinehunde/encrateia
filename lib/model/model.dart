@@ -16,6 +16,7 @@ const tableAthlete = SqfEntityTable(
     useSoftDeleting: false,
     modelName: 'DbAthlete',
     fields: [
+      SqfEntityField('state', DbType.text, defaultValue: "new"),
       SqfEntityField('firstName', DbType.text),
       SqfEntityField('lastName', DbType.text),
       SqfEntityField('stravaUsername', DbType.text),

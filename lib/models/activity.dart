@@ -7,10 +7,10 @@ import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
 import 'package:encrateia/models/athlete.dart';
 
 class Activity extends ChangeNotifier {
-  String state;
   DbActivity db;
 
   Activity();
+  Activity.fromDb(this.db);
 
   Activity.fromStrava(StravaActivity.SummaryActivity summaryActivity) {
     this.db
@@ -18,12 +18,6 @@ class Activity extends ChangeNotifier {
       ..movingTime = summaryActivity.movingTime
       ..type = summaryActivity.type
       ..distance = summaryActivity.distance.toInt();
-  }
-
-  Activity.fromDb(DbActivity dbActivity) {
-    this
-      ..db = dbActivity
-      ..state = "fromDatabase";
   }
 
   String toString() => '$db.name $db.startTime';
@@ -36,8 +30,15 @@ class Activity extends ChangeNotifier {
       id: db.stravaId.toString(),
       athlete: athlete,
     );
-    this.state = "downloaded";
     print("Download status code $statusCode.");
+
+    setState("downloaded");
+  }
+
+  setState(String state) {
+    db
+      ..state = state
+      ..save();
     notifyListeners();
   }
 

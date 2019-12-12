@@ -25,7 +25,7 @@ abstract class FitDownload {
           "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     };
 
-    print("Logged in: ${globals.loggedInToStravaWeb}");
+    // print("Logged in: ${globals.loggedInToStravaWeb}");
 
     if (globals.loggedInToStravaWeb == false) {
       var homePageResponse = await dio.get(
