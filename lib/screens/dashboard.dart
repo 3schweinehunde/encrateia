@@ -43,16 +43,14 @@ class _DashboardState extends State<Dashboard> {
                                 'Maybe you want to learn more about Encrateia.'
                                 'We have provided some introductory help for you.'),
                           ),
-                          ButtonTheme.bar(
-                            child: ButtonBar(
-                              children: <Widget>[
-                                FlatButton(
-                                  child: const Text('HELP'),
-                                  onPressed: () {},
-                                )
-                              ],
-                            ),
-                          )
+                          ButtonBar(
+                            children: <Widget>[
+                              FlatButton(
+                                child: const Text('HELP'),
+                                onPressed: () {},
+                              )
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -68,8 +66,7 @@ class _DashboardState extends State<Dashboard> {
                               '(you) or many athletes (if you act as a trainer).'
                               '\n Please create your first athlete!'),
                         ),
-                        ButtonTheme.bar(
-                            child: ButtonBar(
+                        ButtonBar(
                           children: <Widget>[
                             FlatButton(
                               child: const Text('CREATE NEW ATHLETE'),
@@ -85,7 +82,7 @@ class _DashboardState extends State<Dashboard> {
                               },
                             )
                           ],
-                        ))
+                        )
                       ],
                     ))
                   ],
@@ -120,7 +117,7 @@ class _DashboardState extends State<Dashboard> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(builder: (context) {
-                                    athlete.read_credentials();
+                                    athlete.readCredentials();
                                     return EditAthleteScreen(athlete: athlete);
                                   }),
                                 );

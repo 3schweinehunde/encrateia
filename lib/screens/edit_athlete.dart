@@ -104,7 +104,7 @@ class EditAthleteScreen extends StatelessWidget {
                       child: Text('Save', textScaleFactor: 1.5),
                       onPressed: () {
                         athlete.db.save();
-                        athlete.store_credentials();
+                        athlete.storeCredentials();
                         Navigator.of(context).pop();
                       },
                     ),

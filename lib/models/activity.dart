@@ -59,7 +59,7 @@ class Activity extends ChangeNotifier {
         await strava.getLoggedInAthleteActivities(now, startDate);
 
     for (StravaActivity.SummaryActivity summaryActivity in summaryActivities) {
-      Activity.fromStrava(summaryActivity).db.save;
+      Activity.fromStrava(summaryActivity).db.save();
     }
   }
 
