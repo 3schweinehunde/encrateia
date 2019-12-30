@@ -63,24 +63,22 @@ class EditAthleteScreen extends StatelessWidget {
                         subtitle: Text('This athlete is not connected to a '
                             'Strava User yet'),
                       ),
-                      ButtonTheme.bar(
-                        child: ButtonBar(
-                          children: <Widget>[
-                            FlatButton(
-                              child: const Text('CONNECT TO STRAVA'),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        StravaGetUser(athlete: athlete),
-                                  ),
-                                );
-                              },
-                            )
-                          ],
-                        ),
-                      )
+                      ButtonBar(
+                        children: <Widget>[
+                          FlatButton(
+                            child: const Text('CONNECT TO STRAVA'),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      StravaGetUser(athlete: athlete),
+                                ),
+                              );
+                            },
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
