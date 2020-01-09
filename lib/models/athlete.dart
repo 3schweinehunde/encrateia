@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class Athlete extends ChangeNotifier {
   String email;
   String password;
-  DbAthlete db;
+  DbAthlete db = DbAthlete();
 
   Athlete();
   Athlete.fromDb(this.db);
@@ -20,7 +20,7 @@ class Athlete extends ChangeNotifier {
       ..stravaId = athlete.id
       ..stravaUsername = athlete.username
       ..photoPath = athlete.profile
-      ..state = athlete.state;
+      ..geoState = athlete.state;
     notifyListeners();
   }
 

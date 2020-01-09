@@ -25,19 +25,19 @@ class EditAthleteScreen extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Text("First Name"),
-                title: Text(athlete.db.firstName ?? ""),
+                title: Text(athlete.db.firstName ?? 't.b.d.'),
               ),
               ListTile(
                 leading: Text("Last Name"),
-                title: Text(athlete.db.lastName ?? ""),
+                title: Text(athlete.db.lastName ?? 't.b.d.'),
               ),
               ListTile(
                 leading: Text("Strava ID"),
-                title: Text(athlete.db.stravaId.toString() ?? ""),
+                title: Text(athlete.db.stravaId?.toString() ?? 't.b.d.'),
               ),
               ListTile(
                 leading: Text("Strava Username"),
-                title: Text(athlete.db.stravaUsername ?? ""),
+                title: Text(athlete.db.stravaUsername ?? 't.b.d.'),
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Email"),
@@ -52,7 +52,7 @@ class EditAthleteScreen extends StatelessWidget {
               ),
 
               // Strava Connection Card
-              if (athlete.db.stravaId == null)
+              if (athlete.db == null || athlete.db.stravaId == null)
                 Card(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,

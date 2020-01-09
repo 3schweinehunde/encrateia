@@ -13,8 +13,8 @@ class StravaGetUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => athlete,
+    return ChangeNotifierProvider.value(
+      value: athlete,
       child: Scaffold(
         appBar: AppBar(title: Text('Create Athlete')),
         body:

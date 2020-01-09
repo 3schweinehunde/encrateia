@@ -37,6 +37,7 @@ class TableDbAthlete extends SqfEntityTableBase {
       SqfEntityFieldBase('stravaUsername', DbType.text),
       SqfEntityFieldBase('photoPath', DbType.text),
       SqfEntityFieldBase('stravaId', DbType.integer),
+      SqfEntityFieldBase('geoState', DbType.text),
     ];
     super.init();
   }
@@ -95,7 +96,7 @@ class DbEncrateia extends SqfEntityModelProvider {
         .bundledDatabasePath; //'assets/sample.db'; // This value is optional. When bundledDatabasePath is empty then EntityBase creats a new database when initializing the database
   }
   Map<String, dynamic> getControllers() {
-    final controllers = Map<String, dynamic>();
+    final controllers = <String, dynamic>{};
 
     return controllers;
   }
@@ -112,15 +113,16 @@ class DbAthlete {
       this.lastName,
       this.stravaUsername,
       this.photoPath,
-      this.stravaId}) {
+      this.stravaId,
+      this.geoState}) {
     _setDefaultValues();
   }
   DbAthlete.withFields(this.state, this.firstName, this.lastName,
-      this.stravaUsername, this.photoPath, this.stravaId) {
+      this.stravaUsername, this.photoPath, this.stravaId, this.geoState) {
     _setDefaultValues();
   }
   DbAthlete.withId(this.id, this.state, this.firstName, this.lastName,
-      this.stravaUsername, this.photoPath, this.stravaId) {
+      this.stravaUsername, this.photoPath, this.stravaId, this.geoState) {
     _setDefaultValues();
   }
   DbAthlete.fromMap(Map<String, dynamic> o) {
@@ -131,6 +133,7 @@ class DbAthlete {
     stravaUsername = o['stravaUsername'] as String;
     photoPath = o['photoPath'] as String;
     stravaId = o['stravaId'] as int;
+    geoState = o['geoState'] as String;
   }
   // FIELDS (DbAthlete)
   int id;
@@ -140,11 +143,15 @@ class DbAthlete {
   String stravaUsername;
   String photoPath;
   int stravaId;
+  String geoState;
 
   BoolResult saveResult;
   // end FIELDS (DbAthlete)
 
 // COLLECTIONS (DbAthlete)
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbActivity> plDbActivities;
+
   /// get DbActivity(s) filtered by athletesId=id
   DbActivityFilterBuilder getDbActivities(
       {List<String> columnsToSelect, bool getIsDeleted}) {
@@ -165,7 +172,7 @@ class DbAthlete {
 
   // METHODS
   Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
-    final map = Map<String, dynamic>();
+    final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
     }
@@ -191,6 +198,10 @@ class DbAthlete {
 
     if (stravaId != null) {
       map['stravaId'] = stravaId;
+    }
+
+    if (geoState != null) {
+      map['geoState'] = geoState;
     }
 
     return map;
@@ -198,7 +209,7 @@ class DbAthlete {
 
   Future<Map<String, dynamic>> toMapWithChilds(
       [bool forQuery = false, bool forJson = false]) async {
-    final map = Map<String, dynamic>();
+    final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
     }
@@ -224,6 +235,10 @@ class DbAthlete {
 
     if (stravaId != null) {
       map['stravaId'] = stravaId;
+    }
+
+    if (geoState != null) {
+      map['geoState'] = geoState;
     }
 
 // COLLECTIONS (DbAthlete)
@@ -253,7 +268,8 @@ class DbAthlete {
       lastName,
       stravaUsername,
       photoPath,
-      stravaId
+      stravaId,
+      geoState
     ];
   }
 
@@ -270,7 +286,7 @@ class DbAthlete {
 
   static Future<List<DbAthlete>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
-    var objList = List<DbAthlete>();
+    var objList = <DbAthlete>[];
     try {
       objList = list
           .map((dbathlete) =>
@@ -283,15 +299,26 @@ class DbAthlete {
     return objList;
   }
 
-  static Future<List<DbAthlete>> fromObjectList(Future<List<dynamic>> o) async {
-    final data = await o;
-    return await DbAthlete.fromMapList(data);
-  }
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbAthlete>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbAthlete.fromMapList(data);
+    } 
+    */
 
-  static Future<List<DbAthlete>> fromMapList(List<dynamic> data) async {
-    final List<DbAthlete> objList = List<DbAthlete>();
-    for (final Map map in data as List<Map>) {
+  static Future<List<DbAthlete>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbAthlete> objList = <DbAthlete>[];
+    for (final map in data) {
       final obj = DbAthlete.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbActivities')) {
+          obj.plDbActivities = await obj.getDbActivities().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
 
       objList.add(obj);
     }
@@ -341,7 +368,7 @@ class DbAthlete {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbAthlete> dbathletes) async {
     final results = _mnDbAthlete.saveAll(
-        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState)  VALUES (?,?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -351,20 +378,26 @@ class DbAthlete {
   /// <returns>Returns id
   Future<int> _upsert() async {
     try {
-      id = await _mnDbAthlete.rawInsert(
-          'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?,?)',
-          [
-            id,
-            state,
-            firstName,
-            lastName,
-            stravaUsername,
-            photoPath,
-            stravaId
-          ]);
-      saveResult = BoolResult(
-          success: true,
-          successMessage: 'DbAthlete id=$id updated successfuly');
+      if (await _mnDbAthlete.rawInsert(
+              'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState)  VALUES (?,?,?,?,?,?,?,?)',
+              [
+                id,
+                state,
+                firstName,
+                lastName,
+                stravaUsername,
+                photoPath,
+                stravaId,
+                geoState
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbAthlete id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbAthlete id=$id did not update');
+      }
       return id;
     } catch (e) {
       saveResult = BoolResult(
@@ -379,7 +412,7 @@ class DbAthlete {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
-        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState)  VALUES (?,?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -463,7 +496,7 @@ class DbAthleteField extends SearchCriteria {
     return this;
   }
 
-  DbAthleteFilterBuilder equals(var pValue) {
+  DbAthleteFilterBuilder equals(dynamic pValue) {
     param.expression = '=';
     dbathleteFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, dbathleteFB.parameters, param, SqlSyntax.EQuals,
@@ -476,7 +509,7 @@ class DbAthleteField extends SearchCriteria {
     return dbathleteFB;
   }
 
-  DbAthleteFilterBuilder equalsOrNull(var pValue) {
+  DbAthleteFilterBuilder equalsOrNull(dynamic pValue) {
     param.expression = '=';
     dbathleteFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, dbathleteFB.parameters, param,
@@ -633,7 +666,7 @@ class DbAthleteField extends SearchCriteria {
     return dbathleteFB;
   }
 
-  DbAthleteFilterBuilder inValues(var pValue) {
+  DbAthleteFilterBuilder inValues(dynamic pValue) {
     dbathleteFB._addedBlocks = setCriteria(
         pValue,
         dbathleteFB.parameters,
@@ -653,10 +686,10 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   DbAthleteFilterBuilder(DbAthlete obj) {
     whereString = '';
     qparams = QueryParams();
-    parameters = List<DbParameter>();
-    orderByList = List<String>();
-    groupByList = List<String>();
-    _addedBlocks = AddedBlocks(List<bool>(), List<bool>());
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
     _addedBlocks.needEndBlock.add(false);
     _addedBlocks.waitingStartBlock.add(false);
     _pagesize = 0;
@@ -741,7 +774,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  DbAthleteFilterBuilder orderBy(var argFields) {
+  DbAthleteFilterBuilder orderBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add(argFields);
@@ -759,7 +792,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  DbAthleteFilterBuilder orderByDesc(var argFields) {
+  DbAthleteFilterBuilder orderByDesc(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
@@ -777,7 +810,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  DbAthleteFilterBuilder groupBy(var argFields) {
+  DbAthleteFilterBuilder groupBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         groupByList.add(' $argFields ');
@@ -832,6 +865,11 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   DbAthleteField _stravaId;
   DbAthleteField get stravaId {
     return _stravaId = setField(_stravaId, 'stravaId', DbType.integer);
+  }
+
+  DbAthleteField _geoState;
+  DbAthleteField get geoState {
+    return _geoState = setField(_geoState, 'geoState', DbType.text);
   }
 
   bool _getIsDeleted;
@@ -940,8 +978,14 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   }
 
   /// This method always returns DbAthleteObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
   /// <returns>List<DbAthlete>
-  Future<DbAthlete> toSingle([VoidCallback dbathlete(DbAthlete o)]) async {
+  Future<DbAthlete> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbAthlete.toList(qparams);
@@ -949,11 +993,16 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     DbAthlete obj;
     if (data.isNotEmpty) {
       obj = DbAthlete.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbActivities')) {
+          obj.plDbActivities = await obj.getDbActivities().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
-    }
-    if (dbathlete != null) {
-      dbathlete(obj);
     }
     return obj;
   }
@@ -961,7 +1010,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// This method always returns int.
   ///
   /// <returns>int
-  Future<int> toCount([VoidCallback dbathleteCount(int c)]) async {
+  Future<int> toCount([VoidCallback Function(int c) dbathleteCount]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
     final dbathletesFuture = await _obj._mnDbAthlete.toList(qparams);
@@ -973,18 +1022,23 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   }
 
   /// This method always returns List<DbAthlete>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
   /// <returns>List<DbAthlete>
   Future<List<DbAthlete>> toList(
-      [VoidCallback dbathleteList(List<DbAthlete> o)]) async {
+      {bool preload = false, List<String> preloadFields}) async {
     final data = await toMapList();
-    final List<DbAthlete> dbathletesData = await DbAthlete.fromMapList(data);
-    if (dbathleteList != null) dbathleteList(dbathletesData);
+    final List<DbAthlete> dbathletesData =
+        await DbAthlete.fromMapList(data, preload: preload);
     return dbathletesData;
   }
 
   /// This method always returns Json String
   Future<String> toJson() async {
-    final list = List<dynamic>();
+    final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
       list.add(o.toMap(forJson: true));
@@ -994,7 +1048,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
 
   /// This method always returns Json String.
   Future<String> toJsonWithChilds() async {
-    final list = List<dynamic>();
+    final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
       list.add(await o.toMapWithChilds(false, true));
@@ -1013,14 +1067,14 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// Returns List<DropdownMenuItem<DbAthlete>>
   Future<List<DropdownMenuItem<DbAthlete>>> toDropDownMenu(
       String displayTextColumn,
-      [VoidCallback dropDownMenu(List<DropdownMenuItem<DbAthlete>> o)]) async {
+      [VoidCallback Function(List<DropdownMenuItem<DbAthlete>> o)
+          dropDownMenu]) async {
     _buildParameters();
     final dbathletesFuture = _obj._mnDbAthlete.toList(qparams);
 
     final data = await dbathletesFuture;
     final int count = data.length;
-    final List<DropdownMenuItem<DbAthlete>> items = List()
-      ..add(DropdownMenuItem(
+    final List<DropdownMenuItem<DbAthlete>> items = []..add(DropdownMenuItem(
         value: DbAthlete(),
         child: Text('Select DbAthlete'),
       ));
@@ -1041,15 +1095,15 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// Returns List<DropdownMenuItem<int>>
   Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
       String displayTextColumn,
-      [VoidCallback dropDownMenu(List<DropdownMenuItem<int>> o)]) async {
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
     _buildParameters();
     qparams.selectColumns = ['id', displayTextColumn];
     final dbathletesFuture = _obj._mnDbAthlete.toList(qparams);
 
     final data = await dbathletesFuture;
     final int count = data.length;
-    final List<DropdownMenuItem<int>> items = List()
-      ..add(DropdownMenuItem(
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
         value: 0,
         child: Text('Select DbAthlete'),
       ));
@@ -1071,7 +1125,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
-    final List<int> idData = List<int>();
+    final List<int> idData = <int>[];
     qparams.selectColumns = ['id'];
     final idFuture = await _obj._mnDbAthlete.toList(qparams);
 
@@ -1086,12 +1140,12 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject(
-      [VoidCallback listObject(List<dynamic> o)]) async {
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbAthlete.toList(qparams);
 
-    final List<dynamic> objectsData = List<dynamic>();
+    final List<dynamic> objectsData = <dynamic>[];
     final data = await objectFuture;
     final int count = data.length;
     for (int i = 0; i < count; i++) {
@@ -1107,12 +1161,12 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   ///
   /// Sample usage: await DbAthlete.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
-      [VoidCallback listString(List<String> o)]) async {
+      [VoidCallback Function(List<String> o) listString]) async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbAthlete.toList(qparams);
 
-    final List<String> objectsData = List<String>();
+    final List<String> objectsData = <String>[];
     final data = await objectFuture;
     final int count = data.length;
     for (int i = 0; i < count; i++) {
@@ -1167,6 +1221,12 @@ class DbAthleteFields {
   static TableField get stravaId {
     return _fStravaId = _fStravaId ??
         SqlSyntax.setField(_fStravaId, 'stravaId', DbType.integer);
+  }
+
+  static TableField _fGeoState;
+  static TableField get geoState {
+    return _fGeoState =
+        _fGeoState ?? SqlSyntax.setField(_fGeoState, 'geoState', DbType.text);
   }
 }
 // endregion DbAthleteFields
@@ -1248,8 +1308,13 @@ class DbActivity {
   // end FIELDS (DbActivity)
 
 // RELATIONSHIPS (DbActivity)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbAthlete plDbAthlete;
+
   /// get DbAthlete By AthletesId
-  Future<DbAthlete> getDbAthlete([VoidCallback dbathlete(DbAthlete o)]) async {
+
+  Future<DbAthlete> getDbAthlete(
+      [VoidCallback Function(DbAthlete o) dbathlete]) async {
     final _obj = await DbAthlete().getById(athletesId);
     if (dbathlete != null) {
       dbathlete(_obj);
@@ -1267,7 +1332,7 @@ class DbActivity {
 
   // METHODS
   Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
-    final map = Map<String, dynamic>();
+    final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
     }
@@ -1312,7 +1377,7 @@ class DbActivity {
 
   Future<Map<String, dynamic>> toMapWithChilds(
       [bool forQuery = false, bool forJson = false]) async {
-    final map = Map<String, dynamic>();
+    final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
     }
@@ -1393,7 +1458,7 @@ class DbActivity {
 
   static Future<List<DbActivity>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
-    var objList = List<DbActivity>();
+    var objList = <DbActivity>[];
     try {
       objList = list
           .map((dbactivity) =>
@@ -1406,16 +1471,26 @@ class DbActivity {
     return objList;
   }
 
-  static Future<List<DbActivity>> fromObjectList(
-      Future<List<dynamic>> o) async {
-    final data = await o;
-    return await DbActivity.fromMapList(data);
-  }
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbActivity>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbActivity.fromMapList(data);
+    } 
+    */
 
-  static Future<List<DbActivity>> fromMapList(List<dynamic> data) async {
-    final List<DbActivity> objList = List<DbActivity>();
-    for (final Map map in data as List<Map>) {
+  static Future<List<DbActivity>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbActivity> objList = <DbActivity>[];
+    for (final map in data) {
       final obj = DbActivity.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
 
       objList.add(obj);
     }
@@ -1475,23 +1550,28 @@ class DbActivity {
   /// <returns>Returns id
   Future<int> _upsert() async {
     try {
-      id = await _mnDbActivity.rawInsert(
-          'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
-          [
-            id,
-            state,
-            path,
-            stravaId,
-            name,
-            movingTime,
-            type,
-            startTime,
-            distance,
-            athletesId
-          ]);
-      saveResult = BoolResult(
-          success: true,
-          successMessage: 'DbActivity id=$id updated successfuly');
+      if (await _mnDbActivity.rawInsert(
+              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+              [
+                id,
+                state,
+                path,
+                stravaId,
+                name,
+                movingTime,
+                type,
+                startTime,
+                distance,
+                athletesId
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbActivity id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbActivity id=$id did not update');
+      }
       return id;
     } catch (e) {
       saveResult = BoolResult(
@@ -1583,7 +1663,7 @@ class DbActivityField extends SearchCriteria {
     return this;
   }
 
-  DbActivityFilterBuilder equals(var pValue) {
+  DbActivityFilterBuilder equals(dynamic pValue) {
     param.expression = '=';
     dbactivityFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, dbactivityFB.parameters, param, SqlSyntax.EQuals,
@@ -1596,7 +1676,7 @@ class DbActivityField extends SearchCriteria {
     return dbactivityFB;
   }
 
-  DbActivityFilterBuilder equalsOrNull(var pValue) {
+  DbActivityFilterBuilder equalsOrNull(dynamic pValue) {
     param.expression = '=';
     dbactivityFB._addedBlocks = _waitingNot == ''
         ? setCriteria(pValue, dbactivityFB.parameters, param,
@@ -1753,7 +1833,7 @@ class DbActivityField extends SearchCriteria {
     return dbactivityFB;
   }
 
-  DbActivityFilterBuilder inValues(var pValue) {
+  DbActivityFilterBuilder inValues(dynamic pValue) {
     dbactivityFB._addedBlocks = setCriteria(
         pValue,
         dbactivityFB.parameters,
@@ -1773,10 +1853,10 @@ class DbActivityFilterBuilder extends SearchCriteria {
   DbActivityFilterBuilder(DbActivity obj) {
     whereString = '';
     qparams = QueryParams();
-    parameters = List<DbParameter>();
-    orderByList = List<String>();
-    groupByList = List<String>();
-    _addedBlocks = AddedBlocks(List<bool>(), List<bool>());
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
     _addedBlocks.needEndBlock.add(false);
     _addedBlocks.waitingStartBlock.add(false);
     _pagesize = 0;
@@ -1861,7 +1941,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  DbActivityFilterBuilder orderBy(var argFields) {
+  DbActivityFilterBuilder orderBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add(argFields);
@@ -1879,7 +1959,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  DbActivityFilterBuilder orderByDesc(var argFields) {
+  DbActivityFilterBuilder orderByDesc(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
@@ -1897,7 +1977,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  DbActivityFilterBuilder groupBy(var argFields) {
+  DbActivityFilterBuilder groupBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         groupByList.add(' $argFields ');
@@ -2075,8 +2155,14 @@ class DbActivityFilterBuilder extends SearchCriteria {
   }
 
   /// This method always returns DbActivityObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
   /// <returns>List<DbActivity>
-  Future<DbActivity> toSingle([VoidCallback dbactivity(DbActivity o)]) async {
+  Future<DbActivity> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbActivity.toList(qparams);
@@ -2084,11 +2170,16 @@ class DbActivityFilterBuilder extends SearchCriteria {
     DbActivity obj;
     if (data.isNotEmpty) {
       obj = DbActivity.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
-    }
-    if (dbactivity != null) {
-      dbactivity(obj);
     }
     return obj;
   }
@@ -2096,7 +2187,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   /// This method always returns int.
   ///
   /// <returns>int
-  Future<int> toCount([VoidCallback dbactivityCount(int c)]) async {
+  Future<int> toCount([VoidCallback Function(int c) dbactivityCount]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
     final dbactivitiesFuture = await _obj._mnDbActivity.toList(qparams);
@@ -2108,19 +2199,23 @@ class DbActivityFilterBuilder extends SearchCriteria {
   }
 
   /// This method always returns List<DbActivity>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
   /// <returns>List<DbActivity>
   Future<List<DbActivity>> toList(
-      [VoidCallback dbactivityList(List<DbActivity> o)]) async {
+      {bool preload = false, List<String> preloadFields}) async {
     final data = await toMapList();
     final List<DbActivity> dbactivitiesData =
-        await DbActivity.fromMapList(data);
-    if (dbactivityList != null) dbactivityList(dbactivitiesData);
+        await DbActivity.fromMapList(data, preload: preload);
     return dbactivitiesData;
   }
 
   /// This method always returns Json String
   Future<String> toJson() async {
-    final list = List<dynamic>();
+    final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
       list.add(o.toMap(forJson: true));
@@ -2130,7 +2225,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
 
   /// This method always returns Json String.
   Future<String> toJsonWithChilds() async {
-    final list = List<dynamic>();
+    final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
       list.add(await o.toMapWithChilds(false, true));
@@ -2149,14 +2244,14 @@ class DbActivityFilterBuilder extends SearchCriteria {
   /// Returns List<DropdownMenuItem<DbActivity>>
   Future<List<DropdownMenuItem<DbActivity>>> toDropDownMenu(
       String displayTextColumn,
-      [VoidCallback dropDownMenu(List<DropdownMenuItem<DbActivity>> o)]) async {
+      [VoidCallback Function(List<DropdownMenuItem<DbActivity>> o)
+          dropDownMenu]) async {
     _buildParameters();
     final dbactivitiesFuture = _obj._mnDbActivity.toList(qparams);
 
     final data = await dbactivitiesFuture;
     final int count = data.length;
-    final List<DropdownMenuItem<DbActivity>> items = List()
-      ..add(DropdownMenuItem(
+    final List<DropdownMenuItem<DbActivity>> items = []..add(DropdownMenuItem(
         value: DbActivity(),
         child: Text('Select DbActivity'),
       ));
@@ -2177,15 +2272,15 @@ class DbActivityFilterBuilder extends SearchCriteria {
   /// Returns List<DropdownMenuItem<int>>
   Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
       String displayTextColumn,
-      [VoidCallback dropDownMenu(List<DropdownMenuItem<int>> o)]) async {
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
     _buildParameters();
     qparams.selectColumns = ['id', displayTextColumn];
     final dbactivitiesFuture = _obj._mnDbActivity.toList(qparams);
 
     final data = await dbactivitiesFuture;
     final int count = data.length;
-    final List<DropdownMenuItem<int>> items = List()
-      ..add(DropdownMenuItem(
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
         value: 0,
         child: Text('Select DbActivity'),
       ));
@@ -2207,7 +2302,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
-    final List<int> idData = List<int>();
+    final List<int> idData = <int>[];
     qparams.selectColumns = ['id'];
     final idFuture = await _obj._mnDbActivity.toList(qparams);
 
@@ -2222,12 +2317,12 @@ class DbActivityFilterBuilder extends SearchCriteria {
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject(
-      [VoidCallback listObject(List<dynamic> o)]) async {
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbActivity.toList(qparams);
 
-    final List<dynamic> objectsData = List<dynamic>();
+    final List<dynamic> objectsData = <dynamic>[];
     final data = await objectFuture;
     final int count = data.length;
     for (int i = 0; i < count; i++) {
@@ -2243,12 +2338,12 @@ class DbActivityFilterBuilder extends SearchCriteria {
   ///
   /// Sample usage: await DbActivity.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
-      [VoidCallback listString(List<String> o)]) async {
+      [VoidCallback Function(List<String> o) listString]) async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbActivity.toList(qparams);
 
-    final List<String> objectsData = List<String>();
+    final List<String> objectsData = <String>[];
     final data = await objectFuture;
     final int count = data.length;
     for (int i = 0; i < count; i++) {

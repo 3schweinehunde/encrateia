@@ -13,11 +13,15 @@ class Activity extends ChangeNotifier {
   Activity.fromDb(this.db);
 
   Activity.fromStrava(StravaActivity.SummaryActivity summaryActivity) {
-    this.db
+    db = DbActivity();
+
+    db
       ..name = summaryActivity.name
       ..movingTime = summaryActivity.movingTime
       ..type = summaryActivity.type
       ..distance = summaryActivity.distance.toInt();
+
+    notifyListeners();
   }
 
   String toString() => '$db.name $db.startTime';
@@ -36,14 +40,13 @@ class Activity extends ChangeNotifier {
   }
 
   setState(String state) {
-    db
-      ..state = state
-      ..save();
+    db.state = state;
+    db.save();
     notifyListeners();
   }
 
   static queryStrava() async {
-    Strava strava = Strava(true, secret);
+    var strava = Strava(true, secret);
     final prompt = 'auto';
 
     await strava.oauth(

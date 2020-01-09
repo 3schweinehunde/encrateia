@@ -11,13 +11,14 @@ dependencies:
     sdk: flutter
   flutter_launcher_icons: ^0.7.2
   cupertino_icons: ^0.1.2
-  strava_flutter: ^1.0.11+32
+  strava_flutter: ^1.1.0+40
   sqfentity: ^1.2.2+8
   sqfentity_gen: ^1.2.0+12
   dio: ^3.0.7
   dio_cookie_manager: ^1.0.0
   flutter_secure_storage: ^3.3.1+1
   provider: ^3.2.0
+  fit_parser: ^0.1.3
 
 dev_dependencies:
   flutter_test:

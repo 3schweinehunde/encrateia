@@ -30,11 +30,23 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
           return ListView(
             padding: EdgeInsets.all(20),
             children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.cloud_download),
-                title: Text("Download Activities from Strava"),
-                onTap: () => Activity.queryStrava(),
-              ),
+              if (widget.athlete.email != null &&
+                  widget.athlete.password != null)
+                ListTile(
+                  leading: Icon(Icons.cloud_download),
+                  title: Text("Download Activities from Strava"),
+                  onTap: () => Activity.queryStrava(),
+                ),
+              if (widget.athlete.password == null)
+                ListTile(
+                  leading: Icon(Icons.error),
+                  title: Text("Strava password not provided yet!"),
+                ),
+              if (widget.athlete.email == null)
+                ListTile(
+                  leading: Icon(Icons.error),
+                  title: Text("Strava email not provided yet!"),
+                ),
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.data.length > 0)
                 for (Activity activity in snapshot.data)
