@@ -82,7 +82,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
       case "downloaded":
         return IconButton(
           icon: Icon(Icons.save_alt),
-          onPressed: () => activity.download(athlete: athlete),
+          onPressed: () => activity.parse(athlete: athlete),
           tooltip: 'Parse .fit-file',
         );
         break;

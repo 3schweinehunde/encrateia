@@ -5,6 +5,9 @@ import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
 import 'package:encrateia/models/athlete.dart';
+import 'package:fit_parser/fit_parser.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:developer';
 
 class Activity extends ChangeNotifier {
   DbActivity db;
@@ -42,6 +45,18 @@ class Activity extends ChangeNotifier {
     db.state = state;
     db.save();
     notifyListeners();
+  }
+
+  parse({@required Athlete athlete}) async {
+    var appDocDir = await getApplicationDocumentsDirectory();
+    print("Starting to parse activity ${db.stravaId}.");
+    var fitFile = FitFile(path: appDocDir.path + '/${db.stravaId}.fit').parse();
+    print("Parsing activity ${db.stravaId} done.");
+
+    for (var dataMessage in fitFile.dataMessages) {
+      print(dataMessage);
+      debugger();
+    }
   }
 
   static queryStrava() async {
