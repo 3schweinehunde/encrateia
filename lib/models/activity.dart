@@ -13,13 +13,12 @@ class Activity extends ChangeNotifier {
   Activity.fromDb(this.db);
 
   Activity.fromStrava(StravaActivity.SummaryActivity summaryActivity) {
-    db = DbActivity();
-
-    db
+    db = DbActivity()
       ..name = summaryActivity.name
       ..movingTime = summaryActivity.movingTime
       ..type = summaryActivity.type
-      ..distance = summaryActivity.distance.toInt();
+      ..distance = summaryActivity.distance.toInt()
+      ..stravaId = summaryActivity.id;
 
     notifyListeners();
   }
