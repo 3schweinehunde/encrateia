@@ -67,6 +67,8 @@ class TableDbActivity extends SqfEntityTableBase {
       SqfEntityFieldBase('type', DbType.text),
       SqfEntityFieldBase('startTime', DbType.text),
       SqfEntityFieldBase('distance', DbType.integer),
+      SqfEntityFieldBase('serialNumber', DbType.integer),
+      SqfEntityFieldBase('timeCreated', DbType.datetime),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'athletesId'),
@@ -76,6 +78,35 @@ class TableDbActivity extends SqfEntityTableBase {
   static SqfEntityTableBase _instance;
   static SqfEntityTableBase get getInstance {
     return _instance = _instance ?? TableDbActivity();
+  }
+}
+
+// DbEvent TABLE
+class TableDbEvent extends SqfEntityTableBase {
+  TableDbEvent() {
+    // declare properties of EntityTable
+    tableName = 'events';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('event', DbType.text),
+      SqfEntityFieldBase('eventType', DbType.text),
+      SqfEntityFieldBase('eventGroup', DbType.integer),
+      SqfEntityFieldBase('timerTrigger', DbType.text),
+      SqfEntityFieldBase('timeStamp', DbType.datetime),
+      SqfEntityFieldRelationshipBase(
+          TableDbActivity.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'activitiesId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbEvent();
   }
 }
 // END TABLES
@@ -90,6 +121,7 @@ class DbEncrateia extends SqfEntityModelProvider {
     databaseTables = [
       TableDbAthlete.getInstance,
       TableDbActivity.getInstance,
+      TableDbEvent.getInstance,
     ];
 
     bundledDatabasePath = encrateia
@@ -1252,6 +1284,8 @@ class DbActivity {
       this.type,
       this.startTime,
       this.distance,
+      this.serialNumber,
+      this.timeCreated,
       this.athletesId}) {
     _setDefaultValues();
   }
@@ -1264,6 +1298,8 @@ class DbActivity {
       this.type,
       this.startTime,
       this.distance,
+      this.serialNumber,
+      this.timeCreated,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -1277,6 +1313,8 @@ class DbActivity {
       this.type,
       this.startTime,
       this.distance,
+      this.serialNumber,
+      this.timeCreated,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -1290,6 +1328,12 @@ class DbActivity {
     type = o['type'] as String;
     startTime = o['startTime'] as String;
     distance = o['distance'] as int;
+    serialNumber = o['serialNumber'] as int;
+    timeCreated = o['timeCreated'] != null
+        ? int.tryParse(o['timeCreated'].toString()) != null
+            ? DateTime.fromMillisecondsSinceEpoch(o['timeCreated'] as int)
+            : DateTime.tryParse(o['timeCreated'].toString())
+        : null;
     athletesId = o['athletesId'] as int;
   }
   // FIELDS (DbActivity)
@@ -1302,6 +1346,8 @@ class DbActivity {
   String type;
   String startTime;
   int distance;
+  int serialNumber;
+  DateTime timeCreated;
   int athletesId;
 
   BoolResult saveResult;
@@ -1322,6 +1368,21 @@ class DbActivity {
     return _obj;
   }
   // END RELATIONSHIPS (DbActivity)
+
+// COLLECTIONS (DbActivity)
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbEvent> plDbEvents;
+
+  /// get DbEvent(s) filtered by activitiesId=id
+  DbEventFilterBuilder getDbEvents(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbEvent()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .activitiesId
+        .equals(id)
+        .and;
+  }
+// END COLLECTIONS (DbActivity)
 
   static const bool _softDeleteActivated = false;
   DbActivityManager __mnDbActivity;
@@ -1366,6 +1427,16 @@ class DbActivity {
 
     if (distance != null) {
       map['distance'] = distance;
+    }
+
+    if (serialNumber != null) {
+      map['serialNumber'] = serialNumber;
+    }
+
+    if (timeCreated != null) {
+      map['timeCreated'] = forJson
+          ? timeCreated.toUtc().toString()
+          : forQuery ? timeCreated.millisecondsSinceEpoch : timeCreated;
     }
 
     if (athletesId != null) {
@@ -1413,9 +1484,25 @@ class DbActivity {
       map['distance'] = distance;
     }
 
+    if (serialNumber != null) {
+      map['serialNumber'] = serialNumber;
+    }
+
+    if (timeCreated != null) {
+      map['timeCreated'] = forJson
+          ? timeCreated.toUtc().toString()
+          : forQuery ? timeCreated.millisecondsSinceEpoch : timeCreated;
+    }
+
     if (athletesId != null) {
       map['athletesId'] = athletesId;
     }
+
+// COLLECTIONS (DbActivity)
+    if (!forQuery) {
+      map['DbEvents'] = await getDbEvents().toMapList();
+    }
+// END COLLECTIONS (DbActivity)
 
     return map;
   }
@@ -1441,6 +1528,8 @@ class DbActivity {
       type,
       startTime,
       distance,
+      serialNumber,
+      timeCreated != null ? timeCreated.millisecondsSinceEpoch : null,
       athletesId
     ];
   }
@@ -1484,6 +1573,13 @@ class DbActivity {
     final List<DbActivity> objList = <DbActivity>[];
     for (final map in data) {
       final obj = DbActivity.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbEvents')) {
+          obj.plDbEvents = await obj.getDbEvents().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
@@ -1540,7 +1636,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
     final results = _mnDbActivity.saveAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -1551,7 +1647,7 @@ class DbActivity {
   Future<int> _upsert() async {
     try {
       if (await _mnDbActivity.rawInsert(
-              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -1562,6 +1658,8 @@ class DbActivity {
                 type,
                 startTime,
                 distance,
+                serialNumber,
+                timeCreated != null ? timeCreated.millisecondsSinceEpoch : null,
                 athletesId
               ]) ==
           1) {
@@ -1586,7 +1684,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -1596,6 +1694,14 @@ class DbActivity {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete DbActivity invoked (id=$id)');
+    var result = BoolResult();
+    {
+      result =
+          await DbEvent().select().activitiesId.equals(id).delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
     if (!_softDeleteActivated || hardDelete) {
       return _mnDbActivity
           .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
@@ -2044,6 +2150,18 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return _distance = setField(_distance, 'distance', DbType.integer);
   }
 
+  DbActivityField _serialNumber;
+  DbActivityField get serialNumber {
+    return _serialNumber =
+        setField(_serialNumber, 'serialNumber', DbType.integer);
+  }
+
+  DbActivityField _timeCreated;
+  DbActivityField get timeCreated {
+    return _timeCreated =
+        setField(_timeCreated, 'timeCreated', DbType.datetime);
+  }
+
   DbActivityField _athletesId;
   DbActivityField get athletesId {
     return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
@@ -2170,6 +2288,13 @@ class DbActivityFilterBuilder extends SearchCriteria {
     DbActivity obj;
     if (data.isNotEmpty) {
       obj = DbActivity.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbEvents')) {
+          obj.plDbEvents = await obj.getDbEvents().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
@@ -2409,6 +2534,18 @@ class DbActivityFields {
         SqlSyntax.setField(_fDistance, 'distance', DbType.integer);
   }
 
+  static TableField _fSerialNumber;
+  static TableField get serialNumber {
+    return _fSerialNumber = _fSerialNumber ??
+        SqlSyntax.setField(_fSerialNumber, 'serialNumber', DbType.integer);
+  }
+
+  static TableField _fTimeCreated;
+  static TableField get timeCreated {
+    return _fTimeCreated = _fTimeCreated ??
+        SqlSyntax.setField(_fTimeCreated, 'timeCreated', DbType.datetime);
+  }
+
   static TableField _fAthletesId;
   static TableField get athletesId {
     return _fAthletesId = _fAthletesId ??
@@ -2426,6 +2563,1110 @@ class DbActivityManager extends SqfEntityProvider {
 }
 
 //endregion DbActivityManager
+// region DbEvent
+class DbEvent {
+  DbEvent(
+      {this.id,
+      this.event,
+      this.eventType,
+      this.eventGroup,
+      this.timerTrigger,
+      this.timeStamp,
+      this.activitiesId}) {
+    _setDefaultValues();
+  }
+  DbEvent.withFields(this.event, this.eventType, this.eventGroup,
+      this.timerTrigger, this.timeStamp, this.activitiesId) {
+    _setDefaultValues();
+  }
+  DbEvent.withId(this.id, this.event, this.eventType, this.eventGroup,
+      this.timerTrigger, this.timeStamp, this.activitiesId) {
+    _setDefaultValues();
+  }
+  DbEvent.fromMap(Map<String, dynamic> o) {
+    id = o['id'] as int;
+    event = o['event'] as String;
+    eventType = o['eventType'] as String;
+    eventGroup = o['eventGroup'] as int;
+    timerTrigger = o['timerTrigger'] as String;
+    timeStamp = o['timeStamp'] != null
+        ? int.tryParse(o['timeStamp'].toString()) != null
+            ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
+            : DateTime.tryParse(o['timeStamp'].toString())
+        : null;
+    activitiesId = o['activitiesId'] as int;
+  }
+  // FIELDS (DbEvent)
+  int id;
+  String event;
+  String eventType;
+  int eventGroup;
+  String timerTrigger;
+  DateTime timeStamp;
+  int activitiesId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbEvent)
+
+// RELATIONSHIPS (DbEvent)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbActivity plDbActivity;
+
+  /// get DbActivity By ActivitiesId
+
+  Future<DbActivity> getDbActivity(
+      [VoidCallback Function(DbActivity o) dbactivity]) async {
+    final _obj = await DbActivity().getById(activitiesId);
+    if (dbactivity != null) {
+      dbactivity(_obj);
+    }
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbEvent)
+
+  static const bool _softDeleteActivated = false;
+  DbEventManager __mnDbEvent;
+
+  DbEventManager get _mnDbEvent {
+    return __mnDbEvent = __mnDbEvent ?? DbEventManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (event != null) {
+      map['event'] = event;
+    }
+
+    if (eventType != null) {
+      map['eventType'] = eventType;
+    }
+
+    if (eventGroup != null) {
+      map['eventGroup'] = eventGroup;
+    }
+
+    if (timerTrigger != null) {
+      map['timerTrigger'] = timerTrigger;
+    }
+
+    if (timeStamp != null) {
+      map['timeStamp'] = forJson
+          ? timeStamp.toUtc().toString()
+          : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
+    }
+
+    if (activitiesId != null) {
+      map['activitiesId'] = activitiesId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (event != null) {
+      map['event'] = event;
+    }
+
+    if (eventType != null) {
+      map['eventType'] = eventType;
+    }
+
+    if (eventGroup != null) {
+      map['eventGroup'] = eventGroup;
+    }
+
+    if (timerTrigger != null) {
+      map['timerTrigger'] = timerTrigger;
+    }
+
+    if (timeStamp != null) {
+      map['timeStamp'] = forJson
+          ? timeStamp.toUtc().toString()
+          : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
+    }
+
+    if (activitiesId != null) {
+      map['activitiesId'] = activitiesId;
+    }
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [
+      id,
+      event,
+      eventType,
+      eventGroup,
+      timerTrigger,
+      timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+      activitiesId
+    ];
+  }
+
+  static Future<List<DbEvent>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbEvent.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbEvent>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbEvent>[];
+    try {
+      objList = list
+          .map((dbevent) => DbEvent.fromMap(dbevent as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print('SQFENTITY ERROR DbEvent.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbEvent>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbEvent.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbEvent>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbEvent> objList = <DbEvent>[];
+    for (final map in data) {
+      final obj = DbEvent.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbActivity')) {
+          obj.plDbActivity = await obj.getDbActivity();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbEvent by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbEvent if exist, otherwise returns null
+  Future<DbEvent> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbEvent obj;
+    final data = await _mnDbEvent.getById(id);
+    if (data.length != 0) {
+      obj = DbEvent.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbEvent.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbEvent. Returns a new Primary Key value of DbEvent
+
+  /// <returns>Returns a new Primary Key value of DbEvent
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbEvent> as a bulk in one transaction
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(List<DbEvent> dbevents) async {
+    final results = _mnDbEvent.saveAll(
+        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, activitiesId)  VALUES (?,?,?,?,?,?,?)',
+        dbevents);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbEvent.rawInsert(
+              'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, activitiesId)  VALUES (?,?,?,?,?,?,?)',
+              [
+                id,
+                event,
+                eventType,
+                eventGroup,
+                timerTrigger,
+                timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+                activitiesId
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbEvent id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbEvent id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbEvent Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbEvent>> as a bulk in one transaction.
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(List<DbEvent> dbevents) async {
+    final results = await _mnDbEvent.rawInsertAll(
+        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, activitiesId)  VALUES (?,?,?,?,?,?,?)',
+        dbevents);
+    return results;
+  }
+
+  /// Deletes DbEvent
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbEvent invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbEvent
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbEvent.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbEventFilterBuilder _Select;
+  DbEventFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbEventFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbEventFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbEventFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    activitiesId = activitiesId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbevent
+
+// region DbEventField
+class DbEventField extends SearchCriteria {
+  DbEventField(this.dbeventFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbEventFilterBuilder dbeventFB;
+
+  DbEventField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbEventFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbeventFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbeventFB.parameters, param, SqlSyntax.EQuals,
+            dbeventFB._addedBlocks)
+        : setCriteria(pValue, dbeventFB.parameters, param, SqlSyntax.NotEQuals,
+            dbeventFB._addedBlocks);
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbeventFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbeventFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbeventFB._addedBlocks)
+        : setCriteria(pValue, dbeventFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbeventFB._addedBlocks);
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder isNull() {
+    dbeventFB._addedBlocks = setCriteria(
+        0,
+        dbeventFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbeventFB._addedBlocks);
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbeventFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbeventFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbeventFB._addedBlocks);
+      _waitingNot = '';
+      dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+          dbeventFB._addedBlocks.retVal;
+    }
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbeventFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbeventFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbeventFB._addedBlocks);
+      _waitingNot = '';
+      dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+          dbeventFB._addedBlocks.retVal;
+      dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+          dbeventFB._addedBlocks.retVal;
+    }
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbeventFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbeventFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbeventFB._addedBlocks);
+      _waitingNot = '';
+      dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+          dbeventFB._addedBlocks.retVal;
+    }
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbeventFB._addedBlocks = setCriteria(
+          pFirst,
+          dbeventFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbeventFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbeventFB._addedBlocks = setCriteria(pFirst, dbeventFB.parameters,
+            param, SqlSyntax.LessThan, dbeventFB._addedBlocks);
+      } else {
+        dbeventFB._addedBlocks = setCriteria(pFirst, dbeventFB.parameters,
+            param, SqlSyntax.GreaterThanOrEquals, dbeventFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbeventFB._addedBlocks = setCriteria(pLast, dbeventFB.parameters, param,
+            SqlSyntax.GreaterThan, dbeventFB._addedBlocks);
+      } else {
+        dbeventFB._addedBlocks = setCriteria(pLast, dbeventFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbeventFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbeventFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbeventFB.parameters, param,
+            SqlSyntax.GreaterThan, dbeventFB._addedBlocks)
+        : setCriteria(pValue, dbeventFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbeventFB._addedBlocks);
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbeventFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbeventFB.parameters, param, SqlSyntax.LessThan,
+            dbeventFB._addedBlocks)
+        : setCriteria(pValue, dbeventFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbeventFB._addedBlocks);
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbeventFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbeventFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbeventFB._addedBlocks)
+        : setCriteria(pValue, dbeventFB.parameters, param, SqlSyntax.LessThan,
+            dbeventFB._addedBlocks);
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbeventFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbeventFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbeventFB._addedBlocks)
+        : setCriteria(pValue, dbeventFB.parameters, param,
+            SqlSyntax.GreaterThan, dbeventFB._addedBlocks);
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+
+  DbEventFilterBuilder inValues(dynamic pValue) {
+    dbeventFB._addedBlocks = setCriteria(
+        pValue,
+        dbeventFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbeventFB._addedBlocks);
+    _waitingNot = '';
+    dbeventFB._addedBlocks.needEndBlock[dbeventFB._blockIndex] =
+        dbeventFB._addedBlocks.retVal;
+    return dbeventFB;
+  }
+}
+// endregion DbEventField
+
+// region DbEventFilterBuilder
+class DbEventFilterBuilder extends SearchCriteria {
+  DbEventFilterBuilder(DbEvent obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbEvent _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbEventFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbEventFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbEventFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbEventFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbEventFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbEventFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbEventFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbEventFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbEventFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbEventFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbEventField setField(DbEventField field, String colName, DbType dbtype) {
+    return DbEventField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbEventField _id;
+  DbEventField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbEventField _event;
+  DbEventField get event {
+    return _event = setField(_event, 'event', DbType.text);
+  }
+
+  DbEventField _eventType;
+  DbEventField get eventType {
+    return _eventType = setField(_eventType, 'eventType', DbType.text);
+  }
+
+  DbEventField _eventGroup;
+  DbEventField get eventGroup {
+    return _eventGroup = setField(_eventGroup, 'eventGroup', DbType.integer);
+  }
+
+  DbEventField _timerTrigger;
+  DbEventField get timerTrigger {
+    return _timerTrigger = setField(_timerTrigger, 'timerTrigger', DbType.text);
+  }
+
+  DbEventField _timeStamp;
+  DbEventField get timeStamp {
+    return _timeStamp = setField(_timeStamp, 'timeStamp', DbType.datetime);
+  }
+
+  DbEventField _activitiesId;
+  DbEventField get activitiesId {
+    return _activitiesId =
+        setField(_activitiesId, 'activitiesId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbEvent._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbEvent> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbEvent._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbEvent.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbEvent.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from events ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbEvent.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbEventObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbEvent>
+  Future<DbEvent> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbEvent.toList(qparams);
+    final data = await objFuture;
+    DbEvent obj;
+    if (data.isNotEmpty) {
+      obj = DbEvent.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbActivity')) {
+          obj.plDbActivity = await obj.getDbActivity();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dbeventCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbeventsFuture = await _obj._mnDbEvent.toList(qparams);
+    final int count = dbeventsFuture[0]['CNT'] as int;
+    if (dbeventCount != null) {
+      dbeventCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbEvent>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbEvent>
+  Future<List<DbEvent>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbEvent> dbeventsData =
+        await DbEvent.fromMapList(data, preload: preload);
+    return dbeventsData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbEvent.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbEvent>>
+  Future<List<DropdownMenuItem<DbEvent>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbEvent>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbeventsFuture = _obj._mnDbEvent.toList(qparams);
+
+    final data = await dbeventsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbEvent>> items = []..add(DropdownMenuItem(
+        value: DbEvent(),
+        child: Text('Select DbEvent'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbEvent.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbeventsFuture = _obj._mnDbEvent.toList(qparams);
+
+    final data = await dbeventsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbEvent'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbEvent.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbEvent.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbEvent.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbEvent.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbEventFilterBuilder
+
+// region DbEventFields
+class DbEventFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fEvent;
+  static TableField get event {
+    return _fEvent =
+        _fEvent ?? SqlSyntax.setField(_fEvent, 'event', DbType.text);
+  }
+
+  static TableField _fEventType;
+  static TableField get eventType {
+    return _fEventType = _fEventType ??
+        SqlSyntax.setField(_fEventType, 'eventType', DbType.text);
+  }
+
+  static TableField _fEventGroup;
+  static TableField get eventGroup {
+    return _fEventGroup = _fEventGroup ??
+        SqlSyntax.setField(_fEventGroup, 'eventGroup', DbType.integer);
+  }
+
+  static TableField _fTimerTrigger;
+  static TableField get timerTrigger {
+    return _fTimerTrigger = _fTimerTrigger ??
+        SqlSyntax.setField(_fTimerTrigger, 'timerTrigger', DbType.text);
+  }
+
+  static TableField _fTimeStamp;
+  static TableField get timeStamp {
+    return _fTimeStamp = _fTimeStamp ??
+        SqlSyntax.setField(_fTimeStamp, 'timeStamp', DbType.datetime);
+  }
+
+  static TableField _fActivitiesId;
+  static TableField get activitiesId {
+    return _fActivitiesId = _fActivitiesId ??
+        SqlSyntax.setField(_fActivitiesId, 'activitiesId', DbType.integer);
+  }
+}
+// endregion DbEventFields
+
+//region DbEventManager
+class DbEventManager extends SqfEntityProvider {
+  DbEventManager() : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'events';
+  static String _colId = 'id';
+}
+
+//endregion DbEventManager
 class DbEncrateiaSequenceManager extends SqfEntityProvider {
   DbEncrateiaSequenceManager() : super(DbEncrateia());
 }

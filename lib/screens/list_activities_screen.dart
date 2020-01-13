@@ -80,10 +80,20 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
         );
         break;
       case "downloaded":
-        return IconButton(
-          icon: Icon(Icons.save_alt),
-          onPressed: () => activity.parse(athlete: athlete),
-          tooltip: 'Parse .fit-file',
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.details),
+              onPressed: () => activity.parse(athlete: athlete),
+              tooltip: 'Parse .fit-file',
+            ),
+            IconButton(
+              icon: Icon(Icons.cloud_download),
+              onPressed: () => activity.download(athlete: athlete),
+              tooltip: 'Download',
+            ),
+          ],
         );
         break;
       default:

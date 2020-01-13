@@ -41,8 +41,29 @@ const tableActivity = SqfEntityTable(
     SqfEntityField('type', DbType.text),
     SqfEntityField('startTime', DbType.text),
     SqfEntityField('distance', DbType.integer),
+    SqfEntityField('serialNumber', DbType.integer),
+    SqfEntityField('timeCreated', DbType.datetime),
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: '0'),
+  ],
+);
+
+const tableEvent = SqfEntityTable(
+  tableName: 'events',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: false,
+  modelName: 'DbEvent',
+  fields: [
+    SqfEntityField('event', DbType.text),
+    SqfEntityField('eventType', DbType.text),
+    SqfEntityField('eventGroup', DbType.integer),
+    SqfEntityField('timerTrigger', DbType.text),
+    SqfEntityField('timeStamp', DbType.datetime),
+    SqfEntityFieldRelationship(
+        parentTable: tableActivity,
         deleteRule: DeleteRule.CASCADE,
         defaultValue: '0'),
   ],
@@ -52,6 +73,10 @@ const tableActivity = SqfEntityTable(
 const encrateia = SqfEntityModel(
     modelName: 'DbEncrateia', // optional
     databaseName: 'encrateia.db',
-    databaseTables: [tableAthlete, tableActivity],
+    databaseTables: [
+      tableAthlete,
+      tableActivity,
+      tableEvent,
+    ],
     sequences: [],
     bundledDatabasePath: null);

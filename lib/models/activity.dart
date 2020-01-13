@@ -5,8 +5,10 @@ import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:encrateia/utils/date_time_utils.dart';
 import 'dart:developer';
 
 class Activity extends ChangeNotifier {
@@ -21,7 +23,8 @@ class Activity extends ChangeNotifier {
       ..movingTime = summaryActivity.movingTime
       ..type = summaryActivity.type
       ..distance = summaryActivity.distance.toInt()
-      ..stravaId = summaryActivity.id;
+      ..stravaId = summaryActivity.id
+      ..save();
 
     notifyListeners();
   }
@@ -54,8 +57,38 @@ class Activity extends ChangeNotifier {
     print("Parsing activity ${db.stravaId} done.");
 
     for (var dataMessage in fitFile.dataMessages) {
-      print(dataMessage);
-      debugger();
+      if (dataMessage.definitionMessage.globalMessageName == null) {
+        switch (dataMessage.definitionMessage.globalMessageNumber) {
+          case 22:
+          case 141:
+            break; // Garmin uses global message numbers, which are not specified
+          default:
+            debugger();
+        }
+      } else {
+        switch (dataMessage.definitionMessage.globalMessageName) {
+          case "device_info":
+          case "device_settings";
+          case "file_creator":
+            break; // we are currently not storing these kinds of messages
+          case "file_id":
+            db.serialNumber = dataMessage.values
+                .firstWhere((value) => value.fieldName == 'serial_number')
+                .value
+                .round();
+            db.timeCreated = dateTimeFromStrava(dataMessage.values
+                .firstWhere((value) => value.fieldName == 'time_created')
+                .value);
+            db.save();
+            notifyListeners();
+            break;
+          case "event":
+            Event(dataMessage);
+            break;
+          default:
+            debugger();
+        }
+      }
     }
   }
 
@@ -76,7 +109,7 @@ class Activity extends ChangeNotifier {
         await strava.getLoggedInAthleteActivities(now, startDate);
 
     for (StravaActivity.SummaryActivity summaryActivity in summaryActivities) {
-      Activity.fromStrava(summaryActivity).db.save();
+      Activity.fromStrava(summaryActivity);
     }
   }
 
