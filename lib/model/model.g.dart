@@ -69,6 +69,10 @@ class TableDbActivity extends SqfEntityTableBase {
       SqfEntityFieldBase('distance', DbType.integer),
       SqfEntityFieldBase('serialNumber', DbType.integer),
       SqfEntityFieldBase('timeCreated', DbType.datetime),
+      SqfEntityFieldBase('sportName', DbType.text),
+      SqfEntityFieldBase('sport', DbType.text),
+      SqfEntityFieldBase('subSport', DbType.text),
+      SqfEntityFieldBase('maxHeartRate', DbType.integer),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'athletesId'),
@@ -1286,6 +1290,10 @@ class DbActivity {
       this.distance,
       this.serialNumber,
       this.timeCreated,
+      this.sportName,
+      this.sport,
+      this.subSport,
+      this.maxHeartRate,
       this.athletesId}) {
     _setDefaultValues();
   }
@@ -1300,6 +1308,10 @@ class DbActivity {
       this.distance,
       this.serialNumber,
       this.timeCreated,
+      this.sportName,
+      this.sport,
+      this.subSport,
+      this.maxHeartRate,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -1315,6 +1327,10 @@ class DbActivity {
       this.distance,
       this.serialNumber,
       this.timeCreated,
+      this.sportName,
+      this.sport,
+      this.subSport,
+      this.maxHeartRate,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -1334,6 +1350,10 @@ class DbActivity {
             ? DateTime.fromMillisecondsSinceEpoch(o['timeCreated'] as int)
             : DateTime.tryParse(o['timeCreated'].toString())
         : null;
+    sportName = o['sportName'] as String;
+    sport = o['sport'] as String;
+    subSport = o['subSport'] as String;
+    maxHeartRate = o['maxHeartRate'] as int;
     athletesId = o['athletesId'] as int;
   }
   // FIELDS (DbActivity)
@@ -1348,6 +1368,10 @@ class DbActivity {
   int distance;
   int serialNumber;
   DateTime timeCreated;
+  String sportName;
+  String sport;
+  String subSport;
+  int maxHeartRate;
   int athletesId;
 
   BoolResult saveResult;
@@ -1439,6 +1463,22 @@ class DbActivity {
           : forQuery ? timeCreated.millisecondsSinceEpoch : timeCreated;
     }
 
+    if (sportName != null) {
+      map['sportName'] = sportName;
+    }
+
+    if (sport != null) {
+      map['sport'] = sport;
+    }
+
+    if (subSport != null) {
+      map['subSport'] = subSport;
+    }
+
+    if (maxHeartRate != null) {
+      map['maxHeartRate'] = maxHeartRate;
+    }
+
     if (athletesId != null) {
       map['athletesId'] = athletesId;
     }
@@ -1494,6 +1534,22 @@ class DbActivity {
           : forQuery ? timeCreated.millisecondsSinceEpoch : timeCreated;
     }
 
+    if (sportName != null) {
+      map['sportName'] = sportName;
+    }
+
+    if (sport != null) {
+      map['sport'] = sport;
+    }
+
+    if (subSport != null) {
+      map['subSport'] = subSport;
+    }
+
+    if (maxHeartRate != null) {
+      map['maxHeartRate'] = maxHeartRate;
+    }
+
     if (athletesId != null) {
       map['athletesId'] = athletesId;
     }
@@ -1530,6 +1586,10 @@ class DbActivity {
       distance,
       serialNumber,
       timeCreated != null ? timeCreated.millisecondsSinceEpoch : null,
+      sportName,
+      sport,
+      subSport,
+      maxHeartRate,
       athletesId
     ];
   }
@@ -1636,7 +1696,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
     final results = _mnDbActivity.saveAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, sportName, sport, subSport, maxHeartRate, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -1647,7 +1707,7 @@ class DbActivity {
   Future<int> _upsert() async {
     try {
       if (await _mnDbActivity.rawInsert(
-              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, sportName, sport, subSport, maxHeartRate, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -1660,6 +1720,10 @@ class DbActivity {
                 distance,
                 serialNumber,
                 timeCreated != null ? timeCreated.millisecondsSinceEpoch : null,
+                sportName,
+                sport,
+                subSport,
+                maxHeartRate,
                 athletesId
               ]) ==
           1) {
@@ -1684,7 +1748,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, sportName, sport, subSport, maxHeartRate, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -2162,6 +2226,27 @@ class DbActivityFilterBuilder extends SearchCriteria {
         setField(_timeCreated, 'timeCreated', DbType.datetime);
   }
 
+  DbActivityField _sportName;
+  DbActivityField get sportName {
+    return _sportName = setField(_sportName, 'sportName', DbType.text);
+  }
+
+  DbActivityField _sport;
+  DbActivityField get sport {
+    return _sport = setField(_sport, 'sport', DbType.text);
+  }
+
+  DbActivityField _subSport;
+  DbActivityField get subSport {
+    return _subSport = setField(_subSport, 'subSport', DbType.text);
+  }
+
+  DbActivityField _maxHeartRate;
+  DbActivityField get maxHeartRate {
+    return _maxHeartRate =
+        setField(_maxHeartRate, 'maxHeartRate', DbType.integer);
+  }
+
   DbActivityField _athletesId;
   DbActivityField get athletesId {
     return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
@@ -2544,6 +2629,30 @@ class DbActivityFields {
   static TableField get timeCreated {
     return _fTimeCreated = _fTimeCreated ??
         SqlSyntax.setField(_fTimeCreated, 'timeCreated', DbType.datetime);
+  }
+
+  static TableField _fSportName;
+  static TableField get sportName {
+    return _fSportName = _fSportName ??
+        SqlSyntax.setField(_fSportName, 'sportName', DbType.text);
+  }
+
+  static TableField _fSport;
+  static TableField get sport {
+    return _fSport =
+        _fSport ?? SqlSyntax.setField(_fSport, 'sport', DbType.text);
+  }
+
+  static TableField _fSubSport;
+  static TableField get subSport {
+    return _fSubSport =
+        _fSubSport ?? SqlSyntax.setField(_fSubSport, 'subSport', DbType.text);
+  }
+
+  static TableField _fMaxHeartRate;
+  static TableField get maxHeartRate {
+    return _fMaxHeartRate = _fMaxHeartRate ??
+        SqlSyntax.setField(_fMaxHeartRate, 'maxHeartRate', DbType.integer);
   }
 
   static TableField _fAthletesId;

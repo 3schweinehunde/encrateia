@@ -59,8 +59,11 @@ class Activity extends ChangeNotifier {
     for (var dataMessage in fitFile.dataMessages) {
       if (dataMessage.definitionMessage.globalMessageName == null) {
         switch (dataMessage.definitionMessage.globalMessageNumber) {
+          case 13:
           case 22:
+          case 79:
           case 141:
+          case 147:
             break; // Garmin uses global message numbers, which are not specified
           default:
             debugger();
@@ -68,9 +71,11 @@ class Activity extends ChangeNotifier {
       } else {
         switch (dataMessage.definitionMessage.globalMessageName) {
           case "device_info":
-          case "device_settings";
+          case "device_settings":
           case "file_creator":
+          case "user_profile":
             break; // we are currently not storing these kinds of messages
+
           case "file_id":
             db.serialNumber = dataMessage.values
                 .firstWhere((value) => value.fieldName == 'serial_number')
@@ -82,8 +87,22 @@ class Activity extends ChangeNotifier {
             db.save();
             notifyListeners();
             break;
+
+            case"sport":
+              db.sportName = dataMessage.values
+                  .firstWhere((value) => value.fieldName == 'name')
+                  .value;
+              db.sport = dataMessage.values
+                  .firstWhere((value) => value.fieldName == 'sport')
+                  .value;
+              db.subSport = dataMessage.values
+                  .firstWhere((value) => value.fieldName == 'sub_sport')
+                  .value;
+
+              break;
+
           case "event":
-            Event(dataMessage);
+            Event(dataMessage: dataMessage, activity: this);
             break;
           default:
             debugger();

@@ -43,6 +43,10 @@ const tableActivity = SqfEntityTable(
     SqfEntityField('distance', DbType.integer),
     SqfEntityField('serialNumber', DbType.integer),
     SqfEntityField('timeCreated', DbType.datetime),
+    SqfEntityField('sportName', DbType.text),
+    SqfEntityField('sport', DbType.text),
+    SqfEntityField('subSport', DbType.text),
+    SqfEntityField('maxHeartRate', DbType.integer),
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,
         deleteRule: DeleteRule.CASCADE,
