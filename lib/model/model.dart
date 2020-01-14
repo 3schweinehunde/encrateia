@@ -50,7 +50,7 @@ const tableActivity = SqfEntityTable(
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,
         deleteRule: DeleteRule.CASCADE,
-        defaultValue: '0'),
+        defaultValue: 0),
   ],
 );
 
@@ -66,10 +66,25 @@ const tableEvent = SqfEntityTable(
     SqfEntityField('eventGroup', DbType.integer),
     SqfEntityField('timerTrigger', DbType.text),
     SqfEntityField('timeStamp', DbType.datetime),
+    SqfEntityField('positionLat', DbType.real),
+    SqfEntityField('positionLong', DbType.real),
+    SqfEntityField('distance', DbType.real),
+    SqfEntityField('altitude', DbType.real),
+    SqfEntityField('speed', DbType.real),
+    SqfEntityField('heartRate', DbType.integer),
+    SqfEntityField('cadence', DbType.real),
+    SqfEntityField('fractionalCadence', DbType.real),
+    SqfEntityField('power', DbType.integer),
+    SqfEntityField('strydCadence', DbType.real),
+    SqfEntityField('groundTime', DbType.real),
+    SqfEntityField('verticalOscillation', DbType.real),
+    SqfEntityField('formPower', DbType.integer),
+    SqfEntityField('legSpringStiffness', DbType.real),
+    SqfEntityField('data', DbType.real),
     SqfEntityFieldRelationship(
         parentTable: tableActivity,
         deleteRule: DeleteRule.CASCADE,
-        defaultValue: '0'),
+        defaultValue: 0),
   ],
 );
 

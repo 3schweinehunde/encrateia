@@ -102,6 +102,21 @@ class TableDbEvent extends SqfEntityTableBase {
       SqfEntityFieldBase('eventGroup', DbType.integer),
       SqfEntityFieldBase('timerTrigger', DbType.text),
       SqfEntityFieldBase('timeStamp', DbType.datetime),
+      SqfEntityFieldBase('positionLat', DbType.real),
+      SqfEntityFieldBase('positionLong', DbType.real),
+      SqfEntityFieldBase('distance', DbType.real),
+      SqfEntityFieldBase('altitude', DbType.real),
+      SqfEntityFieldBase('speed', DbType.real),
+      SqfEntityFieldBase('heartRate', DbType.integer),
+      SqfEntityFieldBase('cadence', DbType.real),
+      SqfEntityFieldBase('fractionalCadence', DbType.real),
+      SqfEntityFieldBase('power', DbType.integer),
+      SqfEntityFieldBase('strydCadence', DbType.real),
+      SqfEntityFieldBase('groundTime', DbType.real),
+      SqfEntityFieldBase('verticalOscillation', DbType.real),
+      SqfEntityFieldBase('formPower', DbType.integer),
+      SqfEntityFieldBase('legSpringStiffness', DbType.real),
+      SqfEntityFieldBase('data', DbType.real),
       SqfEntityFieldRelationshipBase(
           TableDbActivity.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'activitiesId'),
@@ -2681,15 +2696,71 @@ class DbEvent {
       this.eventGroup,
       this.timerTrigger,
       this.timeStamp,
+      this.positionLat,
+      this.positionLong,
+      this.distance,
+      this.altitude,
+      this.speed,
+      this.heartRate,
+      this.cadence,
+      this.fractionalCadence,
+      this.power,
+      this.strydCadence,
+      this.groundTime,
+      this.verticalOscillation,
+      this.formPower,
+      this.legSpringStiffness,
+      this.data,
       this.activitiesId}) {
     _setDefaultValues();
   }
-  DbEvent.withFields(this.event, this.eventType, this.eventGroup,
-      this.timerTrigger, this.timeStamp, this.activitiesId) {
+  DbEvent.withFields(
+      this.event,
+      this.eventType,
+      this.eventGroup,
+      this.timerTrigger,
+      this.timeStamp,
+      this.positionLat,
+      this.positionLong,
+      this.distance,
+      this.altitude,
+      this.speed,
+      this.heartRate,
+      this.cadence,
+      this.fractionalCadence,
+      this.power,
+      this.strydCadence,
+      this.groundTime,
+      this.verticalOscillation,
+      this.formPower,
+      this.legSpringStiffness,
+      this.data,
+      this.activitiesId) {
     _setDefaultValues();
   }
-  DbEvent.withId(this.id, this.event, this.eventType, this.eventGroup,
-      this.timerTrigger, this.timeStamp, this.activitiesId) {
+  DbEvent.withId(
+      this.id,
+      this.event,
+      this.eventType,
+      this.eventGroup,
+      this.timerTrigger,
+      this.timeStamp,
+      this.positionLat,
+      this.positionLong,
+      this.distance,
+      this.altitude,
+      this.speed,
+      this.heartRate,
+      this.cadence,
+      this.fractionalCadence,
+      this.power,
+      this.strydCadence,
+      this.groundTime,
+      this.verticalOscillation,
+      this.formPower,
+      this.legSpringStiffness,
+      this.data,
+      this.activitiesId) {
     _setDefaultValues();
   }
   DbEvent.fromMap(Map<String, dynamic> o) {
@@ -2703,6 +2774,21 @@ class DbEvent {
             ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
             : DateTime.tryParse(o['timeStamp'].toString())
         : null;
+    positionLat = double.tryParse(o['positionLat'].toString());
+    positionLong = double.tryParse(o['positionLong'].toString());
+    distance = double.tryParse(o['distance'].toString());
+    altitude = double.tryParse(o['altitude'].toString());
+    speed = double.tryParse(o['speed'].toString());
+    heartRate = o['heartRate'] as int;
+    cadence = double.tryParse(o['cadence'].toString());
+    fractionalCadence = double.tryParse(o['fractionalCadence'].toString());
+    power = o['power'] as int;
+    strydCadence = double.tryParse(o['strydCadence'].toString());
+    groundTime = double.tryParse(o['groundTime'].toString());
+    verticalOscillation = double.tryParse(o['verticalOscillation'].toString());
+    formPower = o['formPower'] as int;
+    legSpringStiffness = double.tryParse(o['legSpringStiffness'].toString());
+    data = double.tryParse(o['data'].toString());
     activitiesId = o['activitiesId'] as int;
   }
   // FIELDS (DbEvent)
@@ -2712,6 +2798,21 @@ class DbEvent {
   int eventGroup;
   String timerTrigger;
   DateTime timeStamp;
+  double positionLat;
+  double positionLong;
+  double distance;
+  double altitude;
+  double speed;
+  int heartRate;
+  double cadence;
+  double fractionalCadence;
+  int power;
+  double strydCadence;
+  double groundTime;
+  double verticalOscillation;
+  int formPower;
+  double legSpringStiffness;
+  double data;
   int activitiesId;
 
   BoolResult saveResult;
@@ -2768,6 +2869,66 @@ class DbEvent {
           : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
     }
 
+    if (positionLat != null) {
+      map['positionLat'] = positionLat;
+    }
+
+    if (positionLong != null) {
+      map['positionLong'] = positionLong;
+    }
+
+    if (distance != null) {
+      map['distance'] = distance;
+    }
+
+    if (altitude != null) {
+      map['altitude'] = altitude;
+    }
+
+    if (speed != null) {
+      map['speed'] = speed;
+    }
+
+    if (heartRate != null) {
+      map['heartRate'] = heartRate;
+    }
+
+    if (cadence != null) {
+      map['cadence'] = cadence;
+    }
+
+    if (fractionalCadence != null) {
+      map['fractionalCadence'] = fractionalCadence;
+    }
+
+    if (power != null) {
+      map['power'] = power;
+    }
+
+    if (strydCadence != null) {
+      map['strydCadence'] = strydCadence;
+    }
+
+    if (groundTime != null) {
+      map['groundTime'] = groundTime;
+    }
+
+    if (verticalOscillation != null) {
+      map['verticalOscillation'] = verticalOscillation;
+    }
+
+    if (formPower != null) {
+      map['formPower'] = formPower;
+    }
+
+    if (legSpringStiffness != null) {
+      map['legSpringStiffness'] = legSpringStiffness;
+    }
+
+    if (data != null) {
+      map['data'] = data;
+    }
+
     if (activitiesId != null) {
       map['activitiesId'] = activitiesId;
     }
@@ -2803,6 +2964,66 @@ class DbEvent {
           : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
     }
 
+    if (positionLat != null) {
+      map['positionLat'] = positionLat;
+    }
+
+    if (positionLong != null) {
+      map['positionLong'] = positionLong;
+    }
+
+    if (distance != null) {
+      map['distance'] = distance;
+    }
+
+    if (altitude != null) {
+      map['altitude'] = altitude;
+    }
+
+    if (speed != null) {
+      map['speed'] = speed;
+    }
+
+    if (heartRate != null) {
+      map['heartRate'] = heartRate;
+    }
+
+    if (cadence != null) {
+      map['cadence'] = cadence;
+    }
+
+    if (fractionalCadence != null) {
+      map['fractionalCadence'] = fractionalCadence;
+    }
+
+    if (power != null) {
+      map['power'] = power;
+    }
+
+    if (strydCadence != null) {
+      map['strydCadence'] = strydCadence;
+    }
+
+    if (groundTime != null) {
+      map['groundTime'] = groundTime;
+    }
+
+    if (verticalOscillation != null) {
+      map['verticalOscillation'] = verticalOscillation;
+    }
+
+    if (formPower != null) {
+      map['formPower'] = formPower;
+    }
+
+    if (legSpringStiffness != null) {
+      map['legSpringStiffness'] = legSpringStiffness;
+    }
+
+    if (data != null) {
+      map['data'] = data;
+    }
+
     if (activitiesId != null) {
       map['activitiesId'] = activitiesId;
     }
@@ -2828,6 +3049,21 @@ class DbEvent {
       eventGroup,
       timerTrigger,
       timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+      positionLat,
+      positionLong,
+      distance,
+      altitude,
+      speed,
+      heartRate,
+      cadence,
+      fractionalCadence,
+      power,
+      strydCadence,
+      groundTime,
+      verticalOscillation,
+      formPower,
+      legSpringStiffness,
+      data,
       activitiesId
     ];
   }
@@ -2925,7 +3161,7 @@ class DbEvent {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbEvent> dbevents) async {
     final results = _mnDbEvent.saveAll(
-        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, activitiesId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbevents);
     return results;
   }
@@ -2936,7 +3172,7 @@ class DbEvent {
   Future<int> _upsert() async {
     try {
       if (await _mnDbEvent.rawInsert(
-              'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, activitiesId)  VALUES (?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 event,
@@ -2944,6 +3180,21 @@ class DbEvent {
                 eventGroup,
                 timerTrigger,
                 timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+                positionLat,
+                positionLong,
+                distance,
+                altitude,
+                speed,
+                heartRate,
+                cadence,
+                fractionalCadence,
+                power,
+                strydCadence,
+                groundTime,
+                verticalOscillation,
+                formPower,
+                legSpringStiffness,
+                data,
                 activitiesId
               ]) ==
           1) {
@@ -2968,7 +3219,7 @@ class DbEvent {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbEvent> dbevents) async {
     final results = await _mnDbEvent.rawInsertAll(
-        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, activitiesId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbevents);
     return results;
   }
@@ -3409,6 +3660,84 @@ class DbEventFilterBuilder extends SearchCriteria {
     return _timeStamp = setField(_timeStamp, 'timeStamp', DbType.datetime);
   }
 
+  DbEventField _positionLat;
+  DbEventField get positionLat {
+    return _positionLat = setField(_positionLat, 'positionLat', DbType.real);
+  }
+
+  DbEventField _positionLong;
+  DbEventField get positionLong {
+    return _positionLong = setField(_positionLong, 'positionLong', DbType.real);
+  }
+
+  DbEventField _distance;
+  DbEventField get distance {
+    return _distance = setField(_distance, 'distance', DbType.real);
+  }
+
+  DbEventField _altitude;
+  DbEventField get altitude {
+    return _altitude = setField(_altitude, 'altitude', DbType.real);
+  }
+
+  DbEventField _speed;
+  DbEventField get speed {
+    return _speed = setField(_speed, 'speed', DbType.real);
+  }
+
+  DbEventField _heartRate;
+  DbEventField get heartRate {
+    return _heartRate = setField(_heartRate, 'heartRate', DbType.integer);
+  }
+
+  DbEventField _cadence;
+  DbEventField get cadence {
+    return _cadence = setField(_cadence, 'cadence', DbType.real);
+  }
+
+  DbEventField _fractionalCadence;
+  DbEventField get fractionalCadence {
+    return _fractionalCadence =
+        setField(_fractionalCadence, 'fractionalCadence', DbType.real);
+  }
+
+  DbEventField _power;
+  DbEventField get power {
+    return _power = setField(_power, 'power', DbType.integer);
+  }
+
+  DbEventField _strydCadence;
+  DbEventField get strydCadence {
+    return _strydCadence = setField(_strydCadence, 'strydCadence', DbType.real);
+  }
+
+  DbEventField _groundTime;
+  DbEventField get groundTime {
+    return _groundTime = setField(_groundTime, 'groundTime', DbType.real);
+  }
+
+  DbEventField _verticalOscillation;
+  DbEventField get verticalOscillation {
+    return _verticalOscillation =
+        setField(_verticalOscillation, 'verticalOscillation', DbType.real);
+  }
+
+  DbEventField _formPower;
+  DbEventField get formPower {
+    return _formPower = setField(_formPower, 'formPower', DbType.integer);
+  }
+
+  DbEventField _legSpringStiffness;
+  DbEventField get legSpringStiffness {
+    return _legSpringStiffness =
+        setField(_legSpringStiffness, 'legSpringStiffness', DbType.real);
+  }
+
+  DbEventField _data;
+  DbEventField get data {
+    return _data = setField(_data, 'data', DbType.real);
+  }
+
   DbEventField _activitiesId;
   DbEventField get activitiesId {
     return _activitiesId =
@@ -3758,6 +4087,98 @@ class DbEventFields {
   static TableField get timeStamp {
     return _fTimeStamp = _fTimeStamp ??
         SqlSyntax.setField(_fTimeStamp, 'timeStamp', DbType.datetime);
+  }
+
+  static TableField _fPositionLat;
+  static TableField get positionLat {
+    return _fPositionLat = _fPositionLat ??
+        SqlSyntax.setField(_fPositionLat, 'positionLat', DbType.real);
+  }
+
+  static TableField _fPositionLong;
+  static TableField get positionLong {
+    return _fPositionLong = _fPositionLong ??
+        SqlSyntax.setField(_fPositionLong, 'positionLong', DbType.real);
+  }
+
+  static TableField _fDistance;
+  static TableField get distance {
+    return _fDistance =
+        _fDistance ?? SqlSyntax.setField(_fDistance, 'distance', DbType.real);
+  }
+
+  static TableField _fAltitude;
+  static TableField get altitude {
+    return _fAltitude =
+        _fAltitude ?? SqlSyntax.setField(_fAltitude, 'altitude', DbType.real);
+  }
+
+  static TableField _fSpeed;
+  static TableField get speed {
+    return _fSpeed =
+        _fSpeed ?? SqlSyntax.setField(_fSpeed, 'speed', DbType.real);
+  }
+
+  static TableField _fHeartRate;
+  static TableField get heartRate {
+    return _fHeartRate = _fHeartRate ??
+        SqlSyntax.setField(_fHeartRate, 'heartRate', DbType.integer);
+  }
+
+  static TableField _fCadence;
+  static TableField get cadence {
+    return _fCadence =
+        _fCadence ?? SqlSyntax.setField(_fCadence, 'cadence', DbType.real);
+  }
+
+  static TableField _fFractionalCadence;
+  static TableField get fractionalCadence {
+    return _fFractionalCadence = _fFractionalCadence ??
+        SqlSyntax.setField(
+            _fFractionalCadence, 'fractionalCadence', DbType.real);
+  }
+
+  static TableField _fPower;
+  static TableField get power {
+    return _fPower =
+        _fPower ?? SqlSyntax.setField(_fPower, 'power', DbType.integer);
+  }
+
+  static TableField _fStrydCadence;
+  static TableField get strydCadence {
+    return _fStrydCadence = _fStrydCadence ??
+        SqlSyntax.setField(_fStrydCadence, 'strydCadence', DbType.real);
+  }
+
+  static TableField _fGroundTime;
+  static TableField get groundTime {
+    return _fGroundTime = _fGroundTime ??
+        SqlSyntax.setField(_fGroundTime, 'groundTime', DbType.real);
+  }
+
+  static TableField _fVerticalOscillation;
+  static TableField get verticalOscillation {
+    return _fVerticalOscillation = _fVerticalOscillation ??
+        SqlSyntax.setField(
+            _fVerticalOscillation, 'verticalOscillation', DbType.real);
+  }
+
+  static TableField _fFormPower;
+  static TableField get formPower {
+    return _fFormPower = _fFormPower ??
+        SqlSyntax.setField(_fFormPower, 'formPower', DbType.integer);
+  }
+
+  static TableField _fLegSpringStiffness;
+  static TableField get legSpringStiffness {
+    return _fLegSpringStiffness = _fLegSpringStiffness ??
+        SqlSyntax.setField(
+            _fLegSpringStiffness, 'legSpringStiffness', DbType.real);
+  }
+
+  static TableField _fData;
+  static TableField get data {
+    return _fData = _fData ?? SqlSyntax.setField(_fData, 'data', DbType.real);
   }
 
   static TableField _fActivitiesId;

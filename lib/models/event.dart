@@ -17,9 +17,11 @@ class Event {
       return;
     }
 
-    if (dataMessage.values.any(
-        (value) => value.fieldName == 'event_type' && value.value == 'start')) {
+    if (dataMessage.values.any((value) =>
+        value.fieldName == 'event_type' &&
+        ['start', 'stop_all'].contains(value.value))) {
       db = DbEvent()
+        ..activitiesId = activity.db.id
         ..event = dataMessage.get('event')
         ..eventType = dataMessage.get('event_type')
         ..eventGroup = dataMessage.get('event_group').round()
@@ -29,6 +31,47 @@ class Event {
       return;
     }
 
+    if (dataMessage.values.any((value) =>
+        value.fieldName == 'event_type' && ['marker'].contains(value.value))) {
+      db = DbEvent()
+        ..activitiesId = activity.db.id
+        ..event = dataMessage.get('event').toString()
+        ..eventType = dataMessage.get('event_type')
+        ..eventGroup = dataMessage.get('event_group').round()
+        ..data = dataMessage.get('data')
+        ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
+        ..save();
+      return;
+    }
+
     debugger();
+  }
+
+  Event.fromRecord({DataMessage dataMessage, this.activity}) {
+    db = DbEvent()
+      ..activitiesId = activity.db.id
+      ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
+      ..positionLat = dataMessage.get('position_lat')
+      ..positionLong = dataMessage.get('position_long')
+      ..distance = dataMessage.get('distance')
+      ..altitude = dataMessage.get('altitude')
+      ..speed = dataMessage.get('speed')
+      ..heartRate = dataMessage.get('heart_rate').round()
+      ..cadence = dataMessage.get('cadence')
+      ..fractionalCadence = dataMessage.get('fractional_cadence')
+      ..power = dataMessage.get('Power').round()
+      ..strydCadence = dataMessage.get('Cadence')
+      ..groundTime = dataMessage.get('Ground Time')
+      ..verticalOscillation = dataMessage.get('Vertical Oscillation')
+      ..formPower = dataMessage.get('Form Power').round()
+      ..legSpringStiffness = dataMessage.get('Leg Spring Stiffness')
+      ..save();
+  }
+
+  Event.fromLap({DataMessage dataMessage, this.activity}) {
+    db = DbEvent()
+      ..activitiesId = activity.db.id
+      // 40 values to add here ;-)
+      ..save();
   }
 }

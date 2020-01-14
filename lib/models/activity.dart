@@ -63,6 +63,7 @@ class Activity extends ChangeNotifier {
           case 13:
           case 22:
           case 79:
+          case 104:
           case 141:
           case 147:
             break; // Garmin uses global message numbers, which are not specified
@@ -71,10 +72,13 @@ class Activity extends ChangeNotifier {
         }
       } else {
         switch (dataMessage.definitionMessage.globalMessageName) {
+          case 'developer_data_id':
           case "device_info":
           case "device_settings":
+          case "field_description":
           case "file_creator":
           case "user_profile":
+          case "zones_target":
             break; // we are currently not storing these kinds of messages
 
           case "file_id":
@@ -98,6 +102,15 @@ class Activity extends ChangeNotifier {
           case "event":
             Event(dataMessage: dataMessage, activity: this);
             break;
+
+          case "record":
+            Event.fromRecord(dataMessage: dataMessage, activity: this);
+            break;
+
+          case "lap":
+            Event.fromLap(dataMessage: dataMessage, activity: this)
+            break;
+
           default:
             debugger();
         }

@@ -559,14 +559,14 @@ packages:
       name: sqfentity
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.2+12"
+    version: "1.2.3+1"
   sqfentity_gen:
     dependency: "direct main"
     description:
       name: sqfentity_gen
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1+21"
+    version: "1.2.3+3"
   sqflite:
     dependency: transitive
     description:
