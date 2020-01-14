@@ -9,6 +9,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
+import 'package:encrateia/utils/data_message_utils.dart';
 import 'dart:developer';
 
 class Activity extends ChangeNotifier {
@@ -77,29 +78,22 @@ class Activity extends ChangeNotifier {
             break; // we are currently not storing these kinds of messages
 
           case "file_id":
-            db.serialNumber = dataMessage.values
-                .firstWhere((value) => value.fieldName == 'serial_number')
-                .value
-                .round();
-            db.timeCreated = dateTimeFromStrava(dataMessage.values
-                .firstWhere((value) => value.fieldName == 'time_created')
-                .value);
-            db.save();
+            db
+              ..serialNumber = dataMessage.get('serial_number').round()
+              ..timeCreated =
+                  dateTimeFromStrava(dataMessage.get('time_created'))
+              ..save();
             notifyListeners();
             break;
 
-            case"sport":
-              db.sportName = dataMessage.values
-                  .firstWhere((value) => value.fieldName == 'name')
-                  .value;
-              db.sport = dataMessage.values
-                  .firstWhere((value) => value.fieldName == 'sport')
-                  .value;
-              db.subSport = dataMessage.values
-                  .firstWhere((value) => value.fieldName == 'sub_sport')
-                  .value;
-
-              break;
+          case "sport":
+            db
+              ..sportName = dataMessage.get('name')
+              ..sport = dataMessage.get('sport')
+              ..subSport = dataMessage.get('sub_sport')
+              ..save();
+            notifyListeners();
+            break;
 
           case "event":
             Event(dataMessage: dataMessage, activity: this);
