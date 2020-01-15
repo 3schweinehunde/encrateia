@@ -8,51 +8,44 @@ class Lap {
   DbLap db;
   Activity activity;
 
-  Lap({DataMessage dataMessage, this.activity, int eventId})
-  {
+  Lap({DataMessage dataMessage, this.activity, int eventId}) {
     db = DbLap()
-
+      ..activitiesId = activity.db.id
+      ..eventsId = eventId
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
       ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
       ..startPositionLat = dataMessage.get('start_position_lat')
       ..startPositionLong = dataMessage.get('start_position_long')
       ..endPositionLong = dataMessage.get('end_position_lat')
       ..startPositionLat = dataMessage.get('end_position_long')
+      ..avgHeartRate = dataMessage.get('avg_heart_rate').round()
+      ..maxHeartRate = dataMessage.get('max_heart_rate').round()
+      ..avgRunningCadence = dataMessage.get('avg_running_cadence')
+      ..event = dataMessage.get('event')
+      ..eventType = dataMessage.get('event_type')
+      ..eventGroup = dataMessage.get('event_group').round()
+      ..sport = dataMessage.get('sport')
+      ..subSport = dataMessage.get('sub_sport')
+      ..avgVerticalOscillation = dataMessage.get('avg_vertical_oscillation')
+      ..totalElapsedTime = dataMessage.get('total_elapsed_time').round()
+      ..totalTimerTime = dataMessage.get('total_timer_time').round()
+      ..totalDistance = dataMessage.get('total_distance').round()
+      ..totalStrides = dataMessage.get('total_strides').round()
+      ..totalCalories = dataMessage.get('total_calories').round()
+      ..avgSpeed = dataMessage.get('avg_speed')
+      ..maxSpeed = dataMessage.get('max_speed')
+      ..totalAscent = dataMessage.get('total_ascent').round()
+      ..totalDescent = dataMessage.get('total_descent').round()
+      ..avgStanceTimePercent = dataMessage.get('avg_stance_time_percent')
+      ..avgStanceTime = dataMessage.get('avg_stance_time')
+      ..maxRunningCadence = dataMessage.get('max_running_cadence').round()
+      ..intensity = dataMessage.get('intensity').round()
+      ..lapTrigger = dataMessage.get('lap_trigger')
+      ..avgTemperature = dataMessage.get('avg_temperature').round()
+      ..maxTemperature = dataMessage.get('max_temperature').round()
+      ..avgFractionalCadence = dataMessage.get('avg_fractional_cadence')
+      ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
+      ..totalFractionalCycles = dataMessage.get('total_fractional_cycles')
       ..save();
-    return;
   }
 }
-
-// total_elapsed_time, total_timer_time, total_distance, total_strides,
-// unknown, unknown, unknown, unknown, message_index, total_calories, avg_speed, max_speed, total_ascent, total_descent, wkt_step_index, avg_vertical_oscillation,
-// avg_stance_time_percent, avg_stance_time, event, event_type, avg_heart_rate, max_heart_rate, avg_running_cadence, max_running_cadence, intensity, lap_trigger, sport,
-// event_group, sub_sport, avg_temperature, max_temperature, unknown, avg_fractional_cadence, max_fractional_cadence, total_fractional_cycles
-
-//SqfEntityField('avgHeartRate', DbType.integer),
-//SqfEntityField('maxHeartRate', DbType.integer),
-//SqfEntityField('avgRunningCadence', DbType.real),
-//SqfEntityField('event', DbType.text),
-//SqfEntityField('eventType', DbType.text),
-//SqfEntityField('eventGroup', DbType.integer),
-//SqfEntityField('sport', DbType.text),
-//SqfEntityField('subSport', DbType.text),
-//SqfEntityField('avgVerticalOscillation', DbType.real),
-//SqfEntityField('totalElapsedTime', DbType.integer),
-//SqfEntityField('totalTimerTime', DbType.integer),
-//SqfEntityField('totalDistance', DbType.integer),
-//SqfEntityField('totalStrides', DbType.integer),
-//SqfEntityField('totalCalories', DbType.integer),
-//SqfEntityField('avgSpeed', DbType.real),
-//SqfEntityField('maxSpeed', DbType.real),
-//SqfEntityField('totalAscent', DbType.integer),
-//SqfEntityField('totalDescent', DbType.integer),
-//SqfEntityField('avgStanceTimePercent', DbType.real),
-//SqfEntityField('avgStanceTime', DbType.real),
-//SqfEntityField('maxRunningCadence', DbType.integer),
-//SqfEntityField('intensity', DbType.integer),
-//SqfEntityField('lapTrigger', DbType.text),
-//SqfEntityField('avgTemperature', DbType.integer),
-//SqfEntityField('maxTemperature', DbType.integer),
-//SqfEntityField('avgFractionalCadence', DbType.real),
-//SqfEntityField('maxFractionalCadence', DbType.real),
-//SqfEntityField('totalFractionalCycles', DbType.real),

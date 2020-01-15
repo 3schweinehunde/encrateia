@@ -47,8 +47,10 @@ class Activity extends ChangeNotifier {
   }
 
   setState(String state) {
-    db.state = state;
-    db.save();
+    db
+      ..state = state
+      ..save();
+
     notifyListeners();
   }
 
@@ -59,16 +61,22 @@ class Activity extends ChangeNotifier {
     print("Parsing activity ${db.stravaId} done.");
 
     for (var dataMessage in fitFile.dataMessages) {
+//    print(dataMessage.values.map((v) => v.fieldName).toList());
       if (dataMessage.definitionMessage.globalMessageName == null) {
         switch (dataMessage.definitionMessage.globalMessageNumber) {
           case 13:
           case 22:
           case 79:
           case 104:
+          case 140:
           case 141:
           case 147:
+          case 216:
             break; // Garmin uses global message numbers, which are not specified
           default:
+            print("Message number "
+                "${dataMessage.definitionMessage.globalMessageNumber} "
+                "unknown.");
             debugger();
         }
       } else {
@@ -110,16 +118,19 @@ class Activity extends ChangeNotifier {
 
           case "lap":
             var event = Event.fromLap(dataMessage: dataMessage, activity: this);
-            print(dataMessage.values.map((v) => v.fieldName).toList());
-            debugger();
-            Lap(dataMessage: dataMessage, activity: this, eventId: 0);
+            var eventId = await event.db.save();
+            Lap(dataMessage: dataMessage, activity: this, eventId: eventId);
             break;
 
           default:
+            print("Messages of type "
+                "${dataMessage.definitionMessage.globalMessageName} "
+                "are not implemented yet.");
             debugger();
         }
       }
     }
+    print("All elements of activity ${db.stravaId} persisted.");
   }
 
   static queryStrava() async {

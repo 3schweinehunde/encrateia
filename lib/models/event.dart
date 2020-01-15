@@ -14,10 +14,7 @@ class Event {
       activity.db
         ..maxHeartRate = dataMessage.get('max_heart_rate').round()
         ..save();
-      return;
-    }
-
-    if (dataMessage.values.any((value) =>
+    } else if (dataMessage.values.any((value) =>
         value.fieldName == 'event_type' &&
         ['start', 'stop_all'].contains(value.value))) {
       db = DbEvent()
@@ -28,10 +25,7 @@ class Event {
         ..timerTrigger = dataMessage.get('timer_trigger')
         ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
         ..save();
-      return;
-    }
-
-    if (dataMessage.values.any((value) =>
+    } else if (dataMessage.values.any((value) =>
         value.fieldName == 'event_type' && ['marker'].contains(value.value))) {
       db = DbEvent()
         ..activitiesId = activity.db.id
@@ -41,10 +35,9 @@ class Event {
         ..data = dataMessage.get('data')
         ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
         ..save();
-      return;
+    } else {
+      debugger();
     }
-
-    debugger();
   }
 
   Event.fromRecord({DataMessage dataMessage, this.activity}) {
@@ -83,8 +76,6 @@ class Event {
       ..heartRate = dataMessage.get('avg_heart_rate').round()
       ..cadence = dataMessage.get('avg_running_cadence')
       ..timerTrigger = dataMessage.get('lap_trigger')
-      ..distance = dataMessage.get('total_distance')
-      ..save();
+      ..distance = dataMessage.get('total_distance');
   }
 }
-
