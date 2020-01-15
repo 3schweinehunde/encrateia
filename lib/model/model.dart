@@ -88,6 +88,59 @@ const tableEvent = SqfEntityTable(
   ],
 );
 
+const tableLap = SqfEntityTable(
+    tableName: 'laps',
+    primaryKeyName: 'id',
+    primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+    useSoftDeleting: false,
+    modelName: 'DbLap',
+    fields: [
+      SqfEntityField('timeStamp', DbType.datetime),
+      SqfEntityField('startTime', DbType.datetime),
+      SqfEntityField('startPositionLat', DbType.real),
+      SqfEntityField('startPositionLong', DbType.real),
+      SqfEntityField('endPositionLat', DbType.real),
+      SqfEntityField('endPositionLong', DbType.real),
+      SqfEntityField('avgHeartRate', DbType.integer),
+      SqfEntityField('maxHeartRate', DbType.integer),
+      SqfEntityField('avgRunningCadence', DbType.real),
+      SqfEntityField('event', DbType.text),
+      SqfEntityField('eventType', DbType.text),
+      SqfEntityField('eventGroup', DbType.integer),
+      SqfEntityField('sport', DbType.text),
+      SqfEntityField('subSport', DbType.text),
+      SqfEntityField('avgVerticalOscillation', DbType.real),
+      SqfEntityField('totalElapsedTime', DbType.integer),
+      SqfEntityField('totalTimerTime', DbType.integer),
+      SqfEntityField('totalDistance', DbType.integer),
+      SqfEntityField('totalStrides', DbType.integer),
+      SqfEntityField('totalCalories', DbType.integer),
+      SqfEntityField('avgSpeed', DbType.real),
+      SqfEntityField('maxSpeed', DbType.real),
+      SqfEntityField('totalAscent', DbType.integer),
+      SqfEntityField('totalDescent', DbType.integer),
+      SqfEntityField('avgStanceTimePercent', DbType.real),
+      SqfEntityField('avgStanceTime', DbType.real),
+      SqfEntityField('maxRunningCadence', DbType.integer),
+      SqfEntityField('intensity', DbType.integer),
+      SqfEntityField('lapTrigger', DbType.text),
+      SqfEntityField('avgTemperature', DbType.integer),
+      SqfEntityField('maxTemperature', DbType.integer),
+      SqfEntityField('avgFractionalCadence', DbType.real),
+      SqfEntityField('maxFractionalCadence', DbType.real),
+      SqfEntityField('totalFractionalCycles', DbType.real),
+
+      SqfEntityFieldRelationship(
+          parentTable: tableEvent,
+          deleteRule: DeleteRule.CASCADE,
+          defaultValue: 0),
+      SqfEntityFieldRelationship(
+          parentTable: tableActivity,
+          deleteRule: DeleteRule.CASCADE,
+          defaultValue: 0),
+    ]
+);
+
 @SqfEntityBuilder(encrateia)
 const encrateia = SqfEntityModel(
     modelName: 'DbEncrateia', // optional
@@ -96,6 +149,7 @@ const encrateia = SqfEntityModel(
       tableAthlete,
       tableActivity,
       tableEvent,
+      tableLap,
     ],
     sequences: [],
     bundledDatabasePath: null);

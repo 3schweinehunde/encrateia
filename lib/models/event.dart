@@ -71,7 +71,20 @@ class Event {
   Event.fromLap({DataMessage dataMessage, this.activity}) {
     db = DbEvent()
       ..activitiesId = activity.db.id
-      // 40 values to add here ;-)
+      ..positionLat = dataMessage.get('end_position_lat')
+      ..positionLong = dataMessage.get('end_position_long')
+      ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
+      ..event = dataMessage.get('event').toString()
+      ..eventType = dataMessage.get('event_type')
+      ..eventGroup = dataMessage.get('event_group').round()
+      ..speed = dataMessage.get('avg_speed')
+      ..verticalOscillation = dataMessage.get('avg_vertical_oscillation')
+      ..fractionalCadence = dataMessage.get('avg_fractional_cadence')
+      ..heartRate = dataMessage.get('avg_heart_rate').round()
+      ..cadence = dataMessage.get('avg_running_cadence')
+      ..timerTrigger = dataMessage.get('lap_trigger')
+      ..distance = dataMessage.get('total_distance')
       ..save();
   }
 }
+

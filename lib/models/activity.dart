@@ -4,8 +4,9 @@ import 'package:encrateia/model/model.dart';
 import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/event.dart';
+import 'athlete.dart';
+import 'event.dart';
+import 'lap.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
@@ -108,7 +109,10 @@ class Activity extends ChangeNotifier {
             break;
 
           case "lap":
-            Event.fromLap(dataMessage: dataMessage, activity: this)
+            var event = Event.fromLap(dataMessage: dataMessage, activity: this);
+            print(dataMessage.values.map((v) => v.fieldName).toList());
+            debugger();
+            Lap(dataMessage: dataMessage, activity: this, eventId: 0);
             break;
 
           default:
