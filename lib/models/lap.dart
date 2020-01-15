@@ -1,7 +1,6 @@
 import 'package:encrateia/model/model.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
-import 'package:encrateia/utils/data_message_utils.dart';
 import 'activity.dart';
 
 class Lap {

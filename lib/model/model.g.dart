@@ -65,14 +65,50 @@ class TableDbActivity extends SqfEntityTableBase {
       SqfEntityFieldBase('name', DbType.text),
       SqfEntityFieldBase('movingTime', DbType.integer),
       SqfEntityFieldBase('type', DbType.text),
-      SqfEntityFieldBase('startTime', DbType.text),
       SqfEntityFieldBase('distance', DbType.integer),
       SqfEntityFieldBase('serialNumber', DbType.integer),
       SqfEntityFieldBase('timeCreated', DbType.datetime),
       SqfEntityFieldBase('sportName', DbType.text),
       SqfEntityFieldBase('sport', DbType.text),
       SqfEntityFieldBase('subSport', DbType.text),
+      SqfEntityFieldBase('timeStamp', DbType.datetime),
+      SqfEntityFieldBase('startTime', DbType.datetime),
+      SqfEntityFieldBase('startPositionLat', DbType.real),
+      SqfEntityFieldBase('startPositionLong', DbType.real),
+      SqfEntityFieldBase('event', DbType.text),
+      SqfEntityFieldBase('eventType', DbType.text),
+      SqfEntityFieldBase('eventGroup', DbType.integer),
+      SqfEntityFieldBase('totalDistance', DbType.integer),
+      SqfEntityFieldBase('totalStrides', DbType.integer),
+      SqfEntityFieldBase('totalCalories', DbType.integer),
+      SqfEntityFieldBase('avgSpeed', DbType.real),
+      SqfEntityFieldBase('maxSpeed', DbType.real),
+      SqfEntityFieldBase('totalAscent', DbType.integer),
+      SqfEntityFieldBase('totalDescent', DbType.integer),
+      SqfEntityFieldBase('maxRunningCadence', DbType.integer),
+      SqfEntityFieldBase('trigger', DbType.text),
+      SqfEntityFieldBase('avgTemperature', DbType.integer),
+      SqfEntityFieldBase('maxTemperature', DbType.integer),
+      SqfEntityFieldBase('avgFractionalCadence', DbType.real),
+      SqfEntityFieldBase('maxFractionalCadence', DbType.real),
+      SqfEntityFieldBase('totalFractionalCycles', DbType.real),
+      SqfEntityFieldBase('avgStanceTimePercent', DbType.real),
+      SqfEntityFieldBase('avgStanceTime', DbType.real),
+      SqfEntityFieldBase('avgHeartRate', DbType.integer),
       SqfEntityFieldBase('maxHeartRate', DbType.integer),
+      SqfEntityFieldBase('avgRunningCadence', DbType.real),
+      SqfEntityFieldBase('avgVerticalOscillation', DbType.real),
+      SqfEntityFieldBase('totalElapsedTime', DbType.integer),
+      SqfEntityFieldBase('totalTimerTime', DbType.integer),
+      SqfEntityFieldBase('totalTrainingEffect', DbType.integer),
+      SqfEntityFieldBase('necLat', DbType.real),
+      SqfEntityFieldBase('necLong', DbType.real),
+      SqfEntityFieldBase('swcLat', DbType.real),
+      SqfEntityFieldBase('swcLong', DbType.real),
+      SqfEntityFieldBase('firstLapIndex', DbType.integer),
+      SqfEntityFieldBase('numLaps', DbType.integer),
+      SqfEntityFieldBase('numSessions', DbType.integer),
+      SqfEntityFieldBase('localTimestamp', DbType.datetime),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'athletesId'),
@@ -1363,14 +1399,50 @@ class DbActivity {
       this.name,
       this.movingTime,
       this.type,
-      this.startTime,
       this.distance,
       this.serialNumber,
       this.timeCreated,
       this.sportName,
       this.sport,
       this.subSport,
+      this.timeStamp,
+      this.startTime,
+      this.startPositionLat,
+      this.startPositionLong,
+      this.event,
+      this.eventType,
+      this.eventGroup,
+      this.totalDistance,
+      this.totalStrides,
+      this.totalCalories,
+      this.avgSpeed,
+      this.maxSpeed,
+      this.totalAscent,
+      this.totalDescent,
+      this.maxRunningCadence,
+      this.trigger,
+      this.avgTemperature,
+      this.maxTemperature,
+      this.avgFractionalCadence,
+      this.maxFractionalCadence,
+      this.totalFractionalCycles,
+      this.avgStanceTimePercent,
+      this.avgStanceTime,
+      this.avgHeartRate,
       this.maxHeartRate,
+      this.avgRunningCadence,
+      this.avgVerticalOscillation,
+      this.totalElapsedTime,
+      this.totalTimerTime,
+      this.totalTrainingEffect,
+      this.necLat,
+      this.necLong,
+      this.swcLat,
+      this.swcLong,
+      this.firstLapIndex,
+      this.numLaps,
+      this.numSessions,
+      this.localTimestamp,
       this.athletesId}) {
     _setDefaultValues();
   }
@@ -1381,14 +1453,50 @@ class DbActivity {
       this.name,
       this.movingTime,
       this.type,
-      this.startTime,
       this.distance,
       this.serialNumber,
       this.timeCreated,
       this.sportName,
       this.sport,
       this.subSport,
+      this.timeStamp,
+      this.startTime,
+      this.startPositionLat,
+      this.startPositionLong,
+      this.event,
+      this.eventType,
+      this.eventGroup,
+      this.totalDistance,
+      this.totalStrides,
+      this.totalCalories,
+      this.avgSpeed,
+      this.maxSpeed,
+      this.totalAscent,
+      this.totalDescent,
+      this.maxRunningCadence,
+      this.trigger,
+      this.avgTemperature,
+      this.maxTemperature,
+      this.avgFractionalCadence,
+      this.maxFractionalCadence,
+      this.totalFractionalCycles,
+      this.avgStanceTimePercent,
+      this.avgStanceTime,
+      this.avgHeartRate,
       this.maxHeartRate,
+      this.avgRunningCadence,
+      this.avgVerticalOscillation,
+      this.totalElapsedTime,
+      this.totalTimerTime,
+      this.totalTrainingEffect,
+      this.necLat,
+      this.necLong,
+      this.swcLat,
+      this.swcLong,
+      this.firstLapIndex,
+      this.numLaps,
+      this.numSessions,
+      this.localTimestamp,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -1400,14 +1508,50 @@ class DbActivity {
       this.name,
       this.movingTime,
       this.type,
-      this.startTime,
       this.distance,
       this.serialNumber,
       this.timeCreated,
       this.sportName,
       this.sport,
       this.subSport,
+      this.timeStamp,
+      this.startTime,
+      this.startPositionLat,
+      this.startPositionLong,
+      this.event,
+      this.eventType,
+      this.eventGroup,
+      this.totalDistance,
+      this.totalStrides,
+      this.totalCalories,
+      this.avgSpeed,
+      this.maxSpeed,
+      this.totalAscent,
+      this.totalDescent,
+      this.maxRunningCadence,
+      this.trigger,
+      this.avgTemperature,
+      this.maxTemperature,
+      this.avgFractionalCadence,
+      this.maxFractionalCadence,
+      this.totalFractionalCycles,
+      this.avgStanceTimePercent,
+      this.avgStanceTime,
+      this.avgHeartRate,
       this.maxHeartRate,
+      this.avgRunningCadence,
+      this.avgVerticalOscillation,
+      this.totalElapsedTime,
+      this.totalTimerTime,
+      this.totalTrainingEffect,
+      this.necLat,
+      this.necLong,
+      this.swcLat,
+      this.swcLong,
+      this.firstLapIndex,
+      this.numLaps,
+      this.numSessions,
+      this.localTimestamp,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -1419,7 +1563,6 @@ class DbActivity {
     name = o['name'] as String;
     movingTime = o['movingTime'] as int;
     type = o['type'] as String;
-    startTime = o['startTime'] as String;
     distance = o['distance'] as int;
     serialNumber = o['serialNumber'] as int;
     timeCreated = o['timeCreated'] != null
@@ -1430,7 +1573,61 @@ class DbActivity {
     sportName = o['sportName'] as String;
     sport = o['sport'] as String;
     subSport = o['subSport'] as String;
+    timeStamp = o['timeStamp'] != null
+        ? int.tryParse(o['timeStamp'].toString()) != null
+            ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
+            : DateTime.tryParse(o['timeStamp'].toString())
+        : null;
+    startTime = o['startTime'] != null
+        ? int.tryParse(o['startTime'].toString()) != null
+            ? DateTime.fromMillisecondsSinceEpoch(o['startTime'] as int)
+            : DateTime.tryParse(o['startTime'].toString())
+        : null;
+    startPositionLat = double.tryParse(o['startPositionLat'].toString());
+    startPositionLong = double.tryParse(o['startPositionLong'].toString());
+    event = o['event'] as String;
+    eventType = o['eventType'] as String;
+    eventGroup = o['eventGroup'] as int;
+    totalDistance = o['totalDistance'] as int;
+    totalStrides = o['totalStrides'] as int;
+    totalCalories = o['totalCalories'] as int;
+    avgSpeed = double.tryParse(o['avgSpeed'].toString());
+    maxSpeed = double.tryParse(o['maxSpeed'].toString());
+    totalAscent = o['totalAscent'] as int;
+    totalDescent = o['totalDescent'] as int;
+    maxRunningCadence = o['maxRunningCadence'] as int;
+    trigger = o['trigger'] as String;
+    avgTemperature = o['avgTemperature'] as int;
+    maxTemperature = o['maxTemperature'] as int;
+    avgFractionalCadence =
+        double.tryParse(o['avgFractionalCadence'].toString());
+    maxFractionalCadence =
+        double.tryParse(o['maxFractionalCadence'].toString());
+    totalFractionalCycles =
+        double.tryParse(o['totalFractionalCycles'].toString());
+    avgStanceTimePercent =
+        double.tryParse(o['avgStanceTimePercent'].toString());
+    avgStanceTime = double.tryParse(o['avgStanceTime'].toString());
+    avgHeartRate = o['avgHeartRate'] as int;
     maxHeartRate = o['maxHeartRate'] as int;
+    avgRunningCadence = double.tryParse(o['avgRunningCadence'].toString());
+    avgVerticalOscillation =
+        double.tryParse(o['avgVerticalOscillation'].toString());
+    totalElapsedTime = o['totalElapsedTime'] as int;
+    totalTimerTime = o['totalTimerTime'] as int;
+    totalTrainingEffect = o['totalTrainingEffect'] as int;
+    necLat = double.tryParse(o['necLat'].toString());
+    necLong = double.tryParse(o['necLong'].toString());
+    swcLat = double.tryParse(o['swcLat'].toString());
+    swcLong = double.tryParse(o['swcLong'].toString());
+    firstLapIndex = o['firstLapIndex'] as int;
+    numLaps = o['numLaps'] as int;
+    numSessions = o['numSessions'] as int;
+    localTimestamp = o['localTimestamp'] != null
+        ? int.tryParse(o['localTimestamp'].toString()) != null
+            ? DateTime.fromMillisecondsSinceEpoch(o['localTimestamp'] as int)
+            : DateTime.tryParse(o['localTimestamp'].toString())
+        : null;
     athletesId = o['athletesId'] as int;
   }
   // FIELDS (DbActivity)
@@ -1441,14 +1638,50 @@ class DbActivity {
   String name;
   int movingTime;
   String type;
-  String startTime;
   int distance;
   int serialNumber;
   DateTime timeCreated;
   String sportName;
   String sport;
   String subSport;
+  DateTime timeStamp;
+  DateTime startTime;
+  double startPositionLat;
+  double startPositionLong;
+  String event;
+  String eventType;
+  int eventGroup;
+  int totalDistance;
+  int totalStrides;
+  int totalCalories;
+  double avgSpeed;
+  double maxSpeed;
+  int totalAscent;
+  int totalDescent;
+  int maxRunningCadence;
+  String trigger;
+  int avgTemperature;
+  int maxTemperature;
+  double avgFractionalCadence;
+  double maxFractionalCadence;
+  double totalFractionalCycles;
+  double avgStanceTimePercent;
+  double avgStanceTime;
+  int avgHeartRate;
   int maxHeartRate;
+  double avgRunningCadence;
+  double avgVerticalOscillation;
+  int totalElapsedTime;
+  int totalTimerTime;
+  int totalTrainingEffect;
+  double necLat;
+  double necLong;
+  double swcLat;
+  double swcLong;
+  int firstLapIndex;
+  int numLaps;
+  int numSessions;
+  DateTime localTimestamp;
   int athletesId;
 
   BoolResult saveResult;
@@ -1535,10 +1768,6 @@ class DbActivity {
       map['type'] = type;
     }
 
-    if (startTime != null) {
-      map['startTime'] = startTime;
-    }
-
     if (distance != null) {
       map['distance'] = distance;
     }
@@ -1565,8 +1794,162 @@ class DbActivity {
       map['subSport'] = subSport;
     }
 
+    if (timeStamp != null) {
+      map['timeStamp'] = forJson
+          ? timeStamp.toUtc().toString()
+          : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
+    }
+
+    if (startTime != null) {
+      map['startTime'] = forJson
+          ? startTime.toUtc().toString()
+          : forQuery ? startTime.millisecondsSinceEpoch : startTime;
+    }
+
+    if (startPositionLat != null) {
+      map['startPositionLat'] = startPositionLat;
+    }
+
+    if (startPositionLong != null) {
+      map['startPositionLong'] = startPositionLong;
+    }
+
+    if (event != null) {
+      map['event'] = event;
+    }
+
+    if (eventType != null) {
+      map['eventType'] = eventType;
+    }
+
+    if (eventGroup != null) {
+      map['eventGroup'] = eventGroup;
+    }
+
+    if (totalDistance != null) {
+      map['totalDistance'] = totalDistance;
+    }
+
+    if (totalStrides != null) {
+      map['totalStrides'] = totalStrides;
+    }
+
+    if (totalCalories != null) {
+      map['totalCalories'] = totalCalories;
+    }
+
+    if (avgSpeed != null) {
+      map['avgSpeed'] = avgSpeed;
+    }
+
+    if (maxSpeed != null) {
+      map['maxSpeed'] = maxSpeed;
+    }
+
+    if (totalAscent != null) {
+      map['totalAscent'] = totalAscent;
+    }
+
+    if (totalDescent != null) {
+      map['totalDescent'] = totalDescent;
+    }
+
+    if (maxRunningCadence != null) {
+      map['maxRunningCadence'] = maxRunningCadence;
+    }
+
+    if (trigger != null) {
+      map['trigger'] = trigger;
+    }
+
+    if (avgTemperature != null) {
+      map['avgTemperature'] = avgTemperature;
+    }
+
+    if (maxTemperature != null) {
+      map['maxTemperature'] = maxTemperature;
+    }
+
+    if (avgFractionalCadence != null) {
+      map['avgFractionalCadence'] = avgFractionalCadence;
+    }
+
+    if (maxFractionalCadence != null) {
+      map['maxFractionalCadence'] = maxFractionalCadence;
+    }
+
+    if (totalFractionalCycles != null) {
+      map['totalFractionalCycles'] = totalFractionalCycles;
+    }
+
+    if (avgStanceTimePercent != null) {
+      map['avgStanceTimePercent'] = avgStanceTimePercent;
+    }
+
+    if (avgStanceTime != null) {
+      map['avgStanceTime'] = avgStanceTime;
+    }
+
+    if (avgHeartRate != null) {
+      map['avgHeartRate'] = avgHeartRate;
+    }
+
     if (maxHeartRate != null) {
       map['maxHeartRate'] = maxHeartRate;
+    }
+
+    if (avgRunningCadence != null) {
+      map['avgRunningCadence'] = avgRunningCadence;
+    }
+
+    if (avgVerticalOscillation != null) {
+      map['avgVerticalOscillation'] = avgVerticalOscillation;
+    }
+
+    if (totalElapsedTime != null) {
+      map['totalElapsedTime'] = totalElapsedTime;
+    }
+
+    if (totalTimerTime != null) {
+      map['totalTimerTime'] = totalTimerTime;
+    }
+
+    if (totalTrainingEffect != null) {
+      map['totalTrainingEffect'] = totalTrainingEffect;
+    }
+
+    if (necLat != null) {
+      map['necLat'] = necLat;
+    }
+
+    if (necLong != null) {
+      map['necLong'] = necLong;
+    }
+
+    if (swcLat != null) {
+      map['swcLat'] = swcLat;
+    }
+
+    if (swcLong != null) {
+      map['swcLong'] = swcLong;
+    }
+
+    if (firstLapIndex != null) {
+      map['firstLapIndex'] = firstLapIndex;
+    }
+
+    if (numLaps != null) {
+      map['numLaps'] = numLaps;
+    }
+
+    if (numSessions != null) {
+      map['numSessions'] = numSessions;
+    }
+
+    if (localTimestamp != null) {
+      map['localTimestamp'] = forJson
+          ? localTimestamp.toUtc().toString()
+          : forQuery ? localTimestamp.millisecondsSinceEpoch : localTimestamp;
     }
 
     if (athletesId != null) {
@@ -1606,10 +1989,6 @@ class DbActivity {
       map['type'] = type;
     }
 
-    if (startTime != null) {
-      map['startTime'] = startTime;
-    }
-
     if (distance != null) {
       map['distance'] = distance;
     }
@@ -1636,8 +2015,162 @@ class DbActivity {
       map['subSport'] = subSport;
     }
 
+    if (timeStamp != null) {
+      map['timeStamp'] = forJson
+          ? timeStamp.toUtc().toString()
+          : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
+    }
+
+    if (startTime != null) {
+      map['startTime'] = forJson
+          ? startTime.toUtc().toString()
+          : forQuery ? startTime.millisecondsSinceEpoch : startTime;
+    }
+
+    if (startPositionLat != null) {
+      map['startPositionLat'] = startPositionLat;
+    }
+
+    if (startPositionLong != null) {
+      map['startPositionLong'] = startPositionLong;
+    }
+
+    if (event != null) {
+      map['event'] = event;
+    }
+
+    if (eventType != null) {
+      map['eventType'] = eventType;
+    }
+
+    if (eventGroup != null) {
+      map['eventGroup'] = eventGroup;
+    }
+
+    if (totalDistance != null) {
+      map['totalDistance'] = totalDistance;
+    }
+
+    if (totalStrides != null) {
+      map['totalStrides'] = totalStrides;
+    }
+
+    if (totalCalories != null) {
+      map['totalCalories'] = totalCalories;
+    }
+
+    if (avgSpeed != null) {
+      map['avgSpeed'] = avgSpeed;
+    }
+
+    if (maxSpeed != null) {
+      map['maxSpeed'] = maxSpeed;
+    }
+
+    if (totalAscent != null) {
+      map['totalAscent'] = totalAscent;
+    }
+
+    if (totalDescent != null) {
+      map['totalDescent'] = totalDescent;
+    }
+
+    if (maxRunningCadence != null) {
+      map['maxRunningCadence'] = maxRunningCadence;
+    }
+
+    if (trigger != null) {
+      map['trigger'] = trigger;
+    }
+
+    if (avgTemperature != null) {
+      map['avgTemperature'] = avgTemperature;
+    }
+
+    if (maxTemperature != null) {
+      map['maxTemperature'] = maxTemperature;
+    }
+
+    if (avgFractionalCadence != null) {
+      map['avgFractionalCadence'] = avgFractionalCadence;
+    }
+
+    if (maxFractionalCadence != null) {
+      map['maxFractionalCadence'] = maxFractionalCadence;
+    }
+
+    if (totalFractionalCycles != null) {
+      map['totalFractionalCycles'] = totalFractionalCycles;
+    }
+
+    if (avgStanceTimePercent != null) {
+      map['avgStanceTimePercent'] = avgStanceTimePercent;
+    }
+
+    if (avgStanceTime != null) {
+      map['avgStanceTime'] = avgStanceTime;
+    }
+
+    if (avgHeartRate != null) {
+      map['avgHeartRate'] = avgHeartRate;
+    }
+
     if (maxHeartRate != null) {
       map['maxHeartRate'] = maxHeartRate;
+    }
+
+    if (avgRunningCadence != null) {
+      map['avgRunningCadence'] = avgRunningCadence;
+    }
+
+    if (avgVerticalOscillation != null) {
+      map['avgVerticalOscillation'] = avgVerticalOscillation;
+    }
+
+    if (totalElapsedTime != null) {
+      map['totalElapsedTime'] = totalElapsedTime;
+    }
+
+    if (totalTimerTime != null) {
+      map['totalTimerTime'] = totalTimerTime;
+    }
+
+    if (totalTrainingEffect != null) {
+      map['totalTrainingEffect'] = totalTrainingEffect;
+    }
+
+    if (necLat != null) {
+      map['necLat'] = necLat;
+    }
+
+    if (necLong != null) {
+      map['necLong'] = necLong;
+    }
+
+    if (swcLat != null) {
+      map['swcLat'] = swcLat;
+    }
+
+    if (swcLong != null) {
+      map['swcLong'] = swcLong;
+    }
+
+    if (firstLapIndex != null) {
+      map['firstLapIndex'] = firstLapIndex;
+    }
+
+    if (numLaps != null) {
+      map['numLaps'] = numLaps;
+    }
+
+    if (numSessions != null) {
+      map['numSessions'] = numSessions;
+    }
+
+    if (localTimestamp != null) {
+      map['localTimestamp'] = forJson
+          ? localTimestamp.toUtc().toString()
+          : forQuery ? localTimestamp.millisecondsSinceEpoch : localTimestamp;
     }
 
     if (athletesId != null) {
@@ -1675,14 +2208,50 @@ class DbActivity {
       name,
       movingTime,
       type,
-      startTime,
       distance,
       serialNumber,
       timeCreated != null ? timeCreated.millisecondsSinceEpoch : null,
       sportName,
       sport,
       subSport,
+      timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+      startTime != null ? startTime.millisecondsSinceEpoch : null,
+      startPositionLat,
+      startPositionLong,
+      event,
+      eventType,
+      eventGroup,
+      totalDistance,
+      totalStrides,
+      totalCalories,
+      avgSpeed,
+      maxSpeed,
+      totalAscent,
+      totalDescent,
+      maxRunningCadence,
+      trigger,
+      avgTemperature,
+      maxTemperature,
+      avgFractionalCadence,
+      maxFractionalCadence,
+      totalFractionalCycles,
+      avgStanceTimePercent,
+      avgStanceTime,
+      avgHeartRate,
       maxHeartRate,
+      avgRunningCadence,
+      avgVerticalOscillation,
+      totalElapsedTime,
+      totalTimerTime,
+      totalTrainingEffect,
+      necLat,
+      necLong,
+      swcLat,
+      swcLong,
+      firstLapIndex,
+      numLaps,
+      numSessions,
+      localTimestamp != null ? localTimestamp.millisecondsSinceEpoch : null,
       athletesId
     ];
   }
@@ -1792,7 +2361,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
     final results = _mnDbActivity.saveAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, sportName, sport, subSport, maxHeartRate, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -1803,7 +2372,7 @@ class DbActivity {
   Future<int> _upsert() async {
     try {
       if (await _mnDbActivity.rawInsert(
-              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, sportName, sport, subSport, maxHeartRate, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -1812,14 +2381,52 @@ class DbActivity {
                 name,
                 movingTime,
                 type,
-                startTime,
                 distance,
                 serialNumber,
                 timeCreated != null ? timeCreated.millisecondsSinceEpoch : null,
                 sportName,
                 sport,
                 subSport,
+                timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+                startTime != null ? startTime.millisecondsSinceEpoch : null,
+                startPositionLat,
+                startPositionLong,
+                event,
+                eventType,
+                eventGroup,
+                totalDistance,
+                totalStrides,
+                totalCalories,
+                avgSpeed,
+                maxSpeed,
+                totalAscent,
+                totalDescent,
+                maxRunningCadence,
+                trigger,
+                avgTemperature,
+                maxTemperature,
+                avgFractionalCadence,
+                maxFractionalCadence,
+                totalFractionalCycles,
+                avgStanceTimePercent,
+                avgStanceTime,
+                avgHeartRate,
                 maxHeartRate,
+                avgRunningCadence,
+                avgVerticalOscillation,
+                totalElapsedTime,
+                totalTimerTime,
+                totalTrainingEffect,
+                necLat,
+                necLong,
+                swcLat,
+                swcLong,
+                firstLapIndex,
+                numLaps,
+                numSessions,
+                localTimestamp != null
+                    ? localTimestamp.millisecondsSinceEpoch
+                    : null,
                 athletesId
               ]) ==
           1) {
@@ -1844,7 +2451,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, startTime, distance, serialNumber, timeCreated, sportName, sport, subSport, maxHeartRate, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -2307,11 +2914,6 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return _type = setField(_type, 'type', DbType.text);
   }
 
-  DbActivityField _startTime;
-  DbActivityField get startTime {
-    return _startTime = setField(_startTime, 'startTime', DbType.text);
-  }
-
   DbActivityField _distance;
   DbActivityField get distance {
     return _distance = setField(_distance, 'distance', DbType.integer);
@@ -2344,10 +2946,217 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return _subSport = setField(_subSport, 'subSport', DbType.text);
   }
 
+  DbActivityField _timeStamp;
+  DbActivityField get timeStamp {
+    return _timeStamp = setField(_timeStamp, 'timeStamp', DbType.datetime);
+  }
+
+  DbActivityField _startTime;
+  DbActivityField get startTime {
+    return _startTime = setField(_startTime, 'startTime', DbType.datetime);
+  }
+
+  DbActivityField _startPositionLat;
+  DbActivityField get startPositionLat {
+    return _startPositionLat =
+        setField(_startPositionLat, 'startPositionLat', DbType.real);
+  }
+
+  DbActivityField _startPositionLong;
+  DbActivityField get startPositionLong {
+    return _startPositionLong =
+        setField(_startPositionLong, 'startPositionLong', DbType.real);
+  }
+
+  DbActivityField _event;
+  DbActivityField get event {
+    return _event = setField(_event, 'event', DbType.text);
+  }
+
+  DbActivityField _eventType;
+  DbActivityField get eventType {
+    return _eventType = setField(_eventType, 'eventType', DbType.text);
+  }
+
+  DbActivityField _eventGroup;
+  DbActivityField get eventGroup {
+    return _eventGroup = setField(_eventGroup, 'eventGroup', DbType.integer);
+  }
+
+  DbActivityField _totalDistance;
+  DbActivityField get totalDistance {
+    return _totalDistance =
+        setField(_totalDistance, 'totalDistance', DbType.integer);
+  }
+
+  DbActivityField _totalStrides;
+  DbActivityField get totalStrides {
+    return _totalStrides =
+        setField(_totalStrides, 'totalStrides', DbType.integer);
+  }
+
+  DbActivityField _totalCalories;
+  DbActivityField get totalCalories {
+    return _totalCalories =
+        setField(_totalCalories, 'totalCalories', DbType.integer);
+  }
+
+  DbActivityField _avgSpeed;
+  DbActivityField get avgSpeed {
+    return _avgSpeed = setField(_avgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  DbActivityField _maxSpeed;
+  DbActivityField get maxSpeed {
+    return _maxSpeed = setField(_maxSpeed, 'maxSpeed', DbType.real);
+  }
+
+  DbActivityField _totalAscent;
+  DbActivityField get totalAscent {
+    return _totalAscent = setField(_totalAscent, 'totalAscent', DbType.integer);
+  }
+
+  DbActivityField _totalDescent;
+  DbActivityField get totalDescent {
+    return _totalDescent =
+        setField(_totalDescent, 'totalDescent', DbType.integer);
+  }
+
+  DbActivityField _maxRunningCadence;
+  DbActivityField get maxRunningCadence {
+    return _maxRunningCadence =
+        setField(_maxRunningCadence, 'maxRunningCadence', DbType.integer);
+  }
+
+  DbActivityField _trigger;
+  DbActivityField get trigger {
+    return _trigger = setField(_trigger, 'trigger', DbType.text);
+  }
+
+  DbActivityField _avgTemperature;
+  DbActivityField get avgTemperature {
+    return _avgTemperature =
+        setField(_avgTemperature, 'avgTemperature', DbType.integer);
+  }
+
+  DbActivityField _maxTemperature;
+  DbActivityField get maxTemperature {
+    return _maxTemperature =
+        setField(_maxTemperature, 'maxTemperature', DbType.integer);
+  }
+
+  DbActivityField _avgFractionalCadence;
+  DbActivityField get avgFractionalCadence {
+    return _avgFractionalCadence =
+        setField(_avgFractionalCadence, 'avgFractionalCadence', DbType.real);
+  }
+
+  DbActivityField _maxFractionalCadence;
+  DbActivityField get maxFractionalCadence {
+    return _maxFractionalCadence =
+        setField(_maxFractionalCadence, 'maxFractionalCadence', DbType.real);
+  }
+
+  DbActivityField _totalFractionalCycles;
+  DbActivityField get totalFractionalCycles {
+    return _totalFractionalCycles =
+        setField(_totalFractionalCycles, 'totalFractionalCycles', DbType.real);
+  }
+
+  DbActivityField _avgStanceTimePercent;
+  DbActivityField get avgStanceTimePercent {
+    return _avgStanceTimePercent =
+        setField(_avgStanceTimePercent, 'avgStanceTimePercent', DbType.real);
+  }
+
+  DbActivityField _avgStanceTime;
+  DbActivityField get avgStanceTime {
+    return _avgStanceTime =
+        setField(_avgStanceTime, 'avgStanceTime', DbType.real);
+  }
+
+  DbActivityField _avgHeartRate;
+  DbActivityField get avgHeartRate {
+    return _avgHeartRate =
+        setField(_avgHeartRate, 'avgHeartRate', DbType.integer);
+  }
+
   DbActivityField _maxHeartRate;
   DbActivityField get maxHeartRate {
     return _maxHeartRate =
         setField(_maxHeartRate, 'maxHeartRate', DbType.integer);
+  }
+
+  DbActivityField _avgRunningCadence;
+  DbActivityField get avgRunningCadence {
+    return _avgRunningCadence =
+        setField(_avgRunningCadence, 'avgRunningCadence', DbType.real);
+  }
+
+  DbActivityField _avgVerticalOscillation;
+  DbActivityField get avgVerticalOscillation {
+    return _avgVerticalOscillation = setField(
+        _avgVerticalOscillation, 'avgVerticalOscillation', DbType.real);
+  }
+
+  DbActivityField _totalElapsedTime;
+  DbActivityField get totalElapsedTime {
+    return _totalElapsedTime =
+        setField(_totalElapsedTime, 'totalElapsedTime', DbType.integer);
+  }
+
+  DbActivityField _totalTimerTime;
+  DbActivityField get totalTimerTime {
+    return _totalTimerTime =
+        setField(_totalTimerTime, 'totalTimerTime', DbType.integer);
+  }
+
+  DbActivityField _totalTrainingEffect;
+  DbActivityField get totalTrainingEffect {
+    return _totalTrainingEffect =
+        setField(_totalTrainingEffect, 'totalTrainingEffect', DbType.integer);
+  }
+
+  DbActivityField _necLat;
+  DbActivityField get necLat {
+    return _necLat = setField(_necLat, 'necLat', DbType.real);
+  }
+
+  DbActivityField _necLong;
+  DbActivityField get necLong {
+    return _necLong = setField(_necLong, 'necLong', DbType.real);
+  }
+
+  DbActivityField _swcLat;
+  DbActivityField get swcLat {
+    return _swcLat = setField(_swcLat, 'swcLat', DbType.real);
+  }
+
+  DbActivityField _swcLong;
+  DbActivityField get swcLong {
+    return _swcLong = setField(_swcLong, 'swcLong', DbType.real);
+  }
+
+  DbActivityField _firstLapIndex;
+  DbActivityField get firstLapIndex {
+    return _firstLapIndex =
+        setField(_firstLapIndex, 'firstLapIndex', DbType.integer);
+  }
+
+  DbActivityField _numLaps;
+  DbActivityField get numLaps {
+    return _numLaps = setField(_numLaps, 'numLaps', DbType.integer);
+  }
+
+  DbActivityField _numSessions;
+  DbActivityField get numSessions {
+    return _numSessions = setField(_numSessions, 'numSessions', DbType.integer);
+  }
+
+  DbActivityField _localTimestamp;
+  DbActivityField get localTimestamp {
+    return _localTimestamp =
+        setField(_localTimestamp, 'localTimestamp', DbType.datetime);
   }
 
   DbActivityField _athletesId;
@@ -2713,12 +3522,6 @@ class DbActivityFields {
     return _fType = _fType ?? SqlSyntax.setField(_fType, 'type', DbType.text);
   }
 
-  static TableField _fStartTime;
-  static TableField get startTime {
-    return _fStartTime = _fStartTime ??
-        SqlSyntax.setField(_fStartTime, 'startTime', DbType.text);
-  }
-
   static TableField _fDistance;
   static TableField get distance {
     return _fDistance = _fDistance ??
@@ -2755,10 +3558,242 @@ class DbActivityFields {
         _fSubSport ?? SqlSyntax.setField(_fSubSport, 'subSport', DbType.text);
   }
 
+  static TableField _fTimeStamp;
+  static TableField get timeStamp {
+    return _fTimeStamp = _fTimeStamp ??
+        SqlSyntax.setField(_fTimeStamp, 'timeStamp', DbType.datetime);
+  }
+
+  static TableField _fStartTime;
+  static TableField get startTime {
+    return _fStartTime = _fStartTime ??
+        SqlSyntax.setField(_fStartTime, 'startTime', DbType.datetime);
+  }
+
+  static TableField _fStartPositionLat;
+  static TableField get startPositionLat {
+    return _fStartPositionLat = _fStartPositionLat ??
+        SqlSyntax.setField(_fStartPositionLat, 'startPositionLat', DbType.real);
+  }
+
+  static TableField _fStartPositionLong;
+  static TableField get startPositionLong {
+    return _fStartPositionLong = _fStartPositionLong ??
+        SqlSyntax.setField(
+            _fStartPositionLong, 'startPositionLong', DbType.real);
+  }
+
+  static TableField _fEvent;
+  static TableField get event {
+    return _fEvent =
+        _fEvent ?? SqlSyntax.setField(_fEvent, 'event', DbType.text);
+  }
+
+  static TableField _fEventType;
+  static TableField get eventType {
+    return _fEventType = _fEventType ??
+        SqlSyntax.setField(_fEventType, 'eventType', DbType.text);
+  }
+
+  static TableField _fEventGroup;
+  static TableField get eventGroup {
+    return _fEventGroup = _fEventGroup ??
+        SqlSyntax.setField(_fEventGroup, 'eventGroup', DbType.integer);
+  }
+
+  static TableField _fTotalDistance;
+  static TableField get totalDistance {
+    return _fTotalDistance = _fTotalDistance ??
+        SqlSyntax.setField(_fTotalDistance, 'totalDistance', DbType.integer);
+  }
+
+  static TableField _fTotalStrides;
+  static TableField get totalStrides {
+    return _fTotalStrides = _fTotalStrides ??
+        SqlSyntax.setField(_fTotalStrides, 'totalStrides', DbType.integer);
+  }
+
+  static TableField _fTotalCalories;
+  static TableField get totalCalories {
+    return _fTotalCalories = _fTotalCalories ??
+        SqlSyntax.setField(_fTotalCalories, 'totalCalories', DbType.integer);
+  }
+
+  static TableField _fAvgSpeed;
+  static TableField get avgSpeed {
+    return _fAvgSpeed =
+        _fAvgSpeed ?? SqlSyntax.setField(_fAvgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  static TableField _fMaxSpeed;
+  static TableField get maxSpeed {
+    return _fMaxSpeed =
+        _fMaxSpeed ?? SqlSyntax.setField(_fMaxSpeed, 'maxSpeed', DbType.real);
+  }
+
+  static TableField _fTotalAscent;
+  static TableField get totalAscent {
+    return _fTotalAscent = _fTotalAscent ??
+        SqlSyntax.setField(_fTotalAscent, 'totalAscent', DbType.integer);
+  }
+
+  static TableField _fTotalDescent;
+  static TableField get totalDescent {
+    return _fTotalDescent = _fTotalDescent ??
+        SqlSyntax.setField(_fTotalDescent, 'totalDescent', DbType.integer);
+  }
+
+  static TableField _fMaxRunningCadence;
+  static TableField get maxRunningCadence {
+    return _fMaxRunningCadence = _fMaxRunningCadence ??
+        SqlSyntax.setField(
+            _fMaxRunningCadence, 'maxRunningCadence', DbType.integer);
+  }
+
+  static TableField _fTrigger;
+  static TableField get trigger {
+    return _fTrigger =
+        _fTrigger ?? SqlSyntax.setField(_fTrigger, 'trigger', DbType.text);
+  }
+
+  static TableField _fAvgTemperature;
+  static TableField get avgTemperature {
+    return _fAvgTemperature = _fAvgTemperature ??
+        SqlSyntax.setField(_fAvgTemperature, 'avgTemperature', DbType.integer);
+  }
+
+  static TableField _fMaxTemperature;
+  static TableField get maxTemperature {
+    return _fMaxTemperature = _fMaxTemperature ??
+        SqlSyntax.setField(_fMaxTemperature, 'maxTemperature', DbType.integer);
+  }
+
+  static TableField _fAvgFractionalCadence;
+  static TableField get avgFractionalCadence {
+    return _fAvgFractionalCadence = _fAvgFractionalCadence ??
+        SqlSyntax.setField(
+            _fAvgFractionalCadence, 'avgFractionalCadence', DbType.real);
+  }
+
+  static TableField _fMaxFractionalCadence;
+  static TableField get maxFractionalCadence {
+    return _fMaxFractionalCadence = _fMaxFractionalCadence ??
+        SqlSyntax.setField(
+            _fMaxFractionalCadence, 'maxFractionalCadence', DbType.real);
+  }
+
+  static TableField _fTotalFractionalCycles;
+  static TableField get totalFractionalCycles {
+    return _fTotalFractionalCycles = _fTotalFractionalCycles ??
+        SqlSyntax.setField(
+            _fTotalFractionalCycles, 'totalFractionalCycles', DbType.real);
+  }
+
+  static TableField _fAvgStanceTimePercent;
+  static TableField get avgStanceTimePercent {
+    return _fAvgStanceTimePercent = _fAvgStanceTimePercent ??
+        SqlSyntax.setField(
+            _fAvgStanceTimePercent, 'avgStanceTimePercent', DbType.real);
+  }
+
+  static TableField _fAvgStanceTime;
+  static TableField get avgStanceTime {
+    return _fAvgStanceTime = _fAvgStanceTime ??
+        SqlSyntax.setField(_fAvgStanceTime, 'avgStanceTime', DbType.real);
+  }
+
+  static TableField _fAvgHeartRate;
+  static TableField get avgHeartRate {
+    return _fAvgHeartRate = _fAvgHeartRate ??
+        SqlSyntax.setField(_fAvgHeartRate, 'avgHeartRate', DbType.integer);
+  }
+
   static TableField _fMaxHeartRate;
   static TableField get maxHeartRate {
     return _fMaxHeartRate = _fMaxHeartRate ??
         SqlSyntax.setField(_fMaxHeartRate, 'maxHeartRate', DbType.integer);
+  }
+
+  static TableField _fAvgRunningCadence;
+  static TableField get avgRunningCadence {
+    return _fAvgRunningCadence = _fAvgRunningCadence ??
+        SqlSyntax.setField(
+            _fAvgRunningCadence, 'avgRunningCadence', DbType.real);
+  }
+
+  static TableField _fAvgVerticalOscillation;
+  static TableField get avgVerticalOscillation {
+    return _fAvgVerticalOscillation = _fAvgVerticalOscillation ??
+        SqlSyntax.setField(
+            _fAvgVerticalOscillation, 'avgVerticalOscillation', DbType.real);
+  }
+
+  static TableField _fTotalElapsedTime;
+  static TableField get totalElapsedTime {
+    return _fTotalElapsedTime = _fTotalElapsedTime ??
+        SqlSyntax.setField(
+            _fTotalElapsedTime, 'totalElapsedTime', DbType.integer);
+  }
+
+  static TableField _fTotalTimerTime;
+  static TableField get totalTimerTime {
+    return _fTotalTimerTime = _fTotalTimerTime ??
+        SqlSyntax.setField(_fTotalTimerTime, 'totalTimerTime', DbType.integer);
+  }
+
+  static TableField _fTotalTrainingEffect;
+  static TableField get totalTrainingEffect {
+    return _fTotalTrainingEffect = _fTotalTrainingEffect ??
+        SqlSyntax.setField(
+            _fTotalTrainingEffect, 'totalTrainingEffect', DbType.integer);
+  }
+
+  static TableField _fNecLat;
+  static TableField get necLat {
+    return _fNecLat =
+        _fNecLat ?? SqlSyntax.setField(_fNecLat, 'necLat', DbType.real);
+  }
+
+  static TableField _fNecLong;
+  static TableField get necLong {
+    return _fNecLong =
+        _fNecLong ?? SqlSyntax.setField(_fNecLong, 'necLong', DbType.real);
+  }
+
+  static TableField _fSwcLat;
+  static TableField get swcLat {
+    return _fSwcLat =
+        _fSwcLat ?? SqlSyntax.setField(_fSwcLat, 'swcLat', DbType.real);
+  }
+
+  static TableField _fSwcLong;
+  static TableField get swcLong {
+    return _fSwcLong =
+        _fSwcLong ?? SqlSyntax.setField(_fSwcLong, 'swcLong', DbType.real);
+  }
+
+  static TableField _fFirstLapIndex;
+  static TableField get firstLapIndex {
+    return _fFirstLapIndex = _fFirstLapIndex ??
+        SqlSyntax.setField(_fFirstLapIndex, 'firstLapIndex', DbType.integer);
+  }
+
+  static TableField _fNumLaps;
+  static TableField get numLaps {
+    return _fNumLaps =
+        _fNumLaps ?? SqlSyntax.setField(_fNumLaps, 'numLaps', DbType.integer);
+  }
+
+  static TableField _fNumSessions;
+  static TableField get numSessions {
+    return _fNumSessions = _fNumSessions ??
+        SqlSyntax.setField(_fNumSessions, 'numSessions', DbType.integer);
+  }
+
+  static TableField _fLocalTimestamp;
+  static TableField get localTimestamp {
+    return _fLocalTimestamp = _fLocalTimestamp ??
+        SqlSyntax.setField(_fLocalTimestamp, 'localTimestamp', DbType.datetime);
   }
 
   static TableField _fAthletesId;
