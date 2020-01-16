@@ -18,8 +18,12 @@ class Activity extends ChangeNotifier {
   Activity();
   Activity.fromDb(this.db);
 
-  Activity.fromStrava(StravaActivity.SummaryActivity summaryActivity) {
+  Activity.fromStrava({
+    StravaActivity.SummaryActivity summaryActivity,
+    Athlete athlete,
+  }) {
     db = DbActivity()
+      ..athletesId = athlete.db.id
       ..name = summaryActivity.name
       ..movingTime = summaryActivity.movingTime
       ..type = summaryActivity.type
@@ -192,7 +196,7 @@ class Activity extends ChangeNotifier {
     print("All elements of activity ${db.stravaId} persisted.");
   }
 
-  static queryStrava() async {
+  static queryStrava({Athlete athlete}) async {
     var strava = Strava(true, secret);
     final prompt = 'auto';
 
@@ -209,7 +213,10 @@ class Activity extends ChangeNotifier {
         await strava.getLoggedInAthleteActivities(now, startDate);
 
     for (StravaActivity.SummaryActivity summaryActivity in summaryActivities) {
-      Activity.fromStrava(summaryActivity);
+      Activity.fromStrava(
+        summaryActivity: summaryActivity,
+        athlete: athlete,
+      );
     }
   }
 

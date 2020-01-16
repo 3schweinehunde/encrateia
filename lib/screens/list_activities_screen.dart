@@ -35,7 +35,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                 ListTile(
                   leading: Icon(Icons.cloud_download),
                   title: Text("Download Activities from Strava"),
-                  onTap: () => Activity.queryStrava(),
+                  onTap: () => Activity.queryStrava(athlete: athlete),
                 ),
               if (widget.athlete.password == null)
                 ListTile(
