@@ -11,7 +11,7 @@ class Event {
   Event({DataMessage dataMessage, this.activity}) {
     if (dataMessage.any('max_heart_rate')) {
       activity.db
-        ..maxHeartRate = dataMessage.get('max_heart_rate').round()
+        ..maxHeartRate = dataMessage.get('max_heart_rate')?.round()
         ..save();
     } else if (dataMessage.values.any((value) =>
         value.fieldName == 'event_type' &&
@@ -20,7 +20,7 @@ class Event {
         ..activitiesId = activity.db.id
         ..event = dataMessage.get('event')
         ..eventType = dataMessage.get('event_type')
-        ..eventGroup = dataMessage.get('event_group').round()
+        ..eventGroup = dataMessage.get('event_group')?.round()
         ..timerTrigger = dataMessage.get('timer_trigger')
         ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
         ..save();
@@ -28,9 +28,9 @@ class Event {
         value.fieldName == 'event_type' && ['marker'].contains(value.value))) {
       db = DbEvent()
         ..activitiesId = activity.db.id
-        ..event = dataMessage.get('event').toString()
+        ..event = dataMessage.get('event')?.toString()
         ..eventType = dataMessage.get('event_type')
-        ..eventGroup = dataMessage.get('event_group').round()
+        ..eventGroup = dataMessage.get('event_group')?.round()
         ..data = dataMessage.get('data')
         ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
         ..save();
@@ -48,14 +48,14 @@ class Event {
       ..distance = dataMessage.get('distance')
       ..altitude = dataMessage.get('altitude')
       ..speed = dataMessage.get('speed')
-      ..heartRate = dataMessage.get('heart_rate').round()
+      ..heartRate = dataMessage.get('heart_rate')?.round()
       ..cadence = dataMessage.get('cadence')
       ..fractionalCadence = dataMessage.get('fractional_cadence')
-      ..power = dataMessage.get('Power').round()
+      ..power = dataMessage.get('Power')?.round()
       ..strydCadence = dataMessage.get('Cadence')
       ..groundTime = dataMessage.get('Ground Time')
       ..verticalOscillation = dataMessage.get('Vertical Oscillation')
-      ..formPower = dataMessage.get('Form Power').round()
+      ..formPower = dataMessage.get('Form Power')?.round()
       ..legSpringStiffness = dataMessage.get('Leg Spring Stiffness')
       ..save();
   }
@@ -66,13 +66,13 @@ class Event {
       ..positionLat = dataMessage.get('end_position_lat')
       ..positionLong = dataMessage.get('end_position_long')
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
-      ..event = dataMessage.get('event').toString()
+      ..event = dataMessage.get('event')?.toString()
       ..eventType = dataMessage.get('event_type')
-      ..eventGroup = dataMessage.get('event_group').round()
+      ..eventGroup = dataMessage.get('event_group')?.round()
       ..speed = dataMessage.get('avg_speed')
       ..verticalOscillation = dataMessage.get('avg_vertical_oscillation')
       ..fractionalCadence = dataMessage.get('avg_fractional_cadence')
-      ..heartRate = dataMessage.get('avg_heart_rate').round()
+      ..heartRate = dataMessage.get('avg_heart_rate')?.round()
       ..cadence = dataMessage.get('avg_running_cadence')
       ..timerTrigger = dataMessage.get('lap_trigger')
       ..distance = dataMessage.get('total_distance')

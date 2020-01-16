@@ -96,7 +96,7 @@ class Activity extends ChangeNotifier {
 
           case "file_id":
             db
-              ..serialNumber = dataMessage.get('serial_number').round()
+              ..serialNumber = dataMessage.get('serial_number')?.round()
               ..timeCreated =
                   dateTimeFromStrava(dataMessage.get('time_created'))
               ..save();
@@ -132,26 +132,26 @@ class Activity extends ChangeNotifier {
               ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
               ..startPositionLat = dataMessage.get('start_position_lat')
               ..startPositionLong = dataMessage.get('start_position_long')
-              ..totalElapsedTime = dataMessage.get('total_elapsed_time').round()
-              ..totalTimerTime = dataMessage.get('total_timer_time').round()
-              ..totalDistance = dataMessage.get('total_distance').round()
-              ..totalStrides = dataMessage.get('total_strides').round()
+              ..totalElapsedTime = dataMessage.get('total_elapsed_time')?.round()
+              ..totalTimerTime = dataMessage.get('total_timer_time')?.round()
+              ..totalDistance = dataMessage.get('total_distance')?.round()
+              ..totalStrides = dataMessage.get('total_strides')?.round()
               ..necLat = dataMessage.get('nec_lat')
               ..necLong = dataMessage.get('nec_long')
               ..swcLat = dataMessage.get('swc_lat')
               ..swcLong = dataMessage.get('swc_long')
-              ..totalCalories = dataMessage.get('total_calories').round()
+              ..totalCalories = dataMessage.get('total_calories')?.round()
               ..avgSpeed = dataMessage.get('avg_speed')
               ..maxSpeed = dataMessage.get('max_speed')
-              ..totalAscent = dataMessage.get('total_ascent').round()
-              ..totalDescent = dataMessage.get('total_descent').round()
+              ..totalAscent = dataMessage.get('total_ascent')?.round()
+              ..totalDescent = dataMessage.get('total_descent')?.round()
               ..maxRunningCadence =
-                  dataMessage.get('max_running_cadence').round()
-              ..firstLapIndex = dataMessage.get('first_lap_index').round()
-              ..numLaps = dataMessage.get('num_laps').round()
-              ..event = dataMessage.get('event').toString()
+                  dataMessage.get('max_running_cadence')?.round()
+              ..firstLapIndex = dataMessage.get('first_lap_index')?.round()
+              ..numLaps = dataMessage.get('num_laps')?.round()
+              ..event = dataMessage.get('event')?.toString()
               ..eventType = dataMessage.get('event_type')
-              ..eventGroup = dataMessage.get('event_group').round()
+              ..eventGroup = dataMessage.get('event_group')?.round()
               ..trigger = dataMessage.get('trigger')
               ..avgVerticalOscillation =
                   dataMessage.get('avg_vertical_oscillation')
@@ -160,13 +160,13 @@ class Activity extends ChangeNotifier {
               ..avgStanceTime = dataMessage.get('avg_stance_time')
               ..sport = dataMessage.get('sport')
               ..subSport = dataMessage.get('sub_sport')
-              ..avgHeartRate = dataMessage.get('avg_heart_rate').round()
-              ..maxHeartRate = dataMessage.get('max_heart_rate').round()
+              ..avgHeartRate = dataMessage.get('avg_heart_rate')?.round()
+              ..maxHeartRate = dataMessage.get('max_heart_rate')?.round()
               ..avgRunningCadence = dataMessage.get('avg_running_cadence')
               ..totalTrainingEffect =
-                  dataMessage.get('total_training_effect').round()
-              ..avgTemperature = dataMessage.get('avg_temperature').round()
-              ..maxTemperature = dataMessage.get('max_temperature').round()
+                  dataMessage.get('total_training_effect')?.round()
+              ..avgTemperature = dataMessage.get('avg_temperature')?.round()
+              ..maxTemperature = dataMessage.get('max_temperature')?.round()
               ..avgFractionalCadence = dataMessage.get('avg_fractional_cadence')
               ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
               ..totalFractionalCycles =
@@ -177,7 +177,7 @@ class Activity extends ChangeNotifier {
 
           case "activity":
             db
-              ..numSessions = dataMessage.get('num_sessions').round()
+              ..numSessions = dataMessage.get('num_sessions')?.round()
               ..localTimestamp =
                   dateTimeFromStrava(dataMessage.get('local_timestamp'))
               ..save();
@@ -193,7 +193,11 @@ class Activity extends ChangeNotifier {
         }
       }
     }
-    print("All elements of activity ${db.stravaId} persisted.");
+
+    db.state = "persisted";
+    db.save();
+    notifyListeners();
+    print("Persisted activity ${db.stravaId} to database.");
   }
 
   static queryStrava({Athlete athlete}) async {

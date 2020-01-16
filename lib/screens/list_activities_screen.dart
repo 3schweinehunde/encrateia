@@ -2,6 +2,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'show_activity.dart';
 
 class ListActivitiesScreen extends StatefulWidget {
   final Athlete athlete;
@@ -35,7 +36,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                 ListTile(
                   leading: Icon(Icons.cloud_download),
                   title: Text("Download Activities from Strava"),
-                  onTap: () => Activity.queryStrava(athlete: athlete),
+                  onTap: () => Activity.queryStrava(athlete: widget.athlete),
                 ),
               if (widget.athlete.password == null)
                 ListTile(
@@ -92,6 +93,32 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
               icon: Icon(Icons.cloud_download),
               onPressed: () => activity.download(athlete: athlete),
               tooltip: 'Download',
+            ),
+          ],
+        );
+        break;
+      case "persisted":
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.remove_red_eye),
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShowActivityScreen(
+                      activity: activity,
+                    ),
+                  ),
+                )
+              },
+              tooltip: 'Show details',
+            ),
+            IconButton(
+              icon: Icon(Icons.details),
+              onPressed: () => activity.parse(athlete: athlete),
+              tooltip: 'Parse .fit-file',
             ),
           ],
         );
