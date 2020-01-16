@@ -46,22 +46,21 @@ class Activity extends ChangeNotifier {
   }
 
   setState(String state) {
-    db
-      ..state = state
-      ..save();
-
+    db.state = state;
+    db.save();
     notifyListeners();
   }
 
   parse({@required Athlete athlete}) async {
-    var counter = 0;
     var appDocDir = await getApplicationDocumentsDirectory();
-    print("Starting to parse activity ${db.stravaId}.");
     var fitFile = FitFile(path: appDocDir.path + '/${db.stravaId}.fit').parse();
-    print("Parsing activity ${db.stravaId} done.");
+    print("Parsing .fit-File ${db.stravaId} done.");
+
+    // delete left overs from prior runs:
+    await db.getDbEvents().delete();
+    await db.getDbLaps().delete();
 
     for (var dataMessage in fitFile.dataMessages) {
-      counter = counter + 1;
       if (dataMessage.definitionMessage.globalMessageName == null) {
         switch (dataMessage.definitionMessage.globalMessageNumber) {
           case 13:
@@ -187,7 +186,6 @@ class Activity extends ChangeNotifier {
                 "are not implemented yet.");
             print(dataMessage.values.map((v) => v.fieldName).toList());
             debugger();
-            print(counter);
         }
       }
     }

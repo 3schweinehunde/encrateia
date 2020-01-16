@@ -75,6 +75,7 @@ class Event {
       ..heartRate = dataMessage.get('avg_heart_rate').round()
       ..cadence = dataMessage.get('avg_running_cadence')
       ..timerTrigger = dataMessage.get('lap_trigger')
-      ..distance = dataMessage.get('total_distance');
+      ..distance = dataMessage.get('total_distance')
+      ..save();
   }
 }
