@@ -85,7 +85,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.details),
+              icon: Icon(Icons.build),
               onPressed: () => activity.parse(athlete: athlete),
               tooltip: 'Parse .fit-file',
             ),
@@ -116,7 +116,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
               tooltip: 'Show details',
             ),
             IconButton(
-              icon: Icon(Icons.details),
+              icon: Icon(Icons.build),
               onPressed: () => activity.parse(athlete: athlete),
               tooltip: 'Parse .fit-file',
             ),
