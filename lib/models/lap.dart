@@ -6,6 +6,7 @@ import 'activity.dart';
 class Lap {
   DbLap db;
   Activity activity;
+  int index;
 
   Lap({DataMessage dataMessage, this.activity, int eventId}) {
     db = DbLap()
@@ -46,5 +47,22 @@ class Lap {
       ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
       ..totalFractionalCycles = dataMessage.get('total_fractional_cycles')
       ..save();
+  }
+  Lap.fromDb(this.db);
+
+  static Future<List<Lap>> by({Activity activity}) async {
+    int counter = 1;
+
+    List<DbLap> dbLapList = await activity.db.getDbLaps().toList();
+    var lapList = dbLapList.map((dbLap) => Lap.fromDb(dbLap)).toList();
+
+    await Future.forEach(lapList, (lap) async {
+      var dbActivity = await lap.db.getDbActivity();
+      lap.activity = Activity.fromDb(dbActivity);
+      lap.index = counter;
+      counter = counter +1;
+    });
+
+    return lapList;
   }
 }
