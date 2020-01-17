@@ -19,8 +19,20 @@ class ShowActivityScreen extends StatelessWidget {
         appBar: AppBar(
           bottom: TabBar(
             tabs: [
-              Tab(icon: Icon(Icons.directions_run)),
-              Tab(icon: Icon(Icons.timer)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Tab(icon: Icon(Icons.directions_run)),
+                  Text(" Overview"),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Tab(icon: Icon(Icons.timer)),
+                  Text(" Laps"),
+                ],
+              )
             ],
           ),
           title: Text(

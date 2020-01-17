@@ -16,13 +16,28 @@ class LapsListWidget extends StatelessWidget {
 
         if (snapshot.hasData) {
           widget = DataTable(
-            dataRowHeight: kMinInteractiveDimension * 0.75,
+            dataRowHeight: kMinInteractiveDimension * 0.60,
             columns: <DataColumn>[
-              const DataColumn(label: Icon(Icons.loop), tooltip: 'Lap'),
-              const DataColumn(label: Text("bpm"), tooltip: 'heartrate'),
-              const DataColumn(label: Text("km/h"), tooltip: 'speed'),
               const DataColumn(
-                  label: Icon(Icons.trending_up), tooltip: 'ascent'),
+                label: Icon(Icons.loop),
+                tooltip: 'Lap',
+                numeric: true,
+              ),
+              const DataColumn(
+                label: Text("bpm"),
+                tooltip: 'heartrate',
+                numeric: true,
+              ),
+              const DataColumn(
+                label: Text("km/h"),
+                tooltip: 'speed',
+                numeric: true,
+              ),
+              const DataColumn(
+                label: Icon(Icons.trending_up),
+                tooltip: 'ascent',
+                numeric: true,
+              ),
             ],
             rows: snapshot.data.map((Lap lap) {
               return DataRow(key: Key(lap.db.id.toString()), cells: [
