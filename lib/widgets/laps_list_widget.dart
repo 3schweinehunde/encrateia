@@ -16,6 +16,7 @@ class LapsListWidget extends StatelessWidget {
 
         if (snapshot.hasData) {
           widget = DataTable(
+            dataRowHeight: kMinInteractiveDimension * 0.75,
             columns: <DataColumn>[
               const DataColumn(label: Icon(Icons.loop), tooltip: 'Lap'),
               const DataColumn(label: Text("bpm"), tooltip: 'heartrate'),
