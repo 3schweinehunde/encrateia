@@ -35,7 +35,12 @@ class ShowActivityScreen extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.timer),
             title: Text(Duration(seconds: activity.db.movingTime).print()),
-            trailing: Text('moving time (hh:mm:ss)'),
+            subtitle: Text(
+                Duration(seconds: activity.db.totalElapsedTime).print() +
+                    "\n" +
+                    Duration(seconds: activity.db.totalTimerTime).print()),
+            trailing: Text(
+                'moving time (hh:mm:ss)\ntotal elapsed time\ntotal timer time'),
           ),
           ListTile(
             leading: Icon(Icons.directions_bike),
@@ -65,22 +70,23 @@ class ShowActivityScreen extends StatelessWidget {
             title: Text('${activity.db.totalCalories} kcal'),
             trailing: Text('total calories'),
           ),
-          if (activity.db.totalStrides != null)  ListTile(
-            leading: Icon(Icons.directions_walk),
-            title: Text(activity.db.totalStrides.toString()),
-            trailing: Text('total strides'),
-          ),
+          if (activity.db.totalStrides != null)
+            ListTile(
+              leading: Icon(Icons.directions_walk),
+              title: Text(activity.db.totalStrides.toString()),
+              trailing: Text('total strides'),
+            ),
           ListTile(
             leading: Icon(Icons.shutter_speed),
             title:
                 Text((activity.db.avgSpeed * 3.6).toStringAsFixed(2) + " km/h"),
-            trailing: Text('average speed'),
+            trailing: Text('avg speed'),
           ),
           ListTile(
             leading: Icon(Icons.airplanemode_active),
             title:
                 Text((activity.db.maxSpeed * 3.6).toStringAsFixed(2) + " km/h"),
-            trailing: Text('maximum speed'),
+            trailing: Text('max speed'),
           ),
           ListTile(
             leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -98,40 +104,89 @@ class ShowActivityScreen extends StatelessWidget {
             title: Text("${activity.db.totalDescent} m"),
             trailing: Text('total descent'),
           ),
-          if (activity.db.maxRunningCadence != null) ListTile(
-            leading: Icon(Icons.directions_run),
-            title: Text(activity.db.maxRunningCadence.toString()),
-            trailing: Text('maximum running cadence'),
+          if (activity.db.maxRunningCadence != null)
+            ListTile(
+              leading: Icon(Icons.directions_run),
+              title: Text(activity.db.maxRunningCadence.toString()),
+              trailing: Text('max running cadence'),
+            ),
+          ListTile(
+            leading: Icon(Icons.settings_input_antenna),
+            title: Text(activity.db.trigger),
+            trailing: Text('trigger'),
+          ),
+          ListTile(
+            leading: Icon(Icons.ac_unit),
+            title: Text(
+                '${activity.db.avgTemperature}°... ${activity.db.maxTemperature}°'),
+            trailing: Text('avg ... max temperature'),
+          ),
+          ListTile(
+            leading: Icon(Icons.linear_scale),
+            title: Text(
+                '${activity.db.avgFractionalCadence.toStringAsFixed(2)}... ${activity.db.maxFractionalCadence.toStringAsFixed(2)}'),
+            trailing: Text('avg ... max\nfractional cadence'),
+          ),
+          ListTile(
+            leading: Icon(Icons.spa),
+            title: Text(
+                '${activity.db.avgHeartRate}... ${activity.db.maxHeartRate}'),
+            trailing: Text('avg ... max heart rate'),
+          ),
+          ListTile(
+            leading: Icon(Icons.repeat),
+            title: Text('${activity.db.numLaps} / ${activity.db.numSessions}'),
+            trailing: Text('number of laps / sessions'),
+          ),
+          ListTile(
+            leading: Icon(Icons.pets),
+            title: Text(
+                '${activity.db.avgStanceTime}ms / ${activity.db.avgStanceTimePercent}%'),
+            trailing: Text('avg stance time / %'),
+          ),
+          ListTile(
+            leading: Icon(Icons.fitness_center),
+            title: Text(activity.db.totalTrainingEffect.toString()),
+            trailing: Text('total training effect'),
+          ),
+          ListTile(
+            leading: Icon(Icons.unfold_more),
+            title: Text(activity.db.avgVerticalOscillation.toString()),
+            trailing: Text('avg vertical oscillation'),
+          ),
+          ListTile(
+            leading: Icon(Icons.pets),
+            title: Text(activity.db.avgRunningCadence.toString()),
+            trailing: Text('avg running cadence'),
+          ),
+          ListTile(
+            leading: Icon(Icons.repeat),
+            title: Text(activity.db.totalFractionalCycles.toString()),
+            trailing: Text('total fractional cycles'),
+          ),
+          ListTile(
+            leading: Icon(Icons.map),
+            title: Text(activity.db.startPositionLong.semicirclesAsDegrees() +
+                " /\n" +
+                activity.db.startPositionLat.semicirclesAsDegrees()),
+            trailing: Text('start position long /\nlat'),
+          ),
+          ListTile(
+            leading: Icon(Icons.map),
+            title: Text(activity.db.necLong.semicirclesAsDegrees() +
+                " /\n" +
+                activity.db.necLat.semicirclesAsDegrees()),
+            trailing: Text('north east corner long /\nlat'),
+          ),
+          ListTile(
+            leading: Icon(Icons.map),
+            title: Text(activity.db.swcLong.semicirclesAsDegrees() +
+                " /\n" +
+                activity.db.swcLat.semicirclesAsDegrees()),
+            trailing: Text('south west corner long /\nlat'),
           ),
         ],
       ),
     );
   }
-
-//double startPositionLat;
-//double startPositionLong;
-//String trigger;
-//int avgTemperature;
-//int maxTemperature;
-//double avgFractionalCadence;
-//double maxFractionalCadence;
-//double totalFractionalCycles;
-//double avgStanceTimePercent;
-//double avgStanceTime;
-//int avgHeartRate;
-//int maxHeartRate;
-//double avgRunningCadence;
-//double avgVerticalOscillation;
-//int totalElapsedTime;
-//int totalTimerTime;
-//int totalTrainingEffect;
-//double necLat;
-//double necLong;
-//double swcLat;
-//double swcLong;
-//int firstLapIndex;
-//int numLaps;
-//int numSessions;
-//DateTime localTimestamp;
-//int athletesId;
 }
