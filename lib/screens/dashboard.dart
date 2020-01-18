@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'edit_athlete.dart';
+import 'edit_athlete_screen.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'list_activities_screen.dart';
 

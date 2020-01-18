@@ -2,7 +2,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'show_activity.dart';
+import 'show_activity_screen.dart';
 
 class ListActivitiesScreen extends StatefulWidget {
   final Athlete athlete;
