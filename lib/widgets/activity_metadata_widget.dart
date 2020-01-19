@@ -11,76 +11,48 @@ class ActivityMetadataWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return new ListTileTheme(
-      dense: true,
       iconColor: Colors.deepOrange,
       child: ListView(
-        padding: EdgeInsets.only(left: 8, right: 8),
+        padding: EdgeInsets.only(left: 25),
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.title),
-            title: Text(activity.db.name),
-          ),
-          ListTile(
-            leading: Icon(Icons.fingerprint),
-            title: Text(activity.db.stravaId.toString()),
-            subtitle: Text(activity.db.serialNumber.toString()),
-            trailing: Text("Strava id \nGarmin id"),
-          ),
+              leading: Icon(Icons.title),
+              title: Text(activity.db.name),
+              subtitle: Text("title")),
           ListTile(
             leading: Icon(Icons.timer),
             title: Text(Duration(seconds: activity.db.movingTime).print()),
-            subtitle: Text(
-                Duration(seconds: activity.db.totalElapsedTime).print() +
-                    "\n" +
-                    Duration(seconds: activity.db.totalTimerTime).print()),
-            trailing: Text(
-                'moving time (hh:mm:ss)\ntotal elapsed time\ntotal timer time'),
-          ),
-          ListTile(
-            leading: Icon(Icons.directions_bike),
-            title: Text(activity.db.type),
-            subtitle: Text(activity.db.sport + '/' + activity.db.subSport),
-            trailing: Text('activity type \nsport / sub sport'),
+            subtitle: Text('moving time'),
           ),
           ListTile(
             leading: Icon(Icons.access_time),
-            title: Text(DateFormat("dd MMM yyyy  hh:mm:ss")
+            title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
                 .format(activity.db.timeCreated)),
-            trailing: Text('time created'),
+            subtitle: Text('time created'),
           ),
           ListTile(
             leading: Icon(Icons.redo),
             title:
                 Text('${(activity.db.distance / 1000).toStringAsFixed(2)} km'),
-            trailing: Text('distance'),
+            subtitle: Text('distance'),
           ),
           ListTile(
             leading: Icon(Icons.event),
-            title: Text(activity.db.event + " / " + activity.db.eventType),
-            trailing: Text('last event / event type'),
+            title: Text(activity.db.event),
+            subtitle: Text('last event'),
+          ),
+          ListTile(
+            leading: Icon(Icons.shutter_speed),
+            title: Text((activity.db.avgSpeed * 3.6).toStringAsFixed(2) +
+                " km/h / " +
+                (activity.db.maxSpeed * 3.6).toStringAsFixed(2) +
+                " km/h"),
+            subtitle: Text('avg / max speed'),
           ),
           ListTile(
             leading: Icon(Icons.battery_charging_full),
             title: Text('${activity.db.totalCalories} kcal'),
-            trailing: Text('total calories'),
-          ),
-          if (activity.db.totalStrides != null)
-            ListTile(
-              leading: Icon(Icons.directions_walk),
-              title: Text(activity.db.totalStrides.toString()),
-              trailing: Text('total strides'),
-            ),
-          ListTile(
-            leading: Icon(Icons.shutter_speed),
-            title:
-                Text((activity.db.avgSpeed * 3.6).toStringAsFixed(2) + " km/h"),
-            trailing: Text('avg speed'),
-          ),
-          ListTile(
-            leading: Icon(Icons.airplanemode_active),
-            title:
-                Text((activity.db.maxSpeed * 3.6).toStringAsFixed(2) + " km/h"),
-            trailing: Text('max speed'),
+            subtitle: Text('total calories'),
           ),
           ListTile(
             leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -88,7 +60,7 @@ class ActivityMetadataWidget extends StatelessWidget {
               Icon(Icons.landscape),
             ]),
             title: Text("${activity.db.totalAscent} m"),
-            trailing: Text('total ascent'),
+            subtitle: Text('total ascent'),
           ),
           ListTile(
             leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
@@ -96,88 +68,115 @@ class ActivityMetadataWidget extends StatelessWidget {
               Icon(Icons.landscape),
             ]),
             title: Text("${activity.db.totalDescent} m"),
-            trailing: Text('total descent'),
+            subtitle: Text('total descent'),
           ),
+          if (activity.db.totalStrides != null)
+            ListTile(
+              leading: Icon(Icons.directions_walk),
+              title: Text(activity.db.totalStrides.toString()),
+              subtitle: Text('total strides'),
+            ),
           if (activity.db.maxRunningCadence != null)
             ListTile(
-              leading: Icon(Icons.directions_run),
-              title: Text(activity.db.maxRunningCadence.toString()),
-              trailing: Text('max running cadence'),
+              leading: Icon(Icons.pets),
+              title: Text("${activity.db.avgRunningCadence} + ${activity.db.maxRunningCadence}"),
+              subtitle: Text('avg / max running cadence'),
             ),
-          ListTile(
-            leading: Icon(Icons.settings_input_antenna),
-            title: Text(activity.db.trigger),
-            trailing: Text('trigger'),
-          ),
           ListTile(
             leading: Icon(Icons.ac_unit),
             title: Text(
-                '${activity.db.avgTemperature}° ... ${activity.db.maxTemperature}°'),
-            trailing: Text('avg ... max temperature'),
-          ),
-          ListTile(
-            leading: Icon(Icons.linear_scale),
-            title: Text(
-                '${activity.db.avgFractionalCadence.toStringAsFixed(2)} ... ${activity.db.maxFractionalCadence.toStringAsFixed(2)}'),
-            trailing: Text('avg ... max\nfractional cadence'),
+                '${activity.db.avgTemperature}° / ${activity.db.maxTemperature}°'),
+            subtitle: Text('avg / max temperature'),
           ),
           ListTile(
             leading: Icon(Icons.spa),
             title: Text(
-                '${activity.db.avgHeartRate} ... ${activity.db.maxHeartRate}'),
-            trailing: Text('avg ... max heart rate'),
+                "${activity.db.avgHeartRate} / ${activity.db.maxHeartRate}"),
+            subtitle: Text('avg / max heart rate'),
+          ),
+          ListTile(
+            leading: Icon(Icons.fitness_center),
+            title: Text(activity.db.totalTrainingEffect.toString()),
+            subtitle: Text('total training effect'),
+          ),
+          ListTile(
+            leading: Icon(Icons.unfold_more),
+            title: Text(activity.db.avgVerticalOscillation.toString()),
+            subtitle: Text('avg vertical oscillation'),
           ),
           ListTile(
             leading: Icon(Icons.repeat),
-            title: Text('${activity.db.numLaps} / ${activity.db.numSessions}'),
-            trailing: Text('number of laps / sessions'),
+            title: Text(activity.db.totalFractionalCycles.toString()),
+            subtitle: Text('total fractional cycles'),
+          ),
+          ListTile(
+            leading: Icon(Icons.timer),
+            title:
+                Text(Duration(seconds: activity.db.totalElapsedTime).print()),
+            subtitle: Text('total elapsed time'),
+          ),
+          ListTile(
+            leading: Icon(Icons.timer),
+            title: Text(Duration(seconds: activity.db.totalTimerTime).print()),
+            subtitle: Text('total timer time'),
+          ),
+          ListTile(
+            leading: Icon(Icons.fingerprint),
+            title: Text("${activity.db.stravaId} / ${activity.db.serialNumber}"),
+            subtitle: Text("Strava / Garmin id"),
+          ),
+          ListTile(
+            leading: Icon(Icons.directions_bike),
+            title: Text(activity.db.type +
+                " / " +
+                activity.db.sport +
+                " / " +
+                activity.db.subSport),
+            subtitle: Text('activity type / sport / sub sport'),
+          ),
+          ListTile(
+            leading: Icon(Icons.event),
+            title: Text(activity.db.eventType + " / " + activity.db.trigger),
+            subtitle: Text('event type / trigger'),
+          ),
+          ListTile(
+            leading: Icon(Icons.repeat),
+            title: Text("${activity.db.numLaps} / ${activity.db.numSessions}"),
+            subtitle: Text('number of laps / sessions'),
+          ),
+          ListTile(
+            leading: Icon(Icons.linear_scale),
+            title: Text(activity.db.avgFractionalCadence.toStringAsFixed(2) +
+                " / " +
+                activity.db.maxFractionalCadence.toStringAsFixed(2)),
+            subtitle: Text('avg / max fractional cadence'),
           ),
           ListTile(
             leading: Icon(Icons.pets),
             title: Text(
                 '${activity.db.avgStanceTime}ms / ${activity.db.avgStanceTimePercent}%'),
-            trailing: Text('avg stance time / %'),
-          ),
-          ListTile(
-            leading: Icon(Icons.fitness_center),
-            title: Text(activity.db.totalTrainingEffect.toString()),
-            trailing: Text('total training effect'),
-          ),
-          ListTile(
-            leading: Icon(Icons.unfold_more),
-            title: Text(activity.db.avgVerticalOscillation.toString()),
-            trailing: Text('avg vertical oscillation'),
-          ),
-          ListTile(
-            leading: Icon(Icons.pets),
-            title: Text(activity.db.avgRunningCadence.toString()),
-            trailing: Text('avg running cadence'),
-          ),
-          ListTile(
-            leading: Icon(Icons.repeat),
-            title: Text(activity.db.totalFractionalCycles.toString()),
-            trailing: Text('total fractional cycles'),
+            subtitle: Text('avg stance time / avg stance time percent'),
           ),
           ListTile(
             leading: Icon(Icons.map),
             title: Text(activity.db.startPositionLong.semicirclesAsDegrees() +
-                " /\n" +
+                "   /   " +
                 activity.db.startPositionLat.semicirclesAsDegrees()),
-            trailing: Text('start position long /\nlat'),
+            subtitle: Text('start position'),
           ),
           ListTile(
             leading: Icon(Icons.map),
             title: Text(activity.db.necLong.semicirclesAsDegrees() +
-                " /\n" +
+                "   /   " +
                 activity.db.necLat.semicirclesAsDegrees()),
-            trailing: Text('north east corner long /\nlat'),
+            subtitle: Text('north east corner'),
           ),
           ListTile(
             leading: Icon(Icons.map),
             title: Text(activity.db.swcLong.semicirclesAsDegrees() +
-                " /\n" +
+                "   /   " +
                 activity.db.swcLat.semicirclesAsDegrees()),
-            trailing: Text('south west corner long /\nlat'),
+            subtitle: Text('south west corner'),
           ),
         ],
       ),

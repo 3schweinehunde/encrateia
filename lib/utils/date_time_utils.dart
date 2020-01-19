@@ -8,7 +8,12 @@ dateTimeFromStrava(double dateTime) {
 
 extension DurationFormatters on Duration {
   String print() {
-    return "$inHours h ${inMinutes.remainder(60)} min ${inSeconds.remainder(60)} s";
+    return inHours.toString() +
+        "h " +
+        inMinutes.remainder(60).toString() +
+        "min " +
+        inSeconds.remainder(60).toString() +
+        "s";
   }
 }
 
