@@ -1,4 +1,5 @@
 import 'package:encrateia/widgets/activity_metadata_widget.dart';
+import 'package:encrateia/widgets/activity_overview_widget.dart';
 import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -14,7 +15,7 @@ class ShowActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -32,7 +33,14 @@ class ShowActivityScreen extends StatelessWidget {
                   Tab(icon: Icon(Icons.timer)),
                   Text(" Laps"),
                 ],
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Tab(icon: Icon(Icons.storage)),
+                  Text(" Metadata"),
+                ],
+              ),
             ],
           ),
           title: Text(
@@ -41,8 +49,9 @@ class ShowActivityScreen extends StatelessWidget {
           ),
         ),
         body: TabBarView(children: [
-          ActivityMetadataWidget(activity: activity),
+          ActivityOverviewWidget(activity: activity),
           LapsListWidget(activity: activity),
+          ActivityMetadataWidget(activity: activity),
         ]),
       ),
     );

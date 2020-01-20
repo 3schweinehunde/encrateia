@@ -20,55 +20,15 @@ class ActivityMetadataWidget extends StatelessWidget {
               title: Text(activity.db.name),
               subtitle: Text("title")),
           ListTile(
-            leading: Icon(Icons.timer),
-            title: Text(Duration(seconds: activity.db.movingTime).print()),
-            subtitle: Text('moving time'),
-          ),
-          ListTile(
             leading: Icon(Icons.access_time),
             title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
-                .format(activity.db.timeCreated)),
-            subtitle: Text('time created'),
-          ),
-          ListTile(
-            leading: Icon(Icons.redo),
-            title:
-                Text('${(activity.db.distance / 1000).toStringAsFixed(2)} km'),
-            subtitle: Text('distance'),
+                .format(activity.db.timeStamp)),
+            subtitle: Text('timestamp'),
           ),
           ListTile(
             leading: Icon(Icons.event),
             title: Text(activity.db.event),
             subtitle: Text('last event'),
-          ),
-          ListTile(
-            leading: Icon(Icons.shutter_speed),
-            title: Text((activity.db.avgSpeed * 3.6).toStringAsFixed(2) +
-                " km/h / " +
-                (activity.db.maxSpeed * 3.6).toStringAsFixed(2) +
-                " km/h"),
-            subtitle: Text('avg / max speed'),
-          ),
-          ListTile(
-            leading: Icon(Icons.battery_charging_full),
-            title: Text('${activity.db.totalCalories} kcal'),
-            subtitle: Text('total calories'),
-          ),
-          ListTile(
-            leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Icon(Icons.trending_up),
-              Icon(Icons.landscape),
-            ]),
-            title: Text("${activity.db.totalAscent} m"),
-            subtitle: Text('total ascent'),
-          ),
-          ListTile(
-            leading: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Icon(Icons.trending_down),
-              Icon(Icons.landscape),
-            ]),
-            title: Text("${activity.db.totalDescent} m"),
-            subtitle: Text('total descent'),
           ),
           if (activity.db.totalStrides != null)
             ListTile(
@@ -79,7 +39,8 @@ class ActivityMetadataWidget extends StatelessWidget {
           if (activity.db.maxRunningCadence != null)
             ListTile(
               leading: Icon(Icons.pets),
-              title: Text("${activity.db.avgRunningCadence} + ${activity.db.maxRunningCadence}"),
+              title: Text("${activity.db.avgRunningCadence.round()} /"
+                  " ${activity.db.maxRunningCadence}"),
               subtitle: Text('avg / max running cadence'),
             ),
           ListTile(
@@ -87,17 +48,6 @@ class ActivityMetadataWidget extends StatelessWidget {
             title: Text(
                 '${activity.db.avgTemperature}° / ${activity.db.maxTemperature}°'),
             subtitle: Text('avg / max temperature'),
-          ),
-          ListTile(
-            leading: Icon(Icons.spa),
-            title: Text(
-                "${activity.db.avgHeartRate} / ${activity.db.maxHeartRate}"),
-            subtitle: Text('avg / max heart rate'),
-          ),
-          ListTile(
-            leading: Icon(Icons.fitness_center),
-            title: Text(activity.db.totalTrainingEffect.toString()),
-            subtitle: Text('total training effect'),
           ),
           ListTile(
             leading: Icon(Icons.unfold_more),
@@ -122,7 +72,8 @@ class ActivityMetadataWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.fingerprint),
-            title: Text("${activity.db.stravaId} / ${activity.db.serialNumber}"),
+            title:
+                Text("${activity.db.stravaId} / ${activity.db.serialNumber}"),
             subtitle: Text("Strava / Garmin id"),
           ),
           ListTile(
@@ -154,7 +105,7 @@ class ActivityMetadataWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.pets),
             title: Text(
-                '${activity.db.avgStanceTime}ms / ${activity.db.avgStanceTimePercent}%'),
+                '${activity.db.avgStanceTime} ms / ${activity.db.avgStanceTimePercent} %'),
             subtitle: Text('avg stance time / avg stance time percent'),
           ),
           ListTile(

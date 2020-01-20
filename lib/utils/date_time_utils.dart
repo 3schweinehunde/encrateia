@@ -19,11 +19,15 @@ extension DurationFormatters on Duration {
 
 extension DegreeFormatters on double {
   String semicirclesAsDegrees() {
-    var fractionalDegrees = this * (180 / pow(2, 31));
-    var degrees = fractionalDegrees.floor();
-    var minutes = ((fractionalDegrees - degrees) * 60).floor();
-    var seconds = (((fractionalDegrees - degrees) * 60) - minutes) * 60;
+    if (this != null) {
+      var fractionalDegrees = this * (180 / pow(2, 31));
+      var degrees = fractionalDegrees.floor();
+      var minutes = ((fractionalDegrees - degrees) * 60).floor();
+      var seconds = (((fractionalDegrees - degrees) * 60) - minutes) * 60;
 
-    return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}"';
+      return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}"';
+    } else {
+      return "no value";
+    }
   }
 }
