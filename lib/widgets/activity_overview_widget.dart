@@ -55,13 +55,13 @@ class ActivityOverviewWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.spa),
             title: Text(
-                "${activity.db.avgHeartRate} / ${activity.db.maxHeartRate}"),
+                "${activity.db.avgHeartRate} bpm / ${activity.db.maxHeartRate} bpm"),
             subtitle: Text('avg / max heart rate'),
           ),
           ListTile(
             leading: Icon(Icons.pets),
-            title: Text("${(activity.db.avgRunningCadence * 2).round()} / "
-                "${activity.db.maxRunningCadence * 2}"),
+            title: Text("${(activity.db.avgRunningCadence * 2).round()} spm / "
+                "${activity.db.maxRunningCadence * 2} spm"),
             subtitle: Text('avg / max steps per minute'),
           ),
           ListTile(

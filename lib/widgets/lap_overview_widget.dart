@@ -48,13 +48,13 @@ class LapOverviewWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.spa),
-            title: Text("${lap.db.avgHeartRate} / ${lap.db.maxHeartRate}"),
+            title: Text("${lap.db.avgHeartRate} bpm / ${lap.db.maxHeartRate} bpm"),
             subtitle: Text('avg / max heart rate'),
           ),
           ListTile(
             leading: Icon(Icons.pets),
-            title: Text("${(lap.db.avgRunningCadence * 2).round()} / "
-                "${lap.db.maxRunningCadence * 2}"),
+            title: Text("${(lap.db.avgRunningCadence * 2).round()} spm / "
+                "${lap.db.maxRunningCadence * 2} spm"),
             subtitle: Text('avg / max steps per minute'),
           ),
           ListTile(
