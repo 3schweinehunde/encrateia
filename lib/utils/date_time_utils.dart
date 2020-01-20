@@ -30,4 +30,17 @@ extension DegreeFormatters on double {
       return "no value";
     }
   }
+
+  String toPace() {
+    if (this != null) {
+       var totalSeconds = 1000 / this;
+       var minutes = (totalSeconds / 60).floor();
+       var seconds = (totalSeconds - minutes * 60).round();
+       return "${minutes}min ${seconds}s";
+    } else {
+      return "no value";
+    }
+  }
 }
+
+

@@ -104,6 +104,14 @@ class LapMetadataWidget extends StatelessWidget {
             title: Text(lap.db.intensity.toString()),
             subtitle: Text('intensity'),
           ),
+          ListTile(
+            leading: Icon(Icons.shutter_speed),
+            title: Text((lap.db.avgSpeed * 3.6).toStringAsFixed(2) +
+                " km/h / " +
+                (lap.db.maxSpeed * 3.6).toStringAsFixed(2) +
+                " km/h"),
+            subtitle: Text('avg / max speed'),
+          ),
         ],
       ),
     );

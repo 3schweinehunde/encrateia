@@ -129,6 +129,15 @@ class ActivityMetadataWidget extends StatelessWidget {
                 activity.db.swcLat.semicirclesAsDegrees()),
             subtitle: Text('south west corner'),
           ),
+          ListTile(
+            leading: Icon(Icons.shutter_speed),
+            title: Text((activity.db.avgSpeed * 3.6).toStringAsFixed(2) +
+                " km/h / " +
+                (activity.db.maxSpeed * 3.6).toStringAsFixed(2) +
+                " km/h"),
+            subtitle: Text('avg / max speed'),
+          ),
+
         ],
       ),
     );

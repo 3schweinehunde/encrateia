@@ -34,11 +34,10 @@ class ActivityOverviewWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.shutter_speed),
-            title: Text((activity.db.avgSpeed * 3.6).toStringAsFixed(2) +
-                " km/h / " +
-                (activity.db.maxSpeed * 3.6).toStringAsFixed(2) +
-                " km/h"),
-            subtitle: Text('avg / max speed'),
+            title: Text(activity.db.avgSpeed.toPace() +
+                " / " +
+                activity.db.maxSpeed.toPace()),
+            subtitle: Text('avg / max pace'),
           ),
           ListTile(
             leading: Icon(Icons.battery_charging_full),

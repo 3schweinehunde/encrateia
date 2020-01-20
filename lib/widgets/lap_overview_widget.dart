@@ -24,16 +24,13 @@ class LapOverviewWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.redo),
             title:
-            Text('${(lap.db.totalDistance / 1000).toStringAsFixed(2)} km'),
+                Text('${(lap.db.totalDistance / 1000).toStringAsFixed(2)} km'),
             subtitle: Text('distance'),
           ),
           ListTile(
             leading: Icon(Icons.shutter_speed),
-            title: Text((lap.db.avgSpeed * 3.6).toStringAsFixed(2) +
-                " km/h / " +
-                (lap.db.maxSpeed * 3.6).toStringAsFixed(2) +
-                " km/h"),
-            subtitle: Text('avg / max speed'),
+            title: Text(lap.db.avgSpeed.toPace() + " / " + lap.db.maxSpeed.toPace()),
+            subtitle: Text('avg / max pace'),
           ),
           ListTile(
             leading: Icon(Icons.battery_charging_full),
@@ -48,7 +45,8 @@ class LapOverviewWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.spa),
-            title: Text("${lap.db.avgHeartRate} bpm / ${lap.db.maxHeartRate} bpm"),
+            title:
+                Text("${lap.db.avgHeartRate} bpm / ${lap.db.maxHeartRate} bpm"),
             subtitle: Text('avg / max heart rate'),
           ),
           ListTile(
