@@ -21,8 +21,8 @@ class LapMetadataWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.access_time),
-            title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
-                .format(lap.db.timeStamp)),
+            title: Text(
+                DateFormat("dd MMM yyyy, h:mm:ss").format(lap.db.timeStamp)),
             subtitle: Text('timestamp'),
           ),
           ListTile(
@@ -37,13 +37,54 @@ class LapMetadataWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.event),
-            title: Text(lap.db.eventType + " / " + lap.db.eventGroup.toString()),
+            title:
+                Text(lap.db.eventType + " / " + lap.db.eventGroup.toString()),
             subtitle: Text('event type / group'),
           ),
-
-
-
-
+          ListTile(
+            leading: Icon(Icons.unfold_more),
+            title: Text(lap.db.avgVerticalOscillation.toString()),
+            subtitle: Text('avg vertical oscillation'),
+          ),
+          ListTile(
+            leading: Icon(Icons.timer),
+            title: Text(Duration(seconds: lap.db.totalElapsedTime).print()),
+            subtitle: Text('total elapsed time'),
+          ),
+          ListTile(
+            leading: Icon(Icons.timer),
+            title: Text(Duration(seconds: lap.db.totalTimerTime).print()),
+            subtitle: Text('total timer time'),
+          ),
+          ListTile(
+            leading: Icon(Icons.pets),
+            title: Text(
+                '${lap.db.avgStanceTime} ms / ${lap.db.avgStanceTimePercent} %'),
+            subtitle: Text('avg stance time / avg stance time percent'),
+          ),
+          ListTile(
+            leading: Icon(Icons.event),
+            title: Text(lap.db.lapTrigger),
+            subtitle: Text('lap trigger'),
+          ),
+          ListTile(
+            leading: Icon(Icons.ac_unit),
+            title:
+                Text('${lap.db.avgTemperature}° / ${lap.db.maxTemperature}°'),
+            subtitle: Text('avg / max temperature'),
+          ),
+          ListTile(
+            leading: Icon(Icons.linear_scale),
+            title: Text(lap.db.avgFractionalCadence.toStringAsFixed(2) +
+                " / " +
+                lap.db.maxFractionalCadence.toStringAsFixed(2)),
+            subtitle: Text('avg / max fractional cadence'),
+          ),
+          ListTile(
+            leading: Icon(Icons.repeat),
+            title: Text(lap.db.totalFractionalCycles.toString()),
+            subtitle: Text('total fractional cycles'),
+          ),
           ListTile(
             leading: Icon(Icons.map),
             title: Text(lap.db.startPositionLong.semicirclesAsDegrees() +
@@ -58,20 +99,13 @@ class LapMetadataWidget extends StatelessWidget {
                 lap.db.endPositionLat.semicirclesAsDegrees()),
             subtitle: Text('end position'),
           ),
+          ListTile(
+            leading: Icon(Icons.power),
+            title: Text(lap.db.intensity.toString()),
+            subtitle: Text('intensity'),
+          ),
         ],
       ),
     );
   }
 }
-
-// avgVerticalOscillation     real
-// totalElapsedTime     integer
-// totalTimerTime     integer
-// avgStanceTimePercent     real
-// avgStanceTime    real
-// lapTrigger     text
-// avgTemperature     integer
-// maxTemperature     integer
-// avgFractionalCadence     real
-// maxFractionalCadence     real
-// totalFractionalCycles    real

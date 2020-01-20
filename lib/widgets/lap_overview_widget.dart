@@ -17,26 +17,53 @@ class LapOverviewWidget extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.access_time),
-            title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
-                .format(lap.db.startTime)),
+            title: Text(
+                DateFormat("dd MMM yyyy, h:mm:ss").format(lap.db.startTime)),
             subtitle: Text('start time'),
+          ),
+          ListTile(
+            leading: Icon(Icons.redo),
+            title:
+            Text('${(lap.db.totalDistance / 1000).toStringAsFixed(2)} km'),
+            subtitle: Text('distance'),
+          ),
+          ListTile(
+            leading: Icon(Icons.shutter_speed),
+            title: Text((lap.db.avgSpeed * 3.6).toStringAsFixed(2) +
+                " km/h / " +
+                (lap.db.maxSpeed * 3.6).toStringAsFixed(2) +
+                " km/h"),
+            subtitle: Text('avg / max speed'),
+          ),
+          ListTile(
+            leading: Icon(Icons.battery_charging_full),
+            title: Text('${lap.db.totalCalories} kcal'),
+            subtitle: Text('total calories'),
+          ),
+          ListTile(
+            leading: Icon(Icons.landscape),
+            title: Text("${lap.db.totalAscent} m - ${lap.db.totalDescent} m"
+                " = ${lap.db.totalAscent - lap.db.totalDescent} m"),
+            subtitle: Text('total ascent - descent = total climb'),
+          ),
+          ListTile(
+            leading: Icon(Icons.spa),
+            title: Text("${lap.db.avgHeartRate} / ${lap.db.maxHeartRate}"),
+            subtitle: Text('avg / max heart rate'),
+          ),
+          ListTile(
+            leading: Icon(Icons.pets),
+            title: Text("${(lap.db.avgRunningCadence * 2).round()} / "
+                "${lap.db.maxRunningCadence * 2}"),
+            subtitle: Text('avg / max steps per minute'),
+          ),
+          ListTile(
+            leading: Icon(Icons.pets),
+            title: Text(lap.db.totalStrides.toString()),
+            subtitle: Text('total strides'),
           ),
         ],
       ),
     );
   }
 }
-
-// avgHeartRate     integer
-// maxHeartRate     integer
-// avgRunningCadence    real
-// maxRunningCadence    integer
-// totalDistance    integer
-// totalStrides     integer
-// totalCalories    integer
-// avgSpeed     real
-// maxSpeed     real
-// totalAscent    integer
-// totalDescent     integer
-// intensity    integer
-

@@ -53,16 +53,16 @@ class ActivityOverviewWidget extends StatelessWidget {
             subtitle: Text('total ascent - descent = total climb'),
           ),
           ListTile(
-            leading: Icon(Icons.pets),
-            title: Text("${(activity.db.avgRunningCadence * 2).round()} / "
-                "${activity.db.maxRunningCadence * 2}"),
-            subtitle: Text('avg / max steps per minute'),
-          ),
-          ListTile(
             leading: Icon(Icons.spa),
             title: Text(
                 "${activity.db.avgHeartRate} / ${activity.db.maxHeartRate}"),
             subtitle: Text('avg / max heart rate'),
+          ),
+          ListTile(
+            leading: Icon(Icons.pets),
+            title: Text("${(activity.db.avgRunningCadence * 2).round()} / "
+                "${activity.db.maxRunningCadence * 2}"),
+            subtitle: Text('avg / max steps per minute'),
           ),
           ListTile(
             leading: Icon(Icons.fitness_center),
