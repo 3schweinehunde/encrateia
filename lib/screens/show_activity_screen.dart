@@ -1,6 +1,8 @@
 import 'package:encrateia/widgets/activity_metadata_widget.dart';
 import 'package:encrateia/widgets/activity_overview_widget.dart';
 import 'package:encrateia/widgets/laps_list_widget.dart';
+import 'package:encrateia/widgets/activity_heart_rate_widget.dart';
+import 'package:encrateia/widgets/activity_power_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 
@@ -15,16 +17,31 @@ class ShowActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
+            isScrollable: true,
             tabs: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Tab(icon: Icon(Icons.directions_run)),
                   Text(" Overview"),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Tab(icon: Icon(Icons.spa)),
+                  Text(" Heart Rate"),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Tab(icon: Icon(Icons.ev_station)),
+                  Text(" Power"),
                 ],
               ),
               Row(
@@ -50,6 +67,8 @@ class ShowActivityScreen extends StatelessWidget {
         ),
         body: TabBarView(children: [
           ActivityOverviewWidget(activity: activity),
+          ActivityHeartRateWidget(activity: activity),
+          ActivityPowerWidget(activity: activity),
           LapsListWidget(activity: activity),
           ActivityMetadataWidget(activity: activity),
         ]),

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
 
-class LapPowerWidget extends StatelessWidget {
-  final Lap lap;
+class ActivityPowerWidget extends StatelessWidget {
+  final Activity activity;
 
-  LapPowerWidget({this.lap});
+  ActivityPowerWidget({this.activity});
 
   @override
   Widget build(context) {
     return FutureBuilder<List<Event>>(
-      future: Event.recordsByLap(lap: lap),
+      future: Event.recordsByActivity(activity: activity),
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var records = snapshot.data;

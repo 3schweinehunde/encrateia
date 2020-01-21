@@ -98,6 +98,12 @@ class Event {
     return records.toList();
   }
 
+  static Future<List<Event>> recordsByActivity({Activity activity}) async {
+    var events = await by(activity: activity);
+    var records = events.where((event) => event.db.event == "record");
+    return records.toList();
+  }
+
   static Future<List<Event>> by({Activity activity}) async {
     int counter = 1;
 

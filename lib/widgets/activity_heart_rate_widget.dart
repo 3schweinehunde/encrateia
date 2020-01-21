@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/lap.dart';
 
-class LapPowerWidget extends StatelessWidget {
-  final Lap lap;
+class ActivityHeartRateWidget extends StatelessWidget {
+  final Activity activity;
 
-  LapPowerWidget({this.lap});
+  ActivityHeartRateWidget({this.activity});
 
   @override
   Widget build(context) {
     return FutureBuilder<List<Event>>(
-      future: Event.recordsByLap(lap: lap),
+      future: Event.recordsByActivity(activity: activity),
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var records = snapshot.data;
@@ -25,24 +26,24 @@ class LapPowerWidget extends StatelessWidget {
                   subtitle: Text("number of measurements"),
                 ),
                 ListTile(
-                  leading: Icon(Icons.ev_station),
-                  title: Text(Lap.averagePower(records: records) + " W"),
-                  subtitle: Text("average power"),
+                  leading: Icon(Icons.pets),
+                  title: Text(Lap.averageHeartRate(records: records)),
+                  subtitle: Text("average heart rate"),
                 ),
                 ListTile(
                   leading: Icon(Icons.expand_less),
-                  title: Text(Lap.minPower(records: records) + " W"),
-                  subtitle: Text("minimum power"),
+                  title: Text(Lap.minHeartRate(records: records)),
+                  subtitle: Text("minimum heart rate"),
                 ),
                 ListTile(
                   leading: Icon(Icons.expand_more),
-                  title: Text(Lap.maxPower(records: records) + " W"),
-                  subtitle: Text("maximum power"),
+                  title: Text(Lap.maxHeartRate(records: records)),
+                  subtitle: Text("maximum heart rate"),
                 ),
                 ListTile(
                   leading: Icon(Icons.unfold_more),
-                  title: Text(Lap.sdevPower(records: records) + " W"),
-                  subtitle: Text("standard deviation power"),
+                  title: Text(Lap.sdevHeartRate(records: records)),
+                  subtitle: Text("standard deviation heart rate"),
 
                 ),
               ],

@@ -84,7 +84,6 @@ class LapsListWidget extends StatelessWidget {
             child: Text("Loading"),
           );
         }
-        ;
       },
     );
   }
