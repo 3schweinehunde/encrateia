@@ -4,7 +4,6 @@ import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/models/event.dart';
 import 'activity.dart';
-import 'dart:math';
 
 class Lap {
   DbLap db;
@@ -94,12 +93,12 @@ class Lap {
 
   static String minHeartRate({List<Event> records}) {
     var heartRates = records.map((record) => record.db.heartRate);
-    return heartRates.reduce(min).toStringAsFixed(1);
+    return heartRates.min().toStringAsFixed(1);
   }
 
   static String maxHeartRate({List<Event> records}) {
     var heartRates = records.map((record) => record.db.heartRate);
-    return heartRates.reduce(max).toStringAsFixed(1);
+    return heartRates.max().toStringAsFixed(1);
   }
 
   static String averagePower({List<Event> records}) {
@@ -114,11 +113,11 @@ class Lap {
 
   static String minPower({List<Event> records}) {
     var powers = records.map((record) => record.db.power);
-    return powers.reduce(min).toStringAsFixed(1);
+    return powers.min().toStringAsFixed(1);
   }
 
   static String maxPower({List<Event> records}) {
     var powers = records.map((record) => record.db.power);
-    return powers.reduce(max).toStringAsFixed(1);
+    return powers.max().toStringAsFixed(1);
   }
 }
