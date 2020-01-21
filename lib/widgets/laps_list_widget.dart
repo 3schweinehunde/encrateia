@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/screens/show_lap_screen.dart';
+import 'package:encrateia/utils/date_time_utils.dart';
 
 class LapsListWidget extends StatelessWidget {
   final Activity activity;
@@ -13,10 +14,8 @@ class LapsListWidget extends StatelessWidget {
     return FutureBuilder<List<Lap>>(
       future: Lap.by(activity: activity),
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
-        Widget widget;
-
         if (snapshot.hasData) {
-          widget = DataTable(
+          return DataTable(
             dataRowHeight: kMinInteractiveDimension * 0.60,
             columnSpacing: 20,
             columns: <DataColumn>[
@@ -31,8 +30,8 @@ class LapsListWidget extends StatelessWidget {
                 numeric: true,
               ),
               const DataColumn(
-                label: Text("km/h"),
-                tooltip: 'speed',
+                label: Text("min:ss"),
+                tooltip: 'pace',
                 numeric: true,
               ),
               const DataColumn(
@@ -54,9 +53,7 @@ class LapsListWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ShowLapScreen(
-                          lap: lap,
-                        ),
+                        builder: (context) => ShowLapScreen(lap: lap),
                       ),
                     );
                   }
@@ -69,10 +66,10 @@ class LapsListWidget extends StatelessWidget {
                     Text(lap.db.avgHeartRate.toString()),
                   ),
                   DataCell(
-                    Text((lap.db.avgSpeed * 3.6).toStringAsFixed(2)),
+                    Text(lap.db.avgSpeed.toPace()),
                   ),
                   DataCell(
-                    Text((lap.db.totalDistance / 1000).toStringAsFixed(3) +
+                    Text((lap.db.totalDistance / 1000).toStringAsFixed(2) +
                         ' km'),
                   ),
                   DataCell(
@@ -83,25 +80,11 @@ class LapsListWidget extends StatelessWidget {
             }).toList(),
           );
         } else {
-          widget = Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  child: CircularProgressIndicator(),
-                  width: 60,
-                  height: 60,
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text('Loading...'),
-                )
-              ],
-            ),
+          return Center(
+            child: Text("Loading"),
           );
         }
-        return widget;
+        ;
       },
     );
   }

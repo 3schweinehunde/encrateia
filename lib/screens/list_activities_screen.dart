@@ -48,8 +48,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                   leading: Icon(Icons.error),
                   title: Text("Strava email not provided yet!"),
                 ),
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.data.length > 0)
+              if (snapshot.hasData)
                 for (Activity activity in snapshot.data)
                   ListTile(
                     leading: Icon(Icons.directions_run),

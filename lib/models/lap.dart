@@ -1,7 +1,10 @@
 import 'package:encrateia/model/model.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
+import 'package:encrateia/utils/list_utils.dart';
+import 'package:encrateia/models/event.dart';
 import 'activity.dart';
+import 'dart:math';
 
 class Lap {
   DbLap db;
@@ -51,19 +54,71 @@ class Lap {
   }
   Lap.fromDb(this.db);
 
+  Future<int> firstEventId() async {
+    if (index > 1) {
+      var lapList = await Lap.by(activity: activity);
+      DbEvent firstEvent = await lapList
+          .firstWhere((lap) => lap.index == index - 1)
+          .db
+          .getDbEvent();
+      return firstEvent.id;
+    } else {
+      return 0;
+    }
+  }
+
   static Future<List<Lap>> by({Activity activity}) async {
     int counter = 1;
 
     List<DbLap> dbLapList = await activity.db.getDbLaps().toList();
     var lapList = dbLapList.map((dbLap) => Lap.fromDb(dbLap)).toList();
 
-    await Future.forEach(lapList, (lap) async {
-      var dbActivity = await lap.db.getDbActivity();
-      lap.activity = Activity.fromDb(dbActivity);
-      lap.index = counter;
-      counter = counter +1;
-    });
-
+    for (Lap lap in lapList) {
+      lap
+        ..activity = activity
+        ..index = counter;
+      counter = counter + 1;
+    }
     return lapList;
+  }
+
+  static String averageHeartRate({List<Event> records}) {
+    var heartRates = records.map((record) => record.db.heartRate);
+    return heartRates.mean().toStringAsFixed(1);
+  }
+
+  static String sdevHeartRate({List<Event> records}) {
+    var heartRates = records.map((record) => record.db.heartRate);
+    return heartRates.sdev().toStringAsFixed(2);
+  }
+
+  static String minHeartRate({List<Event> records}) {
+    var heartRates = records.map((record) => record.db.heartRate);
+    return heartRates.reduce(min).toStringAsFixed(1);
+  }
+
+  static String maxHeartRate({List<Event> records}) {
+    var heartRates = records.map((record) => record.db.heartRate);
+    return heartRates.reduce(max).toStringAsFixed(1);
+  }
+
+  static String averagePower({List<Event> records}) {
+    var powers = records.map((record) => record.db.power);
+    return powers.mean().toStringAsFixed(1);
+  }
+
+  static String sdevPower({List<Event> records}) {
+    var powers = records.map((record) => record.db.power);
+    return powers.sdev().toStringAsFixed(2);
+  }
+
+  static String minPower({List<Event> records}) {
+    var powers = records.map((record) => record.db.power);
+    return powers.reduce(min).toStringAsFixed(1);
+  }
+
+  static String maxPower({List<Event> records}) {
+    var powers = records.map((record) => record.db.power);
+    return powers.reduce(max).toStringAsFixed(1);
   }
 }

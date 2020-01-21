@@ -35,8 +35,8 @@ extension DegreeFormatters on double {
     if (this != null) {
        var totalSeconds = 1000 / this;
        var minutes = (totalSeconds / 60).floor();
-       var seconds = (totalSeconds - minutes * 60).round();
-       return "${minutes}min ${seconds}s";
+       var seconds = (totalSeconds - minutes * 60).round().toString().padLeft(2, "0");
+       return "$minutes:$seconds";
     } else {
       return "no value";
     }
