@@ -16,7 +16,7 @@ class ActivityPowerWidget extends StatelessWidget {
         if (snapshot.hasData) {
           var records = snapshot.data;
           return ListTileTheme(
-            iconColor: Colors.lightGreen,
+            iconColor: Colors.deepOrange,
             child: ListView(
               padding: EdgeInsets.only(left: 25),
               children: <Widget>[
