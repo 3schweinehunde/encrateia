@@ -1,29 +1,30 @@
 import 'dart:math' as math;
 
 extension StatisticFunctions on Iterable {
-  double mean() {
-    var nonZeroValues = this.nonZero();
-    var sum = nonZeroValues.reduce((a, b) => a + b);
-    var number = nonZeroValues.length;
+  double mean(){
+    List<int> values = this;
+    var sum = values.reduce((a, b) => a + b);
+    var number = this.length;
     return sum / number;
   }
 
   double sdev() {
-    var nonZeroValues = this.nonZero();
-    var mean = nonZeroValues.mean();
+    var mean = this.toList().mean();
 
-    var sumOfErrorSquares = nonZeroValues.fold(
-        0.0, (double sum, next) => sum + math.pow(next - mean, 2));
-    var variance = sumOfErrorSquares / nonZeroValues.length;
+    var sumOfErrorSquares =
+        this.fold(0.0, (double sum, next) => sum + math.pow(next - mean, 2));
+    var variance = sumOfErrorSquares / this.length;
     return math.sqrt(variance);
   }
 
   int min() {
-    return this.nonZero().reduce(math.min);
+    List<int> values = this.toList();
+    return values.reduce(math.min);
   }
 
   int max() {
-    return this.nonZero().reduce(math.max);
+    List<int> values = this.toList();
+    return values.reduce(math.max);
   }
 
   List<int> nonZero() {

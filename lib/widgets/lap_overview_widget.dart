@@ -51,8 +51,8 @@ class LapOverviewWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.pets),
-            title: Text("${(lap.db.avgRunningCadence * 2).round()} spm / "
-                "${lap.db.maxRunningCadence * 2} spm"),
+            title: Text("${(lap.db.avgRunningCadence ?? 0 * 2).round()} spm / "
+                "${lap.db.maxRunningCadence ?? 0 * 2} spm"),
             subtitle: Text('avg / max steps per minute'),
           ),
           ListTile(

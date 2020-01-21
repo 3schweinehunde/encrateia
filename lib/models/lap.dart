@@ -82,42 +82,43 @@ class Lap {
   }
 
   static String averageHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate);
+    List<int> heartRates =
+        records.map((record) => record.db.heartRate).nonZero();
     return heartRates.mean().toStringAsFixed(1);
   }
 
   static String sdevHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate);
+    var heartRates = records.map((record) => record.db.heartRate).nonZero();
     return heartRates.sdev().toStringAsFixed(2);
   }
 
   static String minHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate);
+    var heartRates = records.map((record) => record.db.heartRate).nonZero();
     return heartRates.min().toStringAsFixed(1);
   }
 
   static String maxHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate);
+    var heartRates = records.map((record) => record.db.heartRate).nonZero();
     return heartRates.max().toStringAsFixed(1);
   }
 
   static String averagePower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power);
+    var powers = records.map((record) => record.db.power).nonZero();
     return powers.mean().toStringAsFixed(1);
   }
 
   static String sdevPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power);
+    var powers = records.map((record) => record.db.power).nonZero();
     return powers.sdev().toStringAsFixed(2);
   }
 
   static String minPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power);
+    var powers = records.map((record) => record.db.power).nonZero();
     return powers.min().toStringAsFixed(1);
   }
 
   static String maxPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power);
+    var powers = records.map((record) => record.db.power).nonZero();
     return powers.max().toStringAsFixed(1);
   }
 }

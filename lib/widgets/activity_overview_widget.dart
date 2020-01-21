@@ -59,8 +59,8 @@ class ActivityOverviewWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.pets),
-            title: Text("${(activity.db.avgRunningCadence * 2).round()} spm / "
-                "${activity.db.maxRunningCadence * 2} spm"),
+            title: Text("${(activity.db.avgRunningCadence ?? 0 * 2).round()} spm / "
+                "${activity.db.maxRunningCadence ?? 0 * 2} spm"),
             subtitle: Text('avg / max steps per minute'),
           ),
           ListTile(
