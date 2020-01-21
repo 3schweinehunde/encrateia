@@ -31,12 +31,12 @@ class ActivityHeartRateWidget extends StatelessWidget {
                   subtitle: Text("average heart rate"),
                 ),
                 ListTile(
-                  leading: Icon(Icons.expand_less),
+                  leading: Icon(Icons.expand_more),
                   title: Text(Lap.minHeartRate(records: records)),
                   subtitle: Text("minimum heart rate"),
                 ),
                 ListTile(
-                  leading: Icon(Icons.expand_more),
+                  leading: Icon(Icons.expand_less),
                   title: Text(Lap.maxHeartRate(records: records)),
                   subtitle: Text("maximum heart rate"),
                 ),

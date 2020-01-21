@@ -31,12 +31,12 @@ class ActivityPowerWidget extends StatelessWidget {
                   subtitle: Text("average power"),
                 ),
                 ListTile(
-                  leading: Icon(Icons.expand_less),
+                  leading: Icon(Icons.expand_more),
                   title: Text(Lap.minPower(records: records) + " W"),
                   subtitle: Text("minimum power"),
                 ),
                 ListTile(
-                  leading: Icon(Icons.expand_more),
+                  leading: Icon(Icons.expand_less),
                   title: Text(Lap.maxPower(records: records) + " W"),
                   subtitle: Text("maximum power"),
                 ),
