@@ -1,27 +1,28 @@
+import 'package:encrateia/models/power_duration.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/plot_point.dart';
 
-class LapPowerChart extends StatelessWidget {
+class LapPowerDurationChart extends StatelessWidget {
   final List<Event> records;
 
-  LapPowerChart({this.records});
+  LapPowerDurationChart({this.records});
 
   @override
   Widget build(BuildContext context) {
     var nonZero = records
         .where((value) => value.db.power != null && value.db.power > 100)
         .toList();
-
-    var offset = nonZero.first.db.distance.round();
+    PowerDuration powerDuration = PowerDuration(records: nonZero);
 
     List<Series<dynamic, num>> data = [
-      new Series<Event, int>(
-        id: 'Power',
+      new Series<PlotPoint, int>(
+        id: 'Power Duration',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
-        domainFn: (Event record, _) => record.db.distance.round() - offset,
-        measureFn: (Event record, _) => record.db.power,
-        data: nonZero,
+        domainFn: (PlotPoint record, _) => record.domain,
+        measureFn: (PlotPoint record, _) => record.measure,
+        data: powerDuration.asList(),
       )
     ];
 
@@ -34,7 +35,8 @@ class LapPowerChart extends StatelessWidget {
           tickProviderSpec: BasicNumericTickProviderSpec(
               zeroBound: false,
               dataIsInWholeNumbers: true,
-              desiredTickCount: 6),
+              desiredTickCount: 10,
+              desiredMinTickCount: 6),
         ),
         animate: false,
         behaviors: [
@@ -45,7 +47,7 @@ class LapPowerChart extends StatelessWidget {
             titleOutsideJustification: OutsideJustification.end,
           ),
           ChartTitle(
-            'Distance (m)',
+            'Time (s)',
             titleStyleSpec: TextStyleSpec(fontSize: 13),
             behaviorPosition: BehaviorPosition.bottom,
             titleOutsideJustification: OutsideJustification.end,
