@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:encrateia/models/event.dart';
 
 extension StatisticFunctions on Iterable {
   double mean(){
@@ -31,5 +32,11 @@ extension StatisticFunctions on Iterable {
     List<int> values = this.toList();
     var nonZeroValues = values.where((value) => value != null && value != 0);
     return nonZeroValues.toList();
+  }
+
+  Iterable<Event> everyNth(int n) sync* {
+    List<Event> values = this.toList();
+    int i = 0;
+    for (var e in values) if (i++ % n == 0) yield e;
   }
 }
