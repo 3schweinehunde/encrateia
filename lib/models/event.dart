@@ -1,9 +1,11 @@
 import 'package:encrateia/model/model.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'activity.dart';
 import 'dart:developer';
 import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/plot_point.dart';
 
 class Event {
   DbEvent db;
@@ -117,5 +119,31 @@ class Event {
     }
 
     return eventList;
+  }
+
+  static toDataPoints({Iterable<Event> records, int amount, @required String attribute}) {
+    int index = 0;
+    List<PlotPoint> plotPoints = [];
+    int sum = 0;
+
+    for (var record in records) {
+      switch(attribute) {
+        case "power":
+          sum = sum + record.db.power;
+          break;
+        case "heartRate":
+          sum = sum + record.db.heartRate;
+      }
+
+      if (index++ % amount == amount - 1) {
+        plotPoints.add(PlotPoint(
+          domain: record.db.distance.round(),
+          measure: (sum / amount).round(),
+        ));
+        sum = 0;
+      }
+    }
+
+    return plotPoints;
   }
 }

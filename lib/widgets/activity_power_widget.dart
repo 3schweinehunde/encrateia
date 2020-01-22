@@ -23,7 +23,10 @@ class ActivityPowerWidget extends StatelessWidget {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                ActivityPowerChart(records: records, activity: activity),
+                ActivityPowerChart(
+                  records: records,
+                  activity: activity,
+                ),
                 Expanded(
                   child: ListTileTheme(
                     iconColor: Colors.deepOrange,

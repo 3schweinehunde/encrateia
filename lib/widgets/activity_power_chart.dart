@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/utils/list_utils.dart';
+import 'package:encrateia/models/plot_point.dart';
 
 class ActivityPowerChart extends StatelessWidget {
   final List<Event> records;
@@ -18,15 +18,19 @@ class ActivityPowerChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.power > 100);
-    var recducedRecords = nonZero.everyNth(25).toList();
+    var smoothedRecords = Event.toDataPoints(
+      attribute: "power",
+      records: nonZero,
+      amount: 30,
+    );
 
     List<Series<dynamic, num>> data = [
-      new Series<Event, int>(
+      new Series<PlotPoint, int>(
         id: 'Power',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
-        domainFn: (Event record, _) => record.db.distance.round(),
-        measureFn: (Event record, _) => record.db.power,
-        data: recducedRecords,
+        domainFn: (PlotPoint record, _) => record.domain,
+        measureFn: (PlotPoint record, _) => record.measure,
+        data: smoothedRecords,
       )
     ];
 
@@ -89,9 +93,9 @@ class ActivityPowerChart extends StatelessWidget {
       for (int index = 0; index < laps.length; index++)
         RangeAnnotationSegment(
           laps
-              .sublist(0, index + 1)
-              .map((lap) => lap.db.totalDistance)
-              .reduce((a, b) => a + b) -
+                  .sublist(0, index + 1)
+                  .map((lap) => lap.db.totalDistance)
+                  .reduce((a, b) => a + b) -
               laps[index].db.totalDistance,
           laps
               .sublist(0, index + 1)
