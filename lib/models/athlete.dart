@@ -20,7 +20,8 @@ class Athlete extends ChangeNotifier {
       ..stravaId = athlete.id
       ..stravaUsername = athlete.username
       ..photoPath = athlete.profile
-      ..geoState = athlete.state;
+      ..geoState = athlete.state
+      ..state = "fromStrava";
     notifyListeners();
   }
 
@@ -30,8 +31,10 @@ class Athlete extends ChangeNotifier {
         return "Loading athlete data from Strava ...";
       case "unsaved":
         return "Strava data loaded successfully.";
+      case "fromStrava":
+        return "Data received from Strava.";
       default:
-        return "Unknown state, should have never come here.";
+        return "Unknown state ${db.state}, should have never come here.";
     }
   }
 

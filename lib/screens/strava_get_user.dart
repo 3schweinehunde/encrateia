@@ -17,16 +17,17 @@ class StravaGetUser extends StatelessWidget {
       value: athlete,
       child: Scaffold(
         appBar: AppBar(title: Text('Create Athlete')),
-        body:
-            Consumer<Athlete>(builder: (context, athlete, _child) {
-          if (athlete.db.firstName == null) loginToStrava();
-          return Container(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(athlete.stateText),
-            ),
-          );
-        }),
+        body: Consumer<Athlete>(
+          builder: (context, athlete, _child) {
+            if (athlete.db.firstName == null) loginToStrava();
+            return Container(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Text(athlete.stateText),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

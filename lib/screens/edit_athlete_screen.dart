@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:provider/provider.dart';
-import 'strava/strava_get_user.dart';
+import 'strava_get_user.dart';
 
 class EditAthleteScreen extends StatelessWidget {
   final Athlete athlete;
