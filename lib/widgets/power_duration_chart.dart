@@ -3,8 +3,6 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/plot_point.dart';
-import 'package:encrateia/models/power_duration.dart';
-
 
 class PowerDurationChart extends StatelessWidget {
   final List<Event> records;
@@ -36,6 +34,21 @@ class PowerDurationChart extends StatelessWidget {
       TickSpec(PowerDuration.scaled(seconds: 3600), label: '1h'),
     ];
 
+    final chartTitles = [
+      ChartTitle(
+        'Power (W)',
+        titleStyleSpec: TextStyleSpec(fontSize: 13),
+        behaviorPosition: BehaviorPosition.start,
+        titleOutsideJustification: OutsideJustification.end,
+      ),
+      ChartTitle(
+        'Time',
+        titleStyleSpec: TextStyleSpec(fontSize: 13),
+        behaviorPosition: BehaviorPosition.bottom,
+        titleOutsideJustification: OutsideJustification.end,
+      ),
+    ];
+
     return new Container(
       height: 300,
       padding: EdgeInsets.all(2),
@@ -49,26 +62,10 @@ class PowerDurationChart extends StatelessWidget {
               desiredMinTickCount: 6),
         ),
         domainAxis: NumericAxisSpec(
-            tickProviderSpec:
-            StaticNumericTickProviderSpec(staticTicks)),
+            tickProviderSpec: StaticNumericTickProviderSpec(staticTicks)),
         animate: false,
-        behaviors: [
-          ChartTitle(
-            'Power (W)',
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.start,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-          ChartTitle(
-            'Time',
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.bottom,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-        ],
+        behaviors: chartTitles,
       ),
     );
   }
-
-
 }

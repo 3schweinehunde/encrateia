@@ -30,10 +30,7 @@ class Activity extends ChangeNotifier {
       ..distance = summaryActivity.distance.toInt()
       ..stravaId = summaryActivity.id
       ..startTime = summaryActivity.startDate
-      ..movingTime = summaryActivity.movingTime
-      ..save();
-
-    notifyListeners();
+      ..movingTime = summaryActivity.movingTime;
   }
 
   String toString() => '$db.name $db.startTime';
@@ -132,7 +129,8 @@ class Activity extends ChangeNotifier {
               ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
               ..startPositionLat = dataMessage.get('start_position_lat')
               ..startPositionLong = dataMessage.get('start_position_long')
-              ..totalElapsedTime = dataMessage.get('total_elapsed_time')?.round()
+              ..totalElapsedTime =
+                  dataMessage.get('total_elapsed_time')?.round()
               ..totalTimerTime = dataMessage.get('total_timer_time')?.round()
               ..totalDistance = dataMessage.get('total_distance')?.round()
               ..totalStrides = dataMessage.get('total_strides')?.round()
@@ -200,6 +198,10 @@ class Activity extends ChangeNotifier {
     print("Persisted activity ${db.stravaId} to database.");
   }
 
+  delete() {
+    this.db.delete();
+  }
+
   static queryStrava({Athlete athlete}) async {
     var strava = Strava(true, secret);
     final prompt = 'auto';
@@ -217,15 +219,25 @@ class Activity extends ChangeNotifier {
         await strava.getLoggedInAthleteActivities(now, startDate);
 
     for (StravaActivity.SummaryActivity summaryActivity in summaryActivities) {
-      Activity.fromStrava(
+      var activity = Activity.fromStrava(
         summaryActivity: summaryActivity,
         athlete: athlete,
       );
+
+      var existingAlready = await DbActivity()
+          .select()
+          .stravaId
+          .equals(activity.db.stravaId)
+          .toList();
+      if (existingAlready.length == 0) {
+        activity.db.save();
+      }
     }
   }
 
   static Future<List<Activity>> all() async {
-    List<DbActivity> dbActivityList = await DbActivity().select().toList();
+    List<DbActivity> dbActivityList =
+        await DbActivity().select().orderByDesc('stravaId').toList();
     return dbActivityList
         .map((dbActivity) => Activity.fromDb(dbActivity))
         .toList();

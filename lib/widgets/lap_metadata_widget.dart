@@ -48,12 +48,12 @@ class LapMetadataWidget extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.timer),
-            title: Text(Duration(seconds: lap.db.totalElapsedTime).print()),
+            title: Text(Duration(seconds: lap.db.totalElapsedTime).asString()),
             subtitle: Text('total elapsed time'),
           ),
           ListTile(
             leading: Icon(Icons.timer),
-            title: Text(Duration(seconds: lap.db.totalTimerTime).print()),
+            title: Text(Duration(seconds: lap.db.totalTimerTime).asString()),
             subtitle: Text('total timer time'),
           ),
           ListTile(

@@ -21,12 +21,14 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    activities = Activity.all();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Activities'),
       ),
       body: FutureBuilder<List<Activity>>(
-        future: Activity.all(),
+        future: activities,
         builder: (context, snapshot) {
           return ListView(
             padding: EdgeInsets.all(20),
@@ -34,10 +36,9 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
               if (widget.athlete.email != null &&
                   widget.athlete.password != null)
                 ListTile(
-                  leading: Icon(Icons.cloud_download),
-                  title: Text("Download Activities from Strava"),
-                  onTap: () => Activity.queryStrava(athlete: widget.athlete),
-                ),
+                    leading: Icon(Icons.cloud_download),
+                    title: Text("Download Activities from Strava"),
+                    onTap: () => queryStrava()),
               if (widget.athlete.password == null)
                 ListTile(
                   leading: Icon(Icons.error),
@@ -59,7 +60,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                       value: activity,
                       child: Consumer<Activity>(
                         builder: (context, activity, _child) =>
-                            stateIcon(activity, widget.athlete),
+                            stateIcon(activity: activity),
                       ),
                     ),
                   ),
@@ -70,13 +71,33 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
     );
   }
 
-  stateIcon(Activity activity, Athlete athlete) {
+  Future queryStrava() async {
+    await Activity.queryStrava(athlete: widget.athlete);
+    setState(() => {});
+  }
+
+  Future delete({Activity activity}) async {
+    await activity.delete();
+    setState(() => {});
+  }
+
+  stateIcon({Activity activity}) {
     switch (activity.db.state) {
       case "new":
-        return IconButton(
-          icon: Icon(Icons.cloud_download),
-          onPressed: () => activity.download(athlete: athlete),
-          tooltip: 'Download',
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.cloud_download),
+              onPressed: () => activity.download(athlete: widget.athlete),
+              tooltip: 'Download',
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => delete(activity: activity),
+              tooltip: 'Delete',
+            ),
+          ],
         );
         break;
       case "downloaded":
@@ -85,12 +106,12 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.build),
-              onPressed: () => activity.parse(athlete: athlete),
+              onPressed: () => activity.parse(athlete: widget.athlete),
               tooltip: 'Parse .fit-file',
             ),
             IconButton(
               icon: Icon(Icons.cloud_download),
-              onPressed: () => activity.download(athlete: athlete),
+              onPressed: () => activity.download(athlete: widget.athlete),
               tooltip: 'Download',
             ),
           ],
@@ -116,7 +137,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
             ),
             IconButton(
               icon: Icon(Icons.build),
-              onPressed: () => activity.parse(athlete: athlete),
+              onPressed: () => activity.parse(athlete: widget.athlete),
               tooltip: 'Parse .fit-file',
             ),
           ],

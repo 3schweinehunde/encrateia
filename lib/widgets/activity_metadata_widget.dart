@@ -62,12 +62,12 @@ class ActivityMetadataWidget extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.timer),
             title:
-                Text(Duration(seconds: activity.db.totalElapsedTime).print()),
+                Text(Duration(seconds: activity.db.totalElapsedTime).asString()),
             subtitle: Text('total elapsed time'),
           ),
           ListTile(
             leading: Icon(Icons.timer),
-            title: Text(Duration(seconds: activity.db.totalTimerTime).print()),
+            title: Text(Duration(seconds: activity.db.totalTimerTime).asString()),
             subtitle: Text('total timer time'),
           ),
           ListTile(

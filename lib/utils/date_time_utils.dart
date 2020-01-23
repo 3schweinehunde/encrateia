@@ -7,7 +7,7 @@ dateTimeFromStrava(double dateTime) {
 }
 
 extension DurationFormatters on Duration {
-  String print() {
+  String asString() {
     return inHours.toString() +
         "h " +
         inMinutes.remainder(60).toString() +
