@@ -1,37 +1,37 @@
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/plot_point.dart';
+import 'dart:math';
 
 class PowerDuration {
   Map powerMap = {};
 
   PowerDuration({List<Event> records}) {
-    int lastPower = 0;
-
     for (int index = 0; index < records.length - 1; index++) {
       int power = records[index].db.power;
-      if (power > lastPower) {
-        DateTime nextLower = records
-            .sublist(index + 1, records.length)
-            .firstWhere((record) => record.db.power < power,
-                orElse: () => records.last)
-            .db
-            .timeStamp;
-        int persistedFor =
-            nextLower.difference(records[index].db.timeStamp).inSeconds;
+      DateTime nextLower = records
+          .sublist(index + 1, records.length)
+          .firstWhere((record) => record.db.power < power,
+              orElse: () => records.last)
+          .db
+          .timeStamp;
 
-        if (power > (powerMap[persistedFor] ?? 0)) {
-          for (int durationIndex = persistedFor;
-              durationIndex > 0;
-              durationIndex--) {
-            if (power > (powerMap[durationIndex] ?? 0)) {
-              powerMap[durationIndex] = power;
-            } else {
-              break;
-            }
-          }
+      DateTime recentLower = records
+          .sublist(0, index)
+          .lastWhere((record) => record.db.power < power,
+              orElse: () => records.first)
+          .db
+          .timeStamp;
+
+      int persistedFor = nextLower.difference(recentLower).inSeconds;
+
+      if (power > (powerMap[persistedFor] ?? 0)) {
+        for (int durationIndex = persistedFor;
+            durationIndex > 0;
+            durationIndex--) {
+          if (power <= (powerMap[durationIndex] ?? 0)) break;
+          powerMap[durationIndex] = power;
         }
       }
-      lastPower = power;
     }
   }
 
@@ -40,7 +40,7 @@ class PowerDuration {
 
     powerMap.forEach((duration, power) {
       plotPoints.add(PlotPoint(
-        domain: duration,
+        domain: scaled(seconds: duration),
         measure: power,
       ));
     });
@@ -48,4 +48,6 @@ class PowerDuration {
     plotPoints.sort((a, b) => a.domain.compareTo(b.domain));
     return plotPoints;
   }
+
+  static int scaled({int seconds}) => (200 * log(seconds)).round();
 }

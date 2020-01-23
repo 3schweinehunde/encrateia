@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'power_duration_chart.dart';
 
-class LapPowerDurationWidget extends StatelessWidget {
-  final Lap lap;
+class ActivityPowerDurationWidget extends StatelessWidget {
+  final Activity activity;
 
-  LapPowerDurationWidget({this.lap});
+  ActivityPowerDurationWidget({this.activity});
 
   @override
   Widget build(context) {
     return FutureBuilder<List<Event>>(
-      future: Event.recordsByLap(lap: lap),
+      future: Event.by(activity: activity),
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var powerValues =

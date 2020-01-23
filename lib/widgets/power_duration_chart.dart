@@ -3,11 +3,13 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/plot_point.dart';
+import 'package:encrateia/models/power_duration.dart';
 
-class LapPowerDurationChart extends StatelessWidget {
+
+class PowerDurationChart extends StatelessWidget {
   final List<Event> records;
 
-  LapPowerDurationChart({this.records});
+  PowerDurationChart({this.records});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,14 @@ class LapPowerDurationChart extends StatelessWidget {
       )
     ];
 
+    final staticTicks = <TickSpec<int>>[
+      TickSpec(PowerDuration.scaled(seconds: 1), label: '1s'),
+      TickSpec(PowerDuration.scaled(seconds: 10), label: '10s'),
+      TickSpec(PowerDuration.scaled(seconds: 60), label: '1min'),
+      TickSpec(PowerDuration.scaled(seconds: 600), label: '10min'),
+      TickSpec(PowerDuration.scaled(seconds: 3600), label: '1h'),
+    ];
+
     return new Container(
       height: 300,
       padding: EdgeInsets.all(2),
@@ -38,6 +48,9 @@ class LapPowerDurationChart extends StatelessWidget {
               desiredTickCount: 10,
               desiredMinTickCount: 6),
         ),
+        domainAxis: NumericAxisSpec(
+            tickProviderSpec:
+            StaticNumericTickProviderSpec(staticTicks)),
         animate: false,
         behaviors: [
           ChartTitle(
@@ -47,7 +60,7 @@ class LapPowerDurationChart extends StatelessWidget {
             titleOutsideJustification: OutsideJustification.end,
           ),
           ChartTitle(
-            'Time (s)',
+            'Time',
             titleStyleSpec: TextStyleSpec(fontSize: 13),
             behaviorPosition: BehaviorPosition.bottom,
             titleOutsideJustification: OutsideJustification.end,
@@ -56,4 +69,6 @@ class LapPowerDurationChart extends StatelessWidget {
       ),
     );
   }
+
+
 }
