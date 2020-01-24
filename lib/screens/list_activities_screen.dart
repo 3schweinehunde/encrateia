@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'show_activity_screen.dart';
 
+enum Action { show, parse, download, delete, state }
+
 class ListActivitiesScreen extends StatefulWidget {
   final Athlete athlete;
 
@@ -17,134 +19,195 @@ class ListActivitiesScreen extends StatefulWidget {
 }
 
 class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
-  Future<List<Activity>> activities;
+  List<Activity> activities;
+
+  @override
+  initState() {
+    getActivities();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    activities = Activity.all();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Activities'),
       ),
-      body: FutureBuilder<List<Activity>>(
-        future: activities,
-        builder: (context, snapshot) {
-          return ListView(
-            padding: EdgeInsets.all(20),
-            children: <Widget>[
-              if (widget.athlete.email != null &&
-                  widget.athlete.password != null)
-                ListTile(
-                    leading: Icon(Icons.cloud_download),
-                    title: Text("Download Activities from Strava"),
-                    onTap: () => queryStrava()),
-              if (widget.athlete.password == null)
-                ListTile(
-                  leading: Icon(Icons.error),
-                  title: Text("Strava password not provided yet!"),
+      body: ListView(
+        padding: EdgeInsets.all(20),
+        children: <Widget>[
+          if (widget.athlete.email != null && widget.athlete.password != null)
+            ListTile(
+                leading: Icon(Icons.cloud_download),
+                title: Text(
+                  "Download Activities from Strava",
                 ),
-              if (widget.athlete.email == null)
-                ListTile(
-                  leading: Icon(Icons.error),
-                  title: Text("Strava email not provided yet!"),
+                onTap: () => queryStrava()),
+          if (widget.athlete.password == null)
+            ListTile(
+              leading: Icon(
+                Icons.error,
+                color: Colors.red,
+              ),
+              title: Text(
+                "Strava password not provided yet!",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
                 ),
-              if (snapshot.hasData)
-                for (Activity activity in snapshot.data)
-                  ListTile(
-                    leading: Icon(Icons.directions_run),
-                    title: Text("${activity.db.type} "
-                        "${activity.db.stravaId}"),
-                    subtitle: Text(activity.db.name ?? "Activity"),
-                    trailing: ChangeNotifierProvider.value(
-                      value: activity,
-                      child: Consumer<Activity>(
-                        builder: (context, activity, _child) =>
-                            stateIcon(activity: activity),
-                      ),
-                    ),
+              ),
+            ),
+          if (widget.athlete.email == null)
+            ListTile(
+              leading: Icon(
+                Icons.error,
+                color: Colors.red,
+              ),
+              title: Text(
+                "Strava email not provided yet!",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          if (activities != null)
+            for (Activity activity in activities)
+              ListTile(
+                leading: Icon(Icons.directions_run),
+                title: Text("${activity.db.type} "
+                    "${activity.db.stravaId}"),
+                subtitle: Text(activity.db.name ?? "Activity"),
+                trailing: ChangeNotifierProvider.value(
+                  value: activity,
+                  child: Consumer<Activity>(
+                    builder: (context, activity, _child) =>
+                        popupMenuButton(activity: activity),
                   ),
-            ],
-          );
-        },
+                ),
+              ),
+        ],
       ),
     );
   }
 
   Future queryStrava() async {
     await Activity.queryStrava(athlete: widget.athlete);
-    setState(() => {});
+    getActivities();
   }
 
   Future delete({Activity activity}) async {
     await activity.delete();
-    setState(() => {});
+    getActivities();
   }
 
-  stateIcon({Activity activity}) {
+  Future download({Activity activity}) async {
+    await activity.download(athlete: widget.athlete);
+    setState(() {});
+  }
+
+  Future parse({Activity activity}) async {
+    await activity.parse(athlete: widget.athlete);
+    setState(() {});
+  }
+
+  Future getActivities() async {
+    activities = await Activity.all();
+    print(activities.length);
+    setState(() {});
+  }
+
+  popupMenuButton({Activity activity}) {
+    List<String> actions;
+
     switch (activity.db.state) {
       case "new":
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.cloud_download),
-              onPressed: () => activity.download(athlete: widget.athlete),
-              tooltip: 'Download',
-            ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => delete(activity: activity),
-              tooltip: 'Delete',
-            ),
-          ],
-        );
+        actions = ["download", "delete"];
         break;
       case "downloaded":
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.build),
-              onPressed: () => activity.parse(athlete: widget.athlete),
-              tooltip: 'Parse .fit-file',
-            ),
-            IconButton(
-              icon: Icon(Icons.cloud_download),
-              onPressed: () => activity.download(athlete: widget.athlete),
-              tooltip: 'Download',
-            ),
-          ],
-        );
+        actions = ["parse", "download", "delete"];
         break;
       case "persisted":
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.remove_red_eye),
-              onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShowActivityScreen(
-                      activity: activity,
-                    ),
-                  ),
-                )
-              },
-              tooltip: 'Show details',
-            ),
-            IconButton(
-              icon: Icon(Icons.build),
-              onPressed: () => activity.parse(athlete: widget.athlete),
-              tooltip: 'Parse .fit-file',
-            ),
-          ],
-        );
+        actions = ["show", "parse", "download", "delete"];
         break;
-      default:
-        return Text(activity.db.state);
+      case "delete":
+        delete(activity: activity);
+        break;
+      case "default":
+        actions = ["state"];
     }
+
+    return PopupMenuButton<Action>(
+      onSelected: (Action action) {
+        switch (action) {
+          case Action.show:
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ShowActivityScreen(
+                  activity: activity,
+                ),
+              ),
+            );
+            break;
+          case Action.parse:
+            parse(activity: activity);
+            break;
+          case Action.download:
+            download(activity: activity);
+            break;
+          case Action.delete:
+            delete(activity: activity);
+            break;
+          case Action.state:
+            break;
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<Action>>[
+        if (actions.contains("download"))
+          if (actions.contains("show"))
+            PopupMenuItem<Action>(
+              value: Action.show,
+              child: Row(children: <Widget>[
+                Icon(Icons.remove_red_eye),
+                Text(" Show"),
+              ]),
+            ),
+        if (actions.contains("parse"))
+          PopupMenuItem<Action>(
+            value: Action.parse,
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.build),
+                Text(" Parse .fit-file"),
+              ],
+            ),
+          ),
+        PopupMenuItem<Action>(
+          value: Action.download,
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.cloud_download),
+              Text(" Download .fit-file")
+            ],
+          ),
+        ),
+        if (actions.contains("delete"))
+          PopupMenuItem<Action>(
+            value: Action.delete,
+            child: Row(
+              children: <Widget>[
+                Icon(Icons.delete),
+                Text(" Delete activity"),
+              ],
+            ),
+          ),
+        if (actions.contains("state"))
+          PopupMenuItem<Action>(
+            value: Action.state,
+            child: Text("State: ${activity.db.state}"),
+          ),
+      ],
+    );
   }
 }

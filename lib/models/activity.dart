@@ -1,4 +1,4 @@
-import 'package:encrateia/models/fit_download.dart';
+import 'package:encrateia/models/strava_fit_download.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:strava_flutter/strava.dart';
@@ -37,12 +37,10 @@ class Activity extends ChangeNotifier {
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
 
   download({@required Athlete athlete}) async {
-    int statusCode = await FitDownload.byId(
+    int statusCode = await StravaFitDownload.byId(
       id: db.stravaId.toString(),
       athlete: athlete,
     );
-    print("Download status code $statusCode.");
-
     setState("downloaded");
   }
 
@@ -193,13 +191,13 @@ class Activity extends ChangeNotifier {
     }
 
     db.state = "persisted";
-    db.save();
+    await db.save();
     notifyListeners();
     print("Persisted activity ${db.stravaId} to database.");
   }
 
-  delete() {
-    this.db.delete();
+  delete() async{
+    await this.db.delete();
   }
 
   static queryStrava({Athlete athlete}) async {
