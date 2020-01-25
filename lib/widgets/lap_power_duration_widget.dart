@@ -18,11 +18,8 @@ class LapPowerDurationWidget extends StatelessWidget {
           var powerValues =
               snapshot.data.map((value) => value.db.power).nonZero();
           if (powerValues.length > 0) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                PowerDurationChart(records: snapshot.data),
-              ],
+            return SingleChildScrollView(
+              child: PowerDurationChart(records: snapshot.data, ),
             );
           } else {
             return Center(

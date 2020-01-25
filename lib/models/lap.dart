@@ -104,7 +104,10 @@ class Lap {
 
   static String averagePower({List<Event> records}) {
     var powers = records.map((record) => record.db.power).nonZero();
-    return powers.mean().toStringAsFixed(1);
+    if (powers.length > 0) {
+      return powers.mean().toStringAsFixed(1) + " W";
+    } else
+      return "";
   }
 
   static String sdevPower({List<Event> records}) {

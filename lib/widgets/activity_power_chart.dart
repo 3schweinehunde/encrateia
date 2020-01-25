@@ -80,9 +80,11 @@ class ActivityPowerChart extends StatelessWidget {
             ),
           );
         } else {
-          return Center(
-            child: Text("Loading"),
+          return Container(
+            height: 100,
+            child: Center(child: Text("Loading")),
           );
+
         }
       },
     );

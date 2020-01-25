@@ -18,11 +18,8 @@ class ActivityPowerDurationWidget extends StatelessWidget {
           var powerValues =
               snapshot.data.map((value) => value.db.power).nonZero();
           if (powerValues.length > 0) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                PowerDurationChart(records: snapshot.data),
-              ],
+            return SingleChildScrollView(
+              child: PowerDurationChart(records: snapshot.data),
             );
           } else {
             return Center(
@@ -30,8 +27,9 @@ class ActivityPowerDurationWidget extends StatelessWidget {
             );
           }
         } else {
-          return Center(
-            child: Text("Loading"),
+          return Container(
+            height: 100,
+            child: Center(child: Text("Loading")),
           );
         }
       },

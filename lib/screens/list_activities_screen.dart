@@ -23,8 +23,8 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
 
   @override
   initState() {
-    getActivities();
     super.initState();
+    getActivities();
   }
 
   @override
@@ -39,45 +39,52 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
           if (widget.athlete.email != null && widget.athlete.password != null)
             ListTile(
                 leading: Icon(Icons.cloud_download),
-                title: Text(
-                  "Download Activities from Strava",
-                ),
+                title: Text("Download Activities from Strava"),
                 onTap: () => queryStrava()),
           if (widget.athlete.password == null)
             ListTile(
-              leading: Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
+              leading: Icon(Icons.error, color: Colors.red),
               title: Text(
                 "Strava password not provided yet!",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
               ),
             ),
           if (widget.athlete.email == null)
             ListTile(
-              leading: Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
+              leading: Icon(Icons.error, color: Colors.red),
               title: Text(
                 "Strava email not provided yet!",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
-                ),
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
               ),
             ),
           if (activities != null)
             for (Activity activity in activities)
               ListTile(
                 leading: Icon(Icons.directions_run),
-                title: Text("${activity.db.type} "
-                    "${activity.db.stravaId}"),
-                subtitle: Text(activity.db.name ?? "Activity"),
+                title: Text(activity.db.name ?? "Activity"),
+                subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(activity.dateString() +
+                        "\n" +
+                        activity.distanceString()),
+                    Text(activity.timeString() + "\n" + activity.paceString()),
+                    FutureBuilder<String>(
+                        future: activity.averagePower,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<String> snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(activity.heartRateString() +
+                                "\n" +
+                                snapshot.data);
+                          } else {
+                            return Text(activity.heartRateString() + "\n ...");
+                          }
+                        }),
+                  ],
+                ),
                 trailing: ChangeNotifierProvider.value(
                   value: activity,
                   child: Consumer<Activity>(
@@ -113,7 +120,6 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
 
   Future getActivities() async {
     activities = await Activity.all();
-    print(activities.length);
     setState(() {});
   }
 

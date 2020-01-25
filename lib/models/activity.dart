@@ -11,6 +11,7 @@ import 'package:fit_parser/fit_parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'dart:developer';
+import 'package:intl/intl.dart';
 
 class Activity extends ChangeNotifier {
   DbActivity db;
@@ -37,17 +38,59 @@ class Activity extends ChangeNotifier {
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
 
   download({@required Athlete athlete}) async {
-    int statusCode = await StravaFitDownload.byId(
-      id: db.stravaId.toString(),
-      athlete: athlete,
-    );
+    await StravaFitDownload.byId(id: db.stravaId.toString(), athlete: athlete);
     setState("downloaded");
   }
 
   setState(String state) {
-    db.state = state;
-    db.save();
+    db
+      ..state = state
+      ..save();
     notifyListeners();
+  }
+
+  distanceString() {
+    if (db.totalDistance != null) {
+      return (db.totalDistance / 1000).toStringAsFixed(2) + " km";
+    } else
+      return "";
+  }
+
+  heartRateString() {
+    if (db.avgHeartRate != null) {
+      return db.avgHeartRate.toString() + " bpm";
+    } else
+      return "";
+  }
+
+  timeString() {
+    if (db.avgHeartRate != null) {
+      return DateFormat("H:mm")
+          .format(db.timeCreated);
+    } else
+      return "";
+  }
+
+  dateString() {
+    if (db.avgHeartRate != null) {
+      return DateFormat("d MMM yy")
+          .format(db.timeCreated);
+    } else
+      return "";
+  }
+
+  paceString() {
+    if (db.avgHeartRate != null) {
+      return db.avgSpeed.toPace() + "/km";
+    } else
+      return "";
+  }
+
+  Future<String> get averagePower async{
+    List<Event> records = await Event.recordsByActivity(activity: this);
+    String averagePower =  Lap.averagePower(records: records);
+    notifyListeners();
+    return averagePower;
   }
 
   parse({@required Athlete athlete}) async {
@@ -196,7 +239,7 @@ class Activity extends ChangeNotifier {
     print("Persisted activity ${db.stravaId} to database.");
   }
 
-  delete() async{
+  delete() async {
     await this.db.delete();
   }
 
