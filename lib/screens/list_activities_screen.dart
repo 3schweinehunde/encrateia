@@ -3,6 +3,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'show_activity_screen.dart';
+import 'package:encrateia/utils/num_utils.dart';
 
 enum Action { show, parse, download, delete, state }
 
@@ -23,8 +24,8 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
 
   @override
   initState() {
-    super.initState();
     getActivities();
+    super.initState();
   }
 
   @override
@@ -71,14 +72,14 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
                         "\n" +
                         activity.distanceString()),
                     Text(activity.timeString() + "\n" + activity.paceString()),
-                    FutureBuilder<String>(
-                        future: activity.averagePower,
+                    FutureBuilder<double>(
+                        future: activity.avgPower,
                         builder: (BuildContext context,
-                            AsyncSnapshot<String> snapshot) {
+                            AsyncSnapshot<double> snapshot) {
                           if (snapshot.hasData) {
                             return Text(activity.heartRateString() +
                                 "\n" +
-                                snapshot.data);
+                                snapshot.data.toStringOrDashes(1) + " W");
                           } else {
                             return Text(activity.heartRateString() + "\n ...");
                           }

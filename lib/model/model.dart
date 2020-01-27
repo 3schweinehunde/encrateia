@@ -83,6 +83,11 @@ const tableActivity = SqfEntityTable(
     SqfEntityField('numLaps', DbType.integer),
     SqfEntityField('numSessions', DbType.integer),
     SqfEntityField('localTimestamp', DbType.datetime),
+    // Cached calculated values:
+    SqfEntityField('avgPower', DbType.real),
+    SqfEntityField('minPower', DbType.integer),
+    SqfEntityField('maxPower', DbType.integer),
+    SqfEntityField('sdevPower', DbType.real),
 
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,
@@ -167,6 +172,12 @@ const tableLap = SqfEntityTable(
       SqfEntityField('avgFractionalCadence', DbType.real),
       SqfEntityField('maxFractionalCadence', DbType.real),
       SqfEntityField('totalFractionalCycles', DbType.real),
+      // Cached calculated values:
+      SqfEntityField('avgPower', DbType.real),
+      SqfEntityField('minPower', DbType.integer),
+      SqfEntityField('maxPower', DbType.integer),
+      SqfEntityField('sdevPower', DbType.real),
+
 
       SqfEntityFieldRelationship(
           parentTable: tableEvent,

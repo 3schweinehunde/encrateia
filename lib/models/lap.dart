@@ -53,6 +53,43 @@ class Lap {
   }
   Lap.fromDb(this.db);
 
+  Future<double> get avgPower async {
+    if (db.avgPower == null) {
+      List<Event> records = await Event.recordsByLap(lap: this);
+      db.avgPower = calculateAveragePower(records: records);
+      await db.save();
+    }
+    return db.avgPower;
+  }
+
+  Future<double> get sdevPower async {
+    if (db.sdevPower == null) {
+      List<Event> records = await Event.recordsByLap(lap: this);
+      db.sdevPower = calculateSdevPower(records: records);
+      await db.save();
+    }
+    return db.sdevPower;
+  }
+
+  Future<int> get minPower async {
+    if (db.minPower == null){
+      List<Event> records = await Event.recordsByLap(lap: this);
+      db.minPower = calculateMinPower(records: records);
+      await db.save();
+    }
+    return db.minPower;
+  }
+
+  Future<int> get maxPower async {
+    if (db.maxPower == null){
+      List<Event> records = await Event.recordsByLap(lap: this);
+      db.maxPower = calculateMaxPower(records: records);
+      await db.save();
+    }
+    return db.maxPower;
+  }
+
+
   Future<int> firstEventId() async {
     if (index > 1) {
       var lapList = await Lap.by(activity: activity);
@@ -102,26 +139,26 @@ class Lap {
     return heartRates.max().toStringAsFixed(1);
   }
 
-  static String averagePower({List<Event> records}) {
+  static double calculateAveragePower({List<Event> records}) {
     var powers = records.map((record) => record.db.power).nonZero();
     if (powers.length > 0) {
-      return powers.mean().toStringAsFixed(1) + " W";
+      return powers.mean();
     } else
-      return "";
+      return -1;
   }
 
-  static String sdevPower({List<Event> records}) {
+  static double calculateSdevPower({List<Event> records}) {
     var powers = records.map((record) => record.db.power).nonZero();
-    return powers.sdev().toStringAsFixed(2);
+    return powers.sdev();
   }
 
-  static String minPower({List<Event> records}) {
+  static int calculateMinPower({List<Event> records}) {
     var powers = records.map((record) => record.db.power).nonZero();
-    return powers.min().toStringAsFixed(1);
+    return powers.min();
   }
 
-  static String maxPower({List<Event> records}) {
+  static int calculateMaxPower({List<Event> records}) {
     var powers = records.map((record) => record.db.power).nonZero();
-    return powers.max().toStringAsFixed(1);
+    return powers.max();
   }
 }

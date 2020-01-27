@@ -65,16 +65,14 @@ class Activity extends ChangeNotifier {
 
   timeString() {
     if (db.avgHeartRate != null) {
-      return DateFormat("H:mm")
-          .format(db.timeCreated);
+      return DateFormat("H:mm").format(db.timeCreated);
     } else
       return "";
   }
 
   dateString() {
     if (db.avgHeartRate != null) {
-      return DateFormat("d MMM yy")
-          .format(db.timeCreated);
+      return DateFormat("d MMM yy").format(db.timeCreated);
     } else
       return "";
   }
@@ -86,11 +84,45 @@ class Activity extends ChangeNotifier {
       return "";
   }
 
-  Future<String> get averagePower async{
-    List<Event> records = await Event.recordsByActivity(activity: this);
-    String averagePower =  Lap.averagePower(records: records);
-    notifyListeners();
-    return averagePower;
+  Future<double> get avgPower async {
+    if (db.avgPower == null) {
+      List<Event> records = await Event.recordsByActivity(activity: this);
+      db.avgPower = Lap.calculateAveragePower(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgPower;
+  }
+
+  Future<double> get sdevPower async {
+    if (db.sdevPower == null) {
+      List<Event> records = await Event.recordsByActivity(activity: this);
+      db.sdevPower = Lap.calculateSdevPower(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.sdevPower;
+  }
+
+  Future<int> get minPower async {
+    if (db.minPower == null){
+      List<Event> records = await Event.recordsByActivity(activity: this);
+      db.minPower = Lap.calculateMinPower(records: records);
+      await db.save();
+      notifyListeners();
+
+    }
+    return db.minPower;
+  }
+
+  Future<int> get maxPower async {
+    if (db.maxPower == null){
+      List<Event> records = await Event.recordsByActivity(activity: this);
+      db.maxPower = Lap.calculateMaxPower(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.maxPower;
   }
 
   parse({@required Athlete athlete}) async {
