@@ -12,7 +12,7 @@ class ActivityPowerDurationWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return FutureBuilder<List<Event>>(
-      future: Event.by(activity: activity),
+      future: activity.records,
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var powerValues =

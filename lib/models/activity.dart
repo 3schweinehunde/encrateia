@@ -15,6 +15,8 @@ import 'package:intl/intl.dart';
 
 class Activity extends ChangeNotifier {
   DbActivity db;
+  List<Event> _records;
+  List<Lap> _laps;
 
   Activity();
   Activity.fromDb(this.db);
@@ -84,9 +86,23 @@ class Activity extends ChangeNotifier {
       return "";
   }
 
+  Future<List<Event>> get records async {
+    if (_records == null) {
+      _records = await Event.recordsByActivity(activity: this);
+    }
+    return _records;
+  }
+
+  Future<List<Lap>> get laps async {
+    if (_laps == null) {
+      _laps = await Lap.by(activity: this);
+    }
+    return _laps;
+  }
+
   Future<double> get avgPower async {
     if (db.avgPower == null) {
-      List<Event> records = await Event.recordsByActivity(activity: this);
+      List<Event> records = await this.records;
       db.avgPower = Lap.calculateAveragePower(records: records);
       await db.save();
       notifyListeners();
@@ -96,7 +112,7 @@ class Activity extends ChangeNotifier {
 
   Future<double> get sdevPower async {
     if (db.sdevPower == null) {
-      List<Event> records = await Event.recordsByActivity(activity: this);
+      List<Event> records = await this.records;
       db.sdevPower = Lap.calculateSdevPower(records: records);
       await db.save();
       notifyListeners();
@@ -106,7 +122,7 @@ class Activity extends ChangeNotifier {
 
   Future<int> get minPower async {
     if (db.minPower == null){
-      List<Event> records = await Event.recordsByActivity(activity: this);
+      List<Event> records = await this.records;
       db.minPower = Lap.calculateMinPower(records: records);
       await db.save();
       notifyListeners();
@@ -117,7 +133,7 @@ class Activity extends ChangeNotifier {
 
   Future<int> get maxPower async {
     if (db.maxPower == null){
-      List<Event> records = await Event.recordsByActivity(activity: this);
+      List<Event> records = await this.records;
       db.maxPower = Lap.calculateMaxPower(records: records);
       await db.save();
       notifyListeners();

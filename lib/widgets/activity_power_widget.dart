@@ -80,7 +80,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
 
   getData() async {
     Activity activity = widget.activity;
-    records = await Event.recordsByActivity(activity: activity);
+    records = await activity.records;
 
     double avg = await activity.avgPower;
     setState(() {

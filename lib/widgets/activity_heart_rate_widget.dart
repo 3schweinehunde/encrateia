@@ -14,7 +14,7 @@ class ActivityHeartRateWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return FutureBuilder<List<Event>>(
-      future: Event.recordsByActivity(activity: activity),
+      future: activity.records,
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var heartRates =
@@ -29,7 +29,7 @@ class ActivityHeartRateWidget extends StatelessWidget {
                   ActivityHeartRateChart(records: records, activity: activity),
                   ListTile(
                     leading: Icon(Icons.pets),
-                    title: Text(Lap.averageHeartRate(records: records)),
+                    title: Text(activity.db.avgHeartRate.toString()),
                     subtitle: Text("average heart rate"),
                   ),
                   ListTile(
@@ -39,7 +39,7 @@ class ActivityHeartRateWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(Icons.expand_less),
-                    title: Text(Lap.maxHeartRate(records: records)),
+                    title: Text(activity.db.maxHeartRate.toString()),
                     subtitle: Text("maximum heart rate"),
                   ),
                   ListTile(

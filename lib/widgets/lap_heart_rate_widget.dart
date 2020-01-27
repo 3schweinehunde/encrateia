@@ -12,7 +12,7 @@ class LapHeartRateWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return FutureBuilder<List<Event>>(
-      future: Event.recordsByLap(lap: lap),
+      future: lap.records,
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var heartRates =
@@ -27,7 +27,7 @@ class LapHeartRateWidget extends StatelessWidget {
                   LapHeartRateChart(records: records),
                   ListTile(
                     leading: Icon(Icons.pets),
-                    title: Text(Lap.averageHeartRate(records: records)),
+                    title: Text(lap.db.avgHeartRate.toString()),
                     subtitle: Text("average heart rate"),
                   ),
                   ListTile(
@@ -37,7 +37,7 @@ class LapHeartRateWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Icon(Icons.expand_less),
-                    title: Text(Lap.maxHeartRate(records: records)),
+                    title: Text(lap.db.maxHeartRate.toString()),
                     subtitle: Text("maximum heart rate"),
                   ),
                   ListTile(

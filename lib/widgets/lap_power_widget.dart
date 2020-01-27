@@ -82,7 +82,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
 
     getData() async {
       Lap lap = widget.lap;
-      records = await Event.recordsByLap(lap: lap);
+      records = await lap.records;
 
       double avg = await lap.avgPower;
       setState(() {

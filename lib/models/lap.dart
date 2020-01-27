@@ -9,6 +9,7 @@ class Lap {
   DbLap db;
   Activity activity;
   int index;
+  List<Event> _records;
 
   Lap({DataMessage dataMessage, this.activity, int eventId}) {
     db = DbLap()
@@ -53,9 +54,17 @@ class Lap {
   }
   Lap.fromDb(this.db);
 
+
+  Future<List<Event>> get records async {
+    if (_records == null) {
+      _records = await Event.recordsByLap(lap: this);
+    }
+    return _records;
+  }
+
   Future<double> get avgPower async {
     if (db.avgPower == null) {
-      List<Event> records = await Event.recordsByLap(lap: this);
+      List<Event> records = await this.records;
       db.avgPower = calculateAveragePower(records: records);
       await db.save();
     }
@@ -64,7 +73,7 @@ class Lap {
 
   Future<double> get sdevPower async {
     if (db.sdevPower == null) {
-      List<Event> records = await Event.recordsByLap(lap: this);
+      List<Event> records = await this.records;
       db.sdevPower = calculateSdevPower(records: records);
       await db.save();
     }
@@ -73,7 +82,7 @@ class Lap {
 
   Future<int> get minPower async {
     if (db.minPower == null){
-      List<Event> records = await Event.recordsByLap(lap: this);
+      List<Event> records = await this.records;
       db.minPower = calculateMinPower(records: records);
       await db.save();
     }
@@ -82,7 +91,7 @@ class Lap {
 
   Future<int> get maxPower async {
     if (db.maxPower == null){
-      List<Event> records = await Event.recordsByLap(lap: this);
+      List<Event> records = await this.records;
       db.maxPower = calculateMaxPower(records: records);
       await db.save();
     }
@@ -92,7 +101,7 @@ class Lap {
 
   Future<int> firstEventId() async {
     if (index > 1) {
-      var lapList = await Lap.by(activity: activity);
+      var lapList = await activity.laps;
       DbEvent firstEvent = await lapList
           .firstWhere((lap) => lap.index == index - 1)
           .db
@@ -118,12 +127,6 @@ class Lap {
     return lapList;
   }
 
-  static String averageHeartRate({List<Event> records}) {
-    List<int> heartRates =
-        records.map((record) => record.db.heartRate).nonZero();
-    return heartRates.mean().toStringAsFixed(1);
-  }
-
   static String sdevHeartRate({List<Event> records}) {
     var heartRates = records.map((record) => record.db.heartRate).nonZero();
     return heartRates.sdev().toStringAsFixed(2);
@@ -131,12 +134,7 @@ class Lap {
 
   static String minHeartRate({List<Event> records}) {
     var heartRates = records.map((record) => record.db.heartRate).nonZero();
-    return heartRates.min().toStringAsFixed(1);
-  }
-
-  static String maxHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZero();
-    return heartRates.max().toStringAsFixed(1);
+    return heartRates.min().toString();
   }
 
   static double calculateAveragePower({List<Event> records}) {

@@ -12,7 +12,7 @@ class LapPowerDurationWidget extends StatelessWidget {
   @override
   Widget build(context) {
     return FutureBuilder<List<Event>>(
-      future: Event.recordsByLap(lap: lap),
+      future: lap.records,
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var powerValues =
