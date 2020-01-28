@@ -191,4 +191,19 @@ class Lap {
         records.map((record) => record.db.groundTime).nonZeroDoubles();
     return groundTimes.sdev();
   }
+
+  static double calculateAverageLegSpringStiffness({List<Event> records}) {
+    var legSpringStiffnesses =
+    records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
+    if (legSpringStiffnesses.length > 0) {
+      return legSpringStiffnesses.mean();
+    } else
+      return -1;
+  }
+
+  static double calculateSdevLegSpringStiffness({List<Event> records}) {
+    var legSpringStiffnesses =
+    records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
+    return legSpringStiffnesses.sdev();
+  }
 }

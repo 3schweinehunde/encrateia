@@ -3,21 +3,21 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'activity_ground_time_chart.dart';
+import 'activity_leg_spring_stiffness_chart.dart';
 
-class ActivityGroundTimeWidget extends StatefulWidget {
+class ActivityLegSpringStiffnessWidget extends StatefulWidget {
   final Activity activity;
 
-  ActivityGroundTimeWidget({this.activity});
+  ActivityLegSpringStiffnessWidget({this.activity});
 
   @override
-  _ActivityGroundTimeWidgetState createState() => _ActivityGroundTimeWidgetState();
+  _ActivityLegSpringStiffnessWidgetState createState() => _ActivityLegSpringStiffnessWidgetState();
 }
 
-class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
+class _ActivityLegSpringStiffnessWidgetState extends State<ActivityLegSpringStiffnessWidget> {
   List<Event> records = [];
-  String avgGroundTimeString = "Loading ...";
-  String sdevGroundTimeString = "Loading ...";
+  String avgLegSpringStiffnessString = "Loading ...";
+  String sdevLegSpringStiffnessString = "Loading ...";
 
   @override
   void initState() {
@@ -35,15 +35,15 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityGroundTimeChart(records: records, activity: widget.activity),
+              ActivityLegSpringStiffnessChart(records: records, activity: widget.activity),
               ListTile(
                 leading: Icon(Icons.ev_station),
-                title: Text(avgGroundTimeString),
+                title: Text(avgLegSpringStiffnessString),
                 subtitle: Text("average ground time"),
               ),
               ListTile(
                 leading: Icon(Icons.unfold_more),
-                title: Text(sdevGroundTimeString),
+                title: Text(sdevLegSpringStiffnessString),
                 subtitle: Text("standard deviation ground time"),
               ),
               ListTile(
@@ -70,14 +70,14 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
     Activity activity = widget.activity;
     records = await activity.records;
 
-    double avg = await activity.avgGroundTime;
+    double avg = await activity.avgLegSpringStiffness;
     setState(() {
-      avgGroundTimeString = avg.toStringOrDashes(1) + " ms";
+      avgLegSpringStiffnessString = avg.toStringOrDashes(1) + " ms";
     });
 
-    double sdev = await activity.sdevGroundTime;
+    double sdev = await activity.sdevLegSpringStiffness;
     setState(() {
-      sdevGroundTimeString = sdev.toStringOrDashes(2) + " ms";
+      sdevLegSpringStiffnessString = sdev.toStringOrDashes(2) + " ms";
     });
   }
 }

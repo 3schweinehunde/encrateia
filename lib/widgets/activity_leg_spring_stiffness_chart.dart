@@ -5,7 +5,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 
-class ActivityGroundTimeChart extends StatelessWidget {
+class ActivityLegSpringStiffnessChart extends StatelessWidget {
   final List<Event> records;
   final Activity activity;
   final colorArray = [
@@ -13,20 +13,20 @@ class ActivityGroundTimeChart extends StatelessWidget {
     MaterialPalette.gray.shade200,
   ];
 
-  ActivityGroundTimeChart({this.records, @required this.activity});
+  ActivityLegSpringStiffnessChart({this.records, @required this.activity});
 
   @override
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.groundTime > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: "groundTime",
+      attribute: "legSpringStiffness",
       records: nonZero,
       amount: 30,
     );
 
     List<Series<dynamic, num>> data = [
       new Series<DoublePlotPoint, int>(
-        id: 'Ground Time',
+        id: 'Leg spring stiffness',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (DoublePlotPoint record, _) => record.domain,
         measureFn: (DoublePlotPoint record, _) => record.measure,
@@ -66,7 +66,7 @@ class ActivityGroundTimeChart extends StatelessWidget {
               behaviors: [
                 RangeAnnotation(rangeAnnotations(laps: laps)),
                 ChartTitle(
-                  'Ground Time (ms)',
+                  'Leg Spring Stiffness (kN/m)',
                   titleStyleSpec: TextStyleSpec(fontSize: 13),
                   behaviorPosition: BehaviorPosition.start,
                   titleOutsideJustification: OutsideJustification.end,
@@ -85,7 +85,6 @@ class ActivityGroundTimeChart extends StatelessWidget {
             height: 100,
             child: Center(child: Text("Loading")),
           );
-
         }
       },
     );
@@ -96,9 +95,9 @@ class ActivityGroundTimeChart extends StatelessWidget {
       for (int index = 0; index < laps.length; index++)
         RangeAnnotationSegment(
           laps
-              .sublist(0, index + 1)
-              .map((lap) => lap.db.totalDistance)
-              .reduce((a, b) => a + b) -
+                  .sublist(0, index + 1)
+                  .map((lap) => lap.db.totalDistance)
+                  .reduce((a, b) => a + b) -
               laps[index].db.totalDistance,
           laps
               .sublist(0, index + 1)

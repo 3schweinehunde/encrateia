@@ -90,6 +90,8 @@ const tableActivity = SqfEntityTable(
     SqfEntityField('sdevPower', DbType.real),
     SqfEntityField('avgGroundTime', DbType.real),
     SqfEntityField('sdevGroundTime', DbType.real),
+    SqfEntityField('avgLegSpringStiffness', DbType.real),
+    SqfEntityField('sdevLegSpringStiffness', DbType.real),
 
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,
@@ -181,7 +183,8 @@ const tableLap = SqfEntityTable(
       SqfEntityField('sdevPower', DbType.real),
       SqfEntityField('avgGroundTime', DbType.real),
       SqfEntityField('sdevGroundTime', DbType.real),
-
+      SqfEntityField('avgLegSpringStiffness', DbType.real),
+      SqfEntityField('sdevLegSpringStiffness', DbType.real),
 
       SqfEntityFieldRelationship(
           parentTable: tableEvent,

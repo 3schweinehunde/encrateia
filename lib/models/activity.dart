@@ -160,6 +160,26 @@ class Activity extends ChangeNotifier {
     return db.sdevGroundTime;
   }
 
+  Future<double> get avgLegSpringStiffness async {
+    if (db.avgLegSpringStiffness == null) {
+      List<Event> records = await this.records;
+      db.avgLegSpringStiffness = Lap.calculateAverageLegSpringStiffness(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgLegSpringStiffness;
+  }
+
+  Future<double> get sdevLegSpringStiffness async {
+    if (db.sdevLegSpringStiffness == null) {
+      List<Event> records = await this.records;
+      db.sdevLegSpringStiffness = Lap.calculateSdevLegSpringStiffness(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.sdevLegSpringStiffness;
+  }
+
 
   parse({@required Athlete athlete}) async {
     var appDocDir = await getApplicationDocumentsDirectory();
