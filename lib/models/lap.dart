@@ -133,6 +133,25 @@ class Lap {
     return db.sdevLegSpringStiffness;
   }
 
+  Future<double> get avgFormPower async {
+    if (db.avgFormPower == null) {
+      List<Event> records = await this.records;
+      db.avgFormPower = calculateAverageFormPower(records: records);
+      await db.save();
+    }
+    return db.avgFormPower;
+  }
+
+  Future<double> get sdevFormPower async {
+    if (db.sdevFormPower == null) {
+      List<Event> records = await this.records;
+      db.sdevFormPower = calculateSdevFormPower(records: records);
+      await db.save();
+    }
+    return db.sdevFormPower;
+  }
+
+
   Future<int> firstEventId() async {
     if (index > 1) {
       var lapList = await activity.laps;
