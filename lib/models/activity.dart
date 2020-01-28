@@ -180,6 +180,26 @@ class Activity extends ChangeNotifier {
     return db.sdevLegSpringStiffness;
   }
 
+  Future<double> get avgFormPower async {
+    if (db.avgFormPower == null) {
+      List<Event> records = await this.records;
+      db.avgFormPower = Lap.calculateAverageFormPower(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgFormPower;
+  }
+
+  Future<double> get sdevFormPower async {
+    if (db.sdevFormPower == null) {
+      List<Event> records = await this.records;
+      db.sdevFormPower = Lap.calculateSdevFormPower(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.sdevFormPower;
+  }
+
 
   parse({@required Athlete athlete}) async {
     var appDocDir = await getApplicationDocumentsDirectory();

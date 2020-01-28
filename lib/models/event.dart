@@ -135,6 +135,9 @@ class Event {
         case "power":
           sum = sum + record.db.power;
           break;
+        case "formPower":
+          sum = sum + record.db.formPower;
+          break;
         case "heartRate":
           sum = sum + record.db.heartRate;
       }
@@ -170,9 +173,6 @@ class Event {
           break;
         case "verticalOscillation":
           sum = sum + record.db.verticalOscillation;
-          break;
-        case "formPower":
-          sum = sum + record.db.formPower;
           break;
         case "legSpringStiffness":
           sum = sum + record.db.legSpringStiffness;

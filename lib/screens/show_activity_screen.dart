@@ -6,6 +6,7 @@ import 'package:encrateia/widgets/activity_power_widget.dart';
 import 'package:encrateia/widgets/activity_power_duration_widget.dart';
 import 'package:encrateia/widgets/activity_ground_time_widget.dart';
 import 'package:encrateia/widgets/activity_leg_spring_stiffness_widget.dart';
+import 'package:encrateia/widgets/activity_form_power_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 
@@ -20,7 +21,7 @@ class ShowActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 8,
+      length: 9,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -48,11 +49,15 @@ class ShowActivityScreen extends StatelessWidget {
               ),
               Tab(
                 icon: Icon(Icons.vertical_align_bottom),
-                text: "Grnd.time",
+                text: "Grnd.Time",
               ),
               Tab(
                 icon: Icon(Icons.airline_seat_recline_extra),
-                text: "Leg spr.stiff.",
+                text: "Leg Spr.Stiff.",
+              ),
+              Tab(
+                icon: Icon(Icons.accessibility_new),
+                text: "Form Power",
               ),
               Tab(
                 icon: Icon(Icons.storage),
@@ -73,6 +78,7 @@ class ShowActivityScreen extends StatelessWidget {
           ActivityPowerDurationWidget(activity: activity),
           ActivityGroundTimeWidget(activity: activity),
           ActivityLegSpringStiffnessWidget(activity: activity),
+          ActivityFormPowerWidget(activity: activity),
           ActivityMetadataWidget(activity: activity),
         ]),
       ),
