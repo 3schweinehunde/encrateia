@@ -18,7 +18,7 @@ class ActivityHeartRateWidget extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var heartRates =
-              snapshot.data.map((value) => value.db.heartRate).nonZero();
+              snapshot.data.map((value) => value.db.heartRate).nonZeroInts();
           if (heartRates.length > 0) {
             var records = snapshot.data;
             return ListTileTheme(

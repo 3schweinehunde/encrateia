@@ -30,7 +30,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.power).nonZero();
+      var powerValues = records.map((value) => value.db.power).nonZeroInts();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

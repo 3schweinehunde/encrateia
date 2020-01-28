@@ -16,7 +16,7 @@ class LapPowerDurationWidget extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
           var powerValues =
-              snapshot.data.map((value) => value.db.power).nonZero();
+              snapshot.data.map((value) => value.db.power).nonZeroInts();
           if (powerValues.length > 0) {
             return SingleChildScrollView(
               child: PowerDurationChart(records: snapshot.data, ),

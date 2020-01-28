@@ -113,6 +113,8 @@ class TableDbActivity extends SqfEntityTableBase {
       SqfEntityFieldBase('minPower', DbType.integer),
       SqfEntityFieldBase('maxPower', DbType.integer),
       SqfEntityFieldBase('sdevPower', DbType.real),
+      SqfEntityFieldBase('avgGroundTime', DbType.real),
+      SqfEntityFieldBase('sdevGroundTime', DbType.real),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'athletesId'),
@@ -219,6 +221,8 @@ class TableDbLap extends SqfEntityTableBase {
       SqfEntityFieldBase('minPower', DbType.integer),
       SqfEntityFieldBase('maxPower', DbType.integer),
       SqfEntityFieldBase('sdevPower', DbType.real),
+      SqfEntityFieldBase('avgGroundTime', DbType.real),
+      SqfEntityFieldBase('sdevGroundTime', DbType.real),
       SqfEntityFieldRelationshipBase(
           TableDbEvent.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'eventsId'),
@@ -1455,6 +1459,8 @@ class DbActivity {
       this.minPower,
       this.maxPower,
       this.sdevPower,
+      this.avgGroundTime,
+      this.sdevGroundTime,
       this.athletesId}) {
     _setDefaultValues();
   }
@@ -1513,6 +1519,8 @@ class DbActivity {
       this.minPower,
       this.maxPower,
       this.sdevPower,
+      this.avgGroundTime,
+      this.sdevGroundTime,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -1572,6 +1580,8 @@ class DbActivity {
       this.minPower,
       this.maxPower,
       this.sdevPower,
+      this.avgGroundTime,
+      this.sdevGroundTime,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -1652,6 +1662,8 @@ class DbActivity {
     minPower = o['minPower'] as int;
     maxPower = o['maxPower'] as int;
     sdevPower = double.tryParse(o['sdevPower'].toString());
+    avgGroundTime = double.tryParse(o['avgGroundTime'].toString());
+    sdevGroundTime = double.tryParse(o['sdevGroundTime'].toString());
     athletesId = o['athletesId'] as int;
   }
   // FIELDS (DbActivity)
@@ -1710,6 +1722,8 @@ class DbActivity {
   int minPower;
   int maxPower;
   double sdevPower;
+  double avgGroundTime;
+  double sdevGroundTime;
   int athletesId;
 
   BoolResult saveResult;
@@ -1996,6 +2010,14 @@ class DbActivity {
       map['sdevPower'] = sdevPower;
     }
 
+    if (avgGroundTime != null) {
+      map['avgGroundTime'] = avgGroundTime;
+    }
+
+    if (sdevGroundTime != null) {
+      map['sdevGroundTime'] = sdevGroundTime;
+    }
+
     if (athletesId != null) {
       map['athletesId'] = athletesId;
     }
@@ -2233,6 +2255,14 @@ class DbActivity {
       map['sdevPower'] = sdevPower;
     }
 
+    if (avgGroundTime != null) {
+      map['avgGroundTime'] = avgGroundTime;
+    }
+
+    if (sdevGroundTime != null) {
+      map['sdevGroundTime'] = sdevGroundTime;
+    }
+
     if (athletesId != null) {
       map['athletesId'] = athletesId;
     }
@@ -2316,6 +2346,8 @@ class DbActivity {
       minPower,
       maxPower,
       sdevPower,
+      avgGroundTime,
+      sdevGroundTime,
       athletesId
     ];
   }
@@ -2425,7 +2457,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
     final results = _mnDbActivity.saveAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -2436,7 +2468,7 @@ class DbActivity {
   Future<int> _upsert() async {
     try {
       if (await _mnDbActivity.rawInsert(
-              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -2495,6 +2527,8 @@ class DbActivity {
                 minPower,
                 maxPower,
                 sdevPower,
+                avgGroundTime,
+                sdevGroundTime,
                 athletesId
               ]) ==
           1) {
@@ -2519,7 +2553,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -3247,6 +3281,18 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return _sdevPower = setField(_sdevPower, 'sdevPower', DbType.real);
   }
 
+  DbActivityField _avgGroundTime;
+  DbActivityField get avgGroundTime {
+    return _avgGroundTime =
+        setField(_avgGroundTime, 'avgGroundTime', DbType.real);
+  }
+
+  DbActivityField _sdevGroundTime;
+  DbActivityField get sdevGroundTime {
+    return _sdevGroundTime =
+        setField(_sdevGroundTime, 'sdevGroundTime', DbType.real);
+  }
+
   DbActivityField _athletesId;
   DbActivityField get athletesId {
     return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
@@ -3906,6 +3952,18 @@ class DbActivityFields {
   static TableField get sdevPower {
     return _fSdevPower = _fSdevPower ??
         SqlSyntax.setField(_fSdevPower, 'sdevPower', DbType.real);
+  }
+
+  static TableField _fAvgGroundTime;
+  static TableField get avgGroundTime {
+    return _fAvgGroundTime = _fAvgGroundTime ??
+        SqlSyntax.setField(_fAvgGroundTime, 'avgGroundTime', DbType.real);
+  }
+
+  static TableField _fSdevGroundTime;
+  static TableField get sdevGroundTime {
+    return _fSdevGroundTime = _fSdevGroundTime ??
+        SqlSyntax.setField(_fSdevGroundTime, 'sdevGroundTime', DbType.real);
   }
 
   static TableField _fAthletesId;
@@ -5519,6 +5577,8 @@ class DbLap {
       this.minPower,
       this.maxPower,
       this.sdevPower,
+      this.avgGroundTime,
+      this.sdevGroundTime,
       this.eventsId,
       this.activitiesId}) {
     _setDefaultValues();
@@ -5562,6 +5622,8 @@ class DbLap {
       this.minPower,
       this.maxPower,
       this.sdevPower,
+      this.avgGroundTime,
+      this.sdevGroundTime,
       this.eventsId,
       this.activitiesId) {
     _setDefaultValues();
@@ -5606,6 +5668,8 @@ class DbLap {
       this.minPower,
       this.maxPower,
       this.sdevPower,
+      this.avgGroundTime,
+      this.sdevGroundTime,
       this.eventsId,
       this.activitiesId) {
     _setDefaultValues();
@@ -5663,6 +5727,8 @@ class DbLap {
     minPower = o['minPower'] as int;
     maxPower = o['maxPower'] as int;
     sdevPower = double.tryParse(o['sdevPower'].toString());
+    avgGroundTime = double.tryParse(o['avgGroundTime'].toString());
+    sdevGroundTime = double.tryParse(o['sdevGroundTime'].toString());
     eventsId = o['eventsId'] as int;
 
     activitiesId = o['activitiesId'] as int;
@@ -5707,6 +5773,8 @@ class DbLap {
   int minPower;
   int maxPower;
   double sdevPower;
+  double avgGroundTime;
+  double sdevGroundTime;
   int eventsId;
   int activitiesId;
 
@@ -5911,6 +5979,14 @@ class DbLap {
       map['sdevPower'] = sdevPower;
     }
 
+    if (avgGroundTime != null) {
+      map['avgGroundTime'] = avgGroundTime;
+    }
+
+    if (sdevGroundTime != null) {
+      map['sdevGroundTime'] = sdevGroundTime;
+    }
+
     if (eventsId != null) {
       map['eventsId'] = eventsId;
     }
@@ -6084,6 +6160,14 @@ class DbLap {
       map['sdevPower'] = sdevPower;
     }
 
+    if (avgGroundTime != null) {
+      map['avgGroundTime'] = avgGroundTime;
+    }
+
+    if (sdevGroundTime != null) {
+      map['sdevGroundTime'] = sdevGroundTime;
+    }
+
     if (eventsId != null) {
       map['eventsId'] = eventsId;
     }
@@ -6146,6 +6230,8 @@ class DbLap {
       minPower,
       maxPower,
       sdevPower,
+      avgGroundTime,
+      sdevGroundTime,
       eventsId,
       activitiesId
     ];
@@ -6246,7 +6332,7 @@ class DbLap {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbLap> dblaps) async {
     final results = _mnDbLap.saveAll(
-        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dblaps);
     return results;
   }
@@ -6257,7 +6343,7 @@ class DbLap {
   Future<int> _upsert() async {
     try {
       if (await _mnDbLap.rawInsert(
-              'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
@@ -6298,6 +6384,8 @@ class DbLap {
                 minPower,
                 maxPower,
                 sdevPower,
+                avgGroundTime,
+                sdevGroundTime,
                 eventsId,
                 activitiesId
               ]) ==
@@ -6322,7 +6410,7 @@ class DbLap {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbLap> dblaps) async {
     final results = await _mnDbLap.rawInsertAll(
-        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dblaps);
     return results;
   }
@@ -6950,6 +7038,18 @@ class DbLapFilterBuilder extends SearchCriteria {
     return _sdevPower = setField(_sdevPower, 'sdevPower', DbType.real);
   }
 
+  DbLapField _avgGroundTime;
+  DbLapField get avgGroundTime {
+    return _avgGroundTime =
+        setField(_avgGroundTime, 'avgGroundTime', DbType.real);
+  }
+
+  DbLapField _sdevGroundTime;
+  DbLapField get sdevGroundTime {
+    return _sdevGroundTime =
+        setField(_sdevGroundTime, 'sdevGroundTime', DbType.real);
+  }
+
   DbLapField _eventsId;
   DbLapField get eventsId {
     return _eventsId = setField(_eventsId, 'eventsId', DbType.integer);
@@ -7513,6 +7613,18 @@ class DbLapFields {
   static TableField get sdevPower {
     return _fSdevPower = _fSdevPower ??
         SqlSyntax.setField(_fSdevPower, 'sdevPower', DbType.real);
+  }
+
+  static TableField _fAvgGroundTime;
+  static TableField get avgGroundTime {
+    return _fAvgGroundTime = _fAvgGroundTime ??
+        SqlSyntax.setField(_fAvgGroundTime, 'avgGroundTime', DbType.real);
+  }
+
+  static TableField _fSdevGroundTime;
+  static TableField get sdevGroundTime {
+    return _fSdevGroundTime = _fSdevGroundTime ??
+        SqlSyntax.setField(_fSdevGroundTime, 'sdevGroundTime', DbType.real);
   }
 
   static TableField _fEventsId;

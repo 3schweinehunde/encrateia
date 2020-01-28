@@ -31,7 +31,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
   Widget build(context) {
     if (records.length > 0) {
       var powerValues =
-      records.map((value) => value.db.power).nonZero();
+      records.map((value) => value.db.power).nonZeroInts();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,

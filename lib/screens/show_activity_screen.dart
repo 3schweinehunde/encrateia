@@ -4,6 +4,7 @@ import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:encrateia/widgets/activity_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_power_widget.dart';
 import 'package:encrateia/widgets/activity_power_duration_widget.dart';
+import 'package:encrateia/widgets/activity_ground_time_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 
@@ -18,53 +19,39 @@ class ShowActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
+      length: 7,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
             isScrollable: true,
             tabs: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.directions_run)),
-                  Text(" Overview"),
-                ],
+              Tab(
+                icon: Icon(Icons.directions_run),
+                text: "Overview",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.spa)),
-                  Text(" Heart Rate"),
-                ],
+              Tab(
+                icon: Icon(Icons.timer),
+                text: "Laps",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.ev_station)),
-                  Text(" Power"),
-                ],
+              Tab(
+                icon: Icon(Icons.spa),
+                text: "HR",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.multiline_chart)),
-                  Text(" Power Duration"),
-                ],
+              Tab(
+                icon: Icon(Icons.ev_station),
+                text: "Power",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.timer)),
-                  Text(" Laps"),
-                ],
+              Tab(
+                icon: Icon(Icons.multiline_chart),
+                text: "Pow Dur",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.storage)),
-                  Text(" Metadata"),
-                ],
+              Tab(
+                icon: Icon(Icons.vertical_align_bottom),
+                text: "Grnd.time",
+              ),
+              Tab(
+                icon: Icon(Icons.storage),
+                text: "Metadata",
               ),
             ],
           ),
@@ -75,10 +62,11 @@ class ShowActivityScreen extends StatelessWidget {
         ),
         body: TabBarView(children: [
           ActivityOverviewWidget(activity: activity),
+          LapsListWidget(activity: activity),
           ActivityHeartRateWidget(activity: activity),
           ActivityPowerWidget(activity: activity),
           ActivityPowerDurationWidget(activity: activity),
-          LapsListWidget(activity: activity),
+          ActivityGroundTimeWidget(activity: activity),
           ActivityMetadataWidget(activity: activity),
         ]),
       ),

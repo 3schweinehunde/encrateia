@@ -35,11 +35,11 @@ class PowerDuration {
     }
   }
 
-  List<PlotPoint> asList() {
-    List<PlotPoint> plotPoints = [];
+  List<IntPlotPoint> asList() {
+    List<IntPlotPoint> plotPoints = [];
 
     powerMap.forEach((duration, power) {
-      plotPoints.add(PlotPoint(
+      plotPoints.add(IntPlotPoint(
         domain: scaled(seconds: duration),
         measure: power,
       ));

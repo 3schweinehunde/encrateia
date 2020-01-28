@@ -3,8 +3,7 @@ import 'package:encrateia/models/event.dart';
 
 extension StatisticFunctions on Iterable {
   double mean(){
-    List<int> values = this;
-    var sum = values.reduce((a, b) => a + b);
+    var sum = this.fold(0, (a, b) => a + b);
     var number = this.length;
     return sum / number;
   }
@@ -28,11 +27,18 @@ extension StatisticFunctions on Iterable {
     return values.reduce(math.max);
   }
 
-  List<int> nonZero() {
+  List<int> nonZeroInts() {
     List<int> values = this.toList();
     var nonZeroValues = values.where((value) => value != null && value != 0);
     return nonZeroValues.toList();
   }
+
+  List<double> nonZeroDoubles() {
+    List<double> values = this.toList();
+    var nonZeroValues = values.where((value) => value != null && value != 0);
+    return nonZeroValues.toList();
+  }
+
 
   Iterable<Event> everyNth(int n) sync* {
     List<Event> values = this.toList();

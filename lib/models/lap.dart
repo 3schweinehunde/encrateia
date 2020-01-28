@@ -54,7 +54,6 @@ class Lap {
   }
   Lap.fromDb(this.db);
 
-
   Future<List<Event>> get records async {
     if (_records == null) {
       _records = await Event.recordsByLap(lap: this);
@@ -81,7 +80,7 @@ class Lap {
   }
 
   Future<int> get minPower async {
-    if (db.minPower == null){
+    if (db.minPower == null) {
       List<Event> records = await this.records;
       db.minPower = calculateMinPower(records: records);
       await db.save();
@@ -90,14 +89,13 @@ class Lap {
   }
 
   Future<int> get maxPower async {
-    if (db.maxPower == null){
+    if (db.maxPower == null) {
       List<Event> records = await this.records;
       db.maxPower = calculateMaxPower(records: records);
       await db.save();
     }
     return db.maxPower;
   }
-
 
   Future<int> firstEventId() async {
     if (index > 1) {
@@ -128,17 +126,17 @@ class Lap {
   }
 
   static String sdevHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZero();
+    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
     return heartRates.sdev().toStringAsFixed(2);
   }
 
   static String minHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZero();
+    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
     return heartRates.min().toString();
   }
 
   static double calculateAveragePower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power).nonZero();
+    var powers = records.map((record) => record.db.power).nonZeroInts();
     if (powers.length > 0) {
       return powers.mean();
     } else
@@ -146,17 +144,32 @@ class Lap {
   }
 
   static double calculateSdevPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power).nonZero();
+    var powers = records.map((record) => record.db.power).nonZeroInts();
     return powers.sdev();
   }
 
   static int calculateMinPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power).nonZero();
+    var powers = records.map((record) => record.db.power).nonZeroInts();
     return powers.min();
   }
 
   static int calculateMaxPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power).nonZero();
+    var powers = records.map((record) => record.db.power).nonZeroInts();
     return powers.max();
+  }
+
+  static double calculateAverageGroundTime({List<Event> records}) {
+    var groundTimes =
+        records.map((record) => record.db.groundTime).nonZeroDoubles();
+    if (groundTimes.length > 0) {
+      return groundTimes.mean();
+    } else
+      return -1;
+  }
+
+  static double calculateSdevGroundTime({List<Event> records}) {
+    var groundTimes =
+        records.map((record) => record.db.groundTime).nonZeroDoubles();
+    return groundTimes.sdev();
   }
 }

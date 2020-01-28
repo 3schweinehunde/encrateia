@@ -141,6 +141,27 @@ class Activity extends ChangeNotifier {
     return db.maxPower;
   }
 
+  Future<double> get avgGroundTime async {
+    if (db.avgGroundTime == null) {
+      List<Event> records = await this.records;
+      db.avgGroundTime = Lap.calculateAverageGroundTime(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgGroundTime;
+  }
+
+  Future<double> get sdevGroundTime async {
+    if (db.sdevGroundTime == null) {
+      List<Event> records = await this.records;
+      db.sdevGroundTime = Lap.calculateSdevGroundTime(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.sdevGroundTime;
+  }
+
+
   parse({@required Athlete athlete}) async {
     var appDocDir = await getApplicationDocumentsDirectory();
     var fitFile = FitFile(path: appDocDir.path + '/${db.stravaId}.fit').parse();

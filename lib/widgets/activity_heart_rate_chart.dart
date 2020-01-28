@@ -19,18 +19,18 @@ class ActivityHeartRateChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where(
         (value) => value.db.heartRate != null && value.db.heartRate > 10);
-    var smoothedRecords = Event.toDataPoints(
+    var smoothedRecords = Event.toIntDataPoints(
       attribute: "heartRate",
       records: nonZero,
       amount: 30,
     );
 
     List<Series<dynamic, num>> data = [
-      new Series<PlotPoint, int>(
+      new Series<IntPlotPoint, int>(
         id: 'Heart Rate',
         colorFn: (_, __) => MaterialPalette.red.shadeDefault,
-        domainFn: (PlotPoint point, _) => point.domain,
-        measureFn: (PlotPoint point, _) => point.measure,
+        domainFn: (IntPlotPoint point, _) => point.domain,
+        measureFn: (IntPlotPoint point, _) => point.measure,
         data: smoothedRecords,
       )
     ];

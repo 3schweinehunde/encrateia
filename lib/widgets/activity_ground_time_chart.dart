@@ -5,7 +5,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 
-class ActivityPowerChart extends StatelessWidget {
+class ActivityGroundTimeChart extends StatelessWidget {
   final List<Event> records;
   final Activity activity;
   final colorArray = [
@@ -13,23 +13,23 @@ class ActivityPowerChart extends StatelessWidget {
     MaterialPalette.gray.shade200,
   ];
 
-  ActivityPowerChart({this.records, @required this.activity});
+  ActivityGroundTimeChart({this.records, @required this.activity});
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) => value.db.power > 100);
-    var smoothedRecords = Event.toIntDataPoints(
-      attribute: "power",
+    var nonZero = records.where((value) => value.db.groundTime > 0);
+    var smoothedRecords = Event.toDoubleDataPoints(
+      attribute: "groundTime",
       records: nonZero,
       amount: 30,
     );
 
     List<Series<dynamic, num>> data = [
-      new Series<IntPlotPoint, int>(
-        id: 'Power',
+      new Series<DoublePlotPoint, int>(
+        id: 'Ground Time',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
-        domainFn: (IntPlotPoint record, _) => record.domain,
-        measureFn: (IntPlotPoint record, _) => record.measure,
+        domainFn: (DoublePlotPoint record, _) => record.domain,
+        measureFn: (DoublePlotPoint record, _) => record.measure,
         data: smoothedRecords,
       )
     ];
@@ -49,12 +49,6 @@ class ActivityPowerChart extends StatelessWidget {
                   desiredTickCount: 6,
                 ),
               ),
-              primaryMeasureAxis: NumericAxisSpec(
-                tickProviderSpec: BasicNumericTickProviderSpec(
-                    zeroBound: false,
-                    dataIsInWholeNumbers: true,
-                    desiredTickCount: 6),
-              ),
               animate: false,
               layoutConfig: LayoutConfig(
                 leftMarginSpec: MarginSpec.fixedPixel(60),
@@ -65,7 +59,7 @@ class ActivityPowerChart extends StatelessWidget {
               behaviors: [
                 RangeAnnotation(rangeAnnotations(laps: laps)),
                 ChartTitle(
-                  'Power (W)',
+                  'Ground Time (ms)',
                   titleStyleSpec: TextStyleSpec(fontSize: 13),
                   behaviorPosition: BehaviorPosition.start,
                   titleOutsideJustification: OutsideJustification.end,
@@ -95,9 +89,9 @@ class ActivityPowerChart extends StatelessWidget {
       for (int index = 0; index < laps.length; index++)
         RangeAnnotationSegment(
           laps
-                  .sublist(0, index + 1)
-                  .map((lap) => lap.db.totalDistance)
-                  .reduce((a, b) => a + b) -
+              .sublist(0, index + 1)
+              .map((lap) => lap.db.totalDistance)
+              .reduce((a, b) => a + b) -
               laps[index].db.totalDistance,
           laps
               .sublist(0, index + 1)

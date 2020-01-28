@@ -121,13 +121,17 @@ class Event {
     return eventList;
   }
 
-  static toDataPoints({Iterable<Event> records, int amount, @required String attribute}) {
+  static toIntDataPoints({
+    Iterable<Event> records,
+    int amount,
+    @required String attribute,
+  }) {
     int index = 0;
-    List<PlotPoint> plotPoints = [];
+    List<IntPlotPoint> plotPoints = [];
     int sum = 0;
 
     for (var record in records) {
-      switch(attribute) {
+      switch (attribute) {
         case "power":
           sum = sum + record.db.power;
           break;
@@ -136,9 +140,48 @@ class Event {
       }
 
       if (index++ % amount == amount - 1) {
-        plotPoints.add(PlotPoint(
+        plotPoints.add(IntPlotPoint(
           domain: record.db.distance.round(),
           measure: (sum / amount).round(),
+        ));
+        sum = 0;
+      }
+    }
+
+    return plotPoints;
+  }
+
+  static toDoubleDataPoints({
+    Iterable<Event> records,
+    int amount,
+    @required String attribute,
+  }) {
+    int index = 0;
+    List<DoublePlotPoint> plotPoints = [];
+    double sum = 0.0;
+
+    for (var record in records) {
+      switch (attribute) {
+        case "groundTime":
+          sum = sum + record.db.groundTime;
+          break;
+        case "strydCadence":
+          sum = sum + record.db.strydCadence;
+          break;
+        case "verticalOscillation":
+          sum = sum + record.db.verticalOscillation;
+          break;
+        case "formPower":
+          sum = sum + record.db.formPower;
+          break;
+        case "legSpringStiffness":
+          sum = sum + record.db.legSpringStiffness;
+      }
+
+      if (index++ % amount == amount - 1) {
+        plotPoints.add(DoublePlotPoint(
+          domain: record.db.distance.round(),
+          measure: sum / amount,
         ));
         sum = 0;
       }

@@ -1,6 +1,13 @@
-class PlotPoint {
-  int measure;
+class IntPlotPoint {
   int domain;
+  int measure;
 
-  PlotPoint({this.measure, this.domain});
+  IntPlotPoint({this.domain, this.measure});
+}
+
+class DoublePlotPoint {
+  int domain;
+  double measure;
+
+  DoublePlotPoint({this.domain, this.measure});
 }

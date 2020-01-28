@@ -88,6 +88,8 @@ const tableActivity = SqfEntityTable(
     SqfEntityField('minPower', DbType.integer),
     SqfEntityField('maxPower', DbType.integer),
     SqfEntityField('sdevPower', DbType.real),
+    SqfEntityField('avgGroundTime', DbType.real),
+    SqfEntityField('sdevGroundTime', DbType.real),
 
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,
@@ -177,6 +179,8 @@ const tableLap = SqfEntityTable(
       SqfEntityField('minPower', DbType.integer),
       SqfEntityField('maxPower', DbType.integer),
       SqfEntityField('sdevPower', DbType.real),
+      SqfEntityField('avgGroundTime', DbType.real),
+      SqfEntityField('sdevGroundTime', DbType.real),
 
 
       SqfEntityFieldRelationship(
