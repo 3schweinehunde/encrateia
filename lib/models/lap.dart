@@ -115,6 +115,23 @@ class Lap {
     return db.sdevGroundTime;
   }
 
+  Future<double> get avgLegSpringStiffness async {
+    if (db.avgLegSpringStiffness == null) {
+      List<Event> records = await this.records;
+      db.avgLegSpringStiffness = calculateAverageLegSpringStiffness(records: records);
+      await db.save();
+    }
+    return db.avgLegSpringStiffness;
+  }
+
+  Future<double> get sdevLegSpringStiffness async {
+    if (db.sdevLegSpringStiffness == null) {
+      List<Event> records = await this.records;
+      db.sdevLegSpringStiffness = calculateSdevLegSpringStiffness(records: records);
+      await db.save();
+    }
+    return db.sdevLegSpringStiffness;
+  }
 
   Future<int> firstEventId() async {
     if (index > 1) {

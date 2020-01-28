@@ -2,22 +2,25 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 
-class LapHeartRateChart extends StatelessWidget {
+class LapLegSpringStiffnessChart extends StatelessWidget {
   final List<Event> records;
 
-  LapHeartRateChart({this.records});
+  LapLegSpringStiffnessChart({this.records});
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) => value.db.heartRate > 0).toList();
+    var nonZero = records
+        .where((value) => value.db.legSpringStiffness != null && value.db.legSpringStiffness > 0)
+        .toList();
+
     var offset = nonZero.first.db.distance.round();
 
     List<Series<dynamic, num>> data = [
       new Series<Event, int>(
-        id: 'Heart Rate',
-        colorFn: (_, __) => MaterialPalette.red.shadeDefault,
+        id: 'Leg Spring Stiffness',
+        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Event record, _) => record.db.distance.round() - offset,
-        measureFn: (Event record, _) => record.db.heartRate,
+        measureFn: (Event record, _) => record.db.groundTime,
         data: nonZero,
       )
     ];
@@ -27,16 +30,17 @@ class LapHeartRateChart extends StatelessWidget {
       padding: EdgeInsets.all(2),
       child: LineChart(
         data,
+        animate: false,
         primaryMeasureAxis: NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
-              zeroBound: false,
-              dataIsInWholeNumbers: true,
-              desiredTickCount: 6),
+            zeroBound: false,
+            dataIsInWholeNumbers: false,
+            desiredTickCount: 5,
+          ),
         ),
-        animate: false,
         behaviors: [
           ChartTitle(
-            'Heart Rate (bpm)',
+            'Leg Spring Stiffness (kN/m)',
             titleStyleSpec: TextStyleSpec(fontSize: 13),
             behaviorPosition: BehaviorPosition.start,
             titleOutsideJustification: OutsideJustification.end,

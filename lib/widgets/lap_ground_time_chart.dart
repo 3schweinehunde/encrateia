@@ -10,7 +10,7 @@ class LapGroundTimeChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var nonZero = records
-        .where((value) => value.db.power != null && value.db.power > 100)
+        .where((value) => value.db.groundTime != null && value.db.groundTime > 0)
         .toList();
 
     var offset = nonZero.first.db.distance.round();
@@ -31,6 +31,13 @@ class LapGroundTimeChart extends StatelessWidget {
       child: LineChart(
         data,
         animate: false,
+        primaryMeasureAxis: NumericAxisSpec(
+          tickProviderSpec: BasicNumericTickProviderSpec(
+            zeroBound: false,
+            dataIsInWholeNumbers: false,
+            desiredTickCount: 5,
+          ),
+        ),
         behaviors: [
           ChartTitle(
             'Ground Time (ms)',

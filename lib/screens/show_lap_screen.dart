@@ -4,6 +4,7 @@ import 'package:encrateia/widgets/lap_heart_rate_widget.dart';
 import 'package:encrateia/widgets/lap_power_widget.dart';
 import 'package:encrateia/widgets/lap_power_duration_widget.dart';
 import 'package:encrateia/widgets/lap_ground_time_widget.dart';
+import 'package:encrateia/widgets/lap_leg_spring_stiffness_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 
@@ -18,7 +19,7 @@ class ShowLapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
+      length: 7,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
@@ -46,6 +47,11 @@ class ShowLapScreen extends StatelessWidget {
                 text: "Ground Time",
               ),
               Tab(
+                icon: Icon(Icons.airline_seat_recline_extra),
+                text: "Leg spr.stiff.",
+              ),
+
+              Tab(
                 icon: Icon(Icons.storage),
                 text: "Metadata",
               ),
@@ -62,6 +68,7 @@ class ShowLapScreen extends StatelessWidget {
           LapPowerWidget(lap: lap),
           LapPowerDurationWidget(lap: lap),
           LapGroundTimeWidget(lap: lap),
+          LapLegSpringStiffnessWidget(lap: lap),
           LapMetadataWidget(lap: lap),
         ]),
       ),
