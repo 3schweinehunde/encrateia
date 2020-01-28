@@ -44,10 +44,9 @@ class Activity extends ChangeNotifier {
     setState("downloaded");
   }
 
-  setState(String state) {
-    db
-      ..state = state
-      ..save();
+  setState(String state) async{
+    db.state = state;
+    await db.save();
     notifyListeners();
   }
 
