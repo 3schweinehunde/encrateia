@@ -97,6 +97,25 @@ class Lap {
     return db.maxPower;
   }
 
+  Future<double> get avgGroundTime async {
+    if (db.avgGroundTime == null) {
+      List<Event> records = await this.records;
+      db.avgGroundTime = calculateAverageGroundTime(records: records);
+      await db.save();
+    }
+    return db.avgGroundTime;
+  }
+
+  Future<double> get sdevGroundTime async {
+    if (db.sdevGroundTime == null) {
+      List<Event> records = await this.records;
+      db.sdevGroundTime = calculateSdevGroundTime(records: records);
+      await db.save();
+    }
+    return db.sdevGroundTime;
+  }
+
+
   Future<int> firstEventId() async {
     if (index > 1) {
       var lapList = await activity.laps;

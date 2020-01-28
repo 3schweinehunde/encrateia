@@ -3,6 +3,7 @@ import 'package:encrateia/widgets/lap_overview_widget.dart';
 import 'package:encrateia/widgets/lap_heart_rate_widget.dart';
 import 'package:encrateia/widgets/lap_power_widget.dart';
 import 'package:encrateia/widgets/lap_power_duration_widget.dart';
+import 'package:encrateia/widgets/lap_ground_time_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 
@@ -17,46 +18,36 @@ class ShowLapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 5,
+      length: 6,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.green,
           bottom: TabBar(
             isScrollable: true,
             tabs: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.directions_run)),
-                  Text(" Overview"),
-                ],
+              Tab(
+                icon: Icon(Icons.directions_run),
+                text: "Overview",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.spa)),
-                  Text(" Heart Rate"),
-                ],
+              Tab(
+                icon: Icon(Icons.spa),
+                text: "HR",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.ev_station)),
-                  Text(" Power"),
-                ],
+              Tab(
+                icon: Icon(Icons.ev_station),
+                text: "Power",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.multiline_chart)),
-                  Text(" Power Duration"),
-                ],
+              Tab(
+                icon: Icon(Icons.multiline_chart),
+                text: "Power Duration",
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Tab(icon: Icon(Icons.storage)),
-                  Text(" Metadata"),
-                ],
+              Tab(
+                icon: Icon(Icons.vertical_align_bottom),
+                text: "Ground Time",
+              ),
+              Tab(
+                icon: Icon(Icons.storage),
+                text: "Metadata",
               ),
             ],
           ),
@@ -70,6 +61,7 @@ class ShowLapScreen extends StatelessWidget {
           LapHeartRateWidget(lap: lap),
           LapPowerWidget(lap: lap),
           LapPowerDurationWidget(lap: lap),
+          LapGroundTimeWidget(lap: lap),
           LapMetadataWidget(lap: lap),
         ]),
       ),
