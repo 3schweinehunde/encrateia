@@ -169,7 +169,7 @@ class Event {
           sum = sum + record.db.groundTime;
           break;
         case "strydCadence":
-          sum = sum + record.db.strydCadence;
+          sum = sum + 2 * record.db.strydCadence;
           break;
         case "verticalOscillation":
           sum = sum + record.db.verticalOscillation;

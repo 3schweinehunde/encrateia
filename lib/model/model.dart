@@ -94,6 +94,8 @@ const tableActivity = SqfEntityTable(
     SqfEntityField('sdevLegSpringStiffness', DbType.real),
     SqfEntityField('avgFormPower', DbType.real),
     SqfEntityField('sdevFormPower', DbType.real),
+    SqfEntityField('avgStrydCadence', DbType.real),
+    SqfEntityField('sdevStrydCadence', DbType.real),
 
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,
@@ -101,7 +103,6 @@ const tableActivity = SqfEntityTable(
         defaultValue: 0),
   ],
 );
-
 
 const tableEvent = SqfEntityTable(
   tableName: 'events',
@@ -189,6 +190,8 @@ const tableLap = SqfEntityTable(
       SqfEntityField('sdevLegSpringStiffness', DbType.real),
       SqfEntityField('avgFormPower', DbType.real),
       SqfEntityField('sdevFormPower', DbType.real),
+      SqfEntityField('avgStrydCadence', DbType.real),
+      SqfEntityField('sdevStrydCadence', DbType.real),
 
       SqfEntityFieldRelationship(
           parentTable: tableEvent,
@@ -198,8 +201,7 @@ const tableLap = SqfEntityTable(
           parentTable: tableActivity,
           deleteRule: DeleteRule.CASCADE,
           defaultValue: 0),
-    ]
-);
+    ]);
 
 @SqfEntityBuilder(encrateia)
 const encrateia = SqfEntityModel(

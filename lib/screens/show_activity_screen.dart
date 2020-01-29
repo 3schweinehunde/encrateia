@@ -7,6 +7,7 @@ import 'package:encrateia/widgets/activity_power_duration_widget.dart';
 import 'package:encrateia/widgets/activity_ground_time_widget.dart';
 import 'package:encrateia/widgets/activity_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/activity_form_power_widget.dart';
+import 'package:encrateia/widgets/activity_stryd_cadence_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 
@@ -21,7 +22,7 @@ class ShowActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 9,
+      length: 10,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -60,6 +61,10 @@ class ShowActivityScreen extends StatelessWidget {
                 text: "Form Power",
               ),
               Tab(
+                icon: Icon(Icons.pets),
+                text: "Cadence",
+              ),
+              Tab(
                 icon: Icon(Icons.storage),
                 text: "Metadata",
               ),
@@ -79,6 +84,7 @@ class ShowActivityScreen extends StatelessWidget {
           ActivityGroundTimeWidget(activity: activity),
           ActivityLegSpringStiffnessWidget(activity: activity),
           ActivityFormPowerWidget(activity: activity),
+          ActivityStrydCadenceWidget(activity: activity),
           ActivityMetadataWidget(activity: activity),
         ]),
       ),

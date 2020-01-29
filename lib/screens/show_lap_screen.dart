@@ -6,6 +6,7 @@ import 'package:encrateia/widgets/lap_power_duration_widget.dart';
 import 'package:encrateia/widgets/lap_ground_time_widget.dart';
 import 'package:encrateia/widgets/lap_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/lap_form_power_widget.dart';
+import 'package:encrateia/widgets/lap_stryd_cadence_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 
@@ -20,7 +21,7 @@ class ShowLapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 8,
+      length: 9,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.green,
@@ -56,6 +57,10 @@ class ShowLapScreen extends StatelessWidget {
                 text: "Form Power",
               ),
               Tab(
+                icon: Icon(Icons.pets),
+                text: "Cadence",
+              ),
+              Tab(
                 icon: Icon(Icons.storage),
                 text: "Metadata",
               ),
@@ -74,6 +79,7 @@ class ShowLapScreen extends StatelessWidget {
           LapGroundTimeWidget(lap: lap),
           LapLegSpringStiffnessWidget(lap: lap),
           LapFormPowerWidget(lap: lap),
+          LapStrydCadenceWidget(lap: lap),
           LapMetadataWidget(lap: lap),
         ]),
       ),

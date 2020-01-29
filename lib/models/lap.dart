@@ -115,6 +115,24 @@ class Lap {
     return db.sdevGroundTime;
   }
 
+  Future<double> get avgStrydCadence async {
+    if (db.avgStrydCadence == null) {
+      List<Event> records = await this.records;
+      db.avgStrydCadence = calculateAverageStrydCadence(records: records);
+      await db.save();
+    }
+    return db.avgStrydCadence;
+  }
+
+  Future<double> get sdevStrydCadence async {
+    if (db.sdevStrydCadence == null) {
+      List<Event> records = await this.records;
+      db.sdevStrydCadence = calculateSdevStrydCadence(records: records);
+      await db.save();
+    }
+    return db.sdevStrydCadence;
+  }
+
   Future<double> get avgLegSpringStiffness async {
     if (db.avgLegSpringStiffness == null) {
       List<Event> records = await this.records;
@@ -227,6 +245,22 @@ class Lap {
         records.map((record) => record.db.groundTime).nonZeroDoubles();
     return groundTimes.sdev();
   }
+
+  static double calculateAverageStrydCadence({List<Event> records}) {
+    var strydCadences =
+    records.map((record) => 2 * record.db.strydCadence).nonZeroDoubles();
+    if (strydCadences.length > 0) {
+      return strydCadences.mean();
+    } else
+      return -1;
+  }
+
+  static double calculateSdevStrydCadence({List<Event> records}) {
+    var strydCadences =
+    records.map((record) => 2 * record.db.strydCadence).nonZeroDoubles();
+    return strydCadences.sdev();
+  }
+
 
   static double calculateAverageLegSpringStiffness({List<Event> records}) {
     var legSpringStiffnesses =

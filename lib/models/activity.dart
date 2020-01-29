@@ -160,6 +160,27 @@ class Activity extends ChangeNotifier {
     return db.sdevGroundTime;
   }
 
+  Future<double> get avgStrydCadence async {
+    if (db.avgStrydCadence == null) {
+      List<Event> records = await this.records;
+      db.avgStrydCadence = Lap.calculateAverageStrydCadence(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgStrydCadence;
+  }
+
+  Future<double> get sdevStrydCadence async {
+    if (db.sdevStrydCadence == null) {
+      List<Event> records = await this.records;
+      db.sdevStrydCadence = Lap.calculateSdevStrydCadence(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.sdevStrydCadence;
+  }
+
+
   Future<double> get avgLegSpringStiffness async {
     if (db.avgLegSpringStiffness == null) {
       List<Event> records = await this.records;
