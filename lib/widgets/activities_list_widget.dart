@@ -50,11 +50,6 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     return ListView(
       padding: EdgeInsets.all(20),
       children: <Widget>[
-        if (widget.athlete.email != null && widget.athlete.password != null)
-          ListTile(
-              leading: Icon(Icons.cloud_download),
-              title: Text("Download Activities from Strava"),
-              onTap: () => queryStrava()),
         if (activities != null)
           for (Activity activity in activities)
             ListTile(
@@ -91,11 +86,6 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             ),
       ],
     );
-  }
-
-  Future queryStrava() async {
-    await Activity.queryStrava(athlete: widget.athlete);
-    getActivities();
   }
 
   Future delete({Activity activity}) async {
