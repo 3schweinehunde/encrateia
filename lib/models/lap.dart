@@ -115,6 +115,25 @@ class Lap {
     return db.sdevGroundTime;
   }
 
+  Future<double> get avgVerticalOscillation async {
+    if (db.avgVerticalOscillation == null || db.avgVerticalOscillation == 6553.5) {
+      List<Event> records = await this.records;
+      db.avgVerticalOscillation = calculateAverageVerticalOscillation(records: records);
+      await db.save();
+    }
+    return db.avgVerticalOscillation;
+  }
+
+  Future<double> get sdevVerticalOscillation async {
+    if (db.sdevVerticalOscillation == null) {
+      List<Event> records = await this.records;
+      db.sdevVerticalOscillation = calculateSdevVerticalOscillation(records: records);
+      await db.save();
+    }
+    return db.sdevVerticalOscillation;
+  }
+
+
   Future<double> get avgStrydCadence async {
     if (db.avgStrydCadence == null) {
       List<Event> records = await this.records;
@@ -276,6 +295,22 @@ class Lap {
     records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
     return legSpringStiffnesses.sdev();
   }
+
+  static double calculateAverageVerticalOscillation({List<Event> records}) {
+    var verticalOscillation =
+    records.map((record) => record.db.verticalOscillation).nonZeroDoubles();
+    if (verticalOscillation.length > 0) {
+      return verticalOscillation.mean();
+    } else
+      return -1;
+  }
+
+  static double calculateSdevVerticalOscillation({List<Event> records}) {
+    var verticalOscillation =
+    records.map((record) => record.db.verticalOscillation).nonZeroDoubles();
+    return verticalOscillation.sdev();
+  }
+
 
   static double calculateAverageFormPower({List<Event> records}) {
     var legSpringStiffnesses =

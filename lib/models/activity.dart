@@ -160,6 +160,27 @@ class Activity extends ChangeNotifier {
     return db.sdevGroundTime;
   }
 
+  Future<double> get avgVerticalOscillation async {
+    if (db.avgVerticalOscillation == null || db.avgVerticalOscillation == 6553.5) {
+      List<Event> records = await this.records;
+      db.avgVerticalOscillation = Lap.calculateAverageVerticalOscillation(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgVerticalOscillation;
+  }
+
+  Future<double> get sdevVerticalOscillation async {
+    if (db.sdevVerticalOscillation == null) {
+      List<Event> records = await this.records;
+      db.sdevVerticalOscillation = Lap.calculateSdevVerticalOscillation(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.sdevVerticalOscillation;
+  }
+
+
   Future<double> get avgStrydCadence async {
     if (db.avgStrydCadence == null) {
       List<Event> records = await this.records;
