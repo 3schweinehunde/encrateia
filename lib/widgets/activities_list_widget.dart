@@ -48,11 +48,12 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(10),
       children: <Widget>[
         if (activities != null)
           for (Activity activity in activities)
             ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 0),
               leading: Icon(Icons.directions_run),
               title: Text(activity.db.name ?? "Activity"),
               subtitle: Row(
