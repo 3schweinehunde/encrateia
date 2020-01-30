@@ -20,7 +20,7 @@ class ActivitiesListWidget extends StatefulWidget {
 }
 
 class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
-  List<Activity> activities;
+  List<Activity> activities = [];
 
   @override
   initState() {
@@ -47,46 +47,60 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.all(10),
-      children: <Widget>[
-        if (activities != null)
-          for (Activity activity in activities)
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 0),
-              leading: Icon(Icons.directions_run),
-              title: Text(activity.db.name ?? "Activity"),
-              subtitle: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text(
-                      activity.dateString() + "\n" + activity.distanceString()),
-                  Text(activity.timeString() + "\n" + activity.paceString()),
-                  FutureBuilder<double>(
-                      future: activity.avgPower,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<double> snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(activity.heartRateString() +
-                              "\n" +
-                              snapshot.data.toStringOrDashes(1) +
-                              " W");
-                        } else {
-                          return Text(activity.heartRateString() + "\n ...");
-                        }
-                      }),
-                ],
-              ),
-              trailing: ChangeNotifierProvider.value(
-                value: activity,
-                child: Consumer<Activity>(
-                  builder: (context, activity, _child) =>
-                      popupMenuButton(activity: activity),
-                ),
-              ),
+    return ListView.separated(
+      separatorBuilder: (context, index) => Divider(
+        color: Colors.black,
+      ),
+      padding: EdgeInsets.only(left: 10),
+      itemCount: activities.length,
+      itemBuilder: (BuildContext context, int index) {
+        var activity = activities[index];
+        return ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 0),
+          leading: sportsIcon(sport: activity.db.sport),
+          title: Text(activity.db.name ?? "Activity"),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text(
+                  activity.dateString() + "\n" + activity.distanceString()),
+              Text(activity.timeString() + "\n" + activity.paceString()),
+              FutureBuilder<double>(
+                  future: activity.avgPower,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<double> snapshot) {
+                    if (snapshot.hasData) {
+                      return Text(activity.heartRateString() +
+                          "\n" +
+                          snapshot.data.toStringOrDashes(1) +
+                          " W");
+                    } else {
+                      return Text(activity.heartRateString() + "\n ...");
+                    }
+                  }),
+            ],
+          ),
+          trailing: ChangeNotifierProvider.value(
+            value: activity,
+            child: Consumer<Activity>(
+              builder: (context, activity, _child) =>
+                  popupMenuButton(activity: activity),
             ),
-      ],
+          ),
+        );
+      },
     );
+  }
+
+  Icon sportsIcon({String sport}) {
+    switch(sport) {
+      case "running":
+        return Icon(Icons.directions_run);
+      case "cycling":
+        return Icon(Icons.directions_bike);
+      default:
+        return Icon(Icons.fitness_center);
+    }
   }
 
   Future delete({Activity activity}) async {
