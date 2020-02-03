@@ -4,14 +4,12 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
+import 'package:encrateia/utils/graph_utils.dart';
+import 'package:encrateia/utils/my_line_chart.dart';
 
 class ActivityGroundTimeChart extends StatelessWidget {
   final List<Event> records;
   final Activity activity;
-  final colorArray = [
-    MaterialPalette.white,
-    MaterialPalette.gray.shade200,
-  ];
 
   ActivityGroundTimeChart({this.records, @required this.activity});
 
@@ -41,73 +39,21 @@ class ActivityGroundTimeChart extends StatelessWidget {
           var laps = snapshot.data;
           return Container(
             height: 300,
-            child: LineChart(
-              data,
-              domainAxis: NumericAxisSpec(
-                viewport: NumericExtents(0, nonZero.last.db.distance + 500),
-                tickProviderSpec: BasicNumericTickProviderSpec(
-                  desiredTickCount: 6,
-                ),
-              ),
-              primaryMeasureAxis: NumericAxisSpec(
-                tickProviderSpec: BasicNumericTickProviderSpec(
+            child: MyLineChart(
+              data: data,
+              maxDomain: nonZero.last.db.distance,
+              laps: laps,
+              domainTitle: 'Ground Time (ms)',
+              measureTickProviderSpec: BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: false,
-                  desiredTickCount: 5,
-                ),
-              ),
-              animate: false,
-              layoutConfig: LayoutConfig(
-                leftMarginSpec: MarginSpec.fixedPixel(60),
-                topMarginSpec: MarginSpec.fixedPixel(20),
-                rightMarginSpec: MarginSpec.fixedPixel(20),
-                bottomMarginSpec: MarginSpec.fixedPixel(40),
-              ),
-              behaviors: [
-                RangeAnnotation(rangeAnnotations(laps: laps)),
-                ChartTitle(
-                  'Ground Time (ms)',
-                  titleStyleSpec: TextStyleSpec(fontSize: 13),
-                  behaviorPosition: BehaviorPosition.start,
-                  titleOutsideJustification: OutsideJustification.end,
-                ),
-                ChartTitle(
-                  'Distance (m)',
-                  titleStyleSpec: TextStyleSpec(fontSize: 13),
-                  behaviorPosition: BehaviorPosition.bottom,
-                  titleOutsideJustification: OutsideJustification.end,
-                ),
-              ],
+                  desiredTickCount: 5),
+              domainTickProviderSpec:
+              BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
-        } else {
-          return Container(
-            height: 100,
-            child: Center(child: Text("Loading")),
-          );
-
-        }
+        } else return GraphUtils.loadingContainer;
       },
     );
-  }
-
-  rangeAnnotations({List<Lap> laps}) {
-    return [
-      for (int index = 0; index < laps.length; index++)
-        RangeAnnotationSegment(
-          laps
-              .sublist(0, index + 1)
-              .map((lap) => lap.db.totalDistance)
-              .reduce((a, b) => a + b) -
-              laps[index].db.totalDistance,
-          laps
-              .sublist(0, index + 1)
-              .map((lap) => lap.db.totalDistance)
-              .reduce((a, b) => a + b),
-          RangeAnnotationAxisType.domain,
-          color: colorArray[index % 2],
-          endLabel: 'Lap ${laps[index].index}',
-        )
-    ];
   }
 }

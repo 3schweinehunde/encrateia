@@ -32,7 +32,7 @@ class MyLineChart extends LineChart {
               titleOutsideJustification: OutsideJustification.end,
             ),
             ChartTitle(
-              measureTitle,
+              measureTitle ?? 'Distance (m)',
               titleStyleSpec: TextStyleSpec(fontSize: 13),
               behaviorPosition: BehaviorPosition.bottom,
               titleOutsideJustification: OutsideJustification.end,
@@ -40,5 +40,3 @@ class MyLineChart extends LineChart {
           ],
         );
 }
-
-

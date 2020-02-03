@@ -1,11 +1,11 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/utils/graph_utils.dart';
+import 'package:encrateia/utils/my_line_chart.dart';
 
 class ActivityFormPowerChart extends StatelessWidget {
   final List<Event> records;
@@ -44,8 +44,7 @@ class ActivityFormPowerChart extends StatelessWidget {
               maxDomain: nonZero.last.db.distance,
               laps: laps,
               domainTitle: 'Form Power (W)',
-              measureTitle: 'Distance (m)',
-              measureTickProviderSpec: BasicNumericTickProviderSpec(
+                            measureTickProviderSpec: BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: true,
                   desiredTickCount: 5),
@@ -53,9 +52,7 @@ class ActivityFormPowerChart extends StatelessWidget {
                   BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
-        } else {
-          return GraphUtils.loadingContainer;
-        }
+        } else return GraphUtils.loadingContainer;
       },
     );
   }
