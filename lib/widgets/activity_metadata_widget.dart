@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityMetadataWidget extends StatelessWidget {
   final Activity activity;
@@ -50,7 +51,7 @@ class ActivityMetadataWidget extends StatelessWidget {
             subtitle: Text('avg / max temperature'),
           ),
           ListTile(
-            leading: Icon(Icons.unfold_more),
+            leading: MyIcon.verticalOscillation,
             title: Text(activity.db.avgVerticalOscillation.toString()),
             subtitle: Text('avg vertical oscillation'),
           ),

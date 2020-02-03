@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class LapMetadataWidget extends StatelessWidget {
   final Lap lap;
@@ -42,7 +43,7 @@ class LapMetadataWidget extends StatelessWidget {
             subtitle: Text('event type / group'),
           ),
           ListTile(
-            leading: Icon(Icons.unfold_more),
+            leading: MyIcon.verticalOscillation,
             title: Text(lap.db.avgVerticalOscillation.toString()),
             subtitle: Text('avg vertical oscillation'),
           ),

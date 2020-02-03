@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class ListActivitiesScreen extends StatefulWidget {
   final Athlete athlete;
@@ -34,7 +35,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
       return FloatingActionButton.extended(
         onPressed: () => queryStrava(),
         label: Text("from Strava"),
-        icon: Icon(Icons.cloud_download),
+        icon: MyIcon.stravaDownload,
       );
     } else {
       return Container();

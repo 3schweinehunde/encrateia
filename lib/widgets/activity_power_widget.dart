@@ -4,6 +4,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'activity_power_chart.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityPowerWidget extends StatefulWidget {
   final Activity activity;
@@ -39,7 +40,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
             children: <Widget>[
               ActivityPowerChart(records: records, activity: widget.activity),
               ListTile(
-                leading: Icon(Icons.ev_station),
+                leading: MyIcon.average,
                 title: Text(avgPowerString),
                 subtitle: Text("average power"),
               ),
@@ -54,12 +55,12 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                 subtitle: Text("maximum power"),
               ),
               ListTile(
-                leading: Icon(Icons.unfold_more),
+                leading: MyIcon.sdev,
                 title: Text(sdevPowerString),
                 subtitle: Text("standard deviation power"),
               ),
               ListTile(
-                leading: Icon(Icons.playlist_add),
+                leading: MyIcon.amount,
                 title: Text(records.length.toString()),
                 subtitle: Text("number of measurements"),
               ),

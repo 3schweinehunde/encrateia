@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/num_utils.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 enum Action { show, parse, download, delete, state }
 
@@ -95,11 +96,11 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   Icon sportsIcon({String sport}) {
     switch(sport) {
       case "running":
-        return Icon(Icons.directions_run);
+        return MyIcon.running;
       case "cycling":
-        return Icon(Icons.directions_bike);
+        return MyIcon.cycling;
       default:
-        return Icon(Icons.fitness_center);
+        return MyIcon.sport;
     }
   }
 
@@ -175,7 +176,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             PopupMenuItem<Action>(
               value: Action.show,
               child: Row(children: <Widget>[
-                Icon(Icons.remove_red_eye),
+                MyIcon.show,
                 Text(" Show"),
               ]),
             ),
@@ -184,7 +185,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             value: Action.parse,
             child: Row(
               children: <Widget>[
-                Icon(Icons.build),
+                MyIcon.parse,
                 Text(" Parse .fit-file"),
               ],
             ),
@@ -193,7 +194,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           value: Action.download,
           child: Row(
             children: <Widget>[
-              Icon(Icons.cloud_download),
+              MyIcon.download,
               Text(" Download .fit-file")
             ],
           ),
@@ -203,7 +204,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             value: Action.delete,
             child: Row(
               children: <Widget>[
-                Icon(Icons.delete),
+                MyIcon.delete,
                 Text(" Delete activity"),
               ],
             ),

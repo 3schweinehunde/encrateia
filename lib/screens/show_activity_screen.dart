@@ -11,6 +11,7 @@ import 'package:encrateia/widgets/activity_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/activity_vertical_oscillation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class ShowActivityScreen extends StatelessWidget {
   final Activity activity;
@@ -42,7 +43,7 @@ class ShowActivityScreen extends StatelessWidget {
                 text: "HR",
               ),
               Tab(
-                icon: Icon(Icons.ev_station),
+                icon: MyIcon.power,
                 text: "Power",
               ),
               Tab(
@@ -66,7 +67,7 @@ class ShowActivityScreen extends StatelessWidget {
                 text: "Cadence",
               ),
               Tab(
-                icon: Icon(Icons.unfold_more),
+                icon: MyIcon.verticalOscillation,
                 text: "Vertical Oscillation",
               ),
               Tab(

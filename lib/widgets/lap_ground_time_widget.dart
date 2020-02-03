@@ -4,6 +4,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'lap_ground_time_chart.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class LapGroundTimeWidget extends StatefulWidget {
   final Lap lap;
@@ -38,17 +39,17 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
             children: <Widget>[
               LapGroundTimeChart(records: records),
               ListTile(
-                leading: Icon(Icons.ev_station),
+                leading: MyIcon.average,
                 title: Text(avgGroundTimeString),
                 subtitle: Text("average ground time"),
               ),
               ListTile(
-                leading: Icon(Icons.unfold_more),
+                leading: MyIcon.sdev,
                 title: Text(sdevGroundTimeString),
                 subtitle: Text("standard deviation ground time"),
               ),
               ListTile(
-                leading: Icon(Icons.playlist_add),
+                leading: MyIcon.amount,
                 title: Text(records.length.toString()),
                 subtitle: Text("number of measurements"),
               ),

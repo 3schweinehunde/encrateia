@@ -4,6 +4,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'lap_form_power_chart.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class LapFormPowerWidget extends StatefulWidget {
   final Lap lap;
@@ -38,17 +39,17 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
             children: <Widget>[
               LapFormPowerChart(records: records),
               ListTile(
-                leading: Icon(Icons.ev_station),
+                leading: MyIcon.average,
                 title: Text(avgFormPowerString),
                 subtitle: Text("average form power"),
               ),
               ListTile(
-                leading: Icon(Icons.unfold_more),
+                leading: MyIcon.sdev,
                 title: Text(sdevFormPowerString),
                 subtitle: Text("standard deviation form power"),
               ),
               ListTile(
-                leading: Icon(Icons.playlist_add),
+                leading: MyIcon.amount,
                 title: Text(records.length.toString()),
                 subtitle: Text("number of measurements"),
               ),

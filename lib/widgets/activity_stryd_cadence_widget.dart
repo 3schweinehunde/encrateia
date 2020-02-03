@@ -4,6 +4,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'activity_stryd_cadence_chart.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityStrydCadenceWidget extends StatefulWidget {
   final Activity activity;
@@ -37,17 +38,17 @@ class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget>
             children: <Widget>[
               ActivityStrydCadenceChart(records: records, activity: widget.activity),
               ListTile(
-                leading: Icon(Icons.ev_station),
+                leading: MyIcon.average,
                 title: Text(avgStrydCadenceString),
                 subtitle: Text("average cadence"),
               ),
               ListTile(
-                leading: Icon(Icons.unfold_more),
+                leading: MyIcon.sdev,
                 title: Text(sdevStrydCadenceString),
                 subtitle: Text("standard deviation cadence"),
               ),
               ListTile(
-                leading: Icon(Icons.playlist_add),
+                leading: MyIcon.amount,
                 title: Text(records.length.toString()),
                 subtitle: Text("number of measurements"),
               ),

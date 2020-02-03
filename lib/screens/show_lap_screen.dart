@@ -10,6 +10,7 @@ import 'package:encrateia/widgets/lap_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/lap_vertical_oscillation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class ShowLapScreen extends StatelessWidget {
   final Lap lap;
@@ -38,7 +39,7 @@ class ShowLapScreen extends StatelessWidget {
                 text: "HR",
               ),
               Tab(
-                icon: Icon(Icons.ev_station),
+                icon: MyIcon.power,
                 text: "Power",
               ),
               Tab(
@@ -62,7 +63,7 @@ class ShowLapScreen extends StatelessWidget {
                 text: "Cadence",
               ),
               Tab(
-                icon: Icon(Icons.unfold_more),
+                icon: MyIcon.verticalOscillation,
                 text: "Vertical Oscillation",
               ),
               Tab(

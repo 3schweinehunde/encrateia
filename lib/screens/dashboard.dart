@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'edit_athlete_screen.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'list_activities_screen.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class Dashboard extends StatefulWidget {
   Dashboard();
@@ -37,7 +38,7 @@ class _DashboardState extends State<Dashboard> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           ListTile(
-                            leading: Icon(Icons.help),
+                            leading: MyIcon.help,
                             title: Text('Welcome to Encrateia!'),
                             subtitle: Text(
                                 'Maybe you want to learn more about Encrateia.'
@@ -59,7 +60,7 @@ class _DashboardState extends State<Dashboard> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         ListTile(
-                          leading: Icon(Icons.face),
+                          leading: MyIcon.athlete,
                           title: Text('Who are you?'),
                           subtitle: Text(
                               'This app stores date associated to one athlete '
@@ -122,7 +123,7 @@ class _DashboardState extends State<Dashboard> {
                                   }),
                                 );
                               },
-                              child: Icon(Icons.edit),
+                              child: MyIcon.edit,
                             ),
                           ],
                         ),

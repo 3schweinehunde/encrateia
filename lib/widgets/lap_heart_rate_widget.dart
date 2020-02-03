@@ -3,6 +3,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'lap_heart_rate_chart.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class LapHeartRateWidget extends StatelessWidget {
   final Lap lap;
@@ -41,12 +42,12 @@ class LapHeartRateWidget extends StatelessWidget {
                     subtitle: Text("maximum heart rate"),
                   ),
                   ListTile(
-                    leading: Icon(Icons.unfold_more),
+                    leading: MyIcon.sdev,
                     title: Text(Lap.sdevHeartRate(records: records)),
                     subtitle: Text("standard deviation heart rate"),
                   ),
                   ListTile(
-                    leading: Icon(Icons.playlist_add),
+                    leading: MyIcon.amount,
                     title: Text(records.length.toString()),
                     subtitle: Text("number of measurements"),
                   ),
