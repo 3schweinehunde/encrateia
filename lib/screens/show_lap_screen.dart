@@ -31,11 +31,11 @@ class ShowLapScreen extends StatelessWidget {
             isScrollable: true,
             tabs: [
               Tab(
-                icon: Icon(Icons.directions_run),
+                icon: MyIcon.overView,
                 text: "Overview",
               ),
               Tab(
-                icon: Icon(Icons.spa),
+                icon: MyIcon.heartRate,
                 text: "HR",
               ),
               Tab(
@@ -43,23 +43,23 @@ class ShowLapScreen extends StatelessWidget {
                 text: "Power",
               ),
               Tab(
-                icon: Icon(Icons.multiline_chart),
+                icon: MyIcon.powerDuration,
                 text: "Power Duration",
               ),
               Tab(
-                icon: Icon(Icons.vertical_align_bottom),
+                icon: MyIcon.groundTime,
                 text: "Ground Time",
               ),
               Tab(
-                icon: Icon(Icons.airline_seat_recline_extra),
+                icon: MyIcon.legSpringStiffness,
                 text: "Leg spr.stiff.",
               ),
               Tab(
-                icon: Icon(Icons.accessibility_new),
+                icon: MyIcon.formPower,
                 text: "Form Power",
               ),
               Tab(
-                icon: Icon(Icons.pets),
+                icon: MyIcon.cadence,
                 text: "Cadence",
               ),
               Tab(
@@ -67,7 +67,7 @@ class ShowLapScreen extends StatelessWidget {
                 text: "Vertical Oscillation",
               ),
               Tab(
-                icon: Icon(Icons.storage),
+                icon: MyIcon.metaData,
                 text: "Metadata",
               ),
             ],

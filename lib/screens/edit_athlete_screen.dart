@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:provider/provider.dart';
 import 'strava_get_user.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class EditAthleteScreen extends StatelessWidget {
   final Athlete athlete;
@@ -58,7 +59,7 @@ class EditAthleteScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ListTile(
-                        leading: Icon(Icons.link_off),
+                        leading: MyIcon.brokenConnection,
                         title: Text('Strava Connection'),
                         subtitle: Text('This athlete is not connected to a '
                             'Strava User yet'),

@@ -27,17 +27,17 @@ class LapHeartRateWidget extends StatelessWidget {
                 children: <Widget>[
                   LapHeartRateChart(records: records),
                   ListTile(
-                    leading: Icon(Icons.pets),
+                    leading: MyIcon.average,
                     title: Text(lap.db.avgHeartRate.toString()),
                     subtitle: Text("average heart rate"),
                   ),
                   ListTile(
-                    leading: Icon(Icons.expand_more),
+                    leading: MyIcon.minimum,
                     title: Text(Lap.minHeartRate(records: records)),
                     subtitle: Text("minimum heart rate"),
                   ),
                   ListTile(
-                    leading: Icon(Icons.expand_less),
+                    leading: MyIcon.maximum,
                     title: Text(lap.db.maxHeartRate.toString()),
                     subtitle: Text("maximum heart rate"),
                   ),

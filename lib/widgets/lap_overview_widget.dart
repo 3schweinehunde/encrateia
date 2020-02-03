@@ -1,3 +1,4 @@
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:intl/intl.dart';
@@ -16,47 +17,47 @@ class LapOverviewWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: 25),
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.access_time),
+            leading: MyIcon.timeStamp,
             title: Text(
                 DateFormat("dd MMM yyyy, h:mm:ss").format(lap.db.startTime)),
             subtitle: Text('start time'),
           ),
           ListTile(
-            leading: Icon(Icons.redo),
+            leading: MyIcon.distance,
             title:
                 Text('${(lap.db.totalDistance / 1000).toStringAsFixed(2)} km'),
             subtitle: Text('distance'),
           ),
           ListTile(
-            leading: Icon(Icons.shutter_speed),
+            leading: MyIcon.speed,
             title: Text(lap.db.avgSpeed.toPace() + " / " + lap.db.maxSpeed.toPace()),
             subtitle: Text('avg / max pace'),
           ),
           ListTile(
-            leading: Icon(Icons.battery_charging_full),
+            leading: MyIcon.calories,
             title: Text('${lap.db.totalCalories} kcal'),
             subtitle: Text('total calories'),
           ),
           ListTile(
-            leading: Icon(Icons.landscape),
+            leading: MyIcon.climb,
             title: Text("${lap.db.totalAscent} m - ${lap.db.totalDescent} m"
                 " = ${lap.db.totalAscent - lap.db.totalDescent} m"),
             subtitle: Text('total ascent - descent = total climb'),
           ),
           ListTile(
-            leading: Icon(Icons.spa),
+            leading: MyIcon.heartRate,
             title:
                 Text("${lap.db.avgHeartRate} bpm / ${lap.db.maxHeartRate} bpm"),
             subtitle: Text('avg / max heart rate'),
           ),
           ListTile(
-            leading: Icon(Icons.pets),
+            leading: MyIcon.cadence,
             title: Text("${(lap.db.avgRunningCadence ?? 0 * 2).round()} spm / "
                 "${lap.db.maxRunningCadence ?? 0 * 2} spm"),
             subtitle: Text('avg / max steps per minute'),
           ),
           ListTile(
-            leading: Icon(Icons.pets),
+            leading: MyIcon.strides,
             title: Text(lap.db.totalStrides.toString()),
             subtitle: Text('total strides'),
           ),

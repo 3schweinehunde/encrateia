@@ -45,12 +45,12 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                 subtitle: Text("average power"),
               ),
               ListTile(
-                leading: Icon(Icons.expand_more),
+                leading: MyIcon.minimum,
                 title: Text(minPowerString),
                 subtitle: Text("minimum power"),
               ),
               ListTile(
-                leading: Icon(Icons.expand_less),
+                leading: MyIcon.maximum,
                 title: Text(maxPowerString),
                 subtitle: Text("maximum power"),
               ),

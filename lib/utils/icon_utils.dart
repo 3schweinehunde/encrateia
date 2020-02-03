@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 
 class MyIcon {
   // A
-  static final amount = Icon(Icons.playlist_add); // number of records, ...
+  static final amount = Icon(Icons.playlist_add);
   static final ascent = Icon(Icons.trending_up);
   static final athlete = Icon(Icons.face);
   static final average = Icon(Icons.filter_tilt_shift);
+  // B
+  static final brokenConnection = Icon(Icons.link_off);
   // C
   static final cadence = Icon(Icons.pets);
   static final calories = Icon(Icons.battery_charging_full);
@@ -34,8 +36,12 @@ class MyIcon {
   // L
   static final laps = Icon(Icons.timer);
   static final legSpringStiffness = Icon(Icons.airline_seat_recline_extra);
-    // M
+  // M
+  static final maximum = Icon(Icons.expand_less);
   static final metaData = Icon(Icons.storage);
+  static final minimum = Icon(Icons.expand_more);
+  // N
+  static final number = amount;
   // O
   static final overView = Icon(Icons.landscape);
   // P
