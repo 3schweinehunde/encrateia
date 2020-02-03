@@ -8,7 +8,7 @@ class MyLineChart extends LineChart {
     @required maxDomain,
     @required laps,
     @required domainTitle,
-    @required measureTitle,
+    measureTitle,
     measureTickProviderSpec,
     domainTickProviderSpec
 

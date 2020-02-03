@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/utils/graph_utils.dart';
 
 class LapStrydCadenceChart extends StatelessWidget {
   final List<Event> records;
@@ -27,7 +28,6 @@ class LapStrydCadenceChart extends StatelessWidget {
 
     return new Container(
       height: 300,
-      padding: EdgeInsets.all(2),
       child: LineChart(
         data,
         animate: false,
@@ -38,20 +38,9 @@ class LapStrydCadenceChart extends StatelessWidget {
             desiredTickCount: 5,
           ),
         ),
-        behaviors: [
-          ChartTitle(
-            'Cadence (spm)',
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.start,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-          ChartTitle(
-            'Distance (m)',
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.bottom,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-        ],
+        behaviors: GraphUtils.axis(
+          measureTitle: 'Cadence (spm)',
+        ),
       ),
     );
   }

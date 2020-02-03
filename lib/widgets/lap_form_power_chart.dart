@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/utils/graph_utils.dart';
 
 class LapFormPowerChart extends StatelessWidget {
   final List<Event> records;
@@ -27,30 +28,19 @@ class LapFormPowerChart extends StatelessWidget {
 
     return new Container(
       height: 300,
-      padding: EdgeInsets.all(2),
       child: LineChart(
         data,
         primaryMeasureAxis: NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
-              zeroBound: false,
-              dataIsInWholeNumbers: true,
-              desiredTickCount: 6),
+            zeroBound: false,
+            dataIsInWholeNumbers: true,
+            desiredTickCount: 6,
+          ),
         ),
         animate: false,
-        behaviors: [
-          ChartTitle(
-            'Form Power (W)',
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.start,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-          ChartTitle(
-            'Distance (m)',
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.bottom,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-        ],
+        behaviors: GraphUtils.axis(
+          measureTitle: 'Form Power (W)',
+        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/utils/graph_utils.dart';
 
 class LapLegSpringStiffnessChart extends StatelessWidget {
   final List<Event> records;
@@ -10,7 +11,9 @@ class LapLegSpringStiffnessChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var nonZero = records
-        .where((value) => value.db.legSpringStiffness != null && value.db.legSpringStiffness > 0)
+        .where((value) =>
+            value.db.legSpringStiffness != null &&
+            value.db.legSpringStiffness > 0)
         .toList();
 
     var offset = nonZero.first.db.distance.round();
@@ -27,7 +30,6 @@ class LapLegSpringStiffnessChart extends StatelessWidget {
 
     return new Container(
       height: 300,
-      padding: EdgeInsets.all(2),
       child: LineChart(
         data,
         animate: false,
@@ -38,20 +40,9 @@ class LapLegSpringStiffnessChart extends StatelessWidget {
             desiredTickCount: 5,
           ),
         ),
-        behaviors: [
-          ChartTitle(
-            'Leg Spring Stiffness (kN/m)',
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.start,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-          ChartTitle(
-            'Distance (m)',
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.bottom,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-        ],
+        behaviors: GraphUtils.axis(
+          measureTitle: 'Leg Spring Stiffness (kN/m)',
+        ),
       ),
     );
   }

@@ -39,4 +39,21 @@ class GraphUtils {
     height: 100,
     child: Center(child: Text("Loading")),
   );
+
+  static axis({String measureTitle}) {
+    return [
+      ChartTitle(
+        measureTitle,
+        titleStyleSpec: TextStyleSpec(fontSize: 13),
+        behaviorPosition: BehaviorPosition.start,
+        titleOutsideJustification: OutsideJustification.end,
+      ),
+      ChartTitle(
+        'Distance (m)',
+        titleStyleSpec: TextStyleSpec(fontSize: 13),
+        behaviorPosition: BehaviorPosition.bottom,
+        titleOutsideJustification: OutsideJustification.end,
+      ),
+    ];
+  }
 }

@@ -26,13 +26,13 @@ class PowerDurationChart extends StatelessWidget {
       )
     ];
 
-    final staticTicks = <TickSpec<int>>[
+    final staticTicks = StaticNumericTickProviderSpec([
       TickSpec(PowerDuration.scaled(seconds: 1), label: '1s'),
       TickSpec(PowerDuration.scaled(seconds: 10), label: '10s'),
       TickSpec(PowerDuration.scaled(seconds: 60), label: '1min'),
       TickSpec(PowerDuration.scaled(seconds: 600), label: '10min'),
       TickSpec(PowerDuration.scaled(seconds: 3600), label: '1h'),
-    ];
+    ]);
 
     final chartTitles = [
       ChartTitle(
@@ -61,8 +61,7 @@ class PowerDurationChart extends StatelessWidget {
               desiredTickCount: 10,
               desiredMinTickCount: 6),
         ),
-        domainAxis: NumericAxisSpec(
-            tickProviderSpec: StaticNumericTickProviderSpec(staticTicks)),
+        domainAxis: NumericAxisSpec(tickProviderSpec: staticTicks),
         animate: false,
         behaviors: chartTitles,
       ),
