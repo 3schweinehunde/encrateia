@@ -5,29 +5,61 @@ import 'package:flutter/material.dart';
 class MyIcon {
   // A
   static final amount = Icon(Icons.playlist_add); // number of records, ...
+  static final ascent = Icon(Icons.trending_up);
   static final athlete = Icon(Icons.face);
   static final average = Icon(Icons.filter_tilt_shift);
   // C
+  static final cadence = Icon(Icons.pets);
+  static final calories = Icon(Icons.battery_charging_full);
+  static final climb = ascent;
   static final cycling = Icon(Icons.directions_bike);
+  static final cycles = Icon(Icons.repeat);
   // D
   static final delete = Icon(Icons.delete);
+  static final distance = Icon(Icons.redo);
   static final download = Icon(Icons.cloud_download);
   // E
   static final edit = Icon(Icons.edit);
+  static final event = Icon(Icons.event);
   // F
   static final formPower = Icon(Icons.ev_station);
+  // G
+  static final groundTime = Icon(Icons.vertical_align_bottom);
   // H
+  static final heartRate = Icon(Icons.spa);
   static final help = Icon(Icons.help);
+  // I
+  static final id = Icon(Icons.fingerprint);
+  static final intensity = Icon(Icons.power);
+  // L
+  static final laps = Icon(Icons.timer);
+  static final legSpringStiffness = Icon(Icons.airline_seat_recline_extra);
+    // M
+  static final metaData = Icon(Icons.storage);
+  // O
+  static final overView = Icon(Icons.landscape);
   // P
   static final parse = Icon(Icons.build);
+  static final position = Icon(Icons.map);
   static final power = Icon(Icons.ev_station);
+  static final powerDuration = Icon(Icons.multiline_chart);
   // R
+  static final repeats = Icon(Icons.loop);
   static final running = Icon(Icons.directions_run);
   // S
-  static final sdev = Icon(Icons.unfold_more); // standard deviation
   static final show = Icon(Icons.remove_red_eye);
+  static final speed = Icon(Icons.shutter_speed);
   static final sport = Icon(Icons.fitness_center);
+  static final stanceTime = cadence;
+  static final standardDeviation = Icon(Icons.unfold_more);
   static final stravaDownload = Icon(Icons.cloud_download);
+  static final strides = Icon(Icons.directions_walk);
+  // T
+  static final temperature = Icon(Icons.ac_unit);
+  static final time = Icon(Icons.timer);
+  static final timeStamp = Icon(Icons.access_time);
+  static final title = Icon(Icons.title);
+  static final trainingEffect = Icon(Icons.fitness_center);
   // V
   static final verticalOscillation = Icon(Icons.unfold_more);
 }

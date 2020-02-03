@@ -43,7 +43,7 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
                 subtitle: Text("average ground time"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevGroundTimeString),
                 subtitle: Text("standard deviation ground time"),
               ),

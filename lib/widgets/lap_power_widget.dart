@@ -57,7 +57,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
                 subtitle: Text("maximum power"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevPowerString),
                 subtitle: Text("standard deviation power"),
               ),

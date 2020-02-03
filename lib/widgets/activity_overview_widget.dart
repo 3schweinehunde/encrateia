@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityOverviewWidget extends StatelessWidget {
   final Activity activity;
@@ -16,55 +17,55 @@ class ActivityOverviewWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: 25),
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.access_time),
+            leading: MyIcon.timeStamp,
             title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
                 .format(activity.db.timeCreated)),
             subtitle: Text('time created'),
           ),
           ListTile(
-            leading: Icon(Icons.timer),
+            leading: MyIcon.time,
             title: Text(Duration(seconds: activity.db.movingTime).asString()),
             subtitle: Text('moving time'),
           ),
           ListTile(
-            leading: Icon(Icons.redo),
+            leading: MyIcon.distance,
             title:
                 Text('${(activity.db.distance / 1000).toStringAsFixed(2)} km'),
             subtitle: Text('distance'),
           ),
           ListTile(
-            leading: Icon(Icons.shutter_speed),
+            leading: MyIcon.speed,
             title: Text(activity.db.avgSpeed.toPace() +
                 " / " +
                 activity.db.maxSpeed.toPace()),
             subtitle: Text('avg / max pace'),
           ),
           ListTile(
-            leading: Icon(Icons.battery_charging_full),
+            leading: MyIcon.calories,
             title: Text('${activity.db.totalCalories} kcal'),
             subtitle: Text('total calories'),
           ),
           ListTile(
-            leading: Icon(Icons.landscape),
+            leading: MyIcon.climb,
             title: Text(
                 "${activity.db.totalAscent} m - ${activity.db.totalDescent} m"
                 " = ${activity.db.totalAscent - activity.db.totalDescent} m"),
             subtitle: Text('total ascent - descent = total climb'),
           ),
           ListTile(
-            leading: Icon(Icons.spa),
+            leading: MyIcon.heartRate,
             title: Text(
                 "${activity.db.avgHeartRate} bpm / ${activity.db.maxHeartRate} bpm"),
             subtitle: Text('avg / max heart rate'),
           ),
           ListTile(
-            leading: Icon(Icons.pets),
+            leading: MyIcon.cadence,
             title: Text("${(activity.db.avgRunningCadence ?? 0 * 2).round()} spm / "
                 "${activity.db.maxRunningCadence ?? 0 * 2} spm"),
             subtitle: Text('avg / max steps per minute'),
           ),
           ListTile(
-            leading: Icon(Icons.fitness_center),
+            leading: MyIcon.trainingEffect,
             title: Text(activity.db.totalTrainingEffect.toString()),
             subtitle: Text('total training effect'),
           ),

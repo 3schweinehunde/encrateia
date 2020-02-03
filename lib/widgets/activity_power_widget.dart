@@ -55,7 +55,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                 subtitle: Text("maximum power"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevPowerString),
                 subtitle: Text("standard deviation power"),
               ),

@@ -43,7 +43,7 @@ class _ActivityLegSpringStiffnessWidgetState extends State<ActivityLegSpringStif
                 subtitle: Text("average ground time"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevLegSpringStiffnessString),
                 subtitle: Text("standard deviation ground time"),
               ),

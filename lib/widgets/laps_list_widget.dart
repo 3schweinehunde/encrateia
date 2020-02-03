@@ -3,6 +3,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/screens/show_lap_screen.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 
 class LapsListWidget extends StatelessWidget {
   final Activity activity;
@@ -19,28 +20,28 @@ class LapsListWidget extends StatelessWidget {
             dataRowHeight: kMinInteractiveDimension * 0.60,
             columnSpacing: 20,
             columns: <DataColumn>[
-              const DataColumn(
-                label: Icon(Icons.loop),
+              DataColumn(
+                label: MyIcon.repeats,
                 tooltip: 'Lap',
                 numeric: true,
               ),
-              const DataColumn(
+              DataColumn(
                 label: Text("bpm"),
                 tooltip: 'heartrate',
                 numeric: true,
               ),
-              const DataColumn(
+              DataColumn(
                 label: Text("min:ss"),
                 tooltip: 'pace',
                 numeric: true,
               ),
-              const DataColumn(
-                label: Icon(Icons.swap_calls),
+              DataColumn(
+                label: MyIcon.distance,
                 tooltip: 'distance',
                 numeric: true,
               ),
-              const DataColumn(
-                label: Icon(Icons.trending_up),
+              DataColumn(
+                label: MyIcon.ascent,
                 tooltip: 'ascent',
                 numeric: true,
               ),
@@ -59,15 +60,9 @@ class LapsListWidget extends StatelessWidget {
                   }
                 },
                 cells: [
-                  DataCell(
-                    Text(lap.index.toString()),
-                  ),
-                  DataCell(
-                    Text(lap.db.avgHeartRate.toString()),
-                  ),
-                  DataCell(
-                    Text(lap.db.avgSpeed.toPace()),
-                  ),
+                  DataCell(Text(lap.index.toString())),
+                  DataCell(Text(lap.db.avgHeartRate.toString())),
+                  DataCell(Text(lap.db.avgSpeed.toPace())),
                   DataCell(
                     Text((lap.db.totalDistance / 1000).toStringAsFixed(2) +
                         ' km'),

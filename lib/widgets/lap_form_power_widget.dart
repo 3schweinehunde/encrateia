@@ -44,7 +44,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
                 subtitle: Text("average form power"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevFormPowerString),
                 subtitle: Text("standard deviation form power"),
               ),

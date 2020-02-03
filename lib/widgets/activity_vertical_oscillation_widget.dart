@@ -43,7 +43,7 @@ class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOsci
                 subtitle: Text("average vertical oscillation"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevVerticalOscillationString),
                 subtitle: Text("standard deviation vertical oscillation"),
               ),

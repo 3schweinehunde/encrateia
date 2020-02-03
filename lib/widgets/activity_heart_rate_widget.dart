@@ -44,7 +44,7 @@ class ActivityHeartRateWidget extends StatelessWidget {
                     subtitle: Text("maximum heart rate"),
                   ),
                   ListTile(
-                    leading: MyIcon.sdev,
+                    leading: MyIcon.standardDeviation,
                     title: Text(Lap.sdevHeartRate(records: records)),
                     subtitle: Text("standard deviation heart rate"),
                   ),

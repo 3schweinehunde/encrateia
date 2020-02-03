@@ -44,7 +44,7 @@ class _LapVerticalOscillationWidgetState extends State<LapVerticalOscillationWid
                 subtitle: Text("average vertical oscillation"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevVerticalOscillationString),
                 subtitle: Text("standard deviation vertical oscillation"),
               ),

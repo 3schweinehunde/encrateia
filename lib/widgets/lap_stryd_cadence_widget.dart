@@ -44,7 +44,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
                 subtitle: Text("average cadence"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevStrydCadenceString),
                 subtitle: Text("standard deviation cadence"),
               ),

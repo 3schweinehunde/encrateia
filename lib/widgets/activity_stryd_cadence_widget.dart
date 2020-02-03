@@ -43,7 +43,7 @@ class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget>
                 subtitle: Text("average cadence"),
               ),
               ListTile(
-                leading: MyIcon.sdev,
+                leading: MyIcon.standardDeviation,
                 title: Text(sdevStrydCadenceString),
                 subtitle: Text("standard deviation cadence"),
               ),

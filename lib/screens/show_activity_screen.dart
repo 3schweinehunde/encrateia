@@ -31,15 +31,15 @@ class ShowActivityScreen extends StatelessWidget {
             isScrollable: true,
             tabs: [
               Tab(
-                icon: Icon(Icons.directions_run),
+                icon: MyIcon.overView,
                 text: "Overview",
               ),
               Tab(
-                icon: Icon(Icons.timer),
+                icon: MyIcon.laps,
                 text: "Laps",
               ),
               Tab(
-                icon: Icon(Icons.spa),
+                icon: MyIcon.heartRate,
                 text: "HR",
               ),
               Tab(
@@ -47,23 +47,23 @@ class ShowActivityScreen extends StatelessWidget {
                 text: "Power",
               ),
               Tab(
-                icon: Icon(Icons.multiline_chart),
+                icon: MyIcon.powerDuration,
                 text: "Pow Dur",
               ),
               Tab(
-                icon: Icon(Icons.vertical_align_bottom),
+                icon: MyIcon.groundTime,
                 text: "Grnd.Time",
               ),
               Tab(
-                icon: Icon(Icons.airline_seat_recline_extra),
+                icon: MyIcon.legSpringStiffness,
                 text: "Leg Spr.Stiff.",
               ),
               Tab(
-                icon: Icon(Icons.accessibility_new),
+                icon: MyIcon.formPower,
                 text: "Form Power",
               ),
               Tab(
-                icon: Icon(Icons.pets),
+                icon: MyIcon.cadence,
                 text: "Cadence",
               ),
               Tab(
@@ -71,7 +71,7 @@ class ShowActivityScreen extends StatelessWidget {
                 text: "Vertical Oscillation",
               ),
               Tab(
-                icon: Icon(Icons.storage),
+                icon: MyIcon.metaData,
                 text: "Metadata",
               ),
             ],
