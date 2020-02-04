@@ -11,10 +11,7 @@ enum Action { show, parse, download, delete, state }
 class ActivitiesListWidget extends StatefulWidget {
   final Athlete athlete;
 
-  const ActivitiesListWidget({
-    Key key,
-    this.athlete,
-  }) : super(key: key);
+  const ActivitiesListWidget({Key key, this.athlete}) : super(key: key);
 
   @override
   _ActivitiesListWidgetState createState() => _ActivitiesListWidgetState();
@@ -27,23 +24,29 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   initState() {
     getActivities();
 
-     Future<Null>.delayed(
+    Future<Null>.delayed(
       Duration(seconds: 2),
       () {
         if (widget.athlete.email == null)
           Scaffold.of(context).showSnackBar(SnackBar(
-            content:  Text("Strava email not provided yet!"),
+            content: Text("Strava email not provided yet!"),
             backgroundColor: Colors.red,
           ));
         if (widget.athlete.password == null)
           Scaffold.of(context).showSnackBar(SnackBar(
-            content:  Text("Strava password not provided yet!"),
+            content: Text("Strava password not provided yet!"),
             backgroundColor: Colors.red,
           ));
       },
     );
 
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(ActivitiesListWidget oldWidget) {
+    getActivities();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -63,13 +66,12 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text(
-                  activity.dateString() + "\n" + activity.distanceString()),
+              Text(activity.dateString() + "\n" + activity.distanceString()),
               Text(activity.timeString() + "\n" + activity.paceString()),
               FutureBuilder<double>(
                   future: activity.avgPower,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<double> snapshot) {
+                  builder:
+                      (BuildContext context, AsyncSnapshot<double> snapshot) {
                     if (snapshot.hasData) {
                       return Text(activity.heartRateString() +
                           "\n" +
@@ -94,7 +96,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   }
 
   Icon sportsIcon({String sport}) {
-    switch(sport) {
+    switch (sport) {
       case "running":
         return MyIcon.running;
       case "cycling":
@@ -193,10 +195,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         PopupMenuItem<Action>(
           value: Action.download,
           child: Row(
-            children: <Widget>[
-              MyIcon.download,
-              Text(" Download .fit-file")
-            ],
+            children: <Widget>[MyIcon.download, Text(" Download .fit-file")],
           ),
         ),
         if (actions.contains("delete"))

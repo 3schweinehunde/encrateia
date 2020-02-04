@@ -310,7 +310,8 @@ class Activity extends ChangeNotifier {
             break;
 
           case "record":
-            events.add(Event.fromRecord(dataMessage: dataMessage, activity: this));
+            events.add(
+                Event.fromRecord(dataMessage: dataMessage, activity: this));
             break;
 
           case "lap":
@@ -319,7 +320,8 @@ class Activity extends ChangeNotifier {
             event.uuid = Uuid().v1();
             events.add(event);
 
-            laps.add(Lap(dataMessage: dataMessage, activity: this, uuid: event.uuid));
+            laps.add(Lap(
+                dataMessage: dataMessage, activity: this, uuid: event.uuid));
             break;
 
           case "session":
@@ -394,7 +396,8 @@ class Activity extends ChangeNotifier {
     await DbEvent().upsertAll(events.map((event) => event.db).toList());
 
     for (Lap lap in laps) {
-      lap.db.eventsId = events.firstWhere((event) => lap.uuid == event.uuid).db.id;
+      lap.db.eventsId =
+          events.firstWhere((event) => lap.uuid == event.uuid).db.id;
     }
     await DbLap().upsertAll(laps.map((lap) => lap.db).toList());
 
@@ -424,7 +427,8 @@ class Activity extends ChangeNotifier {
     List<StravaActivity.SummaryActivity> summaryActivities =
         await strava.getLoggedInAthleteActivities(now, startDate);
 
-    for (StravaActivity.SummaryActivity summaryActivity in summaryActivities) {
+    await Future.forEach(summaryActivities,
+        (StravaActivity.SummaryActivity summaryActivity) async {
       var activity = Activity.fromStrava(
         summaryActivity: summaryActivity,
         athlete: athlete,
@@ -436,9 +440,9 @@ class Activity extends ChangeNotifier {
           .equals(activity.db.stravaId)
           .toList();
       if (existingAlready.length == 0) {
-        activity.db.save();
+        await activity.db.save();
       }
-    }
+    });
   }
 
   static Future<List<Activity>> all() async {
