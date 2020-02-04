@@ -256,8 +256,23 @@ class Activity extends ChangeNotifier {
     // delete left overs from prior runs:
     await db.getDbEvents().delete();
     await db.getDbLaps().delete();
+    db
+      ..avgPower = null
+      ..minPower = null
+      ..maxPower = null
+      ..sdevPower = null
+      ..avgGroundTime = null
+      ..sdevGroundTime = null
+      ..avgLegSpringStiffness = null
+      ..sdevLegSpringStiffness = null
+      ..avgFormPower = null
+      ..sdevFormPower = null
+      ..avgStrydCadence = null
+      ..sdevStrydCadence = null
+      ..sdevVerticalOscillation = null;
+    await db.save();
 
-    for (var dataMessage in fitFile.dataMessages) {
+    await Future.forEach(fitFile.dataMessages, (DataMessage dataMessage) async {
       if (dataMessage.definitionMessage.globalMessageName == null) {
         switch (dataMessage.definitionMessage.globalMessageNumber) {
           case 13:
@@ -291,8 +306,8 @@ class Activity extends ChangeNotifier {
             db
               ..serialNumber = dataMessage.get('serial_number')?.round()
               ..timeCreated =
-                  dateTimeFromStrava(dataMessage.get('time_created'))
-              ..save();
+                  dateTimeFromStrava(dataMessage.get('time_created'));
+            await db.save();
             notifyListeners();
             break;
 
@@ -300,8 +315,8 @@ class Activity extends ChangeNotifier {
             db
               ..sportName = dataMessage.get('name')
               ..sport = dataMessage.get('sport')
-              ..subSport = dataMessage.get('sub_sport')
-              ..save();
+              ..subSport = dataMessage.get('sub_sport');
+            await db.save();
             notifyListeners();
             break;
 
@@ -321,7 +336,10 @@ class Activity extends ChangeNotifier {
             events.add(event);
 
             laps.add(Lap(
-                dataMessage: dataMessage, activity: this, uuid: event.uuid));
+              dataMessage: dataMessage,
+              activity: this,
+              uuid: event.uuid,
+            ));
             break;
 
           case "session":
@@ -369,8 +387,8 @@ class Activity extends ChangeNotifier {
               ..avgFractionalCadence = dataMessage.get('avg_fractional_cadence')
               ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
               ..totalFractionalCycles =
-                  dataMessage.get('total_fractional_cycles')
-              ..save();
+                  dataMessage.get('total_fractional_cycles');
+            await db.save();
             notifyListeners();
             break;
 
@@ -378,8 +396,8 @@ class Activity extends ChangeNotifier {
             db
               ..numSessions = dataMessage.get('num_sessions')?.round()
               ..localTimestamp =
-                  dateTimeFromStrava(dataMessage.get('local_timestamp'))
-              ..save();
+                  dateTimeFromStrava(dataMessage.get('local_timestamp'));
+            await db.save();
             notifyListeners();
             break;
 
@@ -391,7 +409,7 @@ class Activity extends ChangeNotifier {
             debugger();
         }
       }
-    }
+    });
 
     await DbEvent().upsertAll(events.map((event) => event.db).toList());
 

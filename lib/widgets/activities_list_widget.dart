@@ -118,6 +118,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
   Future parse({Activity activity}) async {
     await activity.parse(athlete: widget.athlete);
+    activities = await Activity.all();
     setState(() {});
   }
 
