@@ -104,11 +104,11 @@ class _DashboardState extends State<Dashboard> {
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ListActivitiesScreen(
-                                      athlete: athlete,
-                                    ),
-                                  ),
+                                  MaterialPageRoute(builder: (context) {
+                                    athlete.readCredentials();
+                                    return ListActivitiesScreen(
+                                        athlete: athlete);
+                                  }),
                                 );
                               },
                               child: Text("Analyze"),

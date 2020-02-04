@@ -39,16 +39,16 @@ class Athlete extends ChangeNotifier {
   }
 
   storeCredentials() async {
-    final storage = new FlutterSecureStorage();
+    final storage = FlutterSecureStorage();
     await storage.write(key: "email", value: email);
     await storage.write(key: "password", value: password);
   }
 
-  Future<Athlete> readCredentials() async {
-    final storage = new FlutterSecureStorage();
+  readCredentials() async {
+    final storage = FlutterSecureStorage();
     email = await storage.read(key: "email");
     password = await storage.read(key: "password");
-    return this;
+    notifyListeners();
   }
 
   static Future<List<Athlete>> all() async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:provider/provider.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -19,13 +20,18 @@ class ListActivitiesScreen extends StatefulWidget {
 class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      floatingActionButton: floatingActionButton(),
-      appBar: AppBar(
-        title: Text('Activities'),
-      ),
-      body: new ActivitiesListWidget(
-        athlete: widget.athlete,
+    return new ChangeNotifierProvider.value(
+      value: widget.athlete,
+      child: Consumer<Athlete>(
+        builder: (context, athlete, _child) => Scaffold(
+          floatingActionButton: floatingActionButton(),
+          appBar: AppBar(
+            title: Text('Activities'),
+          ),
+          body: ActivitiesListWidget(
+            athlete: widget.athlete,
+          ),
+        ),
       ),
     );
   }
