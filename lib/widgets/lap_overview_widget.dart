@@ -11,7 +11,7 @@ class LapOverviewWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return new ListTileTheme(
+    return  ListTileTheme(
       iconColor: Colors.lightGreen,
       child: ListView(
         padding: EdgeInsets.only(left: 25),

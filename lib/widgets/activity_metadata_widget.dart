@@ -11,7 +11,7 @@ class ActivityMetadataWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return new ListTileTheme(
+    return  ListTileTheme(
       iconColor: Colors.deepOrange,
       child: ListView(
         padding: EdgeInsets.only(left: 25),

@@ -17,7 +17,7 @@ class PowerDurationChart extends StatelessWidget {
     PowerDuration powerDuration = PowerDuration(records: nonZero);
 
     List<Series<dynamic, num>> data = [
-      new Series<IntPlotPoint, int>(
+       Series<IntPlotPoint, int>(
         id: 'Power Duration',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (IntPlotPoint record, _) => record.domain,
@@ -49,7 +49,7 @@ class PowerDurationChart extends StatelessWidget {
       ),
     ];
 
-    return new Container(
+    return  Container(
       height: 300,
       padding: EdgeInsets.all(2),
       child: LineChart(

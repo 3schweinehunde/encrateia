@@ -23,7 +23,7 @@ class ActivityPowerChart extends StatelessWidget {
     );
 
     List<Series<dynamic, num>> data = [
-      new Series<IntPlotPoint, int>(
+       Series<IntPlotPoint, int>(
         id: 'Power',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (IntPlotPoint record, _) => record.domain,

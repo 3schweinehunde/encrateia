@@ -70,7 +70,7 @@ class _DashboardState extends State<Dashboard> {
                         ButtonBar(
                           children: <Widget>[
                             FlatButton(
-                              child: const Text('CREATE NEW ATHLETE'),
+                              child: const Text('Create new Athlete'),
                               onPressed: () {
                                 Navigator.push(
                                   context,

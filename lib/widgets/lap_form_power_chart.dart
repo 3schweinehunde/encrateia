@@ -17,7 +17,7 @@ class LapFormPowerChart extends StatelessWidget {
     var offset = nonZero.first.db.distance.round();
 
     List<Series<dynamic, num>> data = [
-      new Series<Event, int>(
+       Series<Event, int>(
         id: 'Form Power',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Event record, _) => record.db.distance.round() - offset,
@@ -26,7 +26,7 @@ class LapFormPowerChart extends StatelessWidget {
       )
     ];
 
-    return new Container(
+    return  Container(
       height: 300,
       child: LineChart(
         data,

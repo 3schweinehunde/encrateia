@@ -23,7 +23,7 @@ class ActivityStrydCadenceChart extends StatelessWidget {
     );
 
     List<Series<dynamic, num>> data = [
-      new Series<DoublePlotPoint, int>(
+       Series<DoublePlotPoint, int>(
         id: 'Cadence',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (DoublePlotPoint record, _) => record.domain,

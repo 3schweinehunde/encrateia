@@ -14,7 +14,7 @@ class LapHeartRateChart extends StatelessWidget {
     var offset = nonZero.first.db.distance.round();
 
     List<Series<dynamic, num>> data = [
-      new Series<Event, int>(
+       Series<Event, int>(
         id: 'Heart Rate',
         colorFn: (_, __) => MaterialPalette.red.shadeDefault,
         domainFn: (Event record, _) => record.db.distance.round() - offset,
@@ -23,7 +23,7 @@ class LapHeartRateChart extends StatelessWidget {
       )
     ];
 
-    return new Container(
+    return  Container(
       height: 300,
       child: LineChart(
         data,

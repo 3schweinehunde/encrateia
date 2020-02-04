@@ -20,7 +20,7 @@ class ListActivitiesScreen extends StatefulWidget {
 class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   @override
   Widget build(BuildContext context) {
-    return new ChangeNotifierProvider.value(
+    return ChangeNotifierProvider.value(
       value: widget.athlete,
       child: Consumer<Athlete>(
         builder: (context, athlete, _child) => Scaffold(

@@ -24,7 +24,7 @@ class ActivityHeartRateChart extends StatelessWidget {
     );
 
     List<Series<dynamic, num>> data = [
-      new Series<IntPlotPoint, int>(
+       Series<IntPlotPoint, int>(
         id: 'Heart Rate',
         colorFn: (_, __) => MaterialPalette.red.shadeDefault,
         domainFn: (IntPlotPoint point, _) => point.domain,

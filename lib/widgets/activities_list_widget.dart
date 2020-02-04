@@ -27,17 +27,17 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   initState() {
     getActivities();
 
-    new Future<Null>.delayed(
+     Future<Null>.delayed(
       Duration(seconds: 2),
       () {
         if (widget.athlete.email == null)
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: new Text("Strava email not provided yet!"),
+            content:  Text("Strava email not provided yet!"),
             backgroundColor: Colors.red,
           ));
         if (widget.athlete.password == null)
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: new Text("Strava password not provided yet!"),
+            content:  Text("Strava password not provided yet!"),
             backgroundColor: Colors.red,
           ));
       },
