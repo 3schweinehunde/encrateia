@@ -18,7 +18,7 @@ class LapsListWidget extends StatelessWidget {
         if (snapshot.hasData) {
           return DataTable(
             dataRowHeight: kMinInteractiveDimension * 0.60,
-            columnSpacing: 20,
+            columnSpacing: 1,
             columns: <DataColumn>[
               DataColumn(
                 label: MyIcon.repeats,
@@ -36,7 +36,7 @@ class LapsListWidget extends StatelessWidget {
                 numeric: true,
               ),
               DataColumn(
-                label: MyIcon.distance,
+                label: Text("km"),
                 tooltip: 'distance',
                 numeric: true,
               ),
@@ -64,8 +64,7 @@ class LapsListWidget extends StatelessWidget {
                   DataCell(Text(lap.db.avgHeartRate.toString())),
                   DataCell(Text(lap.db.avgSpeed.toPace())),
                   DataCell(
-                    Text((lap.db.totalDistance / 1000).toStringAsFixed(2) +
-                        ' km'),
+                    Text((lap.db.totalDistance / 1000).toStringAsFixed(2)),
                   ),
                   DataCell(
                     Text((lap.db.totalAscent - lap.db.totalDescent).toString()),
