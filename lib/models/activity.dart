@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'dart:developer';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class Activity extends ChangeNotifier {
   DbActivity db;
@@ -44,7 +45,7 @@ class Activity extends ChangeNotifier {
     setState("downloaded");
   }
 
-  setState(String state) async{
+  setState(String state) async {
     db.state = state;
     await db.save();
     notifyListeners();
@@ -120,18 +121,17 @@ class Activity extends ChangeNotifier {
   }
 
   Future<int> get minPower async {
-    if (db.minPower == null){
+    if (db.minPower == null) {
       List<Event> records = await this.records;
       db.minPower = Lap.calculateMinPower(records: records);
       await db.save();
       notifyListeners();
-
     }
     return db.minPower;
   }
 
   Future<int> get maxPower async {
-    if (db.maxPower == null){
+    if (db.maxPower == null) {
       List<Event> records = await this.records;
       db.maxPower = Lap.calculateMaxPower(records: records);
       await db.save();
@@ -161,9 +161,11 @@ class Activity extends ChangeNotifier {
   }
 
   Future<double> get avgVerticalOscillation async {
-    if (db.avgVerticalOscillation == null || db.avgVerticalOscillation == 6553.5) {
+    if (db.avgVerticalOscillation == null ||
+        db.avgVerticalOscillation == 6553.5) {
       List<Event> records = await this.records;
-      db.avgVerticalOscillation = Lap.calculateAverageVerticalOscillation(records: records);
+      db.avgVerticalOscillation =
+          Lap.calculateAverageVerticalOscillation(records: records);
       await db.save();
       notifyListeners();
     }
@@ -173,13 +175,13 @@ class Activity extends ChangeNotifier {
   Future<double> get sdevVerticalOscillation async {
     if (db.sdevVerticalOscillation == null) {
       List<Event> records = await this.records;
-      db.sdevVerticalOscillation = Lap.calculateSdevVerticalOscillation(records: records);
+      db.sdevVerticalOscillation =
+          Lap.calculateSdevVerticalOscillation(records: records);
       await db.save();
       notifyListeners();
     }
     return db.sdevVerticalOscillation;
   }
-
 
   Future<double> get avgStrydCadence async {
     if (db.avgStrydCadence == null) {
@@ -201,11 +203,11 @@ class Activity extends ChangeNotifier {
     return db.sdevStrydCadence;
   }
 
-
   Future<double> get avgLegSpringStiffness async {
     if (db.avgLegSpringStiffness == null) {
       List<Event> records = await this.records;
-      db.avgLegSpringStiffness = Lap.calculateAverageLegSpringStiffness(records: records);
+      db.avgLegSpringStiffness =
+          Lap.calculateAverageLegSpringStiffness(records: records);
       await db.save();
       notifyListeners();
     }
@@ -215,7 +217,8 @@ class Activity extends ChangeNotifier {
   Future<double> get sdevLegSpringStiffness async {
     if (db.sdevLegSpringStiffness == null) {
       List<Event> records = await this.records;
-      db.sdevLegSpringStiffness = Lap.calculateSdevLegSpringStiffness(records: records);
+      db.sdevLegSpringStiffness =
+          Lap.calculateSdevLegSpringStiffness(records: records);
       await db.save();
       notifyListeners();
     }
@@ -242,11 +245,13 @@ class Activity extends ChangeNotifier {
     return db.sdevFormPower;
   }
 
-
   parse({@required Athlete athlete}) async {
     var appDocDir = await getApplicationDocumentsDirectory();
     var fitFile = FitFile(path: appDocDir.path + '/${db.stravaId}.fit').parse();
-    print("Parsing .fit-File ${db.stravaId} done.");
+    print("Parsing .fit-File for »${db.name}« done.");
+
+    List<Lap> laps = [];
+    List<Event> events = [];
 
     // delete left overs from prior runs:
     await db.getDbEvents().delete();
@@ -301,17 +306,20 @@ class Activity extends ChangeNotifier {
             break;
 
           case "event":
-            Event(dataMessage: dataMessage, activity: this);
+            events.add(Event(dataMessage: dataMessage, activity: this));
             break;
 
           case "record":
-            Event.fromRecord(dataMessage: dataMessage, activity: this);
+            events.add(Event.fromRecord(dataMessage: dataMessage, activity: this));
             break;
 
           case "lap":
             var event = Event.fromLap(dataMessage: dataMessage, activity: this);
-            var eventId = await event.db.save();
-            Lap(dataMessage: dataMessage, activity: this, eventId: eventId);
+            // a time based UUID to be able to reference this event from the lap
+            event.uuid = Uuid().v1();
+            events.add(event);
+
+            laps.add(Lap(dataMessage: dataMessage, activity: this, uuid: event.uuid));
             break;
 
           case "session":
@@ -383,10 +391,17 @@ class Activity extends ChangeNotifier {
       }
     }
 
+    await DbEvent().upsertAll(events.map((event) => event.db).toList());
+
+    for (Lap lap in laps) {
+      lap.db.eventsId = events.firstWhere((event) => lap.uuid == event.uuid).db.id;
+    }
+    await DbLap().upsertAll(laps.map((lap) => lap.db).toList());
+
     db.state = "persisted";
     await db.save();
     notifyListeners();
-    print("Persisted activity ${db.stravaId} to database.");
+    print("Activity data for »${db.name}« stored in database.");
   }
 
   delete() async {

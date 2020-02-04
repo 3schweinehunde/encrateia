@@ -10,11 +10,11 @@ class Lap {
   Activity activity;
   int index;
   List<Event> _records;
+  String uuid;
 
-  Lap({DataMessage dataMessage, this.activity, int eventId}) {
+  Lap({DataMessage dataMessage, this.activity, this.uuid}) {
     db = DbLap()
       ..activitiesId = activity.db.id
-      ..eventsId = eventId
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
       ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
       ..startPositionLat = dataMessage.get('start_position_lat')
@@ -49,9 +49,9 @@ class Lap {
       ..maxTemperature = dataMessage.get('max_temperature')?.round()
       ..avgFractionalCadence = dataMessage.get('avg_fractional_cadence')
       ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
-      ..totalFractionalCycles = dataMessage.get('total_fractional_cycles')
-      ..save();
+      ..totalFractionalCycles = dataMessage.get('total_fractional_cycles');
   }
+
   Lap.fromDb(this.db);
 
   Future<List<Event>> get records async {

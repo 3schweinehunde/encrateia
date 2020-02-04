@@ -11,6 +11,7 @@ class Event {
   DbEvent db;
   Activity activity;
   int index;
+  String uuid;
 
   Event.fromDb(this.db);
 
@@ -28,8 +29,7 @@ class Event {
         ..eventType = dataMessage.get('event_type')
         ..eventGroup = dataMessage.get('event_group')?.round()
         ..timerTrigger = dataMessage.get('timer_trigger')
-        ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
-        ..save();
+        ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'));
     } else if (dataMessage.values.any((value) =>
         value.fieldName == 'event_type' && ['marker'].contains(value.value))) {
       db = DbEvent()
@@ -38,8 +38,7 @@ class Event {
         ..eventType = dataMessage.get('event_type')
         ..eventGroup = dataMessage.get('event_group')?.round()
         ..data = dataMessage.get('data')
-        ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
-        ..save();
+        ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'));
     } else {
       debugger();
     }
@@ -63,8 +62,7 @@ class Event {
       ..groundTime = dataMessage.get('Ground Time')
       ..verticalOscillation = dataMessage.get('Vertical Oscillation')
       ..formPower = dataMessage.get('Form Power')?.round()
-      ..legSpringStiffness = dataMessage.get('Leg Spring Stiffness')
-      ..save();
+      ..legSpringStiffness = dataMessage.get('Leg Spring Stiffness');
   }
 
   Event.fromLap({DataMessage dataMessage, this.activity}) {
@@ -82,8 +80,7 @@ class Event {
       ..heartRate = dataMessage.get('avg_heart_rate')?.round()
       ..cadence = dataMessage.get('avg_running_cadence')
       ..timerTrigger = dataMessage.get('lap_trigger')
-      ..distance = dataMessage.get('total_distance')
-      ..save();
+      ..distance = dataMessage.get('total_distance');
   }
 
   static Future<List<Event>> recordsByLap({Lap lap}) async {
