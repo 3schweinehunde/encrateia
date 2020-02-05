@@ -101,28 +101,13 @@ class _DashboardState extends State<Dashboard> {
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             RaisedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) {
-                                    athlete.readCredentials();
-                                    return ListActivitiesScreen(
-                                        athlete: athlete);
-                                  }),
-                                );
-                              },
+                              onPressed: () => navigateToListActivitiesScreen(
+                                  athlete: athlete),
                               child: Text("Analyze"),
                             ),
                             RaisedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) {
-                                    athlete.readCredentials();
-                                    return EditAthleteScreen(athlete: athlete);
-                                  }),
-                                );
-                              },
+                              onPressed: () =>
+                                  navigateToEditAthleteScreen(athlete: athlete),
                               child: MyIcon.edit,
                             ),
                           ],
@@ -135,6 +120,26 @@ class _DashboardState extends State<Dashboard> {
               return CircularProgressIndicator();
             }
           }),
+    );
+  }
+
+  navigateToListActivitiesScreen({Athlete athlete}) async {
+    await athlete.readCredentials();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ListActivitiesScreen(athlete: athlete),
+      ),
+    );
+  }
+
+  navigateToEditAthleteScreen({Athlete athlete}) async {
+    await athlete.readCredentials();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditAthleteScreen(athlete: athlete),
+      ),
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flushbar/flushbar.dart';
 
 enum Action { show, parse, download, delete, state }
 
@@ -24,21 +25,20 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   initState() {
     getActivities();
 
-    Future<Null>.delayed(
-      Duration(seconds: 2),
-      () {
-        if (widget.athlete.email == null)
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("Strava email not provided yet!"),
-            backgroundColor: Colors.red,
-          ));
-        if (widget.athlete.password == null)
-          Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text("Strava password not provided yet!"),
-            backgroundColor: Colors.red,
-          ));
-      },
-    );
+    if (widget.athlete.email == null) {
+      Flushbar(
+        message: "Strava email not provided yet!",
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+      )..show(context);
+    }
+    if (widget.athlete.password == null) {
+      Flushbar(
+        message: "Strava password not provided yet!",
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+      )..show(context);
+    }
 
     super.initState();
   }
@@ -117,7 +117,24 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   }
 
   Future parse({Activity activity}) async {
-    await activity.parse(athlete: widget.athlete);
+    var flushbar = Flushbar(
+      message: "0% of storing »${activity.db.name}«",
+      duration: Duration(milliseconds: 1000),
+      animationDuration: Duration(milliseconds: 1),
+      titleText: LinearProgressIndicator(value: 0),
+    )..show(context);
+
+    var percentageStream = activity.parse(athlete: widget.athlete);
+    await for (var value in percentageStream) {
+      flushbar.dismiss();
+      flushbar = Flushbar(
+          titleText: LinearProgressIndicator(value: value/100),
+          message: "$value% of storing »${activity.db.name}«",
+          duration: Duration(milliseconds: 1000),
+          animationDuration: Duration(milliseconds: 1),
+          )
+        ..show(context);
+    }
     activities = await Activity.all();
     setState(() {});
   }

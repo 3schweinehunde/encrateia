@@ -11,7 +11,6 @@ class Event {
   DbEvent db;
   Activity activity;
   int index;
-  String uuid;
 
   Event.fromDb(this.db);
 

@@ -10,11 +10,11 @@ class Lap {
   Activity activity;
   int index;
   List<Event> _records;
-  String uuid;
 
-  Lap({DataMessage dataMessage, this.activity, this.uuid}) {
+  Lap({DataMessage dataMessage, this.activity, int eventsId}) {
     db = DbLap()
       ..activitiesId = activity.db.id
+      ..eventsId = eventsId
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
       ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
       ..startPositionLat = dataMessage.get('start_position_lat')

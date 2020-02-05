@@ -12,7 +12,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'dart:developer';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 class Activity extends ChangeNotifier {
   DbActivity db;
@@ -245,13 +244,13 @@ class Activity extends ChangeNotifier {
     return db.sdevFormPower;
   }
 
-  parse({@required Athlete athlete}) async {
+  Stream<int> parse({@required Athlete athlete}) async* {
+    int counter = 0;
+    int percentage;
+
     var appDocDir = await getApplicationDocumentsDirectory();
     var fitFile = FitFile(path: appDocDir.path + '/${db.stravaId}.fit').parse();
     print("Parsing .fit-File for »${db.name}« done.");
-
-    List<Lap> laps = [];
-    List<Event> events = [];
 
     // delete left overs from prior runs:
     await db.getDbEvents().delete();
@@ -272,157 +271,164 @@ class Activity extends ChangeNotifier {
       ..sdevVerticalOscillation = null;
     await db.save();
 
-    await Future.forEach(fitFile.dataMessages, (DataMessage dataMessage) async {
-      if (dataMessage.definitionMessage.globalMessageName == null) {
-        switch (dataMessage.definitionMessage.globalMessageNumber) {
-          case 13:
-          case 22:
-          case 79:
-          case 104:
-          case 113:
-          case 140:
-          case 141:
-          case 147:
-          case 216:
-            break; // Garmin uses global message numbers, which are not specified
-          default:
-            print("Message number "
-                "${dataMessage.definitionMessage.globalMessageNumber} "
-                "unknown.");
-            debugger();
-        }
-      } else {
-        switch (dataMessage.definitionMessage.globalMessageName) {
-          case 'developer_data_id':
-          case "device_info":
-          case "device_settings":
-          case "field_description":
-          case "file_creator":
-          case "user_profile":
-          case "zones_target":
-            break; // we are currently not storing these kinds of messages
+    int numberOfMessages = fitFile.dataMessages.length;
 
-          case "file_id":
-            db
-              ..serialNumber = dataMessage.get('serial_number')?.round()
-              ..timeCreated =
-                  dateTimeFromStrava(dataMessage.get('time_created'));
-            await db.save();
-            notifyListeners();
-            break;
+    for (DataMessage dataMessage in fitFile.dataMessages) {
+      counter++;
+      await handleDataMessage(dataMessage: dataMessage);
 
-          case "sport":
-            db
-              ..sportName = dataMessage.get('name')
-              ..sport = dataMessage.get('sport')
-              ..subSport = dataMessage.get('sub_sport');
-            await db.save();
-            notifyListeners();
-            break;
-
-          case "event":
-            events.add(Event(dataMessage: dataMessage, activity: this));
-            break;
-
-          case "record":
-            events.add(
-                Event.fromRecord(dataMessage: dataMessage, activity: this));
-            break;
-
-          case "lap":
-            var event = Event.fromLap(dataMessage: dataMessage, activity: this);
-            // a time based UUID to be able to reference this event from the lap
-            event.uuid = Uuid().v1();
-            events.add(event);
-
-            laps.add(Lap(
-              dataMessage: dataMessage,
-              activity: this,
-              uuid: event.uuid,
-            ));
-            break;
-
-          case "session":
-            db
-              ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
-              ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
-              ..startPositionLat = dataMessage.get('start_position_lat')
-              ..startPositionLong = dataMessage.get('start_position_long')
-              ..totalElapsedTime =
-                  dataMessage.get('total_elapsed_time')?.round()
-              ..totalTimerTime = dataMessage.get('total_timer_time')?.round()
-              ..totalDistance = dataMessage.get('total_distance')?.round()
-              ..totalStrides = dataMessage.get('total_strides')?.round()
-              ..necLat = dataMessage.get('nec_lat')
-              ..necLong = dataMessage.get('nec_long')
-              ..swcLat = dataMessage.get('swc_lat')
-              ..swcLong = dataMessage.get('swc_long')
-              ..totalCalories = dataMessage.get('total_calories')?.round()
-              ..avgSpeed = dataMessage.get('avg_speed')
-              ..maxSpeed = dataMessage.get('max_speed')
-              ..totalAscent = dataMessage.get('total_ascent')?.round()
-              ..totalDescent = dataMessage.get('total_descent')?.round()
-              ..maxRunningCadence =
-                  dataMessage.get('max_running_cadence')?.round()
-              ..firstLapIndex = dataMessage.get('first_lap_index')?.round()
-              ..numLaps = dataMessage.get('num_laps')?.round()
-              ..event = dataMessage.get('event')?.toString()
-              ..eventType = dataMessage.get('event_type')
-              ..eventGroup = dataMessage.get('event_group')?.round()
-              ..trigger = dataMessage.get('trigger')
-              ..avgVerticalOscillation =
-                  dataMessage.get('avg_vertical_oscillation')
-              ..avgStanceTimePercent =
-                  dataMessage.get('avg_stance_time_percent')
-              ..avgStanceTime = dataMessage.get('avg_stance_time')
-              ..sport = dataMessage.get('sport')
-              ..subSport = dataMessage.get('sub_sport')
-              ..avgHeartRate = dataMessage.get('avg_heart_rate')?.round()
-              ..maxHeartRate = dataMessage.get('max_heart_rate')?.round()
-              ..avgRunningCadence = dataMessage.get('avg_running_cadence')
-              ..totalTrainingEffect =
-                  dataMessage.get('total_training_effect')?.round()
-              ..avgTemperature = dataMessage.get('avg_temperature')?.round()
-              ..maxTemperature = dataMessage.get('max_temperature')?.round()
-              ..avgFractionalCadence = dataMessage.get('avg_fractional_cadence')
-              ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
-              ..totalFractionalCycles =
-                  dataMessage.get('total_fractional_cycles');
-            await db.save();
-            notifyListeners();
-            break;
-
-          case "activity":
-            db
-              ..numSessions = dataMessage.get('num_sessions')?.round()
-              ..localTimestamp =
-                  dateTimeFromStrava(dataMessage.get('local_timestamp'));
-            await db.save();
-            notifyListeners();
-            break;
-
-          default:
-            print("Messages of type "
-                "${dataMessage.definitionMessage.globalMessageName} "
-                "are not implemented yet.");
-            print(dataMessage.values.map((v) => v.fieldName).toList());
-            debugger();
-        }
+      if (counter % 100 == 0) {
+        percentage = (counter / numberOfMessages * 100).round();
+        yield percentage;
       }
-    });
-
-    await DbEvent().upsertAll(events.map((event) => event.db).toList());
-
-    for (Lap lap in laps) {
-      lap.db.eventsId =
-          events.firstWhere((event) => lap.uuid == event.uuid).db.id;
     }
-    await DbLap().upsertAll(laps.map((lap) => lap.db).toList());
 
     db.state = "persisted";
     await db.save();
     notifyListeners();
     print("Activity data for »${db.name}« stored in database.");
+    yield 100;
+  }
+
+  handleDataMessage({DataMessage dataMessage}) async {
+    if (dataMessage.definitionMessage.globalMessageName == null) {
+      switch (dataMessage.definitionMessage.globalMessageNumber) {
+        case 13:
+        case 22:
+        case 79:
+        case 104:
+        case 113:
+        case 140:
+        case 141:
+        case 147:
+        case 216:
+          break; // Garmin uses global message numbers, which are not specified
+        default:
+          print("Message number "
+              "${dataMessage.definitionMessage.globalMessageNumber} "
+              "unknown.");
+          debugger();
+      }
+    } else {
+      switch (dataMessage.definitionMessage.globalMessageName) {
+        case 'developer_data_id':
+        case "device_info":
+        case "device_settings":
+        case "field_description":
+        case "file_creator":
+        case "user_profile":
+        case "zones_target":
+          break; // we are currently not storing these kinds of messages
+
+        case "file_id":
+          db
+            ..serialNumber = dataMessage.get('serial_number')?.round()
+            ..timeCreated = dateTimeFromStrava(dataMessage.get('time_created'));
+          await db.save();
+          break;
+
+        case "sport":
+          db
+            ..sportName = dataMessage.get('name')
+            ..sport = dataMessage.get('sport')
+            ..subSport = dataMessage.get('sub_sport');
+          await db.save();
+          break;
+
+        case "event":
+          var event = Event(
+            dataMessage: dataMessage,
+            activity: this,
+          );
+          await event.db.save();
+          break;
+
+        case "record":
+          var event = Event.fromRecord(
+            dataMessage: dataMessage,
+            activity: this,
+          );
+          await event.db.save();
+          break;
+
+        case "lap":
+          var event = Event.fromLap(
+            dataMessage: dataMessage,
+            activity: this,
+          );
+          var eventsId = await event.db.save();
+
+          var lap = Lap(
+            dataMessage: dataMessage,
+            activity: this,
+            eventsId: eventsId,
+          );
+          await lap.db.save();
+          break;
+
+        case "session":
+          db
+            ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
+            ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
+            ..startPositionLat = dataMessage.get('start_position_lat')
+            ..startPositionLong = dataMessage.get('start_position_long')
+            ..totalElapsedTime = dataMessage.get('total_elapsed_time')?.round()
+            ..totalTimerTime = dataMessage.get('total_timer_time')?.round()
+            ..totalDistance = dataMessage.get('total_distance')?.round()
+            ..totalStrides = dataMessage.get('total_strides')?.round()
+            ..necLat = dataMessage.get('nec_lat')
+            ..necLong = dataMessage.get('nec_long')
+            ..swcLat = dataMessage.get('swc_lat')
+            ..swcLong = dataMessage.get('swc_long')
+            ..totalCalories = dataMessage.get('total_calories')?.round()
+            ..avgSpeed = dataMessage.get('avg_speed')
+            ..maxSpeed = dataMessage.get('max_speed')
+            ..totalAscent = dataMessage.get('total_ascent')?.round()
+            ..totalDescent = dataMessage.get('total_descent')?.round()
+            ..maxRunningCadence =
+                dataMessage.get('max_running_cadence')?.round()
+            ..firstLapIndex = dataMessage.get('first_lap_index')?.round()
+            ..numLaps = dataMessage.get('num_laps')?.round()
+            ..event = dataMessage.get('event')?.toString()
+            ..eventType = dataMessage.get('event_type')
+            ..eventGroup = dataMessage.get('event_group')?.round()
+            ..trigger = dataMessage.get('trigger')
+            ..avgVerticalOscillation =
+                dataMessage.get('avg_vertical_oscillation')
+            ..avgStanceTimePercent = dataMessage.get('avg_stance_time_percent')
+            ..avgStanceTime = dataMessage.get('avg_stance_time')
+            ..sport = dataMessage.get('sport')
+            ..subSport = dataMessage.get('sub_sport')
+            ..avgHeartRate = dataMessage.get('avg_heart_rate')?.round()
+            ..maxHeartRate = dataMessage.get('max_heart_rate')?.round()
+            ..avgRunningCadence = dataMessage.get('avg_running_cadence')
+            ..totalTrainingEffect =
+                dataMessage.get('total_training_effect')?.round()
+            ..avgTemperature = dataMessage.get('avg_temperature')?.round()
+            ..maxTemperature = dataMessage.get('max_temperature')?.round()
+            ..avgFractionalCadence = dataMessage.get('avg_fractional_cadence')
+            ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
+            ..totalFractionalCycles =
+                dataMessage.get('total_fractional_cycles');
+          await db.save();
+          break;
+
+        case "activity":
+          db
+            ..numSessions = dataMessage.get('num_sessions')?.round()
+            ..localTimestamp =
+                dateTimeFromStrava(dataMessage.get('local_timestamp'));
+          await db.save();
+          break;
+
+        default:
+          print("Messages of type "
+              "${dataMessage.definitionMessage.globalMessageName} "
+              "are not implemented yet.");
+          print(dataMessage.values.map((v) => v.fieldName).toList());
+          debugger();
+      }
+    }
   }
 
   delete() async {
