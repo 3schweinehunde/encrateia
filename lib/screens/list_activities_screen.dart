@@ -15,31 +15,65 @@ class ListActivitiesScreen extends StatefulWidget {
 }
 
 class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
+  Flushbar flushbar;
+  Visibility floatingActionButton;
+  bool floatingActionButtonVisible;
+
+  @override
+  void initState() {
+    floatingActionButtonVisible =
+    (widget.athlete.email != null && widget.athlete.password != null);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: floatingActionButton(),
-      appBar: AppBar(
-        title: Text('Activities')
+      floatingActionButton: Visibility(
+        visible: floatingActionButtonVisible,
+        child: FloatingActionButton.extended(
+          onPressed: () => updateJob(),
+          label: Text("from Strava"),
+          icon: MyIcon.stravaDownload,
+        ),
       ),
+      appBar: AppBar(title: Text('Activities')),
       body: ActivitiesListWidget(athlete: widget.athlete),
     );
   }
 
-  floatingActionButton() {
-    if (widget.athlete.email != null && widget.athlete.password != null) {
-      return FloatingActionButton.extended(
-        onPressed: () => queryStrava(),
-        label: Text("from Strava"),
-        icon: MyIcon.stravaDownload,
-      );
-    } else {
-      return Container();
+  updateJob() async {
+    List<Activity> activities;
+    setState(() => floatingActionButtonVisible = false);
+    print(floatingActionButtonVisible);
+
+    await queryStrava();
+
+    activities = await Activity.all();
+    var newActivities =
+        activities.where((activity) => activity.db.state == "new");
+    for (Activity activity in newActivities) {
+      await download(activity: activity);
     }
+
+    var downloadedActivities =
+        activities.where((activity) => activity.db.state == "downloaded");
+    for (Activity activity in downloadedActivities) {
+      await parse(activity: activity);
+    }
+
+    flushbar.dismiss();
+    Flushbar(
+      message: "Download Job finished",
+      duration: Duration(seconds: 1),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+
+    setState(() => floatingActionButtonVisible = true);
   }
 
   Future queryStrava() async {
-    var flushbar = Flushbar(
+    flushbar = Flushbar(
       message: "Downloading new activities",
       duration: Duration(seconds: 30),
       icon: MyIcon.stravaDownloadWhite,
@@ -51,6 +85,49 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
       duration: Duration(seconds: 1),
       icon: MyIcon.finishedWhite,
     )..show(context);
+
+    setState(() {});
+  }
+
+  Future download({Activity activity}) async {
+    flushbar.dismiss();
+    flushbar = Flushbar(
+      message: "Download .fit-File for »${activity.db.name}«",
+      duration: Duration(seconds: 30),
+      icon: MyIcon.stravaDownloadWhite,
+    )..show(context);
+
+    await activity.download(athlete: widget.athlete);
+
+    flushbar.dismiss();
+    Flushbar(
+      message: "Download finished",
+      duration: Duration(seconds: 1),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+
+    setState(() {});
+  }
+
+  Future parse({Activity activity}) async {
+    flushbar.dismiss();
+    flushbar = Flushbar(
+      message: "0% of storing »${activity.db.name}«",
+      duration: Duration(seconds: 3),
+      animationDuration: Duration(milliseconds: 1),
+      titleText: LinearProgressIndicator(value: 0),
+    )..show(context);
+
+    var percentageStream = activity.parse(athlete: widget.athlete);
+    await for (var value in percentageStream) {
+      flushbar.dismiss();
+      flushbar = Flushbar(
+        titleText: LinearProgressIndicator(value: value / 100),
+        message: "$value% of storing »${activity.db.name}«",
+        duration: Duration(seconds: 3),
+        animationDuration: Duration(milliseconds: 1),
+      )..show(context);
+    }
 
     setState(() {});
   }

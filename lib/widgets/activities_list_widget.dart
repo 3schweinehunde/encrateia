@@ -171,9 +171,6 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
       case "persisted":
         actions = ["show", "parse", "download", "delete"];
         break;
-      case "delete":
-        delete(activity: activity);
-        break;
       case "default":
         actions = ["state"];
     }
