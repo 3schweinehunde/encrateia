@@ -3,6 +3,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flushbar/flushbar.dart';
 
 class ListActivitiesScreen extends StatefulWidget {
   final Athlete athlete;
@@ -38,7 +39,19 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   }
 
   Future queryStrava() async {
+    var flushbar = Flushbar(
+      message: "Downloading new activities",
+      duration: Duration(seconds: 30),
+      icon: MyIcon.stravaDownloadWhite,
+    )..show(context);
     await Activity.queryStrava(athlete: widget.athlete);
+    flushbar.dismiss();
+    Flushbar(
+      message: "Download finished",
+      duration: Duration(seconds: 1),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+
     setState(() {});
   }
 }
