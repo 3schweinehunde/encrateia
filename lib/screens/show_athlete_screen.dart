@@ -4,6 +4,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/widgets/athlete_power_widget.dart';
 import 'package:encrateia/widgets/athlete_power_per_heart_rate_widget.dart';
+import 'package:encrateia/widgets/athlete_speed_per_heart_rate_widget.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 
@@ -31,7 +32,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         floatingActionButton: Visibility(
           visible: floatingActionButtonVisible,
@@ -56,6 +57,10 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             Tab(
               icon: MyIcon.power,
               text: "Power/HR",
+            ),
+            Tab(
+              icon: MyIcon.speed,
+              text: "Speed/HR",
             )
           ]),
         ),
@@ -63,6 +68,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           ActivitiesListWidget(athlete: widget.athlete),
           AthletePowerWidget(athlete: widget.athlete),
           AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+          AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
         ]),
       ),
     );
