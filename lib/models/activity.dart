@@ -18,6 +18,10 @@ class Activity extends ChangeNotifier {
   List<Event> _records;
   List<Lap> _laps;
 
+  // intermediate data structures used for parsing
+  Lap currentLap;
+  List<Event> eventsForCurrentLap;
+
   Activity();
   Activity.fromDb(this.db);
 
@@ -272,10 +276,11 @@ class Activity extends ChangeNotifier {
     await db.save();
 
     int numberOfMessages = fitFile.dataMessages.length;
+    await resetCurrentLap();
 
     for (DataMessage dataMessage in fitFile.dataMessages) {
       counter++;
-      await handleDataMessage(dataMessage: dataMessage);
+      percentage = await handleDataMessage(dataMessage: dataMessage);
 
       if (counter % 100 == 0) {
         percentage = (counter / numberOfMessages * 100).round();
@@ -290,7 +295,9 @@ class Activity extends ChangeNotifier {
     yield 100;
   }
 
-  handleDataMessage({DataMessage dataMessage}) async {
+  handleDataMessage({
+    DataMessage dataMessage,
+  }) async {
     if (dataMessage.definitionMessage.globalMessageName == null) {
       switch (dataMessage.definitionMessage.globalMessageNumber) {
         case 13:
@@ -340,30 +347,36 @@ class Activity extends ChangeNotifier {
             dataMessage: dataMessage,
             activity: this,
           );
-          await event.db.save();
+          eventsForCurrentLap.add(event);
           break;
 
         case "record":
           var event = Event.fromRecord(
             dataMessage: dataMessage,
             activity: this,
+            lapsId: currentLap.db.id,
           );
-          await event.db.save();
+          eventsForCurrentLap.add(event);
           break;
 
         case "lap":
           var event = Event.fromLap(
             dataMessage: dataMessage,
             activity: this,
+            lapsId: currentLap.db.id,
           );
-          var eventsId = await event.db.save();
+          eventsForCurrentLap.add(event);
 
-          var lap = Lap(
+          var lap = Lap.fromLap(
             dataMessage: dataMessage,
             activity: this,
-            eventsId: eventsId,
+            lap: currentLap,
           );
           await lap.db.save();
+          await DbEvent()
+              .upsertAll(eventsForCurrentLap.map((event) => event.db).toList());
+
+          await resetCurrentLap();
           break;
 
         case "session":
@@ -429,6 +442,12 @@ class Activity extends ChangeNotifier {
           debugger();
       }
     }
+  }
+
+  resetCurrentLap() async{
+    currentLap = Lap();
+    await currentLap.db.save();
+    eventsForCurrentLap = [];
   }
 
   delete() async {

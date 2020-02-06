@@ -75,7 +75,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   Future queryStrava() async {
     flushbar = Flushbar(
       message: "Downloading new activities",
-      duration: Duration(seconds: 30),
+      duration: Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
     await Activity.queryStrava(athlete: widget.athlete);
@@ -113,7 +113,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
     flushbar.dismiss();
     flushbar = Flushbar(
       message: "0% of storing »${activity.db.name}«",
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 10),
       animationDuration: Duration(milliseconds: 1),
       titleText: LinearProgressIndicator(value: 0),
     )..show(context);

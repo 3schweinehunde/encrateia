@@ -11,10 +11,19 @@ class Lap {
   int index;
   List<Event> _records;
 
-  Lap({DataMessage dataMessage, this.activity, int eventsId}) {
-    db = DbLap()
+  Lap() {
+    db = DbLap();
+  }
+
+  Lap.fromDb(this.db);
+
+  static Lap fromLap({
+    DataMessage dataMessage,
+    Activity activity,
+    Lap lap,
+  }) {
+    lap.db
       ..activitiesId = activity.db.id
-      ..eventsId = eventsId
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
       ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
       ..startPositionLat = dataMessage.get('start_position_lat')
@@ -50,9 +59,8 @@ class Lap {
       ..avgFractionalCadence = dataMessage.get('avg_fractional_cadence')
       ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
       ..totalFractionalCycles = dataMessage.get('total_fractional_cycles');
+    return lap;
   }
-
-  Lap.fromDb(this.db);
 
   Future<List<Event>> get records async {
     if (_records == null) {
@@ -116,9 +124,11 @@ class Lap {
   }
 
   Future<double> get avgVerticalOscillation async {
-    if (db.avgVerticalOscillation == null || db.avgVerticalOscillation == 6553.5) {
+    if (db.avgVerticalOscillation == null ||
+        db.avgVerticalOscillation == 6553.5) {
       List<Event> records = await this.records;
-      db.avgVerticalOscillation = calculateAverageVerticalOscillation(records: records);
+      db.avgVerticalOscillation =
+          calculateAverageVerticalOscillation(records: records);
       await db.save();
     }
     return db.avgVerticalOscillation;
@@ -127,12 +137,12 @@ class Lap {
   Future<double> get sdevVerticalOscillation async {
     if (db.sdevVerticalOscillation == null) {
       List<Event> records = await this.records;
-      db.sdevVerticalOscillation = calculateSdevVerticalOscillation(records: records);
+      db.sdevVerticalOscillation =
+          calculateSdevVerticalOscillation(records: records);
       await db.save();
     }
     return db.sdevVerticalOscillation;
   }
-
 
   Future<double> get avgStrydCadence async {
     if (db.avgStrydCadence == null) {
@@ -155,7 +165,8 @@ class Lap {
   Future<double> get avgLegSpringStiffness async {
     if (db.avgLegSpringStiffness == null) {
       List<Event> records = await this.records;
-      db.avgLegSpringStiffness = calculateAverageLegSpringStiffness(records: records);
+      db.avgLegSpringStiffness =
+          calculateAverageLegSpringStiffness(records: records);
       await db.save();
     }
     return db.avgLegSpringStiffness;
@@ -164,7 +175,8 @@ class Lap {
   Future<double> get sdevLegSpringStiffness async {
     if (db.sdevLegSpringStiffness == null) {
       List<Event> records = await this.records;
-      db.sdevLegSpringStiffness = calculateSdevLegSpringStiffness(records: records);
+      db.sdevLegSpringStiffness =
+          calculateSdevLegSpringStiffness(records: records);
       await db.save();
     }
     return db.sdevLegSpringStiffness;
@@ -186,20 +198,6 @@ class Lap {
       await db.save();
     }
     return db.sdevFormPower;
-  }
-
-
-  Future<int> firstEventId() async {
-    if (index > 1) {
-      var lapList = await activity.laps;
-      DbEvent firstEvent = await lapList
-          .firstWhere((lap) => lap.index == index - 1)
-          .db
-          .getDbEvent();
-      return firstEvent.id;
-    } else {
-      return 0;
-    }
   }
 
   static Future<List<Lap>> by({Activity activity}) async {
@@ -267,7 +265,7 @@ class Lap {
 
   static double calculateAverageStrydCadence({List<Event> records}) {
     var strydCadences =
-    records.map((record) => 2 * record.db.strydCadence).nonZeroDoubles();
+        records.map((record) => 2 * record.db.strydCadence).nonZeroDoubles();
     if (strydCadences.length > 0) {
       return strydCadences.mean();
     } else
@@ -276,14 +274,13 @@ class Lap {
 
   static double calculateSdevStrydCadence({List<Event> records}) {
     var strydCadences =
-    records.map((record) => 2 * record.db.strydCadence).nonZeroDoubles();
+        records.map((record) => 2 * record.db.strydCadence).nonZeroDoubles();
     return strydCadences.sdev();
   }
 
-
   static double calculateAverageLegSpringStiffness({List<Event> records}) {
     var legSpringStiffnesses =
-    records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
+        records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
     if (legSpringStiffnesses.length > 0) {
       return legSpringStiffnesses.mean();
     } else
@@ -292,13 +289,13 @@ class Lap {
 
   static double calculateSdevLegSpringStiffness({List<Event> records}) {
     var legSpringStiffnesses =
-    records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
+        records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
     return legSpringStiffnesses.sdev();
   }
 
   static double calculateAverageVerticalOscillation({List<Event> records}) {
     var verticalOscillation =
-    records.map((record) => record.db.verticalOscillation).nonZeroDoubles();
+        records.map((record) => record.db.verticalOscillation).nonZeroDoubles();
     if (verticalOscillation.length > 0) {
       return verticalOscillation.mean();
     } else
@@ -307,14 +304,13 @@ class Lap {
 
   static double calculateSdevVerticalOscillation({List<Event> records}) {
     var verticalOscillation =
-    records.map((record) => record.db.verticalOscillation).nonZeroDoubles();
+        records.map((record) => record.db.verticalOscillation).nonZeroDoubles();
     return verticalOscillation.sdev();
   }
 
-
   static double calculateAverageFormPower({List<Event> records}) {
     var legSpringStiffnesses =
-    records.map((record) => record.db.formPower).nonZeroInts();
+        records.map((record) => record.db.formPower).nonZeroInts();
     if (legSpringStiffnesses.length > 0) {
       return legSpringStiffnesses.mean();
     } else
@@ -323,7 +319,7 @@ class Lap {
 
   static double calculateSdevFormPower({List<Event> records}) {
     var legSpringStiffnesses =
-    records.map((record) => record.db.formPower).nonZeroInts();
+        records.map((record) => record.db.formPower).nonZeroInts();
     return legSpringStiffnesses.sdev();
   }
 }

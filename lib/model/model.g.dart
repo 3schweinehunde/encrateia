@@ -169,6 +169,8 @@ class TableDbEvent extends SqfEntityTableBase {
       SqfEntityFieldRelationshipBase(
           TableDbActivity.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'activitiesId'),
+      SqfEntityFieldRelationshipBase(TableDbLap.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'lapsId'),
     ];
     super.init();
   }
@@ -237,9 +239,6 @@ class TableDbLap extends SqfEntityTableBase {
       SqfEntityFieldBase('avgStrydCadence', DbType.real),
       SqfEntityFieldBase('sdevStrydCadence', DbType.real),
       SqfEntityFieldBase('sdevVerticalOscillation', DbType.real),
-      SqfEntityFieldRelationshipBase(
-          TableDbEvent.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'eventsId'),
       SqfEntityFieldRelationshipBase(
           TableDbActivity.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'activitiesId'),
@@ -4215,7 +4214,8 @@ class DbEvent {
       this.formPower,
       this.legSpringStiffness,
       this.data,
-      this.activitiesId}) {
+      this.activitiesId,
+      this.lapsId}) {
     _setDefaultValues();
   }
   DbEvent.withFields(
@@ -4239,7 +4239,8 @@ class DbEvent {
       this.formPower,
       this.legSpringStiffness,
       this.data,
-      this.activitiesId) {
+      this.activitiesId,
+      this.lapsId) {
     _setDefaultValues();
   }
   DbEvent.withId(
@@ -4264,7 +4265,8 @@ class DbEvent {
       this.formPower,
       this.legSpringStiffness,
       this.data,
-      this.activitiesId) {
+      this.activitiesId,
+      this.lapsId) {
     _setDefaultValues();
   }
   DbEvent.fromMap(Map<String, dynamic> o) {
@@ -4294,6 +4296,8 @@ class DbEvent {
     legSpringStiffness = double.tryParse(o['legSpringStiffness'].toString());
     data = double.tryParse(o['data'].toString());
     activitiesId = o['activitiesId'] as int;
+
+    lapsId = o['lapsId'] as int;
   }
   // FIELDS (DbEvent)
   int id;
@@ -4318,6 +4322,7 @@ class DbEvent {
   double legSpringStiffness;
   double data;
   int activitiesId;
+  int lapsId;
 
   BoolResult saveResult;
   // end FIELDS (DbEvent)
@@ -4336,22 +4341,20 @@ class DbEvent {
     }
     return _obj;
   }
-  // END RELATIONSHIPS (DbEvent)
 
-// COLLECTIONS (DbEvent)
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
-  List<DbLap> plDbLaps;
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbLap plDbLap;
 
-  /// get DbLap(s) filtered by eventsId=id
-  DbLapFilterBuilder getDbLaps(
-      {List<String> columnsToSelect, bool getIsDeleted}) {
-    return DbLap()
-        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .eventsId
-        .equals(id)
-        .and;
+  /// get DbLap By LapsId
+
+  Future<DbLap> getDbLap([VoidCallback Function(DbLap o) dblap]) async {
+    final _obj = await DbLap().getById(lapsId);
+    if (dblap != null) {
+      dblap(_obj);
+    }
+    return _obj;
   }
-// END COLLECTIONS (DbEvent)
+  // END RELATIONSHIPS (DbEvent)
 
   static const bool _softDeleteActivated = false;
   DbEventManager __mnDbEvent;
@@ -4452,6 +4455,10 @@ class DbEvent {
       map['activitiesId'] = activitiesId;
     }
 
+    if (lapsId != null) {
+      map['lapsId'] = lapsId;
+    }
+
     return map;
   }
 
@@ -4547,11 +4554,9 @@ class DbEvent {
       map['activitiesId'] = activitiesId;
     }
 
-// COLLECTIONS (DbEvent)
-    if (!forQuery) {
-      map['DbLaps'] = await getDbLaps().toMapList();
+    if (lapsId != null) {
+      map['lapsId'] = lapsId;
     }
-// END COLLECTIONS (DbEvent)
 
     return map;
   }
@@ -4589,7 +4594,8 @@ class DbEvent {
       formPower,
       legSpringStiffness,
       data,
-      activitiesId
+      activitiesId,
+      lapsId
     ];
   }
 
@@ -4633,15 +4639,11 @@ class DbEvent {
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbLaps')) {
-          obj.plDbLaps = await obj.getDbLaps().toList();
-        }
-      } // END RELATIONSHIPS PRELOAD
-
-      // RELATIONSHIPS PRELOAD
-      if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivity')) {
           obj.plDbActivity = await obj.getDbActivity();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbLap')) {
+          obj.plDbLap = await obj.getDbLap();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -4693,7 +4695,7 @@ class DbEvent {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbEvent> dbevents) async {
     final results = _mnDbEvent.saveAll(
-        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbevents);
     return results;
   }
@@ -4704,7 +4706,7 @@ class DbEvent {
   Future<int> _upsert() async {
     try {
       if (await _mnDbEvent.rawInsert(
-              'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 event,
@@ -4727,7 +4729,8 @@ class DbEvent {
                 formPower,
                 legSpringStiffness,
                 data,
-                activitiesId
+                activitiesId,
+                lapsId
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -4751,7 +4754,7 @@ class DbEvent {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbEvent> dbevents) async {
     final results = await _mnDbEvent.rawInsertAll(
-        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbevents);
     return results;
   }
@@ -4761,13 +4764,6 @@ class DbEvent {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete DbEvent invoked (id=$id)');
-    var result = BoolResult();
-    {
-      result = await DbLap().select().eventsId.equals(id).delete(hardDelete);
-    }
-    if (!result.success) {
-      return result;
-    }
     if (!_softDeleteActivated || hardDelete) {
       return _mnDbEvent
           .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
@@ -4796,6 +4792,7 @@ class DbEvent {
 
   void _setDefaultValues() {
     activitiesId = activitiesId ?? 0;
+    lapsId = lapsId ?? 0;
   }
   // END METHODS
   // CUSTOM CODES
@@ -5283,6 +5280,11 @@ class DbEventFilterBuilder extends SearchCriteria {
         setField(_activitiesId, 'activitiesId', DbType.integer);
   }
 
+  DbEventField _lapsId;
+  DbEventField get lapsId {
+    return _lapsId = setField(_lapsId, 'lapsId', DbType.integer);
+  }
+
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -5407,15 +5409,11 @@ class DbEventFilterBuilder extends SearchCriteria {
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbLaps')) {
-          obj.plDbLaps = await obj.getDbLaps().toList();
-        }
-      } // END RELATIONSHIPS PRELOAD
-
-      // RELATIONSHIPS PRELOAD
-      if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivity')) {
           obj.plDbActivity = await obj.getDbActivity();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbLap')) {
+          obj.plDbLap = await obj.getDbLap();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -5732,6 +5730,12 @@ class DbEventFields {
     return _fActivitiesId = _fActivitiesId ??
         SqlSyntax.setField(_fActivitiesId, 'activitiesId', DbType.integer);
   }
+
+  static TableField _fLapsId;
+  static TableField get lapsId {
+    return _fLapsId =
+        _fLapsId ?? SqlSyntax.setField(_fLapsId, 'lapsId', DbType.integer);
+  }
 }
 // endregion DbEventFields
 
@@ -5794,7 +5798,6 @@ class DbLap {
       this.avgStrydCadence,
       this.sdevStrydCadence,
       this.sdevVerticalOscillation,
-      this.eventsId,
       this.activitiesId}) {
     _setDefaultValues();
   }
@@ -5846,7 +5849,6 @@ class DbLap {
       this.avgStrydCadence,
       this.sdevStrydCadence,
       this.sdevVerticalOscillation,
-      this.eventsId,
       this.activitiesId) {
     _setDefaultValues();
   }
@@ -5899,7 +5901,6 @@ class DbLap {
       this.avgStrydCadence,
       this.sdevStrydCadence,
       this.sdevVerticalOscillation,
-      this.eventsId,
       this.activitiesId) {
     _setDefaultValues();
   }
@@ -5968,8 +5969,6 @@ class DbLap {
     sdevStrydCadence = double.tryParse(o['sdevStrydCadence'].toString());
     sdevVerticalOscillation =
         double.tryParse(o['sdevVerticalOscillation'].toString());
-    eventsId = o['eventsId'] as int;
-
     activitiesId = o['activitiesId'] as int;
   }
   // FIELDS (DbLap)
@@ -6021,26 +6020,12 @@ class DbLap {
   double avgStrydCadence;
   double sdevStrydCadence;
   double sdevVerticalOscillation;
-  int eventsId;
   int activitiesId;
 
   BoolResult saveResult;
   // end FIELDS (DbLap)
 
 // RELATIONSHIPS (DbLap)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
-  DbEvent plDbEvent;
-
-  /// get DbEvent By EventsId
-
-  Future<DbEvent> getDbEvent([VoidCallback Function(DbEvent o) dbevent]) async {
-    final _obj = await DbEvent().getById(eventsId);
-    if (dbevent != null) {
-      dbevent(_obj);
-    }
-    return _obj;
-  }
-
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
   DbActivity plDbActivity;
 
@@ -6055,6 +6040,21 @@ class DbLap {
     return _obj;
   }
   // END RELATIONSHIPS (DbLap)
+
+// COLLECTIONS (DbLap)
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbEvent> plDbEvents;
+
+  /// get DbEvent(s) filtered by lapsId=id
+  DbEventFilterBuilder getDbEvents(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbEvent()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .lapsId
+        .equals(id)
+        .and;
+  }
+// END COLLECTIONS (DbLap)
 
   static const bool _softDeleteActivated = false;
   DbLapManager __mnDbLap;
@@ -6259,10 +6259,6 @@ class DbLap {
 
     if (sdevVerticalOscillation != null) {
       map['sdevVerticalOscillation'] = sdevVerticalOscillation;
-    }
-
-    if (eventsId != null) {
-      map['eventsId'] = eventsId;
     }
 
     if (activitiesId != null) {
@@ -6470,13 +6466,15 @@ class DbLap {
       map['sdevVerticalOscillation'] = sdevVerticalOscillation;
     }
 
-    if (eventsId != null) {
-      map['eventsId'] = eventsId;
-    }
-
     if (activitiesId != null) {
       map['activitiesId'] = activitiesId;
     }
+
+// COLLECTIONS (DbLap)
+    if (!forQuery) {
+      map['DbEvents'] = await getDbEvents().toMapList();
+    }
+// END COLLECTIONS (DbLap)
 
     return map;
   }
@@ -6541,7 +6539,6 @@ class DbLap {
       avgStrydCadence,
       sdevStrydCadence,
       sdevVerticalOscillation,
-      eventsId,
       activitiesId
     ];
   }
@@ -6585,9 +6582,13 @@ class DbLap {
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbEvent')) {
-          obj.plDbEvent = await obj.getDbEvent();
+        if (preloadFields == null || preloadFields.contains('plDbEvents')) {
+          obj.plDbEvents = await obj.getDbEvents().toList();
         }
+      } // END RELATIONSHIPS PRELOAD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivity')) {
           obj.plDbActivity = await obj.getDbActivity();
         }
@@ -6641,7 +6642,7 @@ class DbLap {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbLap> dblaps) async {
     final results = _mnDbLap.saveAll(
-        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dblaps);
     return results;
   }
@@ -6652,7 +6653,7 @@ class DbLap {
   Future<int> _upsert() async {
     try {
       if (await _mnDbLap.rawInsert(
-              'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
@@ -6702,7 +6703,6 @@ class DbLap {
                 avgStrydCadence,
                 sdevStrydCadence,
                 sdevVerticalOscillation,
-                eventsId,
                 activitiesId
               ]) ==
           1) {
@@ -6726,7 +6726,7 @@ class DbLap {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbLap> dblaps) async {
     final results = await _mnDbLap.rawInsertAll(
-        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, eventsId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dblaps);
     return results;
   }
@@ -6736,6 +6736,13 @@ class DbLap {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete DbLap invoked (id=$id)');
+    var result = BoolResult();
+    {
+      result = await DbEvent().select().lapsId.equals(id).delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
     if (!_softDeleteActivated || hardDelete) {
       return _mnDbLap
           .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
@@ -6762,7 +6769,6 @@ class DbLap {
   }
 
   void _setDefaultValues() {
-    eventsId = eventsId ?? 0;
     activitiesId = activitiesId ?? 0;
   }
   // END METHODS
@@ -7407,11 +7413,6 @@ class DbLapFilterBuilder extends SearchCriteria {
         _sdevVerticalOscillation, 'sdevVerticalOscillation', DbType.real);
   }
 
-  DbLapField _eventsId;
-  DbLapField get eventsId {
-    return _eventsId = setField(_eventsId, 'eventsId', DbType.integer);
-  }
-
   DbLapField _activitiesId;
   DbLapField get activitiesId {
     return _activitiesId =
@@ -7542,9 +7543,13 @@ class DbLapFilterBuilder extends SearchCriteria {
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbEvent')) {
-          obj.plDbEvent = await obj.getDbEvent();
+        if (preloadFields == null || preloadFields.contains('plDbEvents')) {
+          obj.plDbEvents = await obj.getDbEvents().toList();
         }
+      } // END RELATIONSHIPS PRELOAD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivity')) {
           obj.plDbActivity = await obj.getDbActivity();
         }
@@ -8027,12 +8032,6 @@ class DbLapFields {
     return _fSdevVerticalOscillation = _fSdevVerticalOscillation ??
         SqlSyntax.setField(
             _fSdevVerticalOscillation, 'sdevVerticalOscillation', DbType.real);
-  }
-
-  static TableField _fEventsId;
-  static TableField get eventsId {
-    return _fEventsId = _fEventsId ??
-        SqlSyntax.setField(_fEventsId, 'eventsId', DbType.integer);
   }
 
   static TableField _fActivitiesId;

@@ -10,11 +10,15 @@ import 'package:encrateia/models/plot_point.dart';
 class Event {
   DbEvent db;
   Activity activity;
+  Lap lap;
   int index;
 
   Event.fromDb(this.db);
 
-  Event({DataMessage dataMessage, this.activity}) {
+  Event({
+    @required DataMessage dataMessage,
+    @required this.activity,
+  }) {
     if (dataMessage.any('max_heart_rate')) {
       activity.db
         ..maxHeartRate = dataMessage.get('max_heart_rate')?.round()
@@ -43,9 +47,14 @@ class Event {
     }
   }
 
-  Event.fromRecord({DataMessage dataMessage, this.activity}) {
+  Event.fromRecord({
+    @required DataMessage dataMessage,
+    @required this.activity,
+    @required int lapsId,
+  }) {
     db = DbEvent()
       ..activitiesId = activity.db.id
+      ..lapsId = lapsId
       ..event = "record"
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
       ..positionLat = dataMessage.get('position_lat')
@@ -64,9 +73,14 @@ class Event {
       ..legSpringStiffness = dataMessage.get('Leg Spring Stiffness');
   }
 
-  Event.fromLap({DataMessage dataMessage, this.activity}) {
+  Event.fromLap({
+    @required DataMessage dataMessage,
+    @required this.activity,
+    @required int lapsId,
+  }) {
     db = DbEvent()
       ..activitiesId = activity.db.id
+      ..lapsId = lapsId
       ..positionLat = dataMessage.get('end_position_lat')
       ..positionLong = dataMessage.get('end_position_long')
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
@@ -83,16 +97,8 @@ class Event {
   }
 
   static Future<List<Event>> recordsByLap({Lap lap}) async {
-    int firstRecordId = await lap.firstEventId();
-    DbEvent lastRecord = await lap.db.getDbEvent();
-    int lastRecordId = lastRecord.id;
-
-    var events = await by(activity: lap.activity);
-    var records = events.where((event) =>
-        event.db.id < lastRecordId &&
-        event.db.id > firstRecordId &&
-        event.db.event == "record");
-
+    var events = await byLap(lap: lap);
+    var records = events.where((event) => event.db.event == "record");
     return records.toList();
   }
 
@@ -102,11 +108,26 @@ class Event {
     return records.toList();
   }
 
+  static Future<List<Event>> byLap({Lap lap}) async {
+    int counter = 1;
+
+    List<DbEvent> dbEventList = await lap.db.getDbEvents().toList();
+    var eventList = dbEventList.map((dbEvent) => Event.fromDb(dbEvent)).toList();
+
+    for (Event event in eventList) {
+      event.lap = lap;
+      event.index = counter;
+      counter = counter + 1;
+    }
+
+    return eventList;
+  }
+
   static Future<List<Event>> by({Activity activity}) async {
     int counter = 1;
 
     List<DbEvent> dbEventList = await activity.db.getDbEvents().toList();
-    var eventList = dbEventList.map((dbLap) => Event.fromDb(dbLap)).toList();
+    var eventList = dbEventList.map((dbEvent) => Event.fromDb(dbEvent)).toList();
 
     for (Event event in eventList) {
       event.activity = activity;

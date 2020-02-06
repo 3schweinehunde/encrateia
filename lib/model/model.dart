@@ -136,6 +136,12 @@ const tableEvent = SqfEntityTable(
         parentTable: tableActivity,
         deleteRule: DeleteRule.CASCADE,
         defaultValue: 0),
+
+    SqfEntityFieldRelationship(
+        parentTable: tableLap,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+
   ],
 );
 
@@ -195,10 +201,6 @@ const tableLap = SqfEntityTable(
       SqfEntityField('sdevStrydCadence', DbType.real),
       SqfEntityField('sdevVerticalOscillation', DbType.real),
 
-      SqfEntityFieldRelationship(
-          parentTable: tableEvent,
-          deleteRule: DeleteRule.CASCADE,
-          defaultValue: 0),
       SqfEntityFieldRelationship(
           parentTable: tableActivity,
           deleteRule: DeleteRule.CASCADE,

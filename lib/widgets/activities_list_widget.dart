@@ -114,7 +114,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   Future download({Activity activity}) async {
     var flushbar = Flushbar(
       message: "Download .fit-File for »${activity.db.name}«",
-      duration: Duration(seconds: 30),
+      duration: Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
 
@@ -133,7 +133,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   Future parse({Activity activity}) async {
     var flushbar = Flushbar(
       message: "0% of storing »${activity.db.name}«",
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 10),
       animationDuration: Duration(milliseconds: 1),
       titleText: LinearProgressIndicator(value: 0),
     )..show(context);
