@@ -64,8 +64,8 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
 
     flushbar.dismiss();
     Flushbar(
-      message: "Download Job finished",
-      duration: Duration(seconds: 1),
+      message: "You are now up to date!",
+      duration: Duration(seconds: 5),
       icon: MyIcon.finishedWhite,
     )..show(context);
 

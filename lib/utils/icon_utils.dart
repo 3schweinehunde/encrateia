@@ -26,7 +26,7 @@ class MyIcon {
   static final event = Icon(Icons.event);
   // F
   static final finished = Icon(Icons.check_box);
-  static final finishedWhite = Icon(Icons.check_box, color: Colors.white);
+  static final finishedWhite = Icon(Icons.sentiment_very_satisfied, color: Colors.white);
   static final formPower = Icon(Icons.ev_station);
   // G
   static final groundTime = Icon(Icons.vertical_align_bottom);
