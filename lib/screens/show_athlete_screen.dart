@@ -2,19 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
+import 'package:encrateia/widgets/athlete_power_widget.dart';
+import 'package:encrateia/widgets/athlete_power_per_heart_rate_widget.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 
-class ListActivitiesScreen extends StatefulWidget {
+class ShowAthleteScreen extends StatefulWidget {
   final Athlete athlete;
 
-  const ListActivitiesScreen({Key key, this.athlete}) : super(key: key);
+  const ShowAthleteScreen({Key key, this.athlete}) : super(key: key);
 
   @override
-  _ListActivitiesScreenState createState() => _ListActivitiesScreenState();
+  _ShowAthleteScreenState createState() => _ShowAthleteScreenState();
 }
 
-class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
+class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   Flushbar flushbar;
   Visibility floatingActionButton;
   bool floatingActionButtonVisible;
@@ -22,23 +24,47 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
   @override
   void initState() {
     floatingActionButtonVisible =
-    (widget.athlete.email != null && widget.athlete.password != null);
+        (widget.athlete.email != null && widget.athlete.password != null);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: Visibility(
-        visible: floatingActionButtonVisible,
-        child: FloatingActionButton.extended(
-          onPressed: () => updateJob(),
-          label: Text("from Strava"),
-          icon: MyIcon.stravaDownload,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        floatingActionButton: Visibility(
+          visible: floatingActionButtonVisible,
+          child: FloatingActionButton.extended(
+            onPressed: () => updateJob(),
+            label: Text("from Strava"),
+            icon: MyIcon.stravaDownload,
+          ),
         ),
+        appBar: AppBar(
+          title: Text(
+              widget.athlete.db.firstName + " " + widget.athlete.db.lastName),
+          bottom: TabBar(isScrollable: true, tabs: [
+            Tab(
+              icon: MyIcon.activities,
+              text: "Activities",
+            ),
+            Tab(
+              icon: MyIcon.power,
+              text: "Power",
+            ),
+            Tab(
+              icon: MyIcon.power,
+              text: "Power/HR",
+            )
+          ]),
+        ),
+        body: TabBarView(children: [
+          ActivitiesListWidget(athlete: widget.athlete),
+          AthletePowerWidget(athlete: widget.athlete),
+          AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+        ]),
       ),
-      appBar: AppBar(title: Text('Activities')),
-      body: ActivitiesListWidget(athlete: widget.athlete),
     );
   }
 
@@ -49,7 +75,7 @@ class _ListActivitiesScreenState extends State<ListActivitiesScreen> {
 
     await queryStrava();
 
-    activities = await Activity.all();
+    activities = await Activity.all(athlete: widget.athlete);
     var newActivities =
         activities.where((activity) => activity.db.state == "new");
     for (Activity activity in newActivities) {

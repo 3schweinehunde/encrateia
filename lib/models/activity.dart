@@ -68,26 +68,12 @@ class Activity extends ChangeNotifier {
       return "";
   }
 
-  timeString() {
-    if (db.avgHeartRate != null) {
-      return DateFormat("H:mm").format(db.timeCreated);
-    } else
-      return "";
-  }
+  timeString() => DateFormat("H:mm").format(db.timeCreated);
 
-  dateString() {
-    if (db.avgHeartRate != null) {
-      return DateFormat("d MMM yy").format(db.timeCreated);
-    } else
-      return "";
-  }
+  dateString() => DateFormat("d MMM yy").format(db.timeCreated);
+  shortDateString() => DateFormat("d.M.").format(db.timeCreated);
 
-  paceString() {
-    if (db.avgHeartRate != null) {
-      return db.avgSpeed.toPace() + "/km";
-    } else
-      return "";
-  }
+  paceString() => db.avgSpeed.toPace() + "/km";
 
   Future<List<Event>> get records async {
     if (_records == null) {
@@ -444,7 +430,7 @@ class Activity extends ChangeNotifier {
     }
   }
 
-  resetCurrentLap() async{
+  resetCurrentLap() async {
     currentLap = Lap();
     await currentLap.db.save();
     eventsForCurrentLap = [];
@@ -488,11 +474,12 @@ class Activity extends ChangeNotifier {
     });
   }
 
-  static Future<List<Activity>> all() async {
-    List<DbActivity> dbActivityList =
-        await DbActivity().select().orderByDesc('stravaId').toList();
-    return dbActivityList
+  static Future<List<Activity>> all({@required Athlete athlete}) async {
+    var dbActivityList =
+        await athlete.db.getDbActivities().orderByDesc('stravaId').toList();
+    var activities = dbActivityList
         .map((dbActivity) => Activity.fromDb(dbActivity))
         .toList();
+    return activities;
   }
 }

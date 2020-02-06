@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
+import 'package:encrateia/models/activity.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Athlete extends ChangeNotifier {
@@ -55,4 +56,7 @@ class Athlete extends ChangeNotifier {
     List<DbAthlete> dbAthleteList = await DbAthlete().select().toList();
     return dbAthleteList.map((dbAthlete) => Athlete.fromDb(dbAthlete)).toList();
   }
+
+  get activities => Activity.all(athlete: this);
+
 }

@@ -3,7 +3,6 @@ import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'activity.dart';
-import 'dart:developer';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 
@@ -43,7 +42,8 @@ class Event {
         ..data = dataMessage.get('data')
         ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'));
     } else {
-      debugger();
+      // Use this debugger to include new event messages, such as heart rate alerts, ...
+      // debugger();
     }
   }
 

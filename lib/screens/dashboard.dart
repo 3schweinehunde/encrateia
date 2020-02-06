@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'edit_athlete_screen.dart';
 import 'package:encrateia/models/athlete.dart';
-import 'list_activities_screen.dart';
+import 'show_athlete_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class Dashboard extends StatefulWidget {
@@ -128,7 +128,7 @@ class _DashboardState extends State<Dashboard> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ListActivitiesScreen(athlete: athlete),
+        builder: (context) => ShowAthleteScreen(athlete: athlete),
       ),
     );
   }

@@ -149,12 +149,12 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           )
         ..show(context);
     }
-    activities = await Activity.all();
+    activities = await Activity.all(athlete: widget.athlete);
     setState(() {});
   }
 
   Future getActivities() async {
-    activities = await Activity.all();
+    activities = await Activity.all(athlete: widget.athlete);
     setState(() {});
   }
 

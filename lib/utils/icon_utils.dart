@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class MyIcon {
   // A
+  static final activities = Icon(Icons.view_list);
   static final amount = Icon(Icons.playlist_add);
   static final ascent = Icon(Icons.trending_up);
   static final athlete = Icon(Icons.face);
