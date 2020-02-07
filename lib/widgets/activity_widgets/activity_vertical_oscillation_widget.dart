@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'lap_vertical_oscillation_chart.dart';
+import '../charts/actitvity_charts/activity_vertical_oscillation_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
-class LapVerticalOscillationWidget extends StatefulWidget {
-  final Lap lap;
+class ActivityVerticalOscillationWidget extends StatefulWidget {
+  final Activity activity;
 
-  LapVerticalOscillationWidget({this.lap});
+  ActivityVerticalOscillationWidget({this.activity});
 
   @override
-  _LapVerticalOscillationWidgetState createState() => _LapVerticalOscillationWidgetState();
+  _ActivityVerticalOscillationWidgetState createState() => _ActivityVerticalOscillationWidgetState();
 }
 
-class _LapVerticalOscillationWidgetState extends State<LapVerticalOscillationWidget> {
+class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOscillationWidget> {
   List<Event> records = [];
   String avgVerticalOscillationString = "Loading ...";
   String sdevVerticalOscillationString = "Loading ...";
@@ -29,15 +29,14 @@ class _LapVerticalOscillationWidgetState extends State<LapVerticalOscillationWid
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues =
-      records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
+      var powerValues = records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
       if (powerValues.length > 0) {
         return ListTileTheme(
-          iconColor: Colors.lightGreen,
+          iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapVerticalOscillationChart(records: records),
+              ActivityVerticalOscillationChart(records: records, activity: widget.activity),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),
@@ -58,7 +57,7 @@ class _LapVerticalOscillationWidgetState extends State<LapVerticalOscillationWid
         );
       } else {
         return Center(
-          child: Text("No vertical oscillation data available."),
+          child: Text("No power data available."),
         );
       }
     } else {
@@ -69,15 +68,15 @@ class _LapVerticalOscillationWidgetState extends State<LapVerticalOscillationWid
   }
 
   getData() async {
-    Lap lap = widget.lap;
-    records = await lap.records;
+    Activity activity = widget.activity;
+    records = await activity.records;
 
-    double avg = await lap.avgVerticalOscillation;
+    double avg = await activity.avgVerticalOscillation;
     setState(() {
       avgVerticalOscillationString = avg.toStringOrDashes(1) + " cm";
     });
 
-    double sdev = await lap.sdevVerticalOscillation;
+    double sdev = await activity.sdevVerticalOscillation;
     setState(() {
       sdevVerticalOscillationString = sdev.toStringOrDashes(2) + " cm";
     });

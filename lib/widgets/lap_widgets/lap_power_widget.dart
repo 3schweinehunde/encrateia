@@ -1,44 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'activity_power_chart.dart';
+import '../charts/lap_charts/lap_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
-class ActivityPowerWidget extends StatefulWidget {
-  final Activity activity;
+class LapPowerWidget extends StatefulWidget {
+  final Lap lap;
 
-  ActivityPowerWidget({this.activity});
+  LapPowerWidget({this.lap});
 
   @override
-  _ActivityPowerWidgetState createState() => _ActivityPowerWidgetState();
+  _LapPowerWidgetState createState() => _LapPowerWidgetState();
 }
 
-class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
+class _LapPowerWidgetState extends State<LapPowerWidget> {
   List<Event> records = [];
   String avgPowerString = "Loading ...";
   String minPowerString = "Loading ...";
   String maxPowerString = "Loading ...";
   String sdevPowerString = "Loading ...";
 
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
+    @override
+    void initState() {
+      getData();
+      super.initState();
+    }
 
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.power).nonZeroInts();
+      var powerValues =
+      records.map((value) => value.db.power).nonZeroInts();
       if (powerValues.length > 0) {
         return ListTileTheme(
-          iconColor: Colors.deepOrange,
+          iconColor: Colors.lightGreen,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityPowerChart(records: records, activity: widget.activity),
+              LapPowerChart(records: records),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerString),
@@ -46,7 +47,8 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(minPowerString),
+                title: Text(
+                    minPowerString),
                 subtitle: Text("minimum power"),
               ),
               ListTile(
@@ -79,28 +81,28 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = await activity.records;
+    getData() async {
+      Lap lap = widget.lap;
+      records = await lap.records;
 
-    double avg = await activity.avgPower;
-    setState(() {
-      avgPowerString = avg.toStringOrDashes(1) + " W";
-    });
+      double avg = await lap.avgPower;
+      setState(() {
+        avgPowerString = avg.toStringOrDashes(1) + " W";
+      });
 
-    int min = await activity.minPower;
-    setState(() {
-      minPowerString = min.toString() + " W";
-    });
+      int min = await lap.minPower;
+      setState(() {
+        minPowerString = min.toString() + " W";
+      });
 
-    int max = await activity.maxPower;
-    setState(() {
-      maxPowerString = max.toString() + " W";
-    });
+      int max = await lap.maxPower;
+      setState(() {
+        maxPowerString = max.toString() + " W";
+      });
 
-    double sdev = await activity.sdevPower;
-    setState(() {
-      sdevPowerString = sdev.toStringOrDashes(2) + " W";
-    });
-  }
+      double sdev = await lap.sdevPower;
+      setState(() {
+        sdevPowerString = sdev.toStringOrDashes(2) + " W";
+      });
+    }
 }

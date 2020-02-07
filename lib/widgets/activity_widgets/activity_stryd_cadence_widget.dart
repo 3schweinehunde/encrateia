@@ -3,22 +3,22 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'activity_form_power_chart.dart';
+import '../charts/actitvity_charts/activity_stryd_cadence_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
-class ActivityFormPowerWidget extends StatefulWidget {
+class ActivityStrydCadenceWidget extends StatefulWidget {
   final Activity activity;
 
-  ActivityFormPowerWidget({this.activity});
+  ActivityStrydCadenceWidget({this.activity});
 
   @override
-  _ActivityFormPowerWidgetState createState() => _ActivityFormPowerWidgetState();
+  _ActivityStrydCadenceWidgetState createState() => _ActivityStrydCadenceWidgetState();
 }
 
-class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
+class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget> {
   List<Event> records = [];
-  String avgFormPowerString = "Loading ...";
-  String sdevFormPowerString = "Loading ...";
+  String avgStrydCadenceString = "Loading ...";
+  String sdevStrydCadenceString = "Loading ...";
 
   @override
   void initState() {
@@ -29,23 +29,23 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.formPower).nonZeroInts();
+      var powerValues = records.map((value) => value.db.strydCadence).nonZeroDoubles();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityFormPowerChart(records: records, activity: widget.activity),
+              ActivityStrydCadenceChart(records: records, activity: widget.activity),
               ListTile(
-                leading: MyIcon.formPower,
-                title: Text(avgFormPowerString),
-                subtitle: Text("average form power"),
+                leading: MyIcon.average,
+                title: Text(avgStrydCadenceString),
+                subtitle: Text("average cadence"),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevFormPowerString),
-                subtitle: Text("standard deviation form power"),
+                title: Text(sdevStrydCadenceString),
+                subtitle: Text("standard deviation cadence"),
               ),
               ListTile(
                 leading: MyIcon.amount,
@@ -57,7 +57,7 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
         );
       } else {
         return Center(
-          child: Text("No form power data available."),
+          child: Text("No cadence data available."),
         );
       }
     } else {
@@ -71,14 +71,14 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
     Activity activity = widget.activity;
     records = await activity.records;
 
-    double avg = await activity.avgFormPower;
+    double avg = await activity.avgStrydCadence;
     setState(() {
-      avgFormPowerString = avg.toStringOrDashes(1) + " W";
+      avgStrydCadenceString = avg.toStringOrDashes(1) + " spm";
     });
 
-    double sdev = await activity.sdevFormPower;
+    double sdev = await activity.sdevStrydCadence;
     setState(() {
-      sdevFormPowerString = sdev.toStringOrDashes(2) + " W";
+      sdevStrydCadenceString = sdev.toStringOrDashes(2) + " spm";
     });
   }
 }

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/list_utils.dart';
-import 'athlete_speed_per_heart_rate_chart.dart';
+import '../charts/athlete_charts/athlete_power_chart.dart';
 
-class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
+class AthletePowerWidget extends StatefulWidget {
   final Athlete athlete;
 
-  AthleteSpeedPerHeartRateWidget({this.athlete});
+  AthletePowerWidget({this.athlete});
 
   @override
-  _AthleteSpeedPerHeartRateWidgetState createState() => _AthleteSpeedPerHeartRateWidgetState();
+  _AthletePowerWidgetState createState() => _AthletePowerWidgetState();
 }
 
-class _AthleteSpeedPerHeartRateWidgetState extends State<AthleteSpeedPerHeartRateWidget> {
+class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   List<Activity> activities = [];
 
   @override
@@ -25,20 +25,20 @@ class _AthleteSpeedPerHeartRateWidgetState extends State<AthleteSpeedPerHeartRat
   @override
   Widget build(context) {
     if (activities.length > 0) {
-      var powerValues = activities.map((value) => value.db.avgSpeed).nonZeroDoubles();
+      var powerValues = activities.map((value) => value.db.avgPower).nonZeroDoubles();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthleteSpeedPerHeartRateChart(activities: activities),
+              AthletePowerChart(activities: activities),
             ],
           ),
         );
       } else {
         return Center(
-          child: Text("No speed per heart rate data available."),
+          child: Text("No power data available."),
         );
       }
     } else {
@@ -51,7 +51,6 @@ class _AthleteSpeedPerHeartRateWidgetState extends State<AthleteSpeedPerHeartRat
   getData() async {
     Athlete athlete = widget.athlete;
     activities = await athlete.activities;
-    activities = activities.where((activity) => activity.db.sport == "running").toList();
     setState(() {});
   }
 }

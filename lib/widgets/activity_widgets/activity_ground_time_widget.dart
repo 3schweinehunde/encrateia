@@ -3,22 +3,22 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'activity_vertical_oscillation_chart.dart';
+import '../charts/actitvity_charts/activity_ground_time_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
-class ActivityVerticalOscillationWidget extends StatefulWidget {
+class ActivityGroundTimeWidget extends StatefulWidget {
   final Activity activity;
 
-  ActivityVerticalOscillationWidget({this.activity});
+  ActivityGroundTimeWidget({this.activity});
 
   @override
-  _ActivityVerticalOscillationWidgetState createState() => _ActivityVerticalOscillationWidgetState();
+  _ActivityGroundTimeWidgetState createState() => _ActivityGroundTimeWidgetState();
 }
 
-class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOscillationWidget> {
+class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   List<Event> records = [];
-  String avgVerticalOscillationString = "Loading ...";
-  String sdevVerticalOscillationString = "Loading ...";
+  String avgGroundTimeString = "Loading ...";
+  String sdevGroundTimeString = "Loading ...";
 
   @override
   void initState() {
@@ -29,23 +29,23 @@ class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOsci
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
+      var powerValues = records.map((value) => value.db.groundTime).nonZeroDoubles();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityVerticalOscillationChart(records: records, activity: widget.activity),
+              ActivityGroundTimeChart(records: records, activity: widget.activity),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgVerticalOscillationString),
-                subtitle: Text("average vertical oscillation"),
+                title: Text(avgGroundTimeString),
+                subtitle: Text("average ground time"),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevVerticalOscillationString),
-                subtitle: Text("standard deviation vertical oscillation"),
+                title: Text(sdevGroundTimeString),
+                subtitle: Text("standard deviation ground time"),
               ),
               ListTile(
                 leading: MyIcon.amount,
@@ -57,7 +57,7 @@ class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOsci
         );
       } else {
         return Center(
-          child: Text("No power data available."),
+          child: Text("No ground time data available."),
         );
       }
     } else {
@@ -71,14 +71,14 @@ class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOsci
     Activity activity = widget.activity;
     records = await activity.records;
 
-    double avg = await activity.avgVerticalOscillation;
+    double avg = await activity.avgGroundTime;
     setState(() {
-      avgVerticalOscillationString = avg.toStringOrDashes(1) + " cm";
+      avgGroundTimeString = avg.toStringOrDashes(1) + " ms";
     });
 
-    double sdev = await activity.sdevVerticalOscillation;
+    double sdev = await activity.sdevGroundTime;
     setState(() {
-      sdevVerticalOscillationString = sdev.toStringOrDashes(2) + " cm";
+      sdevGroundTimeString = sdev.toStringOrDashes(2) + " ms";
     });
   }
 }

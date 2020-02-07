@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/list_utils.dart';
-import 'athlete_power_chart.dart';
+import '../charts/athlete_charts/athlete_power_per_heart_rate_chart.dart';
 
-class AthletePowerWidget extends StatefulWidget {
+class AthletePowerPerHeartRateWidget extends StatefulWidget {
   final Athlete athlete;
 
-  AthletePowerWidget({this.athlete});
+  AthletePowerPerHeartRateWidget({this.athlete});
 
   @override
-  _AthletePowerWidgetState createState() => _AthletePowerWidgetState();
+  _AthletePowerPerHeartRateWidgetState createState() => _AthletePowerPerHeartRateWidgetState();
 }
 
-class _AthletePowerWidgetState extends State<AthletePowerWidget> {
+class _AthletePowerPerHeartRateWidgetState extends State<AthletePowerPerHeartRateWidget> {
   List<Activity> activities = [];
 
   @override
@@ -32,13 +32,13 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthletePowerChart(activities: activities),
+              AthletePowerPerHeartRateChart(activities: activities),
             ],
           ),
         );
       } else {
         return Center(
-          child: Text("No power data available."),
+          child: Text("No power per heart rate data available."),
         );
       }
     } else {

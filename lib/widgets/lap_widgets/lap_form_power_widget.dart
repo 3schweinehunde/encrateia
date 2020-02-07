@@ -3,7 +3,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'lap_form_power_chart.dart';
+import '../charts/lap_charts/lap_form_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class LapFormPowerWidget extends StatefulWidget {

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
-import 'package:encrateia/widgets/athlete_power_widget.dart';
-import 'package:encrateia/widgets/athlete_power_per_heart_rate_widget.dart';
-import 'package:encrateia/widgets/athlete_speed_per_heart_rate_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_power_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_power_per_heart_rate_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_speed_per_heart_rate_widget.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 

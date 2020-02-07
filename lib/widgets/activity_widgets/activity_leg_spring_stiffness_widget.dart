@@ -3,22 +3,22 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'activity_stryd_cadence_chart.dart';
+import '../charts/actitvity_charts/activity_leg_spring_stiffness_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
-class ActivityStrydCadenceWidget extends StatefulWidget {
+class ActivityLegSpringStiffnessWidget extends StatefulWidget {
   final Activity activity;
 
-  ActivityStrydCadenceWidget({this.activity});
+  ActivityLegSpringStiffnessWidget({this.activity});
 
   @override
-  _ActivityStrydCadenceWidgetState createState() => _ActivityStrydCadenceWidgetState();
+  _ActivityLegSpringStiffnessWidgetState createState() => _ActivityLegSpringStiffnessWidgetState();
 }
 
-class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget> {
+class _ActivityLegSpringStiffnessWidgetState extends State<ActivityLegSpringStiffnessWidget> {
   List<Event> records = [];
-  String avgStrydCadenceString = "Loading ...";
-  String sdevStrydCadenceString = "Loading ...";
+  String avgLegSpringStiffnessString = "Loading ...";
+  String sdevLegSpringStiffnessString = "Loading ...";
 
   @override
   void initState() {
@@ -29,23 +29,23 @@ class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget>
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.strydCadence).nonZeroDoubles();
+      var powerValues = records.map((value) => value.db.groundTime).nonZeroDoubles();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityStrydCadenceChart(records: records, activity: widget.activity),
+              ActivityLegSpringStiffnessChart(records: records, activity: widget.activity),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgStrydCadenceString),
-                subtitle: Text("average cadence"),
+                title: Text(avgLegSpringStiffnessString),
+                subtitle: Text("average ground time"),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevStrydCadenceString),
-                subtitle: Text("standard deviation cadence"),
+                title: Text(sdevLegSpringStiffnessString),
+                subtitle: Text("standard deviation ground time"),
               ),
               ListTile(
                 leading: MyIcon.amount,
@@ -57,7 +57,7 @@ class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget>
         );
       } else {
         return Center(
-          child: Text("No cadence data available."),
+          child: Text("No ground time data available."),
         );
       }
     } else {
@@ -71,14 +71,14 @@ class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget>
     Activity activity = widget.activity;
     records = await activity.records;
 
-    double avg = await activity.avgStrydCadence;
+    double avg = await activity.avgLegSpringStiffness;
     setState(() {
-      avgStrydCadenceString = avg.toStringOrDashes(1) + " spm";
+      avgLegSpringStiffnessString = avg.toStringOrDashes(1) + " ms";
     });
 
-    double sdev = await activity.sdevStrydCadence;
+    double sdev = await activity.sdevLegSpringStiffness;
     setState(() {
-      sdevStrydCadenceString = sdev.toStringOrDashes(2) + " spm";
+      sdevLegSpringStiffnessString = sdev.toStringOrDashes(2) + " ms";
     });
   }
 }
