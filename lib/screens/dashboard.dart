@@ -73,14 +73,14 @@ class _DashboardState extends State<Dashboard> {
                           leading: MyIcon.athlete,
                           title: Text('Who are you?'),
                           subtitle: Text(
-                              'This app stores date associated to one athlete '
-                              '(you) or many athletes (if you act as a trainer).'
-                              '\n Please create your first athlete!'),
+                            'This app stores date associated to one athlete '
+                            '(you) or many athletes (if you act as a trainer).',
+                          ),
                         ),
                         ButtonBar(
                           children: <Widget>[
                             FlatButton(
-                              child: const Text('Create new Athlete'),
+                              child: const Text('Create a new Athlete'),
                               onPressed: () {
                                 Navigator.push(
                                   context,

@@ -7,7 +7,10 @@ class MyIcon {
   static final activities = Icon(Icons.view_list);
   static final amount = Icon(Icons.playlist_add);
   static final ascent = Icon(Icons.trending_up);
-  static final athlete = Icon(Icons.face);
+  static final athlete = Icon(
+    Icons.face,
+    color: Colors.deepOrange,
+  );
   static final average = Icon(Icons.filter_tilt_shift);
   // B
   static final brokenConnection = Icon(Icons.link_off);
