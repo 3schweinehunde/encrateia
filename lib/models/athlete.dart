@@ -28,7 +28,7 @@ class Athlete extends ChangeNotifier {
 
   String get stateText {
     switch (db.state) {
-      case "undefined":
+      case "new":
         return "Loading athlete data from Strava ...";
       case "unsaved":
         return "Strava data loaded successfully.";
@@ -43,6 +43,7 @@ class Athlete extends ChangeNotifier {
     final storage = FlutterSecureStorage();
     await storage.write(key: "email", value: email);
     await storage.write(key: "password", value: password);
+    notifyListeners();
   }
 
   readCredentials() async {
@@ -58,5 +59,4 @@ class Athlete extends ChangeNotifier {
   }
 
   get activities => Activity.all(athlete: this);
-
 }

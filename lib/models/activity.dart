@@ -55,23 +55,39 @@ class Activity extends ChangeNotifier {
   }
 
   distanceString() {
-    if (db.totalDistance != null) {
+    if (db.totalDistance != null)
       return (db.totalDistance / 1000).toStringAsFixed(2) + " km";
-    } else
+    else
       return "";
   }
 
   heartRateString() {
-    if (db.avgHeartRate != null) {
+    if (db.avgHeartRate != null)
       return db.avgHeartRate.toString() + " bpm";
-    } else
+    else
       return "";
   }
 
-  timeString() => DateFormat("H:mm").format(db.timeCreated);
+  timeString() {
+    if (db.timeCreated != null)
+      return DateFormat("H:mm").format(db.timeCreated);
+    else
+      return "- - -";
+  }
 
-  dateString() => DateFormat("d MMM yy").format(db.timeCreated);
-  shortDateString() => DateFormat("d.M.").format(db.timeCreated);
+  dateString() {
+    if (db.timeCreated != null)
+      return DateFormat("d MMM yy").format(db.timeCreated);
+    else
+      return "- - -";
+  }
+
+  shortDateString() {
+    if (db.timeCreated != null)
+      return DateFormat("d.M.").format(db.timeCreated);
+    else
+      return "- - -";
+  }
 
   paceString() => db.avgSpeed.toPace() + "/km";
 
@@ -138,7 +154,6 @@ class Activity extends ChangeNotifier {
     }
     return db.avgGroundTime;
   }
-
 
   Future<double> get avgGroundTime async {
     if (db.avgGroundTime == null) {
@@ -462,7 +477,7 @@ class Activity extends ChangeNotifier {
         prompt);
 
     final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final startDate = now - 20 * 86400;
+    final startDate = now - 21 * 86400;
 
     List<StravaActivity.SummaryActivity> summaryActivities =
         await strava.getLoggedInAthleteActivities(now, startDate);

@@ -20,6 +20,7 @@ class StravaGetUser extends StatelessWidget {
         body: Consumer<Athlete>(
           builder: (context, athlete, _child) {
             if (athlete.db.firstName == null) loginToStrava();
+            if (athlete.db.state == 'fromStrava') Navigator.of(context).pop();
             return Container(
               child: Padding(
                 padding: EdgeInsets.all(20),

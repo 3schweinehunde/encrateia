@@ -82,4 +82,6 @@ class MyIcon {
   static final trainingEffect = Icon(Icons.fitness_center);
   // V
   static final verticalOscillation = Icon(Icons.unfold_more);
+  // W
+  static final website = Icon(Icons.web);
 }
