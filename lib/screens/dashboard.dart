@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'edit_athlete_screen.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'indroduction_screen.dart';
 import 'show_athlete_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -38,17 +39,26 @@ class _DashboardState extends State<Dashboard> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           ListTile(
-                            leading: MyIcon.help,
+                            leading: MyIcon.information,
                             title: Text('Welcome to Encrateia!'),
                             subtitle: Text(
-                                'Maybe you want to learn more about Encrateia.'
-                                'We have provided some introductory help for you.'),
+                              'Maybe you want to learn a bit about Encrateia.'
+                              'We have provided some introductory text for you.',
+                            ),
                           ),
                           ButtonBar(
                             children: <Widget>[
                               FlatButton(
-                                child: const Text('HELP'),
-                                onPressed: () {},
+                                child: const Text('Introduction'),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          IntroductionScreen(),
+                                    ),
+                                  );
+                                },
                               )
                             ],
                           ),

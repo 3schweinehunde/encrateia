@@ -27,7 +27,8 @@ class MyIcon {
   static final event = Icon(Icons.event);
   // F
   static final finished = Icon(Icons.check_box);
-  static final finishedWhite = Icon(Icons.sentiment_very_satisfied, color: Colors.white);
+  static final finishedWhite =
+      Icon(Icons.sentiment_very_satisfied, color: Colors.white);
   static final formPower = Icon(Icons.ev_station);
   // G
   static final groundTime = Icon(Icons.vertical_align_bottom);
@@ -36,6 +37,10 @@ class MyIcon {
   static final help = Icon(Icons.help);
   // I
   static final id = Icon(Icons.fingerprint);
+  static final information = Icon(
+    Icons.info_outline,
+    color: Colors.blue,
+  );
   static final intensity = Icon(Icons.power);
   // L
   static final laps = Icon(Icons.timer);
@@ -63,7 +68,8 @@ class MyIcon {
   static final stanceTime = cadence;
   static final standardDeviation = Icon(Icons.unfold_more);
   static final stravaDownload = Icon(Icons.cloud_download);
-  static final stravaDownloadWhite = Icon(Icons.cloud_download, color: Colors.white);
+  static final stravaDownloadWhite =
+      Icon(Icons.cloud_download, color: Colors.white);
   static final strides = Icon(Icons.directions_walk);
   // T
   static final temperature = Icon(Icons.ac_unit);
