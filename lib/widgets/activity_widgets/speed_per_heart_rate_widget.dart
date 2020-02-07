@@ -1,4 +1,4 @@
-import 'package:encrateia/widgets/charts/actitvity_charts/activity_power_per_heart_rate_chart.dart';
+import 'package:encrateia/widgets/charts/actitvity_charts/activity_speed_per_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -6,20 +6,20 @@ import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
-class ActivityPowerPerHeartRateWidget extends StatefulWidget {
+class ActivitySpeedPerHeartRateWidget extends StatefulWidget {
   final Activity activity;
 
-  ActivityPowerPerHeartRateWidget({this.activity});
+  ActivitySpeedPerHeartRateWidget({this.activity});
 
   @override
-  _ActivityPowerPerHeartRateWidgetState createState() =>
-      _ActivityPowerPerHeartRateWidgetState();
+  _ActivitySpeedPerHeartRateWidgetState createState() =>
+      _ActivitySpeedPerHeartRateWidgetState();
 }
 
-class _ActivityPowerPerHeartRateWidgetState
-    extends State<ActivityPowerPerHeartRateWidget> {
+class _ActivitySpeedPerHeartRateWidgetState
+    extends State<ActivitySpeedPerHeartRateWidget> {
   List<Event> records = [];
-  String avgPowerPerHeartRateString = "Loading ...";
+  String avgSpeedPerHeartRateString = "Loading ...";
 
   @override
   void initState() {
@@ -30,28 +30,28 @@ class _ActivityPowerPerHeartRateWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.power).nonZeroInts();
-      if (powerValues.length > 0) {
+      var heartRateValues = records.map((value) => value.db.heartRate).nonZeroInts();
+      if (heartRateValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityPowerPerHeartRateChart(
+              ActivitySpeedPerHeartRateChart(
                 records: records,
                 activity: widget.activity,
               ),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgPowerPerHeartRateString),
-                subtitle: Text("average power per heart rate"),
+                title: Text(avgSpeedPerHeartRateString),
+                subtitle: Text("average speed per heart rate"),
               ),
             ],
           ),
         );
       } else {
         return Center(
-          child: Text("No power per heart rate data available."),
+          child: Text("No speed per heart rate data available."),
         );
       }
     } else {
@@ -65,9 +65,9 @@ class _ActivityPowerPerHeartRateWidgetState
     Activity activity = widget.activity;
     records = await activity.records;
 
-    double avg = await activity.avgPower / activity.db.avgHeartRate;
+    double avg = await activity.avgSpeed / activity.db.avgHeartRate;
     setState(() {
-      avgPowerPerHeartRateString = avg.toStringOrDashes(1) + " W / bpm";
+      avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + " km / h*bpm";
     });
   }
 }

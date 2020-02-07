@@ -248,6 +248,15 @@ class Lap {
     return powers.max();
   }
 
+  static double calculateAverageSpeed({List<Event> records}) {
+    var speeds =
+    records.map((record) => record.db.speed).nonZeroDoubles();
+    if (speeds.length > 0) {
+      return speeds.mean();
+    } else
+      return -1;
+  }
+
   static double calculateAverageGroundTime({List<Event> records}) {
     var groundTimes =
         records.map((record) => record.db.groundTime).nonZeroDoubles();

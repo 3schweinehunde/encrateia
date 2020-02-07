@@ -129,6 +129,17 @@ class Activity extends ChangeNotifier {
     return db.maxPower;
   }
 
+  Future<double> get avgSpeed async {
+    if (db.avgSpeed == null || db.avgSpeed == 0) {
+      List<Event> records = await this.records;
+      db.avgSpeed = Lap.calculateAverageSpeed(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgGroundTime;
+  }
+
+
   Future<double> get avgGroundTime async {
     if (db.avgGroundTime == null) {
       List<Event> records = await this.records;
