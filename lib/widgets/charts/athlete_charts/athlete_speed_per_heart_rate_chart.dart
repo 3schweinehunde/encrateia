@@ -9,7 +9,9 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = activities.where((value) => value.db.avgSpeed > 0).toList();
+    var nonZero = activities
+        .where((value) => value.db.avgSpeed > 0 && value.db.avgHeartRate > 0)
+        .toList();
 
     var data = [
       new Series<Activity, DateTime>(
@@ -17,7 +19,7 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) =>
-        (100 * activity.db.avgSpeed / activity.db.avgHeartRate),
+            (100 * activity.db.avgSpeed / activity.db.avgHeartRate),
         data: nonZero,
       )
     ];

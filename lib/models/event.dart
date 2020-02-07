@@ -182,6 +182,12 @@ class Event {
 
     for (var record in records) {
       switch (attribute) {
+        case "powerPerHeartRate":
+          sum = sum + (record.db.power / record.db.heartRate);
+          break;
+        case "speedPerHeartRate":
+          sum = sum + (record.db.speed / record.db.heartRate);
+          break;
         case "groundTime":
           sum = sum + record.db.groundTime;
           break;

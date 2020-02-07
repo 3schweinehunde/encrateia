@@ -9,7 +9,9 @@ class AthletePowerPerHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = activities.where((value) => value.db.avgPower > 0).toList();
+    var nonZero = activities
+        .where((value) => value.db.avgPower > 0 && value.db.avgHeartRate > 0)
+        .toList();
 
     var data = [
       new Series<Activity, DateTime>(

@@ -4,6 +4,7 @@ import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_duration_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_power_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_ground_time_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_form_power_widget.dart';
@@ -24,7 +25,7 @@ class ShowActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 11,
+      length: 12,
       child: Scaffold(
         appBar: AppBar(
           bottom: TabBar(
@@ -49,6 +50,10 @@ class ShowActivityScreen extends StatelessWidget {
               Tab(
                 icon: MyIcon.powerDuration,
                 text: "Pow Dur",
+              ),
+              Tab(
+                icon: MyIcon.power,
+                text: "Power/HR",
               ),
               Tab(
                 icon: MyIcon.groundTime,
@@ -87,6 +92,7 @@ class ShowActivityScreen extends StatelessWidget {
           ActivityHeartRateWidget(activity: activity),
           ActivityPowerWidget(activity: activity),
           ActivityPowerDurationWidget(activity: activity),
+          ActivityPowerPerHeartRateWidget(activity: activity),
           ActivityGroundTimeWidget(activity: activity),
           ActivityLegSpringStiffnessWidget(activity: activity),
           ActivityFormPowerWidget(activity: activity),
