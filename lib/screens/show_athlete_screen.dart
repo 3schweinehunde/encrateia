@@ -77,7 +77,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   updateJob() async {
     List<Activity> activities;
     setState(() => floatingActionButtonVisible = false);
-    print(floatingActionButtonVisible);
 
     await queryStrava();
 

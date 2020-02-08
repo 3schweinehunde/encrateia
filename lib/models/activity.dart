@@ -36,7 +36,7 @@ class Activity extends ChangeNotifier {
       ..type = summaryActivity.type
       ..distance = summaryActivity.distance.toInt()
       ..stravaId = summaryActivity.id
-      ..startTime = summaryActivity.startDate
+      // ..startTime = summaryActivity.startDate
       ..movingTime = summaryActivity.movingTime;
   }
 
