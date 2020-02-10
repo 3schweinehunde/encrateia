@@ -10,7 +10,11 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var nonZero = activities
-        .where((value) => value.db.avgSpeed > 0 && value.db.avgHeartRate > 0)
+        .where((value) =>
+            value.db.avgSpeed != null &&
+            value.db.avgSpeed > 0 &&
+            value.db.avgHeartRate != null &&
+            value.db.avgHeartRate > 0)
         .toList();
 
     var data = [
@@ -29,6 +33,10 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
       child: TimeSeriesChart(
         data,
         animate: false,
+        defaultRenderer: LineRendererConfig(
+          includePoints: true,
+          dashPattern: [2, 2],
+        ),
         primaryMeasureAxis: NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
             zeroBound: false,

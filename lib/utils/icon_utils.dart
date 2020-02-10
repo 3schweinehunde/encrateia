@@ -65,6 +65,7 @@ class MyIcon {
   static final repeats = Icon(Icons.loop);
   static final running = Icon(Icons.directions_run);
   // S
+  static final settings = Icon(Icons.settings);
   static final show = Icon(Icons.remove_red_eye);
   static final speed = Icon(Icons.shutter_speed);
   static final sport = Icon(Icons.fitness_center);

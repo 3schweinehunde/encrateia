@@ -23,6 +23,7 @@ const tableAthlete = SqfEntityTable(
     SqfEntityField('photoPath', DbType.text),
     SqfEntityField('stravaId', DbType.integer),
     SqfEntityField('geoState', DbType.text),
+    SqfEntityField('downloadInterval', DbType.integer),
   ],
 );
 

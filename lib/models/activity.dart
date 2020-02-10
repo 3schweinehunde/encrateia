@@ -451,7 +451,8 @@ class Activity extends ChangeNotifier {
               "${dataMessage.definitionMessage.globalMessageName} "
               "are not implemented yet.");
           print(dataMessage.values.map((v) => v.fieldName).toList());
-          debugger();
+          // Use this debugger to implement additional message types!
+          // debugger();
       }
     }
   }
@@ -477,7 +478,7 @@ class Activity extends ChangeNotifier {
         prompt);
 
     final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final startDate = now - 21 * 86400;
+    final startDate = now - athlete.db.downloadInterval * 86400;
 
     List<StravaActivity.SummaryActivity> summaryActivities =
         await strava.getLoggedInAthleteActivities(now, startDate);

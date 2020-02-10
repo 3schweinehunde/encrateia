@@ -9,7 +9,9 @@ class AthletePowerChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = activities.where((value) => value.db.avgPower > 0).toList();
+    var nonZero = activities
+        .where((value) => value.db.avgPower != null && value.db.avgPower > 0)
+        .toList();
 
     var data = [
       new Series<Activity, DateTime>(
@@ -26,6 +28,10 @@ class AthletePowerChart extends StatelessWidget {
       child: TimeSeriesChart(
         data,
         animate: false,
+        defaultRenderer: LineRendererConfig(
+          includePoints: true,
+          dashPattern: [2, 2],
+        ),
         primaryMeasureAxis: NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
             zeroBound: false,

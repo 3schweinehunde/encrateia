@@ -22,7 +22,8 @@ class Athlete extends ChangeNotifier {
       ..stravaUsername = athlete.username
       ..photoPath = athlete.profile
       ..geoState = athlete.state
-      ..state = "fromStrava";
+      ..state = "fromStrava"
+      ..downloadInterval = 21;
     notifyListeners();
   }
 
