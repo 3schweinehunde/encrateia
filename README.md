@@ -1,16 +1,27 @@
 # encrateia
 
-Activity tracker data analysis for Android and iOS
+tl;dr: Activity tracker data analysis app for Android and iOS
 
-## Getting Started
+If you want to get back all your running, cycling, ... tracking data and analyse it yourself, 
+this app could be interesting for you one day. Currently, we are in early alpha stage, so we thought,
+let's just share some screenshots to get folks interested:
 
-This project is a starting point for a Flutter application.
+### List of activities
 
-A few resources to get you started if this is your first Flutter project:
+![1.png]
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Power over heart rate diagram for the last activities
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+![2.png]
+
+### Power duration diagram for a single activity
+
+![3.png]
+
+### Heart rate diagram for a single activity
+
+![4.png]
+
+Encrateia is [GPL v3](LICENSE) licensed and will always stay open source software.
+Future versions in app/play stores might not be for free, but you will always be able to get 
+the source code and build it yourself.  
