@@ -8,19 +8,19 @@ let's just share some screenshots to get folks interested:
 
 ### List of activities
 
-![1.png]
+![ List of activities](1.png)
 
 ### Power over heart rate diagram for the last activities
 
-![2.png]
+![Power over heart rate diagram for the last activities](2.png)
 
 ### Power duration diagram for a single activity
 
-![3.png]
+![Power duration diagram for a single activity](3.png)
 
 ### Heart rate diagram for a single activity
 
-![4.png]
+![Heart rate diagram for a single activity](4.png)
 
 Encrateia is [GPL v3](LICENSE) licensed and will always stay open source software.
 Future versions in app/play stores might not be for free, but you will always be able to get 
