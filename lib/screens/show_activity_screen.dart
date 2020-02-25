@@ -11,9 +11,11 @@ import 'package:encrateia/widgets/activity_widgets/activity_leg_spring_stiffness
 import 'package:encrateia/widgets/activity_widgets/activity_form_power_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_vertical_oscillation_widget.dart';
+import 'package:encrateia/screens/show_activity_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flutter/widgets.dart';
 
 class ShowActivityScreen extends StatelessWidget {
   final Activity activity;
@@ -25,87 +27,136 @@ class ShowActivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 13,
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(
-            isScrollable: true,
-            tabs: [
-              Tab(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          '${activity.db.name}',
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      body: Table(
+        children: [
+          TableRow(
+            children: [
+              detailTile(
+                title: "Overview",
                 icon: MyIcon.overView,
-                text: "Overview",
+                context: context,
+                widget: ActivityOverviewWidget(activity: activity),
               ),
-              Tab(
+              detailTile(
+                title: 'Laps',
                 icon: MyIcon.laps,
-                text: "Laps",
-              ),
-              Tab(
-                icon: MyIcon.heartRate,
-                text: "HR",
-              ),
-              Tab(
-                icon: MyIcon.power,
-                text: "Power",
-              ),
-              Tab(
-                icon: MyIcon.powerDuration,
-                text: "Pow Dur",
-              ),
-              Tab(
-                icon: MyIcon.power,
-                text: "Power/HR",
-              ),
-              Tab(
-                icon: MyIcon.speed,
-                text: "speed/HR",
-              ),
-              Tab(
-                icon: MyIcon.groundTime,
-                text: "Grnd.Time",
-              ),
-              Tab(
-                icon: MyIcon.legSpringStiffness,
-                text: "Leg Spr.Stiff.",
-              ),
-              Tab(
-                icon: MyIcon.formPower,
-                text: "Form Power",
-              ),
-              Tab(
-                icon: MyIcon.cadence,
-                text: "Cadence",
-              ),
-              Tab(
-                icon: MyIcon.verticalOscillation,
-                text: "Vertical Oscillation",
-              ),
-              Tab(
-                icon: MyIcon.metaData,
-                text: "Metadata",
+                context: context,
+                widget: LapsListWidget(activity: activity),
               ),
             ],
           ),
-          title: Text(
-            '${activity.db.name}',
-            overflow: TextOverflow.ellipsis,
+          TableRow(children: [
+            detailTile(
+              title: "Heart Rate",
+              icon: MyIcon.heartRate,
+              context: context,
+              widget: ActivityHeartRateWidget(activity: activity),
+            ),
+            detailTile(
+              title: "Power",
+              icon: MyIcon.power,
+              context: context,
+              widget: ActivityPowerWidget(activity: activity),
+            ),
+          ]),
+          TableRow(children: [
+            detailTile(
+              title: "Power Duration",
+              icon: MyIcon.powerDuration,
+              context: context,
+              widget: ActivityPowerDurationWidget(activity: activity),
+            ),
+            detailTile(
+              title: "Power /\nHeart Rate",
+              icon: MyIcon.power,
+              context: context,
+              widget: ActivityPowerPerHeartRateWidget(activity: activity),
+            ),
+          ]),
+          TableRow(children: [
+            detailTile(
+              title: "Speed /\nHeart Rate",
+              icon: MyIcon.speed,
+              context: context,
+              widget: ActivitySpeedPerHeartRateWidget(activity: activity),
+            ),
+            detailTile(
+              title: "Ground Time",
+              icon: MyIcon.groundTime,
+              context: context,
+              widget: ActivityGroundTimeWidget(activity: activity),
+            ),
+          ]),
+          TableRow(children: [
+            detailTile(
+              title: "Leg Spring Stiffness",
+              icon: MyIcon.legSpringStiffness,
+              context: context,
+              widget: ActivityLegSpringStiffnessWidget(activity: activity),
+            ),
+            detailTile(
+              title: "Form Power",
+              icon: MyIcon.formPower,
+              context: context,
+              widget: ActivityFormPowerWidget(activity: activity),
+            ),
+          ]),
+          TableRow(children: [
+            detailTile(
+              title: "Cadence",
+              icon: MyIcon.cadence,
+              context: context,
+              widget: ActivityStrydCadenceWidget(activity: activity),
+            ),
+            detailTile(
+              title: "Vertical Oscillation",
+              icon: MyIcon.verticalOscillation,
+              context: context,
+              widget: ActivityVerticalOscillationWidget(activity: activity),
+            ),
+          ]),
+          TableRow(children: [
+            detailTile(
+              title: "Metadata",
+              icon: MyIcon.metaData,
+              context: context,
+              widget: ActivityMetadataWidget(activity: activity),
+            ),
+            Text(" "),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  detailTile({
+    BuildContext context,
+    Widget widget,
+    Widget icon,
+    String title,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      child: ListTile(
+        leading: icon,
+        title: Text(title),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShowActivityDetailScreen(
+              activity: activity,
+              widget: widget,
+              title: title,
+            ),
           ),
         ),
-        body: TabBarView(children: [
-          ActivityOverviewWidget(activity: activity),
-          LapsListWidget(activity: activity),
-          ActivityHeartRateWidget(activity: activity),
-          ActivityPowerWidget(activity: activity),
-          ActivityPowerDurationWidget(activity: activity),
-          ActivityPowerPerHeartRateWidget(activity: activity),
-          ActivitySpeedPerHeartRateWidget(activity: activity),
-          ActivityGroundTimeWidget(activity: activity),
-          ActivityLegSpringStiffnessWidget(activity: activity),
-          ActivityFormPowerWidget(activity: activity),
-          ActivityStrydCadenceWidget(activity: activity),
-          ActivityVerticalOscillationWidget(activity: activity),
-          ActivityMetadataWidget(activity: activity),
-        ]),
       ),
     );
   }
