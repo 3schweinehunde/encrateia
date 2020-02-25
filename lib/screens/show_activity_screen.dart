@@ -1,5 +1,6 @@
 import 'package:encrateia/widgets/activity_widgets/activity_metadata_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/speed_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_heart_rate_widget.dart';
@@ -96,16 +97,16 @@ class ShowActivityScreen extends StatelessWidget {
           ]),
           TableRow(children: [
             detailTile(
-              title: "Leg Spring Stiffness",
-              icon: MyIcon.legSpringStiffness,
-              context: context,
-              widget: ActivityLegSpringStiffnessWidget(activity: activity),
-            ),
-            detailTile(
               title: "Form Power",
               icon: MyIcon.formPower,
               context: context,
               widget: ActivityFormPowerWidget(activity: activity),
+            ),
+            detailTile(
+              title: "Power Ratio",
+              icon: MyIcon.formPower,
+              context: context,
+              widget: ActivityPowerRatioWidget(activity: activity),
             ),
           ]),
           TableRow(children: [
@@ -124,12 +125,17 @@ class ShowActivityScreen extends StatelessWidget {
           ]),
           TableRow(children: [
             detailTile(
+              title: "Leg Spring Stiffness",
+              icon: MyIcon.legSpringStiffness,
+              context: context,
+              widget: ActivityLegSpringStiffnessWidget(activity: activity),
+            ),
+            detailTile(
               title: "Metadata",
               icon: MyIcon.metaData,
               context: context,
               widget: ActivityMetadataWidget(activity: activity),
             ),
-            Text(" "),
           ]),
         ],
       ),

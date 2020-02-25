@@ -112,7 +112,8 @@ class Event {
     int counter = 1;
 
     List<DbEvent> dbEventList = await lap.db.getDbEvents().toList();
-    var eventList = dbEventList.map((dbEvent) => Event.fromDb(dbEvent)).toList();
+    var eventList =
+        dbEventList.map((dbEvent) => Event.fromDb(dbEvent)).toList();
 
     for (Event event in eventList) {
       event.lap = lap;
@@ -127,7 +128,8 @@ class Event {
     int counter = 1;
 
     List<DbEvent> dbEventList = await activity.db.getDbEvents().toList();
-    var eventList = dbEventList.map((dbEvent) => Event.fromDb(dbEvent)).toList();
+    var eventList =
+        dbEventList.map((dbEvent) => Event.fromDb(dbEvent)).toList();
 
     for (Event event in eventList) {
       event.activity = activity;
@@ -199,6 +201,10 @@ class Event {
           break;
         case "legSpringStiffness":
           sum = sum + record.db.legSpringStiffness;
+          break;
+        case 'powerRatio':
+          sum = sum +
+              ((record.db.power - record.db.formPower) / record.db.power * 100);
       }
 
       if (index++ % amount == amount - 1) {

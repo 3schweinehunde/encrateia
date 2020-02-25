@@ -95,6 +95,8 @@ const tableActivity = SqfEntityTable(
     SqfEntityField('sdevLegSpringStiffness', DbType.real),
     SqfEntityField('avgFormPower', DbType.real),
     SqfEntityField('sdevFormPower', DbType.real),
+    SqfEntityField('avgPowerRatio', DbType.real),
+    SqfEntityField('sdevPowerRatio', DbType.real),
     SqfEntityField('avgStrydCadence', DbType.real),
     SqfEntityField('sdevStrydCadence', DbType.real),
     SqfEntityField('sdevVerticalOscillation', DbType.real),

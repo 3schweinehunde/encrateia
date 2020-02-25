@@ -260,6 +260,26 @@ class Activity extends ChangeNotifier {
     return db.sdevFormPower;
   }
 
+  Future<double> get avgPowerRatio async {
+    if (db.avgPowerRatio == null) {
+      List<Event> records = await this.records;
+      db.avgPowerRatio = Lap.calculateAveragePowerRatio(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgPowerRatio;
+  }
+
+  Future<double> get sdevPowerRatio async {
+    if (db.sdevPowerRatio == null) {
+      List<Event> records = await this.records;
+      db.sdevPowerRatio = Lap.calculateSdevPowerRatio(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.sdevPowerRatio;
+  }
+
   Stream<int> parse({@required Athlete athlete}) async* {
     int counter = 0;
     int percentage;

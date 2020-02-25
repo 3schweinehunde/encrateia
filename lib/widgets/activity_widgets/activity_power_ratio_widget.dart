@@ -3,22 +3,22 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import '../charts/actitvity_charts/activity_form_power_chart.dart';
+import '../charts/actitvity_charts/activity_power_ratio_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
-class ActivityFormPowerWidget extends StatefulWidget {
+class ActivityPowerRatioWidget extends StatefulWidget {
   final Activity activity;
 
-  ActivityFormPowerWidget({this.activity});
+  ActivityPowerRatioWidget({this.activity});
 
   @override
-  _ActivityFormPowerWidgetState createState() => _ActivityFormPowerWidgetState();
+  _ActivityPowerRatioWidgetState createState() => _ActivityPowerRatioWidgetState();
 }
 
-class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
+class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   List<Event> records = [];
-  String avgFormPowerString = "Loading ...";
-  String sdevFormPowerString = "Loading ...";
+  String avgPowerRatioString = "Loading ...";
+  String sdevPowerRatioString = "Loading ...";
 
   @override
   void initState() {
@@ -29,23 +29,24 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var formPowerValues = records.map((value) => value.db.formPower).nonZeroInts();
-      if (formPowerValues.length > 0) {
+      var powerValues = records.map((value) => value.db.power).nonZeroInts();
+      if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityFormPowerChart(records: records, activity: widget.activity),
+              ActivityPowerRatioChart(records: records, activity: widget.activity),
+              Text("power ratio (%) = (power - form power) / power * 100"),
               ListTile(
                 leading: MyIcon.formPower,
-                title: Text(avgFormPowerString),
-                subtitle: Text("average form power"),
+                title: Text(avgPowerRatioString),
+                subtitle: Text("average power ratio"),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevFormPowerString),
-                subtitle: Text("standard deviation form power"),
+                title: Text(sdevPowerRatioString),
+                subtitle: Text("standard deviation power ratio "),
               ),
               ListTile(
                 leading: MyIcon.amount,
@@ -57,7 +58,7 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
         );
       } else {
         return Center(
-          child: Text("No form power data available."),
+          child: Text("No power ratio data available."),
         );
       }
     } else {
@@ -71,14 +72,14 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
     Activity activity = widget.activity;
     records = await activity.records;
 
-    double avg = await activity.avgFormPower;
+    double avg = await activity.avgPowerRatio;
     setState(() {
-      avgFormPowerString = avg.toStringOrDashes(1) + " W";
+      avgPowerRatioString = avg.toStringOrDashes(1) + " %";
     });
 
-    double sdev = await activity.sdevFormPower;
+    double sdev = await activity.sdevPowerRatio;
     setState(() {
-      sdevFormPowerString = sdev.toStringOrDashes(2) + " W";
+      sdevPowerRatioString = sdev.toStringOrDashes(2) + " %";
     });
   }
 }
