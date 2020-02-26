@@ -19,6 +19,7 @@ class Activity extends ChangeNotifier {
   List<Event> _records;
   List<Lap> _laps;
   double glidingAvgPower;
+  double glidingAvgPowerPerHeartRate;
 
   // intermediate data structures used for parsing
   Lap currentLap;
@@ -49,6 +50,8 @@ class Activity extends ChangeNotifier {
     switch (quantity) {
       case ActivityAttr.avgPower:
         return db.avgPower;
+      case ActivityAttr.avgPowerPerHeartRate:
+        return (db.avgPower / db.avgHeartRate);
     }
   }
 
@@ -56,6 +59,9 @@ class Activity extends ChangeNotifier {
     switch (quantity) {
       case ActivityAttr.avgPower:
         glidingAvgPower = value;
+        break;
+      case ActivityAttr.avgPowerPerHeartRate:
+        glidingAvgPowerPerHeartRate = value;
     }
   }
 

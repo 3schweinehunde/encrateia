@@ -13,7 +13,7 @@ class AthletePowerChart extends StatelessWidget {
   Widget build(BuildContext context) {
     int xAxesDays = 60;
 
-    List<Activity> nonZeroActivities = activities
+    var nonZeroActivities = activities
         .where((activity) =>
             activity.db.avgPower != null && activity.db.avgPower > 0)
         .toList();
@@ -31,14 +31,14 @@ class AthletePowerChart extends StatelessWidget {
 
     var data = [
       Series<Activity, DateTime>(
-        id: 'Average Power',
+        id: 'average power',
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) => activity.db.avgPower,
         data: nonZeroDateLimited,
       ),
       Series<Activity, DateTime>(
-        id: 'Gliding Average Power',
+        id: 'Gliding average power',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) => activity.glidingAvgPower,

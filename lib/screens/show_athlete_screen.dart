@@ -71,14 +71,14 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             nextWidget: AthletePowerWidget(athlete: widget.athlete),
           ),
           detailTile(
-            title: "Power /\nHeart Rate",
+            title: "Power / Heart Rate",
             icon: MyIcon.power,
             nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
           ),
         ]),
         TableRow(children: [
           detailTile(
-            title: "Speed /\nHeart Rate",
+            title: "Speed / Heart Rate",
             icon: MyIcon.speed,
             nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
           ),

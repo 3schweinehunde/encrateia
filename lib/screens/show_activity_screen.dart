@@ -75,7 +75,7 @@ class ShowActivityScreen extends StatelessWidget {
               nextWidget: ActivityPowerDurationWidget(activity: activity),
             ),
             detailTile(
-              title: "Power /\nHeart Rate",
+              title: "Power / Heart Rate",
               icon: MyIcon.power,
               context: context,
               nextWidget: ActivityPowerPerHeartRateWidget(activity: activity),
@@ -83,7 +83,7 @@ class ShowActivityScreen extends StatelessWidget {
           ]),
           TableRow(children: [
             detailTile(
-              title: "Speed /\nHeart Rate",
+              title: "Speed / Heart Rate",
               icon: MyIcon.speed,
               context: context,
               nextWidget: ActivitySpeedPerHeartRateWidget(activity: activity),
