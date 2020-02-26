@@ -9,18 +9,54 @@ class AthletePowerChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = activities
-        .where((value) => value.db.avgPower != null && value.db.avgPower > 0)
+    int fullDecay = 30;
+    int xAxesDays = 60;
+
+    List<Activity> nonZeroActivities = activities
+        .where((activity) =>
+            activity.db.avgPower != null && activity.db.avgPower > 0)
+        .toList();
+
+    nonZeroActivities.asMap().forEach((index, activity) {
+      double sumOfAvgPower = activity.db.avgPower * fullDecay;
+      double sumOfWeightings = fullDecay * 1.0;
+      for (var olderIndex = index + 1;
+          olderIndex < nonZeroActivities.length;
+          olderIndex++) {
+        double daysAgo = activity.db.timeCreated
+                .difference(nonZeroActivities[olderIndex].db.timeCreated)
+                .inHours /
+            24;
+        if (daysAgo > fullDecay) break;
+        sumOfAvgPower +=
+            (fullDecay - daysAgo) * nonZeroActivities[olderIndex].db.avgPower;
+        sumOfWeightings += (fullDecay - daysAgo);
+      }
+
+      activity.glidingAvgPower = sumOfAvgPower / sumOfWeightings;
+    });
+
+    var nonZeroDateLimited = nonZeroActivities
+        .where((activity) =>
+            DateTime.now().difference(activity.db.timeCreated).inDays <
+            xAxesDays)
         .toList();
 
     var data = [
-      new Series<Activity, DateTime>(
+      Series<Activity, DateTime>(
         id: 'Average Power',
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) => activity.db.avgPower,
-        data: nonZero,
-      )
+        data: nonZeroDateLimited,
+      ),
+      Series<Activity, DateTime>(
+        id: 'Gliding Average Power',
+        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
+        domainFn: (Activity activity, _) => activity.db.timeCreated,
+        measureFn: (Activity activity, _) => activity.glidingAvgPower,
+        data: nonZeroDateLimited,
+      )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
 
     return new Container(
@@ -30,8 +66,14 @@ class AthletePowerChart extends StatelessWidget {
         animate: false,
         defaultRenderer: LineRendererConfig(
           includePoints: true,
-          dashPattern: [2, 2],
+          includeLine: false,
         ),
+        customSeriesRenderers: [
+          LineRendererConfig(
+            customRendererId: 'glidingAverageRenderer',
+            dashPattern: [1, 2],
+          ),
+        ],
         primaryMeasureAxis: NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
             zeroBound: false,

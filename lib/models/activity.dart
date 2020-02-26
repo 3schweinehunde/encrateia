@@ -17,6 +17,7 @@ class Activity extends ChangeNotifier {
   DbActivity db;
   List<Event> _records;
   List<Lap> _laps;
+  double glidingAvgPower;
 
   // intermediate data structures used for parsing
   Lap currentLap;
