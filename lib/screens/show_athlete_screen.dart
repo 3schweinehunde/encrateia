@@ -6,13 +6,17 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_power_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_settings_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_speed_per_heart_rate_widget.dart';
+import 'package:encrateia/screens/show_athlete_detail_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 
 class ShowAthleteScreen extends StatefulWidget {
   final Athlete athlete;
 
-  const ShowAthleteScreen({Key key, this.athlete}) : super(key: key);
+  const ShowAthleteScreen({
+    Key key,
+    this.athlete,
+  }) : super(key: key);
 
   @override
   _ShowAthleteScreenState createState() => _ShowAthleteScreenState();
@@ -32,50 +36,78 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 5,
-      child: Scaffold(
-        floatingActionButton: Visibility(
-          visible: floatingActionButtonVisible,
-          child: FloatingActionButton.extended(
-            onPressed: () => updateJob(),
-            label: Text("from Strava"),
-            icon: MyIcon.stravaDownload,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          '${widget.athlete.db.firstName} ${widget.athlete.db.lastName}',
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+      floatingActionButton: Visibility(
+        visible: floatingActionButtonVisible,
+        child: FloatingActionButton.extended(
+          onPressed: () => updateJob(),
+          label: Text("from Strava"),
+          icon: MyIcon.stravaDownload,
+        ),
+      ),
+      body: Table(children: [
+        TableRow(children: [
+          detailTile(
+            title: "Activities List",
+            icon: MyIcon.activities,
+            nextWidget: ActivitiesListWidget(athlete: widget.athlete),
+          ),
+          detailTile(
+            title: "Settings",
+            icon: MyIcon.settings,
+            nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
+          )
+        ]),
+        TableRow(children: [
+          detailTile(
+            title: "Power",
+            icon: MyIcon.power,
+            nextWidget: AthletePowerWidget(athlete: widget.athlete),
+          ),
+          detailTile(
+            title: "Power /\nHeart Rate",
+            icon: MyIcon.power,
+            nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+          ),
+        ]),
+        TableRow(children: [
+          detailTile(
+            title: "Speed /\nHeart Rate",
+            icon: MyIcon.speed,
+            nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
+          ),
+          Text(""),
+        ]),
+      ]),
+    );
+  }
+
+  detailTile({
+    Widget nextWidget,
+    Widget icon,
+    String title,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      child: ListTile(
+        leading: icon,
+        title: Text(title),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ShowAthleteDetailScreen(
+              athlete: widget.athlete,
+              widget: nextWidget,
+              title: title,
+            ),
           ),
         ),
-        appBar: AppBar(
-          title: Text(
-              widget.athlete.db.firstName + " " + widget.athlete.db.lastName),
-          bottom: TabBar(isScrollable: true, tabs: [
-            Tab(
-              icon: MyIcon.settings,
-              text: "Settings",
-            ),
-            Tab(
-              icon: MyIcon.activities,
-              text: "Activities",
-            ),
-            Tab(
-              icon: MyIcon.power,
-              text: "Power",
-            ),
-            Tab(
-              icon: MyIcon.power,
-              text: "Power/HR",
-            ),
-            Tab(
-              icon: MyIcon.speed,
-              text: "Speed/HR",
-            )
-          ]),
-        ),
-        body: TabBarView(children: [
-          AthleteSettingsWidget(athlete: widget.athlete),
-          ActivitiesListWidget(athlete: widget.athlete),
-          AthletePowerWidget(athlete: widget.athlete),
-          AthletePowerPerHeartRateWidget(athlete: widget.athlete),
-          AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
-        ]),
       ),
     );
   }

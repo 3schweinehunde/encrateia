@@ -43,13 +43,13 @@ class ShowActivityScreen extends StatelessWidget {
                 title: "Overview",
                 icon: MyIcon.overView,
                 context: context,
-                widget: ActivityOverviewWidget(activity: activity),
+                nextWidget: ActivityOverviewWidget(activity: activity),
               ),
               detailTile(
                 title: 'Laps',
                 icon: MyIcon.laps,
                 context: context,
-                widget: LapsListWidget(activity: activity),
+                nextWidget: LapsListWidget(activity: activity),
               ),
             ],
           ),
@@ -58,13 +58,13 @@ class ShowActivityScreen extends StatelessWidget {
               title: "Heart Rate",
               icon: MyIcon.heartRate,
               context: context,
-              widget: ActivityHeartRateWidget(activity: activity),
+              nextWidget: ActivityHeartRateWidget(activity: activity),
             ),
             detailTile(
               title: "Power",
               icon: MyIcon.power,
               context: context,
-              widget: ActivityPowerWidget(activity: activity),
+              nextWidget: ActivityPowerWidget(activity: activity),
             ),
           ]),
           TableRow(children: [
@@ -72,13 +72,13 @@ class ShowActivityScreen extends StatelessWidget {
               title: "Power Duration",
               icon: MyIcon.powerDuration,
               context: context,
-              widget: ActivityPowerDurationWidget(activity: activity),
+              nextWidget: ActivityPowerDurationWidget(activity: activity),
             ),
             detailTile(
               title: "Power /\nHeart Rate",
               icon: MyIcon.power,
               context: context,
-              widget: ActivityPowerPerHeartRateWidget(activity: activity),
+              nextWidget: ActivityPowerPerHeartRateWidget(activity: activity),
             ),
           ]),
           TableRow(children: [
@@ -86,13 +86,13 @@ class ShowActivityScreen extends StatelessWidget {
               title: "Speed /\nHeart Rate",
               icon: MyIcon.speed,
               context: context,
-              widget: ActivitySpeedPerHeartRateWidget(activity: activity),
+              nextWidget: ActivitySpeedPerHeartRateWidget(activity: activity),
             ),
             detailTile(
               title: "Ground Time",
               icon: MyIcon.groundTime,
               context: context,
-              widget: ActivityGroundTimeWidget(activity: activity),
+              nextWidget: ActivityGroundTimeWidget(activity: activity),
             ),
           ]),
           TableRow(children: [
@@ -100,13 +100,13 @@ class ShowActivityScreen extends StatelessWidget {
               title: "Form Power",
               icon: MyIcon.formPower,
               context: context,
-              widget: ActivityFormPowerWidget(activity: activity),
+              nextWidget: ActivityFormPowerWidget(activity: activity),
             ),
             detailTile(
               title: "Power Ratio",
               icon: MyIcon.formPower,
               context: context,
-              widget: ActivityPowerRatioWidget(activity: activity),
+              nextWidget: ActivityPowerRatioWidget(activity: activity),
             ),
           ]),
           TableRow(children: [
@@ -114,13 +114,13 @@ class ShowActivityScreen extends StatelessWidget {
               title: "Cadence",
               icon: MyIcon.cadence,
               context: context,
-              widget: ActivityStrydCadenceWidget(activity: activity),
+              nextWidget: ActivityStrydCadenceWidget(activity: activity),
             ),
             detailTile(
               title: "Vertical Oscillation",
               icon: MyIcon.verticalOscillation,
               context: context,
-              widget: ActivityVerticalOscillationWidget(activity: activity),
+              nextWidget: ActivityVerticalOscillationWidget(activity: activity),
             ),
           ]),
           TableRow(children: [
@@ -128,13 +128,13 @@ class ShowActivityScreen extends StatelessWidget {
               title: "Leg Spring Stiffness",
               icon: MyIcon.legSpringStiffness,
               context: context,
-              widget: ActivityLegSpringStiffnessWidget(activity: activity),
+              nextWidget: ActivityLegSpringStiffnessWidget(activity: activity),
             ),
             detailTile(
               title: "Metadata",
               icon: MyIcon.metaData,
               context: context,
-              widget: ActivityMetadataWidget(activity: activity),
+              nextWidget: ActivityMetadataWidget(activity: activity),
             ),
           ]),
         ],
@@ -144,7 +144,7 @@ class ShowActivityScreen extends StatelessWidget {
 
   detailTile({
     BuildContext context,
-    Widget widget,
+    Widget nextWidget,
     Widget icon,
     String title,
   }) {
@@ -158,7 +158,7 @@ class ShowActivityScreen extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => ShowActivityDetailScreen(
               activity: activity,
-              widget: widget,
+              widget: nextWidget,
               title: title,
             ),
           ),
