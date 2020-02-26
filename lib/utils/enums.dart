@@ -24,4 +24,5 @@ enum ActivityAction {
 enum ActivityAttr {
   avgPower,
   avgPowerPerHeartRate,
+  avgSpeedPerHeartRate,
 }

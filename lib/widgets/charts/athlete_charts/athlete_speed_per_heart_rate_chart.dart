@@ -1,6 +1,8 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/activity_list.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class AthleteSpeedPerHeartRateChart extends StatelessWidget {
   final List<Activity> activities;
@@ -9,7 +11,9 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = activities
+    int xAxesDays = 60;
+
+    var nonZeroActivities = activities
         .where((value) =>
             value.db.avgSpeed != null &&
             value.db.avgSpeed > 0 &&
@@ -17,15 +21,34 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
             value.db.avgHeartRate > 0)
         .toList();
 
+    ActivityList(activities: nonZeroActivities).enrichGlidingAverage(
+      quantity: ActivityAttr.avgSpeedPerHeartRate,
+      fullDecay: 30,
+    );
+
+    var nonZeroDateLimited = nonZeroActivities
+        .where((activity) =>
+    DateTime.now().difference(activity.db.timeCreated).inDays <
+        xAxesDays)
+        .toList();
+
     var data = [
-      new Series<Activity, DateTime>(
-        id: 'Average Speed',
+      Series<Activity, DateTime>(
+        id: 'Average speed per heart rate',
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) =>
             (100 * activity.db.avgSpeed / activity.db.avgHeartRate),
-        data: nonZero,
-      )
+        data: nonZeroDateLimited,
+      ),
+      Series<Activity, DateTime>(
+        id: 'Gliding average speed per heart rate',
+        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
+        domainFn: (Activity activity, _) => activity.db.timeCreated,
+        measureFn: (Activity activity, _) =>
+        activity.glidingAvgSpeedPerHeartRate,
+        data: nonZeroDateLimited,
+      )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
 
     return new Container(
@@ -35,8 +58,14 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
         animate: false,
         defaultRenderer: LineRendererConfig(
           includePoints: true,
-          dashPattern: [2, 2],
+          includeLine: false,
         ),
+        customSeriesRenderers: [
+          LineRendererConfig(
+            customRendererId: 'glidingAverageRenderer',
+            dashPattern: [1, 2],
+          ),
+        ],
         primaryMeasureAxis: NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
             zeroBound: false,
