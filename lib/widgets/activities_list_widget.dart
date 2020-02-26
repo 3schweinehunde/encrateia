@@ -7,7 +7,7 @@ import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 
-enum Action { show, parse, download, delete, state }
+enum Action { parse, download, delete, state }
 
 class ActivitiesListWidget extends StatefulWidget {
   final Athlete athlete;
@@ -90,6 +90,17 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
                   popupMenuButton(activity: activity),
             ),
           ),
+          onTap: () {
+            if (activity.db.state == "persisted")
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ShowActivityScreen(
+                    activity: activity,
+                  ),
+                ),
+              );
+          },
         );
       },
     );
@@ -142,12 +153,11 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     await for (var value in percentageStream) {
       flushbar.dismiss();
       flushbar = Flushbar(
-          titleText: LinearProgressIndicator(value: value/100),
-          message: "$value% of storing »${activity.db.name}«",
-          duration: Duration(seconds: 3),
-          animationDuration: Duration(milliseconds: 1),
-          )
-        ..show(context);
+        titleText: LinearProgressIndicator(value: value / 100),
+        message: "$value% of storing »${activity.db.name}«",
+        duration: Duration(seconds: 3),
+        animationDuration: Duration(milliseconds: 1),
+      )..show(context);
     }
     activities = await Activity.all(athlete: widget.athlete);
     setState(() {});
@@ -166,10 +176,8 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         actions = ["download", "delete"];
         break;
       case "downloaded":
-        actions = ["parse", "download", "delete"];
-        break;
       case "persisted":
-        actions = ["show", "parse", "download", "delete"];
+        actions = ["parse", "download", "delete"];
         break;
       case "default":
         actions = ["state"];
@@ -178,16 +186,6 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     return PopupMenuButton<Action>(
       onSelected: (Action action) {
         switch (action) {
-          case Action.show:
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ShowActivityScreen(
-                  activity: activity,
-                ),
-              ),
-            );
-            break;
           case Action.parse:
             parse(activity: activity);
             break;
@@ -202,15 +200,6 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<Action>>[
-        if (actions.contains("download"))
-          if (actions.contains("show"))
-            PopupMenuItem<Action>(
-              value: Action.show,
-              child: Row(children: <Widget>[
-                MyIcon.show,
-                Text(" Show"),
-              ]),
-            ),
         if (actions.contains("parse"))
           PopupMenuItem<Action>(
             value: Action.parse,
@@ -221,12 +210,13 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
               ],
             ),
           ),
-        PopupMenuItem<Action>(
-          value: Action.download,
-          child: Row(
-            children: <Widget>[MyIcon.download, Text(" Download .fit-file")],
+        if (actions.contains("download"))
+          PopupMenuItem<Action>(
+            value: Action.download,
+            child: Row(
+              children: <Widget>[MyIcon.download, Text(" Download .fit-file")],
+            ),
           ),
-        ),
         if (actions.contains("delete"))
           PopupMenuItem<Action>(
             value: Action.delete,
