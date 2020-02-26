@@ -1,6 +1,8 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/activity_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class AthletePowerChart extends StatelessWidget {
   final List<Activity> activities;
@@ -9,7 +11,6 @@ class AthletePowerChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int fullDecay = 30;
     int xAxesDays = 60;
 
     List<Activity> nonZeroActivities = activities
@@ -17,24 +18,10 @@ class AthletePowerChart extends StatelessWidget {
             activity.db.avgPower != null && activity.db.avgPower > 0)
         .toList();
 
-    nonZeroActivities.asMap().forEach((index, activity) {
-      double sumOfAvgPower = activity.db.avgPower * fullDecay;
-      double sumOfWeightings = fullDecay * 1.0;
-      for (var olderIndex = index + 1;
-          olderIndex < nonZeroActivities.length;
-          olderIndex++) {
-        double daysAgo = activity.db.timeCreated
-                .difference(nonZeroActivities[olderIndex].db.timeCreated)
-                .inHours /
-            24;
-        if (daysAgo > fullDecay) break;
-        sumOfAvgPower +=
-            (fullDecay - daysAgo) * nonZeroActivities[olderIndex].db.avgPower;
-        sumOfWeightings += (fullDecay - daysAgo);
-      }
-
-      activity.glidingAvgPower = sumOfAvgPower / sumOfWeightings;
-    });
+    ActivityList(activities: nonZeroActivities).enrichGlidingAverage(
+      quantity: ActivityAttr.avgPower,
+      fullDecay: 30,
+    );
 
     var nonZeroDateLimited = nonZeroActivities
         .where((activity) =>

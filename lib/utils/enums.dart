@@ -1,10 +1,10 @@
-enum IntQuantity {
+enum LapIntAttr {
   power,
   formPower,
   heartRate,
 }
 
-enum DoubleQuantity {
+enum LapDoubleAttr {
   powerPerHeartRate,
   speedPerHeartRate,
   groundTime,
@@ -19,4 +19,8 @@ enum ActivityAction {
   download,
   delete,
   state,
+}
+
+enum ActivityAttr {
+  avgPower
 }

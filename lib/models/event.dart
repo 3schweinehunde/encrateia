@@ -144,7 +144,7 @@ class Event {
   static toIntDataPoints({
     Iterable<Event> records,
     int amount,
-    @required IntQuantity attribute,
+    @required LapIntAttr attribute,
   }) {
     int index = 0;
     List<IntPlotPoint> plotPoints = [];
@@ -152,13 +152,13 @@ class Event {
 
     for (var record in records) {
       switch (attribute) {
-        case IntQuantity.power:
+        case LapIntAttr.power:
           sum = sum + record.db.power;
           break;
-        case IntQuantity.formPower:
+        case LapIntAttr.formPower:
           sum = sum + record.db.formPower;
           break;
-        case IntQuantity.heartRate:
+        case LapIntAttr.heartRate:
           sum = sum + record.db.heartRate;
       }
 
@@ -177,7 +177,7 @@ class Event {
   static toDoubleDataPoints({
     Iterable<Event> records,
     int amount,
-    @required DoubleQuantity attribute,
+    @required LapDoubleAttr attribute,
   }) {
     int index = 0;
     List<DoublePlotPoint> plotPoints = [];
@@ -185,25 +185,25 @@ class Event {
 
     for (var record in records) {
       switch (attribute) {
-        case DoubleQuantity.powerPerHeartRate:
+        case LapDoubleAttr.powerPerHeartRate:
           sum = sum + (record.db.power / record.db.heartRate);
           break;
-        case DoubleQuantity.speedPerHeartRate:
+        case LapDoubleAttr.speedPerHeartRate:
           sum = sum + (record.db.speed / record.db.heartRate);
           break;
-        case DoubleQuantity.groundTime:
+        case LapDoubleAttr.groundTime:
           sum = sum + record.db.groundTime;
           break;
-        case DoubleQuantity.strydCadence:
+        case LapDoubleAttr.strydCadence:
           sum = sum + 2 * record.db.strydCadence;
           break;
-        case DoubleQuantity.verticalOscillation:
+        case LapDoubleAttr.verticalOscillation:
           sum = sum + record.db.verticalOscillation;
           break;
-        case DoubleQuantity.legSpringStiffness:
+        case LapDoubleAttr.legSpringStiffness:
           sum = sum + record.db.legSpringStiffness;
           break;
-        case DoubleQuantity.powerRatio:
+        case LapDoubleAttr.powerRatio:
           sum = sum +
               ((record.db.power - record.db.formPower) / record.db.power * 100);
       }

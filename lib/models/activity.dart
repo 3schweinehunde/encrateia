@@ -12,6 +12,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'dart:developer';
 import 'package:intl/intl.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class Activity extends ChangeNotifier {
   DbActivity db;
@@ -43,6 +44,20 @@ class Activity extends ChangeNotifier {
 
   String toString() => '$db.name $db.startTime';
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
+
+  get({ActivityAttr quantity}) {
+    switch (quantity) {
+      case ActivityAttr.avgPower:
+        return db.avgPower;
+    }
+  }
+
+  setGliding({ActivityAttr quantity, double value}) {
+    switch (quantity) {
+      case ActivityAttr.avgPower:
+        glidingAvgPower = value;
+    }
+  }
 
   download({@required Athlete athlete}) async {
     await StravaFitDownload.byId(id: db.stravaId.toString(), athlete: athlete);
@@ -472,8 +487,8 @@ class Activity extends ChangeNotifier {
               "${dataMessage.definitionMessage.globalMessageName} "
               "are not implemented yet.");
           print(dataMessage.values.map((v) => v.fieldName).toList());
-          // Use this debugger to implement additional message types!
-          // debugger();
+        // Use this debugger to implement additional message types!
+        // debugger();
       }
     }
   }

@@ -19,7 +19,7 @@ class ActivityHeartRateChart extends StatelessWidget {
     var nonZero = records.where(
         (value) => value.db.heartRate != null && value.db.heartRate > 10);
     var smoothedRecords = Event.toIntDataPoints(
-      attribute: IntQuantity.heartRate,
+      attribute: LapIntAttr.heartRate,
       records: nonZero,
       amount: 30,
     );

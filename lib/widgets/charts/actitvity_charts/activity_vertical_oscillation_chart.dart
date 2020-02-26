@@ -18,7 +18,7 @@ class ActivityVerticalOscillationChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.power > 100);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: DoubleQuantity.verticalOscillation,
+      attribute: LapDoubleAttr.verticalOscillation,
       records: nonZero,
       amount: 30,
     );

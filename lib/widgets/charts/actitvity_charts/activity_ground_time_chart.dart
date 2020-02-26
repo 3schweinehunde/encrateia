@@ -18,7 +18,7 @@ class ActivityGroundTimeChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.groundTime > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: DoubleQuantity.groundTime,
+      attribute: LapDoubleAttr.groundTime,
       records: nonZero,
       amount: 30,
     );

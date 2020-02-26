@@ -19,7 +19,7 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
     var nonZero = records
         .where((value) => value.db.power > 100 && value.db.heartRate > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: DoubleQuantity.speedPerHeartRate,
+      attribute: LapDoubleAttr.speedPerHeartRate,
       records: nonZero,
       amount: 30,
     );

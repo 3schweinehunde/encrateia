@@ -18,7 +18,7 @@ class ActivityPowerRatioChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.power > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: DoubleQuantity.powerRatio,
+      attribute: LapDoubleAttr.powerRatio,
       records: nonZero,
       amount: 30,
     );

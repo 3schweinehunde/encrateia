@@ -18,7 +18,7 @@ class ActivityPowerChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.power > 100);
     var smoothedRecords = Event.toIntDataPoints(
-      attribute: IntQuantity.power,
+      attribute: LapIntAttr.power,
       records: nonZero,
       amount: 30,
     );

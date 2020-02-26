@@ -18,7 +18,7 @@ class ActivityLegSpringStiffnessChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.groundTime > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: DoubleQuantity.legSpringStiffness,
+      attribute: LapDoubleAttr.legSpringStiffness,
       records: nonZero,
       amount: 30,
     );

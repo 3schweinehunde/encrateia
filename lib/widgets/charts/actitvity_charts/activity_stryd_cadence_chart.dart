@@ -18,7 +18,7 @@ class ActivityStrydCadenceChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.strydCadence > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: DoubleQuantity.strydCadence,
+      attribute: LapDoubleAttr.strydCadence,
       records: nonZero,
       amount: 30,
     );
