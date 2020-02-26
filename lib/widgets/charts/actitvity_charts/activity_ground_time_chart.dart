@@ -6,6 +6,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:encrateia/utils/my_line_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class ActivityGroundTimeChart extends StatelessWidget {
   final List<Event> records;
@@ -17,7 +18,7 @@ class ActivityGroundTimeChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.groundTime > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: "groundTime",
+      attribute: DoubleQuantity.groundTime,
       records: nonZero,
       amount: 30,
     );

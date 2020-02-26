@@ -6,8 +6,7 @@ import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
-
-enum Action { parse, download, delete, state }
+import 'package:encrateia/utils/enums.dart';
 
 class ActivitiesListWidget extends StatefulWidget {
   final Athlete athlete;
@@ -183,26 +182,26 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         actions = ["state"];
     }
 
-    return PopupMenuButton<Action>(
-      onSelected: (Action action) {
+    return PopupMenuButton<ActivityAction>(
+      onSelected: (ActivityAction action) {
         switch (action) {
-          case Action.parse:
+          case ActivityAction.parse:
             parse(activity: activity);
             break;
-          case Action.download:
+          case ActivityAction.download:
             download(activity: activity);
             break;
-          case Action.delete:
+          case ActivityAction.delete:
             delete(activity: activity);
             break;
-          case Action.state:
+          case ActivityAction.state:
             break;
         }
       },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<Action>>[
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<ActivityAction>>[
         if (actions.contains("parse"))
-          PopupMenuItem<Action>(
-            value: Action.parse,
+          PopupMenuItem<ActivityAction>(
+            value: ActivityAction.parse,
             child: Row(
               children: <Widget>[
                 MyIcon.parse,
@@ -211,15 +210,15 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             ),
           ),
         if (actions.contains("download"))
-          PopupMenuItem<Action>(
-            value: Action.download,
+          PopupMenuItem<ActivityAction>(
+            value: ActivityAction.download,
             child: Row(
               children: <Widget>[MyIcon.download, Text(" Download .fit-file")],
             ),
           ),
         if (actions.contains("delete"))
-          PopupMenuItem<Action>(
-            value: Action.delete,
+          PopupMenuItem<ActivityAction>(
+            value: ActivityAction.delete,
             child: Row(
               children: <Widget>[
                 MyIcon.delete,
@@ -228,8 +227,8 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             ),
           ),
         if (actions.contains("state"))
-          PopupMenuItem<Action>(
-            value: Action.state,
+          PopupMenuItem<ActivityAction>(
+            value: ActivityAction.state,
             child: Text("State: ${activity.db.state}"),
           ),
       ],

@@ -6,6 +6,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:encrateia/utils/my_line_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class ActivitySpeedPerHeartRateChart extends StatelessWidget {
   final List<Event> records;
@@ -18,7 +19,7 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
     var nonZero = records
         .where((value) => value.db.power > 100 && value.db.heartRate > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: "speedPerHeartRate",
+      attribute: DoubleQuantity.speedPerHeartRate,
       records: nonZero,
       amount: 30,
     );

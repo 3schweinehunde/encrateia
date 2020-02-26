@@ -6,6 +6,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:encrateia/utils/my_line_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class ActivityHeartRateChart extends StatelessWidget {
   final List<Event> records;
@@ -18,7 +19,7 @@ class ActivityHeartRateChart extends StatelessWidget {
     var nonZero = records.where(
         (value) => value.db.heartRate != null && value.db.heartRate > 10);
     var smoothedRecords = Event.toIntDataPoints(
-      attribute: "heartRate",
+      attribute: IntQuantity.heartRate,
       records: nonZero,
       amount: 30,
     );

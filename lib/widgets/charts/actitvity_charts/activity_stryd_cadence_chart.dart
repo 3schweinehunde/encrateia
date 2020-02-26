@@ -6,6 +6,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:encrateia/utils/my_line_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class ActivityStrydCadenceChart extends StatelessWidget {
   final List<Event> records;
@@ -17,7 +18,7 @@ class ActivityStrydCadenceChart extends StatelessWidget {
   Widget build(BuildContext context) {
     var nonZero = records.where((value) => value.db.strydCadence > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
-      attribute: "strydCadence",
+      attribute: DoubleQuantity.strydCadence,
       records: nonZero,
       amount: 30,
     );

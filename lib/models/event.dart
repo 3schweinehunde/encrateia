@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'activity.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class Event {
   DbEvent db;
@@ -143,7 +144,7 @@ class Event {
   static toIntDataPoints({
     Iterable<Event> records,
     int amount,
-    @required String attribute,
+    @required IntQuantity attribute,
   }) {
     int index = 0;
     List<IntPlotPoint> plotPoints = [];
@@ -151,13 +152,13 @@ class Event {
 
     for (var record in records) {
       switch (attribute) {
-        case "power":
+        case IntQuantity.power:
           sum = sum + record.db.power;
           break;
-        case "formPower":
+        case IntQuantity.formPower:
           sum = sum + record.db.formPower;
           break;
-        case "heartRate":
+        case IntQuantity.heartRate:
           sum = sum + record.db.heartRate;
       }
 
@@ -176,7 +177,7 @@ class Event {
   static toDoubleDataPoints({
     Iterable<Event> records,
     int amount,
-    @required String attribute,
+    @required DoubleQuantity attribute,
   }) {
     int index = 0;
     List<DoublePlotPoint> plotPoints = [];
@@ -184,25 +185,25 @@ class Event {
 
     for (var record in records) {
       switch (attribute) {
-        case "powerPerHeartRate":
+        case DoubleQuantity.powerPerHeartRate:
           sum = sum + (record.db.power / record.db.heartRate);
           break;
-        case "speedPerHeartRate":
+        case DoubleQuantity.speedPerHeartRate:
           sum = sum + (record.db.speed / record.db.heartRate);
           break;
-        case "groundTime":
+        case DoubleQuantity.groundTime:
           sum = sum + record.db.groundTime;
           break;
-        case "strydCadence":
+        case DoubleQuantity.strydCadence:
           sum = sum + 2 * record.db.strydCadence;
           break;
-        case "verticalOscillation":
+        case DoubleQuantity.verticalOscillation:
           sum = sum + record.db.verticalOscillation;
           break;
-        case "legSpringStiffness":
+        case DoubleQuantity.legSpringStiffness:
           sum = sum + record.db.legSpringStiffness;
           break;
-        case 'powerRatio':
+        case DoubleQuantity.powerRatio:
           sum = sum +
               ((record.db.power - record.db.formPower) / record.db.power * 100);
       }
