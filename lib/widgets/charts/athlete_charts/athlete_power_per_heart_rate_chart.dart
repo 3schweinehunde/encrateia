@@ -15,6 +15,7 @@ class AthletePowerPerHeartRateChart extends StatelessWidget {
 
     var nonZeroActivities = activities
         .where((value) =>
+            value.avgPower != null &&
             value.db.avgPower != null &&
             value.db.avgPower > 0 &&
             value.db.avgHeartRate != null &&

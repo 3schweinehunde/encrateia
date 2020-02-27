@@ -1,3 +1,4 @@
+import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
@@ -62,7 +63,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             title: "Settings",
             icon: MyIcon.settings,
             nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
-          )
+          ),
         ]),
         TableRow(children: [
           detailTile(
@@ -71,18 +72,22 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             nextWidget: AthletePowerWidget(athlete: widget.athlete),
           ),
           detailTile(
+            title: "Power Ratio",
+            icon: MyIcon.power,
+            nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
+          ),
+        ]),
+        TableRow(children: [
+          detailTile(
             title: "Power / Heart Rate",
             icon: MyIcon.power,
             nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
           ),
-        ]),
-        TableRow(children: [
           detailTile(
             title: "Speed / Heart Rate",
             icon: MyIcon.speed,
             nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
           ),
-          Text(""),
         ]),
       ]),
     );

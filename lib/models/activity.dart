@@ -21,6 +21,8 @@ class Activity extends ChangeNotifier {
   double glidingAvgPower;
   double glidingAvgPowerPerHeartRate;
   double glidingAvgSpeedPerHeartRate;
+  double glidingAvgPowerRatio;
+  double glidingAvgStrideRatio;
 
   // intermediate data structures used for parsing
   Lap currentLap;
@@ -55,6 +57,10 @@ class Activity extends ChangeNotifier {
         return (db.avgPower / db.avgHeartRate);
       case ActivityAttr.avgSpeedPerHeartRate:
         return 100 * (db.avgSpeed / db.avgHeartRate);
+      case ActivityAttr.avgPowerRatio:
+        return 100 * (db.avgPower - db.avgFormPower) / db.avgPower;
+      case ActivityAttr.avgStrideRatio:
+        return 10000 / 6 * db.avgSpeed / db.avgStrydCadence / db.avgVerticalOscillation;
     }
   }
 
@@ -68,6 +74,12 @@ class Activity extends ChangeNotifier {
         break;
       case ActivityAttr.avgSpeedPerHeartRate:
         glidingAvgSpeedPerHeartRate = value;
+        break;
+      case ActivityAttr.avgPowerRatio:
+        glidingAvgPowerRatio = value;
+        break;
+      case ActivityAttr.avgStrideRatio:
+        glidingAvgStrideRatio = value;
         break;
     }
   }
@@ -307,6 +319,26 @@ class Activity extends ChangeNotifier {
       notifyListeners();
     }
     return db.sdevPowerRatio;
+  }
+
+  Future<double> get avgStrideRatio async {
+    if (db.avgStrideRatio == null) {
+      List<Event> records = await this.records;
+      db.avgStrideRatio = Lap.calculateAverageStrideRatio(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.avgStrideRatio;
+  }
+
+  Future<double> get sdevStrideRatio async {
+    if (db.sdevStrideRatio == null) {
+      List<Event> records = await this.records;
+      db.sdevStrideRatio = Lap.calculateSdevStrideRatio(records: records);
+      await db.save();
+      notifyListeners();
+    }
+    return db.sdevStrideRatio;
   }
 
   Stream<int> parse({@required Athlete athlete}) async* {

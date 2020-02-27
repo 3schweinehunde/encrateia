@@ -11,7 +11,8 @@ enum LapDoubleAttr {
   strydCadence,
   verticalOscillation,
   legSpringStiffness,
-  powerRatio
+  powerRatio,
+  strideRatio,
 }
 
 enum ActivityAction {
@@ -25,4 +26,6 @@ enum ActivityAttr {
   avgPower,
   avgPowerPerHeartRate,
   avgSpeedPerHeartRate,
+  avgPowerRatio,
+  avgStrideRatio,
 }

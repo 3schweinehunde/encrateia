@@ -122,6 +122,8 @@ class TableDbActivity extends SqfEntityTableBase {
       SqfEntityFieldBase('sdevFormPower', DbType.real),
       SqfEntityFieldBase('avgPowerRatio', DbType.real),
       SqfEntityFieldBase('sdevPowerRatio', DbType.real),
+      SqfEntityFieldBase('avgStrideRatio', DbType.real),
+      SqfEntityFieldBase('sdevStrideRatio', DbType.real),
       SqfEntityFieldBase('avgStrydCadence', DbType.real),
       SqfEntityFieldBase('sdevStrydCadence', DbType.real),
       SqfEntityFieldBase('sdevVerticalOscillation', DbType.real),
@@ -1524,6 +1526,8 @@ class DbActivity {
       this.sdevFormPower,
       this.avgPowerRatio,
       this.sdevPowerRatio,
+      this.avgStrideRatio,
+      this.sdevStrideRatio,
       this.avgStrydCadence,
       this.sdevStrydCadence,
       this.sdevVerticalOscillation,
@@ -1593,6 +1597,8 @@ class DbActivity {
       this.sdevFormPower,
       this.avgPowerRatio,
       this.sdevPowerRatio,
+      this.avgStrideRatio,
+      this.sdevStrideRatio,
       this.avgStrydCadence,
       this.sdevStrydCadence,
       this.sdevVerticalOscillation,
@@ -1663,6 +1669,8 @@ class DbActivity {
       this.sdevFormPower,
       this.avgPowerRatio,
       this.sdevPowerRatio,
+      this.avgStrideRatio,
+      this.sdevStrideRatio,
       this.avgStrydCadence,
       this.sdevStrydCadence,
       this.sdevVerticalOscillation,
@@ -1756,6 +1764,8 @@ class DbActivity {
     sdevFormPower = double.tryParse(o['sdevFormPower'].toString());
     avgPowerRatio = double.tryParse(o['avgPowerRatio'].toString());
     sdevPowerRatio = double.tryParse(o['sdevPowerRatio'].toString());
+    avgStrideRatio = double.tryParse(o['avgStrideRatio'].toString());
+    sdevStrideRatio = double.tryParse(o['sdevStrideRatio'].toString());
     avgStrydCadence = double.tryParse(o['avgStrydCadence'].toString());
     sdevStrydCadence = double.tryParse(o['sdevStrydCadence'].toString());
     sdevVerticalOscillation =
@@ -1826,6 +1836,8 @@ class DbActivity {
   double sdevFormPower;
   double avgPowerRatio;
   double sdevPowerRatio;
+  double avgStrideRatio;
+  double sdevStrideRatio;
   double avgStrydCadence;
   double sdevStrydCadence;
   double sdevVerticalOscillation;
@@ -2147,6 +2159,14 @@ class DbActivity {
       map['sdevPowerRatio'] = sdevPowerRatio;
     }
 
+    if (avgStrideRatio != null) {
+      map['avgStrideRatio'] = avgStrideRatio;
+    }
+
+    if (sdevStrideRatio != null) {
+      map['sdevStrideRatio'] = sdevStrideRatio;
+    }
+
     if (avgStrydCadence != null) {
       map['avgStrydCadence'] = avgStrydCadence;
     }
@@ -2428,6 +2448,14 @@ class DbActivity {
       map['sdevPowerRatio'] = sdevPowerRatio;
     }
 
+    if (avgStrideRatio != null) {
+      map['avgStrideRatio'] = avgStrideRatio;
+    }
+
+    if (sdevStrideRatio != null) {
+      map['sdevStrideRatio'] = sdevStrideRatio;
+    }
+
     if (avgStrydCadence != null) {
       map['avgStrydCadence'] = avgStrydCadence;
     }
@@ -2531,6 +2559,8 @@ class DbActivity {
       sdevFormPower,
       avgPowerRatio,
       sdevPowerRatio,
+      avgStrideRatio,
+      sdevStrideRatio,
       avgStrydCadence,
       sdevStrydCadence,
       sdevVerticalOscillation,
@@ -2643,7 +2673,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
     final results = _mnDbActivity.saveAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -2654,7 +2684,7 @@ class DbActivity {
   Future<int> _upsert() async {
     try {
       if (await _mnDbActivity.rawInsert(
-              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -2721,6 +2751,8 @@ class DbActivity {
                 sdevFormPower,
                 avgPowerRatio,
                 sdevPowerRatio,
+                avgStrideRatio,
+                sdevStrideRatio,
                 avgStrydCadence,
                 sdevStrydCadence,
                 sdevVerticalOscillation,
@@ -2748,7 +2780,7 @@ class DbActivity {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -3523,6 +3555,18 @@ class DbActivityFilterBuilder extends SearchCriteria {
         setField(_sdevPowerRatio, 'sdevPowerRatio', DbType.real);
   }
 
+  DbActivityField _avgStrideRatio;
+  DbActivityField get avgStrideRatio {
+    return _avgStrideRatio =
+        setField(_avgStrideRatio, 'avgStrideRatio', DbType.real);
+  }
+
+  DbActivityField _sdevStrideRatio;
+  DbActivityField get sdevStrideRatio {
+    return _sdevStrideRatio =
+        setField(_sdevStrideRatio, 'sdevStrideRatio', DbType.real);
+  }
+
   DbActivityField _avgStrydCadence;
   DbActivityField get avgStrydCadence {
     return _avgStrydCadence =
@@ -4250,6 +4294,18 @@ class DbActivityFields {
   static TableField get sdevPowerRatio {
     return _fSdevPowerRatio = _fSdevPowerRatio ??
         SqlSyntax.setField(_fSdevPowerRatio, 'sdevPowerRatio', DbType.real);
+  }
+
+  static TableField _fAvgStrideRatio;
+  static TableField get avgStrideRatio {
+    return _fAvgStrideRatio = _fAvgStrideRatio ??
+        SqlSyntax.setField(_fAvgStrideRatio, 'avgStrideRatio', DbType.real);
+  }
+
+  static TableField _fSdevStrideRatio;
+  static TableField get sdevStrideRatio {
+    return _fSdevStrideRatio = _fSdevStrideRatio ??
+        SqlSyntax.setField(_fSdevStrideRatio, 'sdevStrideRatio', DbType.real);
   }
 
   static TableField _fAvgStrydCadence;

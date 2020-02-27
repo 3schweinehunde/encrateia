@@ -11,6 +11,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_ground_time_widget.d
 import 'package:encrateia/widgets/activity_widgets/activity_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_form_power_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_stryd_cadence_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_stride_ratio_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_vertical_oscillation_widget.dart';
 import 'package:encrateia/screens/show_activity_detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -111,31 +112,40 @@ class ShowActivityScreen extends StatelessWidget {
           ]),
           TableRow(children: [
             detailTile(
+              title: "Vertical Oscillation",
+              icon: MyIcon.verticalOscillation,
+              context: context,
+              nextWidget: ActivityVerticalOscillationWidget(activity: activity),
+            ),
+            detailTile(
+              title: "Stride Ratio",
+              icon: MyIcon.strideRatio,
+              context: context,
+              nextWidget: ActivityStrideRatioWidget(activity: activity),
+            ),
+          ]),
+          TableRow(children: [
+            detailTile(
               title: "Cadence",
               icon: MyIcon.cadence,
               context: context,
               nextWidget: ActivityStrydCadenceWidget(activity: activity),
             ),
             detailTile(
-              title: "Vertical Oscillation",
-              icon: MyIcon.verticalOscillation,
-              context: context,
-              nextWidget: ActivityVerticalOscillationWidget(activity: activity),
-            ),
-          ]),
-          TableRow(children: [
-            detailTile(
               title: "Leg Spring Stiffness",
               icon: MyIcon.legSpringStiffness,
               context: context,
               nextWidget: ActivityLegSpringStiffnessWidget(activity: activity),
             ),
+          ]),
+          TableRow(children: [
             detailTile(
               title: "Metadata",
               icon: MyIcon.metaData,
               context: context,
               nextWidget: ActivityMetadataWidget(activity: activity),
             ),
+            Text(""),
           ]),
         ],
       ),

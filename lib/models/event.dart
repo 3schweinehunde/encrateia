@@ -206,6 +206,15 @@ class Event {
         case LapDoubleAttr.powerRatio:
           sum = sum +
               ((record.db.power - record.db.formPower) / record.db.power * 100);
+          break;
+        case LapDoubleAttr.strideRatio:
+          sum = sum +
+              (10000 /
+                  6 *
+                  record.db.speed /
+                  record.db.strydCadence /
+                  record.db.verticalOscillation);
+          break;
       }
 
       if (index++ % amount == amount - 1) {

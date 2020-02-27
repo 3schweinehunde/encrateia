@@ -345,4 +345,37 @@ class Lap {
             (record.db.power - record.db.formPower) / record.db.power * 100);
     return powerRatios.sdev();
   }
+
+  static double calculateAverageStrideRatio({List<Event> records}) {
+    var powerRatios = records
+        .where((record) =>
+            record.db.strydCadence != null &&
+            record.db.verticalOscillation != null &&
+            record.db.verticalOscillation != 0)
+        .map((record) =>
+            10000 /
+            6 *
+            record.db.speed /
+            record.db.strydCadence /
+            record.db.verticalOscillation);
+    if (powerRatios.length > 0) {
+      return powerRatios.mean();
+    } else
+      return -1;
+  }
+
+  static double calculateSdevStrideRatio({List<Event> records}) {
+    var powerRatios = records
+        .where((record) =>
+            record.db.strydCadence != null &&
+            record.db.verticalOscillation != null &&
+            record.db.verticalOscillation != 0)
+        .map((record) =>
+            10000 /
+            6 *
+            record.db.speed /
+            record.db.strydCadence /
+            record.db.verticalOscillation);
+    return powerRatios.sdev();
+  }
 }

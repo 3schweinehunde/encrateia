@@ -74,6 +74,7 @@ class MyIcon {
   static final stravaDownload = Icon(Icons.cloud_download);
   static final stravaDownloadWhite =
       Icon(Icons.cloud_download, color: Colors.white);
+  static final strideRatio = Icon(Icons.signal_cellular_null);
   static final strides = Icon(Icons.directions_walk);
   // T
   static final temperature = Icon(Icons.ac_unit);
