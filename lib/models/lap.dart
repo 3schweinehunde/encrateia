@@ -240,12 +240,18 @@ class Lap {
 
   static int calculateMinPower({List<Event> records}) {
     var powers = records.map((record) => record.db.power).nonZeroInts();
-    return powers.min();
+    if (powers.length > 0)
+      return powers.min();
+    else
+      return 0;
   }
 
   static int calculateMaxPower({List<Event> records}) {
     var powers = records.map((record) => record.db.power).nonZeroInts();
-    return powers.max();
+    if (powers.length > 0)
+      return powers.max();
+    else
+      return 0;
   }
 
   static double calculateAverageSpeed({List<Event> records}) {
@@ -272,8 +278,9 @@ class Lap {
   }
 
   static double calculateAverageStrydCadence({List<Event> records}) {
-    var strydCadences =
-        records.map((record) => 2 * record.db.strydCadence).nonZeroDoubles();
+    var strydCadences = records
+        .map((record) => record.db.strydCadence ?? 0.0 * 2)
+        .nonZeroDoubles();
     if (strydCadences.length > 0) {
       return strydCadences.mean();
     } else
@@ -281,8 +288,9 @@ class Lap {
   }
 
   static double calculateSdevStrydCadence({List<Event> records}) {
-    var strydCadences =
-        records.map((record) => 2 * record.db.strydCadence).nonZeroDoubles();
+    var strydCadences = records
+        .map((record) => record.db.strydCadence ?? 0.0 * 2)
+        .nonZeroDoubles();
     return strydCadences.sdev();
   }
 
@@ -330,8 +338,9 @@ class Lap {
   }
 
   static double calculateAveragePowerRatio({List<Event> records}) {
-    var powerRatios = records.where((record) => record.db.power != 0).map(
-        (record) =>
+    var powerRatios = records
+        .where((record) => record.db.power != null && record.db.power != 0)
+        .map((record) =>
             (record.db.power - record.db.formPower) / record.db.power * 100);
     if (powerRatios.length > 0) {
       return powerRatios.mean();
@@ -340,8 +349,9 @@ class Lap {
   }
 
   static double calculateSdevPowerRatio({List<Event> records}) {
-    var powerRatios = records.where((record) => record.db.power != 0).map(
-        (record) =>
+    var powerRatios = records
+        .where((record) => record.db.power != null && record.db.power != 0)
+        .map((record) =>
             (record.db.power - record.db.formPower) / record.db.power * 100);
     return powerRatios.sdev();
   }

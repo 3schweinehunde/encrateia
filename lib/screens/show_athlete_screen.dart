@@ -4,6 +4,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_stride_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_settings_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_speed_per_heart_rate_widget.dart';
@@ -89,6 +90,22 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
           ),
         ]),
+        TableRow(children: [
+          detailTile(
+            title: "Stride Ratio",
+            icon: MyIcon.strideRatio,
+            nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
+          ),
+          Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            child: ListTile(
+              leading: MyIcon.settings,
+              title: Text("Recalculate Averages"),
+              onTap: () => recalculate(),
+            ),
+          ),
+        ]),
       ]),
     );
   }
@@ -115,6 +132,40 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
       ),
     );
+  }
+
+  recalculate() async {
+    print("Start");
+    List<Activity> activities;
+    activities = await Activity.all(athlete: widget.athlete);
+    int index = 0;
+    int percent;
+
+    flushbar = Flushbar(
+      message: "Calculating...",
+      duration: Duration(seconds: 5),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+
+    for (Activity activity in activities) {
+      index += 1;
+      await activity.recalculateAverages();
+      flushbar.dismiss();
+      percent = 100 * index ~/ activities.length ;
+      flushbar = Flushbar(
+        titleText: LinearProgressIndicator(value: percent / 100),
+        message: "$percent% done (recalculating »${activity.db.name}« )",
+        duration: Duration(seconds: 1),
+        animationDuration: Duration(milliseconds: 1),
+      )..show(context);
+    }
+
+    flushbar.dismiss();
+    Flushbar(
+      message: "Averages are now up to date.",
+      duration: Duration(seconds: 5),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
   }
 
   updateJob() async {
@@ -179,7 +230,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       duration: Duration(seconds: 1),
       icon: MyIcon.finishedWhite,
     )..show(context);
-
     setState(() {});
   }
 
@@ -202,7 +252,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         animationDuration: Duration(milliseconds: 1),
       )..show(context);
     }
-
     setState(() {});
   }
 }

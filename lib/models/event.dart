@@ -189,7 +189,7 @@ class Event {
           sum = sum + (record.db.power / record.db.heartRate);
           break;
         case LapDoubleAttr.speedPerHeartRate:
-          sum = sum + (record.db.speed / record.db.heartRate);
+          sum = sum + 100 * (record.db.speed / record.db.heartRate);
           break;
         case LapDoubleAttr.groundTime:
           sum = sum + record.db.groundTime;

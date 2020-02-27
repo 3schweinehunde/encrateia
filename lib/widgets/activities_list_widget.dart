@@ -67,19 +67,10 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             children: <Widget>[
               Text(activity.dateString() + "\n" + activity.distanceString()),
               Text(activity.timeString() + "\n" + activity.paceString()),
-              FutureBuilder<double>(
-                  future: activity.avgPower,
-                  builder:
-                      (BuildContext context, AsyncSnapshot<double> snapshot) {
-                    if (snapshot.hasData) {
-                      return Text(activity.heartRateString() +
-                          "\n" +
-                          snapshot.data.toStringOrDashes(1) +
-                          " W");
-                    } else {
-                      return Text(activity.heartRateString() + "\n ...");
-                    }
-                  }),
+              Text(activity.heartRateString() +
+                  "\n" +
+                  activity.db.avgPower?.toStringOrDashes(1) +
+                  " W"),
             ],
           ),
           trailing: ChangeNotifierProvider.value(

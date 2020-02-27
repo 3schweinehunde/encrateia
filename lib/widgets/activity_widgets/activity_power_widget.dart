@@ -82,25 +82,10 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-
-    double avg = await activity.avgPower;
-    setState(() {
-      avgPowerString = avg.toStringOrDashes(1) + " W";
-    });
-
-    int min = await activity.minPower;
-    setState(() {
-      minPowerString = min.toString() + " W";
-    });
-
-    int max = await activity.maxPower;
-    setState(() {
-      maxPowerString = max.toString() + " W";
-    });
-
-    double sdev = await activity.sdevPower;
-    setState(() {
-      sdevPowerString = sdev.toStringOrDashes(2) + " W";
-    });
+    avgPowerString = activity.db.avgPower.toStringOrDashes(1) + " W";
+    minPowerString = activity.db.minPower.toString() + " W";
+    maxPowerString = activity.db.maxPower.toString() + " W";
+    sdevPowerString = activity.db.sdevPower.toStringOrDashes(2) + " W";
+    setState(() {});
   }
 }

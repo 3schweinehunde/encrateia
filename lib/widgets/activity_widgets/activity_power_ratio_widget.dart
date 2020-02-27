@@ -12,7 +12,8 @@ class ActivityPowerRatioWidget extends StatefulWidget {
   ActivityPowerRatioWidget({this.activity});
 
   @override
-  _ActivityPowerRatioWidgetState createState() => _ActivityPowerRatioWidgetState();
+  _ActivityPowerRatioWidgetState createState() =>
+      _ActivityPowerRatioWidgetState();
 }
 
 class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
@@ -36,7 +37,8 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityPowerRatioChart(records: records, activity: widget.activity),
+              ActivityPowerRatioChart(
+                  records: records, activity: widget.activity),
               Text("power ratio (%) = (power - form power) / power * 100"),
               ListTile(
                 leading: MyIcon.formPower,
@@ -71,15 +73,9 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-
-    double avg = await activity.avgPowerRatio;
-    setState(() {
-      avgPowerRatioString = avg.toStringOrDashes(1) + " %";
-    });
-
-    double sdev = await activity.sdevPowerRatio;
-    setState(() {
-      sdevPowerRatioString = sdev.toStringOrDashes(2) + " %";
-    });
+    avgPowerRatioString = activity.db.avgPowerRatio.toStringOrDashes(1) + " %";
+    sdevPowerRatioString =
+        activity.db.sdevPowerRatio.toStringOrDashes(2) + " %";
+    setState(() {});
   }
 }

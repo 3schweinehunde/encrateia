@@ -146,199 +146,34 @@ class Activity extends ChangeNotifier {
     return _laps;
   }
 
-  Future<double> get avgPower async {
-    if (db.avgPower == null) {
-      List<Event> records = await this.records;
-      db.avgPower = Lap.calculateAveragePower(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgPower;
-  }
+  recalculateAverages() async{
+    var records = await this.records;
+    db.avgPower = Lap.calculateAveragePower(records: records);
+    db.sdevPower = Lap.calculateSdevPower(records: records);
+    db.minPower = Lap.calculateMinPower(records: records);
+    db.maxPower = Lap.calculateMaxPower(records: records);
+    db.avgSpeed = Lap.calculateAverageSpeed(records: records);
+    db.avgGroundTime = Lap.calculateAverageGroundTime(records: records);
+    db.sdevGroundTime = Lap.calculateSdevGroundTime(records: records);
+    db.avgVerticalOscillation =
+        Lap.calculateAverageVerticalOscillation(records: records);
+    db.sdevVerticalOscillation =
+        Lap.calculateSdevVerticalOscillation(records: records);
+    db.avgStrydCadence = Lap.calculateAverageStrydCadence(records: records);
+    db.sdevStrydCadence = Lap.calculateSdevStrydCadence(records: records);
+    db.avgLegSpringStiffness =
+        Lap.calculateAverageLegSpringStiffness(records: records);
+    db.sdevLegSpringStiffness =
+        Lap.calculateSdevLegSpringStiffness(records: records);
+    db.avgFormPower = Lap.calculateAverageFormPower(records: records);
+    db.sdevFormPower = Lap.calculateSdevFormPower(records: records);
+    db.avgPowerRatio = Lap.calculateAveragePowerRatio(records: records);
+    db.sdevPowerRatio = Lap.calculateSdevPowerRatio(records: records);
+    db.avgStrideRatio = Lap.calculateAverageStrideRatio(records: records);
+    db.sdevStrideRatio = Lap.calculateSdevStrideRatio(records: records);
 
-  Future<double> get sdevPower async {
-    if (db.sdevPower == null) {
-      List<Event> records = await this.records;
-      db.sdevPower = Lap.calculateSdevPower(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.sdevPower;
-  }
-
-  Future<int> get minPower async {
-    if (db.minPower == null) {
-      List<Event> records = await this.records;
-      db.minPower = Lap.calculateMinPower(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.minPower;
-  }
-
-  Future<int> get maxPower async {
-    if (db.maxPower == null) {
-      List<Event> records = await this.records;
-      db.maxPower = Lap.calculateMaxPower(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.maxPower;
-  }
-
-  Future<double> get avgSpeed async {
-    if (db.avgSpeed == null || db.avgSpeed == 0) {
-      List<Event> records = await this.records;
-      db.avgSpeed = Lap.calculateAverageSpeed(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgGroundTime;
-  }
-
-  Future<double> get avgGroundTime async {
-    if (db.avgGroundTime == null) {
-      List<Event> records = await this.records;
-      db.avgGroundTime = Lap.calculateAverageGroundTime(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgGroundTime;
-  }
-
-  Future<double> get sdevGroundTime async {
-    if (db.sdevGroundTime == null) {
-      List<Event> records = await this.records;
-      db.sdevGroundTime = Lap.calculateSdevGroundTime(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.sdevGroundTime;
-  }
-
-  Future<double> get avgVerticalOscillation async {
-    if (db.avgVerticalOscillation == null ||
-        db.avgVerticalOscillation == 6553.5) {
-      List<Event> records = await this.records;
-      db.avgVerticalOscillation =
-          Lap.calculateAverageVerticalOscillation(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgVerticalOscillation;
-  }
-
-  Future<double> get sdevVerticalOscillation async {
-    if (db.sdevVerticalOscillation == null) {
-      List<Event> records = await this.records;
-      db.sdevVerticalOscillation =
-          Lap.calculateSdevVerticalOscillation(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.sdevVerticalOscillation;
-  }
-
-  Future<double> get avgStrydCadence async {
-    if (db.avgStrydCadence == null) {
-      List<Event> records = await this.records;
-      db.avgStrydCadence = Lap.calculateAverageStrydCadence(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgStrydCadence;
-  }
-
-  Future<double> get sdevStrydCadence async {
-    if (db.sdevStrydCadence == null) {
-      List<Event> records = await this.records;
-      db.sdevStrydCadence = Lap.calculateSdevStrydCadence(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.sdevStrydCadence;
-  }
-
-  Future<double> get avgLegSpringStiffness async {
-    if (db.avgLegSpringStiffness == null) {
-      List<Event> records = await this.records;
-      db.avgLegSpringStiffness =
-          Lap.calculateAverageLegSpringStiffness(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgLegSpringStiffness;
-  }
-
-  Future<double> get sdevLegSpringStiffness async {
-    if (db.sdevLegSpringStiffness == null) {
-      List<Event> records = await this.records;
-      db.sdevLegSpringStiffness =
-          Lap.calculateSdevLegSpringStiffness(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.sdevLegSpringStiffness;
-  }
-
-  Future<double> get avgFormPower async {
-    if (db.avgFormPower == null) {
-      List<Event> records = await this.records;
-      db.avgFormPower = Lap.calculateAverageFormPower(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgFormPower;
-  }
-
-  Future<double> get sdevFormPower async {
-    if (db.sdevFormPower == null) {
-      List<Event> records = await this.records;
-      db.sdevFormPower = Lap.calculateSdevFormPower(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.sdevFormPower;
-  }
-
-  Future<double> get avgPowerRatio async {
-    if (db.avgPowerRatio == null) {
-      List<Event> records = await this.records;
-      db.avgPowerRatio = Lap.calculateAveragePowerRatio(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgPowerRatio;
-  }
-
-  Future<double> get sdevPowerRatio async {
-    if (db.sdevPowerRatio == null) {
-      List<Event> records = await this.records;
-      db.sdevPowerRatio = Lap.calculateSdevPowerRatio(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.sdevPowerRatio;
-  }
-
-  Future<double> get avgStrideRatio async {
-    if (db.avgStrideRatio == null) {
-      List<Event> records = await this.records;
-      db.avgStrideRatio = Lap.calculateAverageStrideRatio(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.avgStrideRatio;
-  }
-
-  Future<double> get sdevStrideRatio async {
-    if (db.sdevStrideRatio == null) {
-      List<Event> records = await this.records;
-      db.sdevStrideRatio = Lap.calculateSdevStrideRatio(records: records);
-      await db.save();
-      notifyListeners();
-    }
-    return db.sdevStrideRatio;
+    await db.save();
+    return true;
   }
 
   Stream<int> parse({@required Athlete athlete}) async* {
@@ -382,6 +217,7 @@ class Activity extends ChangeNotifier {
     }
 
     db.state = "persisted";
+    await recalculateAverages();
     await db.save();
     notifyListeners();
     print("Activity data for »${db.name}« stored in database.");

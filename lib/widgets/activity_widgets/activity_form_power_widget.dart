@@ -12,7 +12,8 @@ class ActivityFormPowerWidget extends StatefulWidget {
   ActivityFormPowerWidget({this.activity});
 
   @override
-  _ActivityFormPowerWidgetState createState() => _ActivityFormPowerWidgetState();
+  _ActivityFormPowerWidgetState createState() =>
+      _ActivityFormPowerWidgetState();
 }
 
 class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
@@ -29,14 +30,16 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var formPowerValues = records.map((value) => value.db.formPower).nonZeroInts();
+      var formPowerValues =
+          records.map((value) => value.db.formPower).nonZeroInts();
       if (formPowerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityFormPowerChart(records: records, activity: widget.activity),
+              ActivityFormPowerChart(
+                  records: records, activity: widget.activity),
               ListTile(
                 leading: MyIcon.formPower,
                 title: Text(avgFormPowerString),
@@ -70,15 +73,8 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-
-    double avg = await activity.avgFormPower;
-    setState(() {
-      avgFormPowerString = avg.toStringOrDashes(1) + " W";
-    });
-
-    double sdev = await activity.sdevFormPower;
-    setState(() {
-      sdevFormPowerString = sdev.toStringOrDashes(2) + " W";
-    });
+    avgFormPowerString = activity.db.avgFormPower.toStringOrDashes(1) + " W";
+    sdevFormPowerString = activity.db.sdevFormPower.toStringOrDashes(2) + " W";
+    setState(() {});
   }
 }

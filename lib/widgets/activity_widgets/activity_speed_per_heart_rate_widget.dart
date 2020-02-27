@@ -30,7 +30,8 @@ class _ActivitySpeedPerHeartRateWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var heartRateValues = records.map((value) => value.db.heartRate).nonZeroInts();
+      var heartRateValues =
+          records.map((value) => value.db.heartRate).nonZeroInts();
       if (heartRateValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
@@ -64,10 +65,8 @@ class _ActivitySpeedPerHeartRateWidgetState
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-
-    double avg = await activity.avgSpeed / activity.db.avgHeartRate;
-    setState(() {
-      avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + " km / h*bpm";
-    });
+    double avg = 1000 * activity.db.avgSpeed / activity.db.avgHeartRate;
+    avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + " m/h / bpm";
+    setState(() {});
   }
 }

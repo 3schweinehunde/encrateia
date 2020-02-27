@@ -70,15 +70,8 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-
-    double avg = await activity.avgGroundTime;
-    setState(() {
-      avgGroundTimeString = avg.toStringOrDashes(1) + " ms";
-    });
-
-    double sdev = await activity.sdevGroundTime;
-    setState(() {
-      sdevGroundTimeString = sdev.toStringOrDashes(2) + " ms";
-    });
+    avgGroundTimeString = activity.db.avgGroundTime.toStringOrDashes(1) + " ms";
+    sdevGroundTimeString = activity.db.sdevGroundTime.toStringOrDashes(2) + " ms";
+    setState(() {});
   }
 }

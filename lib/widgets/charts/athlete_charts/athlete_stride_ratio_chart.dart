@@ -4,10 +4,10 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/activity_list.dart';
 import 'package:encrateia/utils/enums.dart';
 
-class AthletePowerRatioChart extends StatelessWidget {
+class AthleteStrideRatioChart extends StatelessWidget {
   final List<Activity> activities;
 
-  AthletePowerRatioChart({@required this.activities});
+  AthleteStrideRatioChart({@required this.activities});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +15,12 @@ class AthletePowerRatioChart extends StatelessWidget {
 
     var nonZeroActivities = activities
         .where((value) =>
-            value.db.avgPower != null &&
-            value.db.avgPower > 0 &&
-            value.db.avgFormPower != null &&
-            value.db.avgFormPower > 0)
+            value.db.avgStrideRatio != null &&
+            value.db.avgStrideRatio > 0)
         .toList();
 
     ActivityList(activities: nonZeroActivities).enrichGlidingAverage(
-      quantity: ActivityAttr.avgPowerRatio,
+      quantity: ActivityAttr.avgStrideRatio,
       fullDecay: 30,
     );
 
@@ -37,17 +35,14 @@ class AthletePowerRatioChart extends StatelessWidget {
         id: 'Average power ratio',
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
-        measureFn: (Activity activity, _) =>
-            100 *
-            (activity.db.avgPower - activity.db.avgFormPower) /
-            activity.db.avgPower,
+        measureFn: (Activity activity, _) => activity.db.avgStrideRatio,
         data: nonZeroDateLimited,
       ),
       Series<Activity, DateTime>(
-        id: 'Gliding average power ratio',
+        id: 'Gliding average stride ratio',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
-        measureFn: (Activity activity, _) => activity.glidingAvgPowerRatio,
+        measureFn: (Activity activity, _) => activity.glidingAvgStrideRatio,
         data: nonZeroDateLimited,
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
@@ -76,7 +71,7 @@ class AthletePowerRatioChart extends StatelessWidget {
         ),
         behaviors: [
           ChartTitle(
-            'Power Ratio (%)',
+            'Stride Ratio',
             titleStyleSpec: TextStyleSpec(fontSize: 13),
             behaviorPosition: BehaviorPosition.start,
             titleOutsideJustification: OutsideJustification.end,

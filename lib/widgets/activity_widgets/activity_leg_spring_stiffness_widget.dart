@@ -12,10 +12,12 @@ class ActivityLegSpringStiffnessWidget extends StatefulWidget {
   ActivityLegSpringStiffnessWidget({this.activity});
 
   @override
-  _ActivityLegSpringStiffnessWidgetState createState() => _ActivityLegSpringStiffnessWidgetState();
+  _ActivityLegSpringStiffnessWidgetState createState() =>
+      _ActivityLegSpringStiffnessWidgetState();
 }
 
-class _ActivityLegSpringStiffnessWidgetState extends State<ActivityLegSpringStiffnessWidget> {
+class _ActivityLegSpringStiffnessWidgetState
+    extends State<ActivityLegSpringStiffnessWidget> {
   List<Event> records = [];
   String avgLegSpringStiffnessString = "Loading ...";
   String sdevLegSpringStiffnessString = "Loading ...";
@@ -29,14 +31,16 @@ class _ActivityLegSpringStiffnessWidgetState extends State<ActivityLegSpringStif
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.groundTime).nonZeroDoubles();
+      var powerValues =
+          records.map((value) => value.db.groundTime).nonZeroDoubles();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityLegSpringStiffnessChart(records: records, activity: widget.activity),
+              ActivityLegSpringStiffnessChart(
+                  records: records, activity: widget.activity),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgLegSpringStiffnessString),
@@ -70,15 +74,11 @@ class _ActivityLegSpringStiffnessWidgetState extends State<ActivityLegSpringStif
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
+    avgLegSpringStiffnessString =
+        activity.db.avgLegSpringStiffness.toStringOrDashes(1) + " ms";
 
-    double avg = await activity.avgLegSpringStiffness;
-    setState(() {
-      avgLegSpringStiffnessString = avg.toStringOrDashes(1) + " ms";
-    });
-
-    double sdev = await activity.sdevLegSpringStiffness;
-    setState(() {
-      sdevLegSpringStiffnessString = sdev.toStringOrDashes(2) + " ms";
-    });
+    sdevLegSpringStiffnessString =
+        activity.db.sdevLegSpringStiffness.toStringOrDashes(2) + " ms";
+    setState(() {});
   }
 }

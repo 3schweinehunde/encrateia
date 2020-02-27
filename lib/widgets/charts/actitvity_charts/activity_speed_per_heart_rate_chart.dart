@@ -48,7 +48,7 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
               data: data,
               maxDomain: nonZero.last.db.distance,
               laps: laps,
-              domainTitle: 'Speed per Heart Rate (km / h*bpm)',
+              domainTitle: '100 * Speed per Heart Rate (km / h*bpm)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: false,

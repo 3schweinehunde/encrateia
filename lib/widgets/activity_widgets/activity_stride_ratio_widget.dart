@@ -12,7 +12,8 @@ class ActivityStrideRatioWidget extends StatefulWidget {
   ActivityStrideRatioWidget({this.activity});
 
   @override
-  _ActivityStrideRatioWidgetState createState() => _ActivityStrideRatioWidgetState();
+  _ActivityStrideRatioWidgetState createState() =>
+      _ActivityStrideRatioWidgetState();
 }
 
 class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
@@ -29,16 +30,20 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var strideRatioValues = records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
+      var strideRatioValues =
+          records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
       if (strideRatioValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityStrideRatioChart(records: records, activity: widget.activity),
-              Text("stride ratio = \nstride length (cm) / vertical oscillation (cm)\n"),
-              Text("stridelength (cm) = \n10 000 / 6 * speed (km/h) / cadence (strides/min)"),
+              ActivityStrideRatioChart(
+                  records: records, activity: widget.activity),
+              Text(
+                  "stride ratio = \nstride length (cm) / vertical oscillation (cm)\n"),
+              Text(
+                  "stridelength (cm) = \n10 000 / 6 * speed (km/h) / cadence (strides/min)"),
               ListTile(
                 leading: MyIcon.strideRatio,
                 title: Text(avgStrideRatioString),
@@ -72,15 +77,8 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-
-    double avg = await activity.avgStrideRatio;
-    setState(() {
-      avgStrideRatioString = avg.toStringOrDashes(1);
-    });
-
-    double sdev = await activity.sdevStrideRatio;
-    setState(() {
-      sdevStrideRatioString = sdev.toStringOrDashes(2);
-    });
+    avgStrideRatioString = activity.db.avgStrideRatio.toStringOrDashes(1);
+    sdevStrideRatioString = activity.db.sdevStrideRatio.toStringOrDashes(2);
+    setState(() {});
   }
 }

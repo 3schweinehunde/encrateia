@@ -12,10 +12,12 @@ class ActivityStrydCadenceWidget extends StatefulWidget {
   ActivityStrydCadenceWidget({this.activity});
 
   @override
-  _ActivityStrydCadenceWidgetState createState() => _ActivityStrydCadenceWidgetState();
+  _ActivityStrydCadenceWidgetState createState() =>
+      _ActivityStrydCadenceWidgetState();
 }
 
-class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget> {
+class _ActivityStrydCadenceWidgetState
+    extends State<ActivityStrydCadenceWidget> {
   List<Event> records = [];
   String avgStrydCadenceString = "Loading ...";
   String sdevStrydCadenceString = "Loading ...";
@@ -29,14 +31,16 @@ class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget>
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.strydCadence).nonZeroDoubles();
+      var powerValues =
+          records.map((value) => value.db.strydCadence).nonZeroDoubles();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityStrydCadenceChart(records: records, activity: widget.activity),
+              ActivityStrydCadenceChart(
+                  records: records, activity: widget.activity),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgStrydCadenceString),
@@ -70,15 +74,10 @@ class _ActivityStrydCadenceWidgetState extends State<ActivityStrydCadenceWidget>
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-
-    double avg = await activity.avgStrydCadence;
-    setState(() {
-      avgStrydCadenceString = avg.toStringOrDashes(1) + " spm";
-    });
-
-    double sdev = await activity.sdevStrydCadence;
-    setState(() {
-      sdevStrydCadenceString = sdev.toStringOrDashes(2) + " spm";
-    });
+    avgStrydCadenceString =
+        activity.db.avgStrydCadence.toStringOrDashes(1) + " spm";
+    sdevStrydCadenceString =
+        activity.db.sdevStrydCadence.toStringOrDashes(2) + " spm";
+    setState(() {});
   }
 }

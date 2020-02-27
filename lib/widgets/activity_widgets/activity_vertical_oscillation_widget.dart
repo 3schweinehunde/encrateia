@@ -12,10 +12,12 @@ class ActivityVerticalOscillationWidget extends StatefulWidget {
   ActivityVerticalOscillationWidget({this.activity});
 
   @override
-  _ActivityVerticalOscillationWidgetState createState() => _ActivityVerticalOscillationWidgetState();
+  _ActivityVerticalOscillationWidgetState createState() =>
+      _ActivityVerticalOscillationWidgetState();
 }
 
-class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOscillationWidget> {
+class _ActivityVerticalOscillationWidgetState
+    extends State<ActivityVerticalOscillationWidget> {
   List<Event> records = [];
   String avgVerticalOscillationString = "Loading ...";
   String sdevVerticalOscillationString = "Loading ...";
@@ -29,14 +31,16 @@ class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOsci
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
+      var powerValues =
+          records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
       if (powerValues.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityVerticalOscillationChart(records: records, activity: widget.activity),
+              ActivityVerticalOscillationChart(
+                  records: records, activity: widget.activity),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),
@@ -70,15 +74,10 @@ class _ActivityVerticalOscillationWidgetState extends State<ActivityVerticalOsci
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-
-    double avg = await activity.avgVerticalOscillation;
-    setState(() {
-      avgVerticalOscillationString = avg.toStringOrDashes(1) + " cm";
-    });
-
-    double sdev = await activity.sdevVerticalOscillation;
-    setState(() {
-      sdevVerticalOscillationString = sdev.toStringOrDashes(2) + " cm";
-    });
+    avgVerticalOscillationString =
+        activity.db.avgVerticalOscillation.toStringOrDashes(1) + " cm";
+    sdevVerticalOscillationString =
+        activity.db.sdevVerticalOscillation.toStringOrDashes(2) + " cm";
+    setState(() {});
   }
 }

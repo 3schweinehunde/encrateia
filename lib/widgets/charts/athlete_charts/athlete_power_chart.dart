@@ -15,7 +15,6 @@ class AthletePowerChart extends StatelessWidget {
 
     var nonZeroActivities = activities
         .where((activity) =>
-            activity.avgPower != null &&
             activity.db.avgPower != null &&
             activity.db.avgPower > 0)
         .toList();
