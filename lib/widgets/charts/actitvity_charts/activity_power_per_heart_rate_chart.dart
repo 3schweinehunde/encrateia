@@ -16,8 +16,11 @@ class ActivityPowerPerHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records
-        .where((value) => value.db.power > 100 && value.db.heartRate > 0);
+    var nonZero = records.where((value) =>
+        value.db.power != null &&
+        value.db.power > 100 &&
+        value.db.heartRate != null &&
+        value.db.heartRate > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.powerPerHeartRate,
       records: nonZero,

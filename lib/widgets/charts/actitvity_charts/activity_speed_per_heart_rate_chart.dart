@@ -16,8 +16,11 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records
-        .where((value) => value.db.power > 100 && value.db.heartRate > 0);
+    var nonZero = records.where((value) =>
+        value.db.power != null &&
+        value.db.power > 100 &&
+        value.db.heartRate != null &&
+        value.db.heartRate > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.speedPerHeartRate,
       records: nonZero,
@@ -51,7 +54,7 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
                   dataIsInWholeNumbers: false,
                   desiredTickCount: 6),
               domainTickProviderSpec:
-              BasicNumericTickProviderSpec(desiredTickCount: 6),
+                  BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
         } else
