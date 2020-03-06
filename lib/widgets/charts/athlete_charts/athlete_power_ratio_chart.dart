@@ -13,20 +13,12 @@ class AthletePowerRatioChart extends StatelessWidget {
   Widget build(BuildContext context) {
     int xAxesDays = 60;
 
-    var nonZeroActivities = activities
-        .where((value) =>
-            value.db.avgPower != null &&
-            value.db.avgPower > 0 &&
-            value.db.avgFormPower != null &&
-            value.db.avgFormPower > 0)
-        .toList();
-
-    ActivityList(activities: nonZeroActivities).enrichGlidingAverage(
+    ActivityList(activities: activities).enrichGlidingAverage(
       quantity: ActivityAttr.avgPowerRatio,
       fullDecay: 30,
     );
 
-    var nonZeroDateLimited = nonZeroActivities
+    var recentActivities = activities
         .where((activity) =>
             DateTime.now().difference(activity.db.timeCreated).inDays <
             xAxesDays)
@@ -41,14 +33,14 @@ class AthletePowerRatioChart extends StatelessWidget {
             100 *
             (activity.db.avgPower - activity.db.avgFormPower) /
             activity.db.avgPower,
-        data: nonZeroDateLimited,
+        data: recentActivities,
       ),
       Series<Activity, DateTime>(
         id: 'Gliding average power ratio',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) => activity.glidingAvgPowerRatio,
-        data: nonZeroDateLimited,
+        data: recentActivities,
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
 

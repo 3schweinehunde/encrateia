@@ -36,6 +36,7 @@ class _LapVerticalOscillationWidgetState
               value.db.verticalOscillation != null &&
               value.db.verticalOscillation > 0)
           .toList();
+
       if (verticalOscillationRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,

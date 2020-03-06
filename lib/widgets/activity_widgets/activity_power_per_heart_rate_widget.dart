@@ -36,6 +36,7 @@ class _ActivityPowerPerHeartRateWidgetState
               value.db.heartRate != null &&
               value.db.heartRate > 0)
           .toList();
+
       if (powerPerHeartRateRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

@@ -35,6 +35,7 @@ class _ActivityLegSpringStiffnessWidgetState
               value.db.legSpringStiffness != null &&
               value.db.legSpringStiffness > 0)
           .toList();
+
       if (legSpringStiffnessRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

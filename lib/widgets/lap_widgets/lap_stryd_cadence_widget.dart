@@ -32,6 +32,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
           .where((value) =>
               value.db.strydCadence != null && value.db.strydCadence > 0)
           .toList();
+
       if (strydCadenceRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,

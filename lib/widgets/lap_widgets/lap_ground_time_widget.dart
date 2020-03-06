@@ -32,6 +32,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
           .where(
               (value) => value.db.groundTime != null && value.db.groundTime > 0)
           .toList();
+
       if (groundTimeRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,

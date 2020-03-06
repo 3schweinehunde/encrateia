@@ -13,23 +13,15 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
   Widget build(BuildContext context) {
     int xAxesDays = 60;
 
-    var nonZeroActivities = activities
-        .where((value) =>
-            value.db.avgSpeed != null &&
-            value.db.avgSpeed > 0 &&
-            value.db.avgHeartRate != null &&
-            value.db.avgHeartRate > 0)
-        .toList();
-
-    ActivityList(activities: nonZeroActivities).enrichGlidingAverage(
+    ActivityList(activities: activities).enrichGlidingAverage(
       quantity: ActivityAttr.avgSpeedPerHeartRate,
       fullDecay: 30,
     );
 
-    var nonZeroDateLimited = nonZeroActivities
+    var recentActivities = activities
         .where((activity) =>
-    DateTime.now().difference(activity.db.timeCreated).inDays <
-        xAxesDays)
+            DateTime.now().difference(activity.db.timeCreated).inDays <
+            xAxesDays)
         .toList();
 
     var data = [
@@ -39,15 +31,15 @@ class AthleteSpeedPerHeartRateChart extends StatelessWidget {
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) =>
             (100 * activity.db.avgSpeed / activity.db.avgHeartRate),
-        data: nonZeroDateLimited,
+        data: recentActivities,
       ),
       Series<Activity, DateTime>(
         id: 'Gliding average speed per heart rate',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) =>
-        activity.glidingAvgSpeedPerHeartRate,
-        data: nonZeroDateLimited,
+            activity.glidingAvgSpeedPerHeartRate,
+        data: recentActivities,
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
 

@@ -33,6 +33,7 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
           .where(
               (value) => value.db.groundTime != null && value.db.groundTime > 0)
           .toList();
+
       if (groundTimeRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

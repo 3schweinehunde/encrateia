@@ -32,6 +32,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
           .where(
               (value) => value.db.formPower != null && value.db.formPower > 0)
           .toList();
+
       if (formPowerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,

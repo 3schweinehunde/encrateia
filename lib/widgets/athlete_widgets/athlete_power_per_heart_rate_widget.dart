@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/widgets/charts/athlete_charts/athlete_power_per_heart_rate_chart.dart';
 
 class AthletePowerPerHeartRateWidget extends StatefulWidget {
@@ -10,10 +9,12 @@ class AthletePowerPerHeartRateWidget extends StatefulWidget {
   AthletePowerPerHeartRateWidget({this.athlete});
 
   @override
-  _AthletePowerPerHeartRateWidgetState createState() => _AthletePowerPerHeartRateWidgetState();
+  _AthletePowerPerHeartRateWidgetState createState() =>
+      _AthletePowerPerHeartRateWidgetState();
 }
 
-class _AthletePowerPerHeartRateWidgetState extends State<AthletePowerPerHeartRateWidget> {
+class _AthletePowerPerHeartRateWidgetState
+    extends State<AthletePowerPerHeartRateWidget> {
   List<Activity> activities = [];
 
   @override
@@ -25,14 +26,23 @@ class _AthletePowerPerHeartRateWidgetState extends State<AthletePowerPerHeartRat
   @override
   Widget build(context) {
     if (activities.length > 0) {
-      var powerValues = activities.map((value) => value.db.avgPower).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var powerPerHeartRateActivities = activities
+          .where((value) =>
+              value.db.avgPower != null &&
+              value.db.avgPower > 0 &&
+              value.db.avgHeartRate != null &&
+              value.db.avgHeartRate > 0)
+          .toList();
+
+      if (powerPerHeartRateActivities.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthletePowerPerHeartRateChart(activities: activities),
+              AthletePowerPerHeartRateChart(
+                activities: powerPerHeartRateActivities,
+              ),
             ],
           ),
         );

@@ -13,18 +13,12 @@ class AthleteStrideRatioChart extends StatelessWidget {
   Widget build(BuildContext context) {
     int xAxesDays = 60;
 
-    var nonZeroActivities = activities
-        .where((value) =>
-            value.db.avgStrideRatio != null &&
-            value.db.avgStrideRatio > 0)
-        .toList();
-
-    ActivityList(activities: nonZeroActivities).enrichGlidingAverage(
+    ActivityList(activities: activities).enrichGlidingAverage(
       quantity: ActivityAttr.avgStrideRatio,
       fullDecay: 30,
     );
 
-    var nonZeroDateLimited = nonZeroActivities
+    var recentActivities = activities
         .where((activity) =>
             DateTime.now().difference(activity.db.timeCreated).inDays <
             xAxesDays)
@@ -36,14 +30,14 @@ class AthleteStrideRatioChart extends StatelessWidget {
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) => activity.db.avgStrideRatio,
-        data: nonZeroDateLimited,
+        data: recentActivities,
       ),
       Series<Activity, DateTime>(
         id: 'Gliding average stride ratio',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) => activity.glidingAvgStrideRatio,
-        data: nonZeroDateLimited,
+        data: recentActivities,
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
 

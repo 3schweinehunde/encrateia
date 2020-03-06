@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import '../charts/athlete_charts/athlete_speed_per_heart_rate_chart.dart';
 
 class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
@@ -10,10 +9,12 @@ class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
   AthleteSpeedPerHeartRateWidget({this.athlete});
 
   @override
-  _AthleteSpeedPerHeartRateWidgetState createState() => _AthleteSpeedPerHeartRateWidgetState();
+  _AthleteSpeedPerHeartRateWidgetState createState() =>
+      _AthleteSpeedPerHeartRateWidgetState();
 }
 
-class _AthleteSpeedPerHeartRateWidgetState extends State<AthleteSpeedPerHeartRateWidget> {
+class _AthleteSpeedPerHeartRateWidgetState
+    extends State<AthleteSpeedPerHeartRateWidget> {
   List<Activity> activities = [];
 
   @override
@@ -25,14 +26,23 @@ class _AthleteSpeedPerHeartRateWidgetState extends State<AthleteSpeedPerHeartRat
   @override
   Widget build(context) {
     if (activities.length > 0) {
-      var powerValues = activities.map((value) => value.db.avgSpeed).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var speedPerHeartRateActivities = activities
+          .where((value) =>
+              value.db.avgSpeed != null &&
+              value.db.avgSpeed > 0 &&
+              value.db.avgHeartRate != null &&
+              value.db.avgHeartRate > 0)
+          .toList();
+
+      if (speedPerHeartRateActivities.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthleteSpeedPerHeartRateChart(activities: activities),
+              AthleteSpeedPerHeartRateChart(
+                activities: speedPerHeartRateActivities,
+              ),
             ],
           ),
         );
@@ -51,7 +61,8 @@ class _AthleteSpeedPerHeartRateWidgetState extends State<AthleteSpeedPerHeartRat
   getData() async {
     Athlete athlete = widget.athlete;
     activities = await athlete.activities;
-    activities = activities.where((activity) => activity.db.sport == "running").toList();
+    activities =
+        activities.where((activity) => activity.db.sport == "running").toList();
     setState(() {});
   }
 }

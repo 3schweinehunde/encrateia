@@ -34,6 +34,7 @@ class _ActivityStrydCadenceWidgetState
           .where((value) =>
               value.db.strydCadence != null && value.db.strydCadence > 0)
           .toList();
+
       if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

@@ -25,14 +25,17 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   @override
   Widget build(context) {
     if (activities.length > 0) {
-      var powerValues = activities.map((value) => value.db.avgPower).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var powerActivities = activities
+          .where((activity) =>
+              activity.db.avgPower != null && activity.db.avgPower > 0)
+          .toList();
+      if (powerActivities.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthletePowerChart(activities: activities),
+              AthletePowerChart(activities: powerActivities),
             ],
           ),
         );

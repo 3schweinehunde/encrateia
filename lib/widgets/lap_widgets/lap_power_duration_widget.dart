@@ -18,6 +18,7 @@ class LapPowerDurationWidget extends StatelessWidget {
           var powerRecords = snapshot.data
               .where((value) => value.db.power != null && value.db.power > 100)
               .toList();
+
           if (powerRecords.length > 0) {
             return SingleChildScrollView(
               child: PowerDurationChart(records: powerRecords),

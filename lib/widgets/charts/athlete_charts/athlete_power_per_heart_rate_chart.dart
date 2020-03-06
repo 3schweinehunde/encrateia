@@ -13,20 +13,12 @@ class AthletePowerPerHeartRateChart extends StatelessWidget {
   Widget build(BuildContext context) {
     int xAxesDays = 60;
 
-    var nonZeroActivities = activities
-        .where((value) =>
-            value.db.avgPower != null &&
-            value.db.avgPower > 0 &&
-            value.db.avgHeartRate != null &&
-            value.db.avgHeartRate > 0)
-        .toList();
-
-    ActivityList(activities: nonZeroActivities).enrichGlidingAverage(
+    ActivityList(activities: activities).enrichGlidingAverage(
       quantity: ActivityAttr.avgPowerPerHeartRate,
       fullDecay: 30,
     );
 
-    var nonZeroDateLimited = nonZeroActivities
+    var recentActivities = activities
         .where((activity) =>
             DateTime.now().difference(activity.db.timeCreated).inDays <
             xAxesDays)
@@ -39,7 +31,7 @@ class AthletePowerPerHeartRateChart extends StatelessWidget {
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) =>
             (activity.db.avgPower / activity.db.avgHeartRate),
-        data: nonZeroDateLimited,
+        data: recentActivities,
       ),
       Series<Activity, DateTime>(
         id: 'Gliding average power per heart rate',
@@ -47,7 +39,7 @@ class AthletePowerPerHeartRateChart extends StatelessWidget {
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) =>
             activity.glidingAvgPowerPerHeartRate,
-        data: nonZeroDateLimited,
+        data: recentActivities,
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
 

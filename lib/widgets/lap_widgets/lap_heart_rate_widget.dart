@@ -31,6 +31,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
           .where(
               (value) => value.db.heartRate != null && value.db.heartRate > 0)
           .toList();
+
       if (heartRateRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,

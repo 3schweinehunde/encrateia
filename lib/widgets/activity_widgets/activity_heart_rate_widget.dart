@@ -21,6 +21,7 @@ class ActivityHeartRateWidget extends StatelessWidget {
               .where((value) =>
                   value.db.heartRate != null && value.db.heartRate > 10)
               .toList();
+
           if (heartRateRecords.length > 0) {
             var records = snapshot.data;
             return ListTileTheme(

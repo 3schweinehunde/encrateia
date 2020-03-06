@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/widgets/charts/athlete_charts/athlete_stride_ratio_chart.dart';
 
 class AthleteStrideRatioWidget extends StatefulWidget {
@@ -10,7 +9,8 @@ class AthleteStrideRatioWidget extends StatefulWidget {
   AthleteStrideRatioWidget({this.athlete});
 
   @override
-  _AthleteStrideRatioWidgetState createState() => _AthleteStrideRatioWidgetState();
+  _AthleteStrideRatioWidgetState createState() =>
+      _AthleteStrideRatioWidgetState();
 }
 
 class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
@@ -25,20 +25,24 @@ class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
   @override
   Widget build(context) {
     if (activities.length > 0) {
-      var powerValues = activities.map((value) => value.db.avgStrideRatio).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var strideRatioActivities = activities
+          .where((value) =>
+              value.db.avgStrideRatio != null && value.db.avgStrideRatio > 0)
+          .toList();
+
+      if (strideRatioActivities.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthleteStrideRatioChart(activities: activities),
+              AthleteStrideRatioChart(activities: strideRatioActivities),
             ],
           ),
         );
       } else {
         return Center(
-          child: Text("No power ratio data available."),
+          child: Text("No stride ratio data available."),
         );
       }
     } else {

@@ -35,6 +35,7 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
               value.db.verticalOscillation != null &&
               value.db.verticalOscillation != 0)
           .toList();
+
       if (strideRatioRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

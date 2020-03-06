@@ -34,6 +34,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
       var powerRecords = records
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
+
       if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,

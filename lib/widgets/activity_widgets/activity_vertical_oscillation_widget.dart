@@ -33,6 +33,7 @@ class _ActivityVerticalOscillationWidgetState
       var powerRecords = records
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
+
       if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
@@ -40,7 +41,9 @@ class _ActivityVerticalOscillationWidgetState
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityVerticalOscillationChart(
-                  records: powerRecords, activity: widget.activity),
+                records: powerRecords,
+                activity: widget.activity,
+              ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),

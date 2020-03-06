@@ -32,6 +32,7 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
       var powerRecords = records
           .where((value) => value.db.power != null && value.db.power > 0)
           .toList();
+
       if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
