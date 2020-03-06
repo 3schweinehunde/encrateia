@@ -225,6 +225,16 @@ class Lap {
     return heartRates.min().toString();
   }
 
+  static String avgHeartRate({List<Event> records}) {
+    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
+    return heartRates.mean().toString();
+  }
+
+  static String maxHeartRate({List<Event> records}) {
+    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
+    return heartRates.max().toString();
+  }
+
   static double calculateAveragePower({List<Event> records}) {
     var powers = records.map((record) => record.db.power).nonZeroInts();
     if (powers.length > 0) {

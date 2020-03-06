@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import '../charts/actitvity_charts/activity_heart_rate_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -18,16 +17,21 @@ class ActivityHeartRateWidget extends StatelessWidget {
       future: activity.records,
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
-          var heartRates =
-              snapshot.data.map((value) => value.db.heartRate).nonZeroInts();
-          if (heartRates.length > 0) {
+          var heartRateRecords = snapshot.data
+              .where((value) =>
+                  value.db.heartRate != null && value.db.heartRate > 10)
+              .toList();
+          if (heartRateRecords.length > 0) {
             var records = snapshot.data;
             return ListTileTheme(
               iconColor: Colors.deepOrange,
               child: ListView(
                 padding: EdgeInsets.only(left: 25),
                 children: <Widget>[
-                  ActivityHeartRateChart(records: records, activity: activity),
+                  ActivityHeartRateChart(
+                    records: heartRateRecords,
+                    activity: activity,
+                  ),
                   ListTile(
                     leading: MyIcon.average,
                     title: Text(activity.db.avgHeartRate.toString()),
@@ -50,7 +54,7 @@ class ActivityHeartRateWidget extends StatelessWidget {
                   ),
                   ListTile(
                     leading: MyIcon.amount,
-                    title: Text(records.length.toString()),
+                    title: Text(heartRateRecords.length.toString()),
                     subtitle: Text("number of measurements"),
                   ),
                 ],

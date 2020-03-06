@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import '../charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -12,10 +11,12 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
   LapLegSpringStiffnessWidget({this.lap});
 
   @override
-  _LapLegSpringStiffnessWidgetState createState() => _LapLegSpringStiffnessWidgetState();
+  _LapLegSpringStiffnessWidgetState createState() =>
+      _LapLegSpringStiffnessWidgetState();
 }
 
-class _LapLegSpringStiffnessWidgetState extends State<LapLegSpringStiffnessWidget> {
+class _LapLegSpringStiffnessWidgetState
+    extends State<LapLegSpringStiffnessWidget> {
   List<Event> records = [];
   String avgLegSpringStiffnessString = "Loading ...";
   String sdevLegSpringStiffnessString = "Loading ...";
@@ -29,15 +30,19 @@ class _LapLegSpringStiffnessWidgetState extends State<LapLegSpringStiffnessWidge
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues =
-      records.map((value) => value.db.legSpringStiffness).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var legSpringStiffnessRecords = records
+          .where((value) =>
+              value.db.legSpringStiffness != null &&
+              value.db.legSpringStiffness > 0)
+          .toList();
+
+      if (legSpringStiffnessRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapLegSpringStiffnessChart(records: records),
+              LapLegSpringStiffnessChart(records: legSpringStiffnessRecords),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgLegSpringStiffnessString),
@@ -50,7 +55,7 @@ class _LapLegSpringStiffnessWidgetState extends State<LapLegSpringStiffnessWidge
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(legSpringStiffnessRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],
@@ -58,7 +63,7 @@ class _LapLegSpringStiffnessWidgetState extends State<LapLegSpringStiffnessWidge
         );
       } else {
         return Center(
-          child: Text("No ground time available."),
+          child: Text("No leg spring stiffness data available."),
         );
       }
     } else {
@@ -71,14 +76,10 @@ class _LapLegSpringStiffnessWidgetState extends State<LapLegSpringStiffnessWidge
   getData() async {
     Lap lap = widget.lap;
     records = await lap.records;
-
     double avg = await lap.avgLegSpringStiffness;
-    setState(() {
-      avgLegSpringStiffnessString = avg.toStringOrDashes(1) + " ms";
-    });
-
     double sdev = await lap.sdevLegSpringStiffness;
     setState(() {
+      avgLegSpringStiffnessString = avg.toStringOrDashes(1) + " ms";
       sdevLegSpringStiffnessString = sdev.toStringOrDashes(2) + " ms";
     });
   }

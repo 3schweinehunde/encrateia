@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import '../charts/lap_charts/lap_ground_time_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -29,15 +28,17 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues =
-      records.map((value) => value.db.groundTime).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var groundTimeRecords = records
+          .where(
+              (value) => value.db.groundTime != null && value.db.groundTime > 0)
+          .toList();
+      if (groundTimeRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapGroundTimeChart(records: records),
+              LapGroundTimeChart(records: groundTimeRecords),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgGroundTimeString),
@@ -50,7 +51,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(groundTimeRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],

@@ -16,13 +16,9 @@ class ActivityStrideRatioChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) =>
-        value.db.strydCadence != null &&
-        value.db.verticalOscillation != null &&
-        value.db.verticalOscillation != 0);
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.strideRatio,
-      records: nonZero,
+      records: records,
       amount: 30,
     );
 
@@ -45,7 +41,7 @@ class ActivityStrideRatioChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: nonZero.last.db.distance,
+              maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Stride Ratio (multiple)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(

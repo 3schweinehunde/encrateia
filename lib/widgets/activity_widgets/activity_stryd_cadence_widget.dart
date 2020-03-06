@@ -30,7 +30,10 @@ class _ActivityStrydCadenceWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerRecords = records.where((value) => value.db.strydCadence != null && value.db.strydCadence > 0);
+      var powerRecords = records
+          .where((value) =>
+              value.db.strydCadence != null && value.db.strydCadence > 0)
+          .toList();
       if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
@@ -38,7 +41,9 @@ class _ActivityStrydCadenceWidgetState
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityStrydCadenceChart(
-                  records: powerRecords, activity: widget.activity, ),
+                records: powerRecords,
+                activity: widget.activity,
+              ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgStrydCadenceString),

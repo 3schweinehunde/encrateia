@@ -12,10 +12,12 @@ class LapVerticalOscillationWidget extends StatefulWidget {
   LapVerticalOscillationWidget({this.lap});
 
   @override
-  _LapVerticalOscillationWidgetState createState() => _LapVerticalOscillationWidgetState();
+  _LapVerticalOscillationWidgetState createState() =>
+      _LapVerticalOscillationWidgetState();
 }
 
-class _LapVerticalOscillationWidgetState extends State<LapVerticalOscillationWidget> {
+class _LapVerticalOscillationWidgetState
+    extends State<LapVerticalOscillationWidget> {
   List<Event> records = [];
   String avgVerticalOscillationString = "Loading ...";
   String sdevVerticalOscillationString = "Loading ...";
@@ -29,15 +31,18 @@ class _LapVerticalOscillationWidgetState extends State<LapVerticalOscillationWid
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues =
-      records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var verticalOscillationRecords = records
+          .where((value) =>
+              value.db.verticalOscillation != null &&
+              value.db.verticalOscillation > 0)
+          .toList();
+      if (verticalOscillationRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapVerticalOscillationChart(records: records),
+              LapVerticalOscillationChart(records: verticalOscillationRecords),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),
@@ -50,7 +55,7 @@ class _LapVerticalOscillationWidgetState extends State<LapVerticalOscillationWid
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(verticalOscillationRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],

@@ -16,10 +16,9 @@ class ActivityLegSpringStiffnessChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) => value.db.groundTime > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.legSpringStiffness,
-      records: nonZero,
+      records: records,
       amount: 30,
     );
 
@@ -42,7 +41,7 @@ class ActivityLegSpringStiffnessChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: nonZero.last.db.distance,
+              maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Leg Spring Stiffness (kN/m)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(

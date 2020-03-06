@@ -29,8 +29,10 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var groundTimeRecords = records.where(
-          (value) => value.db.groundTime != null && value.db.groundTime > 0);
+      var groundTimeRecords = records
+          .where(
+              (value) => value.db.groundTime != null && value.db.groundTime > 0)
+          .toList();
       if (groundTimeRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

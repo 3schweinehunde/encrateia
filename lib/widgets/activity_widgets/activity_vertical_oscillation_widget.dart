@@ -30,7 +30,9 @@ class _ActivityVerticalOscillationWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerRecords = records.where((value) => value.db.power != null && value.db.power > 100);
+      var powerRecords = records
+          .where((value) => value.db.power != null && value.db.power > 100)
+          .toList();
       if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

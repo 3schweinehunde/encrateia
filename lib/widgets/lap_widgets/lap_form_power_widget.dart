@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import '../charts/lap_charts/lap_form_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -29,9 +28,11 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues =
-      records.map((value) => value.db.formPower).nonZeroInts();
-      if (powerValues.length > 0) {
+      var formPowerRecords = records
+          .where(
+              (value) => value.db.formPower != null && value.db.formPower > 0)
+          .toList();
+      if (formPowerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
@@ -50,7 +51,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(formPowerRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],

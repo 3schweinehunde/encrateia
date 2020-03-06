@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/actitvity_charts/activity_stride_ratio_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -30,16 +29,22 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var strideRatioValues =
-          records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
-      if (strideRatioValues.length > 0) {
+      var strideRatioRecords = records
+          .where((value) =>
+              value.db.strydCadence != null &&
+              value.db.verticalOscillation != null &&
+              value.db.verticalOscillation != 0)
+          .toList();
+      if (strideRatioRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityStrideRatioChart(
-                  records: records, activity: widget.activity),
+                records: strideRatioRecords,
+                activity: widget.activity,
+              ),
               Text(
                   "stride ratio = \nstride length (cm) / vertical oscillation (cm)\n"),
               Text(
@@ -56,7 +61,7 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(strideRatioRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],
@@ -64,7 +69,7 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
         );
       } else {
         return Center(
-          child: Text("No power ratio data available."),
+          child: Text("No stride ratio data available."),
         );
       }
     } else {

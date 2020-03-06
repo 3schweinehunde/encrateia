@@ -29,8 +29,10 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var formPowerRecords = records.where(
-          (value) => value.db.formPower != null && value.db.formPower > 0);
+      var formPowerRecords = records
+          .where(
+              (value) => value.db.formPower != null && value.db.formPower > 0)
+          .toList();
       if (formPowerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

@@ -10,8 +10,7 @@ class LapHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) => value.db.heartRate > 0).toList();
-    var offset = nonZero.first.db.distance.round();
+    var offset = records.first.db.distance.round();
 
     List<Series<dynamic, num>> data = [
        Series<Event, int>(
@@ -19,7 +18,7 @@ class LapHeartRateChart extends StatelessWidget {
         colorFn: (_, __) => MaterialPalette.red.shadeDefault,
         domainFn: (Event record, _) => record.db.distance.round() - offset,
         measureFn: (Event record, _) => record.db.heartRate,
-        data: nonZero,
+        data: records,
       )
     ];
 

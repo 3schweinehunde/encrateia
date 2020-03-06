@@ -16,11 +16,9 @@ class ActivityHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where(
-        (value) => value.db.heartRate != null && value.db.heartRate > 10);
     var smoothedRecords = Event.toIntDataPoints(
       attribute: LapIntAttr.heartRate,
-      records: nonZero,
+      records: records,
       amount: 30,
     );
 
@@ -43,7 +41,7 @@ class ActivityHeartRateChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: nonZero.last.db.distance,
+              maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Heart Rate (bpm)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(

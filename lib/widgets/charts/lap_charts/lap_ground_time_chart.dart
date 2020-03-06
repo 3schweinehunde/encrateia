@@ -10,12 +10,7 @@ class LapGroundTimeChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records
-        .where(
-            (value) => value.db.groundTime != null && value.db.groundTime > 0)
-        .toList();
-
-    var offset = nonZero.first.db.distance.round();
+    var offset = records.first.db.distance.round();
 
     List<Series<dynamic, num>> data = [
       Series<Event, int>(
@@ -23,7 +18,7 @@ class LapGroundTimeChart extends StatelessWidget {
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Event record, _) => record.db.distance.round() - offset,
         measureFn: (Event record, _) => record.db.groundTime,
-        data: nonZero,
+        data: records,
       )
     ];
 

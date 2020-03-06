@@ -30,14 +30,17 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerRecords = records.where((value) => value.db.power != null && value.db.power > 100);
+      var powerRecords = records
+          .where((value) => value.db.power != null && value.db.power > 100)
+          .toList();
       if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityPowerChart(records: powerRecords, activity: widget.activity),
+              ActivityPowerChart(
+                  records: powerRecords, activity: widget.activity),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerString),

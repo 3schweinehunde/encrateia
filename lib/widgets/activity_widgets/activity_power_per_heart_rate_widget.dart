@@ -29,12 +29,13 @@ class _ActivityPowerPerHeartRateWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerPerHeartRateRecords = records.where((value) =>
-      value.db.power != null &&
-          value.db.power > 100 &&
-          value.db.heartRate != null &&
-          value.db.heartRate > 0);
-
+      var powerPerHeartRateRecords = records
+          .where((value) =>
+              value.db.power != null &&
+              value.db.power > 100 &&
+              value.db.heartRate != null &&
+              value.db.heartRate > 0)
+          .toList();
       if (powerPerHeartRateRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,

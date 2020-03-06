@@ -22,24 +22,25 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
   String maxPowerString = "Loading ...";
   String sdevPowerString = "Loading ...";
 
-    @override
-    void initState() {
-      getData();
-      super.initState();
-    }
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
 
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues =
-      records.map((value) => value.db.power).nonZeroInts();
-      if (powerValues.length > 0) {
+      var powerRecords = records
+          .where((value) => value.db.power != null && value.db.power > 100)
+          .toList();
+      if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapPowerChart(records: records),
+              LapPowerChart(records: powerRecords),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerString),
@@ -47,8 +48,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(
-                    minPowerString),
+                title: Text(minPowerString),
                 subtitle: Text("minimum power"),
               ),
               ListTile(
@@ -63,7 +63,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(powerRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],
@@ -81,28 +81,28 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
     }
   }
 
-    getData() async {
-      Lap lap = widget.lap;
-      records = await lap.records;
+  getData() async {
+    Lap lap = widget.lap;
+    records = await lap.records;
 
-      double avg = await lap.avgPower;
-      setState(() {
-        avgPowerString = avg.toStringOrDashes(1) + " W";
-      });
+    double avg = await lap.avgPower;
+    setState(() {
+      avgPowerString = avg.toStringOrDashes(1) + " W";
+    });
 
-      int min = await lap.minPower;
-      setState(() {
-        minPowerString = min.toString() + " W";
-      });
+    int min = await lap.minPower;
+    setState(() {
+      minPowerString = min.toString() + " W";
+    });
 
-      int max = await lap.maxPower;
-      setState(() {
-        maxPowerString = max.toString() + " W";
-      });
+    int max = await lap.maxPower;
+    setState(() {
+      maxPowerString = max.toString() + " W";
+    });
 
-      double sdev = await lap.sdevPower;
-      setState(() {
-        sdevPowerString = sdev.toStringOrDashes(2) + " W";
-      });
-    }
+    double sdev = await lap.sdevPower;
+    setState(() {
+      sdevPowerString = sdev.toStringOrDashes(2) + " W";
+    });
+  }
 }

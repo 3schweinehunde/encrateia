@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/actitvity_charts/activity_power_ratio_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -30,15 +29,19 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.power).nonZeroInts();
-      if (powerValues.length > 0) {
+      var powerRecords = records
+          .where((value) => value.db.power != null && value.db.power > 0)
+          .toList();
+      if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityPowerRatioChart(
-                  records: records, activity: widget.activity),
+                records: powerRecords,
+                activity: widget.activity,
+              ),
               Text("power ratio (%) = (power - form power) / power * 100"),
               ListTile(
                 leading: MyIcon.formPower,
@@ -52,7 +55,7 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(powerRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],

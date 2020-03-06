@@ -11,10 +11,7 @@ class PowerDurationChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records
-        .where((value) => value.db.power != null && value.db.power > 100)
-        .toList();
-    PowerDuration powerDuration = PowerDuration(records: nonZero);
+    PowerDuration powerDuration = PowerDuration(records: records);
 
     List<Series<dynamic, num>> data = [
        Series<IntPlotPoint, int>(

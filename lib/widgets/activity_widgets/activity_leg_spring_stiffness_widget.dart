@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import '../charts/actitvity_charts/activity_leg_spring_stiffness_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -31,25 +30,30 @@ class _ActivityLegSpringStiffnessWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues =
-          records.map((value) => value.db.groundTime).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var legSpringStiffnessRecords = records
+          .where((value) =>
+              value.db.legSpringStiffness != null &&
+              value.db.legSpringStiffness > 0)
+          .toList();
+      if (legSpringStiffnessRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityLegSpringStiffnessChart(
-                  records: records, activity: widget.activity),
+                records: legSpringStiffnessRecords,
+                activity: widget.activity,
+              ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgLegSpringStiffnessString),
-                subtitle: Text("average ground time"),
+                subtitle: Text("average leg spring stiffness"),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevLegSpringStiffnessString),
-                subtitle: Text("standard deviation ground time"),
+                subtitle: Text("standard deviation leg spring stiffness"),
               ),
               ListTile(
                 leading: MyIcon.amount,
@@ -61,7 +65,7 @@ class _ActivityLegSpringStiffnessWidgetState
         );
       } else {
         return Center(
-          child: Text("No ground time data available."),
+          child: Text("No leg spring stiffness data available."),
         );
       }
     } else {
