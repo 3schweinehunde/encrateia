@@ -2,7 +2,6 @@ import 'package:encrateia/widgets/charts/actitvity_charts/activity_speed_per_hea
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -30,16 +29,19 @@ class _ActivitySpeedPerHeartRateWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var heartRateValues =
-          records.map((value) => value.db.heartRate).nonZeroInts();
-      if (heartRateValues.length > 0) {
+      var heartRateRecords = records.where((value) =>
+          value.db.power != null &&
+          value.db.power > 100 &&
+          value.db.heartRate != null &&
+          value.db.heartRate > 0);
+      if (heartRateRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivitySpeedPerHeartRateChart(
-                records: records,
+                records: heartRateRecords,
                 activity: widget.activity,
               ),
               ListTile(
@@ -65,6 +67,7 @@ class _ActivitySpeedPerHeartRateWidgetState
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
+
     double avg = 1000 * activity.db.avgSpeed / activity.db.avgHeartRate;
     avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + " m/h / bpm";
     setState(() {});

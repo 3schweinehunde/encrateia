@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import '../charts/actitvity_charts/activity_form_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -30,16 +29,18 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var formPowerValues =
-          records.map((value) => value.db.formPower).nonZeroInts();
-      if (formPowerValues.length > 0) {
+      var formPowerRecords = records.where(
+          (value) => value.db.formPower != null && value.db.formPower > 0);
+      if (formPowerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityFormPowerChart(
-                  records: records, activity: widget.activity),
+                records: formPowerRecords,
+                activity: widget.activity,
+              ),
               ListTile(
                 leading: MyIcon.formPower,
                 title: Text(avgFormPowerString),
@@ -52,7 +53,7 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(formPowerRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],

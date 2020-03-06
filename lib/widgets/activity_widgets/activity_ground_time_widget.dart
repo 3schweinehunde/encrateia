@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import '../charts/actitvity_charts/activity_ground_time_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -12,7 +11,8 @@ class ActivityGroundTimeWidget extends StatefulWidget {
   ActivityGroundTimeWidget({this.activity});
 
   @override
-  _ActivityGroundTimeWidgetState createState() => _ActivityGroundTimeWidgetState();
+  _ActivityGroundTimeWidgetState createState() =>
+      _ActivityGroundTimeWidgetState();
 }
 
 class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
@@ -29,14 +29,18 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues = records.map((value) => value.db.groundTime).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var groundTimeRecords = records.where(
+          (value) => value.db.groundTime != null && value.db.groundTime > 0);
+      if (groundTimeRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityGroundTimeChart(records: records, activity: widget.activity),
+              ActivityGroundTimeChart(
+                records: groundTimeRecords,
+                activity: widget.activity,
+              ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgGroundTimeString),
@@ -49,7 +53,7 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(groundTimeRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],
@@ -70,8 +74,11 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-    avgGroundTimeString = activity.db.avgGroundTime.toStringOrDashes(1) + " ms";
-    sdevGroundTimeString = activity.db.sdevGroundTime.toStringOrDashes(2) + " ms";
+    avgGroundTimeString = activity.db.avgGroundTime != null
+        ? activity.db.avgGroundTime.toStringOrDashes(1) + " ms"
+        : "- - -";
+    sdevGroundTimeString =
+        activity.db.sdevGroundTime.toStringOrDashes(2) + " ms";
     setState(() {});
   }
 }

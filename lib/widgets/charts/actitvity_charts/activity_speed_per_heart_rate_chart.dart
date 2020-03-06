@@ -16,14 +16,9 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) =>
-        value.db.power != null &&
-        value.db.power > 100 &&
-        value.db.heartRate != null &&
-        value.db.heartRate > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.speedPerHeartRate,
-      records: nonZero,
+      records: records,
       amount: 30,
     );
 
@@ -46,7 +41,7 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: nonZero.last.db.distance,
+              maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: '100 * Speed per Heart Rate (km / h*bpm)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(

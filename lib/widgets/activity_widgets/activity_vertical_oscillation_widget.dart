@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import '../charts/actitvity_charts/activity_vertical_oscillation_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -31,16 +30,15 @@ class _ActivityVerticalOscillationWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var powerValues =
-          records.map((value) => value.db.verticalOscillation).nonZeroDoubles();
-      if (powerValues.length > 0) {
+      var powerRecords = records.where((value) => value.db.power != null && value.db.power > 100);
+      if (powerRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityVerticalOscillationChart(
-                  records: records, activity: widget.activity),
+                  records: powerRecords, activity: widget.activity),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),
@@ -53,7 +51,7 @@ class _ActivityVerticalOscillationWidgetState
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: Text(powerRecords.length.toString()),
                 subtitle: Text("number of measurements"),
               ),
             ],
@@ -61,7 +59,7 @@ class _ActivityVerticalOscillationWidgetState
         );
       } else {
         return Center(
-          child: Text("No power data available."),
+          child: Text("No vertical oscillation data available."),
         );
       }
     } else {

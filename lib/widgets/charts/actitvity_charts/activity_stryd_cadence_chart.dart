@@ -16,10 +16,9 @@ class ActivityStrydCadenceChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) => value.db.strydCadence > 0);
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.strydCadence,
-      records: nonZero,
+      records: records,
       amount: 30,
     );
 
@@ -42,7 +41,7 @@ class ActivityStrydCadenceChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: nonZero.last.db.distance,
+              maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Cadence (s/min)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(

@@ -16,10 +16,9 @@ class ActivityPowerChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) => value.db.power > 100);
     var smoothedRecords = Event.toIntDataPoints(
       attribute: LapIntAttr.power,
-      records: nonZero,
+      records: records,
       amount: 30,
     );
 
@@ -42,7 +41,7 @@ class ActivityPowerChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: nonZero.last.db.distance,
+              maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Power (W)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(

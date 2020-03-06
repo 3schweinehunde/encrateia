@@ -16,10 +16,9 @@ class ActivityVerticalOscillationChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var nonZero = records.where((value) => value.db.power > 100);
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.verticalOscillation,
-      records: nonZero,
+      records: records,
       amount: 30,
     );
 
@@ -42,7 +41,7 @@ class ActivityVerticalOscillationChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: nonZero.last.db.distance,
+              maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Vertical Oscillation (cm)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(
