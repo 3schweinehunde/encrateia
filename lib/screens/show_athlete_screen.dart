@@ -155,7 +155,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       flushbar = Flushbar(
         titleText: LinearProgressIndicator(value: percent / 100),
         message: "$percent% done (recalculating »${activity.db.name}« )",
-        duration: Duration(seconds: 1),
+        duration: Duration(seconds: 2),
         animationDuration: Duration(milliseconds: 1),
       )..show(context);
     }
@@ -218,7 +218,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     flushbar.dismiss();
     flushbar = Flushbar(
       message: "Download .fit-File for »${activity.db.name}«",
-      duration: Duration(seconds: 30),
+      duration: Duration(seconds: 3),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
 
@@ -237,7 +237,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     flushbar.dismiss();
     flushbar = Flushbar(
       message: "0% of storing »${activity.db.name}«",
-      duration: Duration(seconds: 10),
+      duration: Duration(seconds: 5),
       animationDuration: Duration(milliseconds: 1),
       titleText: LinearProgressIndicator(value: 0),
     )..show(context);
@@ -248,7 +248,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       flushbar = Flushbar(
         titleText: LinearProgressIndicator(value: value / 100),
         message: "$value% of storing »${activity.db.name}«",
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 10),
         animationDuration: Duration(milliseconds: 1),
       )..show(context);
     }
