@@ -37,7 +37,7 @@ class _DashboardState extends State<Dashboard> {
     setState(() {});
   }
 
-  navigateToListActivitiesScreen({Athlete athlete}) async {
+  goToListActivitiesScreen({Athlete athlete}) async {
     await athlete.readCredentials();
     Navigator.push(
       context,
@@ -47,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  navigateToEditAthleteScreen({Athlete athlete}) async {
+  goToEditAthleteScreen({Athlete athlete}) async {
     await athlete.readCredentials();
     Navigator.push(
       context,
@@ -108,16 +108,7 @@ class _DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   FlatButton(
                     child: const Text('Create a new Athlete'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditAthleteScreen(
-                            athlete: Athlete(),
-                          ),
-                        ),
-                      );
-                    },
+                    onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
                   )
                 ],
               )
@@ -132,19 +123,17 @@ class _DashboardState extends State<Dashboard> {
           for (Athlete athlete in athletes)
             ListTile(
               leading: Image.network(athlete.db.photoPath),
-              title: Text(
-                  "${athlete.db.firstName} ${athlete.db.lastName} - ${athlete.db.stravaId}"),
+              title: Text("${athlete.db.firstName} ${athlete.db.lastName} "
+                  "- ${athlete.db.stravaId}"),
               subtitle: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   RaisedButton(
-                    onPressed: () =>
-                        navigateToListActivitiesScreen(athlete: athlete),
+                    onPressed: () => goToListActivitiesScreen(athlete: athlete),
                     child: Text("Analyze"),
                   ),
                   RaisedButton(
-                    onPressed: () =>
-                        navigateToEditAthleteScreen(athlete: athlete),
+                    onPressed: () => goToEditAthleteScreen(athlete: athlete),
                     child: MyIcon.edit,
                   ),
                 ],
