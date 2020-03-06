@@ -60,7 +60,11 @@ class Activity extends ChangeNotifier {
       case ActivityAttr.avgPowerRatio:
         return 100 * (db.avgPower - db.avgFormPower) / db.avgPower;
       case ActivityAttr.avgStrideRatio:
-        return 10000 / 6 * db.avgSpeed / db.avgStrydCadence / db.avgVerticalOscillation;
+        return 10000 /
+            6 *
+            db.avgSpeed /
+            db.avgStrydCadence /
+            db.avgVerticalOscillation;
     }
   }
 
@@ -96,38 +100,39 @@ class Activity extends ChangeNotifier {
   }
 
   distanceString() {
-    if (db.totalDistance != null)
-      return (db.totalDistance / 1000).toStringAsFixed(2) + " km";
-    else
-      return "";
+    return db.totalDistance == null
+        ? "- - -"
+        : (db.totalDistance / 1000).toStringAsFixed(2) + " km";
   }
 
   heartRateString() {
-    if (db.avgHeartRate != null)
-      return db.avgHeartRate.toString() + " bpm";
-    else
-      return "";
+    return db.avgHeartRate == null
+        ? "- - -"
+        : db.avgHeartRate.toString() + " bpm";
+  }
+
+  averagePowerString() {
+    return db.avgPower == null
+        ? "- - -"
+        : db.avgPower.toStringAsFixed(1) + " W";
   }
 
   timeString() {
-    if (db.timeCreated != null)
-      return DateFormat("H:mm").format(db.timeCreated);
-    else
-      return "- - -";
+    return db.timeCreated == null
+        ? "- - -"
+        : DateFormat("H:mm").format(db.timeCreated);
   }
 
   dateString() {
-    if (db.timeCreated != null)
-      return DateFormat("d MMM yy").format(db.timeCreated);
-    else
-      return "- - -";
+    return db.timeCreated == null
+        ? "- - -"
+        : DateFormat("d MMM yy").format(db.timeCreated);
   }
 
   shortDateString() {
-    if (db.timeCreated != null)
-      return DateFormat("d.M.").format(db.timeCreated);
-    else
-      return "- - -";
+    return db.timeCreated == null
+        ? "- - -"
+        : DateFormat("d.M.").format(db.timeCreated);
   }
 
   paceString() => db.avgSpeed.toPace() + "/km";
@@ -146,7 +151,7 @@ class Activity extends ChangeNotifier {
     return _laps;
   }
 
-  recalculateAverages() async{
+  recalculateAverages() async {
     var records = await this.records;
     db.avgPower = Lap.calculateAveragePower(records: records);
     db.sdevPower = Lap.calculateSdevPower(records: records);

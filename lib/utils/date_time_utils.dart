@@ -27,7 +27,7 @@ extension DegreeFormatters on double {
 
       return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}"';
     } else {
-      return "no value";
+      return "- - - ";
     }
   }
 
@@ -38,7 +38,7 @@ extension DegreeFormatters on double {
        var seconds = (totalSeconds - minutes * 60).round().toString().padLeft(2, "0");
        return "$minutes:$seconds";
     } else {
-      return "no value";
+      return "- - - ";
     }
   }
 }

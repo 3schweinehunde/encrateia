@@ -69,8 +69,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
               Text(activity.timeString() + "\n" + activity.paceString()),
               Text(activity.heartRateString() +
                   "\n" +
-                  activity.db.avgPower?.toStringOrDashes(1) +
-                  " W"),
+                  activity.averagePowerString()),
             ],
           ),
           trailing: ChangeNotifierProvider.value(
