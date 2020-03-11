@@ -39,3 +39,4 @@ flutter_icons:
   android: launcher_icon
   ios: true
   image_path: assets/icons/runner.png
+  image_path_ios: assets/icons/runner-nonalpha.png
