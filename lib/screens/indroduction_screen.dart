@@ -29,7 +29,7 @@ That makes later analysis a lot quicker and it has only to be done once.
 
 No data is leaving your device, neither to the developer of Encrateia, nor to any third party service. We believe, your activity data should be stricty yours.
 
-Encrateia is, while not for free, an open source application. The source code can be retrieved from GitHub at: https://github.com/3schweinehunde/enkrateia
+Encrateia is, while not for free, an open source application. The source code can be retrieved from GitHub at: https://github.com/3schweinehunde/encrateia
 The .fit-file parser is a seperate library, you can find it at: https://github.com/3schweinehunde/fit_parser 
 
 If you have any questions regarding Encrateia, feel free to write an email to the main developer Stefan Haslinger using <stefan@3-schweinehun.de>
