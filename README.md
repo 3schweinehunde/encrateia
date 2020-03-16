@@ -25,3 +25,8 @@ let's just share some screenshots to get folks interested:
 Encrateia is [GPL v3](LICENSE) licensed and will always stay open source software.
 Future versions in app/play stores might not be for free, but you will always be able to get 
 the source code and build it yourself.  
+
+# Notes for Self-Compiling
+
+Creating an api to test:
+`flutter build apk --split-per-abi`
