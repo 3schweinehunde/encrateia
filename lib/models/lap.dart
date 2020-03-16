@@ -24,6 +24,8 @@ class Lap {
   }) {
     lap.db
       ..activitiesId = activity.db.id
+      ..avgSpeed = dataMessage.get('avg_speed')
+      ..maxSpeed = dataMessage.get('max_speed')
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
       ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
       ..startPositionLat = dataMessage.get('start_position_lat')
@@ -45,8 +47,6 @@ class Lap {
       ..totalDistance = dataMessage.get('total_distance')?.round()
       ..totalStrides = dataMessage.get('total_strides')?.round()
       ..totalCalories = dataMessage.get('total_calories')?.round()
-      ..avgSpeed = dataMessage.get('avg_speed')
-      ..maxSpeed = dataMessage.get('max_speed')
       ..totalAscent = dataMessage.get('total_ascent')?.round()
       ..totalDescent = dataMessage.get('total_descent')?.round()
       ..avgStanceTimePercent = dataMessage.get('avg_stance_time_percent')
@@ -369,7 +369,9 @@ class Lap {
   static double calculateAverageStrideRatio({List<Event> records}) {
     var powerRatios = records
         .where((record) =>
+            record.db.speed != null &&
             record.db.strydCadence != null &&
+            record.db.strydCadence != 0 &&
             record.db.verticalOscillation != null &&
             record.db.verticalOscillation != 0)
         .map((record) =>
@@ -387,7 +389,9 @@ class Lap {
   static double calculateSdevStrideRatio({List<Event> records}) {
     var powerRatios = records
         .where((record) =>
+            record.db.speed != null &&
             record.db.strydCadence != null &&
+            record.db.strydCadence != 0 &&
             record.db.verticalOscillation != null &&
             record.db.verticalOscillation != 0)
         .map((record) =>

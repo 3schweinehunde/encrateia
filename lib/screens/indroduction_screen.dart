@@ -13,7 +13,7 @@ class IntroductionScreen extends StatelessWidget {
             child: Text('''
 Encrateia is an mobile application that wants to help you analyse your activity tracking data. In particular Encrateia analyzes .fit-Files that are created by many fitness trackers by default.
 
-Encrateia is quite a sophisticated peace of information with 20+ charts, and 10+ reports, so we thought, we'd share the rationale behind Encrateia and what it actually does:
+Encrateia is quite a sophisticated piece of software with 20+ charts, and 10+ reports, so we thought, we'd share the rationale behind Encrateia and what it actually does:
 
 A lot of runners and cyclists upload their activity data to Strava, to be able to share and analyse and because storage capacity on tracking devices is limited. Old tracking data is typically deleted without asking the user for consent.
 
@@ -24,7 +24,7 @@ Encrateia helps you download your original tracking data - the .fit-files from S
 To get your data, we fetch information about your actitvities via the Strava API. You have to authorize the Encrateia app to do so. As the .fit-files can only be downloaded from the web site (and not via the API) you have to provide your Strava credentials a second time.
 
 Then you can use the [Download from Strava]-Button on the Athlete Screen to download the latest of your actitvties. They are stored on your device (and you could create a backup manually, if you like).
-Then tha .fit-files are parsed and the data is stored in a local SQLite database on the device. This takes quite some time, parsing is quick, but storing is 20 to 30 seconds per activtity.
+Then the .fit-files are parsed and the data is stored in a local SQLite database on the device. This takes quite some time, parsing is quick, but storing is 20 to 30 seconds per activtity.
 That makes later analysis a lot quicker and it has only to be done once.
 
 No data is leaving your device, neither to the developer of Encrateia, nor to any third party service. We believe, your activity data should be stricty yours.

@@ -177,6 +177,12 @@ class Activity extends ChangeNotifier {
     db.avgStrideRatio = Lap.calculateAverageStrideRatio(records: records);
     db.sdevStrideRatio = Lap.calculateSdevStrideRatio(records: records);
 
+    var laps = await this.laps;
+    for(Lap lap in laps) {
+      var records = await lap.records;
+      lap.db.avgPower = Lap.calculateAveragePower(records: records);
+      await lap.db.save();
+    }
     await db.save();
     return true;
   }
