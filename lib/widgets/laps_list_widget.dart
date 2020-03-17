@@ -21,35 +21,31 @@ class LapsListWidget extends StatelessWidget {
             child: DataTable(
               dataRowHeight: kMinInteractiveDimension * 0.60,
               columnSpacing: 1,
+              horizontalMargin: 12,
+              onSelectAll: (_){},
               columns: <DataColumn>[
                 DataColumn(
-                  label: MyIcon.repeats,
-                  tooltip: 'Lap',
+                  label: Text("Lap"),
                   numeric: true,
                 ),
                 DataColumn(
-                  label: Text("bpm"),
-                  tooltip: 'heartrate',
+                  label: Text("HR\nbpm"),
                   numeric: true,
                 ),
                 DataColumn(
-                  label: Text("min:ss"),
-                  tooltip: 'pace',
+                  label: Text("Pace\nmin:ss"),
                   numeric: true,
                 ),
                 DataColumn(
-                  label: Text("Watts"),
-                  tooltip: 'power',
+                  label: Text("Power\nWatts"),
                   numeric: true,
                 ),
                 DataColumn(
-                  label: Text("km"),
-                  tooltip: 'distance',
+                  label: Text("Dist.\nkm"),
                   numeric: true,
                 ),
                 DataColumn(
-                  label: MyIcon.ascent,
-                  tooltip: 'ascent',
+                  label: Text("Ascent\nm"),
                   numeric: true,
                 ),
               ],

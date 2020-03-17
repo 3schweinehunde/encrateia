@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import '../charts/athlete_charts/athlete_power_chart.dart';
 
 class AthletePowerWidget extends StatefulWidget {

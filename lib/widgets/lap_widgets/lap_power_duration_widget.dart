@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import '../charts/power_duration_chart.dart';
 
 class LapPowerDurationWidget extends StatelessWidget {

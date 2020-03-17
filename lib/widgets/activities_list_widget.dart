@@ -3,7 +3,6 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:encrateia/utils/enums.dart';

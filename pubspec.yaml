@@ -1,7 +1,7 @@
 name: encrateia
 description: Activity tracker data analysis for Android and iOS
 
-version: 0.1.1
+version: 0.1.2
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -19,7 +19,7 @@ dependencies:
   dio_cookie_manager: ^1.0.0
   flutter_secure_storage: ^3.3.1+1
   provider: ^3.2.0
-  fit_parser: ^0.1.7
+  fit_parser: ^0.1.8
 
   charts_flutter: ^0.8.1
   uuid: 2.0.4
