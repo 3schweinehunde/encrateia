@@ -13,6 +13,7 @@ import 'package:encrateia/utils/date_time_utils.dart';
 import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'dart:io';
 
 class Activity extends ChangeNotifier {
   DbActivity db;
@@ -100,13 +101,27 @@ class Activity extends ChangeNotifier {
   }
 
   Future<bool> copyFromLocalDir() async {
-    //TODO: copy single file over
-    //TODO: if copied...
-    if (true == true) {
-      setState("downloaded");
-      return true;
-    } else
-      return false;
+    var directories = await getExternalStorageDirectories();
+    var localDir = directories[0];
+    var appDocDir = await getApplicationDocumentsDirectory();
+    var pseudoStravaId = DateTime.now().millisecondsSinceEpoch;
+
+    localDir
+        .list(recursive: false, followLinks: false)
+        .listen((FileSystemEntity entity) async {
+      var isFile = await FileSystemEntity.isFile(entity.path);
+      if (isFile == true && entity.path.endsWith('.fit')) {
+        var sourceFile = File(entity.path);
+        await sourceFile
+            .copy(appDocDir.path + "/" + pseudoStravaId.toString() + ".fit");
+        sourceFile.delete();
+        db.stravaId = pseudoStravaId;
+        setState("downloaded");
+        return true;
+      }
+      return false; // No fit-file
+    });
+    return false; // Empty directory
   }
 
   setState(String state) async {
@@ -254,6 +269,7 @@ class Activity extends ChangeNotifier {
   handleDataMessage({DataMessage dataMessage}) async {
     if (dataMessage.definitionMessage.globalMessageName == null) {
       switch (dataMessage.definitionMessage.globalMessageNumber) {
+      // Garmin Forerunner 235uses global message numbers, which are not specified:
         case 13:
         case 22:
         case 79:
@@ -263,7 +279,9 @@ class Activity extends ChangeNotifier {
         case 141:
         case 147:
         case 216:
-          break; // Garmin uses global message numbers, which are not specified
+      // Garmin Forerunner 935 uses global message numbers, which are not specified:
+        case 233:
+          break;
         default:
           print("Message number "
               "${dataMessage.definitionMessage.globalMessageNumber} "
@@ -331,6 +349,9 @@ class Activity extends ChangeNotifier {
               .upsertAll(eventsForCurrentLap.map((event) => event.db).toList());
 
           await resetCurrentLap();
+          break;
+
+        case "segment_lap":
           break;
 
         case "session":
@@ -445,10 +466,7 @@ class Activity extends ChangeNotifier {
 
   static importFromLocalDirectory({Athlete athlete}) async {
     var activity = Activity.fromLocalDirectory(athlete: athlete);
-    bool copied = await activity.copyFromLocalDir();
-    if (copied == true) {
-      await activity.db.save();
-    }
+    await activity.copyFromLocalDir();
   }
 
   static Future<List<Activity>> all({@required Athlete athlete}) async {

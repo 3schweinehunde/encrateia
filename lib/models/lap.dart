@@ -236,7 +236,12 @@ class Lap {
   }
 
   static double calculateAveragePower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power).nonZeroInts();
+    var powers = records
+        .where((record) =>
+            record.db.power != null &&
+            record.db.power > 0 &&
+            record.db.power < 2000)
+        .map((record) => record.db.power);
     if (powers.length > 0) {
       return powers.mean();
     } else
@@ -244,7 +249,12 @@ class Lap {
   }
 
   static double calculateSdevPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power).nonZeroInts();
+    var powers = records
+        .where((record) =>
+            record.db.power != null &&
+            record.db.power > 0 &&
+            record.db.power < 2000)
+        .map((record) => record.db.power);
     return powers.sdev();
   }
 
@@ -349,7 +359,11 @@ class Lap {
 
   static double calculateAveragePowerRatio({List<Event> records}) {
     var powerRatios = records
-        .where((record) => record.db.power != null && record.db.power != 0)
+        .where((record) =>
+            record.db.power != null &&
+            record.db.power != 0 &&
+            record.db.formPower != null &&
+            record.db.formPower != 0)
         .map((record) =>
             (record.db.power - record.db.formPower) / record.db.power * 100);
     if (powerRatios.length > 0) {
@@ -360,7 +374,11 @@ class Lap {
 
   static double calculateSdevPowerRatio({List<Event> records}) {
     var powerRatios = records
-        .where((record) => record.db.power != null && record.db.power != 0)
+        .where((record) =>
+            record.db.power != null &&
+            record.db.power != 0 &&
+            record.db.formPower != null &&
+            record.db.formPower != 0)
         .map((record) =>
             (record.db.power - record.db.formPower) / record.db.power * 100);
     return powerRatios.sdev();

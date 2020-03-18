@@ -24,6 +24,7 @@ class MyIcon {
   static final delete = Icon(Icons.delete);
   static final distance = Icon(Icons.redo);
   static final download = Icon(Icons.cloud_download);
+  static final downloadLocal = Icon(Icons.file_download);
 
   // E
   static final edit = Icon(Icons.edit);

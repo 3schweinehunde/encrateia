@@ -106,6 +106,18 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             ),
           ),
         ]),
+        TableRow(children: [
+           Card(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            child: ListTile(
+              leading: MyIcon.downloadLocal,
+              title: Text("Import from Local Directory"),
+              onTap: () => importLocal(),
+            ),
+          ),
+          Text(""),
+        ]),
       ]),
     );
   }
@@ -166,6 +178,19 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       duration: Duration(seconds: 5),
       icon: MyIcon.finishedWhite,
     )..show(context);
+  }
+
+  importLocal() async {
+    Activity.importFromLocalDirectory(athlete: widget.athlete);
+
+    List<Activity> activities;
+    activities = await Activity.all(athlete: widget.athlete);
+
+    var downloadedActivities =
+    activities.where((activity) => activity.db.state == "downloaded");
+    for (Activity activity in downloadedActivities) {
+    // await parse(activity: activity);
+    }
   }
 
   updateJob() async {
