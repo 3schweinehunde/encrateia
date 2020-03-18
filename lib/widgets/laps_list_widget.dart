@@ -3,7 +3,6 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/screens/show_lap_screen.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 
 class LapsListWidget extends StatelessWidget {

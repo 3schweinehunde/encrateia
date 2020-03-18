@@ -7,10 +7,7 @@ import 'dart:io';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Db.create().connect();
-
-  var directories = await getExternalStorageDirectories();
-  var hintFile = File('${directories[0].path}/put_your_fit_files_here.txt');
-  await hintFile.writeAsString('This is the directory where Encrateia can pickup .fit-files from.');
+  await createHintFile();
   runApp(MyApp());
 }
 
@@ -25,4 +22,11 @@ class MyApp extends StatelessWidget {
       home: Dashboard(),
     );
   }
+}
+
+createHintFile() async {
+  var directories = await getExternalStorageDirectories();
+  var hintFile = File('${directories[0].path}/put_your_fit_files_here.txt');
+  await hintFile.writeAsString(
+      'This is the directory where Encrateia can pickup .fit-files from.');
 }

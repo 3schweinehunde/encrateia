@@ -46,6 +46,12 @@ class Activity extends ChangeNotifier {
       ..movingTime = summaryActivity.movingTime;
   }
 
+  Activity.fromLocalDirectory({Athlete athlete}) {
+    db = DbActivity()
+      ..athletesId = athlete.db.id
+      ..name = "t.b.d.";
+  }
+
   String toString() => '$db.name $db.startTime';
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
 
@@ -91,6 +97,16 @@ class Activity extends ChangeNotifier {
   download({@required Athlete athlete}) async {
     await StravaFitDownload.byId(id: db.stravaId.toString(), athlete: athlete);
     setState("downloaded");
+  }
+
+  Future<bool> copyFromLocalDir() async {
+    //TODO: copy single file over
+    //TODO: if copied...
+    if (true == true) {
+      setState("downloaded");
+      return true;
+    } else
+      return false;
   }
 
   setState(String state) async {
@@ -178,7 +194,7 @@ class Activity extends ChangeNotifier {
     db.sdevStrideRatio = Lap.calculateSdevStrideRatio(records: records);
 
     var laps = await this.laps;
-    for(Lap lap in laps) {
+    for (Lap lap in laps) {
       var records = await lap.records;
       lap.db.avgPower = Lap.calculateAveragePower(records: records);
       await lap.db.save();
@@ -235,9 +251,7 @@ class Activity extends ChangeNotifier {
     yield 100;
   }
 
-  handleDataMessage({
-    DataMessage dataMessage,
-  }) async {
+  handleDataMessage({DataMessage dataMessage}) async {
     if (dataMessage.definitionMessage.globalMessageName == null) {
       switch (dataMessage.definitionMessage.globalMessageNumber) {
         case 13:
@@ -427,6 +441,14 @@ class Activity extends ChangeNotifier {
         await activity.db.save();
       }
     });
+  }
+
+  static importFromLocalDirectory({Athlete athlete}) async {
+    var activity = Activity.fromLocalDirectory(athlete: athlete);
+    bool copied = await activity.copyFromLocalDir();
+    if (copied == true) {
+      await activity.db.save();
+    }
   }
 
   static Future<List<Activity>> all({@required Athlete athlete}) async {
