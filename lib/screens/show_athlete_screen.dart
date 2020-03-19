@@ -181,16 +181,32 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   }
 
   importLocal() async {
-    Activity.importFromLocalDirectory(athlete: widget.athlete);
-
     List<Activity> activities;
-    activities = await Activity.all(athlete: widget.athlete);
 
+    flushbar = Flushbar(
+      message: "Importing activities from local directory",
+      duration: Duration(seconds: 1),
+      icon: MyIcon.stravaDownloadWhite,
+    )..show(context);
+    await Activity.importFromLocalDirectory(athlete: widget.athlete);
+    flushbar = Flushbar(
+      message: "Activities moved into application",
+      duration: Duration(seconds: 1),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+
+    activities = await Activity.all(athlete: widget.athlete);
     var downloadedActivities =
-    activities.where((activity) => activity.db.state == "downloaded");
+    activities.where((activity) => activity.db.state == "downloaded").toList();
     for (Activity activity in downloadedActivities) {
-    // await parse(activity: activity);
+      await parse(activity: activity);
     }
+    flushbar.dismiss();
+    flushbar = Flushbar(
+      message: "Activities imported!",
+      duration: Duration(seconds: 5),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
   }
 
   updateJob() async {

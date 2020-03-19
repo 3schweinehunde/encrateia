@@ -39,17 +39,16 @@ class Activity extends ChangeNotifier {
     db = DbActivity()
       ..athletesId = athlete.db.id
       ..name = summaryActivity.name
-      ..movingTime = summaryActivity.movingTime
       ..type = summaryActivity.type
       ..distance = summaryActivity.distance.toInt()
       ..stravaId = summaryActivity.id
-      // ..startTime = summaryActivity.startDate
       ..movingTime = summaryActivity.movingTime;
   }
 
   Activity.fromLocalDirectory({Athlete athlete}) {
     db = DbActivity()
       ..athletesId = athlete.db.id
+      ..stravaId = DateTime.now().millisecondsSinceEpoch
       ..name = "t.b.d.";
   }
 
@@ -100,28 +99,27 @@ class Activity extends ChangeNotifier {
     setState("downloaded");
   }
 
-  Future<bool> copyFromLocalDir() async {
+  static importFromLocalDirectory({Athlete athlete}) async {
     var directories = await getExternalStorageDirectories();
     var localDir = directories[0];
     var appDocDir = await getApplicationDocumentsDirectory();
-    var pseudoStravaId = DateTime.now().millisecondsSinceEpoch;
 
-    localDir
-        .list(recursive: false, followLinks: false)
-        .listen((FileSystemEntity entity) async {
+    var entityStream = localDir.list(
+      recursive: false,
+      followLinks: false,
+    );
+
+    await for (var entity in entityStream) {
+      var activity = Activity.fromLocalDirectory(athlete: athlete);
       var isFile = await FileSystemEntity.isFile(entity.path);
       if (isFile == true && entity.path.endsWith('.fit')) {
         var sourceFile = File(entity.path);
-        await sourceFile
-            .copy(appDocDir.path + "/" + pseudoStravaId.toString() + ".fit");
+        await sourceFile.copy(
+            appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
         sourceFile.delete();
-        db.stravaId = pseudoStravaId;
-        setState("downloaded");
-        return true;
+        await activity.setState("downloaded");
       }
-      return false; // No fit-file
-    });
-    return false; // Empty directory
+    }
   }
 
   setState(String state) async {
@@ -269,7 +267,7 @@ class Activity extends ChangeNotifier {
   handleDataMessage({DataMessage dataMessage}) async {
     if (dataMessage.definitionMessage.globalMessageName == null) {
       switch (dataMessage.definitionMessage.globalMessageNumber) {
-      // Garmin Forerunner 235uses global message numbers, which are not specified:
+        // Garmin Forerunner 235uses global message numbers, which are not specified:
         case 13:
         case 22:
         case 79:
@@ -279,7 +277,7 @@ class Activity extends ChangeNotifier {
         case 141:
         case 147:
         case 216:
-      // Garmin Forerunner 935 uses global message numbers, which are not specified:
+        // Garmin Forerunner 935 uses global message numbers, which are not specified:
         case 233:
           break;
         default:
@@ -355,13 +353,21 @@ class Activity extends ChangeNotifier {
           break;
 
         case "session":
+          var startTime = dateTimeFromStrava(dataMessage.get('start_time'));
+          if (db.name == "t.b.d.")
+            db
+              ..name =
+                  "Activity on " + DateFormat.yMMMMd('en_US').format(startTime);
+
           db
             ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
-            ..startTime = dateTimeFromStrava(dataMessage.get('start_time'))
+            ..startTime = startTime
             ..startPositionLat = dataMessage.get('start_position_lat')
             ..startPositionLong = dataMessage.get('start_position_long')
             ..totalElapsedTime = dataMessage.get('total_elapsed_time')?.round()
             ..totalTimerTime = dataMessage.get('total_timer_time')?.round()
+            ..distance =
+                db.distance ?? dataMessage.get('total_distance')?.round()
             ..totalDistance = dataMessage.get('total_distance')?.round()
             ..totalStrides = dataMessage.get('total_strides')?.round()
             ..necLat = dataMessage.get('nec_lat')
@@ -378,6 +384,7 @@ class Activity extends ChangeNotifier {
             ..firstLapIndex = dataMessage.get('first_lap_index')?.round()
             ..numLaps = dataMessage.get('num_laps')?.round()
             ..event = dataMessage.get('event')?.toString()
+            ..type = db.type ?? dataMessage.get('event_type')
             ..eventType = dataMessage.get('event_type')
             ..eventGroup = dataMessage.get('event_group')?.round()
             ..trigger = dataMessage.get('trigger')
@@ -462,11 +469,6 @@ class Activity extends ChangeNotifier {
         await activity.db.save();
       }
     });
-  }
-
-  static importFromLocalDirectory({Athlete athlete}) async {
-    var activity = Activity.fromLocalDirectory(athlete: athlete);
-    await activity.copyFromLocalDir();
   }
 
   static Future<List<Activity>> all({@required Athlete athlete}) async {
