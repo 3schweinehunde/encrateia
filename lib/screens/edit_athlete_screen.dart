@@ -69,14 +69,11 @@ class EditAthleteScreen extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Card(
-                  child: ListTile(
-                    leading: MyIcon.upload,
-                    title: Text('Option 2: Standalone User'),
-                    subtitle:
-                        Text('Choose this option, if you want to upload all'
-                            ' .fit-files manually'),
-                  ),
+                ListTile(
+                  leading: MyIcon.upload,
+                  title: Text('Option 2: Standalone User'),
+                  subtitle: Text('Choose this option, if you want to upload all'
+                      ' .fit-files manually'),
                 ),
                 ButtonBar(
                   children: <Widget>[
