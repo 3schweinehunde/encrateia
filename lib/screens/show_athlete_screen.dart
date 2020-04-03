@@ -107,16 +107,24 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           ),
         ]),
         TableRow(children: [
-           Card(
+          Card(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             child: ListTile(
               leading: MyIcon.downloadLocal,
               title: Text("Import from Local Directory"),
               onTap: () => importLocal(),
             ),
           ),
-          Text(""),
+          Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            child: ListTile(
+              leading: MyIcon.delete,
+              title: Text("Delete Athlete"),
+              onTap: () => deleteUser(),
+            ),
+          ),
         ]),
       ]),
     );
@@ -163,7 +171,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       index += 1;
       await activity.recalculateAverages();
       flushbar.dismiss();
-      percent = 100 * index ~/ activities.length ;
+      percent = 100 * index ~/ activities.length;
       flushbar = Flushbar(
         titleText: LinearProgressIndicator(value: percent / 100),
         message: "$percent% done (recalculating »${activity.db.name}« )",
@@ -196,8 +204,9 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     )..show(context);
 
     activities = await Activity.all(athlete: widget.athlete);
-    var downloadedActivities =
-    activities.where((activity) => activity.db.state == "downloaded").toList();
+    var downloadedActivities = activities
+        .where((activity) => activity.db.state == "downloaded")
+        .toList();
     for (Activity activity in downloadedActivities) {
       await parse(activity: activity);
     }
@@ -294,5 +303,43 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       )..show(context);
     }
     setState(() {});
+  }
+
+  deleteUser() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Are you sure?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('All the athlete\'s data including'),
+                Text('activities will be deleted as well.'),
+                Text('There is no undo function.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Delete'),
+              onPressed: () => deleteAthleteAndPop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  deleteAthleteAndPop() async{
+    await widget.athlete.delete();
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 }

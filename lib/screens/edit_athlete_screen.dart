@@ -209,9 +209,10 @@ class EditAthleteScreen extends StatelessWidget {
   }
 
   saveStandaloneUser(BuildContext context) async {
-    athlete.db.firstName = athlete.firstName;
-    athlete.db.lastName = athlete.lastName;
-    await athlete.db.save();
+    athlete.db.firstName = athlete.firstName ?? athlete.db.firstName;
+    athlete.db.lastName = athlete.lastName ?? athlete.db.lastName;
+    await athlete.save();
+
     Navigator.of(context).pop();
   }
 }

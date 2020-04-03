@@ -44,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
       MaterialPageRoute(
         builder: (context) => ShowAthleteScreen(athlete: athlete),
       ),
-    );
+    ).then((_) => getAthletes());
   }
 
   goToEditAthleteScreen({Athlete athlete}) async {

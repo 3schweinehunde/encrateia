@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:io';
 
 class Athlete extends ChangeNotifier {
   String email;
@@ -71,4 +73,22 @@ class Athlete extends ChangeNotifier {
   }
 
   get activities => Activity.all(athlete: this);
+
+  delete() async {
+    var appDocDir = await getApplicationDocumentsDirectory();
+
+    for (Activity activity in await activities) {
+      await activity.db.getDbEvents().delete();
+      await activity.db.getDbLaps().delete();
+      await File(appDocDir.path + '/${db.stravaId}.fit').delete();
+    }
+    await db.getDbActivities().delete();
+    await db.delete();
+    notifyListeners();
+  }
+
+  save() async {
+    await db.save();
+    notifyListeners();
+  }
 }
