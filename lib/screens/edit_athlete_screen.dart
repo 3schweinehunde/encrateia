@@ -29,43 +29,123 @@ class EditAthleteScreen extends StatelessWidget {
   }
 
   Widget editAthleteForm(Athlete athlete, BuildContext context) {
-    if (athlete.db == null || athlete.db.stravaId == null) {
+    if (athlete.db == null ||
+        (athlete.db.stravaId == null && athlete.db.state != "standalone")) {
       // Strava Connection Card
-      return Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: MyIcon.brokenConnection,
-              title: Text('Step 1 of 2: Strava Connection'),
-              subtitle: Text('This athlete is not connected to a '
-                  'Strava User yet'),
-            ),
-            ButtonBar(
+      return ListView(
+        padding: EdgeInsets.all(20),
+        children: <Widget>[
+          Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                FlatButton(
-                  child: const Text('CONNECT TO STRAVA'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => StravaGetUser(athlete: athlete),
-                      ),
-                    );
-                  },
-                )
+                ListTile(
+                  leading: MyIcon.download,
+                  title: Text('Option 1: Strava Connection'),
+                  subtitle:
+                      Text('Choose this option, if you want to download most'
+                          'of the activities from Strava'),
+                ),
+                ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: const Text('Connect to Strava'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                StravaGetUser(athlete: athlete),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+          Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Card(
+                  child: ListTile(
+                    leading: MyIcon.upload,
+                    title: Text('Option 2: Standalone User'),
+                    subtitle:
+                        Text('Choose this option, if you want to upload all'
+                            ' .fit-files manually'),
+                  ),
+                ),
+                ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: const Text('Create standalone User'),
+                      onPressed: () => athlete.setupStandaloneAthlete(),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      );
+    } else if (athlete.db.state == "standalone") {
+      return ListView(
+        padding: EdgeInsets.all(20),
+        children: <Widget>[
+          Card(
+            child: ListTile(
+              leading: MyIcon.running,
+              title: Text('Step 2 of 2: Enter Your Name'),
+            ),
+          ),
+          TextFormField(
+            decoration: InputDecoration(labelText: "First name"),
+            initialValue: athlete.db.firstName,
+            onChanged: (value) => athlete.firstName = value,
+          ),
+          TextFormField(
+            decoration: InputDecoration(labelText: "Last name"),
+            initialValue: athlete.db.lastName,
+            onChanged: (value) => athlete.lastName = value,
+          ),
+
+          // Cancel and Save Card
+          Padding(
+            padding: EdgeInsets.all(15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                RaisedButton(
+                  color: Theme.of(context).primaryColorDark,
+                  textColor: Theme.of(context).primaryColorLight,
+                  child: Text('Cancel', textScaleFactor: 1.5),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                Container(width: 20.0),
+                RaisedButton(
+                  color: Theme.of(context).primaryColorDark,
+                  textColor: Theme.of(context).primaryColorLight,
+                  child: Text('Save', textScaleFactor: 1.5),
+                  onPressed: () => saveStandaloneUser(context),
+                ),
+              ],
+            ),
+          ),
+        ],
       );
     } else {
       return ListView(
         padding: EdgeInsets.all(20),
         children: <Widget>[
-          ListTile(
-            leading: MyIcon.website,
-            title: Text('Step 2 of 2: Credentials for Strava Web Site scraping'),
+          Card(
+            child: ListTile(
+              leading: MyIcon.website,
+              title:
+                  Text('Step 2 of 2: Credentials for Strava Web Site scraping'),
+            ),
           ),
           ListTile(
             leading: Text("First Name"),
@@ -112,7 +192,7 @@ class EditAthleteScreen extends StatelessWidget {
                   color: Theme.of(context).primaryColorDark,
                   textColor: Theme.of(context).primaryColorLight,
                   child: Text('Save', textScaleFactor: 1.5),
-                  onPressed: () => save(context),
+                  onPressed: () => saveStravaUser(context),
                 ),
               ],
             ),
@@ -122,9 +202,16 @@ class EditAthleteScreen extends StatelessWidget {
     }
   }
 
-  save (BuildContext context) async {
+  saveStravaUser(BuildContext context) async {
     await athlete.db.save();
     await athlete.storeCredentials();
+    Navigator.of(context).pop();
+  }
+
+  saveStandaloneUser(BuildContext context) async {
+    athlete.db.firstName = athlete.firstName;
+    athlete.db.lastName = athlete.lastName;
+    await athlete.db.save();
     Navigator.of(context).pop();
   }
 }

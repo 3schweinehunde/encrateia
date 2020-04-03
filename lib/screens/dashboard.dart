@@ -101,9 +101,9 @@ class _DashboardState extends State<Dashboard> {
         children: <Widget>[
           for (Athlete athlete in athletes)
             ListTile(
-              leading: Image.network(athlete.db.photoPath),
-              title: Text("${athlete.db.firstName} ${athlete.db.lastName} "
-                  "- ${athlete.db.stravaId}"),
+              leading: photoOrImage(athlete: athlete),
+              title: Text(
+                  "${athlete.db.firstName} ${athlete.db.lastName} ${stravaIdString(athlete: athlete)}"),
               subtitle: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -121,6 +121,20 @@ class _DashboardState extends State<Dashboard> {
         ],
       );
     }
+  }
+
+  stravaIdString({Athlete athlete}) {
+    if (athlete.db.stravaId != null)
+      return "- ${athlete.db.stravaId}";
+    else
+      return "";
+  }
+
+  photoOrImage({Athlete athlete}) {
+    if (athlete.db.photoPath != null)
+      return Image.network(athlete.db.photoPath);
+    else
+      return MyIcon.runningBig;
   }
 
   addUserCard() {

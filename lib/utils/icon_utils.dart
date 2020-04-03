@@ -65,6 +65,7 @@ class MyIcon {
   // R
   static final repeats = Icon(Icons.loop);
   static final running = Icon(Icons.directions_run);
+  static final runningBig = Icon(Icons.directions_run, size: 50);
   // S
   static final settings = Icon(Icons.settings);
   static final show = Icon(Icons.remove_red_eye);
@@ -83,6 +84,8 @@ class MyIcon {
   static final timeStamp = Icon(Icons.access_time);
   static final title = Icon(Icons.title);
   static final trainingEffect = Icon(Icons.fitness_center);
+  //
+  static final upload = Icon(Icons.file_upload);
   // V
   static final verticalOscillation = Icon(Icons.unfold_more);
   // W

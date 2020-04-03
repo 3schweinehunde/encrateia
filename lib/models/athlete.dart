@@ -7,6 +7,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class Athlete extends ChangeNotifier {
   String email;
   String password;
+  String firstName;
+  String lastName;
   DbAthlete db = DbAthlete();
 
   Athlete();
@@ -24,6 +26,15 @@ class Athlete extends ChangeNotifier {
       ..geoState = athlete.state
       ..state = "fromStrava"
       ..downloadInterval = 21;
+    notifyListeners();
+  }
+
+  setupStandaloneAthlete() async {
+    db
+      ..state = "standalone"
+      ..firstName = "Jane"
+      ..lastName = "Doe";
+    await db.save();
     notifyListeners();
   }
 
