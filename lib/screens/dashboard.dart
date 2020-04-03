@@ -25,11 +25,11 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Encrateia Dashboard"),
-      ),
-      body: dashboardBody(),
-    );
+        appBar: AppBar(
+          title: Text("Encrateia Dashboard"),
+        ),
+        body: dashboardBody(),
+        floatingActionButton: floatingActionButton());
   }
 
   getAthletes() async {
@@ -92,28 +92,7 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
           ),
-          Card(
-              child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: MyIcon.athlete,
-                title: Text('Who are you?'),
-                subtitle: Text(
-                  'This app stores date associated to one athlete '
-                  '(you) or many athletes (if you act as a trainer).',
-                ),
-              ),
-              ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    child: const Text('Create a new Athlete'),
-                    onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
-                  )
-                ],
-              )
-            ],
-          ))
+          addUserCard()
         ],
       );
     } else {
@@ -140,6 +119,41 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
         ],
+      );
+    }
+  }
+
+  addUserCard() {
+    return Card(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            leading: MyIcon.athlete,
+            title: Text('Who are you?'),
+            subtitle: Text(
+              'This app stores date associated to one athlete '
+              '(you) or many athletes (if you act as a trainer).',
+            ),
+          ),
+          ButtonBar(
+            children: <Widget>[
+              FlatButton(
+                child: const Text('Create a new Athlete'),
+                onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  floatingActionButton() {
+    if (athletes.length != 0) {
+      return FloatingActionButton.extended(
+        label: const Text('Add Athlete'),
+        onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
       );
     }
   }
