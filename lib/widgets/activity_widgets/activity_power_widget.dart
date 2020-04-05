@@ -74,7 +74,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                 title: Text(lastRecord.db.positionLong.semicirclesAsDegrees() +
                     " / " +
                     lastRecord.db.positionLat.semicirclesAsDegrees()),
-                subtitle: Text("findYourStryd (last power Record)"),
+                subtitle: Text("findYourStryd (last power record)"),
               ),
             ],
           ),
