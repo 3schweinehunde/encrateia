@@ -30,8 +30,10 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   Widget build(context) {
     if (records.length > 0) {
       var formPowerRecords = records
-          .where(
-              (value) => value.db.formPower != null && value.db.formPower > 0)
+          .where((value) =>
+              value.db.formPower != null &&
+              value.db.formPower > 0 &&
+              value.db.formPower < 200)
           .toList();
 
       if (formPowerRecords.length > 0) {

@@ -30,7 +30,12 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   Widget build(context) {
     if (records.length > 0) {
       var powerRecords = records
-          .where((value) => value.db.power != null && value.db.power > 0)
+          .where((value) =>
+              value.db.power != null &&
+              value.db.power > 0 &&
+              value.db.formPower != null &&
+              value.db.formPower > 0 &&
+              value.db.formPower < 200)
           .toList();
 
       if (powerRecords.length > 0) {
