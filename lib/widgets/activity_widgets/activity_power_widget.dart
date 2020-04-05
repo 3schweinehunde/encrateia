@@ -4,6 +4,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import '../charts/actitvity_charts/activity_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/utils/date_time_utils.dart';
 
 class ActivityPowerWidget extends StatefulWidget {
   final Activity activity;
@@ -33,6 +34,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
       var powerRecords = records
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
+      var lastRecord = powerRecords.last;
 
       if (powerRecords.length > 0) {
         return ListTileTheme(
@@ -66,6 +68,13 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                 leading: MyIcon.amount,
                 title: Text(powerRecords.length.toString()),
                 subtitle: Text("number of measurements"),
+              ),
+              ListTile(
+                leading: Text("🕵️‍♀️", style: TextStyle(fontSize: 25)),
+                title: Text(lastRecord.db.positionLong.semicirclesAsDegrees() +
+                    " / " +
+                    lastRecord.db.positionLat.semicirclesAsDegrees()),
+                subtitle: Text("findYourStryd (last power Record)"),
               ),
             ],
           ),
