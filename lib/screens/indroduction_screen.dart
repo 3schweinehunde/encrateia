@@ -27,6 +27,8 @@ Then you can use the [Download from Strava]-Button on the Athlete Screen to down
 Then the .fit-files are parsed and the data is stored in a local SQLite database on the device. This takes quite some time, parsing is quick, but storing is 20 to 30 seconds per activtity.
 That makes later analysis a lot quicker and it has only to be done once.
 
+If you do not share any data with Strava, you can still use Encrateia importing your .fit-files manually. Create a users with the second option "Create a Standalone User". Then put your .fit-files into the documents directory of the Encrateia app on your mobile device. To help you identify that directory, we placed a file named put_your_fit_files_here.txt there.
+
 No data is leaving your device, neither to the developer of Encrateia, nor to any third party service. We believe, your activity data should be stricty yours.
 
 Encrateia is, while not for free, an open source application. The source code can be retrieved from GitHub at: https://github.com/3schweinehunde/encrateia
