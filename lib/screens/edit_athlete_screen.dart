@@ -43,7 +43,7 @@ class EditAthleteScreen extends StatelessWidget {
                   leading: MyIcon.download,
                   title: Text('Option 1: Strava Connection'),
                   subtitle:
-                      Text('Choose this option, if you want to download most'
+                      Text('Choose this option, if you want to download most '
                           'of the activities from Strava'),
                 ),
                 ButtonBar(
