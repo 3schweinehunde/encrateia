@@ -345,7 +345,11 @@ class Lap {
   }
 
   static double calculateAverageFormPower({List<Event> records}) {
-    var formPowers = records.map((record) => record.db.formPower).nonZeroInts();
+    var formPowers = records
+        .where((record) =>
+            record.db.formPower != null && record.db.formPower < 200)
+        .map((record) => record.db.formPower);
+
     if (formPowers.length > 0) {
       return formPowers.mean();
     } else
@@ -353,7 +357,10 @@ class Lap {
   }
 
   static double calculateSdevFormPower({List<Event> records}) {
-    var formPowers = records.map((record) => record.db.formPower).nonZeroInts();
+    var formPowers = records
+        .where((record) =>
+            record.db.formPower != null && record.db.formPower < 200)
+        .map((record) => record.db.formPower);
     return formPowers.sdev();
   }
 

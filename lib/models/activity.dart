@@ -135,13 +135,13 @@ class Activity extends ChangeNotifier {
   }
 
   heartRateString() {
-    return db.avgHeartRate == null
+    return (db.avgHeartRate == null || db.avgHeartRate == 255)
         ? "- - -"
         : db.avgHeartRate.toString() + " bpm";
   }
 
   averagePowerString() {
-    return db.avgPower == null
+    return (db.avgPower == null || db.avgPower == -1)
         ? "- - -"
         : db.avgPower.toStringAsFixed(1) + " W";
   }

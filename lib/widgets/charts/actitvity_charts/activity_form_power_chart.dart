@@ -20,7 +20,7 @@ class ActivityFormPowerChart extends StatelessWidget {
     var smoothedRecords = Event.toIntDataPoints(
       attribute: LapIntAttr.formPower,
       records: records,
-      amount: 15,
+      amount: 10,
     );
 
     List<Series<dynamic, num>> data = [

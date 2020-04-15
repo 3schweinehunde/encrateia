@@ -19,7 +19,7 @@ class ActivityStrideRatioChart extends StatelessWidget {
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.strideRatio,
       records: records,
-      amount: 15,
+      amount: 10,
     );
 
     List<Series<dynamic, num>> data = [
