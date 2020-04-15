@@ -19,7 +19,7 @@ class ActivityPowerChart extends StatelessWidget {
     var smoothedRecords = Event.toIntDataPoints(
       attribute: LapIntAttr.power,
       records: records,
-      amount: 30,
+      amount: 15,
     );
 
     List<Series<dynamic, num>> data = [

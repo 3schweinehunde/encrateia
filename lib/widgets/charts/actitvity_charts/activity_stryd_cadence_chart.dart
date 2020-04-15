@@ -19,7 +19,7 @@ class ActivityStrydCadenceChart extends StatelessWidget {
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.strydCadence,
       records: records,
-      amount: 30,
+      amount: 15,
     );
 
     List<Series<dynamic, num>> data = [

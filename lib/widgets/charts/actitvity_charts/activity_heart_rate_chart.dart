@@ -19,7 +19,7 @@ class ActivityHeartRateChart extends StatelessWidget {
     var smoothedRecords = Event.toIntDataPoints(
       attribute: LapIntAttr.heartRate,
       records: records,
-      amount: 30,
+      amount: 15,
     );
 
     List<Series<dynamic, num>> data = [
