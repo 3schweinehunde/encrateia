@@ -21,7 +21,7 @@ class LapsListWidget extends StatelessWidget {
               dataRowHeight: kMinInteractiveDimension * 0.60,
               columnSpacing: 1,
               horizontalMargin: 12,
-              onSelectAll: (_){},
+              onSelectAll: (_) {},
               columns: <DataColumn>[
                 DataColumn(
                   label: Text("Lap"),
@@ -63,7 +63,7 @@ class LapsListWidget extends StatelessWidget {
                   },
                   cells: [
                     DataCell(Text(lap.index.toString())),
-                    DataCell(Text(lap.db.avgHeartRate.toString())),
+                    DataCell(Text(avgHeartRateString(lap.db.avgHeartRate))),
                     DataCell(Text(lap.db.avgSpeed.toPace())),
                     DataCell(Text(lap.db.avgPower.toStringOrDashes(1))),
                     DataCell(
@@ -85,5 +85,12 @@ class LapsListWidget extends StatelessWidget {
         }
       },
     );
+  }
+
+  avgHeartRateString(avgHeartRate) {
+    if (avgHeartRate != 255)
+      return avgHeartRate.toString();
+    else
+      return "-";
   }
 }

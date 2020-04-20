@@ -25,8 +25,15 @@ class MyApp extends StatelessWidget {
 }
 
 createHintFile() async {
-  var directories = await getExternalStorageDirectories();
-  var hintFile = File('${directories[0].path}/put_your_fit_files_here.txt');
-  await hintFile.writeAsString(
-      'This is the directory where Encrateia can pickup .fit-files from.');
+  if (Platform.isAndroid) {
+    var directories = await getExternalStorageDirectories();
+    var hintFile = File('${directories[0].path}/put_your_fit_files_here.txt');
+    await hintFile.writeAsString(
+        'This is the directory where Encrateia can pickup .fit-files from.');
+  } else {
+    var directory = await getApplicationDocumentsDirectory();
+    var hintFile = File('${directory.path}/put_your_fit_files_here.txt');
+    await hintFile.writeAsString(
+        'This is the directory where Encrateia can pickup .fit-files from.');
+  }
 }

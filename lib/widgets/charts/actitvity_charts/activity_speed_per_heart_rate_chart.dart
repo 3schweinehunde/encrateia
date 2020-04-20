@@ -19,7 +19,7 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.speedPerHeartRate,
       records: records,
-      amount: 30,
+      amount: 10,
     );
 
     List<Series<dynamic, num>> data = [

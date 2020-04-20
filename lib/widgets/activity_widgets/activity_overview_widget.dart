@@ -24,7 +24,7 @@ class ActivityOverviewWidget extends StatelessWidget {
           ),
           ListTile(
             leading: MyIcon.time,
-            title: Text(Duration(seconds: activity.db.movingTime).asString()),
+            title: Text(Duration(seconds: activity.db.movingTime ?? 0).asString()),
             subtitle: Text('moving time'),
           ),
           ListTile(

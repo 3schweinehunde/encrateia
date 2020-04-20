@@ -100,24 +100,43 @@ class Activity extends ChangeNotifier {
   }
 
   static importFromLocalDirectory({Athlete athlete}) async {
-    var directories = await getExternalStorageDirectories();
-    var localDir = directories[0];
-    var appDocDir = await getApplicationDocumentsDirectory();
+    if (Platform.isAndroid) {
+      var directories = await getExternalStorageDirectories();
+      var localDir = directories[0];
+      var appDocDir = await getApplicationDocumentsDirectory();
 
-    var entityStream = localDir.list(
-      recursive: false,
-      followLinks: false,
-    );
+      var entityStream = localDir.list(
+        recursive: false,
+        followLinks: false,
+      );
 
-    await for (var entity in entityStream) {
-      var activity = Activity.fromLocalDirectory(athlete: athlete);
-      var isFile = await FileSystemEntity.isFile(entity.path);
-      if (isFile == true && entity.path.endsWith('.fit')) {
-        var sourceFile = File(entity.path);
-        await sourceFile.copy(
-            appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
-        sourceFile.delete();
-        await activity.setState("downloaded");
+      await for (var entity in entityStream) {
+        var activity = Activity.fromLocalDirectory(athlete: athlete);
+        var isFile = await FileSystemEntity.isFile(entity.path);
+        if (isFile == true && entity.path.endsWith('.fit')) {
+          var sourceFile = File(entity.path);
+          await sourceFile.copy(
+              appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
+          sourceFile.delete();
+          await activity.setState("downloaded");
+        }
+      }
+    } else {
+      var appDocDir = await getApplicationDocumentsDirectory();
+      var entityStream = appDocDir.list(
+        recursive: false,
+        followLinks: false,
+      );
+
+      await for (var entity in entityStream) {
+        var activity = Activity.fromLocalDirectory(athlete: athlete);
+        var isFile = await FileSystemEntity.isFile(entity.path);
+        if (isFile == true && entity.path.endsWith('.fit')) {
+          var sourceFile = File(entity.path);
+          await sourceFile.rename(
+              appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
+          await activity.setState("downloaded");
+        }
       }
     }
   }
@@ -135,13 +154,13 @@ class Activity extends ChangeNotifier {
   }
 
   heartRateString() {
-    return db.avgHeartRate == null
+    return (db.avgHeartRate == null || db.avgHeartRate == 255)
         ? "- - -"
         : db.avgHeartRate.toString() + " bpm";
   }
 
   averagePowerString() {
-    return db.avgPower == null
+    return (db.avgPower == null || db.avgPower == -1)
         ? "- - -"
         : db.avgPower.toStringAsFixed(1) + " W";
   }

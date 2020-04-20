@@ -31,7 +31,8 @@ class _AthletePowerPerHeartRateWidgetState
               value.db.avgPower != null &&
               value.db.avgPower > 0 &&
               value.db.avgHeartRate != null &&
-              value.db.avgHeartRate > 0)
+              value.db.avgHeartRate > 0 &&
+              value.db.avgHeartRate != 255)
           .toList();
 
       if (powerPerHeartRateActivities.length > 0) {
