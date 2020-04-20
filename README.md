@@ -46,4 +46,5 @@ If you want to compile Encrateia yourself, this is the way to go:
   Obviously, downloads from Strava won't work then.
 
 * I always forget how to split into apks by architecture, when compiling.
-  This is, how it's done: `flutter build apk --split-per-abi`
+  This is, how it's done:  
+  `flutter build apk --split-per-abi`
