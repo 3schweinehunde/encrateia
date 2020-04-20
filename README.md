@@ -43,6 +43,7 @@ If you want to compile Encrateia yourself, this is the way to go:
   final String secret = "a1b2c3d4e5f6";
   final String clientId = "12345";
   ```
+  Obviously, downloads from Strava won't work then.
 
 * I always forget how to split into apks by architecture, when compiling.
   This is, how it's done: `flutter build apk --split-per-abi`
