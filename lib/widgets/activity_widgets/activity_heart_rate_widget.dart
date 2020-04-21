@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
-import '../charts/actitvity_charts/activity_heart_rate_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityHeartRateWidget extends StatelessWidget {

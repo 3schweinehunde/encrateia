@@ -24,7 +24,7 @@ dependencies:
   charts_flutter: ^0.8.1
   uuid: 2.0.4
   flushbar: ^1.9.1
-  path_provider: ^1.6.0
+  path_provider: ^1.6.7
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,7 @@ import 'package:encrateia/model/model.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:flutter/cupertino.dart';
-import 'activity.dart';
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/utils/enums.dart';

@@ -3,7 +3,7 @@ import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/models/event.dart';
-import 'activity.dart';
+import 'package:encrateia/models/activity.dart';
 
 class Lap {
   DbLap db;
