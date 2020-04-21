@@ -4,6 +4,7 @@ import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/utils/num_utils.dart';
 
 class Lap {
   DbLap db;
@@ -227,7 +228,7 @@ class Lap {
 
   static String avgHeartRate({List<Event> records}) {
     var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
-    return heartRates.mean().toString();
+    return heartRates.mean().toStringOrDashes(1);
   }
 
   static String maxHeartRate({List<Event> records}) {
