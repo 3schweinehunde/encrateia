@@ -71,7 +71,7 @@ class _ActivityPowerPerHeartRateWidgetState
     Activity activity = widget.activity;
     records = await activity.records;
     double avg = activity.db.avgPower / activity.db.avgHeartRate;
-    avgPowerPerHeartRateString = avg.toStringOrDashes(1) + " W / bpm";
+    avgPowerPerHeartRateString = avg.toStringOrDashes(2) + " W / bpm";
     setState(() {});
   }
 }
