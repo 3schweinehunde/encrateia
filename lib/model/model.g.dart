@@ -255,6 +255,144 @@ class TableDbLap extends SqfEntityTableBase {
     return _instance = _instance ?? TableDbLap();
   }
 }
+
+// DbWeight TABLE
+class TableDbWeight extends SqfEntityTableBase {
+  TableDbWeight() {
+    // declare properties of EntityTable
+    tableName = 'weights';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('date', DbType.date),
+      SqfEntityFieldBase('value', DbType.real),
+      SqfEntityFieldRelationshipBase(
+          TableDbAthlete.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'athletesId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbWeight();
+  }
+}
+
+// DbHeartRateZoneSchema TABLE
+class TableDbHeartRateZoneSchema extends SqfEntityTableBase {
+  TableDbHeartRateZoneSchema() {
+    // declare properties of EntityTable
+    tableName = 'heartRateZoneSchemata';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('date', DbType.date),
+      SqfEntityFieldBase('name', DbType.text),
+      SqfEntityFieldBase('base', DbType.integer),
+      SqfEntityFieldRelationshipBase(
+          TableDbAthlete.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'athletesId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbHeartRateZoneSchema();
+  }
+}
+
+// DbHeartRateZone TABLE
+class TableDbHeartRateZone extends SqfEntityTableBase {
+  TableDbHeartRateZone() {
+    // declare properties of EntityTable
+    tableName = 'heartRateZone';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('name', DbType.text),
+      SqfEntityFieldBase('lowerPercentage', DbType.integer),
+      SqfEntityFieldBase('upperPercentage', DbType.integer),
+      SqfEntityFieldBase('lowerLimit', DbType.integer),
+      SqfEntityFieldBase('upperLimit', DbType.integer),
+      SqfEntityFieldRelationshipBase(
+          TableDbHeartRateZoneSchema.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'heartRateZoneSchemataId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbHeartRateZone();
+  }
+}
+
+// DbPowerZoneSchema TABLE
+class TableDbPowerZoneSchema extends SqfEntityTableBase {
+  TableDbPowerZoneSchema() {
+    // declare properties of EntityTable
+    tableName = 'powerZoneSchemata';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('date', DbType.date),
+      SqfEntityFieldBase('name', DbType.text),
+      SqfEntityFieldBase('base', DbType.integer),
+      SqfEntityFieldRelationshipBase(
+          TableDbAthlete.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'athletesId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbPowerZoneSchema();
+  }
+}
+
+// DbPowerZone TABLE
+class TableDbPowerZone extends SqfEntityTableBase {
+  TableDbPowerZone() {
+    // declare properties of EntityTable
+    tableName = 'powerZone';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('name', DbType.text),
+      SqfEntityFieldBase('lowerPercentage', DbType.integer),
+      SqfEntityFieldBase('upperPercentage', DbType.integer),
+      SqfEntityFieldBase('lowerLimit', DbType.integer),
+      SqfEntityFieldBase('upperLimit', DbType.integer),
+      SqfEntityFieldRelationshipBase(
+          TableDbPowerZoneSchema.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'powerZoneSchemataId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbPowerZone();
+  }
+}
 // END TABLES
 
 // BEGIN SEQUENCES
@@ -269,6 +407,11 @@ class DbEncrateia extends SqfEntityModelProvider {
       TableDbActivity.getInstance,
       TableDbEvent.getInstance,
       TableDbLap.getInstance,
+      TableDbWeight.getInstance,
+      TableDbHeartRateZoneSchema.getInstance,
+      TableDbHeartRateZone.getInstance,
+      TableDbPowerZoneSchema.getInstance,
+      TableDbPowerZone.getInstance,
     ];
 
     bundledDatabasePath = encrateia
@@ -321,15 +464,18 @@ class DbAthlete {
     _setDefaultValues();
   }
   DbAthlete.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
     id = o['id'] as int;
-    state = o['state'] as String;
-    firstName = o['firstName'] as String;
-    lastName = o['lastName'] as String;
-    stravaUsername = o['stravaUsername'] as String;
-    photoPath = o['photoPath'] as String;
-    stravaId = o['stravaId'] as int;
-    geoState = o['geoState'] as String;
-    downloadInterval = o['downloadInterval'] as int;
+    if (o['state'] != null) state = o['state'] as String;
+    if (o['firstName'] != null) firstName = o['firstName'] as String;
+    if (o['lastName'] != null) lastName = o['lastName'] as String;
+    if (o['stravaUsername'] != null)
+      stravaUsername = o['stravaUsername'] as String;
+    if (o['photoPath'] != null) photoPath = o['photoPath'] as String;
+    if (o['stravaId'] != null) stravaId = o['stravaId'] as int;
+    if (o['geoState'] != null) geoState = o['geoState'] as String;
+    if (o['downloadInterval'] != null)
+      downloadInterval = o['downloadInterval'] as int;
   }
   // FIELDS (DbAthlete)
   int id;
@@ -345,7 +491,7 @@ class DbAthlete {
   BoolResult saveResult;
   // end FIELDS (DbAthlete)
 
-// COLLECTIONS (DbAthlete)
+// COLLECTIONS & VIRTUALS (DbAthlete)
   /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
   List<DbActivity> plDbActivities;
 
@@ -358,7 +504,46 @@ class DbAthlete {
         .equals(id)
         .and;
   }
-// END COLLECTIONS (DbAthlete)
+
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbWeight> plDbWeights;
+
+  /// get DbWeight(s) filtered by athletesId=id
+  DbWeightFilterBuilder getDbWeights(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbWeight()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .athletesId
+        .equals(id)
+        .and;
+  }
+
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbHeartRateZoneSchema> plDbHeartRateZoneSchemas;
+
+  /// get DbHeartRateZoneSchema(s) filtered by athletesId=id
+  DbHeartRateZoneSchemaFilterBuilder getDbHeartRateZoneSchemas(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbHeartRateZoneSchema()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .athletesId
+        .equals(id)
+        .and;
+  }
+
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbPowerZoneSchema> plDbPowerZoneSchemas;
+
+  /// get DbPowerZoneSchema(s) filtered by athletesId=id
+  DbPowerZoneSchemaFilterBuilder getDbPowerZoneSchemas(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbPowerZoneSchema()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .athletesId
+        .equals(id)
+        .and;
+  }
+// END COLLECTIONS & VIRTUALS (DbAthlete)
 
   static const bool _softDeleteActivated = false;
   DbAthleteManager __mnDbAthlete;
@@ -450,6 +635,16 @@ class DbAthlete {
     if (!forQuery) {
       map['DbActivities'] = await getDbActivities().toMapList();
     }
+    if (!forQuery) {
+      map['DbWeights'] = await getDbWeights().toMapList();
+    }
+    if (!forQuery) {
+      map['DbHeartRateZoneSchemas'] =
+          await getDbHeartRateZoneSchemas().toMapList();
+    }
+    if (!forQuery) {
+      map['DbPowerZoneSchemas'] = await getDbPowerZoneSchemas().toMapList();
+    }
 // END COLLECTIONS (DbAthlete)
 
     return map;
@@ -522,7 +717,22 @@ class DbAthlete {
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivities')) {
-          obj.plDbActivities = await obj.getDbActivities().toList();
+          obj.plDbActivities =
+              obj.plDbActivities ?? await obj.getDbActivities().toList();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbWeights')) {
+          obj.plDbWeights =
+              obj.plDbWeights ?? await obj.getDbWeights().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbHeartRateZoneSchemas')) {
+          obj.plDbHeartRateZoneSchemas = obj.plDbHeartRateZoneSchemas ??
+              await obj.getDbHeartRateZoneSchemas().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbPowerZoneSchemas')) {
+          obj.plDbPowerZoneSchemas = obj.plDbPowerZoneSchemas ??
+              await obj.getDbPowerZoneSchemas().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -548,7 +758,7 @@ class DbAthlete {
     return obj;
   }
 
-  /// Saves the object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+  /// Saves the (DbAthlete) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
 
   /// <returns>Returns id
   Future<int> save() async {
@@ -571,6 +781,7 @@ class DbAthlete {
   }
 
   /// saveAll method saves the sent List<DbAthlete> as a bulk in one transaction
+  ///
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbAthlete> dbathletes) async {
     final results = _mnDbAthlete.saveAll(
@@ -615,7 +826,9 @@ class DbAthlete {
   }
 
   /// inserts or replaces the sent List<<DbAthlete>> as a bulk in one transaction.
+  ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
@@ -633,6 +846,33 @@ class DbAthlete {
     {
       result =
           await DbActivity().select().athletesId.equals(id).delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result =
+          await DbWeight().select().athletesId.equals(id).delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbHeartRateZoneSchema()
+          .select()
+          .athletesId
+          .equals(id)
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbPowerZoneSchema()
+          .select()
+          .athletesId
+          .equals(id)
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -1210,7 +1450,22 @@ class DbAthleteFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivities')) {
-          obj.plDbActivities = await obj.getDbActivities().toList();
+          obj.plDbActivities =
+              obj.plDbActivities ?? await obj.getDbActivities().toList();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbWeights')) {
+          obj.plDbWeights =
+              obj.plDbWeights ?? await obj.getDbWeights().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbHeartRateZoneSchemas')) {
+          obj.plDbHeartRateZoneSchemas = obj.plDbHeartRateZoneSchemas ??
+              await obj.getDbHeartRateZoneSchemas().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbPowerZoneSchemas')) {
+          obj.plDbPowerZoneSchemas = obj.plDbPowerZoneSchemas ??
+              await obj.getDbPowerZoneSchemas().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -1678,99 +1933,136 @@ class DbActivity {
     _setDefaultValues();
   }
   DbActivity.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
     id = o['id'] as int;
-    state = o['state'] as String;
-    path = o['path'] as String;
-    stravaId = o['stravaId'] as int;
-    name = o['name'] as String;
-    movingTime = o['movingTime'] as int;
-    type = o['type'] as String;
-    distance = o['distance'] as int;
-    serialNumber = o['serialNumber'] as int;
-    timeCreated = o['timeCreated'] != null
-        ? int.tryParse(o['timeCreated'].toString()) != null
-            ? DateTime.fromMillisecondsSinceEpoch(o['timeCreated'] as int)
-            : DateTime.tryParse(o['timeCreated'].toString())
-        : null;
-    sportName = o['sportName'] as String;
-    sport = o['sport'] as String;
-    subSport = o['subSport'] as String;
-    timeStamp = o['timeStamp'] != null
-        ? int.tryParse(o['timeStamp'].toString()) != null
-            ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
-            : DateTime.tryParse(o['timeStamp'].toString())
-        : null;
-    startTime = o['startTime'] != null
-        ? int.tryParse(o['startTime'].toString()) != null
-            ? DateTime.fromMillisecondsSinceEpoch(o['startTime'] as int)
-            : DateTime.tryParse(o['startTime'].toString())
-        : null;
-    startPositionLat = double.tryParse(o['startPositionLat'].toString());
-    startPositionLong = double.tryParse(o['startPositionLong'].toString());
-    event = o['event'] as String;
-    eventType = o['eventType'] as String;
-    eventGroup = o['eventGroup'] as int;
-    totalDistance = o['totalDistance'] as int;
-    totalStrides = o['totalStrides'] as int;
-    totalCalories = o['totalCalories'] as int;
-    avgSpeed = double.tryParse(o['avgSpeed'].toString());
-    maxSpeed = double.tryParse(o['maxSpeed'].toString());
-    totalAscent = o['totalAscent'] as int;
-    totalDescent = o['totalDescent'] as int;
-    maxRunningCadence = o['maxRunningCadence'] as int;
-    trigger = o['trigger'] as String;
-    avgTemperature = o['avgTemperature'] as int;
-    maxTemperature = o['maxTemperature'] as int;
-    avgFractionalCadence =
-        double.tryParse(o['avgFractionalCadence'].toString());
-    maxFractionalCadence =
-        double.tryParse(o['maxFractionalCadence'].toString());
-    totalFractionalCycles =
-        double.tryParse(o['totalFractionalCycles'].toString());
-    avgStanceTimePercent =
-        double.tryParse(o['avgStanceTimePercent'].toString());
-    avgStanceTime = double.tryParse(o['avgStanceTime'].toString());
-    avgHeartRate = o['avgHeartRate'] as int;
-    maxHeartRate = o['maxHeartRate'] as int;
-    avgRunningCadence = double.tryParse(o['avgRunningCadence'].toString());
-    avgVerticalOscillation =
-        double.tryParse(o['avgVerticalOscillation'].toString());
-    totalElapsedTime = o['totalElapsedTime'] as int;
-    totalTimerTime = o['totalTimerTime'] as int;
-    totalTrainingEffect = o['totalTrainingEffect'] as int;
-    necLat = double.tryParse(o['necLat'].toString());
-    necLong = double.tryParse(o['necLong'].toString());
-    swcLat = double.tryParse(o['swcLat'].toString());
-    swcLong = double.tryParse(o['swcLong'].toString());
-    firstLapIndex = o['firstLapIndex'] as int;
-    numLaps = o['numLaps'] as int;
-    numSessions = o['numSessions'] as int;
-    localTimestamp = o['localTimestamp'] != null
-        ? int.tryParse(o['localTimestamp'].toString()) != null
-            ? DateTime.fromMillisecondsSinceEpoch(o['localTimestamp'] as int)
-            : DateTime.tryParse(o['localTimestamp'].toString())
-        : null;
-    avgPower = double.tryParse(o['avgPower'].toString());
-    minPower = o['minPower'] as int;
-    maxPower = o['maxPower'] as int;
-    sdevPower = double.tryParse(o['sdevPower'].toString());
-    avgGroundTime = double.tryParse(o['avgGroundTime'].toString());
-    sdevGroundTime = double.tryParse(o['sdevGroundTime'].toString());
-    avgLegSpringStiffness =
-        double.tryParse(o['avgLegSpringStiffness'].toString());
-    sdevLegSpringStiffness =
-        double.tryParse(o['sdevLegSpringStiffness'].toString());
-    avgFormPower = double.tryParse(o['avgFormPower'].toString());
-    sdevFormPower = double.tryParse(o['sdevFormPower'].toString());
-    avgPowerRatio = double.tryParse(o['avgPowerRatio'].toString());
-    sdevPowerRatio = double.tryParse(o['sdevPowerRatio'].toString());
-    avgStrideRatio = double.tryParse(o['avgStrideRatio'].toString());
-    sdevStrideRatio = double.tryParse(o['sdevStrideRatio'].toString());
-    avgStrydCadence = double.tryParse(o['avgStrydCadence'].toString());
-    sdevStrydCadence = double.tryParse(o['sdevStrydCadence'].toString());
-    sdevVerticalOscillation =
-        double.tryParse(o['sdevVerticalOscillation'].toString());
+    if (o['state'] != null) state = o['state'] as String;
+    if (o['path'] != null) path = o['path'] as String;
+    if (o['stravaId'] != null) stravaId = o['stravaId'] as int;
+    if (o['name'] != null) name = o['name'] as String;
+    if (o['movingTime'] != null) movingTime = o['movingTime'] as int;
+    if (o['type'] != null) type = o['type'] as String;
+    if (o['distance'] != null) distance = o['distance'] as int;
+    if (o['serialNumber'] != null) serialNumber = o['serialNumber'] as int;
+    if (o['timeCreated'] != null)
+      timeCreated = int.tryParse(o['timeCreated'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['timeCreated'] as int)
+          : DateTime.tryParse(o['timeCreated'].toString());
+    if (o['sportName'] != null) sportName = o['sportName'] as String;
+    if (o['sport'] != null) sport = o['sport'] as String;
+    if (o['subSport'] != null) subSport = o['subSport'] as String;
+    if (o['timeStamp'] != null)
+      timeStamp = int.tryParse(o['timeStamp'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
+          : DateTime.tryParse(o['timeStamp'].toString());
+    if (o['startTime'] != null)
+      startTime = int.tryParse(o['startTime'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['startTime'] as int)
+          : DateTime.tryParse(o['startTime'].toString());
+    if (o['startPositionLat'] != null)
+      startPositionLat = double.tryParse(o['startPositionLat'].toString());
+    if (o['startPositionLong'] != null)
+      startPositionLong = double.tryParse(o['startPositionLong'].toString());
+    if (o['event'] != null) event = o['event'] as String;
+    if (o['eventType'] != null) eventType = o['eventType'] as String;
+    if (o['eventGroup'] != null) eventGroup = o['eventGroup'] as int;
+    if (o['totalDistance'] != null) totalDistance = o['totalDistance'] as int;
+    if (o['totalStrides'] != null) totalStrides = o['totalStrides'] as int;
+    if (o['totalCalories'] != null) totalCalories = o['totalCalories'] as int;
+    if (o['avgSpeed'] != null)
+      avgSpeed = double.tryParse(o['avgSpeed'].toString());
+    if (o['maxSpeed'] != null)
+      maxSpeed = double.tryParse(o['maxSpeed'].toString());
+    if (o['totalAscent'] != null) totalAscent = o['totalAscent'] as int;
+    if (o['totalDescent'] != null) totalDescent = o['totalDescent'] as int;
+    if (o['maxRunningCadence'] != null)
+      maxRunningCadence = o['maxRunningCadence'] as int;
+    if (o['trigger'] != null) trigger = o['trigger'] as String;
+    if (o['avgTemperature'] != null)
+      avgTemperature = o['avgTemperature'] as int;
+    if (o['maxTemperature'] != null)
+      maxTemperature = o['maxTemperature'] as int;
+    if (o['avgFractionalCadence'] != null)
+      avgFractionalCadence =
+          double.tryParse(o['avgFractionalCadence'].toString());
+    if (o['maxFractionalCadence'] != null)
+      maxFractionalCadence =
+          double.tryParse(o['maxFractionalCadence'].toString());
+    if (o['totalFractionalCycles'] != null)
+      totalFractionalCycles =
+          double.tryParse(o['totalFractionalCycles'].toString());
+    if (o['avgStanceTimePercent'] != null)
+      avgStanceTimePercent =
+          double.tryParse(o['avgStanceTimePercent'].toString());
+    if (o['avgStanceTime'] != null)
+      avgStanceTime = double.tryParse(o['avgStanceTime'].toString());
+    if (o['avgHeartRate'] != null) avgHeartRate = o['avgHeartRate'] as int;
+    if (o['maxHeartRate'] != null) maxHeartRate = o['maxHeartRate'] as int;
+    if (o['avgRunningCadence'] != null)
+      avgRunningCadence = double.tryParse(o['avgRunningCadence'].toString());
+    if (o['avgVerticalOscillation'] != null)
+      avgVerticalOscillation =
+          double.tryParse(o['avgVerticalOscillation'].toString());
+    if (o['totalElapsedTime'] != null)
+      totalElapsedTime = o['totalElapsedTime'] as int;
+    if (o['totalTimerTime'] != null)
+      totalTimerTime = o['totalTimerTime'] as int;
+    if (o['totalTrainingEffect'] != null)
+      totalTrainingEffect = o['totalTrainingEffect'] as int;
+    if (o['necLat'] != null) necLat = double.tryParse(o['necLat'].toString());
+    if (o['necLong'] != null)
+      necLong = double.tryParse(o['necLong'].toString());
+    if (o['swcLat'] != null) swcLat = double.tryParse(o['swcLat'].toString());
+    if (o['swcLong'] != null)
+      swcLong = double.tryParse(o['swcLong'].toString());
+    if (o['firstLapIndex'] != null) firstLapIndex = o['firstLapIndex'] as int;
+    if (o['numLaps'] != null) numLaps = o['numLaps'] as int;
+    if (o['numSessions'] != null) numSessions = o['numSessions'] as int;
+    if (o['localTimestamp'] != null)
+      localTimestamp = int.tryParse(o['localTimestamp'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['localTimestamp'] as int)
+          : DateTime.tryParse(o['localTimestamp'].toString());
+    if (o['avgPower'] != null)
+      avgPower = double.tryParse(o['avgPower'].toString());
+    if (o['minPower'] != null) minPower = o['minPower'] as int;
+    if (o['maxPower'] != null) maxPower = o['maxPower'] as int;
+    if (o['sdevPower'] != null)
+      sdevPower = double.tryParse(o['sdevPower'].toString());
+    if (o['avgGroundTime'] != null)
+      avgGroundTime = double.tryParse(o['avgGroundTime'].toString());
+    if (o['sdevGroundTime'] != null)
+      sdevGroundTime = double.tryParse(o['sdevGroundTime'].toString());
+    if (o['avgLegSpringStiffness'] != null)
+      avgLegSpringStiffness =
+          double.tryParse(o['avgLegSpringStiffness'].toString());
+    if (o['sdevLegSpringStiffness'] != null)
+      sdevLegSpringStiffness =
+          double.tryParse(o['sdevLegSpringStiffness'].toString());
+    if (o['avgFormPower'] != null)
+      avgFormPower = double.tryParse(o['avgFormPower'].toString());
+    if (o['sdevFormPower'] != null)
+      sdevFormPower = double.tryParse(o['sdevFormPower'].toString());
+    if (o['avgPowerRatio'] != null)
+      avgPowerRatio = double.tryParse(o['avgPowerRatio'].toString());
+    if (o['sdevPowerRatio'] != null)
+      sdevPowerRatio = double.tryParse(o['sdevPowerRatio'].toString());
+    if (o['avgStrideRatio'] != null)
+      avgStrideRatio = double.tryParse(o['avgStrideRatio'].toString());
+    if (o['sdevStrideRatio'] != null)
+      sdevStrideRatio = double.tryParse(o['sdevStrideRatio'].toString());
+    if (o['avgStrydCadence'] != null)
+      avgStrydCadence = double.tryParse(o['avgStrydCadence'].toString());
+    if (o['sdevStrydCadence'] != null)
+      sdevStrydCadence = double.tryParse(o['sdevStrydCadence'].toString());
+    if (o['sdevVerticalOscillation'] != null)
+      sdevVerticalOscillation =
+          double.tryParse(o['sdevVerticalOscillation'].toString());
     athletesId = o['athletesId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbAthlete = o['DbAthlete'] != null
+        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
   }
   // FIELDS (DbActivity)
   int id;
@@ -1851,18 +2143,13 @@ class DbActivity {
   DbAthlete plDbAthlete;
 
   /// get DbAthlete By AthletesId
-
-  Future<DbAthlete> getDbAthlete(
-      [VoidCallback Function(DbAthlete o) dbathlete]) async {
+  Future<DbAthlete> getDbAthlete() async {
     final _obj = await DbAthlete().getById(athletesId);
-    if (dbathlete != null) {
-      dbathlete(_obj);
-    }
     return _obj;
   }
   // END RELATIONSHIPS (DbActivity)
 
-// COLLECTIONS (DbActivity)
+// COLLECTIONS & VIRTUALS (DbActivity)
   /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
   List<DbEvent> plDbEvents;
 
@@ -1888,7 +2175,7 @@ class DbActivity {
         .equals(id)
         .and;
   }
-// END COLLECTIONS (DbActivity)
+// END COLLECTIONS & VIRTUALS (DbActivity)
 
   static const bool _softDeleteActivated = false;
   DbActivityManager __mnDbActivity;
@@ -2611,17 +2898,17 @@ class DbActivity {
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbEvents')) {
-          obj.plDbEvents = await obj.getDbEvents().toList();
+          obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
         }
         if (preloadFields == null || preloadFields.contains('plDbLaps')) {
-          obj.plDbLaps = await obj.getDbLaps().toList();
+          obj.plDbLaps = obj.plDbLaps ?? await obj.getDbLaps().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = await obj.getDbAthlete();
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -2647,7 +2934,7 @@ class DbActivity {
     return obj;
   }
 
-  /// Saves the object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+  /// Saves the (DbActivity) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
 
   /// <returns>Returns id
   Future<int> save() async {
@@ -2670,6 +2957,7 @@ class DbActivity {
   }
 
   /// saveAll method saves the sent List<DbActivity> as a bulk in one transaction
+  ///
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
     final results = _mnDbActivity.saveAll(
@@ -2776,7 +3064,9 @@ class DbActivity {
   }
 
   /// inserts or replaces the sent List<<DbActivity>> as a bulk in one transaction.
+  ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
@@ -3715,17 +4005,17 @@ class DbActivityFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbEvents')) {
-          obj.plDbEvents = await obj.getDbEvents().toList();
+          obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
         }
         if (preloadFields == null || preloadFields.contains('plDbLaps')) {
-          obj.plDbLaps = await obj.getDbLaps().toList();
+          obj.plDbLaps = obj.plDbLaps ?? await obj.getDbLaps().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = await obj.getDbAthlete();
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -4424,34 +4714,54 @@ class DbEvent {
     _setDefaultValues();
   }
   DbEvent.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
     id = o['id'] as int;
-    event = o['event'] as String;
-    eventType = o['eventType'] as String;
-    eventGroup = o['eventGroup'] as int;
-    timerTrigger = o['timerTrigger'] as String;
-    timeStamp = o['timeStamp'] != null
-        ? int.tryParse(o['timeStamp'].toString()) != null
-            ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
-            : DateTime.tryParse(o['timeStamp'].toString())
-        : null;
-    positionLat = double.tryParse(o['positionLat'].toString());
-    positionLong = double.tryParse(o['positionLong'].toString());
-    distance = double.tryParse(o['distance'].toString());
-    altitude = double.tryParse(o['altitude'].toString());
-    speed = double.tryParse(o['speed'].toString());
-    heartRate = o['heartRate'] as int;
-    cadence = double.tryParse(o['cadence'].toString());
-    fractionalCadence = double.tryParse(o['fractionalCadence'].toString());
-    power = o['power'] as int;
-    strydCadence = double.tryParse(o['strydCadence'].toString());
-    groundTime = double.tryParse(o['groundTime'].toString());
-    verticalOscillation = double.tryParse(o['verticalOscillation'].toString());
-    formPower = o['formPower'] as int;
-    legSpringStiffness = double.tryParse(o['legSpringStiffness'].toString());
-    data = double.tryParse(o['data'].toString());
+    if (o['event'] != null) event = o['event'] as String;
+    if (o['eventType'] != null) eventType = o['eventType'] as String;
+    if (o['eventGroup'] != null) eventGroup = o['eventGroup'] as int;
+    if (o['timerTrigger'] != null) timerTrigger = o['timerTrigger'] as String;
+    if (o['timeStamp'] != null)
+      timeStamp = int.tryParse(o['timeStamp'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
+          : DateTime.tryParse(o['timeStamp'].toString());
+    if (o['positionLat'] != null)
+      positionLat = double.tryParse(o['positionLat'].toString());
+    if (o['positionLong'] != null)
+      positionLong = double.tryParse(o['positionLong'].toString());
+    if (o['distance'] != null)
+      distance = double.tryParse(o['distance'].toString());
+    if (o['altitude'] != null)
+      altitude = double.tryParse(o['altitude'].toString());
+    if (o['speed'] != null) speed = double.tryParse(o['speed'].toString());
+    if (o['heartRate'] != null) heartRate = o['heartRate'] as int;
+    if (o['cadence'] != null)
+      cadence = double.tryParse(o['cadence'].toString());
+    if (o['fractionalCadence'] != null)
+      fractionalCadence = double.tryParse(o['fractionalCadence'].toString());
+    if (o['power'] != null) power = o['power'] as int;
+    if (o['strydCadence'] != null)
+      strydCadence = double.tryParse(o['strydCadence'].toString());
+    if (o['groundTime'] != null)
+      groundTime = double.tryParse(o['groundTime'].toString());
+    if (o['verticalOscillation'] != null)
+      verticalOscillation =
+          double.tryParse(o['verticalOscillation'].toString());
+    if (o['formPower'] != null) formPower = o['formPower'] as int;
+    if (o['legSpringStiffness'] != null)
+      legSpringStiffness = double.tryParse(o['legSpringStiffness'].toString());
+    if (o['data'] != null) data = double.tryParse(o['data'].toString());
     activitiesId = o['activitiesId'] as int;
 
     lapsId = o['lapsId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbActivity = o['DbActivity'] != null
+        ? DbActivity.fromMap(o['DbActivity'] as Map<String, dynamic>)
+        : null;
+    plDbLap = o['DbLap'] != null
+        ? DbLap.fromMap(o['DbLap'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
   }
   // FIELDS (DbEvent)
   int id;
@@ -4486,13 +4796,8 @@ class DbEvent {
   DbActivity plDbActivity;
 
   /// get DbActivity By ActivitiesId
-
-  Future<DbActivity> getDbActivity(
-      [VoidCallback Function(DbActivity o) dbactivity]) async {
+  Future<DbActivity> getDbActivity() async {
     final _obj = await DbActivity().getById(activitiesId);
-    if (dbactivity != null) {
-      dbactivity(_obj);
-    }
     return _obj;
   }
 
@@ -4500,12 +4805,8 @@ class DbEvent {
   DbLap plDbLap;
 
   /// get DbLap By LapsId
-
-  Future<DbLap> getDbLap([VoidCallback Function(DbLap o) dblap]) async {
+  Future<DbLap> getDbLap() async {
     final _obj = await DbLap().getById(lapsId);
-    if (dblap != null) {
-      dblap(_obj);
-    }
     return _obj;
   }
   // END RELATIONSHIPS (DbEvent)
@@ -4794,10 +5095,10 @@ class DbEvent {
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivity')) {
-          obj.plDbActivity = await obj.getDbActivity();
+          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
         }
         if (preloadFields == null || preloadFields.contains('plDbLap')) {
-          obj.plDbLap = await obj.getDbLap();
+          obj.plDbLap = obj.plDbLap ?? await obj.getDbLap();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -4823,7 +5124,7 @@ class DbEvent {
     return obj;
   }
 
-  /// Saves the object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+  /// Saves the (DbEvent) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
 
   /// <returns>Returns id
   Future<int> save() async {
@@ -4846,6 +5147,7 @@ class DbEvent {
   }
 
   /// saveAll method saves the sent List<DbEvent> as a bulk in one transaction
+  ///
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbEvent> dbevents) async {
     final results = _mnDbEvent.saveAll(
@@ -4904,7 +5206,9 @@ class DbEvent {
   }
 
   /// inserts or replaces the sent List<<DbEvent>> as a bulk in one transaction.
+  ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbEvent> dbevents) async {
     final results = await _mnDbEvent.rawInsertAll(
@@ -5564,10 +5868,10 @@ class DbEventFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivity')) {
-          obj.plDbActivity = await obj.getDbActivity();
+          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
         }
         if (preloadFields == null || preloadFields.contains('plDbLap')) {
-          obj.plDbLap = await obj.getDbLap();
+          obj.plDbLap = obj.plDbLap ?? await obj.getDbLap();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -6059,71 +6363,105 @@ class DbLap {
     _setDefaultValues();
   }
   DbLap.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
     id = o['id'] as int;
-    timeStamp = o['timeStamp'] != null
-        ? int.tryParse(o['timeStamp'].toString()) != null
-            ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
-            : DateTime.tryParse(o['timeStamp'].toString())
-        : null;
-    startTime = o['startTime'] != null
-        ? int.tryParse(o['startTime'].toString()) != null
-            ? DateTime.fromMillisecondsSinceEpoch(o['startTime'] as int)
-            : DateTime.tryParse(o['startTime'].toString())
-        : null;
-    startPositionLat = double.tryParse(o['startPositionLat'].toString());
-    startPositionLong = double.tryParse(o['startPositionLong'].toString());
-    endPositionLat = double.tryParse(o['endPositionLat'].toString());
-    endPositionLong = double.tryParse(o['endPositionLong'].toString());
-    avgHeartRate = o['avgHeartRate'] as int;
-    maxHeartRate = o['maxHeartRate'] as int;
-    avgRunningCadence = double.tryParse(o['avgRunningCadence'].toString());
-    event = o['event'] as String;
-    eventType = o['eventType'] as String;
-    eventGroup = o['eventGroup'] as int;
-    sport = o['sport'] as String;
-    subSport = o['subSport'] as String;
-    avgVerticalOscillation =
-        double.tryParse(o['avgVerticalOscillation'].toString());
-    totalElapsedTime = o['totalElapsedTime'] as int;
-    totalTimerTime = o['totalTimerTime'] as int;
-    totalDistance = o['totalDistance'] as int;
-    totalStrides = o['totalStrides'] as int;
-    totalCalories = o['totalCalories'] as int;
-    avgSpeed = double.tryParse(o['avgSpeed'].toString());
-    maxSpeed = double.tryParse(o['maxSpeed'].toString());
-    totalAscent = o['totalAscent'] as int;
-    totalDescent = o['totalDescent'] as int;
-    avgStanceTimePercent =
-        double.tryParse(o['avgStanceTimePercent'].toString());
-    avgStanceTime = double.tryParse(o['avgStanceTime'].toString());
-    maxRunningCadence = o['maxRunningCadence'] as int;
-    intensity = o['intensity'] as int;
-    lapTrigger = o['lapTrigger'] as String;
-    avgTemperature = o['avgTemperature'] as int;
-    maxTemperature = o['maxTemperature'] as int;
-    avgFractionalCadence =
-        double.tryParse(o['avgFractionalCadence'].toString());
-    maxFractionalCadence =
-        double.tryParse(o['maxFractionalCadence'].toString());
-    totalFractionalCycles =
-        double.tryParse(o['totalFractionalCycles'].toString());
-    avgPower = double.tryParse(o['avgPower'].toString());
-    minPower = o['minPower'] as int;
-    maxPower = o['maxPower'] as int;
-    sdevPower = double.tryParse(o['sdevPower'].toString());
-    avgGroundTime = double.tryParse(o['avgGroundTime'].toString());
-    sdevGroundTime = double.tryParse(o['sdevGroundTime'].toString());
-    avgLegSpringStiffness =
-        double.tryParse(o['avgLegSpringStiffness'].toString());
-    sdevLegSpringStiffness =
-        double.tryParse(o['sdevLegSpringStiffness'].toString());
-    avgFormPower = double.tryParse(o['avgFormPower'].toString());
-    sdevFormPower = double.tryParse(o['sdevFormPower'].toString());
-    avgStrydCadence = double.tryParse(o['avgStrydCadence'].toString());
-    sdevStrydCadence = double.tryParse(o['sdevStrydCadence'].toString());
-    sdevVerticalOscillation =
-        double.tryParse(o['sdevVerticalOscillation'].toString());
+    if (o['timeStamp'] != null)
+      timeStamp = int.tryParse(o['timeStamp'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
+          : DateTime.tryParse(o['timeStamp'].toString());
+    if (o['startTime'] != null)
+      startTime = int.tryParse(o['startTime'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['startTime'] as int)
+          : DateTime.tryParse(o['startTime'].toString());
+    if (o['startPositionLat'] != null)
+      startPositionLat = double.tryParse(o['startPositionLat'].toString());
+    if (o['startPositionLong'] != null)
+      startPositionLong = double.tryParse(o['startPositionLong'].toString());
+    if (o['endPositionLat'] != null)
+      endPositionLat = double.tryParse(o['endPositionLat'].toString());
+    if (o['endPositionLong'] != null)
+      endPositionLong = double.tryParse(o['endPositionLong'].toString());
+    if (o['avgHeartRate'] != null) avgHeartRate = o['avgHeartRate'] as int;
+    if (o['maxHeartRate'] != null) maxHeartRate = o['maxHeartRate'] as int;
+    if (o['avgRunningCadence'] != null)
+      avgRunningCadence = double.tryParse(o['avgRunningCadence'].toString());
+    if (o['event'] != null) event = o['event'] as String;
+    if (o['eventType'] != null) eventType = o['eventType'] as String;
+    if (o['eventGroup'] != null) eventGroup = o['eventGroup'] as int;
+    if (o['sport'] != null) sport = o['sport'] as String;
+    if (o['subSport'] != null) subSport = o['subSport'] as String;
+    if (o['avgVerticalOscillation'] != null)
+      avgVerticalOscillation =
+          double.tryParse(o['avgVerticalOscillation'].toString());
+    if (o['totalElapsedTime'] != null)
+      totalElapsedTime = o['totalElapsedTime'] as int;
+    if (o['totalTimerTime'] != null)
+      totalTimerTime = o['totalTimerTime'] as int;
+    if (o['totalDistance'] != null) totalDistance = o['totalDistance'] as int;
+    if (o['totalStrides'] != null) totalStrides = o['totalStrides'] as int;
+    if (o['totalCalories'] != null) totalCalories = o['totalCalories'] as int;
+    if (o['avgSpeed'] != null)
+      avgSpeed = double.tryParse(o['avgSpeed'].toString());
+    if (o['maxSpeed'] != null)
+      maxSpeed = double.tryParse(o['maxSpeed'].toString());
+    if (o['totalAscent'] != null) totalAscent = o['totalAscent'] as int;
+    if (o['totalDescent'] != null) totalDescent = o['totalDescent'] as int;
+    if (o['avgStanceTimePercent'] != null)
+      avgStanceTimePercent =
+          double.tryParse(o['avgStanceTimePercent'].toString());
+    if (o['avgStanceTime'] != null)
+      avgStanceTime = double.tryParse(o['avgStanceTime'].toString());
+    if (o['maxRunningCadence'] != null)
+      maxRunningCadence = o['maxRunningCadence'] as int;
+    if (o['intensity'] != null) intensity = o['intensity'] as int;
+    if (o['lapTrigger'] != null) lapTrigger = o['lapTrigger'] as String;
+    if (o['avgTemperature'] != null)
+      avgTemperature = o['avgTemperature'] as int;
+    if (o['maxTemperature'] != null)
+      maxTemperature = o['maxTemperature'] as int;
+    if (o['avgFractionalCadence'] != null)
+      avgFractionalCadence =
+          double.tryParse(o['avgFractionalCadence'].toString());
+    if (o['maxFractionalCadence'] != null)
+      maxFractionalCadence =
+          double.tryParse(o['maxFractionalCadence'].toString());
+    if (o['totalFractionalCycles'] != null)
+      totalFractionalCycles =
+          double.tryParse(o['totalFractionalCycles'].toString());
+    if (o['avgPower'] != null)
+      avgPower = double.tryParse(o['avgPower'].toString());
+    if (o['minPower'] != null) minPower = o['minPower'] as int;
+    if (o['maxPower'] != null) maxPower = o['maxPower'] as int;
+    if (o['sdevPower'] != null)
+      sdevPower = double.tryParse(o['sdevPower'].toString());
+    if (o['avgGroundTime'] != null)
+      avgGroundTime = double.tryParse(o['avgGroundTime'].toString());
+    if (o['sdevGroundTime'] != null)
+      sdevGroundTime = double.tryParse(o['sdevGroundTime'].toString());
+    if (o['avgLegSpringStiffness'] != null)
+      avgLegSpringStiffness =
+          double.tryParse(o['avgLegSpringStiffness'].toString());
+    if (o['sdevLegSpringStiffness'] != null)
+      sdevLegSpringStiffness =
+          double.tryParse(o['sdevLegSpringStiffness'].toString());
+    if (o['avgFormPower'] != null)
+      avgFormPower = double.tryParse(o['avgFormPower'].toString());
+    if (o['sdevFormPower'] != null)
+      sdevFormPower = double.tryParse(o['sdevFormPower'].toString());
+    if (o['avgStrydCadence'] != null)
+      avgStrydCadence = double.tryParse(o['avgStrydCadence'].toString());
+    if (o['sdevStrydCadence'] != null)
+      sdevStrydCadence = double.tryParse(o['sdevStrydCadence'].toString());
+    if (o['sdevVerticalOscillation'] != null)
+      sdevVerticalOscillation =
+          double.tryParse(o['sdevVerticalOscillation'].toString());
     activitiesId = o['activitiesId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbActivity = o['DbActivity'] != null
+        ? DbActivity.fromMap(o['DbActivity'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
   }
   // FIELDS (DbLap)
   int id;
@@ -6184,18 +6522,13 @@ class DbLap {
   DbActivity plDbActivity;
 
   /// get DbActivity By ActivitiesId
-
-  Future<DbActivity> getDbActivity(
-      [VoidCallback Function(DbActivity o) dbactivity]) async {
+  Future<DbActivity> getDbActivity() async {
     final _obj = await DbActivity().getById(activitiesId);
-    if (dbactivity != null) {
-      dbactivity(_obj);
-    }
     return _obj;
   }
   // END RELATIONSHIPS (DbLap)
 
-// COLLECTIONS (DbLap)
+// COLLECTIONS & VIRTUALS (DbLap)
   /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
   List<DbEvent> plDbEvents;
 
@@ -6208,7 +6541,7 @@ class DbLap {
         .equals(id)
         .and;
   }
-// END COLLECTIONS (DbLap)
+// END COLLECTIONS & VIRTUALS (DbLap)
 
   static const bool _softDeleteActivated = false;
   DbLapManager __mnDbLap;
@@ -6737,14 +7070,14 @@ class DbLap {
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbEvents')) {
-          obj.plDbEvents = await obj.getDbEvents().toList();
+          obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivity')) {
-          obj.plDbActivity = await obj.getDbActivity();
+          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -6770,7 +7103,7 @@ class DbLap {
     return obj;
   }
 
-  /// Saves the object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+  /// Saves the (DbLap) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
 
   /// <returns>Returns id
   Future<int> save() async {
@@ -6793,6 +7126,7 @@ class DbLap {
   }
 
   /// saveAll method saves the sent List<DbLap> as a bulk in one transaction
+  ///
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbLap> dblaps) async {
     final results = _mnDbLap.saveAll(
@@ -6876,7 +7210,9 @@ class DbLap {
   }
 
   /// inserts or replaces the sent List<<DbLap>> as a bulk in one transaction.
+  ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbLap> dblaps) async {
     final results = await _mnDbLap.rawInsertAll(
@@ -7698,14 +8034,14 @@ class DbLapFilterBuilder extends SearchCriteria {
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbEvents')) {
-          obj.plDbEvents = await obj.getDbEvents().toList();
+          obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbActivity')) {
-          obj.plDbActivity = await obj.getDbActivity();
+          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -8204,6 +8540,5633 @@ class DbLapManager extends SqfEntityProvider {
 }
 
 //endregion DbLapManager
+// region DbWeight
+class DbWeight {
+  DbWeight({this.id, this.date, this.value, this.athletesId}) {
+    _setDefaultValues();
+  }
+  DbWeight.withFields(this.date, this.value, this.athletesId) {
+    _setDefaultValues();
+  }
+  DbWeight.withId(this.id, this.date, this.value, this.athletesId) {
+    _setDefaultValues();
+  }
+  DbWeight.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['date'] != null)
+      date = int.tryParse(o['date'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['date'] as int)
+          : DateTime.tryParse(o['date'].toString());
+    if (o['value'] != null) value = double.tryParse(o['value'].toString());
+    athletesId = o['athletesId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbAthlete = o['DbAthlete'] != null
+        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbWeight)
+  int id;
+  DateTime date;
+  double value;
+  int athletesId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbWeight)
+
+// RELATIONSHIPS (DbWeight)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbAthlete plDbAthlete;
+
+  /// get DbAthlete By AthletesId
+  Future<DbAthlete> getDbAthlete() async {
+    final _obj = await DbAthlete().getById(athletesId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbWeight)
+
+  static const bool _softDeleteActivated = false;
+  DbWeightManager __mnDbWeight;
+
+  DbWeightManager get _mnDbWeight {
+    return __mnDbWeight = __mnDbWeight ?? DbWeightManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (date != null) {
+      map['date'] = forJson
+          ? '$date.year-$date.month-$date.day'
+          : forQuery
+              ? DateTime(date.year, date.month, date.day).millisecondsSinceEpoch
+              : date;
+    }
+
+    if (value != null) {
+      map['value'] = value;
+    }
+
+    if (athletesId != null) {
+      map['athletesId'] = athletesId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (date != null) {
+      map['date'] = forJson
+          ? '$date.year-$date.month-$date.day'
+          : forQuery
+              ? DateTime(date.year, date.month, date.day).millisecondsSinceEpoch
+              : date;
+    }
+
+    if (value != null) {
+      map['value'] = value;
+    }
+
+    if (athletesId != null) {
+      map['athletesId'] = athletesId;
+    }
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [
+      id,
+      date != null ? date.millisecondsSinceEpoch : null,
+      value,
+      athletesId
+    ];
+  }
+
+  static Future<List<DbWeight>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbWeight.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbWeight>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbWeight>[];
+    try {
+      objList = list
+          .map((dbweight) => DbWeight.fromMap(dbweight as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print('SQFENTITY ERROR DbWeight.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbWeight>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbWeight.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbWeight>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbWeight> objList = <DbWeight>[];
+    for (final map in data) {
+      final obj = DbWeight.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbWeight by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbWeight if exist, otherwise returns null
+  Future<DbWeight> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbWeight obj;
+    final data = await _mnDbWeight.getById(id);
+    if (data.length != 0) {
+      obj = DbWeight.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbWeight) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbWeight.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbWeight. Returns a new Primary Key value of DbWeight
+
+  /// <returns>Returns a new Primary Key value of DbWeight
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbWeight> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(List<DbWeight> dbweights) async {
+    final results = _mnDbWeight.saveAll(
+        'INSERT OR REPLACE INTO weights (id,  date, value, athletesId)  VALUES (?,?,?,?)',
+        dbweights);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbWeight.rawInsert(
+              'INSERT OR REPLACE INTO weights (id,  date, value, athletesId)  VALUES (?,?,?,?)',
+              [
+                id,
+                date != null ? date.millisecondsSinceEpoch : null,
+                value,
+                athletesId
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbWeight id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbWeight id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbWeight Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbWeight>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(List<DbWeight> dbweights) async {
+    final results = await _mnDbWeight.rawInsertAll(
+        'INSERT OR REPLACE INTO weights (id,  date, value, athletesId)  VALUES (?,?,?,?)',
+        dbweights);
+    return results;
+  }
+
+  /// Deletes DbWeight
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbWeight invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbWeight
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbWeight.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbWeightFilterBuilder _Select;
+  DbWeightFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbWeightFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbWeightFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbWeightFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    athletesId = athletesId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbweight
+
+// region DbWeightField
+class DbWeightField extends SearchCriteria {
+  DbWeightField(this.dbweightFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbWeightFilterBuilder dbweightFB;
+
+  DbWeightField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbWeightFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbweightFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbweightFB.parameters, param, SqlSyntax.EQuals,
+            dbweightFB._addedBlocks)
+        : setCriteria(pValue, dbweightFB.parameters, param, SqlSyntax.NotEQuals,
+            dbweightFB._addedBlocks);
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbweightFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbweightFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbweightFB._addedBlocks)
+        : setCriteria(pValue, dbweightFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbweightFB._addedBlocks);
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder isNull() {
+    dbweightFB._addedBlocks = setCriteria(
+        0,
+        dbweightFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbweightFB._addedBlocks);
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbweightFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbweightFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbweightFB._addedBlocks);
+      _waitingNot = '';
+      dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+          dbweightFB._addedBlocks.retVal;
+    }
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbweightFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbweightFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbweightFB._addedBlocks);
+      _waitingNot = '';
+      dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+          dbweightFB._addedBlocks.retVal;
+      dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+          dbweightFB._addedBlocks.retVal;
+    }
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbweightFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbweightFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbweightFB._addedBlocks);
+      _waitingNot = '';
+      dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+          dbweightFB._addedBlocks.retVal;
+    }
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbweightFB._addedBlocks = setCriteria(
+          pFirst,
+          dbweightFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbweightFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbweightFB._addedBlocks = setCriteria(pFirst, dbweightFB.parameters,
+            param, SqlSyntax.LessThan, dbweightFB._addedBlocks);
+      } else {
+        dbweightFB._addedBlocks = setCriteria(pFirst, dbweightFB.parameters,
+            param, SqlSyntax.GreaterThanOrEquals, dbweightFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbweightFB._addedBlocks = setCriteria(pLast, dbweightFB.parameters,
+            param, SqlSyntax.GreaterThan, dbweightFB._addedBlocks);
+      } else {
+        dbweightFB._addedBlocks = setCriteria(pLast, dbweightFB.parameters,
+            param, SqlSyntax.LessThanOrEquals, dbweightFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbweightFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbweightFB.parameters, param,
+            SqlSyntax.GreaterThan, dbweightFB._addedBlocks)
+        : setCriteria(pValue, dbweightFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbweightFB._addedBlocks);
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbweightFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbweightFB.parameters, param, SqlSyntax.LessThan,
+            dbweightFB._addedBlocks)
+        : setCriteria(pValue, dbweightFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbweightFB._addedBlocks);
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbweightFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbweightFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbweightFB._addedBlocks)
+        : setCriteria(pValue, dbweightFB.parameters, param, SqlSyntax.LessThan,
+            dbweightFB._addedBlocks);
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbweightFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbweightFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbweightFB._addedBlocks)
+        : setCriteria(pValue, dbweightFB.parameters, param,
+            SqlSyntax.GreaterThan, dbweightFB._addedBlocks);
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+
+  DbWeightFilterBuilder inValues(dynamic pValue) {
+    dbweightFB._addedBlocks = setCriteria(
+        pValue,
+        dbweightFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbweightFB._addedBlocks);
+    _waitingNot = '';
+    dbweightFB._addedBlocks.needEndBlock[dbweightFB._blockIndex] =
+        dbweightFB._addedBlocks.retVal;
+    return dbweightFB;
+  }
+}
+// endregion DbWeightField
+
+// region DbWeightFilterBuilder
+class DbWeightFilterBuilder extends SearchCriteria {
+  DbWeightFilterBuilder(DbWeight obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbWeight _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbWeightFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbWeightFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbWeightFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbWeightFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbWeightFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbWeightFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbWeightFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbWeightFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbWeightFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbWeightFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbWeightField setField(DbWeightField field, String colName, DbType dbtype) {
+    return DbWeightField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbWeightField _id;
+  DbWeightField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbWeightField _date;
+  DbWeightField get date {
+    return _date = setField(_date, 'date', DbType.date);
+  }
+
+  DbWeightField _value;
+  DbWeightField get value {
+    return _value = setField(_value, 'value', DbType.real);
+  }
+
+  DbWeightField _athletesId;
+  DbWeightField get athletesId {
+    return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbWeight._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbWeight> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbWeight._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbWeight.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbWeight.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from weights ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbWeight.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbWeightObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbWeight>
+  Future<DbWeight> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbWeight.toList(qparams);
+    final data = await objFuture;
+    DbWeight obj;
+    if (data.isNotEmpty) {
+      obj = DbWeight.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dbweightCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbweightsFuture = await _obj._mnDbWeight.toList(qparams);
+    final int count = dbweightsFuture[0]['CNT'] as int;
+    if (dbweightCount != null) {
+      dbweightCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbWeight>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbWeight>
+  Future<List<DbWeight>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbWeight> dbweightsData =
+        await DbWeight.fromMapList(data, preload: preload);
+    return dbweightsData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbWeight.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbWeight>>
+  Future<List<DropdownMenuItem<DbWeight>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbWeight>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbweightsFuture = _obj._mnDbWeight.toList(qparams);
+
+    final data = await dbweightsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbWeight>> items = []..add(DropdownMenuItem(
+        value: DbWeight(),
+        child: Text('Select DbWeight'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbWeight.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbweightsFuture = _obj._mnDbWeight.toList(qparams);
+
+    final data = await dbweightsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbWeight'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbWeight.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbWeight.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbWeight.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbWeight.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbWeightFilterBuilder
+
+// region DbWeightFields
+class DbWeightFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fDate;
+  static TableField get date {
+    return _fDate = _fDate ?? SqlSyntax.setField(_fDate, 'date', DbType.date);
+  }
+
+  static TableField _fValue;
+  static TableField get value {
+    return _fValue =
+        _fValue ?? SqlSyntax.setField(_fValue, 'value', DbType.real);
+  }
+
+  static TableField _fAthletesId;
+  static TableField get athletesId {
+    return _fAthletesId = _fAthletesId ??
+        SqlSyntax.setField(_fAthletesId, 'athletesId', DbType.integer);
+  }
+}
+// endregion DbWeightFields
+
+//region DbWeightManager
+class DbWeightManager extends SqfEntityProvider {
+  DbWeightManager()
+      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'weights';
+  static String _colId = 'id';
+}
+
+//endregion DbWeightManager
+// region DbHeartRateZoneSchema
+class DbHeartRateZoneSchema {
+  DbHeartRateZoneSchema(
+      {this.id, this.date, this.name, this.base, this.athletesId}) {
+    _setDefaultValues();
+  }
+  DbHeartRateZoneSchema.withFields(
+      this.date, this.name, this.base, this.athletesId) {
+    _setDefaultValues();
+  }
+  DbHeartRateZoneSchema.withId(
+      this.id, this.date, this.name, this.base, this.athletesId) {
+    _setDefaultValues();
+  }
+  DbHeartRateZoneSchema.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['date'] != null)
+      date = int.tryParse(o['date'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['date'] as int)
+          : DateTime.tryParse(o['date'].toString());
+    if (o['name'] != null) name = o['name'] as String;
+    if (o['base'] != null) base = o['base'] as int;
+    athletesId = o['athletesId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbAthlete = o['DbAthlete'] != null
+        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbHeartRateZoneSchema)
+  int id;
+  DateTime date;
+  String name;
+  int base;
+  int athletesId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbHeartRateZoneSchema)
+
+// RELATIONSHIPS (DbHeartRateZoneSchema)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbAthlete plDbAthlete;
+
+  /// get DbAthlete By AthletesId
+  Future<DbAthlete> getDbAthlete() async {
+    final _obj = await DbAthlete().getById(athletesId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbHeartRateZoneSchema)
+
+// COLLECTIONS & VIRTUALS (DbHeartRateZoneSchema)
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbHeartRateZone> plDbHeartRateZones;
+
+  /// get DbHeartRateZone(s) filtered by heartRateZoneSchemataId=id
+  DbHeartRateZoneFilterBuilder getDbHeartRateZones(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbHeartRateZone()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .heartRateZoneSchemataId
+        .equals(id)
+        .and;
+  }
+// END COLLECTIONS & VIRTUALS (DbHeartRateZoneSchema)
+
+  static const bool _softDeleteActivated = false;
+  DbHeartRateZoneSchemaManager __mnDbHeartRateZoneSchema;
+
+  DbHeartRateZoneSchemaManager get _mnDbHeartRateZoneSchema {
+    return __mnDbHeartRateZoneSchema =
+        __mnDbHeartRateZoneSchema ?? DbHeartRateZoneSchemaManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (date != null) {
+      map['date'] = forJson
+          ? '$date.year-$date.month-$date.day'
+          : forQuery
+              ? DateTime(date.year, date.month, date.day).millisecondsSinceEpoch
+              : date;
+    }
+
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (base != null) {
+      map['base'] = base;
+    }
+
+    if (athletesId != null) {
+      map['athletesId'] = athletesId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (date != null) {
+      map['date'] = forJson
+          ? '$date.year-$date.month-$date.day'
+          : forQuery
+              ? DateTime(date.year, date.month, date.day).millisecondsSinceEpoch
+              : date;
+    }
+
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (base != null) {
+      map['base'] = base;
+    }
+
+    if (athletesId != null) {
+      map['athletesId'] = athletesId;
+    }
+
+// COLLECTIONS (DbHeartRateZoneSchema)
+    if (!forQuery) {
+      map['DbHeartRateZones'] = await getDbHeartRateZones().toMapList();
+    }
+// END COLLECTIONS (DbHeartRateZoneSchema)
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [
+      id,
+      date != null ? date.millisecondsSinceEpoch : null,
+      name,
+      base,
+      athletesId
+    ];
+  }
+
+  static Future<List<DbHeartRateZoneSchema>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbHeartRateZoneSchema.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbHeartRateZoneSchema>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbHeartRateZoneSchema>[];
+    try {
+      objList = list
+          .map((dbheartratezoneschema) => DbHeartRateZoneSchema.fromMap(
+              dbheartratezoneschema as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbHeartRateZoneSchema.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbHeartRateZoneSchema>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbHeartRateZoneSchema.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbHeartRateZoneSchema>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbHeartRateZoneSchema> objList = <DbHeartRateZoneSchema>[];
+    for (final map in data) {
+      final obj = DbHeartRateZoneSchema.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null ||
+            preloadFields.contains('plDbHeartRateZones')) {
+          obj.plDbHeartRateZones = obj.plDbHeartRateZones ??
+              await obj.getDbHeartRateZones().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbHeartRateZoneSchema by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbHeartRateZoneSchema if exist, otherwise returns null
+  Future<DbHeartRateZoneSchema> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbHeartRateZoneSchema obj;
+    final data = await _mnDbHeartRateZoneSchema.getById(id);
+    if (data.length != 0) {
+      obj = DbHeartRateZoneSchema.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbHeartRateZoneSchema) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbHeartRateZoneSchema.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbHeartRateZoneSchema. Returns a new Primary Key value of DbHeartRateZoneSchema
+
+  /// <returns>Returns a new Primary Key value of DbHeartRateZoneSchema
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbHeartRateZoneSchema> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(
+      List<DbHeartRateZoneSchema> dbheartratezoneschemas) async {
+    final results = _mnDbHeartRateZoneSchema.saveAll(
+        'INSERT OR REPLACE INTO heartRateZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+        dbheartratezoneschemas);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbHeartRateZoneSchema.rawInsert(
+              'INSERT OR REPLACE INTO heartRateZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+              [
+                id,
+                date != null ? date.millisecondsSinceEpoch : null,
+                name,
+                base,
+                athletesId
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbHeartRateZoneSchema id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false,
+            errorMessage: 'DbHeartRateZoneSchema id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage:
+              'DbHeartRateZoneSchema Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbHeartRateZoneSchema>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(
+      List<DbHeartRateZoneSchema> dbheartratezoneschemas) async {
+    final results = await _mnDbHeartRateZoneSchema.rawInsertAll(
+        'INSERT OR REPLACE INTO heartRateZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+        dbheartratezoneschemas);
+    return results;
+  }
+
+  /// Deletes DbHeartRateZoneSchema
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbHeartRateZoneSchema invoked (id=$id)');
+    var result = BoolResult();
+    {
+      result = await DbHeartRateZone()
+          .select()
+          .heartRateZoneSchemataId
+          .equals(id)
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbHeartRateZoneSchema
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbHeartRateZoneSchema.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbHeartRateZoneSchemaFilterBuilder _Select;
+  DbHeartRateZoneSchemaFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbHeartRateZoneSchemaFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbHeartRateZoneSchemaFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    athletesId = athletesId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbheartratezoneschema
+
+// region DbHeartRateZoneSchemaField
+class DbHeartRateZoneSchemaField extends SearchCriteria {
+  DbHeartRateZoneSchemaField(this.dbheartratezoneschemaFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbHeartRateZoneSchemaFilterBuilder dbheartratezoneschemaFB;
+
+  DbHeartRateZoneSchemaField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbheartratezoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.EQuals, dbheartratezoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.NotEQuals, dbheartratezoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbheartratezoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbheartratezoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbheartratezoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder isNull() {
+    dbheartratezoneschemaFB._addedBlocks = setCriteria(
+        0,
+        dbheartratezoneschemaFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbheartratezoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbheartratezoneschemaFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbheartratezoneschemaFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbheartratezoneschemaFB._addedBlocks);
+      _waitingNot = '';
+      dbheartratezoneschemaFB
+              ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+          dbheartratezoneschemaFB._addedBlocks.retVal;
+    }
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbheartratezoneschemaFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbheartratezoneschemaFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbheartratezoneschemaFB._addedBlocks);
+      _waitingNot = '';
+      dbheartratezoneschemaFB
+              ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+          dbheartratezoneschemaFB._addedBlocks.retVal;
+      dbheartratezoneschemaFB
+              ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+          dbheartratezoneschemaFB._addedBlocks.retVal;
+    }
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbheartratezoneschemaFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbheartratezoneschemaFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbheartratezoneschemaFB._addedBlocks);
+      _waitingNot = '';
+      dbheartratezoneschemaFB
+              ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+          dbheartratezoneschemaFB._addedBlocks.retVal;
+    }
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbheartratezoneschemaFB._addedBlocks = setCriteria(
+          pFirst,
+          dbheartratezoneschemaFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbheartratezoneschemaFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbheartratezoneschemaFB._addedBlocks = setCriteria(
+            pFirst,
+            dbheartratezoneschemaFB.parameters,
+            param,
+            SqlSyntax.LessThan,
+            dbheartratezoneschemaFB._addedBlocks);
+      } else {
+        dbheartratezoneschemaFB._addedBlocks = setCriteria(
+            pFirst,
+            dbheartratezoneschemaFB.parameters,
+            param,
+            SqlSyntax.GreaterThanOrEquals,
+            dbheartratezoneschemaFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbheartratezoneschemaFB._addedBlocks = setCriteria(
+            pLast,
+            dbheartratezoneschemaFB.parameters,
+            param,
+            SqlSyntax.GreaterThan,
+            dbheartratezoneschemaFB._addedBlocks);
+      } else {
+        dbheartratezoneschemaFB._addedBlocks = setCriteria(
+            pLast,
+            dbheartratezoneschemaFB.parameters,
+            param,
+            SqlSyntax.LessThanOrEquals,
+            dbheartratezoneschemaFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbheartratezoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.GreaterThan, dbheartratezoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbheartratezoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbheartratezoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.LessThan, dbheartratezoneschemaFB._addedBlocks)
+        : setCriteria(
+            pValue,
+            dbheartratezoneschemaFB.parameters,
+            param,
+            SqlSyntax.GreaterThanOrEquals,
+            dbheartratezoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbheartratezoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbheartratezoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.LessThan, dbheartratezoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbheartratezoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbheartratezoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneschemaFB.parameters, param,
+            SqlSyntax.GreaterThan, dbheartratezoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+
+  DbHeartRateZoneSchemaFilterBuilder inValues(dynamic pValue) {
+    dbheartratezoneschemaFB._addedBlocks = setCriteria(
+        pValue,
+        dbheartratezoneschemaFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbheartratezoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneschemaFB
+            ._addedBlocks.needEndBlock[dbheartratezoneschemaFB._blockIndex] =
+        dbheartratezoneschemaFB._addedBlocks.retVal;
+    return dbheartratezoneschemaFB;
+  }
+}
+// endregion DbHeartRateZoneSchemaField
+
+// region DbHeartRateZoneSchemaFilterBuilder
+class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
+  DbHeartRateZoneSchemaFilterBuilder(DbHeartRateZoneSchema obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbHeartRateZoneSchema _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbHeartRateZoneSchemaFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbHeartRateZoneSchemaFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbHeartRateZoneSchemaFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbHeartRateZoneSchemaFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbHeartRateZoneSchemaFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbHeartRateZoneSchemaFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbHeartRateZoneSchemaFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbHeartRateZoneSchemaFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbHeartRateZoneSchemaFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbHeartRateZoneSchemaFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbHeartRateZoneSchemaField setField(
+      DbHeartRateZoneSchemaField field, String colName, DbType dbtype) {
+    return DbHeartRateZoneSchemaField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbHeartRateZoneSchemaField _id;
+  DbHeartRateZoneSchemaField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbHeartRateZoneSchemaField _date;
+  DbHeartRateZoneSchemaField get date {
+    return _date = setField(_date, 'date', DbType.date);
+  }
+
+  DbHeartRateZoneSchemaField _name;
+  DbHeartRateZoneSchemaField get name {
+    return _name = setField(_name, 'name', DbType.text);
+  }
+
+  DbHeartRateZoneSchemaField _base;
+  DbHeartRateZoneSchemaField get base {
+    return _base = setField(_base, 'base', DbType.integer);
+  }
+
+  DbHeartRateZoneSchemaField _athletesId;
+  DbHeartRateZoneSchemaField get athletesId {
+    return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbHeartRateZoneSchema._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbHeartRateZoneSchema> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbHeartRateZoneSchema._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbHeartRateZoneSchema
+          .updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbHeartRateZoneSchema.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from heartRateZoneSchemata ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbHeartRateZoneSchema.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbHeartRateZoneSchemaObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbHeartRateZoneSchema>
+  Future<DbHeartRateZoneSchema> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbHeartRateZoneSchema.toList(qparams);
+    final data = await objFuture;
+    DbHeartRateZoneSchema obj;
+    if (data.isNotEmpty) {
+      obj = DbHeartRateZoneSchema.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null ||
+            preloadFields.contains('plDbHeartRateZones')) {
+          obj.plDbHeartRateZones = obj.plDbHeartRateZones ??
+              await obj.getDbHeartRateZones().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount(
+      [VoidCallback Function(int c) dbheartratezoneschemaCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbheartratezoneschemasFuture =
+        await _obj._mnDbHeartRateZoneSchema.toList(qparams);
+    final int count = dbheartratezoneschemasFuture[0]['CNT'] as int;
+    if (dbheartratezoneschemaCount != null) {
+      dbheartratezoneschemaCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbHeartRateZoneSchema>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbHeartRateZoneSchema>
+  Future<List<DbHeartRateZoneSchema>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbHeartRateZoneSchema> dbheartratezoneschemasData =
+        await DbHeartRateZoneSchema.fromMapList(data, preload: preload);
+    return dbheartratezoneschemasData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbHeartRateZoneSchema.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbHeartRateZoneSchema>>
+  Future<List<DropdownMenuItem<DbHeartRateZoneSchema>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbHeartRateZoneSchema>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbheartratezoneschemasFuture =
+        _obj._mnDbHeartRateZoneSchema.toList(qparams);
+
+    final data = await dbheartratezoneschemasFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbHeartRateZoneSchema>> items = []
+      ..add(DropdownMenuItem(
+        value: DbHeartRateZoneSchema(),
+        child: Text('Select DbHeartRateZoneSchema'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbHeartRateZoneSchema.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbheartratezoneschemasFuture =
+        _obj._mnDbHeartRateZoneSchema.toList(qparams);
+
+    final data = await dbheartratezoneschemasFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbHeartRateZoneSchema'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbHeartRateZoneSchema.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbHeartRateZoneSchema.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbHeartRateZoneSchema.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbHeartRateZoneSchema.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbHeartRateZoneSchemaFilterBuilder
+
+// region DbHeartRateZoneSchemaFields
+class DbHeartRateZoneSchemaFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fDate;
+  static TableField get date {
+    return _fDate = _fDate ?? SqlSyntax.setField(_fDate, 'date', DbType.date);
+  }
+
+  static TableField _fName;
+  static TableField get name {
+    return _fName = _fName ?? SqlSyntax.setField(_fName, 'name', DbType.text);
+  }
+
+  static TableField _fBase;
+  static TableField get base {
+    return _fBase =
+        _fBase ?? SqlSyntax.setField(_fBase, 'base', DbType.integer);
+  }
+
+  static TableField _fAthletesId;
+  static TableField get athletesId {
+    return _fAthletesId = _fAthletesId ??
+        SqlSyntax.setField(_fAthletesId, 'athletesId', DbType.integer);
+  }
+}
+// endregion DbHeartRateZoneSchemaFields
+
+//region DbHeartRateZoneSchemaManager
+class DbHeartRateZoneSchemaManager extends SqfEntityProvider {
+  DbHeartRateZoneSchemaManager()
+      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'heartRateZoneSchemata';
+  static String _colId = 'id';
+}
+
+//endregion DbHeartRateZoneSchemaManager
+// region DbHeartRateZone
+class DbHeartRateZone {
+  DbHeartRateZone(
+      {this.id,
+      this.name,
+      this.lowerPercentage,
+      this.upperPercentage,
+      this.lowerLimit,
+      this.upperLimit,
+      this.heartRateZoneSchemataId}) {
+    _setDefaultValues();
+  }
+  DbHeartRateZone.withFields(
+      this.name,
+      this.lowerPercentage,
+      this.upperPercentage,
+      this.lowerLimit,
+      this.upperLimit,
+      this.heartRateZoneSchemataId) {
+    _setDefaultValues();
+  }
+  DbHeartRateZone.withId(
+      this.id,
+      this.name,
+      this.lowerPercentage,
+      this.upperPercentage,
+      this.lowerLimit,
+      this.upperLimit,
+      this.heartRateZoneSchemataId) {
+    _setDefaultValues();
+  }
+  DbHeartRateZone.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['name'] != null) name = o['name'] as String;
+    if (o['lowerPercentage'] != null)
+      lowerPercentage = o['lowerPercentage'] as int;
+    if (o['upperPercentage'] != null)
+      upperPercentage = o['upperPercentage'] as int;
+    if (o['lowerLimit'] != null) lowerLimit = o['lowerLimit'] as int;
+    if (o['upperLimit'] != null) upperLimit = o['upperLimit'] as int;
+    heartRateZoneSchemataId = o['heartRateZoneSchemataId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbHeartRateZoneSchema = o['DbHeartRateZoneSchema'] != null
+        ? DbHeartRateZoneSchema.fromMap(
+            o['DbHeartRateZoneSchema'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbHeartRateZone)
+  int id;
+  String name;
+  int lowerPercentage;
+  int upperPercentage;
+  int lowerLimit;
+  int upperLimit;
+  int heartRateZoneSchemataId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbHeartRateZone)
+
+// RELATIONSHIPS (DbHeartRateZone)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbHeartRateZoneSchema plDbHeartRateZoneSchema;
+
+  /// get DbHeartRateZoneSchema By HeartRateZoneSchemataId
+  Future<DbHeartRateZoneSchema> getDbHeartRateZoneSchema() async {
+    final _obj = await DbHeartRateZoneSchema().getById(heartRateZoneSchemataId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbHeartRateZone)
+
+  static const bool _softDeleteActivated = false;
+  DbHeartRateZoneManager __mnDbHeartRateZone;
+
+  DbHeartRateZoneManager get _mnDbHeartRateZone {
+    return __mnDbHeartRateZone =
+        __mnDbHeartRateZone ?? DbHeartRateZoneManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (lowerPercentage != null) {
+      map['lowerPercentage'] = lowerPercentage;
+    }
+
+    if (upperPercentage != null) {
+      map['upperPercentage'] = upperPercentage;
+    }
+
+    if (lowerLimit != null) {
+      map['lowerLimit'] = lowerLimit;
+    }
+
+    if (upperLimit != null) {
+      map['upperLimit'] = upperLimit;
+    }
+
+    if (heartRateZoneSchemataId != null) {
+      map['heartRateZoneSchemataId'] = heartRateZoneSchemataId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (lowerPercentage != null) {
+      map['lowerPercentage'] = lowerPercentage;
+    }
+
+    if (upperPercentage != null) {
+      map['upperPercentage'] = upperPercentage;
+    }
+
+    if (lowerLimit != null) {
+      map['lowerLimit'] = lowerLimit;
+    }
+
+    if (upperLimit != null) {
+      map['upperLimit'] = upperLimit;
+    }
+
+    if (heartRateZoneSchemataId != null) {
+      map['heartRateZoneSchemataId'] = heartRateZoneSchemataId;
+    }
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [
+      id,
+      name,
+      lowerPercentage,
+      upperPercentage,
+      lowerLimit,
+      upperLimit,
+      heartRateZoneSchemataId
+    ];
+  }
+
+  static Future<List<DbHeartRateZone>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbHeartRateZone.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbHeartRateZone>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbHeartRateZone>[];
+    try {
+      objList = list
+          .map((dbheartratezone) =>
+              DbHeartRateZone.fromMap(dbheartratezone as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbHeartRateZone.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbHeartRateZone>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbHeartRateZone.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbHeartRateZone>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbHeartRateZone> objList = <DbHeartRateZone>[];
+    for (final map in data) {
+      final obj = DbHeartRateZone.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null ||
+            preloadFields.contains('plDbHeartRateZoneSchema')) {
+          obj.plDbHeartRateZoneSchema = obj.plDbHeartRateZoneSchema ??
+              await obj.getDbHeartRateZoneSchema();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbHeartRateZone by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbHeartRateZone if exist, otherwise returns null
+  Future<DbHeartRateZone> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbHeartRateZone obj;
+    final data = await _mnDbHeartRateZone.getById(id);
+    if (data.length != 0) {
+      obj = DbHeartRateZone.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbHeartRateZone) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbHeartRateZone.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbHeartRateZone. Returns a new Primary Key value of DbHeartRateZone
+
+  /// <returns>Returns a new Primary Key value of DbHeartRateZone
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbHeartRateZone> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(
+      List<DbHeartRateZone> dbheartratezones) async {
+    final results = _mnDbHeartRateZone.saveAll(
+        'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        dbheartratezones);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbHeartRateZone.rawInsert(
+              'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+              [
+                id,
+                name,
+                lowerPercentage,
+                upperPercentage,
+                lowerLimit,
+                upperLimit,
+                heartRateZoneSchemataId
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbHeartRateZone id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false,
+            errorMessage: 'DbHeartRateZone id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbHeartRateZone Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbHeartRateZone>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(
+      List<DbHeartRateZone> dbheartratezones) async {
+    final results = await _mnDbHeartRateZone.rawInsertAll(
+        'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        dbheartratezones);
+    return results;
+  }
+
+  /// Deletes DbHeartRateZone
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbHeartRateZone invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbHeartRateZone
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbHeartRateZone.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbHeartRateZoneFilterBuilder _Select;
+  DbHeartRateZoneFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbHeartRateZoneFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbHeartRateZoneFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbHeartRateZoneFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    heartRateZoneSchemataId = heartRateZoneSchemataId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbheartratezone
+
+// region DbHeartRateZoneField
+class DbHeartRateZoneField extends SearchCriteria {
+  DbHeartRateZoneField(this.dbheartratezoneFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbHeartRateZoneFilterBuilder dbheartratezoneFB;
+
+  DbHeartRateZoneField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbHeartRateZoneFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbheartratezoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.EQuals, dbheartratezoneFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.NotEQuals, dbheartratezoneFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbheartratezoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbheartratezoneFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbheartratezoneFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder isNull() {
+    dbheartratezoneFB._addedBlocks = setCriteria(
+        0,
+        dbheartratezoneFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbheartratezoneFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbheartratezoneFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbheartratezoneFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbheartratezoneFB._addedBlocks);
+      _waitingNot = '';
+      dbheartratezoneFB
+              ._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+          dbheartratezoneFB._addedBlocks.retVal;
+    }
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbheartratezoneFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbheartratezoneFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbheartratezoneFB._addedBlocks);
+      _waitingNot = '';
+      dbheartratezoneFB
+              ._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+          dbheartratezoneFB._addedBlocks.retVal;
+      dbheartratezoneFB
+              ._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+          dbheartratezoneFB._addedBlocks.retVal;
+    }
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbheartratezoneFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbheartratezoneFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbheartratezoneFB._addedBlocks);
+      _waitingNot = '';
+      dbheartratezoneFB
+              ._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+          dbheartratezoneFB._addedBlocks.retVal;
+    }
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbheartratezoneFB._addedBlocks = setCriteria(
+          pFirst,
+          dbheartratezoneFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbheartratezoneFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbheartratezoneFB._addedBlocks = setCriteria(
+            pFirst,
+            dbheartratezoneFB.parameters,
+            param,
+            SqlSyntax.LessThan,
+            dbheartratezoneFB._addedBlocks);
+      } else {
+        dbheartratezoneFB._addedBlocks = setCriteria(
+            pFirst,
+            dbheartratezoneFB.parameters,
+            param,
+            SqlSyntax.GreaterThanOrEquals,
+            dbheartratezoneFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbheartratezoneFB._addedBlocks = setCriteria(
+            pLast,
+            dbheartratezoneFB.parameters,
+            param,
+            SqlSyntax.GreaterThan,
+            dbheartratezoneFB._addedBlocks);
+      } else {
+        dbheartratezoneFB._addedBlocks = setCriteria(
+            pLast,
+            dbheartratezoneFB.parameters,
+            param,
+            SqlSyntax.LessThanOrEquals,
+            dbheartratezoneFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbheartratezoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.GreaterThan, dbheartratezoneFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbheartratezoneFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbheartratezoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.LessThan, dbheartratezoneFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbheartratezoneFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbheartratezoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbheartratezoneFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.LessThan, dbheartratezoneFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbheartratezoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbheartratezoneFB._addedBlocks)
+        : setCriteria(pValue, dbheartratezoneFB.parameters, param,
+            SqlSyntax.GreaterThan, dbheartratezoneFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+
+  DbHeartRateZoneFilterBuilder inValues(dynamic pValue) {
+    dbheartratezoneFB._addedBlocks = setCriteria(
+        pValue,
+        dbheartratezoneFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbheartratezoneFB._addedBlocks);
+    _waitingNot = '';
+    dbheartratezoneFB._addedBlocks.needEndBlock[dbheartratezoneFB._blockIndex] =
+        dbheartratezoneFB._addedBlocks.retVal;
+    return dbheartratezoneFB;
+  }
+}
+// endregion DbHeartRateZoneField
+
+// region DbHeartRateZoneFilterBuilder
+class DbHeartRateZoneFilterBuilder extends SearchCriteria {
+  DbHeartRateZoneFilterBuilder(DbHeartRateZone obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbHeartRateZone _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbHeartRateZoneFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbHeartRateZoneFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbHeartRateZoneFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbHeartRateZoneFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbHeartRateZoneFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbHeartRateZoneFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbHeartRateZoneFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbHeartRateZoneFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbHeartRateZoneFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbHeartRateZoneFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbHeartRateZoneField setField(
+      DbHeartRateZoneField field, String colName, DbType dbtype) {
+    return DbHeartRateZoneField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbHeartRateZoneField _id;
+  DbHeartRateZoneField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbHeartRateZoneField _name;
+  DbHeartRateZoneField get name {
+    return _name = setField(_name, 'name', DbType.text);
+  }
+
+  DbHeartRateZoneField _lowerPercentage;
+  DbHeartRateZoneField get lowerPercentage {
+    return _lowerPercentage =
+        setField(_lowerPercentage, 'lowerPercentage', DbType.integer);
+  }
+
+  DbHeartRateZoneField _upperPercentage;
+  DbHeartRateZoneField get upperPercentage {
+    return _upperPercentage =
+        setField(_upperPercentage, 'upperPercentage', DbType.integer);
+  }
+
+  DbHeartRateZoneField _lowerLimit;
+  DbHeartRateZoneField get lowerLimit {
+    return _lowerLimit = setField(_lowerLimit, 'lowerLimit', DbType.integer);
+  }
+
+  DbHeartRateZoneField _upperLimit;
+  DbHeartRateZoneField get upperLimit {
+    return _upperLimit = setField(_upperLimit, 'upperLimit', DbType.integer);
+  }
+
+  DbHeartRateZoneField _heartRateZoneSchemataId;
+  DbHeartRateZoneField get heartRateZoneSchemataId {
+    return _heartRateZoneSchemataId = setField(
+        _heartRateZoneSchemataId, 'heartRateZoneSchemataId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbHeartRateZone._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbHeartRateZone> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbHeartRateZone._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbHeartRateZone.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbHeartRateZone.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from heartRateZone ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbHeartRateZone.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbHeartRateZoneObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbHeartRateZone>
+  Future<DbHeartRateZone> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbHeartRateZone.toList(qparams);
+    final data = await objFuture;
+    DbHeartRateZone obj;
+    if (data.isNotEmpty) {
+      obj = DbHeartRateZone.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null ||
+            preloadFields.contains('plDbHeartRateZoneSchema')) {
+          obj.plDbHeartRateZoneSchema = obj.plDbHeartRateZoneSchema ??
+              await obj.getDbHeartRateZoneSchema();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount(
+      [VoidCallback Function(int c) dbheartratezoneCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbheartratezonesFuture =
+        await _obj._mnDbHeartRateZone.toList(qparams);
+    final int count = dbheartratezonesFuture[0]['CNT'] as int;
+    if (dbheartratezoneCount != null) {
+      dbheartratezoneCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbHeartRateZone>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbHeartRateZone>
+  Future<List<DbHeartRateZone>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbHeartRateZone> dbheartratezonesData =
+        await DbHeartRateZone.fromMapList(data, preload: preload);
+    return dbheartratezonesData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbHeartRateZone.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbHeartRateZone>>
+  Future<List<DropdownMenuItem<DbHeartRateZone>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbHeartRateZone>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbheartratezonesFuture = _obj._mnDbHeartRateZone.toList(qparams);
+
+    final data = await dbheartratezonesFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbHeartRateZone>> items = []
+      ..add(DropdownMenuItem(
+        value: DbHeartRateZone(),
+        child: Text('Select DbHeartRateZone'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbHeartRateZone.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbheartratezonesFuture = _obj._mnDbHeartRateZone.toList(qparams);
+
+    final data = await dbheartratezonesFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbHeartRateZone'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbHeartRateZone.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbHeartRateZone.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbHeartRateZone.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbHeartRateZone.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbHeartRateZoneFilterBuilder
+
+// region DbHeartRateZoneFields
+class DbHeartRateZoneFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fName;
+  static TableField get name {
+    return _fName = _fName ?? SqlSyntax.setField(_fName, 'name', DbType.text);
+  }
+
+  static TableField _fLowerPercentage;
+  static TableField get lowerPercentage {
+    return _fLowerPercentage = _fLowerPercentage ??
+        SqlSyntax.setField(
+            _fLowerPercentage, 'lowerPercentage', DbType.integer);
+  }
+
+  static TableField _fUpperPercentage;
+  static TableField get upperPercentage {
+    return _fUpperPercentage = _fUpperPercentage ??
+        SqlSyntax.setField(
+            _fUpperPercentage, 'upperPercentage', DbType.integer);
+  }
+
+  static TableField _fLowerLimit;
+  static TableField get lowerLimit {
+    return _fLowerLimit = _fLowerLimit ??
+        SqlSyntax.setField(_fLowerLimit, 'lowerLimit', DbType.integer);
+  }
+
+  static TableField _fUpperLimit;
+  static TableField get upperLimit {
+    return _fUpperLimit = _fUpperLimit ??
+        SqlSyntax.setField(_fUpperLimit, 'upperLimit', DbType.integer);
+  }
+
+  static TableField _fHeartRateZoneSchemataId;
+  static TableField get heartRateZoneSchemataId {
+    return _fHeartRateZoneSchemataId = _fHeartRateZoneSchemataId ??
+        SqlSyntax.setField(_fHeartRateZoneSchemataId, 'heartRateZoneSchemataId',
+            DbType.integer);
+  }
+}
+// endregion DbHeartRateZoneFields
+
+//region DbHeartRateZoneManager
+class DbHeartRateZoneManager extends SqfEntityProvider {
+  DbHeartRateZoneManager()
+      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'heartRateZone';
+  static String _colId = 'id';
+}
+
+//endregion DbHeartRateZoneManager
+// region DbPowerZoneSchema
+class DbPowerZoneSchema {
+  DbPowerZoneSchema(
+      {this.id, this.date, this.name, this.base, this.athletesId}) {
+    _setDefaultValues();
+  }
+  DbPowerZoneSchema.withFields(
+      this.date, this.name, this.base, this.athletesId) {
+    _setDefaultValues();
+  }
+  DbPowerZoneSchema.withId(
+      this.id, this.date, this.name, this.base, this.athletesId) {
+    _setDefaultValues();
+  }
+  DbPowerZoneSchema.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['date'] != null)
+      date = int.tryParse(o['date'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(o['date'] as int)
+          : DateTime.tryParse(o['date'].toString());
+    if (o['name'] != null) name = o['name'] as String;
+    if (o['base'] != null) base = o['base'] as int;
+    athletesId = o['athletesId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbAthlete = o['DbAthlete'] != null
+        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbPowerZoneSchema)
+  int id;
+  DateTime date;
+  String name;
+  int base;
+  int athletesId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbPowerZoneSchema)
+
+// RELATIONSHIPS (DbPowerZoneSchema)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbAthlete plDbAthlete;
+
+  /// get DbAthlete By AthletesId
+  Future<DbAthlete> getDbAthlete() async {
+    final _obj = await DbAthlete().getById(athletesId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbPowerZoneSchema)
+
+// COLLECTIONS & VIRTUALS (DbPowerZoneSchema)
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbPowerZone> plDbPowerZones;
+
+  /// get DbPowerZone(s) filtered by powerZoneSchemataId=id
+  DbPowerZoneFilterBuilder getDbPowerZones(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbPowerZone()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .powerZoneSchemataId
+        .equals(id)
+        .and;
+  }
+// END COLLECTIONS & VIRTUALS (DbPowerZoneSchema)
+
+  static const bool _softDeleteActivated = false;
+  DbPowerZoneSchemaManager __mnDbPowerZoneSchema;
+
+  DbPowerZoneSchemaManager get _mnDbPowerZoneSchema {
+    return __mnDbPowerZoneSchema =
+        __mnDbPowerZoneSchema ?? DbPowerZoneSchemaManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (date != null) {
+      map['date'] = forJson
+          ? '$date.year-$date.month-$date.day'
+          : forQuery
+              ? DateTime(date.year, date.month, date.day).millisecondsSinceEpoch
+              : date;
+    }
+
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (base != null) {
+      map['base'] = base;
+    }
+
+    if (athletesId != null) {
+      map['athletesId'] = athletesId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (date != null) {
+      map['date'] = forJson
+          ? '$date.year-$date.month-$date.day'
+          : forQuery
+              ? DateTime(date.year, date.month, date.day).millisecondsSinceEpoch
+              : date;
+    }
+
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (base != null) {
+      map['base'] = base;
+    }
+
+    if (athletesId != null) {
+      map['athletesId'] = athletesId;
+    }
+
+// COLLECTIONS (DbPowerZoneSchema)
+    if (!forQuery) {
+      map['DbPowerZones'] = await getDbPowerZones().toMapList();
+    }
+// END COLLECTIONS (DbPowerZoneSchema)
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [
+      id,
+      date != null ? date.millisecondsSinceEpoch : null,
+      name,
+      base,
+      athletesId
+    ];
+  }
+
+  static Future<List<DbPowerZoneSchema>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbPowerZoneSchema.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbPowerZoneSchema>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbPowerZoneSchema>[];
+    try {
+      objList = list
+          .map((dbpowerzoneschema) => DbPowerZoneSchema.fromMap(
+              dbpowerzoneschema as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbPowerZoneSchema.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbPowerZoneSchema>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbPowerZoneSchema.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbPowerZoneSchema>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbPowerZoneSchema> objList = <DbPowerZoneSchema>[];
+    for (final map in data) {
+      final obj = DbPowerZoneSchema.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbPowerZones')) {
+          obj.plDbPowerZones =
+              obj.plDbPowerZones ?? await obj.getDbPowerZones().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbPowerZoneSchema by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbPowerZoneSchema if exist, otherwise returns null
+  Future<DbPowerZoneSchema> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbPowerZoneSchema obj;
+    final data = await _mnDbPowerZoneSchema.getById(id);
+    if (data.length != 0) {
+      obj = DbPowerZoneSchema.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbPowerZoneSchema) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbPowerZoneSchema.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbPowerZoneSchema. Returns a new Primary Key value of DbPowerZoneSchema
+
+  /// <returns>Returns a new Primary Key value of DbPowerZoneSchema
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbPowerZoneSchema> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(
+      List<DbPowerZoneSchema> dbpowerzoneschemas) async {
+    final results = _mnDbPowerZoneSchema.saveAll(
+        'INSERT OR REPLACE INTO powerZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+        dbpowerzoneschemas);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbPowerZoneSchema.rawInsert(
+              'INSERT OR REPLACE INTO powerZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+              [
+                id,
+                date != null ? date.millisecondsSinceEpoch : null,
+                name,
+                base,
+                athletesId
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbPowerZoneSchema id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false,
+            errorMessage: 'DbPowerZoneSchema id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage:
+              'DbPowerZoneSchema Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbPowerZoneSchema>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(
+      List<DbPowerZoneSchema> dbpowerzoneschemas) async {
+    final results = await _mnDbPowerZoneSchema.rawInsertAll(
+        'INSERT OR REPLACE INTO powerZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+        dbpowerzoneschemas);
+    return results;
+  }
+
+  /// Deletes DbPowerZoneSchema
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbPowerZoneSchema invoked (id=$id)');
+    var result = BoolResult();
+    {
+      result = await DbPowerZone()
+          .select()
+          .powerZoneSchemataId
+          .equals(id)
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbPowerZoneSchema
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbPowerZoneSchema.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbPowerZoneSchemaFilterBuilder _Select;
+  DbPowerZoneSchemaFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbPowerZoneSchemaFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbPowerZoneSchemaFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbPowerZoneSchemaFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    athletesId = athletesId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbpowerzoneschema
+
+// region DbPowerZoneSchemaField
+class DbPowerZoneSchemaField extends SearchCriteria {
+  DbPowerZoneSchemaField(this.dbpowerzoneschemaFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbPowerZoneSchemaFilterBuilder dbpowerzoneschemaFB;
+
+  DbPowerZoneSchemaField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbPowerZoneSchemaFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbpowerzoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.EQuals, dbpowerzoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.NotEQuals, dbpowerzoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbpowerzoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbpowerzoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbpowerzoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder isNull() {
+    dbpowerzoneschemaFB._addedBlocks = setCriteria(
+        0,
+        dbpowerzoneschemaFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbpowerzoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbpowerzoneschemaFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbpowerzoneschemaFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbpowerzoneschemaFB._addedBlocks);
+      _waitingNot = '';
+      dbpowerzoneschemaFB
+              ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+          dbpowerzoneschemaFB._addedBlocks.retVal;
+    }
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbpowerzoneschemaFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbpowerzoneschemaFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbpowerzoneschemaFB._addedBlocks);
+      _waitingNot = '';
+      dbpowerzoneschemaFB
+              ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+          dbpowerzoneschemaFB._addedBlocks.retVal;
+      dbpowerzoneschemaFB
+              ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+          dbpowerzoneschemaFB._addedBlocks.retVal;
+    }
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbpowerzoneschemaFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbpowerzoneschemaFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbpowerzoneschemaFB._addedBlocks);
+      _waitingNot = '';
+      dbpowerzoneschemaFB
+              ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+          dbpowerzoneschemaFB._addedBlocks.retVal;
+    }
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbpowerzoneschemaFB._addedBlocks = setCriteria(
+          pFirst,
+          dbpowerzoneschemaFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbpowerzoneschemaFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbpowerzoneschemaFB._addedBlocks = setCriteria(
+            pFirst,
+            dbpowerzoneschemaFB.parameters,
+            param,
+            SqlSyntax.LessThan,
+            dbpowerzoneschemaFB._addedBlocks);
+      } else {
+        dbpowerzoneschemaFB._addedBlocks = setCriteria(
+            pFirst,
+            dbpowerzoneschemaFB.parameters,
+            param,
+            SqlSyntax.GreaterThanOrEquals,
+            dbpowerzoneschemaFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbpowerzoneschemaFB._addedBlocks = setCriteria(
+            pLast,
+            dbpowerzoneschemaFB.parameters,
+            param,
+            SqlSyntax.GreaterThan,
+            dbpowerzoneschemaFB._addedBlocks);
+      } else {
+        dbpowerzoneschemaFB._addedBlocks = setCriteria(
+            pLast,
+            dbpowerzoneschemaFB.parameters,
+            param,
+            SqlSyntax.LessThanOrEquals,
+            dbpowerzoneschemaFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbpowerzoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.GreaterThan, dbpowerzoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbpowerzoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbpowerzoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.LessThan, dbpowerzoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbpowerzoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbpowerzoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbpowerzoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.LessThan, dbpowerzoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbpowerzoneschemaFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbpowerzoneschemaFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneschemaFB.parameters, param,
+            SqlSyntax.GreaterThan, dbpowerzoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+
+  DbPowerZoneSchemaFilterBuilder inValues(dynamic pValue) {
+    dbpowerzoneschemaFB._addedBlocks = setCriteria(
+        pValue,
+        dbpowerzoneschemaFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbpowerzoneschemaFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneschemaFB
+            ._addedBlocks.needEndBlock[dbpowerzoneschemaFB._blockIndex] =
+        dbpowerzoneschemaFB._addedBlocks.retVal;
+    return dbpowerzoneschemaFB;
+  }
+}
+// endregion DbPowerZoneSchemaField
+
+// region DbPowerZoneSchemaFilterBuilder
+class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
+  DbPowerZoneSchemaFilterBuilder(DbPowerZoneSchema obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbPowerZoneSchema _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbPowerZoneSchemaFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbPowerZoneSchemaFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbPowerZoneSchemaFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbPowerZoneSchemaFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbPowerZoneSchemaFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbPowerZoneSchemaFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbPowerZoneSchemaFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbPowerZoneSchemaFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbPowerZoneSchemaFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbPowerZoneSchemaFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbPowerZoneSchemaField setField(
+      DbPowerZoneSchemaField field, String colName, DbType dbtype) {
+    return DbPowerZoneSchemaField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbPowerZoneSchemaField _id;
+  DbPowerZoneSchemaField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbPowerZoneSchemaField _date;
+  DbPowerZoneSchemaField get date {
+    return _date = setField(_date, 'date', DbType.date);
+  }
+
+  DbPowerZoneSchemaField _name;
+  DbPowerZoneSchemaField get name {
+    return _name = setField(_name, 'name', DbType.text);
+  }
+
+  DbPowerZoneSchemaField _base;
+  DbPowerZoneSchemaField get base {
+    return _base = setField(_base, 'base', DbType.integer);
+  }
+
+  DbPowerZoneSchemaField _athletesId;
+  DbPowerZoneSchemaField get athletesId {
+    return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbPowerZoneSchema._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbPowerZoneSchema> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbPowerZoneSchema._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbPowerZoneSchema
+          .updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbPowerZoneSchema.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from powerZoneSchemata ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbPowerZoneSchema.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbPowerZoneSchemaObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbPowerZoneSchema>
+  Future<DbPowerZoneSchema> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
+    final data = await objFuture;
+    DbPowerZoneSchema obj;
+    if (data.isNotEmpty) {
+      obj = DbPowerZoneSchema.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbPowerZones')) {
+          obj.plDbPowerZones =
+              obj.plDbPowerZones ?? await obj.getDbPowerZones().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount(
+      [VoidCallback Function(int c) dbpowerzoneschemaCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbpowerzoneschemasFuture =
+        await _obj._mnDbPowerZoneSchema.toList(qparams);
+    final int count = dbpowerzoneschemasFuture[0]['CNT'] as int;
+    if (dbpowerzoneschemaCount != null) {
+      dbpowerzoneschemaCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbPowerZoneSchema>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbPowerZoneSchema>
+  Future<List<DbPowerZoneSchema>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbPowerZoneSchema> dbpowerzoneschemasData =
+        await DbPowerZoneSchema.fromMapList(data, preload: preload);
+    return dbpowerzoneschemasData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbPowerZoneSchema.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbPowerZoneSchema>>
+  Future<List<DropdownMenuItem<DbPowerZoneSchema>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbPowerZoneSchema>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbpowerzoneschemasFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
+
+    final data = await dbpowerzoneschemasFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbPowerZoneSchema>> items = []
+      ..add(DropdownMenuItem(
+        value: DbPowerZoneSchema(),
+        child: Text('Select DbPowerZoneSchema'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbPowerZoneSchema.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbpowerzoneschemasFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
+
+    final data = await dbpowerzoneschemasFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbPowerZoneSchema'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbPowerZoneSchema.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbPowerZoneSchema.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbPowerZoneSchemaFilterBuilder
+
+// region DbPowerZoneSchemaFields
+class DbPowerZoneSchemaFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fDate;
+  static TableField get date {
+    return _fDate = _fDate ?? SqlSyntax.setField(_fDate, 'date', DbType.date);
+  }
+
+  static TableField _fName;
+  static TableField get name {
+    return _fName = _fName ?? SqlSyntax.setField(_fName, 'name', DbType.text);
+  }
+
+  static TableField _fBase;
+  static TableField get base {
+    return _fBase =
+        _fBase ?? SqlSyntax.setField(_fBase, 'base', DbType.integer);
+  }
+
+  static TableField _fAthletesId;
+  static TableField get athletesId {
+    return _fAthletesId = _fAthletesId ??
+        SqlSyntax.setField(_fAthletesId, 'athletesId', DbType.integer);
+  }
+}
+// endregion DbPowerZoneSchemaFields
+
+//region DbPowerZoneSchemaManager
+class DbPowerZoneSchemaManager extends SqfEntityProvider {
+  DbPowerZoneSchemaManager()
+      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'powerZoneSchemata';
+  static String _colId = 'id';
+}
+
+//endregion DbPowerZoneSchemaManager
+// region DbPowerZone
+class DbPowerZone {
+  DbPowerZone(
+      {this.id,
+      this.name,
+      this.lowerPercentage,
+      this.upperPercentage,
+      this.lowerLimit,
+      this.upperLimit,
+      this.powerZoneSchemataId}) {
+    _setDefaultValues();
+  }
+  DbPowerZone.withFields(this.name, this.lowerPercentage, this.upperPercentage,
+      this.lowerLimit, this.upperLimit, this.powerZoneSchemataId) {
+    _setDefaultValues();
+  }
+  DbPowerZone.withId(
+      this.id,
+      this.name,
+      this.lowerPercentage,
+      this.upperPercentage,
+      this.lowerLimit,
+      this.upperLimit,
+      this.powerZoneSchemataId) {
+    _setDefaultValues();
+  }
+  DbPowerZone.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['name'] != null) name = o['name'] as String;
+    if (o['lowerPercentage'] != null)
+      lowerPercentage = o['lowerPercentage'] as int;
+    if (o['upperPercentage'] != null)
+      upperPercentage = o['upperPercentage'] as int;
+    if (o['lowerLimit'] != null) lowerLimit = o['lowerLimit'] as int;
+    if (o['upperLimit'] != null) upperLimit = o['upperLimit'] as int;
+    powerZoneSchemataId = o['powerZoneSchemataId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbPowerZoneSchema = o['DbPowerZoneSchema'] != null
+        ? DbPowerZoneSchema.fromMap(
+            o['DbPowerZoneSchema'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbPowerZone)
+  int id;
+  String name;
+  int lowerPercentage;
+  int upperPercentage;
+  int lowerLimit;
+  int upperLimit;
+  int powerZoneSchemataId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbPowerZone)
+
+// RELATIONSHIPS (DbPowerZone)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbPowerZoneSchema plDbPowerZoneSchema;
+
+  /// get DbPowerZoneSchema By PowerZoneSchemataId
+  Future<DbPowerZoneSchema> getDbPowerZoneSchema() async {
+    final _obj = await DbPowerZoneSchema().getById(powerZoneSchemataId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbPowerZone)
+
+  static const bool _softDeleteActivated = false;
+  DbPowerZoneManager __mnDbPowerZone;
+
+  DbPowerZoneManager get _mnDbPowerZone {
+    return __mnDbPowerZone = __mnDbPowerZone ?? DbPowerZoneManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (lowerPercentage != null) {
+      map['lowerPercentage'] = lowerPercentage;
+    }
+
+    if (upperPercentage != null) {
+      map['upperPercentage'] = upperPercentage;
+    }
+
+    if (lowerLimit != null) {
+      map['lowerLimit'] = lowerLimit;
+    }
+
+    if (upperLimit != null) {
+      map['upperLimit'] = upperLimit;
+    }
+
+    if (powerZoneSchemataId != null) {
+      map['powerZoneSchemataId'] = powerZoneSchemataId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (lowerPercentage != null) {
+      map['lowerPercentage'] = lowerPercentage;
+    }
+
+    if (upperPercentage != null) {
+      map['upperPercentage'] = upperPercentage;
+    }
+
+    if (lowerLimit != null) {
+      map['lowerLimit'] = lowerLimit;
+    }
+
+    if (upperLimit != null) {
+      map['upperLimit'] = upperLimit;
+    }
+
+    if (powerZoneSchemataId != null) {
+      map['powerZoneSchemataId'] = powerZoneSchemataId;
+    }
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [
+      id,
+      name,
+      lowerPercentage,
+      upperPercentage,
+      lowerLimit,
+      upperLimit,
+      powerZoneSchemataId
+    ];
+  }
+
+  static Future<List<DbPowerZone>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbPowerZone.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbPowerZone>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbPowerZone>[];
+    try {
+      objList = list
+          .map((dbpowerzone) =>
+              DbPowerZone.fromMap(dbpowerzone as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbPowerZone.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbPowerZone>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbPowerZone.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbPowerZone>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbPowerZone> objList = <DbPowerZone>[];
+    for (final map in data) {
+      final obj = DbPowerZone.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null ||
+            preloadFields.contains('plDbPowerZoneSchema')) {
+          obj.plDbPowerZoneSchema =
+              obj.plDbPowerZoneSchema ?? await obj.getDbPowerZoneSchema();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbPowerZone by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbPowerZone if exist, otherwise returns null
+  Future<DbPowerZone> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbPowerZone obj;
+    final data = await _mnDbPowerZone.getById(id);
+    if (data.length != 0) {
+      obj = DbPowerZone.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbPowerZone) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbPowerZone.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbPowerZone. Returns a new Primary Key value of DbPowerZone
+
+  /// <returns>Returns a new Primary Key value of DbPowerZone
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbPowerZone> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(List<DbPowerZone> dbpowerzones) async {
+    final results = _mnDbPowerZone.saveAll(
+        'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        dbpowerzones);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbPowerZone.rawInsert(
+              'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+              [
+                id,
+                name,
+                lowerPercentage,
+                upperPercentage,
+                lowerLimit,
+                upperLimit,
+                powerZoneSchemataId
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbPowerZone id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbPowerZone id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbPowerZone Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbPowerZone>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(List<DbPowerZone> dbpowerzones) async {
+    final results = await _mnDbPowerZone.rawInsertAll(
+        'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        dbpowerzones);
+    return results;
+  }
+
+  /// Deletes DbPowerZone
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbPowerZone invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbPowerZone
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbPowerZone.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbPowerZoneFilterBuilder _Select;
+  DbPowerZoneFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbPowerZoneFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbPowerZoneFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbPowerZoneFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    powerZoneSchemataId = powerZoneSchemataId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbpowerzone
+
+// region DbPowerZoneField
+class DbPowerZoneField extends SearchCriteria {
+  DbPowerZoneField(this.dbpowerzoneFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbPowerZoneFilterBuilder dbpowerzoneFB;
+
+  DbPowerZoneField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbPowerZoneFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbpowerzoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneFB.parameters, param, SqlSyntax.EQuals,
+            dbpowerzoneFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.NotEQuals, dbpowerzoneFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbpowerzoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbpowerzoneFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbpowerzoneFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder isNull() {
+    dbpowerzoneFB._addedBlocks = setCriteria(
+        0,
+        dbpowerzoneFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbpowerzoneFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbpowerzoneFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbpowerzoneFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbpowerzoneFB._addedBlocks);
+      _waitingNot = '';
+      dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+          dbpowerzoneFB._addedBlocks.retVal;
+    }
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbpowerzoneFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbpowerzoneFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbpowerzoneFB._addedBlocks);
+      _waitingNot = '';
+      dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+          dbpowerzoneFB._addedBlocks.retVal;
+      dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+          dbpowerzoneFB._addedBlocks.retVal;
+    }
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbpowerzoneFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbpowerzoneFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbpowerzoneFB._addedBlocks);
+      _waitingNot = '';
+      dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+          dbpowerzoneFB._addedBlocks.retVal;
+    }
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbpowerzoneFB._addedBlocks = setCriteria(
+          pFirst,
+          dbpowerzoneFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbpowerzoneFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbpowerzoneFB._addedBlocks = setCriteria(
+            pFirst,
+            dbpowerzoneFB.parameters,
+            param,
+            SqlSyntax.LessThan,
+            dbpowerzoneFB._addedBlocks);
+      } else {
+        dbpowerzoneFB._addedBlocks = setCriteria(
+            pFirst,
+            dbpowerzoneFB.parameters,
+            param,
+            SqlSyntax.GreaterThanOrEquals,
+            dbpowerzoneFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbpowerzoneFB._addedBlocks = setCriteria(
+            pLast,
+            dbpowerzoneFB.parameters,
+            param,
+            SqlSyntax.GreaterThan,
+            dbpowerzoneFB._addedBlocks);
+      } else {
+        dbpowerzoneFB._addedBlocks = setCriteria(
+            pLast,
+            dbpowerzoneFB.parameters,
+            param,
+            SqlSyntax.LessThanOrEquals,
+            dbpowerzoneFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbpowerzoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.GreaterThan, dbpowerzoneFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbpowerzoneFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbpowerzoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.LessThan, dbpowerzoneFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbpowerzoneFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbpowerzoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbpowerzoneFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.LessThan, dbpowerzoneFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbpowerzoneFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbpowerzoneFB._addedBlocks)
+        : setCriteria(pValue, dbpowerzoneFB.parameters, param,
+            SqlSyntax.GreaterThan, dbpowerzoneFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+
+  DbPowerZoneFilterBuilder inValues(dynamic pValue) {
+    dbpowerzoneFB._addedBlocks = setCriteria(
+        pValue,
+        dbpowerzoneFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbpowerzoneFB._addedBlocks);
+    _waitingNot = '';
+    dbpowerzoneFB._addedBlocks.needEndBlock[dbpowerzoneFB._blockIndex] =
+        dbpowerzoneFB._addedBlocks.retVal;
+    return dbpowerzoneFB;
+  }
+}
+// endregion DbPowerZoneField
+
+// region DbPowerZoneFilterBuilder
+class DbPowerZoneFilterBuilder extends SearchCriteria {
+  DbPowerZoneFilterBuilder(DbPowerZone obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbPowerZone _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbPowerZoneFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbPowerZoneFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbPowerZoneFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbPowerZoneFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbPowerZoneFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbPowerZoneFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbPowerZoneFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbPowerZoneFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbPowerZoneFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbPowerZoneFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbPowerZoneField setField(
+      DbPowerZoneField field, String colName, DbType dbtype) {
+    return DbPowerZoneField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbPowerZoneField _id;
+  DbPowerZoneField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbPowerZoneField _name;
+  DbPowerZoneField get name {
+    return _name = setField(_name, 'name', DbType.text);
+  }
+
+  DbPowerZoneField _lowerPercentage;
+  DbPowerZoneField get lowerPercentage {
+    return _lowerPercentage =
+        setField(_lowerPercentage, 'lowerPercentage', DbType.integer);
+  }
+
+  DbPowerZoneField _upperPercentage;
+  DbPowerZoneField get upperPercentage {
+    return _upperPercentage =
+        setField(_upperPercentage, 'upperPercentage', DbType.integer);
+  }
+
+  DbPowerZoneField _lowerLimit;
+  DbPowerZoneField get lowerLimit {
+    return _lowerLimit = setField(_lowerLimit, 'lowerLimit', DbType.integer);
+  }
+
+  DbPowerZoneField _upperLimit;
+  DbPowerZoneField get upperLimit {
+    return _upperLimit = setField(_upperLimit, 'upperLimit', DbType.integer);
+  }
+
+  DbPowerZoneField _powerZoneSchemataId;
+  DbPowerZoneField get powerZoneSchemataId {
+    return _powerZoneSchemataId =
+        setField(_powerZoneSchemataId, 'powerZoneSchemataId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbPowerZone._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbPowerZone> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbPowerZone._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbPowerZone.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbPowerZone.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from powerZone ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbPowerZone.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbPowerZoneObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbPowerZone>
+  Future<DbPowerZone> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbPowerZone.toList(qparams);
+    final data = await objFuture;
+    DbPowerZone obj;
+    if (data.isNotEmpty) {
+      obj = DbPowerZone.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null ||
+            preloadFields.contains('plDbPowerZoneSchema')) {
+          obj.plDbPowerZoneSchema =
+              obj.plDbPowerZoneSchema ?? await obj.getDbPowerZoneSchema();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dbpowerzoneCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbpowerzonesFuture = await _obj._mnDbPowerZone.toList(qparams);
+    final int count = dbpowerzonesFuture[0]['CNT'] as int;
+    if (dbpowerzoneCount != null) {
+      dbpowerzoneCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbPowerZone>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbPowerZone>
+  Future<List<DbPowerZone>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbPowerZone> dbpowerzonesData =
+        await DbPowerZone.fromMapList(data, preload: preload);
+    return dbpowerzonesData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbPowerZone.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbPowerZone>>
+  Future<List<DropdownMenuItem<DbPowerZone>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbPowerZone>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbpowerzonesFuture = _obj._mnDbPowerZone.toList(qparams);
+
+    final data = await dbpowerzonesFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbPowerZone>> items = []..add(DropdownMenuItem(
+        value: DbPowerZone(),
+        child: Text('Select DbPowerZone'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbPowerZone.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbpowerzonesFuture = _obj._mnDbPowerZone.toList(qparams);
+
+    final data = await dbpowerzonesFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbPowerZone'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbPowerZone.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbPowerZone.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbPowerZone.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbPowerZone.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbPowerZoneFilterBuilder
+
+// region DbPowerZoneFields
+class DbPowerZoneFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fName;
+  static TableField get name {
+    return _fName = _fName ?? SqlSyntax.setField(_fName, 'name', DbType.text);
+  }
+
+  static TableField _fLowerPercentage;
+  static TableField get lowerPercentage {
+    return _fLowerPercentage = _fLowerPercentage ??
+        SqlSyntax.setField(
+            _fLowerPercentage, 'lowerPercentage', DbType.integer);
+  }
+
+  static TableField _fUpperPercentage;
+  static TableField get upperPercentage {
+    return _fUpperPercentage = _fUpperPercentage ??
+        SqlSyntax.setField(
+            _fUpperPercentage, 'upperPercentage', DbType.integer);
+  }
+
+  static TableField _fLowerLimit;
+  static TableField get lowerLimit {
+    return _fLowerLimit = _fLowerLimit ??
+        SqlSyntax.setField(_fLowerLimit, 'lowerLimit', DbType.integer);
+  }
+
+  static TableField _fUpperLimit;
+  static TableField get upperLimit {
+    return _fUpperLimit = _fUpperLimit ??
+        SqlSyntax.setField(_fUpperLimit, 'upperLimit', DbType.integer);
+  }
+
+  static TableField _fPowerZoneSchemataId;
+  static TableField get powerZoneSchemataId {
+    return _fPowerZoneSchemataId = _fPowerZoneSchemataId ??
+        SqlSyntax.setField(
+            _fPowerZoneSchemataId, 'powerZoneSchemataId', DbType.integer);
+  }
+}
+// endregion DbPowerZoneFields
+
+//region DbPowerZoneManager
+class DbPowerZoneManager extends SqfEntityProvider {
+  DbPowerZoneManager()
+      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'powerZone';
+  static String _colId = 'id';
+}
+
+//endregion DbPowerZoneManager
 class DbEncrateiaSequenceManager extends SqfEntityProvider {
   DbEncrateiaSequenceManager() : super(DbEncrateia());
 }
