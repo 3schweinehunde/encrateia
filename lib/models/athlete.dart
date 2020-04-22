@@ -3,6 +3,7 @@ import 'package:encrateia/model/model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/weight.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io';
 
@@ -73,6 +74,7 @@ class Athlete extends ChangeNotifier {
   }
 
   get activities => Activity.all(athlete: this);
+  get weights => Weight.all(athlete: this);
 
   delete() async {
     var appDocDir = await getApplicationDocumentsDirectory();

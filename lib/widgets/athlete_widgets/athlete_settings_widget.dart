@@ -34,15 +34,7 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
             userDB.firstName + " " + userDB.lastName,
           ),
         ),
-        ListTile(
-          leading: MyIcon.stravaDownload,
-          title: Text("Strava ID / Username / Location"),
-          subtitle: Text(userDB.stravaId.toString() +
-              " / " +
-              userDB.stravaUsername +
-              " / " +
-              userDB.geoState),
-        ),
+        stravaTile(userDB: userDB),
         ListTile(
           leading: MyIcon.activities,
           title: Text("Number of activities"),
@@ -71,7 +63,11 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
             ],
           ),
         ),
-
+        ListTile(
+          leading: MyIcon.weight,
+          title: Text("Last known weight"),
+          subtitle: Text("no data available")
+        )
       ],
     );
   }
@@ -94,8 +90,23 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
   decreaseDownloadInterval() async {
     var userDB = widget.athlete.db;
     userDB.downloadInterval = (userDB.downloadInterval ?? 21) - 7;
-    if(userDB.downloadInterval < 7) userDB.downloadInterval = 7;
+    if (userDB.downloadInterval < 7) userDB.downloadInterval = 7;
     await userDB.save();
     setState(() {});
+  }
+
+  stravaTile({userDB}) {
+    if (userDB.stravaId != null)
+      return ListTile(
+          leading: MyIcon.stravaDownload,
+          title: Text("Strava ID / Username / Location"),
+          subtitle: Text(
+              userDB.stravaId.toString() +
+              " / " +
+              userDB.stravaUsername +
+              " / " +
+              userDB.geoState));
+    else
+      return Container(width: 0, height: 0);
   }
 }

@@ -9,7 +9,7 @@ class IntroductionScreen extends StatelessWidget {
         child: Card(
           margin: EdgeInsets.all(10),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Text('''
 Encrateia is a mobile application that wants to help you analyse your activity tracking data. In particular Encrateia analyzes .fit-Files that are created by many fitness trackers by default.
 

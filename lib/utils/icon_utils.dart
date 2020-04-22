@@ -90,4 +90,5 @@ class MyIcon {
   static final verticalOscillation = Icon(Icons.unfold_more);
   // W
   static final website = Icon(Icons.web);
+  static final weight = Icon(Icons.restaurant_menu);
 }
