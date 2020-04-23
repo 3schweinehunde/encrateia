@@ -36,7 +36,8 @@ class Athlete extends ChangeNotifier {
     db
       ..state = "standalone"
       ..firstName = "Jane"
-      ..lastName = "Doe";
+      ..lastName = "Doe"
+      ..downloadInterval = 21;
     await db.save();
     notifyListeners();
   }

@@ -6,6 +6,7 @@ import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:csv/csv.dart';
+import 'package:intl/intl.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
   final Athlete athlete;
@@ -19,6 +20,7 @@ class AthleteBodyWeightWidget extends StatefulWidget {
 
 class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
   List<Weight> weights = [];
+  int offset = 0;
 
   @override
   void initState() {
@@ -30,7 +32,54 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
   Widget build(context) {
     if (weights != null) {
       if (weights.length > 0) {
-        return Text(weights.length.toString());
+        return ListView(
+          children: <Widget>[
+            DataTable(
+              columns: <DataColumn>[
+                DataColumn(
+                  label: Text("Date"),
+                ),
+                DataColumn(
+                  label: Text("Weight\nkg"),
+                  numeric: true,
+                ),
+              ],
+              rows: weights.sublist(offset, offset + 8).map((Weight weight) {
+                return DataRow(
+                  key: Key(weight.db.id.toString()),
+                  cells: [
+                    DataCell(
+                        Text(DateFormat("d MMM yyyy").format(weight.db.date))),
+                    DataCell(Text(weight.db.value.toString())),
+                  ],
+                );
+              }).toList(),
+            ),
+            Row(
+              children: <Widget>[
+                Spacer(),
+                RaisedButton(
+                  color: Colors.orange,
+                  child: Text("<<"),
+                  onPressed: () => setState(() {
+                    offset > 8 ? offset = offset - 9 : offset = 0;
+                  }),
+                ),
+                Spacer(),
+                RaisedButton(
+                  color: Colors.orange,
+                  child: Text(">>"),
+                  onPressed: () => setState(() {
+                    offset < weights.length - 9
+                        ? offset = offset + 9
+                        : offset = weights.length - 9;
+                  }),
+                ),
+                Spacer(),
+              ],
+            ),
+          ],
+        );
       } else {
         return ListView(
           children: <Widget>[
