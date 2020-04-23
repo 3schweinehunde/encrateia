@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:encrateia/screens/add_weight_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/weight.dart';
@@ -43,6 +44,9 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                   label: Text("Weight\nkg"),
                   numeric: true,
                 ),
+                DataColumn(
+                  label: Text("Delete"),
+                )
               ],
               rows: weights.sublist(offset, offset + 8).map((Weight weight) {
                 return DataRow(
@@ -51,12 +55,27 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                     DataCell(
                         Text(DateFormat("d MMM yyyy").format(weight.db.date))),
                     DataCell(Text(weight.db.value.toString())),
+                    DataCell(MyIcon.delete, onTap: () => deleteWeight(weight: weight)),
                   ],
                 );
               }).toList(),
             ),
             Row(
               children: <Widget>[
+                Spacer(),
+                RaisedButton(
+                  color: Colors.green,
+                  child: Text("New weighting"),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddWeightScreen(
+                        athlete: widget.athlete,
+                        weight: Weight(),
+                      ),
+                    ),
+                  ).then((_) => getData()()),
+                ),
                 Spacer(),
                 RaisedButton(
                   color: Colors.orange,
@@ -110,9 +129,7 @@ Put one date and weight per line in the following format:
         );
       }
     } else {
-      return Center(
-        child: Text("loading"),
-      );
+      return Center(child: Text("loading"));
     }
   }
 
@@ -153,5 +170,10 @@ Put one date and weight per line in the following format:
       }
       await getData();
     }
+  }
+
+  deleteWeight({Weight weight}) async {
+    await weight.delete();
+    await getData();
   }
 }
