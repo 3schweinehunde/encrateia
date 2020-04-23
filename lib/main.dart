@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'screens/dashboard.dart';
-import 'package:encrateia/utils/db.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:encrateia/setup.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Db.create().connect();
-  await createHintFile();
+  await Setup.init();
   runApp(MyApp());
 }
 
@@ -21,19 +17,5 @@ class MyApp extends StatelessWidget {
       ),
       home: Dashboard(),
     );
-  }
-}
-
-createHintFile() async {
-  if (Platform.isAndroid) {
-    var directories = await getExternalStorageDirectories();
-    var hintFile = File('${directories[0].path}/put_your_fit_files_here.txt');
-    await hintFile.writeAsString(
-        'This is the directory where Encrateia can pickup .fit-files from.');
-  } else {
-    var directory = await getApplicationDocumentsDirectory();
-    var hintFile = File('${directory.path}/put_your_fit_files_here.txt');
-    await hintFile.writeAsString(
-        'This is the directory where Encrateia can pickup .fit-files from.');
   }
 }
