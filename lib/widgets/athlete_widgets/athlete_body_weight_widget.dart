@@ -22,6 +22,7 @@ class AthleteBodyWeightWidget extends StatefulWidget {
 class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
   List<Weight> weights = [];
   int offset = 0;
+  int rows;
 
   @override
   void initState() {
@@ -33,8 +34,11 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
   Widget build(context) {
     if (weights != null) {
       if (weights.length > 0) {
+        rows = (weights.length < 8) ? weights.length : 8;
         return ListView(
           children: <Widget>[
+            Center(child: Text("\nWeightings ${offset + 1} - ${offset + rows} "
+                "of ${weights.length}"),),
             DataTable(
               columns: <DataColumn>[
                 DataColumn(
@@ -48,14 +52,15 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                   label: Text("Delete"),
                 )
               ],
-              rows: weights.sublist(offset, offset + 8).map((Weight weight) {
+              rows: weights.sublist(offset, offset + rows).map((Weight weight) {
                 return DataRow(
                   key: Key(weight.db.id.toString()),
                   cells: [
                     DataCell(
                         Text(DateFormat("d MMM yyyy").format(weight.db.date))),
                     DataCell(Text(weight.db.value.toString())),
-                    DataCell(MyIcon.delete, onTap: () => deleteWeight(weight: weight)),
+                    DataCell(MyIcon.delete,
+                        onTap: () => deleteWeight(weight: weight)),
                   ],
                 );
               }).toList(),
@@ -81,7 +86,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                   color: Colors.orange,
                   child: Text("<<"),
                   onPressed: () => setState(() {
-                    offset > 8 ? offset = offset - 9 : offset = 0;
+                    offset > 8 ? offset = offset - rows : offset = 0;
                   }),
                 ),
                 Spacer(),
@@ -89,9 +94,9 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                   color: Colors.orange,
                   child: Text(">>"),
                   onPressed: () => setState(() {
-                    offset < weights.length - 9
-                        ? offset = offset + 9
-                        : offset = weights.length - 9;
+                    offset + rows < weights.length - rows
+                        ? offset = offset + rows
+                        : offset = weights.length - rows;
                   }),
                 ),
                 Spacer(),
@@ -102,29 +107,46 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
       } else {
         return ListView(
           children: <Widget>[
-            Card(
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Center(child: Text('''
-                    No weight data available.
+            Padding(
+              padding: EdgeInsets.all(25.0),
+              child: Text('''
+No weight data so far:
                 
 You can import your historic weight data by putting a weights.csv-file in the App's document directory.
 It's the one with a file named "put_your_fit_files_here.txt" inside.
 
 Put one date and weight per line in the following format:
 2020-04-28,75.3
-                ''')),
-              ),
+
+Or you can simply enter your current weight using the New Weighting button. 
+                '''),
             ),
-            Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25)),
-              child: ListTile(
-                leading: MyIcon.downloadLocal,
-                title: Text("Import Weights"),
-                onTap: () => importWeights(),
-              ),
-            ),
+            Row(
+              children: <Widget>[
+                Spacer(),
+                RaisedButton(
+                  // MyIcon.downloadLocal,
+                  color: Colors.orange,
+                  child: Text("Import Weights"),
+                  onPressed: () => importWeights(),
+                ),
+                Spacer(),
+                RaisedButton(
+                  color: Colors.green,
+                  child: Text("New weighting"),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddWeightScreen(
+                        athlete: widget.athlete,
+                        weight: Weight(),
+                      ),
+                    ),
+                  ).then((_) => getData()()),
+                ),
+                Spacer(),
+              ],
+            )
           ],
         );
       }
