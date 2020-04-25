@@ -34,9 +34,9 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
       var powerRecords = records
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
-      var lastRecord = powerRecords.last;
 
       if (powerRecords.length > 0) {
+        var lastRecord = powerRecords.last;
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(

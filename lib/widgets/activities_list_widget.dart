@@ -22,22 +22,8 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   @override
   initState() {
     getActivities();
-
-    if (widget.athlete.email == null) {
-      Flushbar(
-        message: "Strava email not provided yet!",
-        duration: Duration(seconds: 3),
-        backgroundColor: Colors.red,
-      )..show(context);
-    }
-    if (widget.athlete.password == null) {
-      Flushbar(
-        message: "Strava password not provided yet!",
-        duration: Duration(seconds: 3),
-        backgroundColor: Colors.red,
-      )..show(context);
-    }
-
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
@@ -222,5 +208,22 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           ),
       ],
     );
+  }
+
+  showMyFlushbar() {
+    if (widget.athlete.email == null) {
+      Flushbar(
+        message: "Strava email not provided yet or not a Strava User!",
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.yellow[900],
+      )..show(context);
+    }
+    else if(widget.athlete.password == null) {
+      Flushbar(
+        message: "Strava password not provided yet!",
+        duration: Duration(seconds: 3),
+        backgroundColor: Colors.red,
+      )..show(context);
+    }
   }
 }

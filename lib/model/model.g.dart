@@ -129,7 +129,9 @@ class TableDbActivity extends SqfEntityTableBase {
       SqfEntityFieldBase('sdevVerticalOscillation', DbType.real),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'athletesId'),
+          defaultValue: 0,
+          fieldName: 'athletesId',
+          relationType: RelationType.ONE_TO_MANY),
     ];
     super.init();
   }
@@ -144,6 +146,7 @@ class TableDbEvent extends SqfEntityTableBase {
   TableDbEvent() {
     // declare properties of EntityTable
     tableName = 'events';
+    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -173,9 +176,13 @@ class TableDbEvent extends SqfEntityTableBase {
       SqfEntityFieldBase('data', DbType.real),
       SqfEntityFieldRelationshipBase(
           TableDbActivity.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'activitiesId'),
+          defaultValue: 0,
+          fieldName: 'activitiesId',
+          relationType: RelationType.ONE_TO_MANY),
       SqfEntityFieldRelationshipBase(TableDbLap.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'lapsId'),
+          defaultValue: 0,
+          fieldName: 'lapsId',
+          relationType: RelationType.ONE_TO_MANY),
     ];
     super.init();
   }
@@ -246,7 +253,9 @@ class TableDbLap extends SqfEntityTableBase {
       SqfEntityFieldBase('sdevVerticalOscillation', DbType.real),
       SqfEntityFieldRelationshipBase(
           TableDbActivity.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'activitiesId'),
+          defaultValue: 0,
+          fieldName: 'activitiesId',
+          relationType: RelationType.ONE_TO_MANY),
     ];
     super.init();
   }
@@ -261,6 +270,7 @@ class TableDbWeight extends SqfEntityTableBase {
   TableDbWeight() {
     // declare properties of EntityTable
     tableName = 'weights';
+    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -272,7 +282,9 @@ class TableDbWeight extends SqfEntityTableBase {
       SqfEntityFieldBase('value', DbType.real),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'athletesId'),
+          defaultValue: 0,
+          fieldName: 'athletesId',
+          relationType: RelationType.ONE_TO_MANY),
     ];
     super.init();
   }
@@ -299,7 +311,9 @@ class TableDbHeartRateZoneSchema extends SqfEntityTableBase {
       SqfEntityFieldBase('base', DbType.integer),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'athletesId'),
+          defaultValue: 0,
+          fieldName: 'athletesId',
+          relationType: RelationType.ONE_TO_MANY),
     ];
     super.init();
   }
@@ -314,6 +328,7 @@ class TableDbHeartRateZone extends SqfEntityTableBase {
   TableDbHeartRateZone() {
     // declare properties of EntityTable
     tableName = 'heartRateZone';
+    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -328,7 +343,9 @@ class TableDbHeartRateZone extends SqfEntityTableBase {
       SqfEntityFieldBase('upperLimit', DbType.integer),
       SqfEntityFieldRelationshipBase(
           TableDbHeartRateZoneSchema.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'heartRateZoneSchemataId'),
+          defaultValue: 0,
+          fieldName: 'heartRateZoneSchemataId',
+          relationType: RelationType.ONE_TO_MANY),
     ];
     super.init();
   }
@@ -355,7 +372,9 @@ class TableDbPowerZoneSchema extends SqfEntityTableBase {
       SqfEntityFieldBase('base', DbType.integer),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'athletesId'),
+          defaultValue: 0,
+          fieldName: 'athletesId',
+          relationType: RelationType.ONE_TO_MANY),
     ];
     super.init();
   }
@@ -370,6 +389,7 @@ class TableDbPowerZone extends SqfEntityTableBase {
   TableDbPowerZone() {
     // declare properties of EntityTable
     tableName = 'powerZone';
+    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -384,7 +404,9 @@ class TableDbPowerZone extends SqfEntityTableBase {
       SqfEntityFieldBase('upperLimit', DbType.integer),
       SqfEntityFieldRelationshipBase(
           TableDbPowerZoneSchema.getInstance, DeleteRule.CASCADE,
-          defaultValue: 0, fieldName: 'powerZoneSchemataId'),
+          defaultValue: 0,
+          fieldName: 'powerZoneSchemataId',
+          relationType: RelationType.ONE_TO_MANY),
     ];
     super.init();
   }
@@ -402,6 +424,8 @@ class TableDbPowerZone extends SqfEntityTableBase {
 class DbEncrateia extends SqfEntityModelProvider {
   DbEncrateia() {
     databaseName = encrateia.databaseName;
+    password = encrateia.password;
+
     databaseTables = [
       TableDbAthlete.getInstance,
       TableDbActivity.getInstance,
@@ -452,7 +476,7 @@ class DbAthlete {
     _setDefaultValues();
   }
   DbAthlete.withId(
-      this.id,
+      id,
       this.state,
       this.firstName,
       this.lastName,
@@ -463,19 +487,20 @@ class DbAthlete {
       this.downloadInterval) {
     _setDefaultValues();
   }
-  DbAthlete.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbAthlete.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['state'] != null) state = o['state'] as String;
     if (o['firstName'] != null) firstName = o['firstName'] as String;
     if (o['lastName'] != null) lastName = o['lastName'] as String;
     if (o['stravaUsername'] != null)
       stravaUsername = o['stravaUsername'] as String;
     if (o['photoPath'] != null) photoPath = o['photoPath'] as String;
-    if (o['stravaId'] != null) stravaId = o['stravaId'] as int;
+    if (o['stravaId'] != null)
+      stravaId = int.tryParse(o['stravaId'].toString());
     if (o['geoState'] != null) geoState = o['geoState'] as String;
     if (o['downloadInterval'] != null)
-      downloadInterval = o['downloadInterval'] as int;
+      downloadInterval = int.tryParse(o['downloadInterval'].toString());
   }
   // FIELDS (DbAthlete)
   int id;
@@ -492,10 +517,11 @@ class DbAthlete {
   // end FIELDS (DbAthlete)
 
 // COLLECTIONS & VIRTUALS (DbAthlete)
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbActivities', 'plField2'..]) or so on..
   List<DbActivity> plDbActivities;
 
-  /// get DbActivity(s) filtered by athletesId=id
+  /// get DbActivity(s) filtered by id=athletesId
   DbActivityFilterBuilder getDbActivities(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbActivity()
@@ -505,10 +531,11 @@ class DbAthlete {
         .and;
   }
 
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbWeights', 'plField2'..]) or so on..
   List<DbWeight> plDbWeights;
 
-  /// get DbWeight(s) filtered by athletesId=id
+  /// get DbWeight(s) filtered by id=athletesId
   DbWeightFilterBuilder getDbWeights(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbWeight()
@@ -518,10 +545,11 @@ class DbAthlete {
         .and;
   }
 
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbHeartRateZoneSchemas', 'plField2'..]) or so on..
   List<DbHeartRateZoneSchema> plDbHeartRateZoneSchemas;
 
-  /// get DbHeartRateZoneSchema(s) filtered by athletesId=id
+  /// get DbHeartRateZoneSchema(s) filtered by id=athletesId
   DbHeartRateZoneSchemaFilterBuilder getDbHeartRateZoneSchemas(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbHeartRateZoneSchema()
@@ -531,10 +559,11 @@ class DbAthlete {
         .and;
   }
 
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbPowerZoneSchemas', 'plField2'..]) or so on..
   List<DbPowerZoneSchema> plDbPowerZoneSchemas;
 
-  /// get DbPowerZoneSchema(s) filtered by athletesId=id
+  /// get DbPowerZoneSchema(s) filtered by id=athletesId
   DbPowerZoneSchemaFilterBuilder getDbPowerZoneSchemas(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbPowerZoneSchema()
@@ -543,6 +572,7 @@ class DbAthlete {
         .equals(id)
         .and;
   }
+
 // END COLLECTIONS & VIRTUALS (DbAthlete)
 
   static const bool _softDeleteActivated = false;
@@ -553,7 +583,8 @@ class DbAthlete {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -593,8 +624,10 @@ class DbAthlete {
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -650,17 +683,30 @@ class DbAthlete {
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
+    return [
+      state,
+      firstName,
+      lastName,
+      stravaUsername,
+      photoPath,
+      stravaId,
+      geoState,
+      downloadInterval
+    ];
+  }
+
+  List<dynamic> toArgsWithIds() {
     return [
       id,
       state,
@@ -700,41 +746,63 @@ class DbAthlete {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbAthlete>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbAthlete.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbAthlete>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbAthlete> objList = <DbAthlete>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbAthlete.fromMap(map as Map<String, dynamic>);
+      final obj = DbAthlete.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
 
-      // RELATIONSHIPS PRELOAD
+      // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbActivities')) {
-          obj.plDbActivities =
-              obj.plDbActivities ?? await obj.getDbActivities().toList();
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbActivities') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbActivities'))) {
+          /*_loadedFields.add('athletes.plDbActivities'); */
+          obj.plDbActivities = obj.plDbActivities ??
+              await obj.getDbActivities().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (preloadFields == null || preloadFields.contains('plDbWeights')) {
-          obj.plDbWeights =
-              obj.plDbWeights ?? await obj.getDbWeights().toList();
+        if (/*!_loadedFields.contains('athletes.plDbWeights') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbWeights'))) {
+          /*_loadedFields.add('athletes.plDbWeights'); */
+          obj.plDbWeights = obj.plDbWeights ??
+              await obj.getDbWeights().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (preloadFields == null ||
-            preloadFields.contains('plDbHeartRateZoneSchemas')) {
+        if (/*!_loadedFields.contains('athletes.plDbHeartRateZoneSchemas') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbHeartRateZoneSchemas'))) {
+          /*_loadedFields.add('athletes.plDbHeartRateZoneSchemas'); */
           obj.plDbHeartRateZoneSchemas = obj.plDbHeartRateZoneSchemas ??
-              await obj.getDbHeartRateZoneSchemas().toList();
+              await obj.getDbHeartRateZoneSchemas().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (preloadFields == null ||
-            preloadFields.contains('plDbPowerZoneSchemas')) {
+        if (/*!_loadedFields.contains('athletes.plDbPowerZoneSchemas') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbPowerZoneSchemas'))) {
+          /*_loadedFields.add('athletes.plDbPowerZoneSchemas'); */
           obj.plDbPowerZoneSchemas = obj.plDbPowerZoneSchemas ??
-              await obj.getDbPowerZoneSchemas().toList();
+              await obj.getDbPowerZoneSchemas().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-      } // END RELATIONSHIPS PRELOAD
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       objList.add(obj);
     }
@@ -742,16 +810,80 @@ class DbAthlete {
   }
 
   /// returns DbAthlete by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbAthlete if exist, otherwise returns null
-  Future<DbAthlete> getById(int id) async {
+  Future<DbAthlete> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbAthlete obj;
-    final data = await _mnDbAthlete.getById(id);
+    final data = await _mnDbAthlete.getById([id]);
     if (data.length != 0) {
       obj = DbAthlete.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbActivities') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbActivities'))) {
+          /*_loadedFields.add('athletes.plDbActivities'); */
+          obj.plDbActivities = obj.plDbActivities ??
+              await obj.getDbActivities().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('athletes.plDbWeights') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbWeights'))) {
+          /*_loadedFields.add('athletes.plDbWeights'); */
+          obj.plDbWeights = obj.plDbWeights ??
+              await obj.getDbWeights().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('athletes.plDbHeartRateZoneSchemas') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbHeartRateZoneSchemas'))) {
+          /*_loadedFields.add('athletes.plDbHeartRateZoneSchemas'); */
+          obj.plDbHeartRateZoneSchemas = obj.plDbHeartRateZoneSchemas ??
+              await obj.getDbHeartRateZoneSchemas().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('athletes.plDbPowerZoneSchemas') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbPowerZoneSchemas'))) {
+          /*_loadedFields.add('athletes.plDbPowerZoneSchemas'); */
+          obj.plDbPowerZoneSchemas = obj.plDbPowerZoneSchemas ??
+              await obj.getDbPowerZoneSchemas().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
+
     } else {
       obj = null;
     }
@@ -765,7 +897,8 @@ class DbAthlete {
     if (id == null || id == 0) {
       id = await _mnDbAthlete.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbAthlete.update(this);
     }
 
     return id;
@@ -783,20 +916,23 @@ class DbAthlete {
   /// saveAll method saves the sent List<DbAthlete> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(List<DbAthlete> dbathletes) async {
-    final results = _mnDbAthlete.saveAll(
-        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',
-        dbathletes);
-    return results;
+  Future<List<dynamic>> saveAll(List<DbAthlete> dbathletes) async {
+    // final results = _mnDbAthlete.saveAll('INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',dbathletes);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbathletes) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbAthlete.rawInsert(
-              'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -811,7 +947,7 @@ class DbAthlete {
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbAthlete id=$id updated successfuly');
+            successMessage: 'DbAthlete id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false, errorMessage: 'DbAthlete id=$id did not update');
@@ -829,10 +965,10 @@ class DbAthlete {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(List<DbAthlete> dbathletes) async {
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
-        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -844,15 +980,21 @@ class DbAthlete {
     print('SQFENTITIY: delete DbAthlete invoked (id=$id)');
     var result = BoolResult();
     {
-      result =
-          await DbActivity().select().athletesId.equals(id).delete(hardDelete);
+      result = await DbActivity()
+          .select()
+          .athletesId
+          .equals(id)
+          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
     }
     {
-      result =
-          await DbWeight().select().athletesId.equals(id).delete(hardDelete);
+      result = await DbWeight()
+          .select()
+          .athletesId
+          .equals(id)
+          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -862,7 +1004,7 @@ class DbAthlete {
           .select()
           .athletesId
           .equals(id)
-          .delete(hardDelete);
+          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -872,7 +1014,7 @@ class DbAthlete {
           .select()
           .athletesId
           .equals(id)
-          .delete(hardDelete);
+          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -887,7 +1029,6 @@ class DbAthlete {
     }
   }
 
-  //private DbAthleteFilterBuilder _Select;
   DbAthleteFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbAthleteFilterBuilder(this)
@@ -1178,11 +1319,12 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbAthleteFilterBuilder where(String whereCriteria) {
+  DbAthleteFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -1226,7 +1368,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -1244,7 +1386,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -1262,7 +1404,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -1364,6 +1506,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -1408,6 +1551,40 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+    // Delete sub records where in (DbActivity) according to DeleteRule.CASCADE
+    final activitiesByathletesIdidList = await toListPrimaryKey(false);
+    final resDbActivity = await DbActivity()
+        .select()
+        .athletesId
+        .inValues(activitiesByathletesIdidList)
+        .delete(hardDelete);
+    if (!resDbActivity.success) return resDbActivity;
+// Delete sub records where in (DbWeight) according to DeleteRule.CASCADE
+    final weightsByathletesIdidList = await toListPrimaryKey(false);
+    final resDbWeight = await DbWeight()
+        .select()
+        .athletesId
+        .inValues(weightsByathletesIdidList)
+        .delete(hardDelete);
+    if (!resDbWeight.success) return resDbWeight;
+// Delete sub records where in (DbHeartRateZoneSchema) according to DeleteRule.CASCADE
+    final heartRateZoneSchemataByathletesIdidList =
+        await toListPrimaryKey(false);
+    final resDbHeartRateZoneSchema = await DbHeartRateZoneSchema()
+        .select()
+        .athletesId
+        .inValues(heartRateZoneSchemataByathletesIdidList)
+        .delete(hardDelete);
+    if (!resDbHeartRateZoneSchema.success) return resDbHeartRateZoneSchema;
+// Delete sub records where in (DbPowerZoneSchema) according to DeleteRule.CASCADE
+    final powerZoneSchemataByathletesIdidList = await toListPrimaryKey(false);
+    final resDbPowerZoneSchema = await DbPowerZoneSchema()
+        .select()
+        .athletesId
+        .inValues(powerZoneSchemataByathletesIdidList)
+        .delete(hardDelete);
+    if (!resDbPowerZoneSchema.success) return resDbPowerZoneSchema;
+
     if (DbAthlete._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbAthlete.updateBatch(qparams, {'isDeleted': 1});
     } else {
@@ -1430,15 +1607,25 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return _obj._mnDbAthlete.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbAthleteObj if exist, otherwise returns null
+  /// This method always returns DbAthlete Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbAthlete>
   Future<DbAthlete> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbAthlete.toList(qparams);
@@ -1446,28 +1633,52 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     DbAthlete obj;
     if (data.isNotEmpty) {
       obj = DbAthlete.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
 
-      // RELATIONSHIPS PRELOAD
+      // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbActivities')) {
-          obj.plDbActivities =
-              obj.plDbActivities ?? await obj.getDbActivities().toList();
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbActivities') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbActivities'))) {
+          /*_loadedFields.add('athletes.plDbActivities'); */
+          obj.plDbActivities = obj.plDbActivities ??
+              await obj.getDbActivities().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (preloadFields == null || preloadFields.contains('plDbWeights')) {
-          obj.plDbWeights =
-              obj.plDbWeights ?? await obj.getDbWeights().toList();
+        if (/*!_loadedFields.contains('athletes.plDbWeights') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbWeights'))) {
+          /*_loadedFields.add('athletes.plDbWeights'); */
+          obj.plDbWeights = obj.plDbWeights ??
+              await obj.getDbWeights().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (preloadFields == null ||
-            preloadFields.contains('plDbHeartRateZoneSchemas')) {
+        if (/*!_loadedFields.contains('athletes.plDbHeartRateZoneSchemas') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbHeartRateZoneSchemas'))) {
+          /*_loadedFields.add('athletes.plDbHeartRateZoneSchemas'); */
           obj.plDbHeartRateZoneSchemas = obj.plDbHeartRateZoneSchemas ??
-              await obj.getDbHeartRateZoneSchemas().toList();
+              await obj.getDbHeartRateZoneSchemas().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (preloadFields == null ||
-            preloadFields.contains('plDbPowerZoneSchemas')) {
+        if (/*!_loadedFields.contains('athletes.plDbPowerZoneSchemas') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbPowerZoneSchemas'))) {
+          /*_loadedFields.add('athletes.plDbPowerZoneSchemas'); */
           obj.plDbPowerZoneSchemas = obj.plDbPowerZoneSchemas ??
-              await obj.getDbPowerZoneSchemas().toList();
+              await obj.getDbPowerZoneSchemas().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-      } // END RELATIONSHIPS PRELOAD
+      } // END RELATIONSHIPS PRELOAD CHILD
 
     } else {
       obj = null;
@@ -1475,7 +1686,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbathleteCount]) async {
@@ -1489,22 +1700,36 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbAthlete>.
+  /// This method returns List<DbAthlete>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbAthlete>
   Future<List<DbAthlete>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<DbAthlete> dbathletesData =
-        await DbAthlete.fromMapList(data, preload: preload);
+    final List<DbAthlete> dbathletesData = await DbAthlete.fromMapList(data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
     return dbathletesData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -1514,17 +1739,17 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -1532,64 +1757,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return await _obj._mnDbAthlete.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbAthlete>>
-  Future<List<DropdownMenuItem<DbAthlete>>> toDropDownMenu(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbAthlete>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dbathletesFuture = _obj._mnDbAthlete.toList(qparams);
-
-    final data = await dbathletesFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbAthlete>> items = []..add(DropdownMenuItem(
-        value: DbAthlete(),
-        child: Text('Select DbAthlete'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbAthlete.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dbathletesFuture = _obj._mnDbAthlete.toList(qparams);
-
-    final data = await dbathletesFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbAthlete'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -1607,8 +1775,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbAthlete.toList(qparams);
@@ -1618,9 +1785,6 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -1709,9 +1873,14 @@ class DbAthleteFields {
 //region DbAthleteManager
 class DbAthleteManager extends SqfEntityProvider {
   DbAthleteManager()
-      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'athletes';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbAthleteManager
@@ -1861,7 +2030,7 @@ class DbActivity {
     _setDefaultValues();
   }
   DbActivity.withId(
-      this.id,
+      id,
       this.state,
       this.path,
       this.stravaId,
@@ -1932,31 +2101,38 @@ class DbActivity {
       this.athletesId) {
     _setDefaultValues();
   }
-  DbActivity.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbActivity.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['state'] != null) state = o['state'] as String;
     if (o['path'] != null) path = o['path'] as String;
-    if (o['stravaId'] != null) stravaId = o['stravaId'] as int;
+    if (o['stravaId'] != null)
+      stravaId = int.tryParse(o['stravaId'].toString());
     if (o['name'] != null) name = o['name'] as String;
-    if (o['movingTime'] != null) movingTime = o['movingTime'] as int;
+    if (o['movingTime'] != null)
+      movingTime = int.tryParse(o['movingTime'].toString());
     if (o['type'] != null) type = o['type'] as String;
-    if (o['distance'] != null) distance = o['distance'] as int;
-    if (o['serialNumber'] != null) serialNumber = o['serialNumber'] as int;
+    if (o['distance'] != null)
+      distance = int.tryParse(o['distance'].toString());
+    if (o['serialNumber'] != null)
+      serialNumber = int.tryParse(o['serialNumber'].toString());
     if (o['timeCreated'] != null)
       timeCreated = int.tryParse(o['timeCreated'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['timeCreated'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['timeCreated'].toString()))
           : DateTime.tryParse(o['timeCreated'].toString());
     if (o['sportName'] != null) sportName = o['sportName'] as String;
     if (o['sport'] != null) sport = o['sport'] as String;
     if (o['subSport'] != null) subSport = o['subSport'] as String;
     if (o['timeStamp'] != null)
       timeStamp = int.tryParse(o['timeStamp'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['timeStamp'].toString()))
           : DateTime.tryParse(o['timeStamp'].toString());
     if (o['startTime'] != null)
       startTime = int.tryParse(o['startTime'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['startTime'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['startTime'].toString()))
           : DateTime.tryParse(o['startTime'].toString());
     if (o['startPositionLat'] != null)
       startPositionLat = double.tryParse(o['startPositionLat'].toString());
@@ -1964,23 +2140,29 @@ class DbActivity {
       startPositionLong = double.tryParse(o['startPositionLong'].toString());
     if (o['event'] != null) event = o['event'] as String;
     if (o['eventType'] != null) eventType = o['eventType'] as String;
-    if (o['eventGroup'] != null) eventGroup = o['eventGroup'] as int;
-    if (o['totalDistance'] != null) totalDistance = o['totalDistance'] as int;
-    if (o['totalStrides'] != null) totalStrides = o['totalStrides'] as int;
-    if (o['totalCalories'] != null) totalCalories = o['totalCalories'] as int;
+    if (o['eventGroup'] != null)
+      eventGroup = int.tryParse(o['eventGroup'].toString());
+    if (o['totalDistance'] != null)
+      totalDistance = int.tryParse(o['totalDistance'].toString());
+    if (o['totalStrides'] != null)
+      totalStrides = int.tryParse(o['totalStrides'].toString());
+    if (o['totalCalories'] != null)
+      totalCalories = int.tryParse(o['totalCalories'].toString());
     if (o['avgSpeed'] != null)
       avgSpeed = double.tryParse(o['avgSpeed'].toString());
     if (o['maxSpeed'] != null)
       maxSpeed = double.tryParse(o['maxSpeed'].toString());
-    if (o['totalAscent'] != null) totalAscent = o['totalAscent'] as int;
-    if (o['totalDescent'] != null) totalDescent = o['totalDescent'] as int;
+    if (o['totalAscent'] != null)
+      totalAscent = int.tryParse(o['totalAscent'].toString());
+    if (o['totalDescent'] != null)
+      totalDescent = int.tryParse(o['totalDescent'].toString());
     if (o['maxRunningCadence'] != null)
-      maxRunningCadence = o['maxRunningCadence'] as int;
+      maxRunningCadence = int.tryParse(o['maxRunningCadence'].toString());
     if (o['trigger'] != null) trigger = o['trigger'] as String;
     if (o['avgTemperature'] != null)
-      avgTemperature = o['avgTemperature'] as int;
+      avgTemperature = int.tryParse(o['avgTemperature'].toString());
     if (o['maxTemperature'] != null)
-      maxTemperature = o['maxTemperature'] as int;
+      maxTemperature = int.tryParse(o['maxTemperature'].toString());
     if (o['avgFractionalCadence'] != null)
       avgFractionalCadence =
           double.tryParse(o['avgFractionalCadence'].toString());
@@ -1995,36 +2177,43 @@ class DbActivity {
           double.tryParse(o['avgStanceTimePercent'].toString());
     if (o['avgStanceTime'] != null)
       avgStanceTime = double.tryParse(o['avgStanceTime'].toString());
-    if (o['avgHeartRate'] != null) avgHeartRate = o['avgHeartRate'] as int;
-    if (o['maxHeartRate'] != null) maxHeartRate = o['maxHeartRate'] as int;
+    if (o['avgHeartRate'] != null)
+      avgHeartRate = int.tryParse(o['avgHeartRate'].toString());
+    if (o['maxHeartRate'] != null)
+      maxHeartRate = int.tryParse(o['maxHeartRate'].toString());
     if (o['avgRunningCadence'] != null)
       avgRunningCadence = double.tryParse(o['avgRunningCadence'].toString());
     if (o['avgVerticalOscillation'] != null)
       avgVerticalOscillation =
           double.tryParse(o['avgVerticalOscillation'].toString());
     if (o['totalElapsedTime'] != null)
-      totalElapsedTime = o['totalElapsedTime'] as int;
+      totalElapsedTime = int.tryParse(o['totalElapsedTime'].toString());
     if (o['totalTimerTime'] != null)
-      totalTimerTime = o['totalTimerTime'] as int;
+      totalTimerTime = int.tryParse(o['totalTimerTime'].toString());
     if (o['totalTrainingEffect'] != null)
-      totalTrainingEffect = o['totalTrainingEffect'] as int;
+      totalTrainingEffect = int.tryParse(o['totalTrainingEffect'].toString());
     if (o['necLat'] != null) necLat = double.tryParse(o['necLat'].toString());
     if (o['necLong'] != null)
       necLong = double.tryParse(o['necLong'].toString());
     if (o['swcLat'] != null) swcLat = double.tryParse(o['swcLat'].toString());
     if (o['swcLong'] != null)
       swcLong = double.tryParse(o['swcLong'].toString());
-    if (o['firstLapIndex'] != null) firstLapIndex = o['firstLapIndex'] as int;
-    if (o['numLaps'] != null) numLaps = o['numLaps'] as int;
-    if (o['numSessions'] != null) numSessions = o['numSessions'] as int;
+    if (o['firstLapIndex'] != null)
+      firstLapIndex = int.tryParse(o['firstLapIndex'].toString());
+    if (o['numLaps'] != null) numLaps = int.tryParse(o['numLaps'].toString());
+    if (o['numSessions'] != null)
+      numSessions = int.tryParse(o['numSessions'].toString());
     if (o['localTimestamp'] != null)
       localTimestamp = int.tryParse(o['localTimestamp'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['localTimestamp'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['localTimestamp'].toString()))
           : DateTime.tryParse(o['localTimestamp'].toString());
     if (o['avgPower'] != null)
       avgPower = double.tryParse(o['avgPower'].toString());
-    if (o['minPower'] != null) minPower = o['minPower'] as int;
-    if (o['maxPower'] != null) maxPower = o['maxPower'] as int;
+    if (o['minPower'] != null)
+      minPower = int.tryParse(o['minPower'].toString());
+    if (o['maxPower'] != null)
+      maxPower = int.tryParse(o['maxPower'].toString());
     if (o['sdevPower'] != null)
       sdevPower = double.tryParse(o['sdevPower'].toString());
     if (o['avgGroundTime'] != null)
@@ -2056,11 +2245,11 @@ class DbActivity {
     if (o['sdevVerticalOscillation'] != null)
       sdevVerticalOscillation =
           double.tryParse(o['sdevVerticalOscillation'].toString());
-    athletesId = o['athletesId'] as int;
+    athletesId = int.tryParse(o['athletesId'].toString());
 
     // RELATIONSHIPS FromMAP
-    plDbAthlete = o['DbAthlete'] != null
-        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+    plDbAthlete = o['dbAthlete'] != null
+        ? DbAthlete.fromMap(o['dbAthlete'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -2139,21 +2328,25 @@ class DbActivity {
   // end FIELDS (DbActivity)
 
 // RELATIONSHIPS (DbActivity)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbAthlete', 'plField2'..]) or so on..
   DbAthlete plDbAthlete;
 
   /// get DbAthlete By AthletesId
-  Future<DbAthlete> getDbAthlete() async {
-    final _obj = await DbAthlete().getById(athletesId);
+  Future<DbAthlete> getDbAthlete(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbAthlete().getById(athletesId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (DbActivity)
 
 // COLLECTIONS & VIRTUALS (DbActivity)
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbEvents', 'plField2'..]) or so on..
   List<DbEvent> plDbEvents;
 
-  /// get DbEvent(s) filtered by activitiesId=id
+  /// get DbEvent(s) filtered by id=activitiesId
   DbEventFilterBuilder getDbEvents(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbEvent()
@@ -2163,10 +2356,11 @@ class DbActivity {
         .and;
   }
 
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbLaps', 'plField2'..]) or so on..
   List<DbLap> plDbLaps;
 
-  /// get DbLap(s) filtered by activitiesId=id
+  /// get DbLap(s) filtered by id=activitiesId
   DbLapFilterBuilder getDbLaps(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbLap()
@@ -2175,6 +2369,7 @@ class DbActivity {
         .equals(id)
         .and;
   }
+
 // END COLLECTIONS & VIRTUALS (DbActivity)
 
   static const bool _softDeleteActivated = false;
@@ -2185,7 +2380,8 @@ class DbActivity {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -2224,7 +2420,7 @@ class DbActivity {
 
     if (timeCreated != null) {
       map['timeCreated'] = forJson
-          ? timeCreated.toUtc().toString()
+          ? timeCreated.toString()
           : forQuery ? timeCreated.millisecondsSinceEpoch : timeCreated;
     }
 
@@ -2242,13 +2438,13 @@ class DbActivity {
 
     if (timeStamp != null) {
       map['timeStamp'] = forJson
-          ? timeStamp.toUtc().toString()
+          ? timeStamp.toString()
           : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
     }
 
     if (startTime != null) {
       map['startTime'] = forJson
-          ? startTime.toUtc().toString()
+          ? startTime.toString()
           : forQuery ? startTime.millisecondsSinceEpoch : startTime;
     }
 
@@ -2394,7 +2590,7 @@ class DbActivity {
 
     if (localTimestamp != null) {
       map['localTimestamp'] = forJson
-          ? localTimestamp.toUtc().toString()
+          ? localTimestamp.toString()
           : forQuery ? localTimestamp.millisecondsSinceEpoch : localTimestamp;
     }
 
@@ -2467,14 +2663,16 @@ class DbActivity {
     }
 
     if (athletesId != null) {
-      map['athletesId'] = athletesId;
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
 
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -2513,7 +2711,7 @@ class DbActivity {
 
     if (timeCreated != null) {
       map['timeCreated'] = forJson
-          ? timeCreated.toUtc().toString()
+          ? timeCreated.toString()
           : forQuery ? timeCreated.millisecondsSinceEpoch : timeCreated;
     }
 
@@ -2531,13 +2729,13 @@ class DbActivity {
 
     if (timeStamp != null) {
       map['timeStamp'] = forJson
-          ? timeStamp.toUtc().toString()
+          ? timeStamp.toString()
           : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
     }
 
     if (startTime != null) {
       map['startTime'] = forJson
-          ? startTime.toUtc().toString()
+          ? startTime.toString()
           : forQuery ? startTime.millisecondsSinceEpoch : startTime;
     }
 
@@ -2683,7 +2881,7 @@ class DbActivity {
 
     if (localTimestamp != null) {
       map['localTimestamp'] = forJson
-          ? localTimestamp.toUtc().toString()
+          ? localTimestamp.toString()
           : forQuery ? localTimestamp.millisecondsSinceEpoch : localTimestamp;
     }
 
@@ -2756,7 +2954,7 @@ class DbActivity {
     }
 
     if (athletesId != null) {
-      map['athletesId'] = athletesId;
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
 
 // COLLECTIONS (DbActivity)
@@ -2771,17 +2969,90 @@ class DbActivity {
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
+    return [
+      state,
+      path,
+      stravaId,
+      name,
+      movingTime,
+      type,
+      distance,
+      serialNumber,
+      timeCreated != null ? timeCreated.millisecondsSinceEpoch : null,
+      sportName,
+      sport,
+      subSport,
+      timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+      startTime != null ? startTime.millisecondsSinceEpoch : null,
+      startPositionLat,
+      startPositionLong,
+      event,
+      eventType,
+      eventGroup,
+      totalDistance,
+      totalStrides,
+      totalCalories,
+      avgSpeed,
+      maxSpeed,
+      totalAscent,
+      totalDescent,
+      maxRunningCadence,
+      trigger,
+      avgTemperature,
+      maxTemperature,
+      avgFractionalCadence,
+      maxFractionalCadence,
+      totalFractionalCycles,
+      avgStanceTimePercent,
+      avgStanceTime,
+      avgHeartRate,
+      maxHeartRate,
+      avgRunningCadence,
+      avgVerticalOscillation,
+      totalElapsedTime,
+      totalTimerTime,
+      totalTrainingEffect,
+      necLat,
+      necLong,
+      swcLat,
+      swcLong,
+      firstLapIndex,
+      numLaps,
+      numSessions,
+      localTimestamp != null ? localTimestamp.millisecondsSinceEpoch : null,
+      avgPower,
+      minPower,
+      maxPower,
+      sdevPower,
+      avgGroundTime,
+      sdevGroundTime,
+      avgLegSpringStiffness,
+      sdevLegSpringStiffness,
+      avgFormPower,
+      sdevFormPower,
+      avgPowerRatio,
+      sdevPowerRatio,
+      avgStrideRatio,
+      sdevStrideRatio,
+      avgStrydCadence,
+      sdevStrydCadence,
+      sdevVerticalOscillation,
+      athletesId
+    ];
+  }
+
+  List<dynamic> toArgsWithIds() {
     return [
       id,
       state,
@@ -2881,34 +3152,55 @@ class DbActivity {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbActivity>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbActivity.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbActivity>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbActivity> objList = <DbActivity>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbActivity.fromMap(map as Map<String, dynamic>);
+      final obj = DbActivity.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbEvents') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbEvents'))) {
+          /*_loadedFields.add('activities.plDbEvents'); */
+          obj.plDbEvents = obj.plDbEvents ??
+              await obj.getDbEvents().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('activities.plDbLaps') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLaps'))) {
+          /*_loadedFields.add('activities.plDbLaps'); */
+          obj.plDbLaps = obj.plDbLaps ??
+              await obj.getDbLaps().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbEvents')) {
-          obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
-        }
-        if (preloadFields == null || preloadFields.contains('plDbLaps')) {
-          obj.plDbLaps = obj.plDbLaps ?? await obj.getDbLaps().toList();
-        }
-      } // END RELATIONSHIPS PRELOAD
-
-      // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -2918,16 +3210,74 @@ class DbActivity {
   }
 
   /// returns DbActivity by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbActivity if exist, otherwise returns null
-  Future<DbActivity> getById(int id) async {
+  Future<DbActivity> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbActivity obj;
-    final data = await _mnDbActivity.getById(id);
+    final data = await _mnDbActivity.getById([id]);
     if (data.length != 0) {
       obj = DbActivity.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbEvents') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbEvents'))) {
+          /*_loadedFields.add('activities.plDbEvents'); */
+          obj.plDbEvents = obj.plDbEvents ??
+              await obj.getDbEvents().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('activities.plDbLaps') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLaps'))) {
+          /*_loadedFields.add('activities.plDbLaps'); */
+          obj.plDbLaps = obj.plDbLaps ??
+              await obj.getDbLaps().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
     }
@@ -2941,7 +3291,8 @@ class DbActivity {
     if (id == null || id == 0) {
       id = await _mnDbActivity.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbActivity.update(this);
     }
 
     return id;
@@ -2959,20 +3310,23 @@ class DbActivity {
   /// saveAll method saves the sent List<DbActivity> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(List<DbActivity> dbactivities) async {
-    final results = _mnDbActivity.saveAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        dbactivities);
-    return results;
+  Future<List<dynamic>> saveAll(List<DbActivity> dbactivities) async {
+    // final results = _mnDbActivity.saveAll('INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbactivities);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbactivities) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbActivity.rawInsert(
-              'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -3049,7 +3403,7 @@ class DbActivity {
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbActivity id=$id updated successfuly');
+            successMessage: 'DbActivity id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false, errorMessage: 'DbActivity id=$id did not update');
@@ -3067,10 +3421,10 @@ class DbActivity {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(List<DbActivity> dbactivities) async {
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,  state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -3082,15 +3436,21 @@ class DbActivity {
     print('SQFENTITIY: delete DbActivity invoked (id=$id)');
     var result = BoolResult();
     {
-      result =
-          await DbEvent().select().activitiesId.equals(id).delete(hardDelete);
+      result = await DbEvent()
+          .select()
+          .activitiesId
+          .equals(id)
+          .and /*.activitiesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
     }
     {
-      result =
-          await DbLap().select().activitiesId.equals(id).delete(hardDelete);
+      result = await DbLap()
+          .select()
+          .activitiesId
+          .equals(id)
+          .and /*.activitiesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -3105,7 +3465,6 @@ class DbActivity {
     }
   }
 
-  //private DbActivityFilterBuilder _Select;
   DbActivityFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbActivityFilterBuilder(this)
@@ -3397,11 +3756,13 @@ class DbActivityFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbActivityFilterBuilder where(String whereCriteria) {
+  DbActivityFilterBuilder where(String whereCriteria,
+      {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -3445,7 +3806,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -3463,7 +3824,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -3481,7 +3842,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -3919,6 +4280,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -3963,6 +4325,23 @@ class DbActivityFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+    // Delete sub records where in (DbEvent) according to DeleteRule.CASCADE
+    final eventsByactivitiesIdidList = await toListPrimaryKey(false);
+    final resDbEvent = await DbEvent()
+        .select()
+        .activitiesId
+        .inValues(eventsByactivitiesIdidList)
+        .delete(hardDelete);
+    if (!resDbEvent.success) return resDbEvent;
+// Delete sub records where in (DbLap) according to DeleteRule.CASCADE
+    final lapsByactivitiesIdidList = await toListPrimaryKey(false);
+    final resDbLap = await DbLap()
+        .select()
+        .activitiesId
+        .inValues(lapsByactivitiesIdidList)
+        .delete(hardDelete);
+    if (!resDbLap.success) return resDbLap;
+
     if (DbActivity._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbActivity.updateBatch(qparams, {'isDeleted': 1});
     } else {
@@ -3985,15 +4364,25 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return _obj._mnDbActivity.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbActivityObj if exist, otherwise returns null
+  /// This method always returns DbActivity Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbActivity>
   Future<DbActivity> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbActivity.toList(qparams);
@@ -4001,21 +4390,44 @@ class DbActivityFilterBuilder extends SearchCriteria {
     DbActivity obj;
     if (data.isNotEmpty) {
       obj = DbActivity.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbEvents') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbEvents'))) {
+          /*_loadedFields.add('activities.plDbEvents'); */
+          obj.plDbEvents = obj.plDbEvents ??
+              await obj.getDbEvents().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('activities.plDbLaps') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLaps'))) {
+          /*_loadedFields.add('activities.plDbLaps'); */
+          obj.plDbLaps = obj.plDbLaps ??
+              await obj.getDbLaps().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbEvents')) {
-          obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
-        }
-        if (preloadFields == null || preloadFields.contains('plDbLaps')) {
-          obj.plDbLaps = obj.plDbLaps ?? await obj.getDbLaps().toList();
-        }
-      } // END RELATIONSHIPS PRELOAD
-
-      // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -4025,7 +4437,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbactivityCount]) async {
@@ -4039,22 +4451,36 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbActivity>.
+  /// This method returns List<DbActivity>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbActivity>
   Future<List<DbActivity>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<DbActivity> dbactivitiesData =
-        await DbActivity.fromMapList(data, preload: preload);
+    final List<DbActivity> dbactivitiesData = await DbActivity.fromMapList(data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
     return dbactivitiesData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -4064,17 +4490,17 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -4082,64 +4508,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return await _obj._mnDbActivity.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbActivity>>
-  Future<List<DropdownMenuItem<DbActivity>>> toDropDownMenu(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbActivity>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dbactivitiesFuture = _obj._mnDbActivity.toList(qparams);
-
-    final data = await dbactivitiesFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbActivity>> items = []..add(DropdownMenuItem(
-        value: DbActivity(),
-        child: Text('Select DbActivity'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbActivity.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dbactivitiesFuture = _obj._mnDbActivity.toList(qparams);
-
-    final data = await dbactivitiesFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbActivity'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -4157,8 +4526,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbActivity.toList(qparams);
@@ -4168,9 +4536,6 @@ class DbActivityFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -4628,9 +4993,14 @@ class DbActivityFields {
 //region DbActivityManager
 class DbActivityManager extends SqfEntityProvider {
   DbActivityManager()
-      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'activities';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbActivityManager
@@ -4688,7 +5058,7 @@ class DbEvent {
     _setDefaultValues();
   }
   DbEvent.withId(
-      this.id,
+      id,
       this.event,
       this.eventType,
       this.eventGroup,
@@ -4713,16 +5083,18 @@ class DbEvent {
       this.lapsId) {
     _setDefaultValues();
   }
-  DbEvent.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbEvent.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['event'] != null) event = o['event'] as String;
     if (o['eventType'] != null) eventType = o['eventType'] as String;
-    if (o['eventGroup'] != null) eventGroup = o['eventGroup'] as int;
+    if (o['eventGroup'] != null)
+      eventGroup = int.tryParse(o['eventGroup'].toString());
     if (o['timerTrigger'] != null) timerTrigger = o['timerTrigger'] as String;
     if (o['timeStamp'] != null)
       timeStamp = int.tryParse(o['timeStamp'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['timeStamp'].toString()))
           : DateTime.tryParse(o['timeStamp'].toString());
     if (o['positionLat'] != null)
       positionLat = double.tryParse(o['positionLat'].toString());
@@ -4733,12 +5105,13 @@ class DbEvent {
     if (o['altitude'] != null)
       altitude = double.tryParse(o['altitude'].toString());
     if (o['speed'] != null) speed = double.tryParse(o['speed'].toString());
-    if (o['heartRate'] != null) heartRate = o['heartRate'] as int;
+    if (o['heartRate'] != null)
+      heartRate = int.tryParse(o['heartRate'].toString());
     if (o['cadence'] != null)
       cadence = double.tryParse(o['cadence'].toString());
     if (o['fractionalCadence'] != null)
       fractionalCadence = double.tryParse(o['fractionalCadence'].toString());
-    if (o['power'] != null) power = o['power'] as int;
+    if (o['power'] != null) power = int.tryParse(o['power'].toString());
     if (o['strydCadence'] != null)
       strydCadence = double.tryParse(o['strydCadence'].toString());
     if (o['groundTime'] != null)
@@ -4746,20 +5119,21 @@ class DbEvent {
     if (o['verticalOscillation'] != null)
       verticalOscillation =
           double.tryParse(o['verticalOscillation'].toString());
-    if (o['formPower'] != null) formPower = o['formPower'] as int;
+    if (o['formPower'] != null)
+      formPower = int.tryParse(o['formPower'].toString());
     if (o['legSpringStiffness'] != null)
       legSpringStiffness = double.tryParse(o['legSpringStiffness'].toString());
     if (o['data'] != null) data = double.tryParse(o['data'].toString());
-    activitiesId = o['activitiesId'] as int;
+    activitiesId = int.tryParse(o['activitiesId'].toString());
 
-    lapsId = o['lapsId'] as int;
+    lapsId = int.tryParse(o['lapsId'].toString());
 
     // RELATIONSHIPS FromMAP
-    plDbActivity = o['DbActivity'] != null
-        ? DbActivity.fromMap(o['DbActivity'] as Map<String, dynamic>)
+    plDbActivity = o['dbActivity'] != null
+        ? DbActivity.fromMap(o['dbActivity'] as Map<String, dynamic>)
         : null;
-    plDbLap = o['DbLap'] != null
-        ? DbLap.fromMap(o['DbLap'] as Map<String, dynamic>)
+    plDbLap = o['dbLap'] != null
+        ? DbLap.fromMap(o['dbLap'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -4792,21 +5166,27 @@ class DbEvent {
   // end FIELDS (DbEvent)
 
 // RELATIONSHIPS (DbEvent)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbActivity', 'plField2'..]) or so on..
   DbActivity plDbActivity;
 
   /// get DbActivity By ActivitiesId
-  Future<DbActivity> getDbActivity() async {
-    final _obj = await DbActivity().getById(activitiesId);
+  Future<DbActivity> getDbActivity(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbActivity().getById(activitiesId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
 
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbLap', 'plField2'..]) or so on..
   DbLap plDbLap;
 
   /// get DbLap By LapsId
-  Future<DbLap> getDbLap() async {
-    final _obj = await DbLap().getById(lapsId);
+  Future<DbLap> getDbLap(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbLap()
+        .getById(lapsId, loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (DbEvent)
@@ -4819,7 +5199,8 @@ class DbEvent {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -4842,7 +5223,7 @@ class DbEvent {
 
     if (timeStamp != null) {
       map['timeStamp'] = forJson
-          ? timeStamp.toUtc().toString()
+          ? timeStamp.toString()
           : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
     }
 
@@ -4907,18 +5288,20 @@ class DbEvent {
     }
 
     if (activitiesId != null) {
-      map['activitiesId'] = activitiesId;
+      map['activitiesId'] = forView ? plDbActivity.state : activitiesId;
     }
 
     if (lapsId != null) {
-      map['lapsId'] = lapsId;
+      map['lapsId'] = forView ? plDbLap.event : lapsId;
     }
 
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -4941,7 +5324,7 @@ class DbEvent {
 
     if (timeStamp != null) {
       map['timeStamp'] = forJson
-          ? timeStamp.toUtc().toString()
+          ? timeStamp.toString()
           : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
     }
 
@@ -5006,27 +5389,54 @@ class DbEvent {
     }
 
     if (activitiesId != null) {
-      map['activitiesId'] = activitiesId;
+      map['activitiesId'] = forView ? plDbActivity.state : activitiesId;
     }
 
     if (lapsId != null) {
-      map['lapsId'] = lapsId;
+      map['lapsId'] = forView ? plDbLap.event : lapsId;
     }
 
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
+    return [
+      event,
+      eventType,
+      eventGroup,
+      timerTrigger,
+      timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+      positionLat,
+      positionLong,
+      distance,
+      altitude,
+      speed,
+      heartRate,
+      cadence,
+      fractionalCadence,
+      power,
+      strydCadence,
+      groundTime,
+      verticalOscillation,
+      formPower,
+      legSpringStiffness,
+      data,
+      activitiesId,
+      lapsId
+    ];
+  }
+
+  List<dynamic> toArgsWithIds() {
     return [
       id,
       event,
@@ -5078,27 +5488,39 @@ class DbEvent {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbEvent>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbEvent.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbEvent>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbEvent> objList = <DbEvent>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbEvent.fromMap(map as Map<String, dynamic>);
+      final obj = DbEvent.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbActivity')) {
-          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
-        if (preloadFields == null || preloadFields.contains('plDbLap')) {
-          obj.plDbLap = obj.plDbLap ?? await obj.getDbLap();
+        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbLap'))) {
+          /*_loadedFields.add('laps.plDbLap');*/
+          obj.plDbLap = obj.plDbLap ??
+              await obj.getDbLap(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -5108,16 +5530,58 @@ class DbEvent {
   }
 
   /// returns DbEvent by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbEvent if exist, otherwise returns null
-  Future<DbEvent> getById(int id) async {
+  Future<DbEvent> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbEvent obj;
-    final data = await _mnDbEvent.getById(id);
+    final data = await _mnDbEvent.getById([id]);
     if (data.length != 0) {
       obj = DbEvent.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbLap'))) {
+          /*_loadedFields.add('laps.plDbLap');*/
+          obj.plDbLap = obj.plDbLap ??
+              await obj.getDbLap(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
     }
@@ -5131,7 +5595,8 @@ class DbEvent {
     if (id == null || id == 0) {
       id = await _mnDbEvent.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbEvent.update(this);
     }
 
     return id;
@@ -5149,20 +5614,23 @@ class DbEvent {
   /// saveAll method saves the sent List<DbEvent> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(List<DbEvent> dbevents) async {
-    final results = _mnDbEvent.saveAll(
-        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        dbevents);
-    return results;
+  Future<List<dynamic>> saveAll(List<DbEvent> dbevents) async {
+    // final results = _mnDbEvent.saveAll('INSERT OR REPLACE INTO events (id,event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbevents);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbevents) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbEvent.rawInsert(
-              'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO events (id,event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 event,
@@ -5191,7 +5659,7 @@ class DbEvent {
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbEvent id=$id updated successfuly');
+            successMessage: 'DbEvent id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false, errorMessage: 'DbEvent id=$id did not update');
@@ -5209,10 +5677,10 @@ class DbEvent {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(List<DbEvent> dbevents) async {
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbEvent> dbevents) async {
     final results = await _mnDbEvent.rawInsertAll(
-        'INSERT OR REPLACE INTO events (id,  event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO events (id,event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbevents);
     return results;
   }
@@ -5232,7 +5700,6 @@ class DbEvent {
     }
   }
 
-  //private DbEventFilterBuilder _Select;
   DbEventFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbEventFilterBuilder(this)
@@ -5524,11 +5991,12 @@ class DbEventFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbEventFilterBuilder where(String whereCriteria) {
+  DbEventFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -5572,7 +6040,7 @@ class DbEventFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -5590,7 +6058,7 @@ class DbEventFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -5608,7 +6076,7 @@ class DbEventFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -5782,6 +6250,7 @@ class DbEventFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -5826,6 +6295,7 @@ class DbEventFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+
     if (DbEvent._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbEvent.updateBatch(qparams, {'isDeleted': 1});
     } else {
@@ -5848,15 +6318,25 @@ class DbEventFilterBuilder extends SearchCriteria {
     return _obj._mnDbEvent.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbEventObj if exist, otherwise returns null
+  /// This method always returns DbEvent Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbEvent>
   Future<DbEvent> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbEvent.toList(qparams);
@@ -5864,14 +6344,28 @@ class DbEventFilterBuilder extends SearchCriteria {
     DbEvent obj;
     if (data.isNotEmpty) {
       obj = DbEvent.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbActivity')) {
-          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
-        if (preloadFields == null || preloadFields.contains('plDbLap')) {
-          obj.plDbLap = obj.plDbLap ?? await obj.getDbLap();
+        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbLap'))) {
+          /*_loadedFields.add('laps.plDbLap');*/
+          obj.plDbLap = obj.plDbLap ??
+              await obj.getDbLap(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -5881,7 +6375,7 @@ class DbEventFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbeventCount]) async {
@@ -5895,22 +6389,36 @@ class DbEventFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbEvent>.
+  /// This method returns List<DbEvent>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbEvent>
   Future<List<DbEvent>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<DbEvent> dbeventsData =
-        await DbEvent.fromMapList(data, preload: preload);
+    final List<DbEvent> dbeventsData = await DbEvent.fromMapList(data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
     return dbeventsData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -5920,17 +6428,17 @@ class DbEventFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -5938,64 +6446,7 @@ class DbEventFilterBuilder extends SearchCriteria {
     return await _obj._mnDbEvent.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbEvent>>
-  Future<List<DropdownMenuItem<DbEvent>>> toDropDownMenu(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbEvent>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dbeventsFuture = _obj._mnDbEvent.toList(qparams);
-
-    final data = await dbeventsFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbEvent>> items = []..add(DropdownMenuItem(
-        value: DbEvent(),
-        child: Text('Select DbEvent'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbEvent.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dbeventsFuture = _obj._mnDbEvent.toList(qparams);
-
-    final data = await dbeventsFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbEvent'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -6013,8 +6464,7 @@ class DbEventFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbEvent.toList(qparams);
@@ -6024,9 +6474,6 @@ class DbEventFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -6199,9 +6646,15 @@ class DbEventFields {
 
 //region DbEventManager
 class DbEventManager extends SqfEntityProvider {
-  DbEventManager() : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  DbEventManager()
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'events';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbEventManager
@@ -6311,7 +6764,7 @@ class DbLap {
     _setDefaultValues();
   }
   DbLap.withId(
-      this.id,
+      id,
       this.timeStamp,
       this.startTime,
       this.startPositionLat,
@@ -6362,16 +6815,18 @@ class DbLap {
       this.activitiesId) {
     _setDefaultValues();
   }
-  DbLap.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbLap.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['timeStamp'] != null)
       timeStamp = int.tryParse(o['timeStamp'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['timeStamp'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['timeStamp'].toString()))
           : DateTime.tryParse(o['timeStamp'].toString());
     if (o['startTime'] != null)
       startTime = int.tryParse(o['startTime'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['startTime'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['startTime'].toString()))
           : DateTime.tryParse(o['startTime'].toString());
     if (o['startPositionLat'] != null)
       startPositionLat = double.tryParse(o['startPositionLat'].toString());
@@ -6381,44 +6836,53 @@ class DbLap {
       endPositionLat = double.tryParse(o['endPositionLat'].toString());
     if (o['endPositionLong'] != null)
       endPositionLong = double.tryParse(o['endPositionLong'].toString());
-    if (o['avgHeartRate'] != null) avgHeartRate = o['avgHeartRate'] as int;
-    if (o['maxHeartRate'] != null) maxHeartRate = o['maxHeartRate'] as int;
+    if (o['avgHeartRate'] != null)
+      avgHeartRate = int.tryParse(o['avgHeartRate'].toString());
+    if (o['maxHeartRate'] != null)
+      maxHeartRate = int.tryParse(o['maxHeartRate'].toString());
     if (o['avgRunningCadence'] != null)
       avgRunningCadence = double.tryParse(o['avgRunningCadence'].toString());
     if (o['event'] != null) event = o['event'] as String;
     if (o['eventType'] != null) eventType = o['eventType'] as String;
-    if (o['eventGroup'] != null) eventGroup = o['eventGroup'] as int;
+    if (o['eventGroup'] != null)
+      eventGroup = int.tryParse(o['eventGroup'].toString());
     if (o['sport'] != null) sport = o['sport'] as String;
     if (o['subSport'] != null) subSport = o['subSport'] as String;
     if (o['avgVerticalOscillation'] != null)
       avgVerticalOscillation =
           double.tryParse(o['avgVerticalOscillation'].toString());
     if (o['totalElapsedTime'] != null)
-      totalElapsedTime = o['totalElapsedTime'] as int;
+      totalElapsedTime = int.tryParse(o['totalElapsedTime'].toString());
     if (o['totalTimerTime'] != null)
-      totalTimerTime = o['totalTimerTime'] as int;
-    if (o['totalDistance'] != null) totalDistance = o['totalDistance'] as int;
-    if (o['totalStrides'] != null) totalStrides = o['totalStrides'] as int;
-    if (o['totalCalories'] != null) totalCalories = o['totalCalories'] as int;
+      totalTimerTime = int.tryParse(o['totalTimerTime'].toString());
+    if (o['totalDistance'] != null)
+      totalDistance = int.tryParse(o['totalDistance'].toString());
+    if (o['totalStrides'] != null)
+      totalStrides = int.tryParse(o['totalStrides'].toString());
+    if (o['totalCalories'] != null)
+      totalCalories = int.tryParse(o['totalCalories'].toString());
     if (o['avgSpeed'] != null)
       avgSpeed = double.tryParse(o['avgSpeed'].toString());
     if (o['maxSpeed'] != null)
       maxSpeed = double.tryParse(o['maxSpeed'].toString());
-    if (o['totalAscent'] != null) totalAscent = o['totalAscent'] as int;
-    if (o['totalDescent'] != null) totalDescent = o['totalDescent'] as int;
+    if (o['totalAscent'] != null)
+      totalAscent = int.tryParse(o['totalAscent'].toString());
+    if (o['totalDescent'] != null)
+      totalDescent = int.tryParse(o['totalDescent'].toString());
     if (o['avgStanceTimePercent'] != null)
       avgStanceTimePercent =
           double.tryParse(o['avgStanceTimePercent'].toString());
     if (o['avgStanceTime'] != null)
       avgStanceTime = double.tryParse(o['avgStanceTime'].toString());
     if (o['maxRunningCadence'] != null)
-      maxRunningCadence = o['maxRunningCadence'] as int;
-    if (o['intensity'] != null) intensity = o['intensity'] as int;
+      maxRunningCadence = int.tryParse(o['maxRunningCadence'].toString());
+    if (o['intensity'] != null)
+      intensity = int.tryParse(o['intensity'].toString());
     if (o['lapTrigger'] != null) lapTrigger = o['lapTrigger'] as String;
     if (o['avgTemperature'] != null)
-      avgTemperature = o['avgTemperature'] as int;
+      avgTemperature = int.tryParse(o['avgTemperature'].toString());
     if (o['maxTemperature'] != null)
-      maxTemperature = o['maxTemperature'] as int;
+      maxTemperature = int.tryParse(o['maxTemperature'].toString());
     if (o['avgFractionalCadence'] != null)
       avgFractionalCadence =
           double.tryParse(o['avgFractionalCadence'].toString());
@@ -6430,8 +6894,10 @@ class DbLap {
           double.tryParse(o['totalFractionalCycles'].toString());
     if (o['avgPower'] != null)
       avgPower = double.tryParse(o['avgPower'].toString());
-    if (o['minPower'] != null) minPower = o['minPower'] as int;
-    if (o['maxPower'] != null) maxPower = o['maxPower'] as int;
+    if (o['minPower'] != null)
+      minPower = int.tryParse(o['minPower'].toString());
+    if (o['maxPower'] != null)
+      maxPower = int.tryParse(o['maxPower'].toString());
     if (o['sdevPower'] != null)
       sdevPower = double.tryParse(o['sdevPower'].toString());
     if (o['avgGroundTime'] != null)
@@ -6455,11 +6921,11 @@ class DbLap {
     if (o['sdevVerticalOscillation'] != null)
       sdevVerticalOscillation =
           double.tryParse(o['sdevVerticalOscillation'].toString());
-    activitiesId = o['activitiesId'] as int;
+    activitiesId = int.tryParse(o['activitiesId'].toString());
 
     // RELATIONSHIPS FromMAP
-    plDbActivity = o['DbActivity'] != null
-        ? DbActivity.fromMap(o['DbActivity'] as Map<String, dynamic>)
+    plDbActivity = o['dbActivity'] != null
+        ? DbActivity.fromMap(o['dbActivity'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -6518,21 +6984,25 @@ class DbLap {
   // end FIELDS (DbLap)
 
 // RELATIONSHIPS (DbLap)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbActivity', 'plField2'..]) or so on..
   DbActivity plDbActivity;
 
   /// get DbActivity By ActivitiesId
-  Future<DbActivity> getDbActivity() async {
-    final _obj = await DbActivity().getById(activitiesId);
+  Future<DbActivity> getDbActivity(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbActivity().getById(activitiesId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (DbLap)
 
 // COLLECTIONS & VIRTUALS (DbLap)
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbEvents', 'plField2'..]) or so on..
   List<DbEvent> plDbEvents;
 
-  /// get DbEvent(s) filtered by lapsId=id
+  /// get DbEvent(s) filtered by id=lapsId
   DbEventFilterBuilder getDbEvents(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbEvent()
@@ -6541,6 +7011,7 @@ class DbLap {
         .equals(id)
         .and;
   }
+
 // END COLLECTIONS & VIRTUALS (DbLap)
 
   static const bool _softDeleteActivated = false;
@@ -6551,20 +7022,21 @@ class DbLap {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
     }
     if (timeStamp != null) {
       map['timeStamp'] = forJson
-          ? timeStamp.toUtc().toString()
+          ? timeStamp.toString()
           : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
     }
 
     if (startTime != null) {
       map['startTime'] = forJson
-          ? startTime.toUtc().toString()
+          ? startTime.toString()
           : forQuery ? startTime.millisecondsSinceEpoch : startTime;
     }
 
@@ -6749,27 +7221,29 @@ class DbLap {
     }
 
     if (activitiesId != null) {
-      map['activitiesId'] = activitiesId;
+      map['activitiesId'] = forView ? plDbActivity.state : activitiesId;
     }
 
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
     }
     if (timeStamp != null) {
       map['timeStamp'] = forJson
-          ? timeStamp.toUtc().toString()
+          ? timeStamp.toString()
           : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
     }
 
     if (startTime != null) {
       map['startTime'] = forJson
-          ? startTime.toUtc().toString()
+          ? startTime.toString()
           : forQuery ? startTime.millisecondsSinceEpoch : startTime;
     }
 
@@ -6954,7 +7428,7 @@ class DbLap {
     }
 
     if (activitiesId != null) {
-      map['activitiesId'] = activitiesId;
+      map['activitiesId'] = forView ? plDbActivity.state : activitiesId;
     }
 
 // COLLECTIONS (DbLap)
@@ -6966,20 +7440,73 @@ class DbLap {
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
     return [
+      timeStamp,
+      startTime != null ? startTime.millisecondsSinceEpoch : null,
+      startPositionLat,
+      startPositionLong,
+      endPositionLat,
+      endPositionLong,
+      avgHeartRate,
+      maxHeartRate,
+      avgRunningCadence,
+      event,
+      eventType,
+      eventGroup,
+      sport,
+      subSport,
+      avgVerticalOscillation,
+      totalElapsedTime,
+      totalTimerTime,
+      totalDistance,
+      totalStrides,
+      totalCalories,
+      avgSpeed,
+      maxSpeed,
+      totalAscent,
+      totalDescent,
+      avgStanceTimePercent,
+      avgStanceTime,
+      maxRunningCadence,
+      intensity,
+      lapTrigger,
+      avgTemperature,
+      maxTemperature,
+      avgFractionalCadence,
+      maxFractionalCadence,
+      totalFractionalCycles,
+      avgPower,
+      minPower,
+      maxPower,
+      sdevPower,
+      avgGroundTime,
+      sdevGroundTime,
+      avgLegSpringStiffness,
+      sdevLegSpringStiffness,
+      avgFormPower,
+      sdevFormPower,
+      avgStrydCadence,
+      sdevStrydCadence,
+      sdevVerticalOscillation,
+      activitiesId
+    ];
+  }
+
+  List<dynamic> toArgsWithIds() {
+    return [
       id,
-      timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+      timeStamp,
       startTime != null ? startTime.millisecondsSinceEpoch : null,
       startPositionLat,
       startPositionLong,
@@ -7053,31 +7580,45 @@ class DbLap {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbLap>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbLap.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbLap>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbLap> objList = <DbLap>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbLap.fromMap(map as Map<String, dynamic>);
+      final obj = DbLap.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
 
-      // RELATIONSHIPS PRELOAD
+      // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbEvents')) {
-          obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('laps.plDbEvents') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbEvents'))) {
+          /*_loadedFields.add('laps.plDbEvents'); */
+          obj.plDbEvents = obj.plDbEvents ??
+              await obj.getDbEvents().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-      } // END RELATIONSHIPS PRELOAD
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbActivity')) {
-          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -7087,16 +7628,64 @@ class DbLap {
   }
 
   /// returns DbLap by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbLap if exist, otherwise returns null
-  Future<DbLap> getById(int id) async {
+  Future<DbLap> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbLap obj;
-    final data = await _mnDbLap.getById(id);
+    final data = await _mnDbLap.getById([id]);
     if (data.length != 0) {
       obj = DbLap.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('laps.plDbEvents') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbEvents'))) {
+          /*_loadedFields.add('laps.plDbEvents'); */
+          obj.plDbEvents = obj.plDbEvents ??
+              await obj.getDbEvents().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
     }
@@ -7110,7 +7699,8 @@ class DbLap {
     if (id == null || id == 0) {
       id = await _mnDbLap.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbLap.update(this);
     }
 
     return id;
@@ -7128,23 +7718,26 @@ class DbLap {
   /// saveAll method saves the sent List<DbLap> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(List<DbLap> dblaps) async {
-    final results = _mnDbLap.saveAll(
-        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        dblaps);
-    return results;
+  Future<List<dynamic>> saveAll(List<DbLap> dblaps) async {
+    // final results = _mnDbLap.saveAll('INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dblaps);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dblaps) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbLap.rawInsert(
-              'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
-                timeStamp != null ? timeStamp.millisecondsSinceEpoch : null,
+                timeStamp,
                 startTime != null ? startTime.millisecondsSinceEpoch : null,
                 startPositionLat,
                 startPositionLong,
@@ -7195,7 +7788,7 @@ class DbLap {
               ]) ==
           1) {
         saveResult = BoolResult(
-            success: true, successMessage: 'DbLap id=$id updated successfuly');
+            success: true, successMessage: 'DbLap id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false, errorMessage: 'DbLap id=$id did not update');
@@ -7213,10 +7806,10 @@ class DbLap {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(List<DbLap> dblaps) async {
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbLap> dblaps) async {
     final results = await _mnDbLap.rawInsertAll(
-        'INSERT OR REPLACE INTO laps (id,  timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dblaps);
     return results;
   }
@@ -7228,7 +7821,11 @@ class DbLap {
     print('SQFENTITIY: delete DbLap invoked (id=$id)');
     var result = BoolResult();
     {
-      result = await DbEvent().select().lapsId.equals(id).delete(hardDelete);
+      result = await DbEvent()
+          .select()
+          .lapsId
+          .equals(id)
+          .and /*.lapsId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -7243,7 +7840,6 @@ class DbLap {
     }
   }
 
-  //private DbLapFilterBuilder _Select;
   DbLapFilterBuilder select({List<String> columnsToSelect, bool getIsDeleted}) {
     return DbLapFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
@@ -7533,11 +8129,12 @@ class DbLapFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbLapFilterBuilder where(String whereCriteria) {
+  DbLapFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -7581,7 +8178,7 @@ class DbLapFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -7599,7 +8196,7 @@ class DbLapFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -7617,7 +8214,7 @@ class DbLapFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -7948,6 +8545,7 @@ class DbLapFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -7992,6 +8590,15 @@ class DbLapFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+    // Delete sub records where in (DbEvent) according to DeleteRule.CASCADE
+    final eventsBylapsIdidList = await toListPrimaryKey(false);
+    final resDbEvent = await DbEvent()
+        .select()
+        .lapsId
+        .inValues(eventsBylapsIdidList)
+        .delete(hardDelete);
+    if (!resDbEvent.success) return resDbEvent;
+
     if (DbLap._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbLap.updateBatch(qparams, {'isDeleted': 1});
     } else {
@@ -8014,15 +8621,25 @@ class DbLapFilterBuilder extends SearchCriteria {
     return _obj._mnDbLap.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbLapObj if exist, otherwise returns null
+  /// This method always returns DbLap Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbLap>
   Future<DbLap> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbLap.toList(qparams);
@@ -8030,18 +8647,34 @@ class DbLapFilterBuilder extends SearchCriteria {
     DbLap obj;
     if (data.isNotEmpty) {
       obj = DbLap.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
 
-      // RELATIONSHIPS PRELOAD
+      // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbEvents')) {
-          obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('laps.plDbEvents') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbEvents'))) {
+          /*_loadedFields.add('laps.plDbEvents'); */
+          obj.plDbEvents = obj.plDbEvents ??
+              await obj.getDbEvents().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-      } // END RELATIONSHIPS PRELOAD
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbActivity')) {
-          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -8051,7 +8684,7 @@ class DbLapFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dblapCount]) async {
@@ -8065,22 +8698,36 @@ class DbLapFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbLap>.
+  /// This method returns List<DbLap>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbLap>
   Future<List<DbLap>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<DbLap> dblapsData =
-        await DbLap.fromMapList(data, preload: preload);
+    final List<DbLap> dblapsData = await DbLap.fromMapList(data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
     return dblapsData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -8090,17 +8737,17 @@ class DbLapFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -8108,63 +8755,7 @@ class DbLapFilterBuilder extends SearchCriteria {
     return await _obj._mnDbLap.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbLap>>
-  Future<List<DropdownMenuItem<DbLap>>> toDropDownMenu(String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbLap>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dblapsFuture = _obj._mnDbLap.toList(qparams);
-
-    final data = await dblapsFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbLap>> items = []..add(DropdownMenuItem(
-        value: DbLap(),
-        child: Text('Select DbLap'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbLap.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dblapsFuture = _obj._mnDbLap.toList(qparams);
-
-    final data = await dblapsFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbLap'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -8182,8 +8773,7 @@ class DbLapFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbLap.toList(qparams);
@@ -8193,9 +8783,6 @@ class DbLapFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -8534,9 +9121,15 @@ class DbLapFields {
 
 //region DbLapManager
 class DbLapManager extends SqfEntityProvider {
-  DbLapManager() : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  DbLapManager()
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'laps';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbLapManager
@@ -8548,22 +9141,23 @@ class DbWeight {
   DbWeight.withFields(this.date, this.value, this.athletesId) {
     _setDefaultValues();
   }
-  DbWeight.withId(this.id, this.date, this.value, this.athletesId) {
+  DbWeight.withId(id, this.date, this.value, this.athletesId) {
     _setDefaultValues();
   }
-  DbWeight.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbWeight.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['date'] != null)
       date = int.tryParse(o['date'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['date'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['date'].toString()))
           : DateTime.tryParse(o['date'].toString());
     if (o['value'] != null) value = double.tryParse(o['value'].toString());
-    athletesId = o['athletesId'] as int;
+    athletesId = int.tryParse(o['athletesId'].toString());
 
     // RELATIONSHIPS FromMAP
-    plDbAthlete = o['DbAthlete'] != null
-        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+    plDbAthlete = o['dbAthlete'] != null
+        ? DbAthlete.fromMap(o['dbAthlete'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -8577,12 +9171,15 @@ class DbWeight {
   // end FIELDS (DbWeight)
 
 // RELATIONSHIPS (DbWeight)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbAthlete', 'plField2'..]) or so on..
   DbAthlete plDbAthlete;
 
   /// get DbAthlete By AthletesId
-  Future<DbAthlete> getDbAthlete() async {
-    final _obj = await DbAthlete().getById(athletesId);
+  Future<DbAthlete> getDbAthlete(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbAthlete().getById(athletesId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (DbWeight)
@@ -8595,7 +9192,8 @@ class DbWeight {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -8613,14 +9211,16 @@ class DbWeight {
     }
 
     if (athletesId != null) {
-      map['athletesId'] = athletesId;
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
 
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -8638,29 +9238,28 @@ class DbWeight {
     }
 
     if (athletesId != null) {
-      map['athletesId'] = athletesId;
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
 
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
-    return [
-      id,
-      date != null ? date.millisecondsSinceEpoch : null,
-      value,
-      athletesId
-    ];
+    return [date, value, athletesId];
+  }
+
+  List<dynamic> toArgsWithIds() {
+    return [id, date, value, athletesId];
   }
 
   static Future<List<DbWeight>> fromWebUrl(String url) async {
@@ -8687,24 +9286,30 @@ class DbWeight {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbWeight>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbWeight.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbWeight>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbWeight> objList = <DbWeight>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbWeight.fromMap(map as Map<String, dynamic>);
+      final obj = DbWeight.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -8714,16 +9319,49 @@ class DbWeight {
   }
 
   /// returns DbWeight by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbWeight if exist, otherwise returns null
-  Future<DbWeight> getById(int id) async {
+  Future<DbWeight> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbWeight obj;
-    final data = await _mnDbWeight.getById(id);
+    final data = await _mnDbWeight.getById([id]);
     if (data.length != 0) {
       obj = DbWeight.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
     }
@@ -8737,7 +9375,8 @@ class DbWeight {
     if (id == null || id == 0) {
       id = await _mnDbWeight.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbWeight.update(this);
     }
 
     return id;
@@ -8755,30 +9394,28 @@ class DbWeight {
   /// saveAll method saves the sent List<DbWeight> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(List<DbWeight> dbweights) async {
-    final results = _mnDbWeight.saveAll(
-        'INSERT OR REPLACE INTO weights (id,  date, value, athletesId)  VALUES (?,?,?,?)',
-        dbweights);
-    return results;
+  Future<List<dynamic>> saveAll(List<DbWeight> dbweights) async {
+    // final results = _mnDbWeight.saveAll('INSERT OR REPLACE INTO weights (id,date, value, athletesId)  VALUES (?,?,?,?)',dbweights);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbweights) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbWeight.rawInsert(
-              'INSERT OR REPLACE INTO weights (id,  date, value, athletesId)  VALUES (?,?,?,?)',
-              [
-                id,
-                date != null ? date.millisecondsSinceEpoch : null,
-                value,
-                athletesId
-              ]) ==
+              'INSERT OR REPLACE INTO weights (id,date, value, athletesId)  VALUES (?,?,?,?)',
+              [id, date, value, athletesId]) ==
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbWeight id=$id updated successfuly');
+            successMessage: 'DbWeight id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false, errorMessage: 'DbWeight id=$id did not update');
@@ -8796,10 +9433,10 @@ class DbWeight {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(List<DbWeight> dbweights) async {
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbWeight> dbweights) async {
     final results = await _mnDbWeight.rawInsertAll(
-        'INSERT OR REPLACE INTO weights (id,  date, value, athletesId)  VALUES (?,?,?,?)',
+        'INSERT OR REPLACE INTO weights (id,date, value, athletesId)  VALUES (?,?,?,?)',
         dbweights);
     return results;
   }
@@ -8819,7 +9456,6 @@ class DbWeight {
     }
   }
 
-  //private DbWeightFilterBuilder _Select;
   DbWeightFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbWeightFilterBuilder(this)
@@ -9110,11 +9746,12 @@ class DbWeightFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbWeightFilterBuilder where(String whereCriteria) {
+  DbWeightFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -9158,7 +9795,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -9176,7 +9813,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -9194,7 +9831,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -9269,6 +9906,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -9313,6 +9951,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+
     if (DbWeight._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbWeight.updateBatch(qparams, {'isDeleted': 1});
     } else {
@@ -9335,15 +9974,25 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return _obj._mnDbWeight.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbWeightObj if exist, otherwise returns null
+  /// This method always returns DbWeight Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbWeight>
   Future<DbWeight> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbWeight.toList(qparams);
@@ -9351,11 +10000,19 @@ class DbWeightFilterBuilder extends SearchCriteria {
     DbWeight obj;
     if (data.isNotEmpty) {
       obj = DbWeight.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -9365,7 +10022,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbweightCount]) async {
@@ -9379,22 +10036,36 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbWeight>.
+  /// This method returns List<DbWeight>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbWeight>
   Future<List<DbWeight>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<DbWeight> dbweightsData =
-        await DbWeight.fromMapList(data, preload: preload);
+    final List<DbWeight> dbweightsData = await DbWeight.fromMapList(data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
     return dbweightsData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -9404,17 +10075,17 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -9422,64 +10093,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return await _obj._mnDbWeight.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbWeight>>
-  Future<List<DropdownMenuItem<DbWeight>>> toDropDownMenu(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbWeight>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dbweightsFuture = _obj._mnDbWeight.toList(qparams);
-
-    final data = await dbweightsFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbWeight>> items = []..add(DropdownMenuItem(
-        value: DbWeight(),
-        child: Text('Select DbWeight'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbWeight.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dbweightsFuture = _obj._mnDbWeight.toList(qparams);
-
-    final data = await dbweightsFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbWeight'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -9497,8 +10111,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbWeight.toList(qparams);
@@ -9508,9 +10121,6 @@ class DbWeightFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -9567,9 +10177,14 @@ class DbWeightFields {
 //region DbWeightManager
 class DbWeightManager extends SqfEntityProvider {
   DbWeightManager()
-      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'weights';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbWeightManager
@@ -9584,23 +10199,25 @@ class DbHeartRateZoneSchema {
     _setDefaultValues();
   }
   DbHeartRateZoneSchema.withId(
-      this.id, this.date, this.name, this.base, this.athletesId) {
+      id, this.date, this.name, this.base, this.athletesId) {
     _setDefaultValues();
   }
-  DbHeartRateZoneSchema.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbHeartRateZoneSchema.fromMap(Map<String, dynamic> o,
+      {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['date'] != null)
       date = int.tryParse(o['date'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['date'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['date'].toString()))
           : DateTime.tryParse(o['date'].toString());
     if (o['name'] != null) name = o['name'] as String;
-    if (o['base'] != null) base = o['base'] as int;
-    athletesId = o['athletesId'] as int;
+    if (o['base'] != null) base = int.tryParse(o['base'].toString());
+    athletesId = int.tryParse(o['athletesId'].toString());
 
     // RELATIONSHIPS FromMAP
-    plDbAthlete = o['DbAthlete'] != null
-        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+    plDbAthlete = o['dbAthlete'] != null
+        ? DbAthlete.fromMap(o['dbAthlete'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -9615,21 +10232,25 @@ class DbHeartRateZoneSchema {
   // end FIELDS (DbHeartRateZoneSchema)
 
 // RELATIONSHIPS (DbHeartRateZoneSchema)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbAthlete', 'plField2'..]) or so on..
   DbAthlete plDbAthlete;
 
   /// get DbAthlete By AthletesId
-  Future<DbAthlete> getDbAthlete() async {
-    final _obj = await DbAthlete().getById(athletesId);
+  Future<DbAthlete> getDbAthlete(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbAthlete().getById(athletesId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (DbHeartRateZoneSchema)
 
 // COLLECTIONS & VIRTUALS (DbHeartRateZoneSchema)
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbHeartRateZones', 'plField2'..]) or so on..
   List<DbHeartRateZone> plDbHeartRateZones;
 
-  /// get DbHeartRateZone(s) filtered by heartRateZoneSchemataId=id
+  /// get DbHeartRateZone(s) filtered by id=heartRateZoneSchemataId
   DbHeartRateZoneFilterBuilder getDbHeartRateZones(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbHeartRateZone()
@@ -9638,6 +10259,7 @@ class DbHeartRateZoneSchema {
         .equals(id)
         .and;
   }
+
 // END COLLECTIONS & VIRTUALS (DbHeartRateZoneSchema)
 
   static const bool _softDeleteActivated = false;
@@ -9649,7 +10271,8 @@ class DbHeartRateZoneSchema {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -9671,14 +10294,16 @@ class DbHeartRateZoneSchema {
     }
 
     if (athletesId != null) {
-      map['athletesId'] = athletesId;
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
 
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -9700,7 +10325,7 @@ class DbHeartRateZoneSchema {
     }
 
     if (athletesId != null) {
-      map['athletesId'] = athletesId;
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
 
 // COLLECTIONS (DbHeartRateZoneSchema)
@@ -9712,24 +10337,22 @@ class DbHeartRateZoneSchema {
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
-    return [
-      id,
-      date != null ? date.millisecondsSinceEpoch : null,
-      name,
-      base,
-      athletesId
-    ];
+    return [date, name, base, athletesId];
+  }
+
+  List<dynamic> toArgsWithIds() {
+    return [id, date, name, base, athletesId];
   }
 
   static Future<List<DbHeartRateZoneSchema>> fromWebUrl(String url) async {
@@ -9758,33 +10381,45 @@ class DbHeartRateZoneSchema {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbHeartRateZoneSchema>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbHeartRateZoneSchema.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbHeartRateZoneSchema>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbHeartRateZoneSchema> objList = <DbHeartRateZoneSchema>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbHeartRateZoneSchema.fromMap(map as Map<String, dynamic>);
+      final obj = DbHeartRateZoneSchema.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
 
-      // RELATIONSHIPS PRELOAD
+      // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
-        if (preloadFields == null ||
-            preloadFields.contains('plDbHeartRateZones')) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('heartRateZoneSchemata.plDbHeartRateZones') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbHeartRateZones'))) {
+          /*_loadedFields.add('heartRateZoneSchemata.plDbHeartRateZones'); */
           obj.plDbHeartRateZones = obj.plDbHeartRateZones ??
-              await obj.getDbHeartRateZones().toList();
+              await obj.getDbHeartRateZones().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-      } // END RELATIONSHIPS PRELOAD
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -9794,16 +10429,64 @@ class DbHeartRateZoneSchema {
   }
 
   /// returns DbHeartRateZoneSchema by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbHeartRateZoneSchema if exist, otherwise returns null
-  Future<DbHeartRateZoneSchema> getById(int id) async {
+  Future<DbHeartRateZoneSchema> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbHeartRateZoneSchema obj;
-    final data = await _mnDbHeartRateZoneSchema.getById(id);
+    final data = await _mnDbHeartRateZoneSchema.getById([id]);
     if (data.length != 0) {
       obj = DbHeartRateZoneSchema.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('heartRateZoneSchemata.plDbHeartRateZones') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbHeartRateZones'))) {
+          /*_loadedFields.add('heartRateZoneSchemata.plDbHeartRateZones'); */
+          obj.plDbHeartRateZones = obj.plDbHeartRateZones ??
+              await obj.getDbHeartRateZones().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
     }
@@ -9817,7 +10500,8 @@ class DbHeartRateZoneSchema {
     if (id == null || id == 0) {
       id = await _mnDbHeartRateZoneSchema.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbHeartRateZoneSchema.update(this);
     }
 
     return id;
@@ -9835,32 +10519,30 @@ class DbHeartRateZoneSchema {
   /// saveAll method saves the sent List<DbHeartRateZoneSchema> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(
+  Future<List<dynamic>> saveAll(
       List<DbHeartRateZoneSchema> dbheartratezoneschemas) async {
-    final results = _mnDbHeartRateZoneSchema.saveAll(
-        'INSERT OR REPLACE INTO heartRateZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
-        dbheartratezoneschemas);
-    return results;
+    // final results = _mnDbHeartRateZoneSchema.saveAll('INSERT OR REPLACE INTO heartRateZoneSchemata (id,date, name, base, athletesId)  VALUES (?,?,?,?,?)',dbheartratezoneschemas);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbheartratezoneschemas) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbHeartRateZoneSchema.rawInsert(
-              'INSERT OR REPLACE INTO heartRateZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
-              [
-                id,
-                date != null ? date.millisecondsSinceEpoch : null,
-                name,
-                base,
-                athletesId
-              ]) ==
+              'INSERT OR REPLACE INTO heartRateZoneSchemata (id,date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+              [id, date, name, base, athletesId]) ==
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbHeartRateZoneSchema id=$id updated successfuly');
+            successMessage:
+                'DbHeartRateZoneSchema id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false,
@@ -9880,11 +10562,11 @@ class DbHeartRateZoneSchema {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(
       List<DbHeartRateZoneSchema> dbheartratezoneschemas) async {
     final results = await _mnDbHeartRateZoneSchema.rawInsertAll(
-        'INSERT OR REPLACE INTO heartRateZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+        'INSERT OR REPLACE INTO heartRateZoneSchemata (id,date, name, base, athletesId)  VALUES (?,?,?,?,?)',
         dbheartratezoneschemas);
     return results;
   }
@@ -9900,7 +10582,7 @@ class DbHeartRateZoneSchema {
           .select()
           .heartRateZoneSchemataId
           .equals(id)
-          .delete(hardDelete);
+          .and /*.heartRateZoneSchemataId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -9915,7 +10597,6 @@ class DbHeartRateZoneSchema {
     }
   }
 
-  //private DbHeartRateZoneSchemaFilterBuilder _Select;
   DbHeartRateZoneSchemaFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbHeartRateZoneSchemaFilterBuilder(this)
@@ -10239,11 +10920,13 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbHeartRateZoneSchemaFilterBuilder where(String whereCriteria) {
+  DbHeartRateZoneSchemaFilterBuilder where(String whereCriteria,
+      {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -10287,7 +10970,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -10305,7 +10988,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -10323,7 +11006,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -10404,6 +11087,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -10448,6 +11132,16 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+    // Delete sub records where in (DbHeartRateZone) according to DeleteRule.CASCADE
+    final heartRateZoneByheartRateZoneSchemataIdidList =
+        await toListPrimaryKey(false);
+    final resDbHeartRateZone = await DbHeartRateZone()
+        .select()
+        .heartRateZoneSchemataId
+        .inValues(heartRateZoneByheartRateZoneSchemataIdidList)
+        .delete(hardDelete);
+    if (!resDbHeartRateZone.success) return resDbHeartRateZone;
+
     if (DbHeartRateZoneSchema._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbHeartRateZoneSchema
           .updateBatch(qparams, {'isDeleted': 1});
@@ -10471,15 +11165,25 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return _obj._mnDbHeartRateZoneSchema.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbHeartRateZoneSchemaObj if exist, otherwise returns null
+  /// This method always returns DbHeartRateZoneSchema Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbHeartRateZoneSchema>
   Future<DbHeartRateZoneSchema> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbHeartRateZoneSchema.toList(qparams);
@@ -10487,20 +11191,34 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     DbHeartRateZoneSchema obj;
     if (data.isNotEmpty) {
       obj = DbHeartRateZoneSchema.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
 
-      // RELATIONSHIPS PRELOAD
+      // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
-        if (preloadFields == null ||
-            preloadFields.contains('plDbHeartRateZones')) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('heartRateZoneSchemata.plDbHeartRateZones') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbHeartRateZones'))) {
+          /*_loadedFields.add('heartRateZoneSchemata.plDbHeartRateZones'); */
           obj.plDbHeartRateZones = obj.plDbHeartRateZones ??
-              await obj.getDbHeartRateZones().toList();
+              await obj.getDbHeartRateZones().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-      } // END RELATIONSHIPS PRELOAD
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -10510,7 +11228,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount(
@@ -10526,22 +11244,37 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbHeartRateZoneSchema>.
+  /// This method returns List<DbHeartRateZoneSchema>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbHeartRateZoneSchema>
   Future<List<DbHeartRateZoneSchema>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
     final List<DbHeartRateZoneSchema> dbheartratezoneschemasData =
-        await DbHeartRateZoneSchema.fromMapList(data, preload: preload);
+        await DbHeartRateZoneSchema.fromMapList(data,
+            preload: preload,
+            preloadFields: preloadFields,
+            loadParents: loadParents,
+            loadedFields: loadedFields,
+            setDefaultValues: qparams.selectColumns == null);
     return dbheartratezoneschemasData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -10551,17 +11284,17 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -10569,67 +11302,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return await _obj._mnDbHeartRateZoneSchema.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbHeartRateZoneSchema>>
-  Future<List<DropdownMenuItem<DbHeartRateZoneSchema>>> toDropDownMenu(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbHeartRateZoneSchema>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dbheartratezoneschemasFuture =
-        _obj._mnDbHeartRateZoneSchema.toList(qparams);
-
-    final data = await dbheartratezoneschemasFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbHeartRateZoneSchema>> items = []
-      ..add(DropdownMenuItem(
-        value: DbHeartRateZoneSchema(),
-        child: Text('Select DbHeartRateZoneSchema'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbHeartRateZoneSchema.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dbheartratezoneschemasFuture =
-        _obj._mnDbHeartRateZoneSchema.toList(qparams);
-
-    final data = await dbheartratezoneschemasFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbHeartRateZoneSchema'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -10647,8 +11320,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbHeartRateZoneSchema.toList(qparams);
@@ -10658,9 +11330,6 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -10722,9 +11391,14 @@ class DbHeartRateZoneSchemaFields {
 //region DbHeartRateZoneSchemaManager
 class DbHeartRateZoneSchemaManager extends SqfEntityProvider {
   DbHeartRateZoneSchemaManager()
-      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'heartRateZoneSchemata';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbHeartRateZoneSchemaManager
@@ -10750,7 +11424,7 @@ class DbHeartRateZone {
     _setDefaultValues();
   }
   DbHeartRateZone.withId(
-      this.id,
+      id,
       this.name,
       this.lowerPercentage,
       this.upperPercentage,
@@ -10759,22 +11433,26 @@ class DbHeartRateZone {
       this.heartRateZoneSchemataId) {
     _setDefaultValues();
   }
-  DbHeartRateZone.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbHeartRateZone.fromMap(Map<String, dynamic> o,
+      {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['name'] != null) name = o['name'] as String;
     if (o['lowerPercentage'] != null)
-      lowerPercentage = o['lowerPercentage'] as int;
+      lowerPercentage = int.tryParse(o['lowerPercentage'].toString());
     if (o['upperPercentage'] != null)
-      upperPercentage = o['upperPercentage'] as int;
-    if (o['lowerLimit'] != null) lowerLimit = o['lowerLimit'] as int;
-    if (o['upperLimit'] != null) upperLimit = o['upperLimit'] as int;
-    heartRateZoneSchemataId = o['heartRateZoneSchemataId'] as int;
+      upperPercentage = int.tryParse(o['upperPercentage'].toString());
+    if (o['lowerLimit'] != null)
+      lowerLimit = int.tryParse(o['lowerLimit'].toString());
+    if (o['upperLimit'] != null)
+      upperLimit = int.tryParse(o['upperLimit'].toString());
+    heartRateZoneSchemataId =
+        int.tryParse(o['heartRateZoneSchemataId'].toString());
 
     // RELATIONSHIPS FromMAP
-    plDbHeartRateZoneSchema = o['DbHeartRateZoneSchema'] != null
+    plDbHeartRateZoneSchema = o['dbHeartRateZoneSchema'] != null
         ? DbHeartRateZoneSchema.fromMap(
-            o['DbHeartRateZoneSchema'] as Map<String, dynamic>)
+            o['dbHeartRateZoneSchema'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -10791,12 +11469,15 @@ class DbHeartRateZone {
   // end FIELDS (DbHeartRateZone)
 
 // RELATIONSHIPS (DbHeartRateZone)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbHeartRateZoneSchema', 'plField2'..]) or so on..
   DbHeartRateZoneSchema plDbHeartRateZoneSchema;
 
   /// get DbHeartRateZoneSchema By HeartRateZoneSchemataId
-  Future<DbHeartRateZoneSchema> getDbHeartRateZoneSchema() async {
-    final _obj = await DbHeartRateZoneSchema().getById(heartRateZoneSchemataId);
+  Future<DbHeartRateZoneSchema> getDbHeartRateZoneSchema(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbHeartRateZoneSchema().getById(heartRateZoneSchemataId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (DbHeartRateZone)
@@ -10810,7 +11491,8 @@ class DbHeartRateZone {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -10836,14 +11518,17 @@ class DbHeartRateZone {
     }
 
     if (heartRateZoneSchemataId != null) {
-      map['heartRateZoneSchemataId'] = heartRateZoneSchemataId;
+      map['heartRateZoneSchemataId'] =
+          forView ? plDbHeartRateZoneSchema.name : heartRateZoneSchemataId;
     }
 
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -10869,23 +11554,35 @@ class DbHeartRateZone {
     }
 
     if (heartRateZoneSchemataId != null) {
-      map['heartRateZoneSchemataId'] = heartRateZoneSchemataId;
+      map['heartRateZoneSchemataId'] =
+          forView ? plDbHeartRateZoneSchema.name : heartRateZoneSchemataId;
     }
 
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
+    return [
+      name,
+      lowerPercentage,
+      upperPercentage,
+      lowerLimit,
+      upperLimit,
+      heartRateZoneSchemataId
+    ];
+  }
+
+  List<dynamic> toArgsWithIds() {
     return [
       id,
       name,
@@ -10923,26 +11620,30 @@ class DbHeartRateZone {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbHeartRateZone>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbHeartRateZone.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbHeartRateZone>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbHeartRateZone> objList = <DbHeartRateZone>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbHeartRateZone.fromMap(map as Map<String, dynamic>);
+      final obj = DbHeartRateZone.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null ||
-            preloadFields.contains('plDbHeartRateZoneSchema')) {
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('heartRateZoneSchemata.plDbHeartRateZoneSchema') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbHeartRateZoneSchema'))) {
+          /*_loadedFields.add('heartRateZoneSchemata.plDbHeartRateZoneSchema');*/
           obj.plDbHeartRateZoneSchema = obj.plDbHeartRateZoneSchema ??
-              await obj.getDbHeartRateZoneSchema();
+              await obj.getDbHeartRateZoneSchema(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -10952,16 +11653,49 @@ class DbHeartRateZone {
   }
 
   /// returns DbHeartRateZone by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbHeartRateZone if exist, otherwise returns null
-  Future<DbHeartRateZone> getById(int id) async {
+  Future<DbHeartRateZone> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbHeartRateZone obj;
-    final data = await _mnDbHeartRateZone.getById(id);
+    final data = await _mnDbHeartRateZone.getById([id]);
     if (data.length != 0) {
       obj = DbHeartRateZone.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('heartRateZoneSchemata.plDbHeartRateZoneSchema') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbHeartRateZoneSchema'))) {
+          /*_loadedFields.add('heartRateZoneSchemata.plDbHeartRateZoneSchema');*/
+          obj.plDbHeartRateZoneSchema = obj.plDbHeartRateZoneSchema ??
+              await obj.getDbHeartRateZoneSchema(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
     }
@@ -10975,7 +11709,8 @@ class DbHeartRateZone {
     if (id == null || id == 0) {
       id = await _mnDbHeartRateZone.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbHeartRateZone.update(this);
     }
 
     return id;
@@ -10993,21 +11728,23 @@ class DbHeartRateZone {
   /// saveAll method saves the sent List<DbHeartRateZone> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(
-      List<DbHeartRateZone> dbheartratezones) async {
-    final results = _mnDbHeartRateZone.saveAll(
-        'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
-        dbheartratezones);
-    return results;
+  Future<List<dynamic>> saveAll(List<DbHeartRateZone> dbheartratezones) async {
+    // final results = _mnDbHeartRateZone.saveAll('INSERT OR REPLACE INTO heartRateZone (id,name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',dbheartratezones);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbheartratezones) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbHeartRateZone.rawInsert(
-              'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO heartRateZone (id,name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
               [
                 id,
                 name,
@@ -11020,7 +11757,7 @@ class DbHeartRateZone {
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbHeartRateZone id=$id updated successfuly');
+            successMessage: 'DbHeartRateZone id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false,
@@ -11039,11 +11776,11 @@ class DbHeartRateZone {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(
       List<DbHeartRateZone> dbheartratezones) async {
     final results = await _mnDbHeartRateZone.rawInsertAll(
-        'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO heartRateZone (id,name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
         dbheartratezones);
     return results;
   }
@@ -11063,7 +11800,6 @@ class DbHeartRateZone {
     }
   }
 
-  //private DbHeartRateZoneFilterBuilder _Select;
   DbHeartRateZoneFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbHeartRateZoneFilterBuilder(this)
@@ -11374,11 +12110,13 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbHeartRateZoneFilterBuilder where(String whereCriteria) {
+  DbHeartRateZoneFilterBuilder where(String whereCriteria,
+      {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -11422,7 +12160,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -11440,7 +12178,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -11458,7 +12196,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -11552,6 +12290,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -11596,6 +12335,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+
     if (DbHeartRateZone._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbHeartRateZone.updateBatch(qparams, {'isDeleted': 1});
     } else {
@@ -11618,15 +12358,25 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return _obj._mnDbHeartRateZone.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbHeartRateZoneObj if exist, otherwise returns null
+  /// This method always returns DbHeartRateZone Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbHeartRateZone>
   Future<DbHeartRateZone> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbHeartRateZone.toList(qparams);
@@ -11634,13 +12384,19 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     DbHeartRateZone obj;
     if (data.isNotEmpty) {
       obj = DbHeartRateZone.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null ||
-            preloadFields.contains('plDbHeartRateZoneSchema')) {
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('heartRateZoneSchemata.plDbHeartRateZoneSchema') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbHeartRateZoneSchema'))) {
+          /*_loadedFields.add('heartRateZoneSchemata.plDbHeartRateZoneSchema');*/
           obj.plDbHeartRateZoneSchema = obj.plDbHeartRateZoneSchema ??
-              await obj.getDbHeartRateZoneSchema();
+              await obj.getDbHeartRateZoneSchema(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -11650,7 +12406,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount(
@@ -11666,22 +12422,37 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbHeartRateZone>.
+  /// This method returns List<DbHeartRateZone>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbHeartRateZone>
   Future<List<DbHeartRateZone>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
     final List<DbHeartRateZone> dbheartratezonesData =
-        await DbHeartRateZone.fromMapList(data, preload: preload);
+        await DbHeartRateZone.fromMapList(data,
+            preload: preload,
+            preloadFields: preloadFields,
+            loadParents: loadParents,
+            loadedFields: loadedFields,
+            setDefaultValues: qparams.selectColumns == null);
     return dbheartratezonesData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -11691,17 +12462,17 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -11709,65 +12480,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return await _obj._mnDbHeartRateZone.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbHeartRateZone>>
-  Future<List<DropdownMenuItem<DbHeartRateZone>>> toDropDownMenu(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbHeartRateZone>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dbheartratezonesFuture = _obj._mnDbHeartRateZone.toList(qparams);
-
-    final data = await dbheartratezonesFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbHeartRateZone>> items = []
-      ..add(DropdownMenuItem(
-        value: DbHeartRateZone(),
-        child: Text('Select DbHeartRateZone'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbHeartRateZone.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dbheartratezonesFuture = _obj._mnDbHeartRateZone.toList(qparams);
-
-    final data = await dbheartratezonesFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbHeartRateZone'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -11785,8 +12498,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbHeartRateZone.toList(qparams);
@@ -11796,9 +12508,6 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -11876,9 +12585,14 @@ class DbHeartRateZoneFields {
 //region DbHeartRateZoneManager
 class DbHeartRateZoneManager extends SqfEntityProvider {
   DbHeartRateZoneManager()
-      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'heartRateZone';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbHeartRateZoneManager
@@ -11893,23 +12607,25 @@ class DbPowerZoneSchema {
     _setDefaultValues();
   }
   DbPowerZoneSchema.withId(
-      this.id, this.date, this.name, this.base, this.athletesId) {
+      id, this.date, this.name, this.base, this.athletesId) {
     _setDefaultValues();
   }
-  DbPowerZoneSchema.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbPowerZoneSchema.fromMap(Map<String, dynamic> o,
+      {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['date'] != null)
       date = int.tryParse(o['date'].toString()) != null
-          ? DateTime.fromMillisecondsSinceEpoch(o['date'] as int)
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['date'].toString()))
           : DateTime.tryParse(o['date'].toString());
     if (o['name'] != null) name = o['name'] as String;
-    if (o['base'] != null) base = o['base'] as int;
-    athletesId = o['athletesId'] as int;
+    if (o['base'] != null) base = int.tryParse(o['base'].toString());
+    athletesId = int.tryParse(o['athletesId'].toString());
 
     // RELATIONSHIPS FromMAP
-    plDbAthlete = o['DbAthlete'] != null
-        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+    plDbAthlete = o['dbAthlete'] != null
+        ? DbAthlete.fromMap(o['dbAthlete'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -11924,21 +12640,25 @@ class DbPowerZoneSchema {
   // end FIELDS (DbPowerZoneSchema)
 
 // RELATIONSHIPS (DbPowerZoneSchema)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbAthlete', 'plField2'..]) or so on..
   DbAthlete plDbAthlete;
 
   /// get DbAthlete By AthletesId
-  Future<DbAthlete> getDbAthlete() async {
-    final _obj = await DbAthlete().getById(athletesId);
+  Future<DbAthlete> getDbAthlete(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbAthlete().getById(athletesId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (DbPowerZoneSchema)
 
 // COLLECTIONS & VIRTUALS (DbPowerZoneSchema)
-  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbPowerZones', 'plField2'..]) or so on..
   List<DbPowerZone> plDbPowerZones;
 
-  /// get DbPowerZone(s) filtered by powerZoneSchemataId=id
+  /// get DbPowerZone(s) filtered by id=powerZoneSchemataId
   DbPowerZoneFilterBuilder getDbPowerZones(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbPowerZone()
@@ -11947,6 +12667,7 @@ class DbPowerZoneSchema {
         .equals(id)
         .and;
   }
+
 // END COLLECTIONS & VIRTUALS (DbPowerZoneSchema)
 
   static const bool _softDeleteActivated = false;
@@ -11958,7 +12679,8 @@ class DbPowerZoneSchema {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -11980,14 +12702,16 @@ class DbPowerZoneSchema {
     }
 
     if (athletesId != null) {
-      map['athletesId'] = athletesId;
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
 
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -12009,7 +12733,7 @@ class DbPowerZoneSchema {
     }
 
     if (athletesId != null) {
-      map['athletesId'] = athletesId;
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
 
 // COLLECTIONS (DbPowerZoneSchema)
@@ -12021,24 +12745,22 @@ class DbPowerZoneSchema {
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
-    return [
-      id,
-      date != null ? date.millisecondsSinceEpoch : null,
-      name,
-      base,
-      athletesId
-    ];
+    return [date, name, base, athletesId];
+  }
+
+  List<dynamic> toArgsWithIds() {
+    return [id, date, name, base, athletesId];
   }
 
   static Future<List<DbPowerZoneSchema>> fromWebUrl(String url) async {
@@ -12067,32 +12789,45 @@ class DbPowerZoneSchema {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbPowerZoneSchema>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbPowerZoneSchema.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbPowerZoneSchema>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbPowerZoneSchema> objList = <DbPowerZoneSchema>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbPowerZoneSchema.fromMap(map as Map<String, dynamic>);
+      final obj = DbPowerZoneSchema.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
 
-      // RELATIONSHIPS PRELOAD
+      // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbPowerZones')) {
-          obj.plDbPowerZones =
-              obj.plDbPowerZones ?? await obj.getDbPowerZones().toList();
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('powerZoneSchemata.plDbPowerZones') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbPowerZones'))) {
+          /*_loadedFields.add('powerZoneSchemata.plDbPowerZones'); */
+          obj.plDbPowerZones = obj.plDbPowerZones ??
+              await obj.getDbPowerZones().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-      } // END RELATIONSHIPS PRELOAD
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -12102,16 +12837,64 @@ class DbPowerZoneSchema {
   }
 
   /// returns DbPowerZoneSchema by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbPowerZoneSchema if exist, otherwise returns null
-  Future<DbPowerZoneSchema> getById(int id) async {
+  Future<DbPowerZoneSchema> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbPowerZoneSchema obj;
-    final data = await _mnDbPowerZoneSchema.getById(id);
+    final data = await _mnDbPowerZoneSchema.getById([id]);
     if (data.length != 0) {
       obj = DbPowerZoneSchema.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('powerZoneSchemata.plDbPowerZones') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbPowerZones'))) {
+          /*_loadedFields.add('powerZoneSchemata.plDbPowerZones'); */
+          obj.plDbPowerZones = obj.plDbPowerZones ??
+              await obj.getDbPowerZones().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
     }
@@ -12125,7 +12908,8 @@ class DbPowerZoneSchema {
     if (id == null || id == 0) {
       id = await _mnDbPowerZoneSchema.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbPowerZoneSchema.update(this);
     }
 
     return id;
@@ -12143,32 +12927,29 @@ class DbPowerZoneSchema {
   /// saveAll method saves the sent List<DbPowerZoneSchema> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(
+  Future<List<dynamic>> saveAll(
       List<DbPowerZoneSchema> dbpowerzoneschemas) async {
-    final results = _mnDbPowerZoneSchema.saveAll(
-        'INSERT OR REPLACE INTO powerZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
-        dbpowerzoneschemas);
-    return results;
+    // final results = _mnDbPowerZoneSchema.saveAll('INSERT OR REPLACE INTO powerZoneSchemata (id,date, name, base, athletesId)  VALUES (?,?,?,?,?)',dbpowerzoneschemas);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbpowerzoneschemas) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbPowerZoneSchema.rawInsert(
-              'INSERT OR REPLACE INTO powerZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
-              [
-                id,
-                date != null ? date.millisecondsSinceEpoch : null,
-                name,
-                base,
-                athletesId
-              ]) ==
+              'INSERT OR REPLACE INTO powerZoneSchemata (id,date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+              [id, date, name, base, athletesId]) ==
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbPowerZoneSchema id=$id updated successfuly');
+            successMessage: 'DbPowerZoneSchema id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false,
@@ -12188,11 +12969,11 @@ class DbPowerZoneSchema {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(
       List<DbPowerZoneSchema> dbpowerzoneschemas) async {
     final results = await _mnDbPowerZoneSchema.rawInsertAll(
-        'INSERT OR REPLACE INTO powerZoneSchemata (id,  date, name, base, athletesId)  VALUES (?,?,?,?,?)',
+        'INSERT OR REPLACE INTO powerZoneSchemata (id,date, name, base, athletesId)  VALUES (?,?,?,?,?)',
         dbpowerzoneschemas);
     return results;
   }
@@ -12208,7 +12989,7 @@ class DbPowerZoneSchema {
           .select()
           .powerZoneSchemataId
           .equals(id)
-          .delete(hardDelete);
+          .and /*.powerZoneSchemataId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -12223,7 +13004,6 @@ class DbPowerZoneSchema {
     }
   }
 
-  //private DbPowerZoneSchemaFilterBuilder _Select;
   DbPowerZoneSchemaFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbPowerZoneSchemaFilterBuilder(this)
@@ -12543,11 +13323,13 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbPowerZoneSchemaFilterBuilder where(String whereCriteria) {
+  DbPowerZoneSchemaFilterBuilder where(String whereCriteria,
+      {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -12591,7 +13373,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -12609,7 +13391,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -12627,7 +13409,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -12708,6 +13490,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -12752,6 +13535,15 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+    // Delete sub records where in (DbPowerZone) according to DeleteRule.CASCADE
+    final powerZoneBypowerZoneSchemataIdidList = await toListPrimaryKey(false);
+    final resDbPowerZone = await DbPowerZone()
+        .select()
+        .powerZoneSchemataId
+        .inValues(powerZoneBypowerZoneSchemataIdidList)
+        .delete(hardDelete);
+    if (!resDbPowerZone.success) return resDbPowerZone;
+
     if (DbPowerZoneSchema._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbPowerZoneSchema
           .updateBatch(qparams, {'isDeleted': 1});
@@ -12775,15 +13567,25 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return _obj._mnDbPowerZoneSchema.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbPowerZoneSchemaObj if exist, otherwise returns null
+  /// This method always returns DbPowerZoneSchema Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbPowerZoneSchema>
   Future<DbPowerZoneSchema> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
@@ -12791,19 +13593,34 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     DbPowerZoneSchema obj;
     if (data.isNotEmpty) {
       obj = DbPowerZoneSchema.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
 
-      // RELATIONSHIPS PRELOAD
+      // RELATIONSHIPS PRELOAD CHILD
       if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbPowerZones')) {
-          obj.plDbPowerZones =
-              obj.plDbPowerZones ?? await obj.getDbPowerZones().toList();
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('powerZoneSchemata.plDbPowerZones') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbPowerZones'))) {
+          /*_loadedFields.add('powerZoneSchemata.plDbPowerZones'); */
+          obj.plDbPowerZones = obj.plDbPowerZones ??
+              await obj.getDbPowerZones().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
         }
-      } // END RELATIONSHIPS PRELOAD
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
-          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -12813,7 +13630,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount(
@@ -12829,22 +13646,37 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbPowerZoneSchema>.
+  /// This method returns List<DbPowerZoneSchema>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbPowerZoneSchema>
   Future<List<DbPowerZoneSchema>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
     final List<DbPowerZoneSchema> dbpowerzoneschemasData =
-        await DbPowerZoneSchema.fromMapList(data, preload: preload);
+        await DbPowerZoneSchema.fromMapList(data,
+            preload: preload,
+            preloadFields: preloadFields,
+            loadParents: loadParents,
+            loadedFields: loadedFields,
+            setDefaultValues: qparams.selectColumns == null);
     return dbpowerzoneschemasData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -12854,17 +13686,17 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -12872,65 +13704,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return await _obj._mnDbPowerZoneSchema.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbPowerZoneSchema>>
-  Future<List<DropdownMenuItem<DbPowerZoneSchema>>> toDropDownMenu(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbPowerZoneSchema>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dbpowerzoneschemasFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
-
-    final data = await dbpowerzoneschemasFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbPowerZoneSchema>> items = []
-      ..add(DropdownMenuItem(
-        value: DbPowerZoneSchema(),
-        child: Text('Select DbPowerZoneSchema'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbPowerZoneSchema.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dbpowerzoneschemasFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
-
-    final data = await dbpowerzoneschemasFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbPowerZoneSchema'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -12948,8 +13722,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbPowerZoneSchema.toList(qparams);
@@ -12959,9 +13732,6 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -13023,9 +13793,14 @@ class DbPowerZoneSchemaFields {
 //region DbPowerZoneSchemaManager
 class DbPowerZoneSchemaManager extends SqfEntityProvider {
   DbPowerZoneSchemaManager()
-      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'powerZoneSchemata';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbPowerZoneSchemaManager
@@ -13045,32 +13820,28 @@ class DbPowerZone {
       this.lowerLimit, this.upperLimit, this.powerZoneSchemataId) {
     _setDefaultValues();
   }
-  DbPowerZone.withId(
-      this.id,
-      this.name,
-      this.lowerPercentage,
-      this.upperPercentage,
-      this.lowerLimit,
-      this.upperLimit,
-      this.powerZoneSchemataId) {
+  DbPowerZone.withId(id, this.name, this.lowerPercentage, this.upperPercentage,
+      this.lowerLimit, this.upperLimit, this.powerZoneSchemataId) {
     _setDefaultValues();
   }
-  DbPowerZone.fromMap(Map<String, dynamic> o) {
-    _setDefaultValues();
-    id = o['id'] as int;
+  DbPowerZone.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) _setDefaultValues();
+    id = int.tryParse(o['id'].toString());
     if (o['name'] != null) name = o['name'] as String;
     if (o['lowerPercentage'] != null)
-      lowerPercentage = o['lowerPercentage'] as int;
+      lowerPercentage = int.tryParse(o['lowerPercentage'].toString());
     if (o['upperPercentage'] != null)
-      upperPercentage = o['upperPercentage'] as int;
-    if (o['lowerLimit'] != null) lowerLimit = o['lowerLimit'] as int;
-    if (o['upperLimit'] != null) upperLimit = o['upperLimit'] as int;
-    powerZoneSchemataId = o['powerZoneSchemataId'] as int;
+      upperPercentage = int.tryParse(o['upperPercentage'].toString());
+    if (o['lowerLimit'] != null)
+      lowerLimit = int.tryParse(o['lowerLimit'].toString());
+    if (o['upperLimit'] != null)
+      upperLimit = int.tryParse(o['upperLimit'].toString());
+    powerZoneSchemataId = int.tryParse(o['powerZoneSchemataId'].toString());
 
     // RELATIONSHIPS FromMAP
-    plDbPowerZoneSchema = o['DbPowerZoneSchema'] != null
+    plDbPowerZoneSchema = o['dbPowerZoneSchema'] != null
         ? DbPowerZoneSchema.fromMap(
-            o['DbPowerZoneSchema'] as Map<String, dynamic>)
+            o['dbPowerZoneSchema'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -13087,12 +13858,15 @@ class DbPowerZone {
   // end FIELDS (DbPowerZone)
 
 // RELATIONSHIPS (DbPowerZone)
-  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbPowerZoneSchema', 'plField2'..]) or so on..
   DbPowerZoneSchema plDbPowerZoneSchema;
 
   /// get DbPowerZoneSchema By PowerZoneSchemataId
-  Future<DbPowerZoneSchema> getDbPowerZoneSchema() async {
-    final _obj = await DbPowerZoneSchema().getById(powerZoneSchemataId);
+  Future<DbPowerZoneSchema> getDbPowerZoneSchema(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbPowerZoneSchema().getById(powerZoneSchemataId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
   // END RELATIONSHIPS (DbPowerZone)
@@ -13105,7 +13879,8 @@ class DbPowerZone {
   }
 
   // METHODS
-  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -13131,14 +13906,17 @@ class DbPowerZone {
     }
 
     if (powerZoneSchemataId != null) {
-      map['powerZoneSchemataId'] = powerZoneSchemataId;
+      map['powerZoneSchemataId'] =
+          forView ? plDbPowerZoneSchema.name : powerZoneSchemataId;
     }
 
     return map;
   }
 
-  Future<Map<String, dynamic>> toMapWithChilds(
-      [bool forQuery = false, bool forJson = false]) async {
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
     final map = <String, dynamic>{};
     if (id != null) {
       map['id'] = id;
@@ -13164,23 +13942,35 @@ class DbPowerZone {
     }
 
     if (powerZoneSchemataId != null) {
-      map['powerZoneSchemataId'] = powerZoneSchemataId;
+      map['powerZoneSchemataId'] =
+          forView ? plDbPowerZoneSchema.name : powerZoneSchemataId;
     }
 
     return map;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJsonWithChilds() async {
-    return json.encode(await toMapWithChilds(false, true));
+    return json.encode(await toMapWithChildren(false, true));
   }
 
   List<dynamic> toArgs() {
+    return [
+      name,
+      lowerPercentage,
+      upperPercentage,
+      lowerLimit,
+      upperLimit,
+      powerZoneSchemataId
+    ];
+  }
+
+  List<dynamic> toArgsWithIds() {
     return [
       id,
       name,
@@ -13218,26 +14008,30 @@ class DbPowerZone {
     return objList;
   }
 
-  /*
-    /// REMOVED AFTER v1.2.1+14 
-    static Future<List<DbPowerZone>> fromObjectList(Future<List<dynamic>> o) async {
-      final data = await o;
-      return await DbPowerZone.fromMapList(data);
-    } 
-    */
-
   static Future<List<DbPowerZone>> fromMapList(List<dynamic> data,
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
     final List<DbPowerZone> objList = <DbPowerZone>[];
+    loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbPowerZone.fromMap(map as Map<String, dynamic>);
+      final obj = DbPowerZone.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null ||
-            preloadFields.contains('plDbPowerZoneSchema')) {
-          obj.plDbPowerZoneSchema =
-              obj.plDbPowerZoneSchema ?? await obj.getDbPowerZoneSchema();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('powerZoneSchemata.plDbPowerZoneSchema') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbPowerZoneSchema'))) {
+          /*_loadedFields.add('powerZoneSchemata.plDbPowerZoneSchema');*/
+          obj.plDbPowerZoneSchema = obj.plDbPowerZoneSchema ??
+              await obj.getDbPowerZoneSchema(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -13247,16 +14041,49 @@ class DbPowerZone {
   }
 
   /// returns DbPowerZone by ID if exist, otherwise returns null
-  /// <param name='id'>Primary Key Value</param>
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
   /// <returns>returns DbPowerZone if exist, otherwise returns null
-  Future<DbPowerZone> getById(int id) async {
+  Future<DbPowerZone> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     if (id == null) {
       return null;
     }
     DbPowerZone obj;
-    final data = await _mnDbPowerZone.getById(id);
+    final data = await _mnDbPowerZone.getById([id]);
     if (data.length != 0) {
       obj = DbPowerZone.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('powerZoneSchemata.plDbPowerZoneSchema') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbPowerZoneSchema'))) {
+          /*_loadedFields.add('powerZoneSchemata.plDbPowerZoneSchema');*/
+          obj.plDbPowerZoneSchema = obj.plDbPowerZoneSchema ??
+              await obj.getDbPowerZoneSchema(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
     } else {
       obj = null;
     }
@@ -13270,7 +14097,8 @@ class DbPowerZone {
     if (id == null || id == 0) {
       id = await _mnDbPowerZone.insert(this);
     } else {
-      id = await _upsert();
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbPowerZone.update(this);
     }
 
     return id;
@@ -13288,20 +14116,23 @@ class DbPowerZone {
   /// saveAll method saves the sent List<DbPowerZone> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> saveAll(List<DbPowerZone> dbpowerzones) async {
-    final results = _mnDbPowerZone.saveAll(
-        'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
-        dbpowerzones);
-    return results;
+  Future<List<dynamic>> saveAll(List<DbPowerZone> dbpowerzones) async {
+    // final results = _mnDbPowerZone.saveAll('INSERT OR REPLACE INTO powerZone (id,name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',dbpowerzones);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbpowerzones) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
   }
 
   /// Updates if the record exists, otherwise adds a new row
 
   /// <returns>Returns id
-  Future<int> _upsert() async {
+  Future<int> upsert() async {
     try {
       if (await _mnDbPowerZone.rawInsert(
-              'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO powerZone (id,name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
               [
                 id,
                 name,
@@ -13314,7 +14145,7 @@ class DbPowerZone {
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbPowerZone id=$id updated successfuly');
+            successMessage: 'DbPowerZone id=$id updated successfully');
       } else {
         saveResult = BoolResult(
             success: false, errorMessage: 'DbPowerZone id=$id did not update');
@@ -13332,10 +14163,10 @@ class DbPowerZone {
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
-  /// Returns a <List<BoolResult>>
-  Future<List<BoolResult>> upsertAll(List<DbPowerZone> dbpowerzones) async {
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbPowerZone> dbpowerzones) async {
     final results = await _mnDbPowerZone.rawInsertAll(
-        'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO powerZone (id,name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
         dbpowerzones);
     return results;
   }
@@ -13355,7 +14186,6 @@ class DbPowerZone {
     }
   }
 
-  //private DbPowerZoneFilterBuilder _Select;
   DbPowerZoneFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbPowerZoneFilterBuilder(this)
@@ -13662,11 +14492,13 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbPowerZoneFilterBuilder where(String whereCriteria) {
+  DbPowerZoneFilterBuilder where(String whereCriteria,
+      {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param = DbParameter();
-      _addedBlocks =
-          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
     }
     return this;
@@ -13710,7 +14542,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add(argFields);
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s ');
         }
       }
@@ -13728,7 +14560,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') orderByList.add(' $s desc ');
         }
       }
@@ -13746,7 +14578,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
       if (argFields is String) {
         groupByList.add(' $argFields ');
       } else {
-        for (String s in argFields) {
+        for (String s in argFields as List<String>) {
           if (s != null && s != '') groupByList.add(' $s ');
         }
       }
@@ -13840,6 +14672,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
               break;
             case DbType.date:
             case DbType.datetime:
+            case DbType.datetimeUtc:
               param.value = param.value == null
                   ? null
                   : (param.value as DateTime).millisecondsSinceEpoch;
@@ -13884,6 +14717,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+
     if (DbPowerZone._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbPowerZone.updateBatch(qparams, {'isDeleted': 1});
     } else {
@@ -13906,15 +14740,25 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return _obj._mnDbPowerZone.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbPowerZoneObj if exist, otherwise returns null
+  /// This method always returns DbPowerZone Obj if exist, otherwise returns null
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbPowerZone>
   Future<DbPowerZone> toSingle(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
     final objFuture = _obj._mnDbPowerZone.toList(qparams);
@@ -13922,13 +14766,19 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     DbPowerZone obj;
     if (data.isNotEmpty) {
       obj = DbPowerZone.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD
-      if (preload) {
-        if (preloadFields == null ||
-            preloadFields.contains('plDbPowerZoneSchema')) {
-          obj.plDbPowerZoneSchema =
-              obj.plDbPowerZoneSchema ?? await obj.getDbPowerZoneSchema();
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('powerZoneSchemata.plDbPowerZoneSchema') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbPowerZoneSchema'))) {
+          /*_loadedFields.add('powerZoneSchemata.plDbPowerZoneSchema');*/
+          obj.plDbPowerZoneSchema = obj.plDbPowerZoneSchema ??
+              await obj.getDbPowerZoneSchema(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -13938,7 +14788,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method always returns int.
+  /// This method returns int.
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbpowerzoneCount]) async {
@@ -13952,22 +14802,37 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method always returns List<DbPowerZone>.
+  /// This method returns List<DbPowerZone>.
   ///
-  /// Set preload to true if you want to load all fields related to child or parent
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
-  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
   ///
   /// <returns>List<DbPowerZone>
   Future<List<DbPowerZone>> toList(
-      {bool preload = false, List<String> preloadFields}) async {
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<DbPowerZone> dbpowerzonesData =
-        await DbPowerZone.fromMapList(data, preload: preload);
+    final List<DbPowerZone> dbpowerzonesData = await DbPowerZone.fromMapList(
+        data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
     return dbpowerzonesData;
   }
 
-  /// This method always returns Json String
+  /// This method returns Json String
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -13977,17 +14842,17 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method always returns Json String.
+  /// This method returns Json String.
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
     for (var o in data) {
-      list.add(await o.toMapWithChilds(false, true));
+      list.add(await o.toMapWithChildren(false, true));
     }
     return json.encode(list);
   }
 
-  /// This method always returns List<dynamic>.
+  /// This method returns List<dynamic>.
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
@@ -13995,64 +14860,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return await _obj._mnDbPowerZone.toList(qparams);
   }
 
-  /// Returns List<DropdownMenuItem<DbPowerZone>>
-  Future<List<DropdownMenuItem<DbPowerZone>>> toDropDownMenu(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<DbPowerZone>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    final dbpowerzonesFuture = _obj._mnDbPowerZone.toList(qparams);
-
-    final data = await dbpowerzonesFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<DbPowerZone>> items = []..add(DropdownMenuItem(
-        value: DbPowerZone(),
-        child: Text('Select DbPowerZone'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: DbPowerZone.fromMap(data[i] as Map<String, dynamic>),
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// Returns List<DropdownMenuItem<int>>
-  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
-      String displayTextColumn,
-      [VoidCallback Function(List<DropdownMenuItem<int>> o)
-          dropDownMenu]) async {
-    _buildParameters();
-    qparams.selectColumns = ['id', displayTextColumn];
-    final dbpowerzonesFuture = _obj._mnDbPowerZone.toList(qparams);
-
-    final data = await dbpowerzonesFuture;
-    final int count = data.length;
-    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
-        value: 0,
-        child: Text('Select DbPowerZone'),
-      ));
-    for (int i = 0; i < count; i++) {
-      items.add(
-        DropdownMenuItem(
-          value: data[i]['id'] as int,
-          child: Text(data[i][displayTextColumn].toString()),
-        ),
-      );
-    }
-    if (dropDownMenu != null) {
-      dropDownMenu(items);
-    }
-    return items;
-  }
-
-  /// This method always returns Primary Key List<int>.
+  /// This method returns Primary Key List<int>.
   /// <returns>List<int>
   Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
     if (buildParameters) _buildParameters();
@@ -14070,8 +14878,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
   /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
-  Future<List<dynamic>> toListObject(
-      [VoidCallback Function(List<dynamic> o) listObject]) async {
+  Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
     final objectFuture = _obj._mnDbPowerZone.toList(qparams);
@@ -14081,9 +14888,6 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     final int count = data.length;
     for (int i = 0; i < count; i++) {
       objectsData.add(data[i]);
-    }
-    if (listObject != null) {
-      listObject(objectsData);
     }
     return objectsData;
   }
@@ -14161,9 +14965,14 @@ class DbPowerZoneFields {
 //region DbPowerZoneManager
 class DbPowerZoneManager extends SqfEntityProvider {
   DbPowerZoneManager()
-      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
   static String _tableName = 'powerZone';
-  static String _colId = 'id';
+  //static String _colId = 'id';
+  static List<String> _primaryKeyList = ['id'];
+  static String _whereStr = 'id=?';
 }
 
 //endregion DbPowerZoneManager
