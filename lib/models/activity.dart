@@ -298,6 +298,10 @@ class Activity extends ChangeNotifier {
         case 216:
         // Garmin Forerunner 935 uses global message numbers, which are not specified:
         case 233:
+        // Garmin Forerunner 245 Music uses global message numbers, which are not specified:
+        case 288:
+        case 326:
+        case 327:
           break;
         default:
           print("Message number "
@@ -369,7 +373,12 @@ class Activity extends ChangeNotifier {
           break;
 
         case "segment_lap":
+        case "gps_metadata":
+        case "training_file":
+        case "workout":
+        case "workout_step":
           break;
+
 
         case "session":
           var startTime = dateTimeFromStrava(dataMessage.get('start_time'));
