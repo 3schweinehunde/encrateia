@@ -29,22 +29,21 @@ class _ActivitySpeedPerHeartRateWidgetState
   @override
   Widget build(context) {
     if (records.length > 0) {
-      var heartRateRecords = records
+      var speedPerHeartRateRecords = records
           .where((value) =>
-              value.db.power != null &&
-              value.db.power > 100 &&
+              value.db.speed != null &&
               value.db.heartRate != null &&
               value.db.heartRate > 0)
           .toList();
 
-      if (heartRateRecords.length > 0) {
+      if (speedPerHeartRateRecords.length > 0) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivitySpeedPerHeartRateChart(
-                records: heartRateRecords,
+                records: speedPerHeartRateRecords,
                 activity: widget.activity,
               ),
               ListTile(
