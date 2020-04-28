@@ -1,3 +1,4 @@
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:path_provider/path_provider.dart';
@@ -76,6 +77,7 @@ class Athlete extends ChangeNotifier {
 
   get activities => Activity.all(athlete: this);
   get weights => Weight.all(athlete: this);
+  get powerZoneSchemas => PowerZoneSchema.all(athlete: this);
 
   delete() async {
     var appDocDir = await getApplicationDocumentsDirectory();

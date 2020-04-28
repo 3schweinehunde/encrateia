@@ -258,6 +258,7 @@ const tablePowerZone = SqfEntityTable(
     SqfEntityField('upperPercentage', DbType.integer),
     SqfEntityField('lowerLimit', DbType.integer),
     SqfEntityField('upperLimit', DbType.integer),
+    SqfEntityField('color', DbType.integer),
     SqfEntityFieldRelationship(
         parentTable: tablePowerZoneSchema,
         deleteRule: DeleteRule.CASCADE,
@@ -294,6 +295,7 @@ const tableHeartRateZone = SqfEntityTable(
     SqfEntityField('upperPercentage', DbType.integer),
     SqfEntityField('lowerLimit', DbType.integer),
     SqfEntityField('upperLimit', DbType.integer),
+    SqfEntityField('color', DbType.integer),
     SqfEntityFieldRelationship(
         parentTable: tableHeartRateZoneSchema,
         deleteRule: DeleteRule.CASCADE,

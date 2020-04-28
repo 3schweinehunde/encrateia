@@ -1,4 +1,5 @@
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
@@ -133,7 +134,11 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             icon: MyIcon.weight,
             nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
           ),
-          Text("")
+          detailTile(
+            title: "Power Zone Schemas",
+            icon: MyIcon.power,
+            nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
+          ),
         ])
       ]),
     );

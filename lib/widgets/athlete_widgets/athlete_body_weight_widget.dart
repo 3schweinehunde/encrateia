@@ -37,8 +37,10 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
         rows = (weights.length < 8) ? weights.length : 8;
         return ListView(
           children: <Widget>[
-            Center(child: Text("\nWeightings ${offset + 1} - ${offset + rows} "
-                "of ${weights.length}"),),
+            Center(
+              child: Text("\nWeightings ${offset + 1} - ${offset + rows} "
+                  "of ${weights.length}"),
+            ),
             DataTable(
               columns: <DataColumn>[
                 DataColumn(
@@ -85,19 +87,23 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                 RaisedButton(
                   color: Colors.orange,
                   child: Text("<<"),
-                  onPressed: () => setState(() {
-                    offset > 8 ? offset = offset - rows : offset = 0;
-                  }),
+                  onPressed: (offset == 0)
+                      ? null
+                      : () => setState(() {
+                            offset > 8 ? offset = offset - rows : offset = 0;
+                          }),
                 ),
                 Spacer(),
                 RaisedButton(
                   color: Colors.orange,
                   child: Text(">>"),
-                  onPressed: () => setState(() {
-                    offset + rows < weights.length - rows
-                        ? offset = offset + rows
-                        : offset = weights.length - rows;
-                  }),
+                  onPressed: (offset + rows == weights.length)
+                      ? null
+                      : () => setState(() {
+                            offset + rows < weights.length - rows
+                                ? offset = offset + rows
+                                : offset = weights.length - rows;
+                          }),
                 ),
                 Spacer(),
               ],
