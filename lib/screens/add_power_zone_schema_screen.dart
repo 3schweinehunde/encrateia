@@ -24,7 +24,7 @@ class AddPowerZoneSchemaScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add your PowerZoneSchema'),
+        title: Text('Add Power Zone Schema'),
       ),
       body: ListView(
         padding: EdgeInsets.all(20),
