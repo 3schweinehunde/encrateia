@@ -42,17 +42,15 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                   "of ${weights.length}"),
             ),
             DataTable(
+              columnSpacing: 20,
               columns: <DataColumn>[
-                DataColumn(
-                  label: Text("Date"),
-                ),
+                DataColumn(label: Text("Date")),
                 DataColumn(
                   label: Text("Weight\nkg"),
                   numeric: true,
                 ),
-                DataColumn(
-                  label: Text("Delete"),
-                )
+                DataColumn(label: Text("")),
+                DataColumn(label: Text(""))
               ],
               rows: weights.sublist(offset, offset + rows).map((Weight weight) {
                 return DataRow(
@@ -61,8 +59,22 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                     DataCell(
                         Text(DateFormat("d MMM yyyy").format(weight.db.date))),
                     DataCell(Text(weight.db.value.toString())),
-                    DataCell(MyIcon.delete,
-                        onTap: () => deleteWeight(weight: weight)),
+                    DataCell(
+                      MyIcon.delete,
+                      onTap: () => deleteWeight(weight: weight),
+                    ),
+                    DataCell(
+                      MyIcon.edit,
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddWeightScreen(
+                            athlete: widget.athlete,
+                            weight: weight,
+                          ),
+                        ),
+                      ).then((_) => getData()()),
+                    )
                   ],
                 );
               }).toList(),

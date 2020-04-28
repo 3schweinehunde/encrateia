@@ -29,6 +29,8 @@ dependencies:
   csv: ^4.0.3
   datetime_picker_formfield: ^1.0.0
 
+  flutter_material_color_picker: ^1.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

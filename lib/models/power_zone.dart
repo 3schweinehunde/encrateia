@@ -6,18 +6,21 @@ class PowerZone extends ChangeNotifier {
   DbPowerZone db;
 
   PowerZone(
-      {PowerZoneSchema powerZoneSchema,
+      {@required PowerZoneSchema powerZoneSchema,
       String name,
       int lowerPercentage,
       int upperPercentage,
       int lowerLimit,
-      int upperLimit}) {
+      int upperLimit,
+      int color}) {
     db = DbPowerZone()
       ..powerZoneSchemataId = powerZoneSchema.db.id
+      ..name = name ?? "my Zone"
       ..lowerLimit = lowerLimit ?? 0
       ..upperLimit = upperLimit ?? 0
       ..lowerPercentage = lowerPercentage ?? 0
-      ..upperPercentage = upperPercentage ?? 0;
+      ..upperPercentage = upperPercentage ?? 0
+      ..color = color ?? 0xFFFFc107;
 
     if (lowerPercentage != null)
       db.lowerLimit = (lowerPercentage * powerZoneSchema.db.base / 100).round();

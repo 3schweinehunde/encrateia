@@ -39,24 +39,18 @@ class _AthletePowerZoneSchemaWidgetState
                   "of ${powerZoneSchemas.length}"),
             ),
             DataTable(
-              columnSpacing: 10,
+              dataRowHeight: kMinInteractiveDimension * 0.60,
+              columnSpacing: 1,
+              horizontalMargin: 12,
               columns: <DataColumn>[
-                DataColumn(
-                  label: Text("Date"),
-                ),
-                DataColumn(
-                  label: Text("Name"),
-                ),
+                DataColumn(label: Text("Date")),
+                DataColumn(label: Text("Name")),
                 DataColumn(
                   label: Text("Base\nW"),
                   numeric: true,
                 ),
-                DataColumn(
-                  label: Text(""),
-                ),
-                DataColumn(
-                  label: Text(""),
-                )
+                DataColumn(label: Text("")),
+                DataColumn(label: Text(""))
               ],
               rows: powerZoneSchemas
                   .sublist(offset, offset + rows)
@@ -68,16 +62,17 @@ class _AthletePowerZoneSchemaWidgetState
                         .format(powerZoneSchema.db.date))),
                     DataCell(Text(powerZoneSchema.db.name)),
                     DataCell(Text(powerZoneSchema.db.base.toString())),
-                    DataCell(MyIcon.delete,
-                        onTap: () => deletePowerZoneSchema(
-                            powerZoneSchema: powerZoneSchema)),
+                    DataCell(
+                      MyIcon.delete,
+                      onTap: () => deletePowerZoneSchema(
+                          powerZoneSchema: powerZoneSchema),
+                    ),
                     DataCell(
                       MyIcon.edit,
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => AddPowerZoneSchemaScreen(
-                            athlete: widget.athlete,
                             powerZoneSchema: powerZoneSchema,
                           ),
                         ),
@@ -97,8 +92,7 @@ class _AthletePowerZoneSchemaWidgetState
                     context,
                     MaterialPageRoute(
                       builder: (context) => AddPowerZoneSchemaScreen(
-                        athlete: widget.athlete,
-                        powerZoneSchema: PowerZoneSchema(),
+                        powerZoneSchema: PowerZoneSchema(athlete: widget.athlete),
                       ),
                     ),
                   ).then((_) => getData()()),
@@ -151,8 +145,7 @@ You could also create a schema from scratch.
                   context,
                   MaterialPageRoute(
                     builder: (context) => AddPowerZoneSchemaScreen(
-                      athlete: widget.athlete,
-                      powerZoneSchema: PowerZoneSchema(),
+                      powerZoneSchema: PowerZoneSchema(athlete: widget.athlete),
                     ),
                   ),
                 ).then((_) => getData()()),
@@ -193,24 +186,24 @@ You could also create a schema from scratch.
   likeStryd() async {
     Athlete athlete = widget.athlete;
     var powerZoneSchema = PowerZoneSchema.likeStryd(athlete: athlete);
-    await powerZoneSchema.addStrydZones();
     await powerZoneSchema.db.save();
+    await powerZoneSchema.addStrydZones();
     await getData();
   }
 
   likeJimVance() async {
     Athlete athlete = widget.athlete;
     var powerZoneSchema = PowerZoneSchema.likeJimVance(athlete: athlete);
-    await powerZoneSchema.addJimVanceZones();
     await powerZoneSchema.db.save();
+    await powerZoneSchema.addJimVanceZones();
     await getData();
   }
 
   likeStefanDillinger() async {
     Athlete athlete = widget.athlete;
     var powerZoneSchema = PowerZoneSchema.likeStefanDillinger(athlete: athlete);
-    await powerZoneSchema.addStefanDillingerZones();
     await powerZoneSchema.db.save();
+    await powerZoneSchema.addStefanDillingerZones();
     await getData();
   }
 
