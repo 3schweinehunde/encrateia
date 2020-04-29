@@ -45,12 +45,8 @@ class _AthletePowerZoneSchemaWidgetState
               columns: <DataColumn>[
                 DataColumn(label: Text("Date")),
                 DataColumn(label: Text("Name")),
-                DataColumn(
-                  label: Text("Base\nW"),
-                  numeric: true,
-                ),
-                DataColumn(label: Text("")),
-                DataColumn(label: Text(""))
+                DataColumn(label: Text("Base (W)")),
+                DataColumn(label: Text("Edit")),
               ],
               rows: powerZoneSchemas
                   .sublist(offset, offset + rows)
@@ -62,11 +58,6 @@ class _AthletePowerZoneSchemaWidgetState
                         .format(powerZoneSchema.db.date))),
                     DataCell(Text(powerZoneSchema.db.name)),
                     DataCell(Text(powerZoneSchema.db.base.toString())),
-                    DataCell(
-                      MyIcon.delete,
-                      onTap: () => deletePowerZoneSchema(
-                          powerZoneSchema: powerZoneSchema),
-                    ),
                     DataCell(
                       MyIcon.edit,
                       onTap: () => Navigator.push(
@@ -92,7 +83,8 @@ class _AthletePowerZoneSchemaWidgetState
                     context,
                     MaterialPageRoute(
                       builder: (context) => AddPowerZoneSchemaScreen(
-                        powerZoneSchema: PowerZoneSchema(athlete: widget.athlete),
+                        powerZoneSchema:
+                            PowerZoneSchema(athlete: widget.athlete),
                       ),
                     ),
                   ).then((_) => getData()()),
@@ -204,11 +196,6 @@ You could also create a schema from scratch.
     var powerZoneSchema = PowerZoneSchema.likeStefanDillinger(athlete: athlete);
     await powerZoneSchema.db.save();
     await powerZoneSchema.addStefanDillingerZones();
-    await getData();
-  }
-
-  deletePowerZoneSchema({PowerZoneSchema powerZoneSchema}) async {
-    await powerZoneSchema.delete();
     await getData();
   }
 }
