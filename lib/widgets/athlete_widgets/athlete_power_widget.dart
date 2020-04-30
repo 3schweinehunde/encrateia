@@ -30,7 +30,7 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
           .toList();
       if (powerActivities.length > 0) {
         return ListTileTheme(
-          iconColor: Colors.deepOrange,
+          iconColor: Colors.orange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[

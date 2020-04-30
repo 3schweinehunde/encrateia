@@ -5,8 +5,11 @@ import 'package:encrateia/models/athlete.dart';
 class Weight extends ChangeNotifier {
   DbWeight db;
 
-  Weight() {
-    db = DbWeight();
+  Weight({@required Athlete athlete}) {
+    db = DbWeight()
+      ..athletesId = athlete.db.id
+      ..value = 70
+      ..date = DateTime.now();
   }
   Weight.fromDb(this.db);
 

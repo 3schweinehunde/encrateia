@@ -1,3 +1,4 @@
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'edit_athlete_screen.dart';
@@ -39,22 +40,24 @@ class _DashboardState extends State<Dashboard> {
 
   goToListActivitiesScreen({Athlete athlete}) async {
     await athlete.readCredentials();
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ShowAthleteScreen(athlete: athlete),
       ),
-    ).then((_) => getAthletes());
+    );
+    getAthletes();
   }
 
   goToEditAthleteScreen({Athlete athlete}) async {
     await athlete.readCredentials();
-    Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EditAthleteScreen(athlete: athlete),
       ),
-    ).then((_) => getAthletes());
+    );
+    getAthletes();
   }
 
   dashboardBody() {
@@ -97,7 +100,7 @@ class _DashboardState extends State<Dashboard> {
       );
     } else {
       return ListView(
-        padding: EdgeInsets.all(40),
+        padding: EdgeInsets.all(20),
         children: <Widget>[
           for (Athlete athlete in athletes)
             ListTile(
@@ -107,13 +110,17 @@ class _DashboardState extends State<Dashboard> {
               subtitle: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  RaisedButton(
+                  RaisedButton.icon(
+                    icon: MyIcon.analyze,
+                    color: MyColor.detail,
                     onPressed: () => goToListActivitiesScreen(athlete: athlete),
-                    child: Text("Analyze"),
+                    label: Text("Analyze"),
                   ),
-                  RaisedButton(
+                  RaisedButton.icon(
+                    icon: MyIcon.edit,
+                    color: MyColor.settings,
                     onPressed: () => goToEditAthleteScreen(athlete: athlete),
-                    child: MyIcon.edit,
+                    label: Text("Edit"),
                   ),
                 ],
               ),
@@ -166,6 +173,7 @@ class _DashboardState extends State<Dashboard> {
   floatingActionButton() {
     if (athletes.length != 0) {
       return FloatingActionButton.extended(
+        backgroundColor: MyColor.add,
         label: const Text('Add Athlete'),
         onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
       );

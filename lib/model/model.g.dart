@@ -326,6 +326,7 @@ class TableDbHeartRateZone extends SqfEntityTableBase {
       SqfEntityFieldBase('upperPercentage', DbType.integer),
       SqfEntityFieldBase('lowerLimit', DbType.integer),
       SqfEntityFieldBase('upperLimit', DbType.integer),
+      SqfEntityFieldBase('color', DbType.integer),
       SqfEntityFieldRelationshipBase(
           TableDbHeartRateZoneSchema.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'heartRateZoneSchemataId'),
@@ -382,6 +383,7 @@ class TableDbPowerZone extends SqfEntityTableBase {
       SqfEntityFieldBase('upperPercentage', DbType.integer),
       SqfEntityFieldBase('lowerLimit', DbType.integer),
       SqfEntityFieldBase('upperLimit', DbType.integer),
+      SqfEntityFieldBase('color', DbType.integer),
       SqfEntityFieldRelationshipBase(
           TableDbPowerZoneSchema.getInstance, DeleteRule.CASCADE,
           defaultValue: 0, fieldName: 'powerZoneSchemataId'),
@@ -10737,6 +10739,7 @@ class DbHeartRateZone {
       this.upperPercentage,
       this.lowerLimit,
       this.upperLimit,
+      this.color,
       this.heartRateZoneSchemataId}) {
     _setDefaultValues();
   }
@@ -10746,6 +10749,7 @@ class DbHeartRateZone {
       this.upperPercentage,
       this.lowerLimit,
       this.upperLimit,
+      this.color,
       this.heartRateZoneSchemataId) {
     _setDefaultValues();
   }
@@ -10756,6 +10760,7 @@ class DbHeartRateZone {
       this.upperPercentage,
       this.lowerLimit,
       this.upperLimit,
+      this.color,
       this.heartRateZoneSchemataId) {
     _setDefaultValues();
   }
@@ -10769,6 +10774,7 @@ class DbHeartRateZone {
       upperPercentage = o['upperPercentage'] as int;
     if (o['lowerLimit'] != null) lowerLimit = o['lowerLimit'] as int;
     if (o['upperLimit'] != null) upperLimit = o['upperLimit'] as int;
+    if (o['color'] != null) color = o['color'] as int;
     heartRateZoneSchemataId = o['heartRateZoneSchemataId'] as int;
 
     // RELATIONSHIPS FromMAP
@@ -10785,6 +10791,7 @@ class DbHeartRateZone {
   int upperPercentage;
   int lowerLimit;
   int upperLimit;
+  int color;
   int heartRateZoneSchemataId;
 
   BoolResult saveResult;
@@ -10835,6 +10842,10 @@ class DbHeartRateZone {
       map['upperLimit'] = upperLimit;
     }
 
+    if (color != null) {
+      map['color'] = color;
+    }
+
     if (heartRateZoneSchemataId != null) {
       map['heartRateZoneSchemataId'] = heartRateZoneSchemataId;
     }
@@ -10868,6 +10879,10 @@ class DbHeartRateZone {
       map['upperLimit'] = upperLimit;
     }
 
+    if (color != null) {
+      map['color'] = color;
+    }
+
     if (heartRateZoneSchemataId != null) {
       map['heartRateZoneSchemataId'] = heartRateZoneSchemataId;
     }
@@ -10893,6 +10908,7 @@ class DbHeartRateZone {
       upperPercentage,
       lowerLimit,
       upperLimit,
+      color,
       heartRateZoneSchemataId
     ];
   }
@@ -10996,7 +11012,7 @@ class DbHeartRateZone {
   Future<List<BoolResult>> saveAll(
       List<DbHeartRateZone> dbheartratezones) async {
     final results = _mnDbHeartRateZone.saveAll(
-        'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',
         dbheartratezones);
     return results;
   }
@@ -11007,7 +11023,7 @@ class DbHeartRateZone {
   Future<int> _upsert() async {
     try {
       if (await _mnDbHeartRateZone.rawInsert(
-              'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',
               [
                 id,
                 name,
@@ -11015,6 +11031,7 @@ class DbHeartRateZone {
                 upperPercentage,
                 lowerLimit,
                 upperLimit,
+                color,
                 heartRateZoneSchemataId
               ]) ==
           1) {
@@ -11043,7 +11060,7 @@ class DbHeartRateZone {
   Future<List<BoolResult>> upsertAll(
       List<DbHeartRateZone> dbheartratezones) async {
     final results = await _mnDbHeartRateZone.rawInsertAll(
-        'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO heartRateZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',
         dbheartratezones);
     return results;
   }
@@ -11507,6 +11524,11 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return _upperLimit = setField(_upperLimit, 'upperLimit', DbType.integer);
   }
 
+  DbHeartRateZoneField _color;
+  DbHeartRateZoneField get color {
+    return _color = setField(_color, 'color', DbType.integer);
+  }
+
   DbHeartRateZoneField _heartRateZoneSchemataId;
   DbHeartRateZoneField get heartRateZoneSchemataId {
     return _heartRateZoneSchemataId = setField(
@@ -11862,6 +11884,12 @@ class DbHeartRateZoneFields {
   static TableField get upperLimit {
     return _fUpperLimit = _fUpperLimit ??
         SqlSyntax.setField(_fUpperLimit, 'upperLimit', DbType.integer);
+  }
+
+  static TableField _fColor;
+  static TableField get color {
+    return _fColor =
+        _fColor ?? SqlSyntax.setField(_fColor, 'color', DbType.integer);
   }
 
   static TableField _fHeartRateZoneSchemataId;
@@ -13038,11 +13066,12 @@ class DbPowerZone {
       this.upperPercentage,
       this.lowerLimit,
       this.upperLimit,
+      this.color,
       this.powerZoneSchemataId}) {
     _setDefaultValues();
   }
   DbPowerZone.withFields(this.name, this.lowerPercentage, this.upperPercentage,
-      this.lowerLimit, this.upperLimit, this.powerZoneSchemataId) {
+      this.lowerLimit, this.upperLimit, this.color, this.powerZoneSchemataId) {
     _setDefaultValues();
   }
   DbPowerZone.withId(
@@ -13052,6 +13081,7 @@ class DbPowerZone {
       this.upperPercentage,
       this.lowerLimit,
       this.upperLimit,
+      this.color,
       this.powerZoneSchemataId) {
     _setDefaultValues();
   }
@@ -13065,6 +13095,7 @@ class DbPowerZone {
       upperPercentage = o['upperPercentage'] as int;
     if (o['lowerLimit'] != null) lowerLimit = o['lowerLimit'] as int;
     if (o['upperLimit'] != null) upperLimit = o['upperLimit'] as int;
+    if (o['color'] != null) color = o['color'] as int;
     powerZoneSchemataId = o['powerZoneSchemataId'] as int;
 
     // RELATIONSHIPS FromMAP
@@ -13081,6 +13112,7 @@ class DbPowerZone {
   int upperPercentage;
   int lowerLimit;
   int upperLimit;
+  int color;
   int powerZoneSchemataId;
 
   BoolResult saveResult;
@@ -13130,6 +13162,10 @@ class DbPowerZone {
       map['upperLimit'] = upperLimit;
     }
 
+    if (color != null) {
+      map['color'] = color;
+    }
+
     if (powerZoneSchemataId != null) {
       map['powerZoneSchemataId'] = powerZoneSchemataId;
     }
@@ -13163,6 +13199,10 @@ class DbPowerZone {
       map['upperLimit'] = upperLimit;
     }
 
+    if (color != null) {
+      map['color'] = color;
+    }
+
     if (powerZoneSchemataId != null) {
       map['powerZoneSchemataId'] = powerZoneSchemataId;
     }
@@ -13188,6 +13228,7 @@ class DbPowerZone {
       upperPercentage,
       lowerLimit,
       upperLimit,
+      color,
       powerZoneSchemataId
     ];
   }
@@ -13290,7 +13331,7 @@ class DbPowerZone {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbPowerZone> dbpowerzones) async {
     final results = _mnDbPowerZone.saveAll(
-        'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',
         dbpowerzones);
     return results;
   }
@@ -13301,7 +13342,7 @@ class DbPowerZone {
   Future<int> _upsert() async {
     try {
       if (await _mnDbPowerZone.rawInsert(
-              'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',
               [
                 id,
                 name,
@@ -13309,6 +13350,7 @@ class DbPowerZone {
                 upperPercentage,
                 lowerLimit,
                 upperLimit,
+                color,
                 powerZoneSchemataId
               ]) ==
           1) {
@@ -13335,7 +13377,7 @@ class DbPowerZone {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbPowerZone> dbpowerzones) async {
     final results = await _mnDbPowerZone.rawInsertAll(
-        'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO powerZone (id,  name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',
         dbpowerzones);
     return results;
   }
@@ -13795,6 +13837,11 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return _upperLimit = setField(_upperLimit, 'upperLimit', DbType.integer);
   }
 
+  DbPowerZoneField _color;
+  DbPowerZoneField get color {
+    return _color = setField(_color, 'color', DbType.integer);
+  }
+
   DbPowerZoneField _powerZoneSchemataId;
   DbPowerZoneField get powerZoneSchemataId {
     return _powerZoneSchemataId =
@@ -14147,6 +14194,12 @@ class DbPowerZoneFields {
   static TableField get upperLimit {
     return _fUpperLimit = _fUpperLimit ??
         SqlSyntax.setField(_fUpperLimit, 'upperLimit', DbType.integer);
+  }
+
+  static TableField _fColor;
+  static TableField get color {
+    return _fColor =
+        _fColor ?? SqlSyntax.setField(_fColor, 'color', DbType.integer);
   }
 
   static TableField _fPowerZoneSchemataId;
