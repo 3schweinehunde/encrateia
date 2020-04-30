@@ -2,6 +2,7 @@ import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 
 class MyTheme {
+
   static call() {
     var redness = MyColor.primary.red;
     var greenness = MyColor.primary.green;

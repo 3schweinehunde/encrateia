@@ -1,4 +1,5 @@
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/power_zone.dart';
@@ -38,7 +39,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
         title: Text('Add Power Zone Schema'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(left: 20, right: 20),
         children: <Widget>[
           DateTimeField(
             decoration: InputDecoration(
@@ -70,27 +71,17 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             keyboardType: TextInputType.number,
             onChanged: (value) => db.base = int.parse(value),
           ),
-          Divider(),
-          Text(
-            "Zones",
-            style: Theme.of(context).textTheme.title,
-          ),
+          SizedBox(height: 10),
           DataTable(
+            headingRowHeight: kMinInteractiveDimension * 0.80,
             dataRowHeight: kMinInteractiveDimension * 0.75,
-            columnSpacing: 1,
-            horizontalMargin: 12,
+            columnSpacing: 20,
+            horizontalMargin: 10,
             columns: <DataColumn>[
-              DataColumn(label: Text("Name")),
-              DataColumn(
-                label: Text("Limits (W)"),
-                numeric: true,
-              ),
-              DataColumn(
-                label: Text("Color"),
-                numeric: true,
-              ),
-              DataColumn(label: Text("")),
-              DataColumn(label: Text("")),
+              DataColumn(label: Text("Zone")),
+              DataColumn(label: Text("Limits (W)")),
+              DataColumn(label: Text("Color")),
+              DataColumn(label: Text("Edit")),
             ],
             rows: powerZones.map((PowerZone powerZone) {
               return DataRow(
@@ -106,74 +97,60 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                     color: Color(powerZone.db.color),
                   )),
                   DataCell(
-                    MyIcon.delete,
-                    onTap: () => deletePowerZone(powerZone: powerZone),
-                  ),
-                  DataCell(
                     MyIcon.edit,
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddPowerZoneScreen(
-                          powerZone: powerZone,
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddPowerZoneScreen(
+                            powerZone: powerZone,
+                            base: db.base,
+                          ),
                         ),
-                      ),
-                    ).then((_) => getData()()),
+                      );
+                      getData();
+                    },
                   )
                 ],
               );
             }).toList(),
           ),
+          SizedBox(height: 10),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              Spacer(),
-              RaisedButton(
-                color: Colors.green,
+              MyButton.add(
                 child: Text("Add power zone"),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddPowerZoneScreen(
-                      powerZone:
-                          PowerZone(powerZoneSchema: widget.powerZoneSchema),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddPowerZoneScreen(
+                        powerZone:
+                            PowerZone(powerZoneSchema: widget.powerZoneSchema),
+                        base: widget.powerZoneSchema.db.base,
+                      ),
                     ),
-                  ),
-                ).then((_) => getData()()),
+                  );
+                  getData();
+                },
               ),
-              Spacer(flex: 10),
             ],
           ),
-          Divider(),
-          Padding(
-            padding: EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Spacer(flex: 10),
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Delete', textScaleFactor: 1.5),
-                  onPressed: () => deletePowerZoneSchema(
-                  powerZoneSchema: widget.powerZoneSchema, ),
+          SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              MyButton.delete(
+                onPressed: () => deletePowerZoneSchema(
+                  powerZoneSchema: widget.powerZoneSchema,
                 ),
-                Spacer(),
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Cancel', textScaleFactor: 1.5),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                Spacer(),
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Save', textScaleFactor: 1.5),
-                  onPressed: () => savePowerZoneSchema(context),
-                ),
-                Spacer(),
-              ],
-            ),
+              ),
+              SizedBox(width: 5),
+              MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
+              SizedBox(width: 5),
+              MyButton.save(onPressed: () => savePowerZoneSchema(context)),
+            ],
           ),
         ],
       ),
@@ -188,11 +165,6 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   getData() async {
     powerZones = await widget.powerZoneSchema.powerZones;
     setState(() {});
-  }
-
-  deletePowerZone({PowerZone powerZone}) async {
-    await powerZone.db.delete();
-    await getData();
   }
 
   deletePowerZoneSchema({PowerZoneSchema powerZoneSchema}) async {

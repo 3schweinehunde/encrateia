@@ -1,4 +1,5 @@
 import 'package:encrateia/screens/add_power_zone_schema_screen.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
@@ -35,17 +36,23 @@ class _AthletePowerZoneSchemaWidgetState
         return ListView(
           children: <Widget>[
             Center(
-              child: Text("\nPowerZoneSchemas ${offset + 1} - ${offset + rows} "
-                  "of ${powerZoneSchemas.length}"),
+              child: Text(
+                "\nPowerZoneSchemas ${offset + 1} - ${offset + rows} "
+                "of ${powerZoneSchemas.length}",
+                style: Theme.of(context).textTheme.title,
+              ),
             ),
             DataTable(
-              dataRowHeight: kMinInteractiveDimension * 0.60,
-              columnSpacing: 1,
-              horizontalMargin: 12,
+              headingRowHeight: kMinInteractiveDimension * 0.80,
+              dataRowHeight: kMinInteractiveDimension * 0.80,
+              columnSpacing: 20,
               columns: <DataColumn>[
                 DataColumn(label: Text("Date")),
                 DataColumn(label: Text("Name")),
-                DataColumn(label: Text("Base (W)")),
+                DataColumn(
+                  label: Text("Base (W)"),
+                  numeric: true,
+                ),
                 DataColumn(label: Text("Edit")),
               ],
               rows: powerZoneSchemas
@@ -60,38 +67,42 @@ class _AthletePowerZoneSchemaWidgetState
                     DataCell(Text(powerZoneSchema.db.base.toString())),
                     DataCell(
                       MyIcon.edit,
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddPowerZoneSchemaScreen(
-                            powerZoneSchema: powerZoneSchema,
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddPowerZoneSchemaScreen(
+                              powerZoneSchema: powerZoneSchema,
+                            ),
                           ),
-                        ),
-                      ).then((_) => getData()()),
+                        );
+                        getData();
+                      },
                     )
                   ],
                 );
               }).toList(),
             ),
+            SizedBox(height: 20),
             Row(
               children: <Widget>[
                 Spacer(),
-                RaisedButton(
-                  color: Colors.green,
-                  child: Text("New schema"),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddPowerZoneSchemaScreen(
-                        powerZoneSchema:
-                            PowerZoneSchema(athlete: widget.athlete),
-                      ),
-                    ),
-                  ).then((_) => getData()()),
-                ),
+                MyButton.add(
+                    child: Text("New schema"),
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddPowerZoneSchemaScreen(
+                            powerZoneSchema:
+                                PowerZoneSchema(athlete: widget.athlete),
+                          ),
+                        ),
+                      );
+                      getData();
+                    }),
                 Spacer(),
-                RaisedButton(
-                  color: Colors.orange,
+                MyButton.navigate(
                   child: Text("<<"),
                   onPressed: (offset == 0)
                       ? null
@@ -100,8 +111,7 @@ class _AthletePowerZoneSchemaWidgetState
                           }),
                 ),
                 Spacer(),
-                RaisedButton(
-                  color: Colors.orange,
+                MyButton.navigate(
                   child: Text(">>"),
                   onPressed: (offset + rows == powerZoneSchemas.length)
                       ? null
@@ -133,14 +143,18 @@ You could also create a schema from scratch.
               RaisedButton(
                 color: Colors.green,
                 child: Text("New schema"),
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddPowerZoneSchemaScreen(
-                      powerZoneSchema: PowerZoneSchema(athlete: widget.athlete),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddPowerZoneSchemaScreen(
+                        powerZoneSchema:
+                            PowerZoneSchema(athlete: widget.athlete),
+                      ),
                     ),
-                  ),
-                ).then((_) => getData()()),
+                  );
+                  getData();
+                },
               ),
               RaisedButton(
                 // MyIcon.downloadLocal,

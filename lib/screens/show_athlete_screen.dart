@@ -1,3 +1,4 @@
+import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
 import 'package:flutter/material.dart';
@@ -55,113 +56,110 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           icon: MyIcon.stravaDownload,
         ),
       ),
-      body: Table(children: [
-        TableRow(children: [
-          detailTile(
+      body: GridView.count(
+        padding: EdgeInsets.all(5),
+        crossAxisCount: 2,
+        childAspectRatio: 3,
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
+        children: [
+          navigationButton(
+            color: MyColor.detail,
             title: "Activities List",
             icon: MyIcon.activities,
             nextWidget: ActivitiesListWidget(athlete: widget.athlete),
           ),
-          detailTile(
-            title: "Settings",
-            icon: MyIcon.settings,
-            nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
+          RaisedButton.icon(
+            color: MyColor.add,
+            icon: MyIcon.downloadLocal,
+            label: Text("Import .fit\nfrom Folder"),
+            onPressed: () => importLocal(),
           ),
-        ]),
-        TableRow(children: [
-          detailTile(
+          navigationButton(
+            color: MyColor.navigate,
             title: "Power",
             icon: MyIcon.power,
             nextWidget: AthletePowerWidget(athlete: widget.athlete),
           ),
-          detailTile(
+          RaisedButton.icon(
+            color: MyColor.add,
+            icon: MyIcon.settings,
+            label: Text("Recalculate\nAverages"),
+            onPressed: () => recalculate(),
+          ),
+          navigationButton(
             title: "Power Ratio",
+            color: MyColor.navigate,
             icon: MyIcon.power,
             nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
           ),
-        ]),
-        TableRow(children: [
-          detailTile(
-            title: "Power / Heart Rate",
+          navigationButton(
+            color: MyColor.settings,
+            title: "Settings",
+            icon: MyIcon.settings,
+            nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.navigate,
+            title: "Power /\nHeart Rate",
             icon: MyIcon.power,
             nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
           ),
-          detailTile(
-            title: "Speed / Heart Rate",
-            icon: MyIcon.speed,
-            nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
-          ),
-        ]),
-        TableRow(children: [
-          detailTile(
-            title: "Stride Ratio",
-            icon: MyIcon.strideRatio,
-            nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
-          ),
-          Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            child: ListTile(
-              leading: MyIcon.settings,
-              title: Text("Recalculate Averages"),
-              onTap: () => recalculate(),
-            ),
-          ),
-        ]),
-        TableRow(children: [
-          Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            child: ListTile(
-              leading: MyIcon.downloadLocal,
-              title: Text("Import from Local Directory"),
-              onTap: () => importLocal(),
-            ),
-          ),
-          Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            child: ListTile(
-              leading: MyIcon.delete,
-              title: Text("Delete Athlete"),
-              onTap: () => deleteUser(),
-            ),
-          ),
-        ]),
-        TableRow(children: [
-          detailTile(
+          navigationButton(
+            color: MyColor.settings,
             title: "Body Weight",
             icon: MyIcon.weight,
             nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
           ),
-          detailTile(
-            title: "Power Zone Schemas",
+          navigationButton(
+            color: MyColor.navigate,
+            title: "Stride Ratio",
+            icon: MyIcon.strideRatio,
+            nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.settings,
+            title: "Power Zone\nSchemas",
             icon: MyIcon.power,
             nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
           ),
-        ])
-      ]),
+          navigationButton(
+            color: MyColor.navigate,
+            title: "Speed /\nHeart Rate",
+            icon: MyIcon.speed,
+            nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
+          ),
+          RaisedButton.icon(
+            color: MyColor.danger,
+            textColor: MyColor.white,
+            icon: MyIcon.delete,
+            label: Text("Delete Athlete"),
+            onPressed: () => deleteUser(),
+          ),
+        ],
+      ),
     );
   }
 
-  detailTile({
+  navigationButton({
     Widget nextWidget,
     Widget icon,
     String title,
+    Color color,
+    Color textColor,
   }) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-      child: ListTile(
-        leading: icon,
-        title: Text(title),
-        onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ShowAthleteDetailScreen(
-              athlete: widget.athlete,
-              widget: nextWidget,
-              title: title,
-            ),
+    return RaisedButton.icon(
+      color: color ?? MyColor.primary,
+      textColor: textColor ?? MyColor.black,
+      icon: icon,
+      label: Text(title),
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ShowAthleteDetailScreen(
+            athlete: widget.athlete,
+            widget: nextWidget,
+            title: title,
           ),
         ),
       ),
@@ -352,7 +350,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     );
   }
 
-  deleteAthleteAndPop() async{
+  deleteAthleteAndPop() async {
     await widget.athlete.delete();
     Navigator.of(context).popUntil((route) => route.isFirst);
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:encrateia/screens/add_weight_screen.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/weight.dart';
@@ -37,20 +38,16 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
         rows = (weights.length < 8) ? weights.length : 8;
         return ListView(
           children: <Widget>[
-            Center(
-              child: Text("\nWeightings ${offset + 1} - ${offset + rows} "
-                  "of ${weights.length}"),
-            ),
             DataTable(
-              columnSpacing: 20,
+              headingRowHeight: kMinInteractiveDimension * 0.80,
+              dataRowHeight: kMinInteractiveDimension * 0.80,
               columns: <DataColumn>[
                 DataColumn(label: Text("Date")),
                 DataColumn(
-                  label: Text("Weight\nkg"),
+                  label: Text("Weight in kg"),
                   numeric: true,
                 ),
-                DataColumn(label: Text("")),
-                DataColumn(label: Text(""))
+                DataColumn(label: Text("Edit"))
               ],
               rows: weights.sublist(offset, offset + rows).map((Weight weight) {
                 return DataRow(
@@ -59,45 +56,45 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                     DataCell(
                         Text(DateFormat("d MMM yyyy").format(weight.db.date))),
                     DataCell(Text(weight.db.value.toString())),
-                    DataCell(
-                      MyIcon.delete,
-                      onTap: () => deleteWeight(weight: weight),
-                    ),
-                    DataCell(
-                      MyIcon.edit,
-                      onTap: () => Navigator.push(
+                    DataCell(MyIcon.edit, onTap: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddWeightScreen(
-                            athlete: widget.athlete,
-                            weight: weight,
-                          ),
+                          builder: (context) => AddWeightScreen(weight: weight),
                         ),
-                      ).then((_) => getData()()),
-                    )
+                      );
+                      getData();
+                    })
                   ],
                 );
               }).toList(),
             ),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                "${offset + 1} - ${offset + rows} "
+                "of ${weights.length} ",
+                textAlign: TextAlign.right,
+              ),
+            ),
             Row(
               children: <Widget>[
                 Spacer(),
-                RaisedButton(
-                  color: Colors.green,
-                  child: Text("New weighting"),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddWeightScreen(
-                        athlete: widget.athlete,
-                        weight: Weight(),
-                      ),
-                    ),
-                  ).then((_) => getData()()),
-                ),
+                MyButton.add(
+                    child: Text("New weighting"),
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddWeightScreen(
+                            weight: Weight(athlete: widget.athlete),
+                          ),
+                        ),
+                      );
+                      getData();
+                    }),
                 Spacer(),
-                RaisedButton(
-                  color: Colors.orange,
+                MyButton.navigate(
                   child: Text("<<"),
                   onPressed: (offset == 0)
                       ? null
@@ -106,8 +103,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                           }),
                 ),
                 Spacer(),
-                RaisedButton(
-                  color: Colors.orange,
+                MyButton.navigate(
                   child: Text(">>"),
                   onPressed: (offset + rows == weights.length)
                       ? null
@@ -150,18 +146,19 @@ Or you can simply enter your current weight using the New Weighting button.
                 ),
                 Spacer(),
                 RaisedButton(
-                  color: Colors.green,
-                  child: Text("New weighting"),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddWeightScreen(
-                        athlete: widget.athlete,
-                        weight: Weight(),
-                      ),
-                    ),
-                  ).then((_) => getData()()),
-                ),
+                    color: Colors.green,
+                    child: Text("New weighting"),
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddWeightScreen(
+                            weight: Weight(athlete: widget.athlete),
+                          ),
+                        ),
+                      );
+                      getData();
+                    }),
                 Spacer(),
               ],
             )
@@ -198,8 +195,7 @@ Or you can simply enter your current weight using the New Weighting button.
           .transform(CsvToListConverter(eol: "\n"))
           .toList();
       for (List weighting in weightings) {
-        weight = Weight();
-        weight.db.athletesId = widget.athlete.db.id;
+        weight = Weight(athlete: widget.athlete);
         weight.db.date = DateTime.utc(
           int.parse(weighting[0].split("-")[0]),
           int.parse(weighting[0].split("-")[1]),
@@ -210,10 +206,5 @@ Or you can simply enter your current weight using the New Weighting button.
       }
       await getData();
     }
-  }
-
-  deleteWeight({Weight weight}) async {
-    await weight.delete();
-    await getData();
   }
 }

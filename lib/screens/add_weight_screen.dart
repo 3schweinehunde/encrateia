@@ -1,26 +1,19 @@
-import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class AddWeightScreen extends StatelessWidget {
-  final Athlete athlete;
   final Weight weight;
 
   const AddWeightScreen({
     Key key,
-    this.athlete,
     this.weight,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    weight.db
-      ..athletesId = athlete.db.id
-      ..value = 70
-      ..date = DateTime.now();
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Add your Weight'),
@@ -31,7 +24,7 @@ class AddWeightScreen extends StatelessWidget {
           DateTimeField(
             decoration: InputDecoration(labelText: "Date"),
             format: DateFormat("yyyy-MM-dd"),
-            initialValue: DateTime.now(),
+            initialValue: weight.db.date,
             onShowPicker: (context, currentValue) {
               return showDatePicker(
                 context: context,
@@ -48,26 +41,18 @@ class AddWeightScreen extends StatelessWidget {
             keyboardType: TextInputType.number,
             onChanged: (value) => weight.db.value = double.parse(value),
           ),
-          Padding(
-            padding: EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Cancel', textScaleFactor: 1.5),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                Container(width: 20.0),
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Save', textScaleFactor: 1.5),
-                  onPressed: () => saveWeight(context),
-                ),
-              ],
-            ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              MyButton.delete(
+                onPressed: () => deleteWeight(context),
+              ),
+              SizedBox(width: 5),
+              MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
+              SizedBox(width: 5),
+              MyButton.save(onPressed: () => saveWeight(context)),
+            ],
           ),
         ],
       ),
@@ -76,6 +61,11 @@ class AddWeightScreen extends StatelessWidget {
 
   saveWeight(BuildContext context) async {
     await weight.db.save();
+    Navigator.of(context).pop();
+  }
+
+  deleteWeight(BuildContext context) async {
+    await weight.delete();
     Navigator.of(context).pop();
   }
 }
