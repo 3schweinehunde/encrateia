@@ -135,38 +135,45 @@ class PowerZoneSchema extends ChangeNotifier {
   addStefanDillingerZones() async {
     await PowerZone(
       powerZoneSchema: this,
-      name: "GA1",
+      name: "Z1",
       lowerPercentage: 70,
       upperPercentage: 80,
-      color: Colors.lightGreen.value,
-    ).db.save();
-    await PowerZone(
-      powerZoneSchema: this,
-      name: "GA2",
-      lowerPercentage: 80,
-      upperPercentage: 90,
       color: Colors.lightBlue.value,
     ).db.save();
     await PowerZone(
       powerZoneSchema: this,
-      name: "SL",
-      lowerPercentage: 90,
-      upperPercentage: 100,
+      name: "Z2",
+      lowerPercentage: 80,
+      upperPercentage: 88,
+      color: Colors.lightGreen.value,
+    ).db.save();
+    await PowerZone(
+      powerZoneSchema: this,
+      name: "Z3",
+      lowerPercentage: 88,
+      upperPercentage: 95,
       color: Colors.yellow.value,
     ).db.save();
     await PowerZone(
       powerZoneSchema: this,
-      name: "Int",
-      lowerPercentage: 100,
-      upperPercentage: 110,
+      name: "Z4",
+      lowerPercentage: 95,
+      upperPercentage: 105,
       color: Colors.orange.value,
     ).db.save();
     await PowerZone(
       powerZoneSchema: this,
-      name: "FSB",
-      lowerPercentage: 110,
-      upperPercentage: 120,
+      name: "Z5",
+      lowerPercentage: 105,
+      upperPercentage: 115,
       color: Colors.red.value,
+    ).db.save();
+    await PowerZone(
+      powerZoneSchema: this,
+      name: "Z6",
+      lowerPercentage: 115,
+      upperPercentage: 130,
+      color: Colors.purple.value,
     ).db.save();
   }
 
