@@ -650,7 +650,7 @@ packages:
       name: strava_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.1+51"
+    version: "1.2.1+54"
   stream_channel:
     dependency: transitive
     description:
