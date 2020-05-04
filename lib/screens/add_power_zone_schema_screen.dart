@@ -33,7 +33,6 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var db = widget.powerZoneSchema.db;
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Power Zone Schema'),
@@ -46,30 +45,30 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
               labelText: "Valid from",
             ),
             format: DateFormat("yyyy-MM-dd"),
-            initialValue: DateTime.now(),
+            initialValue: widget.powerZoneSchema.db.date,
             onShowPicker: (context, currentValue) {
               return showDatePicker(
                 context: context,
-                firstDate: DateTime(1990),
-                initialDate: currentValue ?? DateTime.now(),
+                firstDate: DateTime(1969),
+                initialDate: DateTime.now(),
                 lastDate: DateTime(2100),
               );
             },
-            onChanged: (value) => db.date = value,
+            onChanged: (value) => copyPowerZoneSchema(date: value),
           ),
           TextFormField(
             decoration: InputDecoration(labelText: "Name"),
-            initialValue: db.name,
-            onChanged: (value) => db.name = value,
+            initialValue: widget.powerZoneSchema.db.name,
+            onChanged: (value) => widget.powerZoneSchema.db.name = value,
           ),
           TextFormField(
             decoration: InputDecoration(
               labelText: "Base value in W",
               helperText: "e.g. Critical Power, Functional Threshold Power",
             ),
-            initialValue: db.base.toString(),
+            initialValue: widget.powerZoneSchema.db.base.toString(),
             keyboardType: TextInputType.number,
-            onChanged: (value) => updatePowerZoneBase(value: value),
+            onChanged: (value) => updatePowerZoneBase(base: int.parse(value)),
           ),
           SizedBox(height: 10),
           DataTable(
@@ -104,7 +103,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                         MaterialPageRoute(
                           builder: (context) => AddPowerZoneScreen(
                             powerZone: powerZone,
-                            base: db.base,
+                            base: widget.powerZoneSchema.db.base,
                           ),
                         ),
                       );
@@ -160,7 +159,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   savePowerZoneSchema(BuildContext context) async {
     await widget.powerZoneSchema.db.save();
     await DbPowerZone()
-          .upsertAll(powerZones.map((powerZone) => powerZone.db).toList());
+        .upsertAll(powerZones.map((powerZone) => powerZone.db).toList());
     Navigator.of(context).pop();
   }
 
@@ -174,15 +173,44 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     Navigator.of(context).pop();
   }
 
-  updatePowerZoneBase({String value}) {
+  updatePowerZoneBase({int base}) {
     setState(() {
-      widget.powerZoneSchema.db.base = int.parse(value);
+      widget.powerZoneSchema.db.base = base;
       for (PowerZone powerZone in powerZones) {
         powerZone.db.lowerLimit =
-            (powerZone.db.lowerPercentage * int.parse(value) / 100).round();
+            (powerZone.db.lowerPercentage * base / 100).round();
         powerZone.db.upperLimit =
-            (powerZone.db.upperPercentage * int.parse(value) / 100).round();
+            (powerZone.db.upperPercentage * base / 100).round();
       }
     });
+  }
+
+  copyPowerZoneSchema({DateTime date}) async {
+    widget.powerZoneSchema.db
+      ..date = date
+      ..id = null;
+    int powerZoneSchemaId = await widget.powerZoneSchema.db.save();
+    for (PowerZone powerZone in powerZones) {
+      powerZone.db
+        ..powerZoneSchemataId = powerZoneSchemaId
+        ..id = null;
+    }
+    await DbPowerZone()
+        .upsertAll(powerZones.map((powerZone) => powerZone.db).toList());
+    await getData();
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text("Power Zone Schema has been copied"),
+        content: Text(
+            "If you only wanted to fix the date you need to delete the old power zone schema manually."),
+        actions: [
+          FlatButton(
+            child: Text("OK"),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      ),
+    );
   }
 }

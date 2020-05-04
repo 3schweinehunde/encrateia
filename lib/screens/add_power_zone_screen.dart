@@ -18,8 +18,6 @@ class AddPowerZoneScreen extends StatefulWidget {
 }
 
 class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
-  ColorSwatch _tempMainColor;
-
   void _openDialog(Widget content) {
     showDialog(
       context: context,
@@ -50,9 +48,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
     _openDialog(
       MaterialColorPicker(
         selectedColor: Color(widget.powerZone.db.color),
-        onColorChange: (color) => widget.powerZone.db.color = color.value,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-        onBack: () => print("Back button pressed"),
+        onColorChange: (color) => setState(() => widget.powerZone.db.color = color.value),
+        onBack: () => {},
       ),
     );
   }
