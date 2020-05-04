@@ -6,7 +6,7 @@ import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-
+import 'package:encrateia/model/model.dart';
 import 'add_power_zone_screen.dart';
 
 class AddPowerZoneSchemaScreen extends StatefulWidget {
@@ -69,7 +69,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             ),
             initialValue: db.base.toString(),
             keyboardType: TextInputType.number,
-            onChanged: (value) => db.base = int.parse(value),
+            onChanged: (value) => updatePowerZoneBase(value: value),
           ),
           SizedBox(height: 10),
           DataTable(
@@ -159,6 +159,8 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
 
   savePowerZoneSchema(BuildContext context) async {
     await widget.powerZoneSchema.db.save();
+    await DbPowerZone()
+          .upsertAll(powerZones.map((powerZone) => powerZone.db).toList());
     Navigator.of(context).pop();
   }
 
@@ -170,5 +172,17 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   deletePowerZoneSchema({PowerZoneSchema powerZoneSchema}) async {
     await powerZoneSchema.delete();
     Navigator.of(context).pop();
+  }
+
+  updatePowerZoneBase({String value}) {
+    setState(() {
+      widget.powerZoneSchema.db.base = int.parse(value);
+      for (PowerZone powerZone in powerZones) {
+        powerZone.db.lowerLimit =
+            (powerZone.db.lowerPercentage * int.parse(value) / 100).round();
+        powerZone.db.upperLimit =
+            (powerZone.db.upperPercentage * int.parse(value) / 100).round();
+      }
+    });
   }
 }
