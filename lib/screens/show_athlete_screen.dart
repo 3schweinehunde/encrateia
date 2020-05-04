@@ -56,88 +56,92 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           icon: MyIcon.stravaDownload,
         ),
       ),
-      body: GridView.count(
-        padding: EdgeInsets.all(5),
-        crossAxisCount: 2,
-        childAspectRatio: 3,
-        crossAxisSpacing: 3,
-        mainAxisSpacing: 3,
-        children: [
-          navigationButton(
-            color: MyColor.detail,
-            title: "Activities List",
-            icon: MyIcon.activities,
-            nextWidget: ActivitiesListWidget(athlete: widget.athlete),
-          ),
-          RaisedButton.icon(
-            color: MyColor.add,
-            icon: MyIcon.downloadLocal,
-            label: Text("Import .fit\nfrom Folder"),
-            onPressed: () => importLocal(),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: "Power",
-            icon: MyIcon.power,
-            nextWidget: AthletePowerWidget(athlete: widget.athlete),
-          ),
-          RaisedButton.icon(
-            color: MyColor.add,
-            icon: MyIcon.settings,
-            label: Text("Recalculate\nAverages"),
-            onPressed: () => recalculate(),
-          ),
-          navigationButton(
-            title: "Power Ratio",
-            color: MyColor.navigate,
-            icon: MyIcon.power,
-            nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.settings,
-            title: "Settings",
-            icon: MyIcon.settings,
-            nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: "Power /\nHeart Rate",
-            icon: MyIcon.power,
-            nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.settings,
-            title: "Body Weight",
-            icon: MyIcon.weight,
-            nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: "Stride Ratio",
-            icon: MyIcon.strideRatio,
-            nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.settings,
-            title: "Power Zone\nSchemas",
-            icon: MyIcon.power,
-            nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: "Speed /\nHeart Rate",
-            icon: MyIcon.speed,
-            nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
-          ),
-          RaisedButton.icon(
-            color: MyColor.danger,
-            textColor: MyColor.white,
-            icon: MyIcon.delete,
-            label: Text("Delete Athlete"),
-            onPressed: () => deleteUser(),
-          ),
-        ],
-      ),
+      body: new OrientationBuilder(builder: (context, orientation) {
+        return GridView.count(
+          padding: EdgeInsets.all(5),
+          crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+          childAspectRatio: 3,
+          crossAxisSpacing: 3,
+          mainAxisSpacing: 3,
+          children: [
+            navigationButton(
+              color: MyColor.detail,
+              title: "Activities List",
+              icon: MyIcon.activities,
+              nextWidget: ActivitiesListWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              color: MyColor.navigate,
+              title: "Power",
+              icon: MyIcon.power,
+              nextWidget: AthletePowerWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              title: "Power Ratio",
+              color: MyColor.navigate,
+              icon: MyIcon.power,
+              nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              color: MyColor.navigate,
+              title: "Power /\nHeart Rate",
+              icon: MyIcon.power,
+              nextWidget:
+              AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              color: MyColor.navigate,
+              title: "Stride Ratio",
+              icon: MyIcon.strideRatio,
+              nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              color: MyColor.navigate,
+              title: "Speed /\nHeart Rate",
+              icon: MyIcon.speed,
+              nextWidget:
+              AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
+            ),
+            RaisedButton.icon(
+              color: MyColor.add,
+              icon: MyIcon.downloadLocal,
+              label: Text("Import .fit\nfrom Folder"),
+              onPressed: () => importLocal(),
+            ),
+            RaisedButton.icon(
+              color: MyColor.add,
+              icon: MyIcon.settings,
+              label: Text("Recalculate\nAverages"),
+              onPressed: () => recalculate(),
+            ),
+            navigationButton(
+              color: MyColor.settings,
+              title: "Body Weight",
+              icon: MyIcon.weight,
+              nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              color: MyColor.settings,
+              title: "Power Zone\nSchemas",
+              icon: MyIcon.power,
+              nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              color: MyColor.settings,
+              title: "Settings",
+              icon: MyIcon.settings,
+              nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
+            ),
+            RaisedButton.icon(
+              color: MyColor.danger,
+              textColor: MyColor.white,
+              icon: MyIcon.delete,
+              label: Text("Delete Athlete"),
+              onPressed: () => deleteUser(),
+            ),
+          ],
+        );
+      }),
     );
   }
 

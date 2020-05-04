@@ -1,3 +1,4 @@
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:provider/provider.dart';
@@ -115,17 +116,11 @@ class EditAthleteScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Cancel', textScaleFactor: 1.5),
+                MyButton.cancel(
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 Container(width: 20.0),
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Save', textScaleFactor: 1.5),
+                MyButton.save(
                   onPressed: () => saveStandaloneUser(context),
                 ),
               ],
