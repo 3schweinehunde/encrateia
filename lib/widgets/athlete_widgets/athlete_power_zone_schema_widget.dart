@@ -45,7 +45,7 @@ class _AthletePowerZoneSchemaWidgetState
             DataTable(
               headingRowHeight: kMinInteractiveDimension * 0.80,
               dataRowHeight: kMinInteractiveDimension * 0.80,
-              columnSpacing: 20,
+              columnSpacing: 9,
               columns: <DataColumn>[
                 DataColumn(label: Text("Date")),
                 DataColumn(label: Text("Name")),

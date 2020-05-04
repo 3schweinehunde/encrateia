@@ -7,6 +7,7 @@ import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
@@ -379,7 +380,6 @@ class Activity extends ChangeNotifier {
         case "workout_step":
           break;
 
-
         case "session":
           var startTime = dateTimeFromStrava(dataMessage.get('start_time'));
           if (db.name == "t.b.d.")
@@ -506,5 +506,13 @@ class Activity extends ChangeNotifier {
         .map((dbActivity) => Activity.fromDb(dbActivity))
         .toList();
     return activities;
+  }
+
+  getPowerZoneSchema() async {
+    var powerZoneSchema = await PowerZoneSchema.getBy(
+      athletesId: db.athletesId,
+      date: db.timeCreated,
+    );
+    return powerZoneSchema;
   }
 }

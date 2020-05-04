@@ -1,3 +1,5 @@
+import 'package:encrateia/models/power_zone.dart';
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -21,6 +23,8 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   String minPowerString = "Loading ...";
   String maxPowerString = "Loading ...";
   String sdevPowerString = "Loading ...";
+  PowerZoneSchema powerZoneSchema;
+  List<PowerZone> powerZones;
 
   @override
   void initState() {
@@ -30,7 +34,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
+    if (records.length > 0 && powerZones != null) {
       var powerRecords = records
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
@@ -43,7 +47,10 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityPowerChart(
-                  records: powerRecords, activity: widget.activity),
+                records: powerRecords,
+                activity: widget.activity,
+                powerZones: powerZones,
+              ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerString),
@@ -98,6 +105,11 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
     minPowerString = activity.db.minPower.toString() + " W";
     maxPowerString = activity.db.maxPower.toString() + " W";
     sdevPowerString = activity.db.sdevPower.toStringOrDashes(2) + " W";
+    powerZoneSchema = await activity.getPowerZoneSchema();
+    if (powerZoneSchema != null)
+      powerZones = await powerZoneSchema.powerZones;
+    else
+      powerZones = [];
     setState(() {});
   }
 }

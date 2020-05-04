@@ -191,4 +191,23 @@ class PowerZoneSchema extends ChangeNotifier {
         .toList();
     return powerZoneSchemas;
   }
+
+  static getBy({
+    int athletesId,
+    DateTime date,
+  }) async {
+    var dbPowerZoneSchemas = await DbPowerZoneSchema()
+        .select()
+        .athletesId
+        .equals(athletesId)
+        .and
+        .date
+        .lessThanOrEquals(date)
+        .orderByDesc("date")
+        .top(1)
+        .toList();
+    if (dbPowerZoneSchemas.length != 0)
+      return PowerZoneSchema.fromDb(dbPowerZoneSchemas.first);
+    else return null;
+  }
 }

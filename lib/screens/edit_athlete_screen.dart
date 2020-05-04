@@ -173,17 +173,11 @@ class EditAthleteScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Cancel', textScaleFactor: 1.5),
+                MyButton.cancel(
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 Container(width: 20.0),
-                RaisedButton(
-                  color: Theme.of(context).primaryColorDark,
-                  textColor: Theme.of(context).primaryColorLight,
-                  child: Text('Save', textScaleFactor: 1.5),
+                MyButton.save(
                   onPressed: () => saveStravaUser(context),
                 ),
               ],

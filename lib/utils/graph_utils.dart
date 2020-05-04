@@ -1,6 +1,8 @@
 import 'package:encrateia/models/lap.dart';
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' as UI;
 
 class GraphUtils {
   static rangeAnnotations({List<Lap> laps}) {
@@ -55,5 +57,30 @@ class GraphUtils {
         titleOutsideJustification: OutsideJustification.end,
       ),
     ];
+  }
+
+  static zoneAnnotations({List<PowerZone> powerZones}) {
+    if (powerZones != null) {
+      return [
+        for (PowerZone powerZone in powerZones)
+          RangeAnnotationSegment(
+            powerZone.db.lowerLimit,
+            powerZone.db.upperLimit,
+            RangeAnnotationAxisType.measure,
+            startLabel: powerZone.db.name,
+            color: convertedColor(dbColor: powerZone.db.color),
+          )
+      ];
+    } else
+      return [];
+  }
+
+  static convertedColor({int dbColor}) {
+    return Color(
+      r: UI.Color(dbColor).red,
+      g: UI.Color(dbColor).green,
+      b: UI.Color(dbColor).blue,
+      a: (UI.Color(dbColor).alpha / 2).round(),
+    );
   }
 }
