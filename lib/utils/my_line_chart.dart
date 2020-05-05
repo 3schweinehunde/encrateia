@@ -8,6 +8,7 @@ class MyLineChart extends LineChart {
       @required maxDomain,
       @required laps,
       powerZones,
+      heartRateZones,
       @required domainTitle,
       measureTitle,
       measureTickProviderSpec,
@@ -26,7 +27,12 @@ class MyLineChart extends LineChart {
           behaviors: [
             RangeAnnotation(
               GraphUtils.rangeAnnotations(laps: laps) +
-              GraphUtils.zoneAnnotations(powerZones: powerZones),
+                  GraphUtils.powerZoneAnnotations(
+                    powerZones: powerZones,
+                  ) +
+                  GraphUtils.heartRateZoneAnnotations(
+                    heartRateZones: heartRateZones,
+                  ),
             ),
             ChartTitle(
               domainTitle,

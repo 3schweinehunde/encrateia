@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/plot_point.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -11,8 +12,13 @@ import 'package:encrateia/utils/enums.dart';
 class ActivityHeartRateChart extends StatelessWidget {
   final List<Event> records;
   final Activity activity;
+  final List<HeartRateZone> heartRateZones;
 
-  ActivityHeartRateChart({this.records, @required this.activity});
+  ActivityHeartRateChart({
+    this.records,
+    @required this.activity,
+    this.heartRateZones,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class ActivityHeartRateChart extends StatelessWidget {
     );
 
     List<Series<dynamic, num>> data = [
-       Series<IntPlotPoint, int>(
+      Series<IntPlotPoint, int>(
         id: 'Heart Rate',
         colorFn: (_, __) => MaterialPalette.red.shadeDefault,
         domainFn: (IntPlotPoint point, _) => point.domain,
@@ -43,6 +49,7 @@ class ActivityHeartRateChart extends StatelessWidget {
               data: data,
               maxDomain: records.last.db.distance,
               laps: laps,
+              heartRateZones: heartRateZones,
               domainTitle: 'Heart Rate (bpm)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(
                   zeroBound: false,
@@ -52,7 +59,8 @@ class ActivityHeartRateChart extends StatelessWidget {
                   BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
-        } else return GraphUtils.loadingContainer;
+        } else
+          return GraphUtils.loadingContainer;
       },
     );
   }

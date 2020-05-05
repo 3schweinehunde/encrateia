@@ -1,3 +1,4 @@
+import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/power_zone.dart';
@@ -59,7 +60,7 @@ class GraphUtils {
     ];
   }
 
-  static zoneAnnotations({List<PowerZone> powerZones}) {
+  static powerZoneAnnotations({List<PowerZone> powerZones}) {
     List<RangeAnnotationSegment<int>> rangeAnnotationSegmentList = [];
 
     if (powerZones != null) {
@@ -74,7 +75,24 @@ class GraphUtils {
           )
       ];
     }
+    return rangeAnnotationSegmentList;
+  }
 
+  static heartRateZoneAnnotations({List<HeartRateZone> heartRateZones}) {
+    List<RangeAnnotationSegment<int>> rangeAnnotationSegmentList = [];
+
+    if (heartRateZones != null) {
+      rangeAnnotationSegmentList = [
+        for (HeartRateZone heartRateZone in heartRateZones)
+          RangeAnnotationSegment(
+            heartRateZone.db.lowerLimit,
+            heartRateZone.db.upperLimit,
+            RangeAnnotationAxisType.measure,
+            startLabel: heartRateZone.db.name,
+            color: convertedColor(dbColor: heartRateZone.db.color),
+          )
+      ];
+    }
     return rangeAnnotationSegmentList;
   }
 

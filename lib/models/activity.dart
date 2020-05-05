@@ -16,6 +16,8 @@ import 'package:intl/intl.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'dart:io';
 
+import 'heart_rate_zone_schema.dart';
+
 class Activity extends ChangeNotifier {
   DbActivity db;
   List<Event> _records;
@@ -514,5 +516,13 @@ class Activity extends ChangeNotifier {
       date: db.timeCreated,
     );
     return powerZoneSchema;
+  }
+
+  getHeartRateZoneSchema() async {
+    var heartRateZoneSchema = await HeartRateZoneSchema.getBy(
+      athletesId: db.athletesId,
+      date: db.timeCreated,
+    );
+    return heartRateZoneSchema;
   }
 }

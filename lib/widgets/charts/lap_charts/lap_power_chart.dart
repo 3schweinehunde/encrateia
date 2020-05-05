@@ -40,7 +40,7 @@ class LapPowerChart extends StatelessWidget {
         animate: false,
         behaviors: [
           RangeAnnotation(
-            GraphUtils.zoneAnnotations(powerZones: powerZones),
+            GraphUtils.powerZoneAnnotations(powerZones: powerZones),
           ),
           ChartTitle(
             "Power (W)",
