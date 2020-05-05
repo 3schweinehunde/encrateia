@@ -143,7 +143,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               color: MyColor.danger,
               textColor: MyColor.white,
               icon: MyIcon.delete,
-              label: Text("Delete Athlete"),
+              label: Text("Delete\nAthlete"),
               onPressed: () => deleteUser(),
             ),
           ],

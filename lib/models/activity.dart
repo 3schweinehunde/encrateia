@@ -303,6 +303,7 @@ class Activity extends ChangeNotifier {
         case 233:
         // Garmin Forerunner 245 Music uses global message numbers, which are not specified:
         case 288:
+        case 325:
         case 326:
         case 327:
           break;

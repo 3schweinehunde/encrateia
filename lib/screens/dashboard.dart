@@ -100,7 +100,7 @@ class _DashboardState extends State<Dashboard> {
       );
     } else {
       return ListView(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(top: 20),
         children: <Widget>[
           for (Athlete athlete in athletes)
             ListTile(
