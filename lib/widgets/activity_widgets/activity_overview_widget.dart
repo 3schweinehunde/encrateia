@@ -17,21 +17,9 @@ class ActivityOverviewWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: 25),
         children: <Widget>[
           ListTile(
-            leading: MyIcon.timeStamp,
-            title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
-                .format(activity.db.timeCreated)),
-            subtitle: Text('time created'),
-          ),
-          ListTile(
             leading: MyIcon.time,
             title: Text(Duration(seconds: activity.db.movingTime ?? 0).asString()),
             subtitle: Text('moving time'),
-          ),
-          ListTile(
-            leading: MyIcon.distance,
-            title:
-                Text('${(activity.db.distance / 1000).toStringAsFixed(2)} km'),
-            subtitle: Text('distance'),
           ),
           ListTile(
             leading: MyIcon.speed,
@@ -41,9 +29,39 @@ class ActivityOverviewWidget extends StatelessWidget {
             subtitle: Text('avg / max pace'),
           ),
           ListTile(
+            leading: MyIcon.heartRate,
+            title: Text(
+                "${activity.db.avgHeartRate} bpm / ${activity.db.maxHeartRate} bpm"),
+            subtitle: Text('avg / max heart rate'),
+          ),
+          ListTile(
+            leading: MyIcon.power,
+            title: Text(
+                "${activity.db.avgPower.toStringAsFixed(1)} W"),
+            subtitle: Text('avg power'),
+          ),
+          ListTile(
+            leading: MyIcon.power,
+            title:
+            Text("${(activity.db.avgPower / activity.db.avgHeartRate).toStringAsFixed(2)} W/bpm"),
+            subtitle: Text('power / heart rate'),
+          ),
+          ListTile(
+            leading: MyIcon.distance,
+            title:
+                Text('${(activity.db.distance / 1000).toStringAsFixed(2)} km'),
+            subtitle: Text('distance'),
+          ),
+          ListTile(
             leading: MyIcon.calories,
             title: Text('${activity.db.totalCalories} kcal'),
             subtitle: Text('total calories'),
+          ),
+          ListTile(
+            leading: MyIcon.timeStamp,
+            title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
+                .format(activity.db.timeCreated)),
+            subtitle: Text('time created'),
           ),
           ListTile(
             leading: MyIcon.climb,
@@ -51,12 +69,6 @@ class ActivityOverviewWidget extends StatelessWidget {
                 "${activity.db.totalAscent} m - ${activity.db.totalDescent} m"
                 " = ${activity.db.totalAscent - activity.db.totalDescent} m"),
             subtitle: Text('total ascent - descent = total climb'),
-          ),
-          ListTile(
-            leading: MyIcon.heartRate,
-            title: Text(
-                "${activity.db.avgHeartRate} bpm / ${activity.db.maxHeartRate} bpm"),
-            subtitle: Text('avg / max heart rate'),
           ),
           ListTile(
             leading: MyIcon.cadence,

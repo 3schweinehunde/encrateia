@@ -17,6 +17,29 @@ class LapOverviewWidget extends StatelessWidget {
         padding: EdgeInsets.only(left: 25),
         children: <Widget>[
           ListTile(
+            leading: MyIcon.speed,
+            title: Text(lap.db.avgSpeed.toPace() + " / " + lap.db.maxSpeed.toPace()),
+            subtitle: Text('avg / max pace'),
+          ),
+          ListTile(
+            leading: MyIcon.heartRate,
+            title:
+            Text("${lap.db.avgHeartRate} bpm / ${lap.db.maxHeartRate} bpm"),
+            subtitle: Text('avg / max heart rate'),
+          ),
+          ListTile(
+            leading: MyIcon.power,
+            title:
+            Text("${lap.db.avgPower.toStringAsFixed(1)} W"),
+            subtitle: Text('avg power'),
+          ),
+          ListTile(
+            leading: MyIcon.power,
+            title:
+            Text("${(lap.db.avgPower / lap.db.avgHeartRate).toStringAsFixed(2)} WW/bpm"),
+            subtitle: Text('power / heart rate'),
+          ),
+          ListTile(
             leading: MyIcon.timeStamp,
             title: Text(
                 DateFormat("dd MMM yyyy, h:mm:ss").format(lap.db.startTime)),
@@ -29,11 +52,6 @@ class LapOverviewWidget extends StatelessWidget {
             subtitle: Text('distance'),
           ),
           ListTile(
-            leading: MyIcon.speed,
-            title: Text(lap.db.avgSpeed.toPace() + " / " + lap.db.maxSpeed.toPace()),
-            subtitle: Text('avg / max pace'),
-          ),
-          ListTile(
             leading: MyIcon.calories,
             title: Text('${lap.db.totalCalories} kcal'),
             subtitle: Text('total calories'),
@@ -43,12 +61,6 @@ class LapOverviewWidget extends StatelessWidget {
             title: Text("${lap.db.totalAscent} m - ${lap.db.totalDescent} m"
                 " = ${lap.db.totalAscent - lap.db.totalDescent} m"),
             subtitle: Text('total ascent - descent = total climb'),
-          ),
-          ListTile(
-            leading: MyIcon.heartRate,
-            title:
-                Text("${lap.db.avgHeartRate} bpm / ${lap.db.maxHeartRate} bpm"),
-            subtitle: Text('avg / max heart rate'),
           ),
           ListTile(
             leading: MyIcon.cadence,
