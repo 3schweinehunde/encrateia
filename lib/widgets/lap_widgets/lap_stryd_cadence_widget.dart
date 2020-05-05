@@ -75,9 +75,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
     records = await lap.records;
 
     double avg = await lap.avgStrydCadence;
-    setState(() {
-      avgStrydCadenceString = avg.toStringOrDashes(1) + " spm";
-    });
+    avgStrydCadenceString = avg.toStringOrDashes(1) + " spm";
 
     double sdev = await lap.sdevStrydCadence;
     setState(() {

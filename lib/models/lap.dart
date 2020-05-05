@@ -1,4 +1,5 @@
 import 'package:encrateia/model/model.dart';
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/utils/list_utils.dart';
@@ -427,5 +428,15 @@ class Lap {
             record.db.strydCadence /
             record.db.verticalOscillation);
     return powerRatios.sdev();
+  }
+
+  getPowerZoneSchema() async {
+    var dbActivity = await DbActivity().getById(db.activitiesId);
+
+    var powerZoneSchema = await PowerZoneSchema.getBy(
+      athletesId: dbActivity.athletesId,
+      date: dbActivity.timeCreated,
+    );
+    return powerZoneSchema;
   }
 }

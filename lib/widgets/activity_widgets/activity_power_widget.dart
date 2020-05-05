@@ -105,11 +105,10 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
     minPowerString = activity.db.minPower.toString() + " W";
     maxPowerString = activity.db.maxPower.toString() + " W";
     sdevPowerString = activity.db.sdevPower.toStringOrDashes(2) + " W";
+
     powerZoneSchema = await activity.getPowerZoneSchema();
     if (powerZoneSchema != null)
       powerZones = await powerZoneSchema.powerZones;
-    else
-      powerZones = [];
     setState(() {});
   }
 }

@@ -78,9 +78,7 @@ class _LapVerticalOscillationWidgetState
     records = await lap.records;
 
     double avg = await lap.avgVerticalOscillation;
-    setState(() {
-      avgVerticalOscillationString = avg.toStringOrDashes(1) + " cm";
-    });
+    avgVerticalOscillationString = avg.toStringOrDashes(1) + " cm";
 
     double sdev = await lap.sdevVerticalOscillation;
     setState(() {

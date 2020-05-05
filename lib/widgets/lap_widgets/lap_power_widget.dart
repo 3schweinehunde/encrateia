@@ -1,3 +1,5 @@
+import 'package:encrateia/models/power_zone.dart';
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
@@ -20,6 +22,8 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
   String minPowerString = "Loading ...";
   String maxPowerString = "Loading ...";
   String sdevPowerString = "Loading ...";
+  PowerZoneSchema powerZoneSchema;
+  List<PowerZone> powerZones;
 
   @override
   void initState() {
@@ -40,7 +44,10 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapPowerChart(records: powerRecords),
+              LapPowerChart(
+                records: powerRecords,
+                powerZones: powerZones,
+              ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerString),
@@ -86,23 +93,20 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
     records = await lap.records;
 
     double avg = await lap.avgPower;
-    setState(() {
-      avgPowerString = avg.toStringOrDashes(1) + " W";
-    });
+    avgPowerString = avg.toStringOrDashes(1) + " W";
 
     int min = await lap.minPower;
-    setState(() {
-      minPowerString = min.toString() + " W";
-    });
+    minPowerString = min.toString() + " W";
 
     int max = await lap.maxPower;
-    setState(() {
-      maxPowerString = max.toString() + " W";
-    });
+    maxPowerString = max.toString() + " W";
 
     double sdev = await lap.sdevPower;
-    setState(() {
-      sdevPowerString = sdev.toStringOrDashes(2) + " W";
-    });
+    sdevPowerString = sdev.toStringOrDashes(2) + " W";
+
+    powerZoneSchema = await lap.getPowerZoneSchema();
+    if (powerZoneSchema != null)
+      powerZones = await powerZoneSchema.powerZones;
+    setState(() {});
   }
 }

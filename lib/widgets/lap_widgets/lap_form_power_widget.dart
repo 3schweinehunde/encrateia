@@ -75,9 +75,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
     records = await lap.records;
 
     double avg = await lap.avgFormPower;
-    setState(() {
-      avgFormPowerString = avg.toStringOrDashes(1) + " W";
-    });
+    avgFormPowerString = avg.toStringOrDashes(1) + " W";
 
     double sdev = await lap.sdevFormPower;
     setState(() {

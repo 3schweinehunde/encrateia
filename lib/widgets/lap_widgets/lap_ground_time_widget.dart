@@ -75,9 +75,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
     records = await lap.records;
 
     double avg = await lap.avgGroundTime;
-    setState(() {
-      avgGroundTimeString = avg.toStringOrDashes(1) + " ms";
-    });
+    avgGroundTimeString = avg.toStringOrDashes(1) + " ms";
 
     double sdev = await lap.sdevGroundTime;
     setState(() {
