@@ -109,6 +109,8 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
     powerZoneSchema = await activity.getPowerZoneSchema();
     if (powerZoneSchema != null)
       powerZones = await powerZoneSchema.powerZones;
+    else
+      powerZones = [];
     setState(() {});
   }
 }

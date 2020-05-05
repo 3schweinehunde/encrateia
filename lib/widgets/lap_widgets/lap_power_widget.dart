@@ -107,6 +107,8 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
     powerZoneSchema = await lap.getPowerZoneSchema();
     if (powerZoneSchema != null)
       powerZones = await powerZoneSchema.powerZones;
+    else
+      powerZones = [];
     setState(() {});
   }
 }
