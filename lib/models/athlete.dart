@@ -8,6 +8,8 @@ import 'package:encrateia/models/weight.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io';
 
+import 'heart_rate_zone_schema.dart';
+
 class Athlete extends ChangeNotifier {
   String email;
   String password;
@@ -78,6 +80,7 @@ class Athlete extends ChangeNotifier {
   get activities => Activity.all(athlete: this);
   get weights => Weight.all(athlete: this);
   get powerZoneSchemas => PowerZoneSchema.all(athlete: this);
+  get heartRateZoneSchemas => HeartRateZoneSchema.all(athlete: this);
 
   delete() async {
     var appDocDir = await getApplicationDocumentsDirectory();
