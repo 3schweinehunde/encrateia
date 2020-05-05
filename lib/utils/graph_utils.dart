@@ -60,8 +60,10 @@ class GraphUtils {
   }
 
   static zoneAnnotations({List<PowerZone> powerZones}) {
+    List<RangeAnnotationSegment<int>> rangeAnnotationSegmentList = [];
+
     if (powerZones != null) {
-      return [
+      rangeAnnotationSegmentList = [
         for (PowerZone powerZone in powerZones)
           RangeAnnotationSegment(
             powerZone.db.lowerLimit,
@@ -71,8 +73,9 @@ class GraphUtils {
             color: convertedColor(dbColor: powerZone.db.color),
           )
       ];
-    } else
-      return [];
+    }
+
+    return rangeAnnotationSegmentList;
   }
 
   static convertedColor({int dbColor}) {
