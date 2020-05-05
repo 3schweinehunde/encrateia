@@ -27,7 +27,7 @@
 			<string>stravaflutter</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>strava</string>
+				<string>stravaflutter</string>
 			</array>
 		</dict>
 	</array>
