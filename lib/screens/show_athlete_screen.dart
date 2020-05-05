@@ -153,10 +153,10 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   }
 
   navigationButton({
-    Widget nextWidget,
-    Widget icon,
-    String title,
-    Color color,
+    @required Widget nextWidget,
+    @required Widget icon,
+    @required String title,
+    @required Color color,
     Color textColor,
   }) {
     return RaisedButton.icon(
