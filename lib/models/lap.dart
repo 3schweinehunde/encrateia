@@ -7,6 +7,8 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/num_utils.dart';
 
+import 'heart_rate_zone_schema.dart';
+
 class Lap {
   DbLap db;
   Activity activity;
@@ -438,5 +440,15 @@ class Lap {
       date: dbActivity.timeCreated,
     );
     return powerZoneSchema;
+  }
+
+  getHeartRateZoneSchema() async {
+    var dbActivity = await DbActivity().getById(db.activitiesId);
+
+    var heartRateZoneSchema = await HeartRateZoneSchema.getBy(
+      athletesId: dbActivity.athletesId,
+      date: dbActivity.timeCreated,
+    );
+    return heartRateZoneSchema;
   }
 }

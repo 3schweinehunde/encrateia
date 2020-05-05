@@ -1,3 +1,5 @@
+import 'package:encrateia/models/heart_rate_zone.dart';
+import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
@@ -17,6 +19,8 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   List<Event> records = [];
   String avgHeartRateString = "Loading ...";
   String sdevHeartRateString = "Loading ...";
+  HeartRateZoneSchema heartRateZoneSchema;
+  List<HeartRateZone> heartRateZones;
 
   @override
   void initState() {
@@ -38,7 +42,10 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapHeartRateChart(records: records),
+              LapHeartRateChart(
+                records: records,
+                heartRateZones: heartRateZones,
+              ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(Lap.avgHeartRate(records: records)),
@@ -82,6 +89,12 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   getData() async {
     Lap lap = widget.lap;
     records = await lap.records;
+
+    heartRateZoneSchema = await lap.getHeartRateZoneSchema();
+    if (heartRateZoneSchema != null)
+      heartRateZones = await heartRateZoneSchema.heartRateZones;
+    else
+      heartRateZones = [];
     setState(() {});
   }
 }
