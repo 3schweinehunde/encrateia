@@ -124,6 +124,10 @@ class _AthletePowerZoneSchemaWidgetState
                 Spacer(),
               ],
             ),
+            Padding(
+              padding: EdgeInsets.all(25.0),
+              child: templateButtons(),
+            )
           ],
         );
       } else {
@@ -156,24 +160,7 @@ You could also create a schema from scratch.
                   getData();
                 },
               ),
-              RaisedButton(
-                // MyIcon.downloadLocal,
-                color: Colors.orange,
-                child: Text("Zone schema like Stryd"),
-                onPressed: () => likeStryd(),
-              ),
-              RaisedButton(
-                // MyIcon.downloadLocal,
-                color: Colors.orange,
-                child: Text("Zone schema like Jim Vance"),
-                onPressed: () => likeJimVance(),
-              ),
-              RaisedButton(
-                // MyIcon.downloadLocal,
-                color: Colors.orange,
-                child: Text("Zone schema like Stefan Dillinger"),
-                onPressed: () => likeStefanDillinger(),
-              ),
+              templateButtons(),
             ],
           ),
         );
@@ -211,5 +198,30 @@ You could also create a schema from scratch.
     await powerZoneSchema.db.save();
     await powerZoneSchema.addStefanDillingerZones();
     await getData();
+  }
+
+  templateButtons() {
+    return Column(children: [
+      Divider(),
+      Text("Add power zone schema from template:"),
+      RaisedButton(
+        // MyIcon.downloadLocal,
+        color: Colors.orange,
+        child: Text("like Stryd"),
+        onPressed: () => likeStryd(),
+      ),
+      RaisedButton(
+        // MyIcon.downloadLocal,
+        color: Colors.orange,
+        child: Text("like Jim Vance"),
+        onPressed: () => likeJimVance(),
+      ),
+      RaisedButton(
+        // MyIcon.downloadLocal,
+        color: Colors.orange,
+        child: Text("like Stefan Dillinger"),
+        onPressed: () => likeStefanDillinger(),
+      ),
+    ]);
   }
 }

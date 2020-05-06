@@ -32,13 +32,14 @@ class _AthleteHeartRateZoneSchemaWidgetState
   Widget build(context) {
     if (heartRateZoneSchemas != null) {
       if (heartRateZoneSchemas.length > 0) {
-        rows = (heartRateZoneSchemas.length < 8) ? heartRateZoneSchemas.length : 8;
+        rows =
+            (heartRateZoneSchemas.length < 8) ? heartRateZoneSchemas.length : 8;
         return ListView(
           children: <Widget>[
             Center(
               child: Text(
                 "\nHeart Rate Zone Schemas ${offset + 1} - ${offset + rows} "
-                    "of ${heartRateZoneSchemas.length}",
+                "of ${heartRateZoneSchemas.length}",
                 style: Theme.of(context).textTheme.title,
               ),
             ),
@@ -95,7 +96,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                         MaterialPageRoute(
                           builder: (context) => AddHeartRateZoneSchemaScreen(
                             heartRateZoneSchema:
-                            HeartRateZoneSchema(athlete: widget.athlete),
+                                HeartRateZoneSchema(athlete: widget.athlete),
                           ),
                         ),
                       );
@@ -107,8 +108,8 @@ class _AthleteHeartRateZoneSchemaWidgetState
                   onPressed: (offset == 0)
                       ? null
                       : () => setState(() {
-                    offset > 8 ? offset = offset - rows : offset = 0;
-                  }),
+                            offset > 8 ? offset = offset - rows : offset = 0;
+                          }),
                 ),
                 Spacer(),
                 MyButton.navigate(
@@ -116,14 +117,15 @@ class _AthleteHeartRateZoneSchemaWidgetState
                   onPressed: (offset + rows == heartRateZoneSchemas.length)
                       ? null
                       : () => setState(() {
-                    offset + rows < heartRateZoneSchemas.length - rows
-                        ? offset = offset + rows
-                        : offset = heartRateZoneSchemas.length - rows;
-                  }),
+                            offset + rows < heartRateZoneSchemas.length - rows
+                                ? offset = offset + rows
+                                : offset = heartRateZoneSchemas.length - rows;
+                          }),
                 ),
                 Spacer(),
               ],
             ),
+            templateButtons(),
           ],
         );
       } else {
@@ -149,19 +151,14 @@ You could also create a schema from scratch.
                     MaterialPageRoute(
                       builder: (context) => AddHeartRateZoneSchemaScreen(
                         heartRateZoneSchema:
-                        HeartRateZoneSchema(athlete: widget.athlete),
+                            HeartRateZoneSchema(athlete: widget.athlete),
                       ),
                     ),
                   );
                   getData();
                 },
               ),
-              RaisedButton(
-                // MyIcon.downloadLocal,
-                color: Colors.orange,
-                child: Text("Zone schema like Garmin"),
-                onPressed: () => likeGarmin(),
-              ),
+              templateButtons(),
             ],
           ),
         );
@@ -183,5 +180,33 @@ You could also create a schema from scratch.
     await heartRateZoneSchema.db.save();
     await heartRateZoneSchema.addGarminZones();
     await getData();
+  }
+
+  likeStefanDillinger() async {
+    Athlete athlete = widget.athlete;
+    var heartRateZoneSchema =
+        HeartRateZoneSchema.likeStefanDillinger(athlete: athlete);
+    await heartRateZoneSchema.db.save();
+    await heartRateZoneSchema.addStefanDillingerZones();
+    await getData();
+  }
+
+  templateButtons() {
+    return Column(children: [
+      Divider(),
+      Text("Add heart rate zone schema from template:"),
+      RaisedButton(
+        // MyIcon.downloadLocal,
+        color: Colors.orange,
+        child: Text("like Garmin"),
+        onPressed: () => likeGarmin(),
+      ),
+      RaisedButton(
+        // MyIcon.downloadLocal,
+        color: Colors.orange,
+        child: Text("like Stefan Dillinger"),
+        onPressed: () => likeStefanDillinger(),
+      ),
+    ]);
   }
 }

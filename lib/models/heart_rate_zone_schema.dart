@@ -25,6 +25,14 @@ class HeartRateZoneSchema extends ChangeNotifier {
       ..base = 180;
   }
 
+  HeartRateZoneSchema.likeStefanDillinger({Athlete athlete}) {
+    db = DbHeartRateZoneSchema()
+      ..athletesId = athlete.db.id
+      ..name = "like Stefan Dillinger"
+      ..date = DateTime(1970, 01, 01)
+      ..base = 165;
+  }
+
   addGarminZones() async {
     await HeartRateZone(
       heartRateZoneSchema: this,
@@ -62,6 +70,45 @@ class HeartRateZoneSchema extends ChangeNotifier {
       color: Colors.red.value,
     ).db.save();
   }
+
+  addStefanDillingerZones() async {
+    await HeartRateZone(
+      heartRateZoneSchema: this,
+      name: "Z1",
+      lowerPercentage: 70,
+      upperPercentage: 80,
+      color: Colors.grey.value,
+    ).db.save();
+    await HeartRateZone(
+      heartRateZoneSchema: this,
+      name: "Z2",
+      lowerPercentage: 80,
+      upperPercentage: 88,
+      color: Colors.blue.value,
+    ).db.save();
+    await HeartRateZone(
+      heartRateZoneSchema: this,
+      name: "Z3",
+      lowerPercentage: 88,
+      upperPercentage: 95,
+      color: Colors.green.value,
+    ).db.save();
+    await HeartRateZone(
+      heartRateZoneSchema: this,
+      name: "Z4",
+      lowerPercentage: 95,
+      upperPercentage: 100,
+      color: Colors.orange.value,
+    ).db.save();
+    await HeartRateZone(
+      heartRateZoneSchema: this,
+      name: "Z5/6",
+      lowerPercentage: 100,
+      upperPercentage: 115,
+      color: Colors.red.value,
+    ).db.save();
+  }
+
 
   String toString() => '$db.date $db.name';
 
