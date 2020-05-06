@@ -13,6 +13,7 @@ enum LapDoubleAttr {
   legSpringStiffness,
   powerRatio,
   strideRatio,
+  ecor,
 }
 
 enum ActivityAction {

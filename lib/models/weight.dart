@@ -26,4 +26,22 @@ class Weight extends ChangeNotifier {
         dbWeightList.map((dbWeight) => Weight.fromDb(dbWeight)).toList();
     return weights;
   }
+
+  static getBy({
+    int athletesId,
+    DateTime date,
+  }) async {
+    var dbWeights = await DbWeight()
+        .select()
+        .athletesId
+        .equals(athletesId)
+        .and
+        .date
+        .lessThanOrEquals(date)
+        .orderByDesc("date")
+        .top(1)
+        .toList();
+    if (dbWeights.length != 0)
+      return Weight.fromDb(dbWeights.first);
+  }
 }

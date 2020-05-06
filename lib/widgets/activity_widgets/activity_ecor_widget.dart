@@ -1,12 +1,10 @@
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/models/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'package:encrateia/widgets/charts/actitvity_charts/activity_power_chart.dart';
+import 'package:encrateia/widgets/charts/actitvity_charts/activity_ecor_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 
 class ActivityEcorWidget extends StatefulWidget {
   final Activity activity;
@@ -19,12 +17,8 @@ class ActivityEcorWidget extends StatefulWidget {
 
 class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   List<Event> records = [];
-  String avgPowerString = "Loading ...";
-  String minPowerString = "Loading ...";
-  String maxPowerString = "Loading ...";
-  String sdevPowerString = "Loading ...";
-  PowerZoneSchema powerZoneSchema;
-  List<PowerZone> powerZones;
+  Weight weight;
+  String weightString = "Loading ...";
 
   @override
   void initState() {
@@ -34,61 +28,42 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
 
   @override
   Widget build(context) {
-    if (records.length > 0 && powerZones != null) {
-      var powerRecords = records
-          .where((value) => value.db.power != null && value.db.power > 100)
+    if (records.length > 0) {
+      var ecorRecords = records
+          .where((value) =>
+              value.db.power != null &&
+              value.db.power > 100 &&
+              value.db.speed != null &&
+              value.db.speed != 0)
           .toList();
 
-      if (powerRecords.length > 0) {
-        var lastRecord = powerRecords.last;
+      if (ecorRecords.length > 0 && weight != null) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityPowerChart(
-                records: powerRecords,
+              ActivityEcorChart(
+                records: ecorRecords,
                 activity: widget.activity,
-                powerZones: powerZones,
+                weight: weight.db.value,
               ),
               ListTile(
-                leading: MyIcon.average,
-                title: Text(avgPowerString),
-                subtitle: Text("average power"),
-              ),
-              ListTile(
-                leading: MyIcon.minimum,
-                title: Text(minPowerString),
-                subtitle: Text("minimum power"),
-              ),
-              ListTile(
-                leading: MyIcon.maximum,
-                title: Text(maxPowerString),
-                subtitle: Text("maximum power"),
-              ),
-              ListTile(
-                leading: MyIcon.standardDeviation,
-                title: Text(sdevPowerString),
-                subtitle: Text("standard deviation power"),
+                leading: MyIcon.weight,
+                title: Text(weightString),
+                subtitle: Text("weight"),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(powerRecords.length.toString()),
+                title: Text(ecorRecords.length.toString()),
                 subtitle: Text("number of measurements"),
-              ),
-              ListTile(
-                leading: Text("🕵️‍♀️", style: TextStyle(fontSize: 25)),
-                title: Text(lastRecord.db.positionLong.semicirclesAsDegrees() +
-                    " / " +
-                    lastRecord.db.positionLat.semicirclesAsDegrees()),
-                subtitle: Text("findYourStryd (last power record)"),
               ),
             ],
           ),
         );
       } else {
         return Center(
-          child: Text("No power data available."),
+          child: Text("No ecor data available."),
         );
       }
     } else {
@@ -101,16 +76,8 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   getData() async {
     Activity activity = widget.activity;
     records = await activity.records;
-    avgPowerString = activity.db.avgPower.toStringOrDashes(1) + " W";
-    minPowerString = activity.db.minPower.toString() + " W";
-    maxPowerString = activity.db.maxPower.toString() + " W";
-    sdevPowerString = activity.db.sdevPower.toStringOrDashes(2) + " W";
-
-    powerZoneSchema = await activity.getPowerZoneSchema();
-    if (powerZoneSchema != null)
-      powerZones = await powerZoneSchema.powerZones;
-    else
-      powerZones = [];
+    weight = await activity.getWeight();
+    weightString = weight.db.value.toStringOrDashes(2) + " kg";
     setState(() {});
   }
 }

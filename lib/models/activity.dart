@@ -1,4 +1,5 @@
 import 'package:encrateia/models/strava_fit_download.dart';
+import 'package:encrateia/models/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:strava_flutter/strava.dart';
@@ -525,5 +526,13 @@ class Activity extends ChangeNotifier {
       date: db.timeCreated,
     );
     return heartRateZoneSchema;
+  }
+
+  getWeight() async {
+    var weight = await Weight.getBy(
+      athletesId: db.athletesId,
+      date: db.timeCreated,
+    );
+    return weight;
   }
 }

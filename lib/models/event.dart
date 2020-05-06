@@ -178,6 +178,7 @@ class Event {
     Iterable<Event> records,
     int amount,
     @required LapDoubleAttr attribute,
+    double weight
   }) {
     int index = 0;
     List<DoublePlotPoint> plotPoints = [];
@@ -215,6 +216,8 @@ class Event {
                   record.db.strydCadence /
                   record.db.verticalOscillation);
           break;
+        case LapDoubleAttr.ecor:
+          sum = sum + (record.db.power / record.db.speed / weight);
       }
 
       if (index++ % amount == amount - 1) {
