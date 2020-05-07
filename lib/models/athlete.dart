@@ -31,7 +31,8 @@ class Athlete extends ChangeNotifier {
       ..photoPath = athlete.profile
       ..geoState = athlete.state
       ..state = "fromStrava"
-      ..downloadInterval = 21;
+      ..downloadInterval = 21
+      ..recordAggregationCount = 16;
     notifyListeners();
   }
 
@@ -40,7 +41,8 @@ class Athlete extends ChangeNotifier {
       ..state = "standalone"
       ..firstName = "Jane"
       ..lastName = "Doe"
-      ..downloadInterval = 21;
+      ..downloadInterval = 21
+      ..recordAggregationCount = 16;
     await db.save();
     notifyListeners();
   }

@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:intl/intl.dart';
@@ -6,12 +7,16 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityMetadataWidget extends StatelessWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityMetadataWidget({this.activity});
+  ActivityMetadataWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   Widget build(context) {
-    return  ListTileTheme(
+    return ListTileTheme(
       iconColor: Colors.deepOrange,
       child: ListView(
         padding: EdgeInsets.only(left: 25),

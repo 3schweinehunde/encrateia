@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityVerticalOscillationWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityVerticalOscillationWidget({this.activity});
+  ActivityVerticalOscillationWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityVerticalOscillationWidgetState createState() =>
@@ -31,7 +36,7 @@ class _ActivityVerticalOscillationWidgetState
   Widget build(context) {
     if (records.length > 0) {
       var powerRecords = records
-          .where((value) => value.db.power != null && value.db.power > 100)
+          .where((value) => value.db.verticalOscillation != null)
           .toList();
 
       if (powerRecords.length > 0) {
@@ -43,7 +48,12 @@ class _ActivityVerticalOscillationWidgetState
               ActivityVerticalOscillationChart(
                 records: powerRecords,
                 activity: widget.activity,
+                athlete: widget.athlete,
               ),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'vertical oscillation is present are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),

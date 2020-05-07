@@ -24,6 +24,7 @@ const tableAthlete = SqfEntityTable(
     SqfEntityField('stravaId', DbType.integer),
     SqfEntityField('geoState', DbType.text),
     SqfEntityField('downloadInterval', DbType.integer),
+    SqfEntityField('recordAggregationCount', DbType.integer),
   ],
 );
 

@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -11,19 +12,24 @@ import 'package:encrateia/utils/enums.dart';
 class ActivityLegSpringStiffnessChart extends StatelessWidget {
   final List<Event> records;
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityLegSpringStiffnessChart({this.records, @required this.activity});
+  ActivityLegSpringStiffnessChart({
+    this.records,
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   Widget build(BuildContext context) {
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.legSpringStiffness,
       records: records,
-      amount: 10,
+      amount: athlete.db.recordAggregationCount,
     );
 
     List<Series<dynamic, num>> data = [
-       Series<DoublePlotPoint, int>(
+      Series<DoublePlotPoint, int>(
         id: 'Leg spring stiffness',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (DoublePlotPoint record, _) => record.domain,

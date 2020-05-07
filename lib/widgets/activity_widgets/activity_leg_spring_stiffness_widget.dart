@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityLegSpringStiffnessWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityLegSpringStiffnessWidget({this.activity});
+  ActivityLegSpringStiffnessWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityLegSpringStiffnessWidgetState createState() =>
@@ -45,7 +50,12 @@ class _ActivityLegSpringStiffnessWidgetState
               ActivityLegSpringStiffnessChart(
                 records: legSpringStiffnessRecords,
                 activity: widget.activity,
+                athlete: widget.athlete,
               ),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'leg spring stiffness > 0 kN/m are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgLegSpringStiffnessString),

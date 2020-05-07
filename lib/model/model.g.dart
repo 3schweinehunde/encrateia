@@ -39,6 +39,7 @@ class TableDbAthlete extends SqfEntityTableBase {
       SqfEntityFieldBase('stravaId', DbType.integer),
       SqfEntityFieldBase('geoState', DbType.text),
       SqfEntityFieldBase('downloadInterval', DbType.integer),
+      SqfEntityFieldBase('recordAggregationCount', DbType.integer),
     ];
     super.init();
   }
@@ -439,7 +440,8 @@ class DbAthlete {
       this.photoPath,
       this.stravaId,
       this.geoState,
-      this.downloadInterval}) {
+      this.downloadInterval,
+      this.recordAggregationCount}) {
     _setDefaultValues();
   }
   DbAthlete.withFields(
@@ -450,7 +452,8 @@ class DbAthlete {
       this.photoPath,
       this.stravaId,
       this.geoState,
-      this.downloadInterval) {
+      this.downloadInterval,
+      this.recordAggregationCount) {
     _setDefaultValues();
   }
   DbAthlete.withId(
@@ -462,7 +465,8 @@ class DbAthlete {
       this.photoPath,
       this.stravaId,
       this.geoState,
-      this.downloadInterval) {
+      this.downloadInterval,
+      this.recordAggregationCount) {
     _setDefaultValues();
   }
   DbAthlete.fromMap(Map<String, dynamic> o) {
@@ -478,6 +482,8 @@ class DbAthlete {
     if (o['geoState'] != null) geoState = o['geoState'] as String;
     if (o['downloadInterval'] != null)
       downloadInterval = o['downloadInterval'] as int;
+    if (o['recordAggregationCount'] != null)
+      recordAggregationCount = o['recordAggregationCount'] as int;
   }
   // FIELDS (DbAthlete)
   int id;
@@ -489,6 +495,7 @@ class DbAthlete {
   int stravaId;
   String geoState;
   int downloadInterval;
+  int recordAggregationCount;
 
   BoolResult saveResult;
   // end FIELDS (DbAthlete)
@@ -592,6 +599,10 @@ class DbAthlete {
       map['downloadInterval'] = downloadInterval;
     }
 
+    if (recordAggregationCount != null) {
+      map['recordAggregationCount'] = recordAggregationCount;
+    }
+
     return map;
   }
 
@@ -633,6 +644,10 @@ class DbAthlete {
       map['downloadInterval'] = downloadInterval;
     }
 
+    if (recordAggregationCount != null) {
+      map['recordAggregationCount'] = recordAggregationCount;
+    }
+
 // COLLECTIONS (DbAthlete)
     if (!forQuery) {
       map['DbActivities'] = await getDbActivities().toMapList();
@@ -672,7 +687,8 @@ class DbAthlete {
       photoPath,
       stravaId,
       geoState,
-      downloadInterval
+      downloadInterval,
+      recordAggregationCount
     ];
   }
 
@@ -787,7 +803,7 @@ class DbAthlete {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> saveAll(List<DbAthlete> dbathletes) async {
     final results = _mnDbAthlete.saveAll(
-        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -798,7 +814,7 @@ class DbAthlete {
   Future<int> _upsert() async {
     try {
       if (await _mnDbAthlete.rawInsert(
-              'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -808,7 +824,8 @@ class DbAthlete {
                 photoPath,
                 stravaId,
                 geoState,
-                downloadInterval
+                downloadInterval,
+                recordAggregationCount
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -834,7 +851,7 @@ class DbAthlete {
   /// Returns a <List<BoolResult>>
   Future<List<BoolResult>> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
-        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval)  VALUES (?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id,  state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -1327,6 +1344,12 @@ class DbAthleteFilterBuilder extends SearchCriteria {
         setField(_downloadInterval, 'downloadInterval', DbType.integer);
   }
 
+  DbAthleteField _recordAggregationCount;
+  DbAthleteField get recordAggregationCount {
+    return _recordAggregationCount = setField(
+        _recordAggregationCount, 'recordAggregationCount', DbType.integer);
+  }
+
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -1704,6 +1727,13 @@ class DbAthleteFields {
     return _fDownloadInterval = _fDownloadInterval ??
         SqlSyntax.setField(
             _fDownloadInterval, 'downloadInterval', DbType.integer);
+  }
+
+  static TableField _fRecordAggregationCount;
+  static TableField get recordAggregationCount {
+    return _fRecordAggregationCount = _fRecordAggregationCount ??
+        SqlSyntax.setField(
+            _fRecordAggregationCount, 'recordAggregationCount', DbType.integer);
   }
 }
 // endregion DbAthleteFields

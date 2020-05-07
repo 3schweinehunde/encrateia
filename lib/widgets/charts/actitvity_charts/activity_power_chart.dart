@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -12,11 +13,13 @@ import 'package:encrateia/utils/enums.dart';
 class ActivityPowerChart extends StatelessWidget {
   final List<Event> records;
   final Activity activity;
+  final Athlete athlete;
   final List<PowerZone> powerZones;
 
   ActivityPowerChart({
     this.records,
     @required this.activity,
+    @required this.athlete,
     this.powerZones,
   });
 
@@ -25,7 +28,7 @@ class ActivityPowerChart extends StatelessWidget {
     var smoothedRecords = Event.toIntDataPoints(
       attribute: LapIntAttr.power,
       records: records,
-      amount: 10,
+      amount: athlete.db.recordAggregationCount,
     );
 
     List<Series<dynamic, num>> data = [

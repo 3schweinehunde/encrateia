@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +11,12 @@ import 'package:encrateia/utils/date_time_utils.dart';
 
 class ActivityPowerWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityPowerWidget({this.activity});
+  ActivityPowerWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityPowerWidgetState createState() => _ActivityPowerWidgetState();
@@ -50,7 +55,12 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                 records: powerRecords,
                 activity: widget.activity,
                 powerZones: powerZones,
+                athlete: widget.athlete,
               ),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'power > 100 W are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerString),

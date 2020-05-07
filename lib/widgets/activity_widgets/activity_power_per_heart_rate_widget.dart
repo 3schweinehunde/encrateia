@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/widgets/charts/actitvity_charts/activity_power_per_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityPowerPerHeartRateWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityPowerPerHeartRateWidget({this.activity});
+  ActivityPowerPerHeartRateWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityPowerPerHeartRateWidgetState createState() =>
@@ -46,7 +51,12 @@ class _ActivityPowerPerHeartRateWidgetState
               ActivityPowerPerHeartRateChart(
                 records: powerPerHeartRateRecords,
                 activity: widget.activity,
+                athlete: widget.athlete,
               ),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'power > 100 W and heart rate > 0 bpm are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerPerHeartRateString),

@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:intl/intl.dart';
@@ -6,19 +7,24 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityOverviewWidget extends StatelessWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityOverviewWidget({this.activity});
+  ActivityOverviewWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   Widget build(context) {
-    return  ListTileTheme(
+    return ListTileTheme(
       iconColor: Colors.deepOrange,
       child: ListView(
         padding: EdgeInsets.only(left: 25),
         children: <Widget>[
           ListTile(
             leading: MyIcon.time,
-            title: Text(Duration(seconds: activity.db.movingTime ?? 0).asString()),
+            title:
+                Text(Duration(seconds: activity.db.movingTime ?? 0).asString()),
             subtitle: Text('moving time'),
           ),
           ListTile(
@@ -36,14 +42,13 @@ class ActivityOverviewWidget extends StatelessWidget {
           ),
           ListTile(
             leading: MyIcon.power,
-            title: Text(
-                "${activity.db.avgPower.toStringAsFixed(1)} W"),
+            title: Text("${activity.db.avgPower.toStringAsFixed(1)} W"),
             subtitle: Text('avg power'),
           ),
           ListTile(
             leading: MyIcon.power,
-            title:
-            Text("${(activity.db.avgPower / activity.db.avgHeartRate).toStringAsFixed(2)} W/bpm"),
+            title: Text(
+                "${(activity.db.avgPower / activity.db.avgHeartRate).toStringAsFixed(2)} W/bpm"),
             subtitle: Text('power / heart rate'),
           ),
           ListTile(
@@ -72,7 +77,8 @@ class ActivityOverviewWidget extends StatelessWidget {
           ),
           ListTile(
             leading: MyIcon.cadence,
-            title: Text("${(activity.db.avgRunningCadence ?? 0 * 2).round()} spm / "
+            title: Text(
+                "${(activity.db.avgRunningCadence ?? 0 * 2).round()} spm / "
                 "${activity.db.maxRunningCadence ?? 0 * 2} spm"),
             subtitle: Text('avg / max steps per minute'),
           ),

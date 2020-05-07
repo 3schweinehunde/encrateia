@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_metadata_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart';
@@ -23,10 +24,12 @@ import 'package:flutter/widgets.dart';
 
 class ShowActivityScreen extends StatelessWidget {
   final Activity activity;
+  final Athlete athlete;
 
   const ShowActivityScreen({
     Key key,
-    this.activity,
+    @required this.activity,
+    @required this.athlete,
   }) : super(key: key);
 
   @override
@@ -51,7 +54,10 @@ class ShowActivityScreen extends StatelessWidget {
               title: "Overview",
               icon: MyIcon.overView,
               context: context,
-              nextWidget: ActivityOverviewWidget(activity: activity),
+              nextWidget: ActivityOverviewWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: 'Laps',
@@ -65,98 +71,140 @@ class ShowActivityScreen extends StatelessWidget {
               color: MyColor.navigate,
               icon: MyIcon.heartRate,
               context: context,
-              nextWidget: ActivityHeartRateWidget(activity: activity),
+              nextWidget: ActivityHeartRateWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Power",
               color: MyColor.navigate,
               icon: MyIcon.power,
               context: context,
-              nextWidget: ActivityPowerWidget(activity: activity),
+              nextWidget: ActivityPowerWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Power\nDuration",
               color: MyColor.navigate,
               icon: MyIcon.powerDuration,
               context: context,
-              nextWidget: ActivityPowerDurationWidget(activity: activity),
+              nextWidget: ActivityPowerDurationWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Power /\nHeart Rate",
               color: MyColor.navigate,
               icon: MyIcon.power,
               context: context,
-              nextWidget: ActivityPowerPerHeartRateWidget(activity: activity),
+              nextWidget: ActivityPowerPerHeartRateWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Ecor",
               color: MyColor.navigate,
               icon: MyIcon.power,
               context: context,
-              nextWidget: ActivityEcorWidget(activity: activity),
+              nextWidget: ActivityEcorWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Speed /\nHeart Rate",
               color: MyColor.navigate,
               icon: MyIcon.speed,
               context: context,
-              nextWidget: ActivitySpeedPerHeartRateWidget(activity: activity),
+              nextWidget: ActivitySpeedPerHeartRateWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Ground Time",
               color: MyColor.navigate,
               icon: MyIcon.groundTime,
               context: context,
-              nextWidget: ActivityGroundTimeWidget(activity: activity),
+              nextWidget: ActivityGroundTimeWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Form Power",
               color: MyColor.navigate,
               icon: MyIcon.formPower,
               context: context,
-              nextWidget: ActivityFormPowerWidget(activity: activity),
+              nextWidget: ActivityFormPowerWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Power Ratio",
               color: MyColor.navigate,
               icon: MyIcon.formPower,
               context: context,
-              nextWidget: ActivityPowerRatioWidget(activity: activity),
+              nextWidget: ActivityPowerRatioWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Vertical\nOscillation",
               color: MyColor.navigate,
               icon: MyIcon.verticalOscillation,
               context: context,
-              nextWidget: ActivityVerticalOscillationWidget(activity: activity),
+              nextWidget: ActivityVerticalOscillationWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Stride Ratio",
               color: MyColor.navigate,
               icon: MyIcon.strideRatio,
               context: context,
-              nextWidget: ActivityStrideRatioWidget(activity: activity),
+              nextWidget: ActivityStrideRatioWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Cadence",
               color: MyColor.navigate,
               icon: MyIcon.cadence,
               context: context,
-              nextWidget: ActivityStrydCadenceWidget(activity: activity),
+              nextWidget: ActivityStrydCadenceWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Leg Spring\nStiffness",
               color: MyColor.navigate,
               icon: MyIcon.legSpringStiffness,
               context: context,
-              nextWidget: ActivityLegSpringStiffnessWidget(activity: activity),
+              nextWidget: ActivityLegSpringStiffnessWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Metadata",
               color: MyColor.settings,
               icon: MyIcon.metaData,
               context: context,
-              nextWidget: ActivityMetadataWidget(activity: activity),
+              nextWidget: ActivityMetadataWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
           ],
         );

@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityStrideRatioWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityStrideRatioWidget({this.activity});
+  ActivityStrideRatioWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityStrideRatioWidgetState createState() =>
@@ -45,11 +50,16 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
               ActivityStrideRatioChart(
                 records: strideRatioRecords,
                 activity: widget.activity,
+                athlete: widget.athlete,
               ),
-              Text(
-                  "stride ratio = \nstride length (cm) / vertical oscillation (cm)\n"),
-              Text(
-                  "stridelength (cm) = \n10 000 / 6 * speed (km/h) / cadence (strides/min)"),
+              Text("stride ratio = stride length (cm) / vertical oscillation"
+                  " (cm)"),
+              Text("stridelength (cm) = 10 000 / 6 * speed (km/h) / cadence "
+                  "(strides/min)"),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'cadence is present and vertical oscillation > 0 mm are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.strideRatio,
                 title: Text(avgStrideRatioString),

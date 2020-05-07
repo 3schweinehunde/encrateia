@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityGroundTimeWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityGroundTimeWidget({this.activity});
+  ActivityGroundTimeWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityGroundTimeWidgetState createState() =>
@@ -43,7 +48,12 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
               ActivityGroundTimeChart(
                 records: groundTimeRecords,
                 activity: widget.activity,
+                athlete: widget.athlete,
               ),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'ground time > 0 ms are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgGroundTimeString),

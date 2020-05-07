@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityPowerRatioWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityPowerRatioWidget({this.activity});
+  ActivityPowerRatioWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityPowerRatioWidgetState createState() =>
@@ -32,7 +37,7 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
       var powerRecords = records
           .where((value) =>
               value.db.power != null &&
-              value.db.power > 0 &&
+              value.db.power > 100 &&
               value.db.formPower != null &&
               value.db.formPower > 0 &&
               value.db.formPower < 200)
@@ -47,8 +52,13 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
               ActivityPowerRatioChart(
                 records: powerRecords,
                 activity: widget.activity,
+                athlete: widget.athlete,
               ),
               Text("power ratio (%) = (power - form power) / power * 100"),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'power > 100 W and 0 W < form power < 200 W are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.formPower,
                 title: Text(avgPowerRatioString),

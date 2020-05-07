@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -11,20 +12,24 @@ import 'package:encrateia/utils/enums.dart';
 class ActivityFormPowerChart extends StatelessWidget {
   final List<Event> records;
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityFormPowerChart({this.records, @required this.activity});
+  ActivityFormPowerChart({
+    this.records,
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   Widget build(BuildContext context) {
-
     var smoothedRecords = Event.toIntDataPoints(
       attribute: LapIntAttr.formPower,
       records: records,
-      amount: 10,
+      amount: athlete.db.recordAggregationCount,
     );
 
     List<Series<dynamic, num>> data = [
-       Series<IntPlotPoint, int>(
+      Series<IntPlotPoint, int>(
         id: 'Form power',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (IntPlotPoint record, _) => record.domain,
@@ -45,7 +50,7 @@ class ActivityFormPowerChart extends StatelessWidget {
               maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Form Power (W)',
-                            measureTickProviderSpec: BasicNumericTickProviderSpec(
+              measureTickProviderSpec: BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: true,
                   desiredTickCount: 5),
@@ -53,7 +58,8 @@ class ActivityFormPowerChart extends StatelessWidget {
                   BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
-        } else return GraphUtils.loadingContainer;
+        } else
+          return GraphUtils.loadingContainer;
       },
     );
   }

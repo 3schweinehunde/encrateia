@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -11,12 +12,14 @@ import 'package:encrateia/utils/enums.dart';
 class ActivityEcorChart extends StatelessWidget {
   final List<Event> records;
   final Activity activity;
+  final Athlete athlete;
   final double weight;
 
   ActivityEcorChart({
     this.records,
     @required this.activity,
     @required this.weight,
+    @required this.athlete,
   });
 
   @override
@@ -24,7 +27,7 @@ class ActivityEcorChart extends StatelessWidget {
     var smoothedRecords = Event.toDoubleDataPoints(
       attribute: LapDoubleAttr.ecor,
       records: records,
-      amount: 10,
+      amount: athlete.db.recordAggregationCount,
       weight: weight,
     );
 

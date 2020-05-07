@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityFormPowerWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityFormPowerWidget({this.activity});
+  ActivityFormPowerWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityFormPowerWidgetState createState() =>
@@ -45,7 +50,12 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
               ActivityFormPowerChart(
                 records: formPowerRecords,
                 activity: widget.activity,
+                athlete: widget.athlete,
               ),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  '0 W < form power < 200 W are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.formPower,
                 title: Text(avgFormPowerString),

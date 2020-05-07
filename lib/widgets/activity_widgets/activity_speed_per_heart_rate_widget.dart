@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/widgets/charts/actitvity_charts/activity_speed_per_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivitySpeedPerHeartRateWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivitySpeedPerHeartRateWidget({this.activity});
+  ActivitySpeedPerHeartRateWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivitySpeedPerHeartRateWidgetState createState() =>
@@ -45,7 +50,12 @@ class _ActivitySpeedPerHeartRateWidgetState
               ActivitySpeedPerHeartRateChart(
                 records: speedPerHeartRateRecords,
                 activity: widget.activity,
+                athlete: widget.athlete,
               ),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'speed is present and heart rate > 0 bpm are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgSpeedPerHeartRateString),

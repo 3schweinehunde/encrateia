@@ -1,4 +1,5 @@
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
@@ -46,18 +47,37 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
           subtitle: Row(
             children: <Widget>[
               Spacer(),
-              RaisedButton(
-                color: Colors.orange,
+              MyButton.save(
                 child: Text("- 7 days"),
                 onPressed: () => decreaseDownloadInterval(),
               ),
               Spacer(),
               Text(widget.athlete.db.downloadInterval.toString()),
               Spacer(),
-              RaisedButton(
-                color: Colors.orange,
+              MyButton.save(
                 child: Text("+ 7 days"),
                 onPressed: () => increaseDownloadInterval(),
+              ),
+              Spacer(),
+            ],
+          ),
+        ),
+        ListTile(
+          leading: MyIcon.number,
+          title: Text("number of records that are averaged in diagrams on activity level"),
+          subtitle: Row(
+            children: <Widget>[
+              Spacer(),
+              MyButton.save(
+                child: Text("/ 2"),
+                onPressed: () => decreaseRecordAggregationCount(),
+              ),
+              Spacer(),
+              Text(widget.athlete.db.recordAggregationCount.toString()),
+              Spacer(),
+              MyButton.save(
+                child: Text("* 2"),
+                onPressed: () => increaseRecordAggregationCount(),
               ),
               Spacer(),
             ],
@@ -94,6 +114,23 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
     await userDB.save();
     setState(() {});
   }
+
+  increaseRecordAggregationCount() async {
+    var userDB = widget.athlete.db;
+    userDB.recordAggregationCount = (userDB.recordAggregationCount ?? 16) * 2;
+    await userDB.save();
+    setState(() {});
+  }
+
+  decreaseRecordAggregationCount() async {
+    var userDB = widget.athlete.db;
+    userDB.recordAggregationCount = ((userDB.recordAggregationCount ?? 16) / 2).round();
+    if (userDB.recordAggregationCount < 1) userDB.recordAggregationCount = 1;
+    await userDB.save();
+    setState(() {});
+  }
+
+
 
   stravaTile({userDB}) {
     if (userDB.stravaId != null)

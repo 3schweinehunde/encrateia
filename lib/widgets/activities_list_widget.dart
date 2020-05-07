@@ -22,8 +22,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   @override
   initState() {
     getActivities();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => showMyFlushbar());
+    WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
@@ -71,6 +70,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
                 MaterialPageRoute(
                   builder: (context) => ShowActivityScreen(
                     activity: activity,
+                    athlete: widget.athlete,
                   ),
                 ),
               );
@@ -217,8 +217,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         duration: Duration(seconds: 3),
         backgroundColor: Colors.yellow[900],
       )..show(context);
-    }
-    else if(widget.athlete.password == null) {
+    } else if (widget.athlete.password == null) {
       Flushbar(
         message: "Strava password not provided yet!",
         duration: Duration(seconds: 3),

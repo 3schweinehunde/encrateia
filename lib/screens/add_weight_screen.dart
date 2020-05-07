@@ -38,7 +38,7 @@ class AddWeightScreen extends StatelessWidget {
           TextFormField(
             decoration: InputDecoration(labelText: "Weight in kg"),
             initialValue: weight.db.value.toString(),
-            keyboardType: TextInputType.number,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             onChanged: (value) => weight.db.value = double.parse(value),
           ),
           SizedBox(height: 20),

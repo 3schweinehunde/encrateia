@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/widgets/charts/actitvity_charts/activity_heart_rate_chart.dart';
@@ -9,8 +10,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityHeartRateWidget extends StatefulWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  ActivityHeartRateWidget({this.activity});
+  ActivityHeartRateWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   _ActivityHeartRateWidgetState createState() =>
@@ -46,7 +51,12 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
                 records: heartRateRecords,
                 activity: widget.activity,
                 heartRateZones: heartRateZones,
+                athlete: widget.athlete,
               ),
+              Text('${widget.athlete.db.recordAggregationCount} records are '
+                  'aggregated into one point in the plot. Only records where '
+                  'heart rate > 10 bpm are shown.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(widget.activity.db.avgHeartRate.toString()),
