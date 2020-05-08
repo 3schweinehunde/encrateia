@@ -70,6 +70,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               color: MyColor.activity,
               title: "Activities List",
               icon: MyIcon.activities,
+              backgroundColor: MyColor.activity,
               nextWidget: ActivitiesListWidget(athlete: widget.athlete),
             ),
             navigationButton(
@@ -158,6 +159,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     @required Widget icon,
     @required String title,
     @required Color color,
+    Color backgroundColor,
     Color textColor,
   }) {
     return RaisedButton.icon(
@@ -172,6 +174,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             athlete: widget.athlete,
             widget: nextWidget,
             title: title,
+            backgroundColor: backgroundColor,
           ),
         ),
       ),

@@ -6,19 +6,21 @@ class ShowActivityDetailScreen extends StatelessWidget {
   final Activity activity;
   final Widget widget;
   final String title;
+  final Color backgroundColor;
 
   const ShowActivityDetailScreen({
     Key key,
     this.activity,
     this.widget,
     this.title,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyColor.activity,
+        backgroundColor: backgroundColor ?? MyColor.activity,
         title: Text(
           '$title: ${activity.db.name}',
           overflow: TextOverflow.ellipsis,

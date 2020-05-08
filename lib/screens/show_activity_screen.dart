@@ -63,6 +63,7 @@ class ShowActivityScreen extends StatelessWidget {
             navigationButton(
               title: 'Laps List',
               color: MyColor.lap,
+              backgroundColor: MyColor.lap,
               icon: MyIcon.laps,
               context: context,
               nextWidget: LapsListWidget(activity: activity),
@@ -219,6 +220,7 @@ class ShowActivityScreen extends StatelessWidget {
     @required Widget icon,
     @required String title,
     @required Color color,
+    Color backgroundColor,
     Color textColor,
   }) {
     return RaisedButton.icon(
@@ -233,6 +235,7 @@ class ShowActivityScreen extends StatelessWidget {
             activity: activity,
             widget: nextWidget,
             title: title,
+            backgroundColor: backgroundColor,
           ),
         ),
       ),

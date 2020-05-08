@@ -6,19 +6,21 @@ class ShowAthleteDetailScreen extends StatelessWidget {
   final Athlete athlete;
   final Widget widget;
   final String title;
+  final Color backgroundColor;
 
   const ShowAthleteDetailScreen({
     Key key,
     this.athlete,
     this.widget,
     this.title,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MyColor.athlete,
+        backgroundColor: backgroundColor ?? MyColor.athlete,
         title: Text(
           '$title: ${athlete.db.firstName} ${athlete.db.lastName}',
           overflow: TextOverflow.ellipsis,

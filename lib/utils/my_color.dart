@@ -59,6 +59,6 @@ class MyColor {
   static Color navigate = white;
 
   static Color athlete = brightGoldenYellow;
-  static Color activity = mintAccent;
+  static Color activity = aquaAccent;
   static Color lap = grassAccent;
 }
