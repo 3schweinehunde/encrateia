@@ -67,7 +67,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           mainAxisSpacing: 3,
           children: [
             navigationButton(
-              color: MyColor.detail,
+              color: MyColor.activity,
               title: "Activities List",
               icon: MyIcon.activities,
               nextWidget: ActivitiesListWidget(athlete: widget.athlete),

@@ -58,7 +58,7 @@ class MyColor {
   static Color delete = danger;
   static Color navigate = white;
 
-  static Color athlete = ecstasy;
-  static Color activity = bitterSweetAccent;
+  static Color athlete = brightGoldenYellow;
+  static Color activity = mintAccent;
   static Color lap = grassAccent;
 }

@@ -64,7 +64,7 @@ class ShowLapScreen extends StatelessWidget {
               nextWidget: ({lap}) => LapPowerWidget(lap: lap),
             ),
             navigationButton(
-              title: "Power Duration",
+              title: "Power\nDuration",
               color: MyColor.navigate,
               icon: MyIcon.powerDuration,
               context: context,
@@ -78,7 +78,7 @@ class ShowLapScreen extends StatelessWidget {
               nextWidget: ({lap}) => LapGroundTimeWidget(lap: lap),
             ),
             navigationButton(
-              title: "Leg Spring Stiffness",
+              title: "Leg Spring\nStiffness",
               color: MyColor.navigate,
               icon: MyIcon.legSpringStiffness,
               context: context,
@@ -99,7 +99,7 @@ class ShowLapScreen extends StatelessWidget {
               nextWidget: ({lap}) => LapStrydCadenceWidget(lap: lap),
             ),
             navigationButton(
-              title: "Vertical Oscillation",
+              title: "Vertical\nOscillation",
               color: MyColor.navigate,
               icon: MyIcon.verticalOscillation,
               context: context,

@@ -113,7 +113,7 @@ class _DashboardState extends State<Dashboard> {
                 children: <Widget>[
                   RaisedButton.icon(
                     icon: MyIcon.analyze,
-                    color: MyColor.detail,
+                    color: MyColor.athlete,
                     onPressed: () => goToListActivitiesScreen(athlete: athlete),
                     label: Text("Analyze"),
                   ),

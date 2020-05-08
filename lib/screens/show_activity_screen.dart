@@ -61,8 +61,8 @@ class ShowActivityScreen extends StatelessWidget {
               ),
             ),
             navigationButton(
-              title: 'Laps',
-              color: MyColor.detail,
+              title: 'Laps List',
+              color: MyColor.lap,
               icon: MyIcon.laps,
               context: context,
               nextWidget: LapsListWidget(activity: activity),
