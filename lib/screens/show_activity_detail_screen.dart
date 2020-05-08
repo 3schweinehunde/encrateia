@@ -1,3 +1,4 @@
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 
@@ -17,6 +18,7 @@ class ShowActivityDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyColor.activity,
         title: Text(
           '$title: ${activity.db.name}',
           overflow: TextOverflow.ellipsis,

@@ -1,4 +1,5 @@
 import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,7 @@ class AddWeightScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyColor.settings,
         title: Text('Add your Weight'),
       ),
       body: ListView(

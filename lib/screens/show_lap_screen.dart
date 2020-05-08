@@ -28,7 +28,7 @@ class ShowLapScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: MyColor.lap,
         title: Text(
           'Lap ${lap.index}',
           overflow: TextOverflow.ellipsis,

@@ -36,6 +36,7 @@ class ShowActivityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyColor.activity,
         title: Text(
           '${activity.db.name}',
           overflow: TextOverflow.ellipsis,

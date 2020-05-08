@@ -1,3 +1,4 @@
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/strava.dart';
@@ -16,7 +17,10 @@ class StravaGetUser extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: athlete,
       child: Scaffold(
-        appBar: AppBar(title: Text('Create Athlete')),
+        appBar: AppBar(
+          title: Text('Create Athlete'),
+          backgroundColor: MyColor.primary,
+        ),
         body: Consumer<Athlete>(
           builder: (context, athlete, _child) {
             if (athlete.db.firstName == null) loginToStrava();

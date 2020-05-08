@@ -1,5 +1,6 @@
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
@@ -35,6 +36,7 @@ class _AddHeartRateZoneSchemaScreenState extends State<AddHeartRateZoneSchemaScr
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyColor.settings,
         title: Text('Add Heart Rate Zone Schema'),
       ),
       body: ListView(

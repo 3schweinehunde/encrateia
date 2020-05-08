@@ -1,3 +1,4 @@
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 
@@ -17,6 +18,7 @@ class ShowAthleteDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyColor.athlete,
         title: Text(
           '$title: ${athlete.db.firstName} ${athlete.db.lastName}',
           overflow: TextOverflow.ellipsis,

@@ -27,6 +27,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: MyColor.primary,
           title: Text("Encrateia Dashboard"),
         ),
         body: dashboardBody(),

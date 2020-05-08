@@ -1,5 +1,6 @@
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/power_zone.dart';
@@ -35,6 +36,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyColor.settings,
         title: Text('Add Power Zone Schema'),
       ),
       body: ListView(

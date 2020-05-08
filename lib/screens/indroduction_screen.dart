@@ -1,10 +1,14 @@
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 
 class IntroductionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Introduction")),
+      appBar: AppBar(
+        title: Text("Introduction"),
+        backgroundColor: MyColor.primary,
+      ),
       body: SingleChildScrollView(
         child: Card(
           margin: EdgeInsets.all(10),

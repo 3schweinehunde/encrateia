@@ -44,6 +44,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyColor.athlete,
         title: Text(
           '${widget.athlete.db.firstName} ${widget.athlete.db.lastName}',
           overflow: TextOverflow.ellipsis,

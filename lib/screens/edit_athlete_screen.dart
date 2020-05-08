@@ -1,4 +1,5 @@
 import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class EditAthleteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: MyColor.athlete,
         title: Text('Create Athlete'),
       ),
       body: ChangeNotifierProvider.value(
