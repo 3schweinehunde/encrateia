@@ -26,6 +26,12 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   }
 
   @override
+  void didUpdateWidget(oldWidget) {
+    getData();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(context) {
     if (records.length > 0) {
       var formPowerRecords = records

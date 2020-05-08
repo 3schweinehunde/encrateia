@@ -16,6 +16,7 @@ class LapsListWidget extends StatelessWidget {
       future: Lap.by(activity: activity),
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
+          List<Lap> laps = snapshot.data;
           return SingleChildScrollView(
             child: DataTable(
               dataRowHeight: kMinInteractiveDimension * 0.60,
@@ -48,7 +49,7 @@ class LapsListWidget extends StatelessWidget {
                   numeric: true,
                 ),
               ],
-              rows: snapshot.data.map((Lap lap) {
+              rows: laps.map((Lap lap) {
                 return DataRow(
                   key: Key(lap.db.id.toString()),
                   onSelectChanged: (bool selected) {
@@ -56,7 +57,10 @@ class LapsListWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ShowLapScreen(lap: lap),
+                          builder: (context) => ShowLapScreen(
+                            lap: lap,
+                            laps: laps,
+                          ),
                         ),
                       );
                     }

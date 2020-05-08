@@ -1,38 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
-import '../charts/power_duration_chart.dart';
+import 'package:encrateia/widgets/charts/power_duration_chart.dart';
 
-class LapPowerDurationWidget extends StatelessWidget {
+class LapPowerDurationWidget extends StatefulWidget {
   final Lap lap;
 
-  LapPowerDurationWidget({this.lap});
+  LapPowerDurationWidget({@required this.lap});
+
+  @override
+  _LapPowerDurationWidgetState createState() => _LapPowerDurationWidgetState();
+}
+
+class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
+  List<Event> records = [];
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    getData();
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(context) {
-    return FutureBuilder<List<Event>>(
-      future: lap.records,
-      builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
-        if (snapshot.hasData) {
-          var powerRecords = snapshot.data
-              .where((value) => value.db.power != null && value.db.power > 100)
-              .toList();
+    if (records.length > 0) {
+      var powerRecords = records
+          .where((value) => value.db.power != null && value.db.power > 100)
+          .toList();
 
-          if (powerRecords.length > 0) {
-            return SingleChildScrollView(
-              child: PowerDurationChart(records: powerRecords),
-            );
-          } else {
-            return Center(
-              child: Text("No power data available."),
-            );
-          }
-        } else {
-          return Center(
-            child: Text("Loading"),
-          );
-        }
-      },
-    );
+      if (powerRecords.length > 0) {
+        return SingleChildScrollView(
+          child: PowerDurationChart(records: powerRecords),
+        );
+      } else {
+        return Center(
+          child: Text("No power data available."),
+        );
+      }
+    } else {
+      return Center(
+        child: Text("Loading"),
+      );
+    }
+  }
+
+  getData() async {
+    records = await widget.lap.records;
+    setState(() {});
   }
 }

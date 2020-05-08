@@ -28,6 +28,12 @@ class _LapVerticalOscillationWidgetState
   }
 
   @override
+  void didUpdateWidget(oldWidget) {
+    getData();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(context) {
     if (records.length > 0) {
       var verticalOscillationRecords = records

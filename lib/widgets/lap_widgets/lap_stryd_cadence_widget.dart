@@ -26,6 +26,12 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
   }
 
   @override
+  void didUpdateWidget(oldWidget) {
+    getData();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(context) {
     if (records.length > 0) {
       var strydCadenceRecords = records

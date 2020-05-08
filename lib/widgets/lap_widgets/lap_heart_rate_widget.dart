@@ -29,6 +29,12 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   }
 
   @override
+  void didUpdateWidget(oldWidget) {
+    getData();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(context) {
     if (records.length > 0) {
       var heartRateRecords = records

@@ -16,10 +16,12 @@ import 'package:encrateia/utils/icon_utils.dart';
 
 class ShowLapScreen extends StatelessWidget {
   final Lap lap;
+  final List<Lap> laps;
 
   const ShowLapScreen({
     Key key,
-    this.lap,
+    @required this.lap,
+    @required this.laps,
   }) : super(key: key);
 
   @override
@@ -45,70 +47,70 @@ class ShowLapScreen extends StatelessWidget {
               color: MyColor.navigate,
               icon: MyIcon.metaData,
               context: context,
-              nextWidget: LapOverviewWidget(lap: lap),
+              nextWidget: ({lap}) => LapOverviewWidget(lap: lap),
             ),
             navigationButton(
               title: "Heart Rate",
               color: MyColor.navigate,
               icon: MyIcon.heartRate,
               context: context,
-              nextWidget: LapHeartRateWidget(lap: lap),
+              nextWidget: ({lap}) => LapHeartRateWidget(lap: lap),
             ),
             navigationButton(
               title: "Power",
               color: MyColor.navigate,
               icon: MyIcon.power,
               context: context,
-              nextWidget: LapPowerWidget(lap: lap),
+              nextWidget: ({lap}) => LapPowerWidget(lap: lap),
             ),
             navigationButton(
               title: "Power Duration",
               color: MyColor.navigate,
               icon: MyIcon.powerDuration,
               context: context,
-              nextWidget: LapPowerDurationWidget(lap: lap),
+              nextWidget: ({lap}) => LapPowerDurationWidget(lap: lap),
             ),
             navigationButton(
               title: "Ground Time",
               color: MyColor.navigate,
               icon: MyIcon.groundTime,
               context: context,
-              nextWidget: LapGroundTimeWidget(lap: lap),
+              nextWidget: ({lap}) => LapGroundTimeWidget(lap: lap),
             ),
             navigationButton(
               title: "Leg Spring Stiffness",
               color: MyColor.navigate,
               icon: MyIcon.legSpringStiffness,
               context: context,
-              nextWidget: LapLegSpringStiffnessWidget(lap: lap),
+              nextWidget: ({lap}) => LapLegSpringStiffnessWidget(lap: lap),
             ),
             navigationButton(
               title: "Form Power",
               color: MyColor.navigate,
               icon: MyIcon.formPower,
               context: context,
-              nextWidget: LapFormPowerWidget(lap: lap),
+              nextWidget: ({lap}) => LapFormPowerWidget(lap: lap),
             ),
             navigationButton(
               title: "Cadence",
               color: MyColor.navigate,
               icon: MyIcon.cadence,
               context: context,
-              nextWidget: LapStrydCadenceWidget(lap: lap),
+              nextWidget: ({lap}) => LapStrydCadenceWidget(lap: lap),
             ),
             navigationButton(
               title: "Vertical Oscillation",
               color: MyColor.navigate,
               icon: MyIcon.verticalOscillation,
               context: context,
-              nextWidget: LapVerticalOscillationWidget(lap: lap),
+              nextWidget: ({lap}) => LapVerticalOscillationWidget(lap: lap),
             ),
             navigationButton(
               title: "Metadata",
               color: MyColor.navigate,
               icon: MyIcon.metaData,
               context: context,
-              nextWidget: LapMetadataWidget(lap: lap),
+              nextWidget: ({lap}) => LapMetadataWidget(lap: lap),
             ),
           ],
         );
@@ -118,7 +120,7 @@ class ShowLapScreen extends StatelessWidget {
 
   navigationButton({
     @required BuildContext context,
-    @required Widget nextWidget,
+    @required Function({Lap lap}) nextWidget,
     @required Widget icon,
     @required String title,
     @required Color color,
@@ -134,7 +136,8 @@ class ShowLapScreen extends StatelessWidget {
         MaterialPageRoute(
           builder: (context) => ShowLapDetailScreen(
             lap: lap,
-            widget: nextWidget,
+            laps: laps,
+            nextWidget: nextWidget,
             title: title,
           ),
         ),
