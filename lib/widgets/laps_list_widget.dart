@@ -1,3 +1,4 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/lap.dart';
@@ -7,8 +8,12 @@ import 'package:encrateia/utils/num_utils.dart';
 
 class LapsListWidget extends StatelessWidget {
   final Activity activity;
+  final Athlete athlete;
 
-  LapsListWidget({this.activity});
+  LapsListWidget({
+    @required this.activity,
+    @required this.athlete,
+  });
 
   @override
   Widget build(context) {
@@ -60,6 +65,7 @@ class LapsListWidget extends StatelessWidget {
                           builder: (context) => ShowLapScreen(
                             lap: lap,
                             laps: laps,
+                            athlete: athlete,
                           ),
                         ),
                       );

@@ -66,7 +66,10 @@ class ShowActivityScreen extends StatelessWidget {
               backgroundColor: MyColor.lap,
               icon: MyIcon.laps,
               context: context,
-              nextWidget: LapsListWidget(activity: activity),
+              nextWidget: LapsListWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Heart Rate",

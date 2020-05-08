@@ -33,7 +33,7 @@ class LapEcorChart extends StatelessWidget {
         primaryMeasureAxis: NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
               zeroBound: false,
-              dataIsInWholeNumbers: true,
+              dataIsInWholeNumbers: false,
               desiredTickCount: 6),
         ),
         animate: false,

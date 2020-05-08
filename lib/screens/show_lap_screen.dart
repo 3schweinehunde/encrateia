@@ -1,5 +1,7 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/screens/show_lap_detail_screen.dart';
 import 'package:encrateia/utils/my_color.dart';
+import 'package:encrateia/widgets/lap_widgets/lap_ecor_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_metadata_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_overview_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_heart_rate_widget.dart';
@@ -17,11 +19,13 @@ import 'package:encrateia/utils/icon_utils.dart';
 class ShowLapScreen extends StatelessWidget {
   final Lap lap;
   final List<Lap> laps;
+  final Athlete athlete;
 
   const ShowLapScreen({
     Key key,
     @required this.lap,
     @required this.laps,
+    @required this.athlete,
   }) : super(key: key);
 
   @override
@@ -44,7 +48,7 @@ class ShowLapScreen extends StatelessWidget {
           children: [
             navigationButton(
               title: "Overview",
-              color: MyColor.navigate,
+              color: MyColor.settings,
               icon: MyIcon.metaData,
               context: context,
               nextWidget: ({lap}) => LapOverviewWidget(lap: lap),
@@ -69,6 +73,16 @@ class ShowLapScreen extends StatelessWidget {
               icon: MyIcon.powerDuration,
               context: context,
               nextWidget: ({lap}) => LapPowerDurationWidget(lap: lap),
+            ),
+            navigationButton(
+              title: "Ecor",
+              color: MyColor.navigate,
+              icon: MyIcon.power,
+              context: context,
+              nextWidget: ({lap}) => LapEcorWidget(
+                lap: lap,
+                athlete: athlete,
+              ),
             ),
             navigationButton(
               title: "Ground Time",
@@ -107,7 +121,7 @@ class ShowLapScreen extends StatelessWidget {
             ),
             navigationButton(
               title: "Metadata",
-              color: MyColor.navigate,
+              color: MyColor.settings,
               icon: MyIcon.metaData,
               context: context,
               nextWidget: ({lap}) => LapMetadataWidget(lap: lap),
