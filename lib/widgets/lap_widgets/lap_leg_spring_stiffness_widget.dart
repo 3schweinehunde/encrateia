@@ -49,6 +49,9 @@ class _LapLegSpringStiffnessWidgetState
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapLegSpringStiffnessChart(records: legSpringStiffnessRecords),
+              Text('Only records where leg spring stiffness > 0 kN/m are shown.'),
+              Text('Swipe left/write to compare with other laps.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgLegSpringStiffnessString),

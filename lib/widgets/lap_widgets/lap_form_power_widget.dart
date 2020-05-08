@@ -46,6 +46,9 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapFormPowerChart(records: records),
+              Text('Only records where 0 W < form power < 200 W are shown.'),
+              Text('Swipe left/write to compare with other laps.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgFormPowerString),

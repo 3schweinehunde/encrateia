@@ -52,6 +52,9 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
                 records: records,
                 heartRateZones: heartRateZones,
               ),
+              Text('Only records where heart rate > 10 bpm are shown.'),
+              Text('Swipe left/write to compare with other laps.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(Lap.avgHeartRate(records: records)),

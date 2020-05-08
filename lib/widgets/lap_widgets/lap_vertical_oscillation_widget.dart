@@ -49,6 +49,9 @@ class _LapVerticalOscillationWidgetState
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapVerticalOscillationChart(records: verticalOscillationRecords),
+              Text('Only records where vertical oscillation is present are shown.'),
+              Text('Swipe left/write to compare with other laps.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),

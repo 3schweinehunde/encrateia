@@ -46,6 +46,9 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapGroundTimeChart(records: groundTimeRecords),
+              Text('Only records where ground time > 0 ms are shown.'),
+              Text('Swipe left/write to compare with other laps.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgGroundTimeString),

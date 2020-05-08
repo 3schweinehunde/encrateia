@@ -35,8 +35,13 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
           .toList();
 
       if (powerRecords.length > 0) {
-        return SingleChildScrollView(
-          child: PowerDurationChart(records: powerRecords),
+        return ListView(
+          padding: EdgeInsets.only(left: 15),
+          children: <Widget>[
+            PowerDurationChart(records: powerRecords),
+            Text('Swipe left/write to compare with other laps.'),
+            Divider(),
+          ],
         );
       } else {
         return Center(

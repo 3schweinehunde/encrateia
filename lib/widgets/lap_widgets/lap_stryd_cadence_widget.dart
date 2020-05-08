@@ -46,6 +46,9 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapStrydCadenceChart(records: strydCadenceRecords),
+              Text('Only records where cadence > 0 s/min are shown.'),
+              Text('Swipe left/write to compare with other laps.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgStrydCadenceString),

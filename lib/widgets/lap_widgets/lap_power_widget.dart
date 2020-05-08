@@ -54,6 +54,9 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
                 records: powerRecords,
                 powerZones: powerZones,
               ),
+              Text('Only records where power > 100 W are shown.'),
+              Text('Swipe left/write to compare with other laps.'),
+              Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerString),
