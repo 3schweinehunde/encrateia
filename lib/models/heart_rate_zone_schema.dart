@@ -20,7 +20,7 @@ class HeartRateZoneSchema extends ChangeNotifier {
   HeartRateZoneSchema.likeGarmin({Athlete athlete}) {
     db = DbHeartRateZoneSchema()
       ..athletesId = athlete.db.id
-      ..name = "like Garmin"
+      ..name = "max HR based"
       ..date = DateTime(1970, 01, 01)
       ..base = 180;
   }
@@ -28,7 +28,7 @@ class HeartRateZoneSchema extends ChangeNotifier {
   HeartRateZoneSchema.likeStefanDillinger({Athlete athlete}) {
     db = DbHeartRateZoneSchema()
       ..athletesId = athlete.db.id
-      ..name = "like Stefan Dillinger"
+      ..name = "threshold heart rate based"
       ..date = DateTime(1970, 01, 01)
       ..base = 165;
   }

@@ -20,7 +20,7 @@ class PowerZoneSchema extends ChangeNotifier {
   PowerZoneSchema.likeStryd({Athlete athlete}) {
     db = DbPowerZoneSchema()
       ..athletesId = athlete.db.id
-      ..name = "like Stryd"
+      ..name = "CP based"
       ..date = DateTime(1970, 01, 01)
       ..base = 250;
   }
@@ -67,7 +67,7 @@ class PowerZoneSchema extends ChangeNotifier {
   PowerZoneSchema.likeJimVance({Athlete athlete}) {
     db = DbPowerZoneSchema()
       ..athletesId = athlete.db.id
-      ..name = "like Jim Vance"
+      ..name = "FTP based"
       ..date = DateTime(1970, 01, 01)
       ..base = 250;
   }
@@ -127,7 +127,7 @@ class PowerZoneSchema extends ChangeNotifier {
   PowerZoneSchema.likeStefanDillinger({Athlete athlete}) {
     db = DbPowerZoneSchema()
       ..athletesId = athlete.db.id
-      ..name = "like Stefan Dillinger"
+      ..name = "FTP based"
       ..date = DateTime(1970, 01, 01)
       ..base = 250;
   }
