@@ -15,7 +15,6 @@ class AthleteEcorWidget extends StatefulWidget {
 
 class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
   List<Activity> activities = [];
-  double anyWeight;
 
   @override
   void initState() {
@@ -30,10 +29,11 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
           .where((activity) =>
               activity.db.avgPower != null &&
               activity.db.avgPower > 0 &&
-              activity.db.avgSpeed != null)
+              activity.db.avgSpeed != null &&
+              activity.weight != null)
           .toList();
 
-      if (ecorActivities.length > 0 && anyWeight != null) {
+      if (ecorActivities.length > 0) {
         return ListTileTheme(
           iconColor: Colors.orange,
           child: ListView(
@@ -58,10 +58,14 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
   getData() async {
     Athlete athlete = widget.athlete;
     activities = await athlete.activities;
-    anyWeight = await Weight.getBy(
-      athletesId: widget.athlete.db.id,
-      date: DateTime.now(),
-    );
+
+    for (Activity activity in activities) {
+      Weight weight = await Weight.getBy(
+        athletesId: activity.db.athletesId,
+        date: activity.db.timeCreated,
+      );
+      activity.weight = weight.db.value;
+    }
     setState(() {});
   }
 }

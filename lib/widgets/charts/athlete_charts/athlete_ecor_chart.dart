@@ -14,14 +14,14 @@ class AthleteEcorChart extends StatelessWidget {
     int xAxesDays = 60;
 
     ActivityList(activities: activities).enrichGlidingAverage(
-      quantity: ActivityAttr.avgPower,
+      quantity: ActivityAttr.ecor,
       fullDecay: 30,
     );
 
     var recentActivities = activities
         .where((activity) =>
-    DateTime.now().difference(activity.db.timeCreated).inDays <
-        xAxesDays)
+            DateTime.now().difference(activity.db.timeCreated).inDays <
+            xAxesDays)
         .toList();
 
     var data = [
@@ -29,14 +29,15 @@ class AthleteEcorChart extends StatelessWidget {
         id: 'ecor',
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
-        measureFn: (Activity activity, _) => activity.db.avgPower,
+        measureFn: (Activity activity, _) =>
+            activity.db.avgPower / activity.db.avgSpeed / activity.weight,
         data: recentActivities,
       ),
       Series<Activity, DateTime>(
         id: 'gliding_ecor',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
-        measureFn: (Activity activity, _) => activity.glidingAvgPower,
+        measureFn: (Activity activity, _) => activity.glidingEcor,
         data: recentActivities,
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];

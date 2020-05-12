@@ -42,7 +42,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
               value.db.speed >= 1)
           .toList();
 
-      if (ecorRecords.length > 0 && weight != null) {
+      if (ecorRecords.length > 0 && ecorRecords != null) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(

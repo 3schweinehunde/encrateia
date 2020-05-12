@@ -27,6 +27,8 @@ class Activity extends ChangeNotifier {
   double glidingAvgSpeedPerHeartRate;
   double glidingAvgPowerRatio;
   double glidingAvgStrideRatio;
+  double glidingEcor;
+  double weight;
 
   // intermediate data structures used for parsing
   Lap currentLap;
@@ -62,6 +64,8 @@ class Activity extends ChangeNotifier {
     switch (quantity) {
       case ActivityAttr.avgPower:
         return db.avgPower;
+      case ActivityAttr.ecor:
+        return (db.avgPower / db.avgSpeed / weight);
       case ActivityAttr.avgPowerPerHeartRate:
         return (db.avgPower / db.avgHeartRate);
       case ActivityAttr.avgSpeedPerHeartRate:
@@ -81,6 +85,9 @@ class Activity extends ChangeNotifier {
     switch (quantity) {
       case ActivityAttr.avgPower:
         glidingAvgPower = value;
+        break;
+      case ActivityAttr.ecor:
+        glidingEcor = value;
         break;
       case ActivityAttr.avgPowerPerHeartRate:
         glidingAvgPowerPerHeartRate = value;
