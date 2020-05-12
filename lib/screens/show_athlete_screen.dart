@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
@@ -16,6 +17,7 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_ecor_widget.dart';
 import 'package:encrateia/screens/show_athlete_detail_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ShowAthleteScreen extends StatefulWidget {
   final Athlete athlete;
@@ -91,14 +93,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               title: "Power /\nHeart Rate",
               icon: MyIcon.power,
               nextWidget:
-              AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+                  AthletePowerPerHeartRateWidget(athlete: widget.athlete),
             ),
             navigationButton(
               color: MyColor.navigate,
               title: "Ecor",
               icon: MyIcon.power,
-              nextWidget:
-              AthleteEcorWidget(athlete: widget.athlete),
+              nextWidget: AthleteEcorWidget(athlete: widget.athlete),
             ),
             navigationButton(
               color: MyColor.navigate,
@@ -111,7 +112,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               title: "Speed /\nHeart Rate",
               icon: MyIcon.speed,
               nextWidget:
-              AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
+                  AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
             ),
             RaisedButton.icon(
               color: MyColor.add,
@@ -141,7 +142,8 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               color: MyColor.settings,
               title: "Heart Rate\nZone Schemas",
               icon: MyIcon.heartRate,
-              nextWidget: AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
+              nextWidget:
+                  AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
             ),
             navigationButton(
               color: MyColor.settings,
@@ -155,6 +157,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               icon: MyIcon.delete,
               label: Text("Delete\nAthlete"),
               onPressed: () => deleteUser(),
+            ),
+            RaisedButton.icon(
+              color: MyColor.primary,
+              icon: MyIcon.download,
+              label: Text("Download\nDemo Data"),
+              onPressed: () => downloadDemoData(),
             ),
           ],
         );
@@ -234,6 +242,52 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     await Activity.importFromLocalDirectory(athlete: widget.athlete);
     flushbar = Flushbar(
       message: "Activities moved into application",
+      duration: Duration(seconds: 1),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+
+    activities = await Activity.all(athlete: widget.athlete);
+    var downloadedActivities = activities
+        .where((activity) => activity.db.state == "downloaded")
+        .toList();
+    for (Activity activity in downloadedActivities) {
+      await parse(activity: activity);
+    }
+    flushbar.dismiss();
+    flushbar = Flushbar(
+      message: "Activities imported!",
+      duration: Duration(seconds: 5),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+  }
+
+  downloadDemoData() async {
+    List<Activity> activities;
+    var appDocDir = await getApplicationDocumentsDirectory();
+    var dio = Dio();
+    var downloadDir = "https://encrateia.informatom.com/assets/fit-files/";
+    var fileNames = [
+      "munich_half_marathon.fit",
+      "listener_meetup_run_cologne.fit",
+      "stockholm_half_marathon.fit",
+      "upper_palatinate_winter_challenge_half_marathon.fit",
+    ];
+
+    flushbar = Flushbar(
+      message: "Downloading Demo data ...",
+      duration: Duration(seconds: 1),
+      icon: MyIcon.stravaDownloadWhite,
+    )..show(context);
+
+    for (String filename in fileNames) {
+      var activity = Activity.fromLocalDirectory(athlete: widget.athlete);
+      await dio.download(downloadDir + filename,
+          appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
+      await activity.setState("downloaded");
+    }
+
+    flushbar = Flushbar(
+      message: "Downloading demo data finished",
       duration: Duration(seconds: 1),
       icon: MyIcon.finishedWhite,
     )..show(context);
