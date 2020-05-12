@@ -12,6 +12,7 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_settings_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_speed_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_body_weight_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_ecor_widget.dart';
 import 'package:encrateia/screens/show_athlete_detail_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
@@ -91,6 +92,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               icon: MyIcon.power,
               nextWidget:
               AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              color: MyColor.navigate,
+              title: "Ecor",
+              icon: MyIcon.power,
+              nextWidget:
+              AthleteEcorWidget(athlete: widget.athlete),
             ),
             navigationButton(
               color: MyColor.navigate,

@@ -1,19 +1,21 @@
+import 'package:encrateia/models/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/widgets/charts/athlete_charts/athlete_power_chart.dart';
+import 'package:encrateia/widgets/charts/athlete_charts/athlete_ecor_chart.dart';
 
-class AthletePowerWidget extends StatefulWidget {
+class AthleteEcorWidget extends StatefulWidget {
   final Athlete athlete;
 
-  AthletePowerWidget({this.athlete});
+  AthleteEcorWidget({this.athlete});
 
   @override
-  _AthletePowerWidgetState createState() => _AthletePowerWidgetState();
+  _AthleteEcorWidgetState createState() => _AthleteEcorWidgetState();
 }
 
-class _AthletePowerWidgetState extends State<AthletePowerWidget> {
+class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
   List<Activity> activities = [];
+  double anyWeight;
 
   @override
   void initState() {
@@ -24,23 +26,26 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   @override
   Widget build(context) {
     if (activities.length > 0) {
-      var powerActivities = activities
+      var ecorActivities = activities
           .where((activity) =>
-              activity.db.avgPower != null && activity.db.avgPower > 0)
+              activity.db.avgPower != null &&
+              activity.db.avgPower > 0 &&
+              activity.db.avgSpeed != null)
           .toList();
-      if (powerActivities.length > 0) {
+
+      if (ecorActivities.length > 0 && anyWeight != null) {
         return ListTileTheme(
           iconColor: Colors.orange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthletePowerChart(activities: powerActivities),
+              AthleteEcorChart(activities: ecorActivities),
             ],
           ),
         );
       } else {
         return Center(
-          child: Text("No power data available."),
+          child: Text("No Ecor available."),
         );
       }
     } else {
@@ -53,6 +58,10 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   getData() async {
     Athlete athlete = widget.athlete;
     activities = await athlete.activities;
+    anyWeight = await Weight.getBy(
+      athletesId: widget.athlete.db.id,
+      date: DateTime.now(),
+    );
     setState(() {});
   }
 }

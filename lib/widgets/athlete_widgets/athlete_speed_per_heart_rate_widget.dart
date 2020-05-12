@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import '../charts/athlete_charts/athlete_speed_per_heart_rate_chart.dart';
+import 'package:encrateia/widgets/charts/athlete_charts/athlete_speed_per_heart_rate_chart.dart';
 
 class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
   final Athlete athlete;

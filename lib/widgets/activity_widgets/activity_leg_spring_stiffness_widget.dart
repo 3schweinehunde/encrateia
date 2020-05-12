@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import '../charts/actitvity_charts/activity_leg_spring_stiffness_chart.dart';
+import 'package:encrateia/widgets/charts/actitvity_charts/activity_leg_spring_stiffness_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityLegSpringStiffnessWidget extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import '../charts/power_duration_chart.dart';
+import 'package:encrateia/widgets/charts/power_duration_chart.dart';
 
 class ActivityPowerDurationWidget extends StatelessWidget {
   final Activity activity;
