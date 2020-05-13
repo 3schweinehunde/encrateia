@@ -75,102 +75,101 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
 
-    return new Column(children: [
-      Container(
-        height: 300,
-        child: TimeSeriesChart(
-          data,
-          animate: true,
-          selectionModels: [
-            SelectionModelConfig(
-              type: SelectionModelType.info,
-              changedListener: _onSelectionChanged,
-            )
-          ],
-          defaultRenderer: LineRendererConfig(
-            includePoints: true,
-            includeLine: false,
-          ),
-          customSeriesRenderers: [
-            LineRendererConfig(
-              customRendererId: 'glidingAverageRenderer',
-              dashPattern: [1, 2],
-            ),
-          ],
-          primaryMeasureAxis: NumericAxisSpec(
-            tickProviderSpec: BasicNumericTickProviderSpec(
-              zeroBound: false,
-              dataIsInWholeNumbers: false,
-              desiredTickCount: 6,
-            ),
-          ),
-          behaviors: [
-            ChartTitle(
-              widget.chartTitleText,
-              titleStyleSpec: TextStyleSpec(fontSize: 13),
-              behaviorPosition: BehaviorPosition.start,
-              titleOutsideJustification: OutsideJustification.end,
-            ),
-            ChartTitle(
-              'Date',
-              titleStyleSpec: TextStyleSpec(fontSize: 13),
-              behaviorPosition: BehaviorPosition.bottom,
-              titleOutsideJustification: OutsideJustification.end,
-            ),
-          ],
-        ),
-      ),
-      if (selectedActivity != null)
+    return Column(
+      children: [
         Container(
-          height: 200,
-          child: new OrientationBuilder(
-            builder: (context, orientation) {
-              return GridView.count(
-                padding: EdgeInsets.all(5),
-                crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
-                childAspectRatio: 3,
-                crossAxisSpacing: 3,
-                mainAxisSpacing: 3,
-                children: [
-                  MyButton.activity(
-                    child: Text(selectedActivity.db.name),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ShowActivityScreen(
-                          activity: selectedActivity,
-                          athlete: widget.athlete,
-                        ),
+          height: 300,
+          child: TimeSeriesChart(
+            data,
+            animate: true,
+            selectionModels: [
+              SelectionModelConfig(
+                type: SelectionModelType.info,
+                changedListener: _onSelectionChanged,
+              )
+            ],
+            defaultRenderer: LineRendererConfig(
+              includePoints: true,
+              includeLine: false,
+            ),
+            customSeriesRenderers: [
+              LineRendererConfig(
+                customRendererId: 'glidingAverageRenderer',
+                dashPattern: [1, 2],
+              ),
+            ],
+            primaryMeasureAxis: NumericAxisSpec(
+              tickProviderSpec: BasicNumericTickProviderSpec(
+                zeroBound: false,
+                dataIsInWholeNumbers: false,
+                desiredTickCount: 6,
+              ),
+            ),
+            behaviors: [
+              ChartTitle(
+                widget.chartTitleText,
+                titleStyleSpec: TextStyleSpec(fontSize: 13),
+                behaviorPosition: BehaviorPosition.start,
+                titleOutsideJustification: OutsideJustification.end,
+              ),
+              ChartTitle(
+                'Date',
+                titleStyleSpec: TextStyleSpec(fontSize: 13),
+                behaviorPosition: BehaviorPosition.bottom,
+                titleOutsideJustification: OutsideJustification.end,
+              ),
+            ],
+          ),
+        ),
+        if (selectedActivity != null)
+          Container(
+            height: 200,
+            child: GridView.count(
+              padding: EdgeInsets.all(5),
+              crossAxisCount:
+                  MediaQuery.of(context).orientation == Orientation.landscape
+                      ? 4
+                      : 2,
+              childAspectRatio: 4,
+              crossAxisSpacing: 3,
+              mainAxisSpacing: 3,
+              children: [
+                MyButton.activity(
+                  child: Text(selectedActivity.db.name),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowActivityScreen(
+                        activity: selectedActivity,
+                        athlete: widget.athlete,
                       ),
                     ),
                   ),
-                  ListTile(
-                    title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
-                        .format(selectedActivity.db.timeCreated)),
-                    subtitle: Text("Time created"),
-                  ),
-                  ListTile(
-                      title:
-                          Text(selectedActivity.db.distance.toString() + " m"),
-                      subtitle: Text('Distance')),
-                  ListTile(
-                      title: Text(
-                          selectedActivity.db.avgSpeed.toPace() + " min/km"),
-                      subtitle: Text('Average speed')),
-                  ListTile(
-                      title: Text(
-                          selectedActivity.db.avgPower.toStringAsFixed(1) +
-                              " W"),
-                      subtitle: Text('Average power')),
-                  ListTile(
-                      title: Text(
-                          selectedActivity.db.avgHeartRate.toString() + " bpm"),
-                      subtitle: Text('Average heart rate')),
-                ],
-              );
-            },
+                ),
+                ListTile(
+                  title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
+                      .format(selectedActivity.db.timeCreated)),
+                  subtitle: Text("Time created"),
+                ),
+                ListTile(
+                    title: Text(selectedActivity.db.distance.toString() + " m"),
+                    subtitle: Text('Distance')),
+                ListTile(
+                    title:
+                        Text(selectedActivity.db.avgSpeed.toPace() + " min/km"),
+                    subtitle: Text('Average speed')),
+                ListTile(
+                    title: Text(
+                        selectedActivity.db.avgPower.toStringAsFixed(1) + " W"),
+                    subtitle: Text('Average power')),
+                ListTile(
+                    title: Text(
+                        selectedActivity.db.avgHeartRate.toString() + " bpm"),
+                    subtitle: Text('Average heart rate')),
+              ],
+            ),
           ),
-        )
-    ]);
+      ],
+    );
   }
 }
