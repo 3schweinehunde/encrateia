@@ -21,7 +21,8 @@ class AddHeartRateZoneSchemaScreen extends StatefulWidget {
       _AddHeartRateZoneSchemaScreenState();
 }
 
-class _AddHeartRateZoneSchemaScreenState extends State<AddHeartRateZoneSchemaScreen> {
+class _AddHeartRateZoneSchemaScreenState
+    extends State<AddHeartRateZoneSchemaScreen> {
   List<HeartRateZone> heartRateZones = [];
   int offset = 0;
   int rows;
@@ -42,6 +43,18 @@ class _AddHeartRateZoneSchemaScreenState extends State<AddHeartRateZoneSchemaScr
       body: ListView(
         padding: EdgeInsets.only(left: 20, right: 20),
         children: <Widget>[
+          Card(
+            margin: EdgeInsets.all(40),
+            child: ListTile(
+              leading: MyIcon.warning,
+              title: Text("Instructions to update your current base value"),
+              subtitle: Text(
+                "1) Change the VALID FROM date to today to copy the heart rate zone schema.\n"
+                "2) Edit the BASE VALUE to the new value.\n"
+                "3) Click SAVE to persist your changes.",
+              ),
+            ),
+          ),
           DateTimeField(
             decoration: InputDecoration(
               labelText: "Valid from",
@@ -70,7 +83,8 @@ class _AddHeartRateZoneSchemaScreenState extends State<AddHeartRateZoneSchemaScr
             ),
             initialValue: widget.heartRateZoneSchema.db.base.toString(),
             keyboardType: TextInputType.number,
-            onChanged: (value) => updateHeartRateZoneBase(base: int.parse(value)),
+            onChanged: (value) =>
+                updateHeartRateZoneBase(base: int.parse(value)),
           ),
           SizedBox(height: 10),
           DataTable(
@@ -127,8 +141,8 @@ class _AddHeartRateZoneSchemaScreenState extends State<AddHeartRateZoneSchemaScr
                     context,
                     MaterialPageRoute(
                       builder: (context) => AddHeartRateZoneScreen(
-                        heartRateZone:
-                        HeartRateZone(heartRateZoneSchema: widget.heartRateZoneSchema),
+                        heartRateZone: HeartRateZone(
+                            heartRateZoneSchema: widget.heartRateZoneSchema),
                         base: widget.heartRateZoneSchema.db.base,
                       ),
                     ),
@@ -160,8 +174,8 @@ class _AddHeartRateZoneSchemaScreenState extends State<AddHeartRateZoneSchemaScr
 
   saveHeartRateZoneSchema(BuildContext context) async {
     await widget.heartRateZoneSchema.db.save();
-    await DbHeartRateZone()
-        .upsertAll(heartRateZones.map((heartRateZone) => heartRateZone.db).toList());
+    await DbHeartRateZone().upsertAll(
+        heartRateZones.map((heartRateZone) => heartRateZone.db).toList());
     Navigator.of(context).pop();
   }
 
@@ -197,8 +211,8 @@ class _AddHeartRateZoneSchemaScreenState extends State<AddHeartRateZoneSchemaScr
         ..heartRateZoneSchemataId = heartRateZoneSchemaId
         ..id = null;
     }
-    await DbHeartRateZone()
-        .upsertAll(heartRateZones.map((heartRateZone) => heartRateZone.db).toList());
+    await DbHeartRateZone().upsertAll(
+        heartRateZones.map((heartRateZone) => heartRateZone.db).toList());
     await getData();
     showDialog(
       context: context,
