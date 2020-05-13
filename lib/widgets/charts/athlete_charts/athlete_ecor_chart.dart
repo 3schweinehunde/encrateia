@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/activity_list.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,10 @@ class AthleteEcorChart extends StatelessWidget {
             DateTime.now().difference(activity.db.timeCreated).inDays <
             xAxesDays)
         .toList();
+    if (recentActivities.length < 40) {
+      int amount = min(activities.length, 40);
+      recentActivities = activities.sublist(0, amount);
+    }
 
     var data = [
       Series<Activity, DateTime>(

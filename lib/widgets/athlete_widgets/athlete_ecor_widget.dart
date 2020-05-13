@@ -24,16 +24,26 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
 
   @override
   Widget build(context) {
-    if (activities.length > 0) {
+    if (activities.length == 0) {
+      return Center(
+        child: Text("Loading"),
+      );
+    } else {
       var ecorActivities = activities
           .where((activity) =>
               activity.db.avgPower != null &&
               activity.db.avgPower > 0 &&
-              activity.db.avgSpeed != null &&
-              activity.weight != null)
+              activity.db.avgSpeed != null)
           .toList();
-
-      if (ecorActivities.length > 0) {
+      if (ecorActivities.length == 0) {
+        return Center(
+          child: Text("No ecor data available."),
+        );
+      } else if (ecorActivities.first.weight == null) {
+        return Center(
+          child: Text("Please enter your (historical) weight in the settings."),
+        );
+      } else {
         return ListTileTheme(
           iconColor: Colors.orange,
           child: ListView(
@@ -43,15 +53,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
             ],
           ),
         );
-      } else {
-        return Center(
-          child: Text("No Ecor available."),
-        );
       }
-    } else {
-      return Center(
-        child: Text("Loading"),
-      );
     }
   }
 
@@ -64,7 +66,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
         athletesId: activity.db.athletesId,
         date: activity.db.timeCreated,
       );
-      activity.weight = weight.db.value;
+      activity.weight = weight?.db?.value;
     }
     setState(() {});
   }
