@@ -1,7 +1,8 @@
+import 'package:encrateia/utils/athlete_time_series_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/widgets/charts/athlete_charts/athlete_power_chart.dart';
 
 class AthletePowerWidget extends StatefulWidget {
   final Athlete athlete;
@@ -34,7 +35,12 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthletePowerChart(activities: powerActivities),
+              AthleteTimeSeriesChart(
+                activities: powerActivities,
+                chartTitleText: 'Power (W)',
+                activityAttr: ActivityAttr.avgPower,
+                athlete: widget.athlete,
+              ),
             ],
           ),
         );

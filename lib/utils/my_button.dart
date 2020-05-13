@@ -49,4 +49,12 @@ class MyButton extends RaisedButton {
           child: child ?? Text('Detail'),
           onPressed: onPressed,
         );
+
+  MyButton.activity({Widget child, VoidCallback onPressed})
+      : super(
+    color: MyColor.activity,
+    textColor: Colors.white,
+    child: child ?? Text('Activity'),
+    onPressed: onPressed,
+  );
 }

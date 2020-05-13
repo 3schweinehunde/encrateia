@@ -9,10 +9,10 @@ class ActivityList {
 
   enrichGlidingAverage({
     @required int fullDecay,
-    @required ActivityAttr quantity,
+    @required ActivityAttr activityAttr,
   }) {
     activities.asMap().forEach((index, activity) {
-      double sumOfAvg = activity.get(quantity: quantity) * fullDecay;
+      double sumOfAvg = activity.get(activityAttr: activityAttr) * fullDecay;
       double sumOfWeightings = fullDecay * 1.0;
       for (var olderIndex = index + 1;
           olderIndex < activities.length;
@@ -23,14 +23,11 @@ class ActivityList {
             24;
         if (daysAgo > fullDecay) break;
         sumOfAvg += (fullDecay - daysAgo) *
-            activities[olderIndex].get(quantity: quantity);
+            activities[olderIndex].get(activityAttr: activityAttr);
         sumOfWeightings += (fullDecay - daysAgo);
       }
 
-      activity.setGliding(
-        quantity: quantity,
-        value: sumOfAvg / sumOfWeightings,
-      );
+      activity.glidingMeasureAttribute = sumOfAvg / sumOfWeightings;
     });
   }
 }

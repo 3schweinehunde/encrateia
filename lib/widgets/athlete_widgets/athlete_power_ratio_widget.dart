@@ -1,7 +1,8 @@
+import 'package:encrateia/utils/athlete_time_series_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/widgets/charts/athlete_charts/athlete_power_ratio_chart.dart';
 
 class AthletePowerRatioWidget extends StatefulWidget {
   final Athlete athlete;
@@ -39,7 +40,12 @@ class _AthletePowerRatioWidgetState extends State<AthletePowerRatioWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthletePowerRatioChart(activities: powerRatioActivities),
+              AthleteTimeSeriesChart(
+                activities: powerRatioActivities,
+                chartTitleText: 'Power Ratio (%)',
+                activityAttr: ActivityAttr.avgPowerRatio,
+                athlete: widget.athlete,
+              ),
             ],
           ),
         );

@@ -1,7 +1,8 @@
+import 'package:encrateia/utils/athlete_time_series_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/widgets/charts/athlete_charts/athlete_power_per_heart_rate_chart.dart';
 
 class AthletePowerPerHeartRateWidget extends StatefulWidget {
   final Athlete athlete;
@@ -41,8 +42,11 @@ class _AthletePowerPerHeartRateWidgetState
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthletePowerPerHeartRateChart(
+              AthleteTimeSeriesChart(
                 activities: powerPerHeartRateActivities,
+                activityAttr: ActivityAttr.avgPowerPerHeartRate,
+                chartTitleText: 'Average power per heart rate',
+                athlete: widget.athlete,
               ),
             ],
           ),

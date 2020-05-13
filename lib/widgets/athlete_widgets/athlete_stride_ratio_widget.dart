@@ -1,7 +1,8 @@
+import 'package:encrateia/utils/athlete_time_series_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/widgets/charts/athlete_charts/athlete_stride_ratio_chart.dart';
 
 class AthleteStrideRatioWidget extends StatefulWidget {
   final Athlete athlete;
@@ -36,7 +37,12 @@ class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthleteStrideRatioChart(activities: strideRatioActivities),
+              AthleteTimeSeriesChart(
+                activities: strideRatioActivities,
+                activityAttr: ActivityAttr.avgStrideRatio,
+                chartTitleText: 'Stride Ratio',
+                athlete: widget.athlete,
+              ),
             ],
           ),
         );

@@ -22,12 +22,7 @@ class Activity extends ChangeNotifier {
   DbActivity db;
   List<Event> _records;
   List<Lap> _laps;
-  double glidingAvgPower;
-  double glidingAvgPowerPerHeartRate;
-  double glidingAvgSpeedPerHeartRate;
-  double glidingAvgPowerRatio;
-  double glidingAvgStrideRatio;
-  double glidingEcor;
+  double glidingMeasureAttribute;
   double weight;
 
   // intermediate data structures used for parsing
@@ -60,8 +55,8 @@ class Activity extends ChangeNotifier {
   String toString() => '$db.name $db.startTime';
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
 
-  get({ActivityAttr quantity}) {
-    switch (quantity) {
+  get({ActivityAttr activityAttr}) {
+    switch (activityAttr) {
       case ActivityAttr.avgPower:
         return db.avgPower;
       case ActivityAttr.ecor:
@@ -78,29 +73,6 @@ class Activity extends ChangeNotifier {
             db.avgSpeed /
             db.avgStrydCadence /
             db.avgVerticalOscillation;
-    }
-  }
-
-  setGliding({ActivityAttr quantity, double value}) {
-    switch (quantity) {
-      case ActivityAttr.avgPower:
-        glidingAvgPower = value;
-        break;
-      case ActivityAttr.ecor:
-        glidingEcor = value;
-        break;
-      case ActivityAttr.avgPowerPerHeartRate:
-        glidingAvgPowerPerHeartRate = value;
-        break;
-      case ActivityAttr.avgSpeedPerHeartRate:
-        glidingAvgSpeedPerHeartRate = value;
-        break;
-      case ActivityAttr.avgPowerRatio:
-        glidingAvgPowerRatio = value;
-        break;
-      case ActivityAttr.avgStrideRatio:
-        glidingAvgStrideRatio = value;
-        break;
     }
   }
 
