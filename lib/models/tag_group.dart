@@ -9,44 +9,23 @@ class TagGroup extends ChangeNotifier {
   TagGroup({@required Athlete athlete}) {
     db = DbTagGroup()
       ..athletesId = athlete.db.id
+      ..color = Colors.lightGreen.value
+      ..system = false
       ..name = "My Tag Group";
   }
   TagGroup.fromDb(this.db);
 
-  get powerZones => Tag.all(tagGroup: this);
+  get tags => Tag.all(tagGroup: this);
 
-  TagGroup.likeStryd({Athlete athlete}) {
+  TagGroup.by(
+      {@required Athlete athlete,
+      @required String name,
+      @required bool system}) {
     db = DbTagGroup()
       ..athletesId = athlete.db.id
-      ..name = "CP based";
-  }
-
-  addStrydZones() async {
-    await Tag(
-      tagGroup: this,
-      name: "Easy",
-      color: Colors.lightGreen.value,
-    ).db.save();
-    await Tag(
-      tagGroup: this,
-      name: "Moderate",
-      color: Colors.lightBlue.value,
-    ).db.save();
-    await Tag(
-      tagGroup: this,
-      name: "Threshold",
-      color: Colors.yellow.value,
-    ).db.save();
-    await Tag(
-      tagGroup: this,
-      name: "Interval",
-      color: Colors.orange.value,
-    ).db.save();
-    await Tag(
-      tagGroup: this,
-      name: "Repetition",
-      color: Colors.red.value,
-    ).db.save();
+      ..color = Colors.lightGreen.value
+      ..system = system
+      ..name = name;
   }
 
   String toString() => '$db.name';
@@ -55,9 +34,25 @@ class TagGroup extends ChangeNotifier {
     await this.db.delete();
   }
 
+  static createDefaultTagGroups({Athlete athlete}) async {
+    var autoHeartRateZones = TagGroup.by(
+      name: "Auto Heart Rate Zones",
+      athlete: athlete,
+      system: true,
+    );
+    await autoHeartRateZones.db.save();
+
+    var autoPowerZonesTagGroup = TagGroup.by(
+      name: "Auto Power Zones",
+      athlete: athlete,
+      system: true,
+    );
+    await autoPowerZonesTagGroup.db.save();
+  }
+
   static Future<List<TagGroup>> all({@required Athlete athlete}) async {
     var dbTagGroupList =
-    await athlete.db.getDbTagGroups().orderByDesc('date').toList();
+        await athlete.db.getDbTagGroups().orderBy('name').toList();
     var tagGroups = dbTagGroupList
         .map((dbTagGroup) => TagGroup.fromDb(dbTagGroup))
         .toList();
@@ -73,7 +68,6 @@ class TagGroup extends ChangeNotifier {
         .equals(athletesId)
         .top(1)
         .toList();
-    if (dbTagGroups.length != 0)
-      return TagGroup.fromDb(dbTagGroups.first);
+    if (dbTagGroups.length != 0) return TagGroup.fromDb(dbTagGroups.first);
   }
 }

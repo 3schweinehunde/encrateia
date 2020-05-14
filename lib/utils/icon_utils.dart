@@ -80,6 +80,7 @@ class MyIcon {
   static final strideRatio = Icon(Icons.signal_cellular_null);
   static final strides = Icon(Icons.directions_walk);
   // T
+  static final tag = Icon(Icons.label);
   static final temperature = Icon(Icons.ac_unit);
   static final time = Icon(Icons.timer);
   static final timeStamp = Icon(Icons.access_time);

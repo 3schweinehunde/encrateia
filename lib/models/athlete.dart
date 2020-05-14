@@ -1,4 +1,5 @@
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/models/tag_group.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:path_provider/path_provider.dart';
@@ -83,6 +84,7 @@ class Athlete extends ChangeNotifier {
   get weights => Weight.all(athlete: this);
   get powerZoneSchemas => PowerZoneSchema.all(athlete: this);
   get heartRateZoneSchemas => HeartRateZoneSchema.all(athlete: this);
+  get tagGroups => TagGroup.all(athlete: this);
 
   delete() async {
     var appDocDir = await getApplicationDocumentsDirectory();

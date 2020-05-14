@@ -3,6 +3,7 @@ import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
@@ -144,6 +145,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               icon: MyIcon.heartRate,
               nextWidget:
                   AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
+            ),
+            navigationButton(
+              color: MyColor.settings,
+              title: "Tags",
+              icon: MyIcon.tag,
+              nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
             ),
             navigationButton(
               color: MyColor.settings,
