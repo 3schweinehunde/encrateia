@@ -1,4 +1,5 @@
 import 'package:encrateia/models/tag.dart';
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/athlete.dart';
@@ -20,10 +21,11 @@ class TagGroup extends ChangeNotifier {
   TagGroup.by(
       {@required Athlete athlete,
       @required String name,
-      @required bool system}) {
+      @required bool system,
+      @required int color}) {
     db = DbTagGroup()
       ..athletesId = athlete.db.id
-      ..color = Colors.lightGreen.value
+      ..color = color
       ..system = system
       ..name = name;
   }
@@ -39,6 +41,7 @@ class TagGroup extends ChangeNotifier {
       name: "Auto Heart Rate Zones",
       athlete: athlete,
       system: true,
+      color: MyColor.grapeFruit.value,
     );
     await autoHeartRateZones.db.save();
 
@@ -46,6 +49,7 @@ class TagGroup extends ChangeNotifier {
       name: "Auto Power Zones",
       athlete: athlete,
       system: true,
+      color: MyColor.bitterSweet.value,
     );
     await autoPowerZonesTagGroup.db.save();
   }

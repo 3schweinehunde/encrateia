@@ -1,4 +1,5 @@
 import 'package:encrateia/screens/add_tag_group_screen.dart';
+import 'package:encrateia/screens/show_tag_group_screen.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
@@ -62,14 +63,16 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                       color: Color(tagGroup.db.color),
                     )),
                     DataCell(
-                      MyIcon.edit,
+                      tagGroup.db.system ? MyIcon.show : MyIcon.edit,
                       onTap: () async {
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddTagGroupScreen(
-                              tagGroup: tagGroup,
-                            ),
+                            builder: (context) {
+                              if (tagGroup.db.system)
+                              return ShowTagGroupScreen(tagGroup:tagGroup); else
+                              return AddTagGroupScreen(tagGroup: tagGroup);
+                            },
                           ),
                         );
                         getData();
