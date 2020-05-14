@@ -10,7 +10,7 @@ class PowerZoneSchema extends ChangeNotifier {
     db = DbPowerZoneSchema()
       ..athletesId = athlete.db.id
       ..base = 250
-      ..name = "MySchema"
+      ..name = "My Schema"
       ..date = DateTime.now();
   }
   PowerZoneSchema.fromDb(this.db);

@@ -10,7 +10,7 @@ class HeartRateZoneSchema extends ChangeNotifier {
     db = DbHeartRateZoneSchema()
       ..athletesId = athlete.db.id
       ..base = 180
-      ..name = "MySchema"
+      ..name = "My Schema"
       ..date = DateTime.now();
   }
   HeartRateZoneSchema.fromDb(this.db);

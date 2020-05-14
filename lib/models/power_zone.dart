@@ -15,7 +15,7 @@ class PowerZone extends ChangeNotifier {
       int color}) {
     db = DbPowerZone()
       ..powerZoneSchemataId = powerZoneSchema.db.id
-      ..name = name ?? "my Zone"
+      ..name = name ?? "My Zone"
       ..lowerLimit = lowerLimit ?? 70
       ..upperLimit = upperLimit ?? 100
       ..lowerPercentage = lowerPercentage ?? 0
