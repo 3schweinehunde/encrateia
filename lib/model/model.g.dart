@@ -450,6 +450,59 @@ class TableDbTagGroup extends SqfEntityTableBase {
     return _instance = _instance ?? TableDbTagGroup();
   }
 }
+
+// DbLapTagging TABLE
+class TableDbLapTagging extends SqfEntityTableBase {
+  TableDbLapTagging() {
+    // declare properties of EntityTable
+    tableName = 'lapTaggings';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('system', DbType.bool),
+      SqfEntityFieldRelationshipBase(TableDbTag.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'tagsId'),
+      SqfEntityFieldRelationshipBase(TableDbLap.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'lapsId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbLapTagging();
+  }
+}
+
+// DbActivityTagging TABLE
+class TableDbActivityTagging extends SqfEntityTableBase {
+  TableDbActivityTagging() {
+    // declare properties of EntityTable
+    tableName = 'activityTaggings';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('system', DbType.bool),
+      SqfEntityFieldRelationshipBase(TableDbTag.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'tagsId'),
+      SqfEntityFieldRelationshipBase(
+          TableDbActivity.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'activitiesId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbActivityTagging();
+  }
+}
 // END TABLES
 
 // BEGIN SEQUENCES
@@ -471,6 +524,8 @@ class DbEncrateia extends SqfEntityModelProvider {
       TableDbPowerZone.getInstance,
       TableDbTag.getInstance,
       TableDbTagGroup.getInstance,
+      TableDbLapTagging.getInstance,
+      TableDbActivityTagging.getInstance,
     ];
 
     bundledDatabasePath = encrateia
@@ -2294,6 +2349,19 @@ class DbActivity {
         .equals(id)
         .and;
   }
+
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbActivityTagging> plDbActivityTaggings;
+
+  /// get DbActivityTagging(s) filtered by activitiesId=id
+  DbActivityTaggingFilterBuilder getDbActivityTaggings(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbActivityTagging()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .activitiesId
+        .equals(id)
+        .and;
+  }
 // END COLLECTIONS & VIRTUALS (DbActivity)
 
   static const bool _softDeleteActivated = false;
@@ -2885,6 +2953,9 @@ class DbActivity {
     if (!forQuery) {
       map['DbLaps'] = await getDbLaps().toMapList();
     }
+    if (!forQuery) {
+      map['DbActivityTaggings'] = await getDbActivityTaggings().toMapList();
+    }
 // END COLLECTIONS (DbActivity)
 
     return map;
@@ -3021,6 +3092,11 @@ class DbActivity {
         }
         if (preloadFields == null || preloadFields.contains('plDbLaps')) {
           obj.plDbLaps = obj.plDbLaps ?? await obj.getDbLaps().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbActivityTaggings')) {
+          obj.plDbActivityTaggings = obj.plDbActivityTaggings ??
+              await obj.getDbActivityTaggings().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -3210,6 +3286,16 @@ class DbActivity {
     {
       result =
           await DbLap().select().activitiesId.equals(id).delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbActivityTagging()
+          .select()
+          .activitiesId
+          .equals(id)
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -4128,6 +4214,11 @@ class DbActivityFilterBuilder extends SearchCriteria {
         }
         if (preloadFields == null || preloadFields.contains('plDbLaps')) {
           obj.plDbLaps = obj.plDbLaps ?? await obj.getDbLaps().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbActivityTaggings')) {
+          obj.plDbActivityTaggings = obj.plDbActivityTaggings ??
+              await obj.getDbActivityTaggings().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -6660,6 +6751,19 @@ class DbLap {
         .equals(id)
         .and;
   }
+
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbLapTagging> plDbLapTaggings;
+
+  /// get DbLapTagging(s) filtered by lapsId=id
+  DbLapTaggingFilterBuilder getDbLapTaggings(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbLapTagging()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .lapsId
+        .equals(id)
+        .and;
+  }
 // END COLLECTIONS & VIRTUALS (DbLap)
 
   static const bool _softDeleteActivated = false;
@@ -7080,6 +7184,9 @@ class DbLap {
     if (!forQuery) {
       map['DbEvents'] = await getDbEvents().toMapList();
     }
+    if (!forQuery) {
+      map['DbLapTaggings'] = await getDbLapTaggings().toMapList();
+    }
 // END COLLECTIONS (DbLap)
 
     return map;
@@ -7190,6 +7297,11 @@ class DbLap {
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbEvents')) {
           obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbLapTaggings')) {
+          obj.plDbLapTaggings =
+              obj.plDbLapTaggings ?? await obj.getDbLapTaggings().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -7348,6 +7460,13 @@ class DbLap {
     var result = BoolResult();
     {
       result = await DbEvent().select().lapsId.equals(id).delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result =
+          await DbLapTagging().select().lapsId.equals(id).delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -8154,6 +8273,11 @@ class DbLapFilterBuilder extends SearchCriteria {
       if (preload) {
         if (preloadFields == null || preloadFields.contains('plDbEvents')) {
           obj.plDbEvents = obj.plDbEvents ?? await obj.getDbEvents().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbLapTaggings')) {
+          obj.plDbLapTaggings =
+              obj.plDbLapTaggings ?? await obj.getDbLapTaggings().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -14383,6 +14507,34 @@ class DbTag {
   }
   // END RELATIONSHIPS (DbTag)
 
+// COLLECTIONS & VIRTUALS (DbTag)
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbLapTagging> plDbLapTaggings;
+
+  /// get DbLapTagging(s) filtered by tagsId=id
+  DbLapTaggingFilterBuilder getDbLapTaggings(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbLapTagging()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .tagsId
+        .equals(id)
+        .and;
+  }
+
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbActivityTagging> plDbActivityTaggings;
+
+  /// get DbActivityTagging(s) filtered by tagsId=id
+  DbActivityTaggingFilterBuilder getDbActivityTaggings(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbActivityTagging()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .tagsId
+        .equals(id)
+        .and;
+  }
+// END COLLECTIONS & VIRTUALS (DbTag)
+
   static const bool _softDeleteActivated = false;
   DbTagManager __mnDbTag;
 
@@ -14437,6 +14589,15 @@ class DbTag {
       map['tagGroupsId'] = tagGroupsId;
     }
 
+// COLLECTIONS (DbTag)
+    if (!forQuery) {
+      map['DbLapTaggings'] = await getDbLapTaggings().toMapList();
+    }
+    if (!forQuery) {
+      map['DbActivityTaggings'] = await getDbActivityTaggings().toMapList();
+    }
+// END COLLECTIONS (DbTag)
+
     return map;
   }
 
@@ -14490,6 +14651,20 @@ class DbTag {
     final List<DbTag> objList = <DbTag>[];
     for (final map in data) {
       final obj = DbTag.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null ||
+            preloadFields.contains('plDbLapTaggings')) {
+          obj.plDbLapTaggings =
+              obj.plDbLapTaggings ?? await obj.getDbLapTaggings().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbActivityTaggings')) {
+          obj.plDbActivityTaggings = obj.plDbActivityTaggings ??
+              await obj.getDbActivityTaggings().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
@@ -14593,6 +14768,24 @@ class DbTag {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete DbTag invoked (id=$id)');
+    var result = BoolResult();
+    {
+      result =
+          await DbLapTagging().select().tagsId.equals(id).delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbActivityTagging()
+          .select()
+          .tagsId
+          .equals(id)
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
     if (!_softDeleteActivated || hardDelete) {
       return _mnDbTag
           .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
@@ -15139,6 +15332,20 @@ class DbTagFilterBuilder extends SearchCriteria {
     DbTag obj;
     if (data.isNotEmpty) {
       obj = DbTag.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null ||
+            preloadFields.contains('plDbLapTaggings')) {
+          obj.plDbLapTaggings =
+              obj.plDbLapTaggings ?? await obj.getDbLapTaggings().toList();
+        }
+        if (preloadFields == null ||
+            preloadFields.contains('plDbActivityTaggings')) {
+          obj.plDbActivityTaggings = obj.plDbActivityTaggings ??
+              await obj.getDbActivityTaggings().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
 
       // RELATIONSHIPS PRELOAD
       if (preload) {
@@ -16444,6 +16651,2134 @@ class DbTagGroupManager extends SqfEntityProvider {
 }
 
 //endregion DbTagGroupManager
+// region DbLapTagging
+class DbLapTagging {
+  DbLapTagging({this.id, this.system, this.tagsId, this.lapsId}) {
+    _setDefaultValues();
+  }
+  DbLapTagging.withFields(this.system, this.tagsId, this.lapsId) {
+    _setDefaultValues();
+  }
+  DbLapTagging.withId(this.id, this.system, this.tagsId, this.lapsId) {
+    _setDefaultValues();
+  }
+  DbLapTagging.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['system'] != null) system = o['system'] == 1 || o['system'] == true;
+    tagsId = o['tagsId'] as int;
+
+    lapsId = o['lapsId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbTag = o['DbTag'] != null
+        ? DbTag.fromMap(o['DbTag'] as Map<String, dynamic>)
+        : null;
+    plDbLap = o['DbLap'] != null
+        ? DbLap.fromMap(o['DbLap'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbLapTagging)
+  int id;
+  bool system;
+  int tagsId;
+  int lapsId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbLapTagging)
+
+// RELATIONSHIPS (DbLapTagging)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbTag plDbTag;
+
+  /// get DbTag By TagsId
+  Future<DbTag> getDbTag() async {
+    final _obj = await DbTag().getById(tagsId);
+    return _obj;
+  }
+
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbLap plDbLap;
+
+  /// get DbLap By LapsId
+  Future<DbLap> getDbLap() async {
+    final _obj = await DbLap().getById(lapsId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbLapTagging)
+
+  static const bool _softDeleteActivated = false;
+  DbLapTaggingManager __mnDbLapTagging;
+
+  DbLapTaggingManager get _mnDbLapTagging {
+    return __mnDbLapTagging = __mnDbLapTagging ?? DbLapTaggingManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (tagsId != null) {
+      map['tagsId'] = tagsId;
+    }
+
+    if (lapsId != null) {
+      map['lapsId'] = lapsId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (tagsId != null) {
+      map['tagsId'] = tagsId;
+    }
+
+    if (lapsId != null) {
+      map['lapsId'] = lapsId;
+    }
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [id, system, tagsId, lapsId];
+  }
+
+  static Future<List<DbLapTagging>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbLapTagging.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbLapTagging>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbLapTagging>[];
+    try {
+      objList = list
+          .map((dblaptagging) =>
+              DbLapTagging.fromMap(dblaptagging as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbLapTagging.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbLapTagging>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbLapTagging.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbLapTagging>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbLapTagging> objList = <DbLapTagging>[];
+    for (final map in data) {
+      final obj = DbLapTagging.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbTag')) {
+          obj.plDbTag = obj.plDbTag ?? await obj.getDbTag();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbLap')) {
+          obj.plDbLap = obj.plDbLap ?? await obj.getDbLap();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbLapTagging by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbLapTagging if exist, otherwise returns null
+  Future<DbLapTagging> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbLapTagging obj;
+    final data = await _mnDbLapTagging.getById(id);
+    if (data.length != 0) {
+      obj = DbLapTagging.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbLapTagging) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbLapTagging.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbLapTagging. Returns a new Primary Key value of DbLapTagging
+
+  /// <returns>Returns a new Primary Key value of DbLapTagging
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbLapTagging> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(List<DbLapTagging> dblaptaggings) async {
+    final results = _mnDbLapTagging.saveAll(
+        'INSERT OR REPLACE INTO lapTaggings (id,  system, tagsId, lapsId)  VALUES (?,?,?,?)',
+        dblaptaggings);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbLapTagging.rawInsert(
+              'INSERT OR REPLACE INTO lapTaggings (id,  system, tagsId, lapsId)  VALUES (?,?,?,?)',
+              [id, system, tagsId, lapsId]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbLapTagging id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbLapTagging id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbLapTagging Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbLapTagging>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(List<DbLapTagging> dblaptaggings) async {
+    final results = await _mnDbLapTagging.rawInsertAll(
+        'INSERT OR REPLACE INTO lapTaggings (id,  system, tagsId, lapsId)  VALUES (?,?,?,?)',
+        dblaptaggings);
+    return results;
+  }
+
+  /// Deletes DbLapTagging
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbLapTagging invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbLapTagging
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbLapTagging.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbLapTaggingFilterBuilder _Select;
+  DbLapTaggingFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbLapTaggingFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbLapTaggingFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbLapTaggingFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    tagsId = tagsId ?? 0;
+    lapsId = lapsId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dblaptagging
+
+// region DbLapTaggingField
+class DbLapTaggingField extends SearchCriteria {
+  DbLapTaggingField(this.dblaptaggingFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbLapTaggingFilterBuilder dblaptaggingFB;
+
+  DbLapTaggingField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbLapTaggingFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.EQuals, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.NotEQuals, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder isNull() {
+    dblaptaggingFB._addedBlocks = setCriteria(
+        0,
+        dblaptaggingFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dblaptaggingFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dblaptaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblaptaggingFB._addedBlocks);
+      _waitingNot = '';
+      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+          dblaptaggingFB._addedBlocks.retVal;
+    }
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dblaptaggingFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dblaptaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblaptaggingFB._addedBlocks);
+      _waitingNot = '';
+      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+          dblaptaggingFB._addedBlocks.retVal;
+      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+          dblaptaggingFB._addedBlocks.retVal;
+    }
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dblaptaggingFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dblaptaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblaptaggingFB._addedBlocks);
+      _waitingNot = '';
+      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+          dblaptaggingFB._addedBlocks.retVal;
+    }
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dblaptaggingFB._addedBlocks = setCriteria(
+          pFirst,
+          dblaptaggingFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblaptaggingFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dblaptaggingFB._addedBlocks = setCriteria(
+            pFirst,
+            dblaptaggingFB.parameters,
+            param,
+            SqlSyntax.LessThan,
+            dblaptaggingFB._addedBlocks);
+      } else {
+        dblaptaggingFB._addedBlocks = setCriteria(
+            pFirst,
+            dblaptaggingFB.parameters,
+            param,
+            SqlSyntax.GreaterThanOrEquals,
+            dblaptaggingFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dblaptaggingFB._addedBlocks = setCriteria(
+            pLast,
+            dblaptaggingFB.parameters,
+            param,
+            SqlSyntax.GreaterThan,
+            dblaptaggingFB._addedBlocks);
+      } else {
+        dblaptaggingFB._addedBlocks = setCriteria(
+            pLast,
+            dblaptaggingFB.parameters,
+            param,
+            SqlSyntax.LessThanOrEquals,
+            dblaptaggingFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.GreaterThan, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.LessThan, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.LessThan, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.GreaterThan, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder inValues(dynamic pValue) {
+    dblaptaggingFB._addedBlocks = setCriteria(
+        pValue,
+        dblaptaggingFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+}
+// endregion DbLapTaggingField
+
+// region DbLapTaggingFilterBuilder
+class DbLapTaggingFilterBuilder extends SearchCriteria {
+  DbLapTaggingFilterBuilder(DbLapTagging obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbLapTagging _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbLapTaggingFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbLapTaggingFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbLapTaggingFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbLapTaggingFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbLapTaggingFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbLapTaggingFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbLapTaggingFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbLapTaggingFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbLapTaggingFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbLapTaggingFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbLapTaggingField setField(
+      DbLapTaggingField field, String colName, DbType dbtype) {
+    return DbLapTaggingField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbLapTaggingField _id;
+  DbLapTaggingField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbLapTaggingField _system;
+  DbLapTaggingField get system {
+    return _system = setField(_system, 'system', DbType.bool);
+  }
+
+  DbLapTaggingField _tagsId;
+  DbLapTaggingField get tagsId {
+    return _tagsId = setField(_tagsId, 'tagsId', DbType.integer);
+  }
+
+  DbLapTaggingField _lapsId;
+  DbLapTaggingField get lapsId {
+    return _lapsId = setField(_lapsId, 'lapsId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbLapTagging._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbLapTagging> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbLapTagging._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbLapTagging.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbLapTagging.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from lapTaggings ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbLapTagging.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbLapTaggingObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbLapTagging>
+  Future<DbLapTagging> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbLapTagging.toList(qparams);
+    final data = await objFuture;
+    DbLapTagging obj;
+    if (data.isNotEmpty) {
+      obj = DbLapTagging.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbTag')) {
+          obj.plDbTag = obj.plDbTag ?? await obj.getDbTag();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbLap')) {
+          obj.plDbLap = obj.plDbLap ?? await obj.getDbLap();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dblaptaggingCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dblaptaggingsFuture = await _obj._mnDbLapTagging.toList(qparams);
+    final int count = dblaptaggingsFuture[0]['CNT'] as int;
+    if (dblaptaggingCount != null) {
+      dblaptaggingCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbLapTagging>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbLapTagging>
+  Future<List<DbLapTagging>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbLapTagging> dblaptaggingsData =
+        await DbLapTagging.fromMapList(data, preload: preload);
+    return dblaptaggingsData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbLapTagging.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbLapTagging>>
+  Future<List<DropdownMenuItem<DbLapTagging>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbLapTagging>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dblaptaggingsFuture = _obj._mnDbLapTagging.toList(qparams);
+
+    final data = await dblaptaggingsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbLapTagging>> items = []..add(DropdownMenuItem(
+        value: DbLapTagging(),
+        child: Text('Select DbLapTagging'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbLapTagging.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dblaptaggingsFuture = _obj._mnDbLapTagging.toList(qparams);
+
+    final data = await dblaptaggingsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbLapTagging'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbLapTagging.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbLapTagging.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbLapTagging.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbLapTagging.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbLapTaggingFilterBuilder
+
+// region DbLapTaggingFields
+class DbLapTaggingFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fSystem;
+  static TableField get system {
+    return _fSystem =
+        _fSystem ?? SqlSyntax.setField(_fSystem, 'system', DbType.bool);
+  }
+
+  static TableField _fTagsId;
+  static TableField get tagsId {
+    return _fTagsId =
+        _fTagsId ?? SqlSyntax.setField(_fTagsId, 'tagsId', DbType.integer);
+  }
+
+  static TableField _fLapsId;
+  static TableField get lapsId {
+    return _fLapsId =
+        _fLapsId ?? SqlSyntax.setField(_fLapsId, 'lapsId', DbType.integer);
+  }
+}
+// endregion DbLapTaggingFields
+
+//region DbLapTaggingManager
+class DbLapTaggingManager extends SqfEntityProvider {
+  DbLapTaggingManager()
+      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'lapTaggings';
+  static String _colId = 'id';
+}
+
+//endregion DbLapTaggingManager
+// region DbActivityTagging
+class DbActivityTagging {
+  DbActivityTagging({this.id, this.system, this.tagsId, this.activitiesId}) {
+    _setDefaultValues();
+  }
+  DbActivityTagging.withFields(this.system, this.tagsId, this.activitiesId) {
+    _setDefaultValues();
+  }
+  DbActivityTagging.withId(
+      this.id, this.system, this.tagsId, this.activitiesId) {
+    _setDefaultValues();
+  }
+  DbActivityTagging.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['system'] != null) system = o['system'] == 1 || o['system'] == true;
+    tagsId = o['tagsId'] as int;
+
+    activitiesId = o['activitiesId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbTag = o['DbTag'] != null
+        ? DbTag.fromMap(o['DbTag'] as Map<String, dynamic>)
+        : null;
+    plDbActivity = o['DbActivity'] != null
+        ? DbActivity.fromMap(o['DbActivity'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbActivityTagging)
+  int id;
+  bool system;
+  int tagsId;
+  int activitiesId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbActivityTagging)
+
+// RELATIONSHIPS (DbActivityTagging)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbTag plDbTag;
+
+  /// get DbTag By TagsId
+  Future<DbTag> getDbTag() async {
+    final _obj = await DbTag().getById(tagsId);
+    return _obj;
+  }
+
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbActivity plDbActivity;
+
+  /// get DbActivity By ActivitiesId
+  Future<DbActivity> getDbActivity() async {
+    final _obj = await DbActivity().getById(activitiesId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbActivityTagging)
+
+  static const bool _softDeleteActivated = false;
+  DbActivityTaggingManager __mnDbActivityTagging;
+
+  DbActivityTaggingManager get _mnDbActivityTagging {
+    return __mnDbActivityTagging =
+        __mnDbActivityTagging ?? DbActivityTaggingManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (tagsId != null) {
+      map['tagsId'] = tagsId;
+    }
+
+    if (activitiesId != null) {
+      map['activitiesId'] = activitiesId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (tagsId != null) {
+      map['tagsId'] = tagsId;
+    }
+
+    if (activitiesId != null) {
+      map['activitiesId'] = activitiesId;
+    }
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [id, system, tagsId, activitiesId];
+  }
+
+  static Future<List<DbActivityTagging>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbActivityTagging.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbActivityTagging>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbActivityTagging>[];
+    try {
+      objList = list
+          .map((dbactivitytagging) => DbActivityTagging.fromMap(
+              dbactivitytagging as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbActivityTagging.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbActivityTagging>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbActivityTagging.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbActivityTagging>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbActivityTagging> objList = <DbActivityTagging>[];
+    for (final map in data) {
+      final obj = DbActivityTagging.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbTag')) {
+          obj.plDbTag = obj.plDbTag ?? await obj.getDbTag();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbActivity')) {
+          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbActivityTagging by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbActivityTagging if exist, otherwise returns null
+  Future<DbActivityTagging> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbActivityTagging obj;
+    final data = await _mnDbActivityTagging.getById(id);
+    if (data.length != 0) {
+      obj = DbActivityTagging.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbActivityTagging) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbActivityTagging.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbActivityTagging. Returns a new Primary Key value of DbActivityTagging
+
+  /// <returns>Returns a new Primary Key value of DbActivityTagging
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbActivityTagging> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(
+      List<DbActivityTagging> dbactivitytaggings) async {
+    final results = _mnDbActivityTagging.saveAll(
+        'INSERT OR REPLACE INTO activityTaggings (id,  system, tagsId, activitiesId)  VALUES (?,?,?,?)',
+        dbactivitytaggings);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbActivityTagging.rawInsert(
+              'INSERT OR REPLACE INTO activityTaggings (id,  system, tagsId, activitiesId)  VALUES (?,?,?,?)',
+              [id, system, tagsId, activitiesId]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbActivityTagging id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false,
+            errorMessage: 'DbActivityTagging id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage:
+              'DbActivityTagging Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbActivityTagging>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(
+      List<DbActivityTagging> dbactivitytaggings) async {
+    final results = await _mnDbActivityTagging.rawInsertAll(
+        'INSERT OR REPLACE INTO activityTaggings (id,  system, tagsId, activitiesId)  VALUES (?,?,?,?)',
+        dbactivitytaggings);
+    return results;
+  }
+
+  /// Deletes DbActivityTagging
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbActivityTagging invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbActivityTagging
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbActivityTagging.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbActivityTaggingFilterBuilder _Select;
+  DbActivityTaggingFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbActivityTaggingFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbActivityTaggingFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbActivityTaggingFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    tagsId = tagsId ?? 0;
+    activitiesId = activitiesId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbactivitytagging
+
+// region DbActivityTaggingField
+class DbActivityTaggingField extends SearchCriteria {
+  DbActivityTaggingField(this.dbactivitytaggingFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbActivityTaggingFilterBuilder dbactivitytaggingFB;
+
+  DbActivityTaggingField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbActivityTaggingFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbactivitytaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.EQuals, dbactivitytaggingFB._addedBlocks)
+        : setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.NotEQuals, dbactivitytaggingFB._addedBlocks);
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbactivitytaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbactivitytaggingFB._addedBlocks)
+        : setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbactivitytaggingFB._addedBlocks);
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder isNull() {
+    dbactivitytaggingFB._addedBlocks = setCriteria(
+        0,
+        dbactivitytaggingFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbactivitytaggingFB._addedBlocks);
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbactivitytaggingFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbactivitytaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbactivitytaggingFB._addedBlocks);
+      _waitingNot = '';
+      dbactivitytaggingFB
+              ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+          dbactivitytaggingFB._addedBlocks.retVal;
+    }
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbactivitytaggingFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbactivitytaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbactivitytaggingFB._addedBlocks);
+      _waitingNot = '';
+      dbactivitytaggingFB
+              ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+          dbactivitytaggingFB._addedBlocks.retVal;
+      dbactivitytaggingFB
+              ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+          dbactivitytaggingFB._addedBlocks.retVal;
+    }
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbactivitytaggingFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbactivitytaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbactivitytaggingFB._addedBlocks);
+      _waitingNot = '';
+      dbactivitytaggingFB
+              ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+          dbactivitytaggingFB._addedBlocks.retVal;
+    }
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbactivitytaggingFB._addedBlocks = setCriteria(
+          pFirst,
+          dbactivitytaggingFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbactivitytaggingFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbactivitytaggingFB._addedBlocks = setCriteria(
+            pFirst,
+            dbactivitytaggingFB.parameters,
+            param,
+            SqlSyntax.LessThan,
+            dbactivitytaggingFB._addedBlocks);
+      } else {
+        dbactivitytaggingFB._addedBlocks = setCriteria(
+            pFirst,
+            dbactivitytaggingFB.parameters,
+            param,
+            SqlSyntax.GreaterThanOrEquals,
+            dbactivitytaggingFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbactivitytaggingFB._addedBlocks = setCriteria(
+            pLast,
+            dbactivitytaggingFB.parameters,
+            param,
+            SqlSyntax.GreaterThan,
+            dbactivitytaggingFB._addedBlocks);
+      } else {
+        dbactivitytaggingFB._addedBlocks = setCriteria(
+            pLast,
+            dbactivitytaggingFB.parameters,
+            param,
+            SqlSyntax.LessThanOrEquals,
+            dbactivitytaggingFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbactivitytaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.GreaterThan, dbactivitytaggingFB._addedBlocks)
+        : setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbactivitytaggingFB._addedBlocks);
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbactivitytaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.LessThan, dbactivitytaggingFB._addedBlocks)
+        : setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbactivitytaggingFB._addedBlocks);
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbactivitytaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbactivitytaggingFB._addedBlocks)
+        : setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.LessThan, dbactivitytaggingFB._addedBlocks);
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbactivitytaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbactivitytaggingFB._addedBlocks)
+        : setCriteria(pValue, dbactivitytaggingFB.parameters, param,
+            SqlSyntax.GreaterThan, dbactivitytaggingFB._addedBlocks);
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+
+  DbActivityTaggingFilterBuilder inValues(dynamic pValue) {
+    dbactivitytaggingFB._addedBlocks = setCriteria(
+        pValue,
+        dbactivitytaggingFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbactivitytaggingFB._addedBlocks);
+    _waitingNot = '';
+    dbactivitytaggingFB
+            ._addedBlocks.needEndBlock[dbactivitytaggingFB._blockIndex] =
+        dbactivitytaggingFB._addedBlocks.retVal;
+    return dbactivitytaggingFB;
+  }
+}
+// endregion DbActivityTaggingField
+
+// region DbActivityTaggingFilterBuilder
+class DbActivityTaggingFilterBuilder extends SearchCriteria {
+  DbActivityTaggingFilterBuilder(DbActivityTagging obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbActivityTagging _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbActivityTaggingFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbActivityTaggingFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbActivityTaggingFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbActivityTaggingFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbActivityTaggingFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbActivityTaggingFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbActivityTaggingFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbActivityTaggingFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbActivityTaggingFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbActivityTaggingFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbActivityTaggingField setField(
+      DbActivityTaggingField field, String colName, DbType dbtype) {
+    return DbActivityTaggingField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbActivityTaggingField _id;
+  DbActivityTaggingField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbActivityTaggingField _system;
+  DbActivityTaggingField get system {
+    return _system = setField(_system, 'system', DbType.bool);
+  }
+
+  DbActivityTaggingField _tagsId;
+  DbActivityTaggingField get tagsId {
+    return _tagsId = setField(_tagsId, 'tagsId', DbType.integer);
+  }
+
+  DbActivityTaggingField _activitiesId;
+  DbActivityTaggingField get activitiesId {
+    return _activitiesId =
+        setField(_activitiesId, 'activitiesId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbActivityTagging._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbActivityTagging> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbActivityTagging._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbActivityTagging
+          .updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbActivityTagging.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from activityTaggings ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbActivityTagging.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbActivityTaggingObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbActivityTagging>
+  Future<DbActivityTagging> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbActivityTagging.toList(qparams);
+    final data = await objFuture;
+    DbActivityTagging obj;
+    if (data.isNotEmpty) {
+      obj = DbActivityTagging.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbTag')) {
+          obj.plDbTag = obj.plDbTag ?? await obj.getDbTag();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbActivity')) {
+          obj.plDbActivity = obj.plDbActivity ?? await obj.getDbActivity();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount(
+      [VoidCallback Function(int c) dbactivitytaggingCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbactivitytaggingsFuture =
+        await _obj._mnDbActivityTagging.toList(qparams);
+    final int count = dbactivitytaggingsFuture[0]['CNT'] as int;
+    if (dbactivitytaggingCount != null) {
+      dbactivitytaggingCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbActivityTagging>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbActivityTagging>
+  Future<List<DbActivityTagging>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbActivityTagging> dbactivitytaggingsData =
+        await DbActivityTagging.fromMapList(data, preload: preload);
+    return dbactivitytaggingsData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbActivityTagging.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbActivityTagging>>
+  Future<List<DropdownMenuItem<DbActivityTagging>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbActivityTagging>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbactivitytaggingsFuture = _obj._mnDbActivityTagging.toList(qparams);
+
+    final data = await dbactivitytaggingsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbActivityTagging>> items = []
+      ..add(DropdownMenuItem(
+        value: DbActivityTagging(),
+        child: Text('Select DbActivityTagging'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbActivityTagging.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbactivitytaggingsFuture = _obj._mnDbActivityTagging.toList(qparams);
+
+    final data = await dbactivitytaggingsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbActivityTagging'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbActivityTagging.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbActivityTagging.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbActivityTagging.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbActivityTagging.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbActivityTaggingFilterBuilder
+
+// region DbActivityTaggingFields
+class DbActivityTaggingFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fSystem;
+  static TableField get system {
+    return _fSystem =
+        _fSystem ?? SqlSyntax.setField(_fSystem, 'system', DbType.bool);
+  }
+
+  static TableField _fTagsId;
+  static TableField get tagsId {
+    return _fTagsId =
+        _fTagsId ?? SqlSyntax.setField(_fTagsId, 'tagsId', DbType.integer);
+  }
+
+  static TableField _fActivitiesId;
+  static TableField get activitiesId {
+    return _fActivitiesId = _fActivitiesId ??
+        SqlSyntax.setField(_fActivitiesId, 'activitiesId', DbType.integer);
+  }
+}
+// endregion DbActivityTaggingFields
+
+//region DbActivityTaggingManager
+class DbActivityTaggingManager extends SqfEntityProvider {
+  DbActivityTaggingManager()
+      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'activityTaggings';
+  static String _colId = 'id';
+}
+
+//endregion DbActivityTaggingManager
 class DbEncrateiaSequenceManager extends SqfEntityProvider {
   DbEncrateiaSequenceManager() : super(DbEncrateia());
 }

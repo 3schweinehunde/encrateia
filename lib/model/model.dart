@@ -338,6 +338,45 @@ const tableTag = SqfEntityTable(
   ],
 );
 
+const tableLapTagging = SqfEntityTable(
+  tableName: 'lapTaggings',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: false,
+  modelName: 'DbLapTagging',
+  fields: [
+    SqfEntityField('system', DbType.bool),
+    SqfEntityFieldRelationship(
+        parentTable: tableTag,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+    SqfEntityFieldRelationship(
+        parentTable: tableLap,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+  ],
+);
+
+const tableActivityTagging = SqfEntityTable(
+  tableName: 'activityTaggings',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: false,
+  modelName: 'DbActivityTagging',
+  fields: [
+    SqfEntityField('system', DbType.bool),
+    SqfEntityFieldRelationship(
+        parentTable: tableTag,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+    SqfEntityFieldRelationship(
+        parentTable: tableActivity,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+  ],
+);
+
+
 @SqfEntityBuilder(encrateia)
 const encrateia = SqfEntityModel(
   modelName: 'DbEncrateia', // optional
@@ -354,6 +393,8 @@ const encrateia = SqfEntityModel(
     tablePowerZone,
     tableTag,
     tableTagGroup,
+    tableLapTagging,
+    tableActivityTagging,
   ],
   sequences: [],
   bundledDatabasePath: null,
