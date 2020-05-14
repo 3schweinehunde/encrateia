@@ -304,6 +304,40 @@ const tableHeartRateZone = SqfEntityTable(
   ],
 );
 
+const tableTagGroup = SqfEntityTable(
+  tableName: 'tagGroups',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: false,
+  modelName: 'DbTagGroup',
+  fields: [
+    SqfEntityField('name', DbType.text),
+    SqfEntityField('color', DbType.integer),
+    SqfEntityField('system', DbType.bool),
+    SqfEntityFieldRelationship(
+        parentTable: tableAthlete,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+  ],
+);
+
+const tableTag = SqfEntityTable(
+  tableName: 'tags',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: false,
+  modelName: 'DbTag',
+  fields: [
+    SqfEntityField('name', DbType.text),
+    SqfEntityField('color', DbType.integer),
+    SqfEntityField('system', DbType.bool),
+    SqfEntityFieldRelationship(
+        parentTable: tableTagGroup,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+  ],
+);
+
 @SqfEntityBuilder(encrateia)
 const encrateia = SqfEntityModel(
   modelName: 'DbEncrateia', // optional
@@ -318,6 +352,8 @@ const encrateia = SqfEntityModel(
     tableHeartRateZone,
     tablePowerZoneSchema,
     tablePowerZone,
+    tableTag,
+    tableTagGroup,
   ],
   sequences: [],
   bundledDatabasePath: null,

@@ -396,6 +396,60 @@ class TableDbPowerZone extends SqfEntityTableBase {
     return _instance = _instance ?? TableDbPowerZone();
   }
 }
+
+// DbTag TABLE
+class TableDbTag extends SqfEntityTableBase {
+  TableDbTag() {
+    // declare properties of EntityTable
+    tableName = 'tags';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('name', DbType.text),
+      SqfEntityFieldBase('color', DbType.integer),
+      SqfEntityFieldBase('system', DbType.bool),
+      SqfEntityFieldRelationshipBase(
+          TableDbTagGroup.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'tagGroupsId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbTag();
+  }
+}
+
+// DbTagGroup TABLE
+class TableDbTagGroup extends SqfEntityTableBase {
+  TableDbTagGroup() {
+    // declare properties of EntityTable
+    tableName = 'tagGroups';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('name', DbType.text),
+      SqfEntityFieldBase('color', DbType.integer),
+      SqfEntityFieldBase('system', DbType.bool),
+      SqfEntityFieldRelationshipBase(
+          TableDbAthlete.getInstance, DeleteRule.CASCADE,
+          defaultValue: 0, fieldName: 'athletesId'),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbTagGroup();
+  }
+}
 // END TABLES
 
 // BEGIN SEQUENCES
@@ -415,6 +469,8 @@ class DbEncrateia extends SqfEntityModelProvider {
       TableDbHeartRateZone.getInstance,
       TableDbPowerZoneSchema.getInstance,
       TableDbPowerZone.getInstance,
+      TableDbTag.getInstance,
+      TableDbTagGroup.getInstance,
     ];
 
     bundledDatabasePath = encrateia
@@ -552,6 +608,19 @@ class DbAthlete {
         .equals(id)
         .and;
   }
+
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbTagGroup> plDbTagGroups;
+
+  /// get DbTagGroup(s) filtered by athletesId=id
+  DbTagGroupFilterBuilder getDbTagGroups(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbTagGroup()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .athletesId
+        .equals(id)
+        .and;
+  }
 // END COLLECTIONS & VIRTUALS (DbAthlete)
 
   static const bool _softDeleteActivated = false;
@@ -662,6 +731,9 @@ class DbAthlete {
     if (!forQuery) {
       map['DbPowerZoneSchemas'] = await getDbPowerZoneSchemas().toMapList();
     }
+    if (!forQuery) {
+      map['DbTagGroups'] = await getDbTagGroups().toMapList();
+    }
 // END COLLECTIONS (DbAthlete)
 
     return map;
@@ -751,6 +823,10 @@ class DbAthlete {
             preloadFields.contains('plDbPowerZoneSchemas')) {
           obj.plDbPowerZoneSchemas = obj.plDbPowerZoneSchemas ??
               await obj.getDbPowerZoneSchemas().toList();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbTagGroups')) {
+          obj.plDbTagGroups =
+              obj.plDbTagGroups ?? await obj.getDbTagGroups().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -892,6 +968,13 @@ class DbAthlete {
           .athletesId
           .equals(id)
           .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result =
+          await DbTagGroup().select().athletesId.equals(id).delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -1491,6 +1574,10 @@ class DbAthleteFilterBuilder extends SearchCriteria {
             preloadFields.contains('plDbPowerZoneSchemas')) {
           obj.plDbPowerZoneSchemas = obj.plDbPowerZoneSchemas ??
               await obj.getDbPowerZoneSchemas().toList();
+        }
+        if (preloadFields == null || preloadFields.contains('plDbTagGroups')) {
+          obj.plDbTagGroups =
+              obj.plDbTagGroups ?? await obj.getDbTagGroups().toList();
         }
       } // END RELATIONSHIPS PRELOAD
 
@@ -14250,6 +14337,2113 @@ class DbPowerZoneManager extends SqfEntityProvider {
 }
 
 //endregion DbPowerZoneManager
+// region DbTag
+class DbTag {
+  DbTag({this.id, this.name, this.color, this.system, this.tagGroupsId}) {
+    _setDefaultValues();
+  }
+  DbTag.withFields(this.name, this.color, this.system, this.tagGroupsId) {
+    _setDefaultValues();
+  }
+  DbTag.withId(this.id, this.name, this.color, this.system, this.tagGroupsId) {
+    _setDefaultValues();
+  }
+  DbTag.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['name'] != null) name = o['name'] as String;
+    if (o['color'] != null) color = o['color'] as int;
+    if (o['system'] != null) system = o['system'] == 1 || o['system'] == true;
+    tagGroupsId = o['tagGroupsId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbTagGroup = o['DbTagGroup'] != null
+        ? DbTagGroup.fromMap(o['DbTagGroup'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbTag)
+  int id;
+  String name;
+  int color;
+  bool system;
+  int tagGroupsId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbTag)
+
+// RELATIONSHIPS (DbTag)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbTagGroup plDbTagGroup;
+
+  /// get DbTagGroup By TagGroupsId
+  Future<DbTagGroup> getDbTagGroup() async {
+    final _obj = await DbTagGroup().getById(tagGroupsId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbTag)
+
+  static const bool _softDeleteActivated = false;
+  DbTagManager __mnDbTag;
+
+  DbTagManager get _mnDbTag {
+    return __mnDbTag = __mnDbTag ?? DbTagManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (color != null) {
+      map['color'] = color;
+    }
+
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (tagGroupsId != null) {
+      map['tagGroupsId'] = tagGroupsId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (color != null) {
+      map['color'] = color;
+    }
+
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (tagGroupsId != null) {
+      map['tagGroupsId'] = tagGroupsId;
+    }
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [id, name, color, system, tagGroupsId];
+  }
+
+  static Future<List<DbTag>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print('SQFENTITY ERROR DbTag.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbTag>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbTag>[];
+    try {
+      objList = list
+          .map((dbtag) => DbTag.fromMap(dbtag as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print('SQFENTITY ERROR DbTag.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbTag>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbTag.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbTag>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbTag> objList = <DbTag>[];
+    for (final map in data) {
+      final obj = DbTag.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbTagGroup')) {
+          obj.plDbTagGroup = obj.plDbTagGroup ?? await obj.getDbTagGroup();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbTag by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbTag if exist, otherwise returns null
+  Future<DbTag> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbTag obj;
+    final data = await _mnDbTag.getById(id);
+    if (data.length != 0) {
+      obj = DbTag.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbTag) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbTag.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbTag. Returns a new Primary Key value of DbTag
+
+  /// <returns>Returns a new Primary Key value of DbTag
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbTag> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(List<DbTag> dbtags) async {
+    final results = _mnDbTag.saveAll(
+        'INSERT OR REPLACE INTO tags (id,  name, color, system, tagGroupsId)  VALUES (?,?,?,?,?)',
+        dbtags);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbTag.rawInsert(
+              'INSERT OR REPLACE INTO tags (id,  name, color, system, tagGroupsId)  VALUES (?,?,?,?,?)',
+              [id, name, color, system, tagGroupsId]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true, successMessage: 'DbTag id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbTag id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbTag Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbTag>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(List<DbTag> dbtags) async {
+    final results = await _mnDbTag.rawInsertAll(
+        'INSERT OR REPLACE INTO tags (id,  name, color, system, tagGroupsId)  VALUES (?,?,?,?,?)',
+        dbtags);
+    return results;
+  }
+
+  /// Deletes DbTag
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbTag invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbTag
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbTag.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbTagFilterBuilder _Select;
+  DbTagFilterBuilder select({List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbTagFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbTagFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbTagFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    tagGroupsId = tagGroupsId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbtag
+
+// region DbTagField
+class DbTagField extends SearchCriteria {
+  DbTagField(this.dbtagFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbTagFilterBuilder dbtagFB;
+
+  DbTagField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbTagFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbtagFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtagFB.parameters, param, SqlSyntax.EQuals,
+            dbtagFB._addedBlocks)
+        : setCriteria(pValue, dbtagFB.parameters, param, SqlSyntax.NotEQuals,
+            dbtagFB._addedBlocks);
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbtagFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtagFB.parameters, param, SqlSyntax.EQualsOrNull,
+            dbtagFB._addedBlocks)
+        : setCriteria(pValue, dbtagFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbtagFB._addedBlocks);
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder isNull() {
+    dbtagFB._addedBlocks = setCriteria(
+        0,
+        dbtagFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbtagFB._addedBlocks);
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbtagFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbtagFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbtagFB._addedBlocks);
+      _waitingNot = '';
+      dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+          dbtagFB._addedBlocks.retVal;
+    }
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbtagFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbtagFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbtagFB._addedBlocks);
+      _waitingNot = '';
+      dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+          dbtagFB._addedBlocks.retVal;
+      dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+          dbtagFB._addedBlocks.retVal;
+    }
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbtagFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbtagFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbtagFB._addedBlocks);
+      _waitingNot = '';
+      dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+          dbtagFB._addedBlocks.retVal;
+    }
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbtagFB._addedBlocks = setCriteria(
+          pFirst,
+          dbtagFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbtagFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbtagFB._addedBlocks = setCriteria(pFirst, dbtagFB.parameters, param,
+            SqlSyntax.LessThan, dbtagFB._addedBlocks);
+      } else {
+        dbtagFB._addedBlocks = setCriteria(pFirst, dbtagFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbtagFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbtagFB._addedBlocks = setCriteria(pLast, dbtagFB.parameters, param,
+            SqlSyntax.GreaterThan, dbtagFB._addedBlocks);
+      } else {
+        dbtagFB._addedBlocks = setCriteria(pLast, dbtagFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbtagFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbtagFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtagFB.parameters, param, SqlSyntax.GreaterThan,
+            dbtagFB._addedBlocks)
+        : setCriteria(pValue, dbtagFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbtagFB._addedBlocks);
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbtagFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtagFB.parameters, param, SqlSyntax.LessThan,
+            dbtagFB._addedBlocks)
+        : setCriteria(pValue, dbtagFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbtagFB._addedBlocks);
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbtagFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtagFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbtagFB._addedBlocks)
+        : setCriteria(pValue, dbtagFB.parameters, param, SqlSyntax.LessThan,
+            dbtagFB._addedBlocks);
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbtagFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtagFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbtagFB._addedBlocks)
+        : setCriteria(pValue, dbtagFB.parameters, param, SqlSyntax.GreaterThan,
+            dbtagFB._addedBlocks);
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+
+  DbTagFilterBuilder inValues(dynamic pValue) {
+    dbtagFB._addedBlocks = setCriteria(
+        pValue,
+        dbtagFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbtagFB._addedBlocks);
+    _waitingNot = '';
+    dbtagFB._addedBlocks.needEndBlock[dbtagFB._blockIndex] =
+        dbtagFB._addedBlocks.retVal;
+    return dbtagFB;
+  }
+}
+// endregion DbTagField
+
+// region DbTagFilterBuilder
+class DbTagFilterBuilder extends SearchCriteria {
+  DbTagFilterBuilder(DbTag obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbTag _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbTagFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbTagFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbTagFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbTagFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbTagFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbTagFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbTagFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbTagFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbTagFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbTagFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbTagField setField(DbTagField field, String colName, DbType dbtype) {
+    return DbTagField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbTagField _id;
+  DbTagField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbTagField _name;
+  DbTagField get name {
+    return _name = setField(_name, 'name', DbType.text);
+  }
+
+  DbTagField _color;
+  DbTagField get color {
+    return _color = setField(_color, 'color', DbType.integer);
+  }
+
+  DbTagField _system;
+  DbTagField get system {
+    return _system = setField(_system, 'system', DbType.bool);
+  }
+
+  DbTagField _tagGroupsId;
+  DbTagField get tagGroupsId {
+    return _tagGroupsId = setField(_tagGroupsId, 'tagGroupsId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbTag._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbTag> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbTag._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbTag.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbTag.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from tags ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbTag.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbTagObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbTag>
+  Future<DbTag> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbTag.toList(qparams);
+    final data = await objFuture;
+    DbTag obj;
+    if (data.isNotEmpty) {
+      obj = DbTag.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbTagGroup')) {
+          obj.plDbTagGroup = obj.plDbTagGroup ?? await obj.getDbTagGroup();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dbtagCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbtagsFuture = await _obj._mnDbTag.toList(qparams);
+    final int count = dbtagsFuture[0]['CNT'] as int;
+    if (dbtagCount != null) {
+      dbtagCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbTag>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbTag>
+  Future<List<DbTag>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbTag> dbtagsData =
+        await DbTag.fromMapList(data, preload: preload);
+    return dbtagsData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbTag.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbTag>>
+  Future<List<DropdownMenuItem<DbTag>>> toDropDownMenu(String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbTag>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbtagsFuture = _obj._mnDbTag.toList(qparams);
+
+    final data = await dbtagsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbTag>> items = []..add(DropdownMenuItem(
+        value: DbTag(),
+        child: Text('Select DbTag'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbTag.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbtagsFuture = _obj._mnDbTag.toList(qparams);
+
+    final data = await dbtagsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbTag'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbTag.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbTag.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbTag.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbTag.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbTagFilterBuilder
+
+// region DbTagFields
+class DbTagFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fName;
+  static TableField get name {
+    return _fName = _fName ?? SqlSyntax.setField(_fName, 'name', DbType.text);
+  }
+
+  static TableField _fColor;
+  static TableField get color {
+    return _fColor =
+        _fColor ?? SqlSyntax.setField(_fColor, 'color', DbType.integer);
+  }
+
+  static TableField _fSystem;
+  static TableField get system {
+    return _fSystem =
+        _fSystem ?? SqlSyntax.setField(_fSystem, 'system', DbType.bool);
+  }
+
+  static TableField _fTagGroupsId;
+  static TableField get tagGroupsId {
+    return _fTagGroupsId = _fTagGroupsId ??
+        SqlSyntax.setField(_fTagGroupsId, 'tagGroupsId', DbType.integer);
+  }
+}
+// endregion DbTagFields
+
+//region DbTagManager
+class DbTagManager extends SqfEntityProvider {
+  DbTagManager() : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'tags';
+  static String _colId = 'id';
+}
+
+//endregion DbTagManager
+// region DbTagGroup
+class DbTagGroup {
+  DbTagGroup({this.id, this.name, this.color, this.system, this.athletesId}) {
+    _setDefaultValues();
+  }
+  DbTagGroup.withFields(this.name, this.color, this.system, this.athletesId) {
+    _setDefaultValues();
+  }
+  DbTagGroup.withId(
+      this.id, this.name, this.color, this.system, this.athletesId) {
+    _setDefaultValues();
+  }
+  DbTagGroup.fromMap(Map<String, dynamic> o) {
+    _setDefaultValues();
+    id = o['id'] as int;
+    if (o['name'] != null) name = o['name'] as String;
+    if (o['color'] != null) color = o['color'] as int;
+    if (o['system'] != null) system = o['system'] == 1 || o['system'] == true;
+    athletesId = o['athletesId'] as int;
+
+    // RELATIONSHIPS FromMAP
+    plDbAthlete = o['DbAthlete'] != null
+        ? DbAthlete.fromMap(o['DbAthlete'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbTagGroup)
+  int id;
+  String name;
+  int color;
+  bool system;
+  int athletesId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbTagGroup)
+
+// RELATIONSHIPS (DbTagGroup)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  DbAthlete plDbAthlete;
+
+  /// get DbAthlete By AthletesId
+  Future<DbAthlete> getDbAthlete() async {
+    final _obj = await DbAthlete().getById(athletesId);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbTagGroup)
+
+// COLLECTIONS & VIRTUALS (DbTagGroup)
+  /// to load children of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true)
+  List<DbTag> plDbTags;
+
+  /// get DbTag(s) filtered by tagGroupsId=id
+  DbTagFilterBuilder getDbTags(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbTag()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .tagGroupsId
+        .equals(id)
+        .and;
+  }
+// END COLLECTIONS & VIRTUALS (DbTagGroup)
+
+  static const bool _softDeleteActivated = false;
+  DbTagGroupManager __mnDbTagGroup;
+
+  DbTagGroupManager get _mnDbTagGroup {
+    return __mnDbTagGroup = __mnDbTagGroup ?? DbTagGroupManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap({bool forQuery = false, bool forJson = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (color != null) {
+      map['color'] = color;
+    }
+
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (athletesId != null) {
+      map['athletesId'] = athletesId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChilds(
+      [bool forQuery = false, bool forJson = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (name != null) {
+      map['name'] = name;
+    }
+
+    if (color != null) {
+      map['color'] = color;
+    }
+
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (athletesId != null) {
+      map['athletesId'] = athletesId;
+    }
+
+// COLLECTIONS (DbTagGroup)
+    if (!forQuery) {
+      map['DbTags'] = await getDbTags().toMapList();
+    }
+// END COLLECTIONS (DbTagGroup)
+
+    return map;
+  }
+
+  /// This method always returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method always returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChilds(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [id, name, color, system, athletesId];
+  }
+
+  static Future<List<DbTagGroup>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbTagGroup.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbTagGroup>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbTagGroup>[];
+    try {
+      objList = list
+          .map((dbtaggroup) =>
+              DbTagGroup.fromMap(dbtaggroup as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbTagGroup.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  /*
+    /// REMOVED AFTER v1.2.1+14 
+    static Future<List<DbTagGroup>> fromObjectList(Future<List<dynamic>> o) async {
+      final data = await o;
+      return await DbTagGroup.fromMapList(data);
+    } 
+    */
+
+  static Future<List<DbTagGroup>> fromMapList(List<dynamic> data,
+      {bool preload = false, List<String> preloadFields}) async {
+    final List<DbTagGroup> objList = <DbTagGroup>[];
+    for (final map in data) {
+      final obj = DbTagGroup.fromMap(map as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbTags')) {
+          obj.plDbTags = obj.plDbTags ?? await obj.getDbTags().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbTagGroup by ID if exist, otherwise returns null
+  /// <param name='id'>Primary Key Value</param>
+  /// <returns>returns DbTagGroup if exist, otherwise returns null
+  Future<DbTagGroup> getById(int id) async {
+    if (id == null) {
+      return null;
+    }
+    DbTagGroup obj;
+    final data = await _mnDbTagGroup.getById(id);
+    if (data.length != 0) {
+      obj = DbTagGroup.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbTagGroup) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbTagGroup.insert(this);
+    } else {
+      id = await _upsert();
+    }
+
+    return id;
+  }
+
+  /// saveAs DbTagGroup. Returns a new Primary Key value of DbTagGroup
+
+  /// <returns>Returns a new Primary Key value of DbTagGroup
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbTagGroup> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> saveAll(List<DbTagGroup> dbtaggroups) async {
+    final results = _mnDbTagGroup.saveAll(
+        'INSERT OR REPLACE INTO tagGroups (id,  name, color, system, athletesId)  VALUES (?,?,?,?,?)',
+        dbtaggroups);
+    return results;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> _upsert() async {
+    try {
+      if (await _mnDbTagGroup.rawInsert(
+              'INSERT OR REPLACE INTO tagGroups (id,  name, color, system, athletesId)  VALUES (?,?,?,?,?)',
+              [id, name, color, system, athletesId]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbTagGroup id=$id updated successfuly');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbTagGroup id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbTagGroup Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbTagGroup>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<BoolResult>> upsertAll(List<DbTagGroup> dbtaggroups) async {
+    final results = await _mnDbTagGroup.rawInsertAll(
+        'INSERT OR REPLACE INTO tagGroups (id,  name, color, system, athletesId)  VALUES (?,?,?,?,?)',
+        dbtaggroups);
+    return results;
+  }
+
+  /// Deletes DbTagGroup
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbTagGroup invoked (id=$id)');
+    var result = BoolResult();
+    {
+      result = await DbTag().select().tagGroupsId.equals(id).delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbTagGroup
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbTagGroup.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  //private DbTagGroupFilterBuilder _Select;
+  DbTagGroupFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbTagGroupFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbTagGroupFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbTagGroupFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    athletesId = athletesId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbtaggroup
+
+// region DbTagGroupField
+class DbTagGroupField extends SearchCriteria {
+  DbTagGroupField(this.dbtaggroupFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbTagGroupFilterBuilder dbtaggroupFB;
+
+  DbTagGroupField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbTagGroupFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbtaggroupFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtaggroupFB.parameters, param, SqlSyntax.EQuals,
+            dbtaggroupFB._addedBlocks)
+        : setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.NotEQuals, dbtaggroupFB._addedBlocks);
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbtaggroupFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbtaggroupFB._addedBlocks)
+        : setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbtaggroupFB._addedBlocks);
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder isNull() {
+    dbtaggroupFB._addedBlocks = setCriteria(
+        0,
+        dbtaggroupFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbtaggroupFB._addedBlocks);
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbtaggroupFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbtaggroupFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbtaggroupFB._addedBlocks);
+      _waitingNot = '';
+      dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+          dbtaggroupFB._addedBlocks.retVal;
+    }
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbtaggroupFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbtaggroupFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbtaggroupFB._addedBlocks);
+      _waitingNot = '';
+      dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+          dbtaggroupFB._addedBlocks.retVal;
+      dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+          dbtaggroupFB._addedBlocks.retVal;
+    }
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbtaggroupFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbtaggroupFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbtaggroupFB._addedBlocks);
+      _waitingNot = '';
+      dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+          dbtaggroupFB._addedBlocks.retVal;
+    }
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbtaggroupFB._addedBlocks = setCriteria(
+          pFirst,
+          dbtaggroupFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbtaggroupFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbtaggroupFB._addedBlocks = setCriteria(pFirst, dbtaggroupFB.parameters,
+            param, SqlSyntax.LessThan, dbtaggroupFB._addedBlocks);
+      } else {
+        dbtaggroupFB._addedBlocks = setCriteria(pFirst, dbtaggroupFB.parameters,
+            param, SqlSyntax.GreaterThanOrEquals, dbtaggroupFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbtaggroupFB._addedBlocks = setCriteria(pLast, dbtaggroupFB.parameters,
+            param, SqlSyntax.GreaterThan, dbtaggroupFB._addedBlocks);
+      } else {
+        dbtaggroupFB._addedBlocks = setCriteria(pLast, dbtaggroupFB.parameters,
+            param, SqlSyntax.LessThanOrEquals, dbtaggroupFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbtaggroupFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.GreaterThan, dbtaggroupFB._addedBlocks)
+        : setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbtaggroupFB._addedBlocks);
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbtaggroupFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.LessThan, dbtaggroupFB._addedBlocks)
+        : setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbtaggroupFB._addedBlocks);
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbtaggroupFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbtaggroupFB._addedBlocks)
+        : setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.LessThan, dbtaggroupFB._addedBlocks);
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbtaggroupFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbtaggroupFB._addedBlocks)
+        : setCriteria(pValue, dbtaggroupFB.parameters, param,
+            SqlSyntax.GreaterThan, dbtaggroupFB._addedBlocks);
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+
+  DbTagGroupFilterBuilder inValues(dynamic pValue) {
+    dbtaggroupFB._addedBlocks = setCriteria(
+        pValue,
+        dbtaggroupFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbtaggroupFB._addedBlocks);
+    _waitingNot = '';
+    dbtaggroupFB._addedBlocks.needEndBlock[dbtaggroupFB._blockIndex] =
+        dbtaggroupFB._addedBlocks.retVal;
+    return dbtaggroupFB;
+  }
+}
+// endregion DbTagGroupField
+
+// region DbTagGroupFilterBuilder
+class DbTagGroupFilterBuilder extends SearchCriteria {
+  DbTagGroupFilterBuilder(DbTagGroup obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbTagGroup _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbTagGroupFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbTagGroupFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbTagGroupFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbTagGroupFilterBuilder where(String whereCriteria) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter();
+      _addedBlocks =
+          setCriteria(0, parameters, param, '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbTagGroupFilterBuilder page(int page, int pagesize) {
+    if (page > 0) _page = page;
+    if (pagesize > 0) _pagesize = pagesize;
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbTagGroupFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbTagGroupFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbTagGroupFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbTagGroupFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') orderByList.add(' $s desc ');
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbTagGroupFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields) {
+          if (s != null && s != '') groupByList.add(' $s ');
+        }
+      }
+    }
+    return this;
+  }
+
+  DbTagGroupField setField(
+      DbTagGroupField field, String colName, DbType dbtype) {
+    return DbTagGroupField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbTagGroupField _id;
+  DbTagGroupField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbTagGroupField _name;
+  DbTagGroupField get name {
+    return _name = setField(_name, 'name', DbType.text);
+  }
+
+  DbTagGroupField _color;
+  DbTagGroupField get color {
+    return _color = setField(_color, 'color', DbType.integer);
+  }
+
+  DbTagGroupField _system;
+  DbTagGroupField get system {
+    return _system = setField(_system, 'system', DbType.bool);
+  }
+
+  DbTagGroupField _athletesId;
+  DbTagGroupField get athletesId {
+    return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbTagGroup._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbTagGroup> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+    if (DbTagGroup._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbTagGroup.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbTagGroup.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from tagGroups ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbTagGroup.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbTagGroupObj if exist, otherwise returns null
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbTagGroup>
+  Future<DbTagGroup> toSingle(
+      {bool preload = false, List<String> preloadFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbTagGroup.toList(qparams);
+    final data = await objFuture;
+    DbTagGroup obj;
+    if (data.isNotEmpty) {
+      obj = DbTagGroup.fromMap(data[0] as Map<String, dynamic>);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbTags')) {
+          obj.plDbTags = obj.plDbTags ?? await obj.getDbTags().toList();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      // RELATIONSHIPS PRELOAD
+      if (preload) {
+        if (preloadFields == null || preloadFields.contains('plDbAthlete')) {
+          obj.plDbAthlete = obj.plDbAthlete ?? await obj.getDbAthlete();
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method always returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dbtaggroupCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbtaggroupsFuture = await _obj._mnDbTagGroup.toList(qparams);
+    final int count = dbtaggroupsFuture[0]['CNT'] as int;
+    if (dbtaggroupCount != null) {
+      dbtaggroupCount(count);
+    }
+    return count;
+  }
+
+  /// This method always returns List<DbTagGroup>.
+  ///
+  /// Set preload to true if you want to load all fields related to child or parent
+  ///
+  /// You can send certain field names with preloadFields parameter for preloading. For ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])
+  ///
+  /// <returns>List<DbTagGroup>
+  Future<List<DbTagGroup>> toList(
+      {bool preload = false, List<String> preloadFields}) async {
+    final data = await toMapList();
+    final List<DbTagGroup> dbtaggroupsData =
+        await DbTagGroup.fromMapList(data, preload: preload);
+    return dbtaggroupsData;
+  }
+
+  /// This method always returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChilds(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method always returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbTagGroup.toList(qparams);
+  }
+
+  /// Returns List<DropdownMenuItem<DbTagGroup>>
+  Future<List<DropdownMenuItem<DbTagGroup>>> toDropDownMenu(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<DbTagGroup>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    final dbtaggroupsFuture = _obj._mnDbTagGroup.toList(qparams);
+
+    final data = await dbtaggroupsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<DbTagGroup>> items = []..add(DropdownMenuItem(
+        value: DbTagGroup(),
+        child: Text('Select DbTagGroup'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: DbTagGroup.fromMap(data[i] as Map<String, dynamic>),
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// Returns List<DropdownMenuItem<int>>
+  Future<List<DropdownMenuItem<int>>> toDropDownMenuInt(
+      String displayTextColumn,
+      [VoidCallback Function(List<DropdownMenuItem<int>> o)
+          dropDownMenu]) async {
+    _buildParameters();
+    qparams.selectColumns = ['id', displayTextColumn];
+    final dbtaggroupsFuture = _obj._mnDbTagGroup.toList(qparams);
+
+    final data = await dbtaggroupsFuture;
+    final int count = data.length;
+    final List<DropdownMenuItem<int>> items = []..add(DropdownMenuItem(
+        value: 0,
+        child: Text('Select DbTagGroup'),
+      ));
+    for (int i = 0; i < count; i++) {
+      items.add(
+        DropdownMenuItem(
+          value: data[i]['id'] as int,
+          child: Text(data[i][displayTextColumn].toString()),
+        ),
+      );
+    }
+    if (dropDownMenu != null) {
+      dropDownMenu(items);
+    }
+    return items;
+  }
+
+  /// This method always returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) _buildParameters();
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbTagGroup.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject(
+      [VoidCallback Function(List<dynamic> o) listObject]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbTagGroup.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    if (listObject != null) {
+      listObject(objectsData);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbTagGroup.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbTagGroup.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbTagGroupFilterBuilder
+
+// region DbTagGroupFields
+class DbTagGroupFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fName;
+  static TableField get name {
+    return _fName = _fName ?? SqlSyntax.setField(_fName, 'name', DbType.text);
+  }
+
+  static TableField _fColor;
+  static TableField get color {
+    return _fColor =
+        _fColor ?? SqlSyntax.setField(_fColor, 'color', DbType.integer);
+  }
+
+  static TableField _fSystem;
+  static TableField get system {
+    return _fSystem =
+        _fSystem ?? SqlSyntax.setField(_fSystem, 'system', DbType.bool);
+  }
+
+  static TableField _fAthletesId;
+  static TableField get athletesId {
+    return _fAthletesId = _fAthletesId ??
+        SqlSyntax.setField(_fAthletesId, 'athletesId', DbType.integer);
+  }
+}
+// endregion DbTagGroupFields
+
+//region DbTagGroupManager
+class DbTagGroupManager extends SqfEntityProvider {
+  DbTagGroupManager()
+      : super(DbEncrateia(), tableName: _tableName, colId: _colId);
+  static String _tableName = 'tagGroups';
+  static String _colId = 'id';
+}
+
+//endregion DbTagGroupManager
 class DbEncrateiaSequenceManager extends SqfEntityProvider {
   DbEncrateiaSequenceManager() : super(DbEncrateia());
 }
