@@ -40,7 +40,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
               child: Text(
                 "\nHeart Rate Zone Schemas ${offset + 1} - ${offset + rows} "
                 "of ${heartRateZoneSchemas.length}",
-                style: Theme.of(context).textTheme.title,
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
             DataTable(

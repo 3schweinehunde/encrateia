@@ -16,7 +16,7 @@ class AthleteTagGroupWidget extends StatefulWidget {
 }
 
 class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
-  List<TagGroup> tagGroups = [];
+  List<TagGroup> tagGroups;
   int offset = 0;
   int rows;
 
@@ -37,7 +37,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
               child: Text(
                 "\nTag Groups ${offset + 1} - ${offset + rows} "
                 "of ${tagGroups.length}",
-                style: Theme.of(context).textTheme.title,
+                style: Theme.of(context).textTheme.headline6,
               ),
             ),
             DataTable(
