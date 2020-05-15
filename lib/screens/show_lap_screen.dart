@@ -11,6 +11,7 @@ import 'package:encrateia/widgets/lap_widgets/lap_ground_time_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_form_power_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_stryd_cadence_widget.dart';
+import 'package:encrateia/widgets/lap_widgets/lap_tag_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_vertical_oscillation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
@@ -126,6 +127,17 @@ class ShowLapScreen extends StatelessWidget {
               context: context,
               nextWidget: ({lap}) => LapMetadataWidget(lap: lap),
             ),
+            navigationButton(
+              title: "Tags",
+              color: MyColor.tag,
+              icon: MyIcon.tag,
+              context: context,
+              nextWidget: ({lap}) => LapTagWidget(
+                lap: lap,
+                athlete: athlete,
+              ),
+            ),
+
           ],
         );
       }),

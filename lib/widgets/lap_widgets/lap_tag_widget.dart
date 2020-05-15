@@ -1,26 +1,26 @@
 import 'dart:ui';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/models/activity_tagging.dart';
+import 'package:encrateia/models/lap_tagging.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/lap.dart';
 
-class ActivityTagWidget extends StatefulWidget {
-  final Activity activity;
+class LapTagWidget extends StatefulWidget {
+  final Lap lap;
   final Athlete athlete;
 
-  ActivityTagWidget({
-    @required this.activity,
+  LapTagWidget({
+    @required this.lap,
     @required this.athlete,
   });
 
   @override
-  _ActivityTagWidgetState createState() => _ActivityTagWidgetState();
+  _LapTagWidgetState createState() => _LapTagWidgetState();
 }
 
-class _ActivityTagWidgetState extends State<ActivityTagWidget> {
+class _LapTagWidgetState extends State<LapTagWidget> {
   List<TagGroup> tagGroups;
 
   @override
@@ -63,13 +63,13 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
                         onSelected: (selected) {
                           setState(() {
                             if (selected) {
-                              ActivityTagging.createBy(
-                                activity: widget.activity,
+                              LapTagging.createBy(
+                                lap: widget.lap,
                                 tag: tag,
                               );
                             } else {
-                              ActivityTagging.deleteBy(
-                                activity: widget.activity,
+                              LapTagging.deleteBy(
+                                lap: widget.lap,
                                 tag: tag,
                               );
                             }
@@ -93,9 +93,9 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
   }
 
   getData() async {
-    tagGroups = await TagGroup.includingActivityTaggings(
+    tagGroups = await TagGroup.includingLapTaggings(
       athlete: widget.athlete,
-      activity: widget.activity,
+      lap: widget.lap,
     );
     setState(() {});
   }

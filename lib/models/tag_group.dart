@@ -5,6 +5,8 @@ import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
+import 'lap.dart';
+
 class TagGroup extends ChangeNotifier {
   DbTagGroup db;
   List<Tag> cachedTags;
@@ -16,13 +18,12 @@ class TagGroup extends ChangeNotifier {
       ..system = false
       ..name = "My Tag Group";
   }
+
   TagGroup.fromDb(this.db);
 
   Future<List<Tag>> get tags async {
-    if (cachedTags == null) {
-      cachedTags = await Tag.all(tagGroup: this);
-    }
-    return cachedTags;
+    var tags = await Tag.all(tagGroup: this);
+    return tags;
   }
 
   TagGroup.by(
@@ -81,7 +82,29 @@ class TagGroup extends ChangeNotifier {
         tag.selected = selectedTagIds.contains(tag.db.id) ? true : false;
       }
     }
+    return tagGroups;
+  }
 
+  static includingLapTaggings({
+    @required Athlete athlete,
+    @required Lap lap,
+  }) async {
+    var tagGroups = await all(athlete: athlete);
+
+    var dbLapTaggings = await DbLapTagging()
+        .select()
+        .lapsId
+        .equals(lap.db.id)
+        .toList();
+    var selectedTagIds = dbLapTaggings
+        .map((DbLapTagging dbLapTagging) => dbLapTagging.id);
+
+    for (TagGroup tagGroup in tagGroups) {
+      var tags = await tagGroup.tags;
+      for (Tag tag in tags) {
+        tag.selected = selectedTagIds.contains(tag.db.id) ? true : false;
+      }
+    }
     return tagGroups;
   }
 
@@ -92,6 +115,9 @@ class TagGroup extends ChangeNotifier {
         .map((dbTagGroup) => TagGroup.fromDb(dbTagGroup))
         .toList();
 
+    for (TagGroup tagGroup in tagGroups) {
+      tagGroup.cachedTags = await tagGroup.tags;
+    }
     return tagGroups;
   }
 }
