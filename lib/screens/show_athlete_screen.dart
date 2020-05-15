@@ -204,7 +204,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   }
 
   recalculate() async {
-    print("Start");
     List<Activity> activities;
     activities = await Activity.all(athlete: widget.athlete);
     int index = 0;

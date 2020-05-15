@@ -7,12 +7,12 @@ class HeartRateZone extends ChangeNotifier {
 
   HeartRateZone(
       {@required HeartRateZoneSchema heartRateZoneSchema,
-        String name,
-        int lowerPercentage,
-        int upperPercentage,
-        int lowerLimit,
-        int upperLimit,
-        int color}) {
+      String name,
+      int lowerPercentage,
+      int upperPercentage,
+      int lowerLimit,
+      int upperLimit,
+      int color}) {
     db = DbHeartRateZone()
       ..heartRateZoneSchemataId = heartRateZoneSchema.db.id
       ..name = name ?? "My Zone"
@@ -23,9 +23,11 @@ class HeartRateZone extends ChangeNotifier {
       ..color = color ?? 0xFFFFc107;
 
     if (lowerPercentage != null)
-      db.lowerLimit = (lowerPercentage * heartRateZoneSchema.db.base / 100).round();
+      db.lowerLimit =
+          (lowerPercentage * heartRateZoneSchema.db.base / 100).round();
     if (upperPercentage != null)
-      db.upperLimit = (upperPercentage * heartRateZoneSchema.db.base / 100).round();
+      db.upperLimit =
+          (upperPercentage * heartRateZoneSchema.db.base / 100).round();
   }
   HeartRateZone.fromDb(this.db);
 
@@ -37,13 +39,16 @@ class HeartRateZone extends ChangeNotifier {
 
   static Future<List<HeartRateZone>> all(
       {@required HeartRateZoneSchema heartRateZoneSchema}) async {
-    var dbHeartRateZoneList = await heartRateZoneSchema.db
-        .getDbHeartRateZones()
-        .orderByDesc('lowerlimit')
-        .toList();
-    var heartRateZones = dbHeartRateZoneList
-        .map((dbHeartRateZone) => HeartRateZone.fromDb(dbHeartRateZone))
-        .toList();
-    return heartRateZones;
+    if (heartRateZoneSchema.db.id != null) {
+      var dbHeartRateZoneList = await heartRateZoneSchema.db
+          .getDbHeartRateZones()
+          .orderByDesc('lowerlimit')
+          .toList();
+      var heartRateZones = dbHeartRateZoneList
+          .map((dbHeartRateZone) => HeartRateZone.fromDb(dbHeartRateZone))
+          .toList();
+      return heartRateZones;
+    } else
+      return [];
   }
 }
