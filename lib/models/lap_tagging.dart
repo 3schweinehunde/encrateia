@@ -55,8 +55,7 @@ class LapTagging extends ChangeNotifier {
         .tagsId
         .equals(tag.db.id)
         .toSingle();
-    if (dbLapTagging != null)
-      return LapTagging.fromDb(dbLapTagging);
+    if (dbLapTagging != null) return LapTagging.fromDb(dbLapTagging);
   }
 
   static deleteBy({

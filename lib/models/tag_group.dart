@@ -74,11 +74,11 @@ class TagGroup extends ChangeNotifier {
         .equals(activity.db.id)
         .toList();
     var selectedTagIds = dbActivityTaggings
-        .map((DbActivityTagging dbActivityTagging) => dbActivityTagging.id);
+        .map((DbActivityTagging dbActivityTagging) => dbActivityTagging.tagsId);
 
     for (TagGroup tagGroup in tagGroups) {
-      var tags = await tagGroup.tags;
-      for (Tag tag in tags) {
+      tagGroup.cachedTags = await tagGroup.tags;
+      for (Tag tag in tagGroup.cachedTags) {
         tag.selected = selectedTagIds.contains(tag.db.id) ? true : false;
       }
     }
@@ -96,12 +96,13 @@ class TagGroup extends ChangeNotifier {
         .lapsId
         .equals(lap.db.id)
         .toList();
+
     var selectedTagIds = dbLapTaggings
-        .map((DbLapTagging dbLapTagging) => dbLapTagging.id);
+        .map((DbLapTagging dbLapTagging) => dbLapTagging.tagsId);
 
     for (TagGroup tagGroup in tagGroups) {
-      var tags = await tagGroup.tags;
-      for (Tag tag in tags) {
+      tagGroup.cachedTags = await tagGroup.tags;
+      for (Tag tag in tagGroup.cachedTags) {
         tag.selected = selectedTagIds.contains(tag.db.id) ? true : false;
       }
     }

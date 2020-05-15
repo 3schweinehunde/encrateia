@@ -4,7 +4,7 @@ import 'package:encrateia/models/tag_group.dart';
 
 class Tag extends ChangeNotifier {
   DbTag db;
-  bool selected;
+  bool selected = false;
 
   Tag({
     @required TagGroup tagGroup,
