@@ -13,9 +13,13 @@ class LapOverviewWidget extends StatelessWidget {
   Widget build(context) {
     return  ListTileTheme(
       iconColor: Colors.lightGreen,
-      child: ListView(
-        padding: EdgeInsets.only(left: 25),
-        children: <Widget>[
+      child: GridView.count(
+        padding: EdgeInsets.all(5),
+        crossAxisCount: MediaQuery.of(context).orientation  == Orientation.portrait ? 2 : 4,
+        childAspectRatio: 3,
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
+        children: [
           ListTile(
             leading: MyIcon.speed,
             title: Text(lap.db.avgSpeed.toPace() + " / " + lap.db.maxSpeed.toPace()),
@@ -36,7 +40,7 @@ class LapOverviewWidget extends StatelessWidget {
           ListTile(
             leading: MyIcon.power,
             title:
-            Text("${(lap.db.avgPower / lap.db.avgHeartRate).toStringAsFixed(2)} WW/bpm"),
+            Text("${(lap.db.avgPower / lap.db.avgHeartRate).toStringAsFixed(2)} W/bpm"),
             subtitle: Text('power / heart rate'),
           ),
           ListTile(

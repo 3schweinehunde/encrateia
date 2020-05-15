@@ -11,11 +11,16 @@ class LapMetadataWidget extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return  ListTileTheme(
+    return ListTileTheme(
       iconColor: Colors.lightGreen,
-      child: ListView(
-        padding: EdgeInsets.only(left: 25),
-        children: <Widget>[
+      child: GridView.count(
+        padding: EdgeInsets.all(5),
+        crossAxisCount:
+            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+        childAspectRatio: 3,
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
+        children: [
           ListTile(
             leading: MyIcon.repeats,
             title: Text('Lap ${lap.index}'),
@@ -44,7 +49,7 @@ class LapMetadataWidget extends StatelessWidget {
           ),
           ListTile(
             leading: MyIcon.verticalOscillation,
-            title: Text(lap.db.avgVerticalOscillation.toString()),
+            title: Text(lap.db.avgVerticalOscillation.toStringAsFixed(2)),
             subtitle: Text('avg vertical oscillation'),
           ),
           ListTile(
@@ -83,21 +88,23 @@ class LapMetadataWidget extends StatelessWidget {
           ),
           ListTile(
             leading: MyIcon.repeats,
-            title: Text(lap.db.totalFractionalCycles.toString()),
+            title: Text(lap.db.totalFractionalCycles.toStringAsFixed(2)),
             subtitle: Text('total fractional cycles'),
           ),
           ListTile(
             leading: MyIcon.position,
             title: Text(lap.db.startPositionLong.semicirclesAsDegrees() +
-                "   /   " +
-                lap.db.startPositionLat.semicirclesAsDegrees()),
+                " E\n" +
+                lap.db.startPositionLat.semicirclesAsDegrees() +
+                " N"),
             subtitle: Text('start position'),
           ),
           ListTile(
             leading: MyIcon.position,
             title: Text(lap.db.endPositionLong.semicirclesAsDegrees() +
-                "   /   " +
-                lap.db.endPositionLat.semicirclesAsDegrees()),
+                " E\n" +
+                lap.db.endPositionLat.semicirclesAsDegrees() +
+                " N"),
             subtitle: Text('end position'),
           ),
           ListTile(

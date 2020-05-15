@@ -31,9 +31,13 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
   Widget build(context) {
     return ListTileTheme(
       iconColor: Colors.deepOrange,
-      child: ListView(
-        padding: EdgeInsets.only(left: 25),
-        children: <Widget>[
+      child: GridView.count(
+        padding: EdgeInsets.all(5),
+        crossAxisCount: MediaQuery.of(context).orientation  == Orientation.portrait ? 2 : 4,
+        childAspectRatio: 3,
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
+        children: [
           ListTile(
             leading: MyIcon.time,
             title: Text(Duration(seconds: widget.activity.db.movingTime ?? 0)

@@ -18,9 +18,14 @@ class ActivityMetadataWidget extends StatelessWidget {
   Widget build(context) {
     return ListTileTheme(
       iconColor: Colors.deepOrange,
-      child: ListView(
-        padding: EdgeInsets.only(left: 25),
-        children: <Widget>[
+      child: GridView.count(
+        padding: EdgeInsets.all(5),
+        crossAxisCount:
+            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+        childAspectRatio: 3,
+        crossAxisSpacing: 3,
+        mainAxisSpacing: 3,
+        children: [
           ListTile(
               leading: MyIcon.title,
               title: Text(activity.db.name),
@@ -57,12 +62,12 @@ class ActivityMetadataWidget extends StatelessWidget {
           ),
           ListTile(
             leading: MyIcon.verticalOscillation,
-            title: Text(activity.db.avgVerticalOscillation.toString()),
+            title: Text(activity.db.avgVerticalOscillation.toStringAsFixed(2)),
             subtitle: Text('avg vertical oscillation'),
           ),
           ListTile(
             leading: MyIcon.cycles,
-            title: Text(activity.db.totalFractionalCycles.toString()),
+            title: Text(activity.db.totalFractionalCycles.toStringAsFixed(2)),
             subtitle: Text('total fractional cycles'),
           ),
           ListTile(
@@ -118,22 +123,25 @@ class ActivityMetadataWidget extends StatelessWidget {
           ListTile(
             leading: MyIcon.position,
             title: Text(activity.db.startPositionLong.semicirclesAsDegrees() +
-                "   /   " +
-                activity.db.startPositionLat.semicirclesAsDegrees()),
+                " E\n" +
+                activity.db.startPositionLat.semicirclesAsDegrees() +
+                " N"),
             subtitle: Text('start position'),
           ),
           ListTile(
             leading: MyIcon.position,
             title: Text(activity.db.necLong.semicirclesAsDegrees() +
-                "   /   " +
-                activity.db.necLat.semicirclesAsDegrees()),
+                " E\n" +
+                activity.db.necLat.semicirclesAsDegrees() +
+                " N"),
             subtitle: Text('north east corner'),
           ),
           ListTile(
             leading: MyIcon.position,
             title: Text(activity.db.swcLong.semicirclesAsDegrees() +
-                "   /   " +
-                activity.db.swcLat.semicirclesAsDegrees()),
+                " E\n" +
+                activity.db.swcLat.semicirclesAsDegrees() +
+                " N"),
             subtitle: Text('south west corner'),
           ),
           ListTile(

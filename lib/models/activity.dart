@@ -211,6 +211,15 @@ class Activity extends ChangeNotifier {
     for (Lap lap in laps) {
       var records = await lap.records;
       lap.db.avgPower = Lap.calculateAveragePower(records: records);
+      lap.db.avgFormPower = Lap.calculateAverageFormPower(records: records);
+      lap.db.avgHeartRate = Lap.calculateAverageHeartRate(records: records);
+      lap.db.avgSpeed = Lap.calculateAverageSpeed(records: records);
+      lap.db.avgGroundTime = Lap.calculateAverageGroundTime(records: records);
+      lap.db.avgStrydCadence = Lap.calculateAverageStrydCadence(records: records);
+      lap.db.avgLegSpringStiffness = Lap.calculateAverageLegSpringStiffness(records: records);
+      lap.db.avgStrideRatio = Lap.calculateAverageStrideRatio(records: records);
+      lap.db.avgPowerRatio = Lap.calculateAverageStrideRatio(records: records);
+      lap.db.avgVerticalOscillation = Lap.calculateAverageVerticalOscillation(records: records);
       await lap.db.save();
     }
     await db.save();

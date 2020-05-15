@@ -278,6 +278,45 @@ class Lap {
       return 0;
   }
 
+  static int calculateAverageHeartRate({List<Event> records}) {
+    var heartRates = records
+        .where((record) =>
+    record.db.heartRate != null &&
+        record.db.heartRate > 0 &&
+        record.db.heartRate < 2000)
+        .map((record) => record.db.heartRate);
+    if (heartRates.length > 0) {
+      return heartRates.mean().round();
+    } else
+      return -1;
+  }
+
+  static double calculateSdevHeartRate({List<Event> records}) {
+    var heartRates = records
+        .where((record) =>
+    record.db.heartRate != null &&
+        record.db.heartRate > 0 &&
+        record.db.heartRate < 2000)
+        .map((record) => record.db.heartRate);
+    return heartRates.sdev();
+  }
+
+  static int calculateMinHeartRate({List<Event> records}) {
+    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
+    if (heartRates.length > 0)
+      return heartRates.min();
+    else
+      return 0;
+  }
+
+  static int calculateMaxHeartRate({List<Event> records}) {
+    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
+    if (heartRates.length > 0)
+      return heartRates.max();
+    else
+      return 0;
+  }
+
   static double calculateAverageSpeed({List<Event> records}) {
     var speeds = records.map((record) => record.db.speed).nonZeroDoubles();
     if (speeds.length > 0) {

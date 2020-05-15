@@ -206,6 +206,10 @@ const tableLap = SqfEntityTable(
     SqfEntityField('avgStrydCadence', DbType.real),
     SqfEntityField('sdevStrydCadence', DbType.real),
     SqfEntityField('sdevVerticalOscillation', DbType.real),
+    SqfEntityField('avgPowerRatio', DbType.real),
+    SqfEntityField('sdevPowerRatio', DbType.real),
+    SqfEntityField('avgStrideRatio', DbType.real),
+    SqfEntityField('sdevStrideRatio', DbType.real),
 
     SqfEntityFieldRelationship(
         parentTable: tableActivity,
