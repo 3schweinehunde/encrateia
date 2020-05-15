@@ -211,6 +211,16 @@ class ShowActivityScreen extends StatelessWidget {
                 athlete: athlete,
               ),
             ),
+            navigationButton(
+              title: "Tags",
+              color: MyColor.tag,
+              icon: MyIcon.tag,
+              context: context,
+              nextWidget: ActivityMetadataWidget(
+                activity: activity,
+                athlete: athlete,
+              ),
+            ),
           ],
         );
       }),
@@ -224,11 +234,13 @@ class ShowActivityScreen extends StatelessWidget {
     @required String title,
     @required Color color,
     Color backgroundColor,
-    Color textColor,
   }) {
     return RaisedButton.icon(
-      color: color ?? MyColor.primary,
-      textColor: textColor ?? MyColor.black,
+      color: color,
+      textColor:
+          (ThemeData.estimateBrightnessForColor(color) == Brightness.light)
+              ? MyColor.black
+              : MyColor.white,
       icon: icon,
       label: Text(title),
       onPressed: () => Navigator.push(

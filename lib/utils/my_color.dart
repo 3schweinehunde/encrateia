@@ -61,4 +61,5 @@ class MyColor {
   static Color athlete = brightGoldenYellow;
   static Color activity = aquaAccent;
   static Color lap = grassAccent;
+  static Color tag = lavender;
 }

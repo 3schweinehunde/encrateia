@@ -147,7 +147,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
                   AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
             ),
             navigationButton(
-              color: MyColor.settings,
+              color: MyColor.tag,
               title: "Tags",
               icon: MyIcon.tag,
               nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
@@ -183,11 +183,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     @required String title,
     @required Color color,
     Color backgroundColor,
-    Color textColor,
   }) {
     return RaisedButton.icon(
       color: color ?? MyColor.primary,
-      textColor: textColor ?? MyColor.black,
+      textColor:
+          (ThemeData.estimateBrightnessForColor(color) == Brightness.light)
+              ? MyColor.black
+              : MyColor.white,
       icon: icon,
       label: Text(title),
       onPressed: () => Navigator.push(
