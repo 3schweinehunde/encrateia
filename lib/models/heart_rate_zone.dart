@@ -29,7 +29,7 @@ class HeartRateZone extends ChangeNotifier {
   }
   HeartRateZone.fromDb(this.db);
 
-  String toString() => '$db.date $db.name';
+  String toString() => '< HeartRateZone | ${db.name} | ${db.lowerLimit} >';
 
   delete() async {
     await this.db.delete();

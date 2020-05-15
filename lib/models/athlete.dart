@@ -21,7 +21,7 @@ class Athlete extends ChangeNotifier {
   Athlete();
   Athlete.fromDb(this.db);
 
-  String toString() => '$db.firstName $db.lastName ($db.stravaId)';
+  String toString() => '< Athlete | ${db.firstName} ${db.lastName} | ${db.stravaId} >';
 
   updateFromStravaAthlete(DetailedAthlete athlete) {
     db

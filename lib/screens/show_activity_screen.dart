@@ -4,6 +4,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_metadata_widget.dart
 import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_speed_per_heart_rate_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_tag_widget.dart';
 import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_widget.dart';
@@ -216,7 +217,7 @@ class ShowActivityScreen extends StatelessWidget {
               color: MyColor.tag,
               icon: MyIcon.tag,
               context: context,
-              nextWidget: ActivityMetadataWidget(
+              nextWidget: ActivityTagWidget(
                 activity: activity,
                 athlete: athlete,
               ),
@@ -237,10 +238,7 @@ class ShowActivityScreen extends StatelessWidget {
   }) {
     return RaisedButton.icon(
       color: color,
-      textColor:
-          (ThemeData.estimateBrightnessForColor(color) == Brightness.light)
-              ? MyColor.black
-              : MyColor.white,
+      textColor: MyColor.textColor(backgroundColor: color),
       icon: icon,
       label: Text(title),
       onPressed: () => Navigator.push(

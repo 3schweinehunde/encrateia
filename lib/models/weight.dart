@@ -13,7 +13,7 @@ class Weight extends ChangeNotifier {
   }
   Weight.fromDb(this.db);
 
-  String toString() => '$db.date $db.value';
+  String toString() => '< Weight | ${db.date} | ${db.value} >';
 
   delete() async {
     await this.db.delete();

@@ -29,7 +29,7 @@ class PowerZone extends ChangeNotifier {
   }
   PowerZone.fromDb(this.db);
 
-  String toString() => '$db.date $db.name';
+  String toString() => '< PowerZone | ${db.name} | ${db.lowerLimit} >';
 
   delete() async {
     await this.db.delete();

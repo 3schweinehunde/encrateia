@@ -204,7 +204,7 @@ class Lap {
     return db.sdevFormPower;
   }
 
-  static Future<List<Lap>> by({Activity activity}) async {
+  static Future<List<Lap>> all({Activity activity}) async {
     int counter = 1;
 
     List<DbLap> dbLapList = await activity.db.getDbLaps().toList();

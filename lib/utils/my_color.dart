@@ -62,4 +62,18 @@ class MyColor {
   static Color activity = aquaAccent;
   static Color lap = grassAccent;
   static Color tag = lavender;
+
+  static Color textColor({
+    @required Color backgroundColor,
+    bool selected: true,
+  }) {
+    if (selected) {
+      if (ThemeData.estimateBrightnessForColor(backgroundColor) ==
+          Brightness.light)
+        return black;
+      else
+        return white;
+    } else
+      return black;
+  }
 }

@@ -4,6 +4,7 @@ import 'package:encrateia/models/tag_group.dart';
 
 class Tag extends ChangeNotifier {
   DbTag db;
+  bool selected;
 
   Tag({
     @required TagGroup tagGroup,
@@ -17,7 +18,7 @@ class Tag extends ChangeNotifier {
   }
   Tag.fromDb(this.db);
 
-  String toString() => '$db.date $db.name';
+  String toString() => '< Tag | ${db.name} >';
 
   delete() async {
     await this.db.delete();

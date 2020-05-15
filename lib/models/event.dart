@@ -15,6 +15,8 @@ class Event {
 
   Event.fromDb(this.db);
 
+  String toString() => '< Event | {$db.event} | $index >';
+
   Event({
     @required DataMessage dataMessage,
     @required this.activity,

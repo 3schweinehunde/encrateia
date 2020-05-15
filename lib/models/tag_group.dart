@@ -3,9 +3,11 @@ import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/activity.dart';
 
 class TagGroup extends ChangeNotifier {
   DbTagGroup db;
+  List<Tag> cachedTags;
 
   TagGroup({@required Athlete athlete}) {
     db = DbTagGroup()
@@ -16,7 +18,12 @@ class TagGroup extends ChangeNotifier {
   }
   TagGroup.fromDb(this.db);
 
-  get tags => Tag.all(tagGroup: this);
+  Future<List<Tag>> get tags async {
+    if (cachedTags == null) {
+      cachedTags = await Tag.all(tagGroup: this);
+    }
+    return cachedTags;
+  }
 
   TagGroup.by(
       {@required Athlete athlete,
@@ -30,7 +37,7 @@ class TagGroup extends ChangeNotifier {
       ..name = name;
   }
 
-  String toString() => '$db.name';
+  String toString() => '< Taggroup | ${db.name} >';
 
   delete() async {
     await this.db.delete();
@@ -54,24 +61,37 @@ class TagGroup extends ChangeNotifier {
     await autoPowerZonesTagGroup.db.save();
   }
 
+  static includingActivityTaggings({
+    @required Athlete athlete,
+    @required Activity activity,
+  }) async {
+    var tagGroups = await all(athlete: athlete);
+
+    var dbActivityTaggings = await DbActivityTagging()
+        .select()
+        .activitiesId
+        .equals(activity.db.id)
+        .toList();
+    var selectedTagIds = dbActivityTaggings
+        .map((DbActivityTagging dbActivityTagging) => dbActivityTagging.id);
+
+    for (TagGroup tagGroup in tagGroups) {
+      var tags = await tagGroup.tags;
+      for (Tag tag in tags) {
+        tag.selected = selectedTagIds.contains(tag.db.id) ? true : false;
+      }
+    }
+
+    return tagGroups;
+  }
+
   static Future<List<TagGroup>> all({@required Athlete athlete}) async {
     var dbTagGroupList =
         await athlete.db.getDbTagGroups().orderBy('name').toList();
     var tagGroups = dbTagGroupList
         .map((dbTagGroup) => TagGroup.fromDb(dbTagGroup))
         .toList();
-    return tagGroups;
-  }
 
-  static getBy({
-    int athletesId,
-  }) async {
-    var dbTagGroups = await DbTagGroup()
-        .select()
-        .athletesId
-        .equals(athletesId)
-        .top(1)
-        .toList();
-    if (dbTagGroups.length != 0) return TagGroup.fromDb(dbTagGroups.first);
+    return tagGroups;
   }
 }

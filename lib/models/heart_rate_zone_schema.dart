@@ -110,7 +110,7 @@ class HeartRateZoneSchema extends ChangeNotifier {
   }
 
 
-  String toString() => '$db.date $db.name';
+  String toString() => '< HeartRateZoneSchema | ${db.name} | ${db.date} >';
 
   delete() async {
     await this.db.delete();

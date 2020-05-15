@@ -52,7 +52,7 @@ class Activity extends ChangeNotifier {
       ..name = "t.b.d.";
   }
 
-  String toString() => '$db.name $db.startTime';
+  String toString() => '< Activity | ${db.name} | ${db.startTime} >';
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
 
   get({ActivityAttr activityAttr}) {
@@ -176,7 +176,7 @@ class Activity extends ChangeNotifier {
 
   Future<List<Lap>> get laps async {
     if (_laps == null) {
-      _laps = await Lap.by(activity: this);
+      _laps = await Lap.all(activity: this);
     }
     return _laps;
   }

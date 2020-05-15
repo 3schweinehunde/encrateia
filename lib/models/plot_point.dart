@@ -3,6 +3,8 @@ class IntPlotPoint {
   int measure;
 
   IntPlotPoint({this.domain, this.measure});
+
+  String toString() => '< IntPlotPoint | $domain | $measure >';
 }
 
 class DoublePlotPoint {
@@ -10,4 +12,6 @@ class DoublePlotPoint {
   double measure;
 
   DoublePlotPoint({this.domain, this.measure});
+
+  String toString() => '< DoublePlotPoint | $domain | $measure >';
 }

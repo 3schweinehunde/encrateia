@@ -141,10 +141,7 @@ class ShowLapScreen extends StatelessWidget {
   }) {
     return RaisedButton.icon(
       color: color ?? MyColor.primary,
-      textColor:
-          (ThemeData.estimateBrightnessForColor(color) == Brightness.light)
-              ? MyColor.black
-              : MyColor.white,
+      textColor: MyColor.textColor(backgroundColor: color),
       icon: icon,
       label: Text(title),
       onPressed: () => Navigator.push(

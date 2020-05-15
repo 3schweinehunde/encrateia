@@ -177,7 +177,7 @@ class PowerZoneSchema extends ChangeNotifier {
     ).db.save();
   }
 
-  String toString() => '$db.date $db.name';
+  String toString() => '< PowerZoneSchema | ${db.name} | ${db.date} >';
 
   delete() async {
     await this.db.delete();
