@@ -1,6 +1,7 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
   @override
   Widget build(context) {
     return ListTileTheme(
-      iconColor: Colors.deepOrange,
+      iconColor: MyColor.activity,
       child: GridView.count(
         padding: EdgeInsets.all(5),
         crossAxisCount: MediaQuery.of(context).orientation  == Orientation.portrait ? 2 : 4,
