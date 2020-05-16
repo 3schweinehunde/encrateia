@@ -25,11 +25,8 @@ class Tag extends ChangeNotifier {
   }
 
   static Future<List<Tag>> all({@required TagGroup tagGroup}) async {
-    if (tagGroup.db.id != null) {
-      var dbTagList = await tagGroup.db.getDbTags().orderBy('name').toList();
-      var tags = dbTagList.map((dbTag) => Tag.fromDb(dbTag)).toList();
-      return tags;
-    } else
-      return [];
+    var dbTagList = await tagGroup.db.getDbTags().orderBy('name').toList();
+    var tags = dbTagList.map((dbTag) => Tag.fromDb(dbTag)).toList();
+    return tags;
   }
 }

@@ -39,16 +39,13 @@ class HeartRateZone extends ChangeNotifier {
 
   static Future<List<HeartRateZone>> all(
       {@required HeartRateZoneSchema heartRateZoneSchema}) async {
-    if (heartRateZoneSchema.db.id != null) {
-      var dbHeartRateZoneList = await heartRateZoneSchema.db
-          .getDbHeartRateZones()
-          .orderByDesc('lowerlimit')
-          .toList();
-      var heartRateZones = dbHeartRateZoneList
-          .map((dbHeartRateZone) => HeartRateZone.fromDb(dbHeartRateZone))
-          .toList();
-      return heartRateZones;
-    } else
-      return [];
+    var dbHeartRateZoneList = await heartRateZoneSchema.db
+        .getDbHeartRateZones()
+        .orderByDesc('lowerlimit')
+        .toList();
+    var heartRateZones = dbHeartRateZoneList
+        .map((dbHeartRateZone) => HeartRateZone.fromDb(dbHeartRateZone))
+        .toList();
+    return heartRateZones;
   }
 }

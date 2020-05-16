@@ -721,8 +721,7 @@ class DbAthlete {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbActivity()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .athletesId
-        .equals(id)
+        .where('athletesId=?', parameterValue: id)
         .and;
   }
 
@@ -735,8 +734,7 @@ class DbAthlete {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbWeight()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .athletesId
-        .equals(id)
+        .where('athletesId=?', parameterValue: id)
         .and;
   }
 
@@ -749,8 +747,7 @@ class DbAthlete {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbHeartRateZoneSchema()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .athletesId
-        .equals(id)
+        .where('athletesId=?', parameterValue: id)
         .and;
   }
 
@@ -763,8 +760,7 @@ class DbAthlete {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbPowerZoneSchema()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .athletesId
-        .equals(id)
+        .where('athletesId=?', parameterValue: id)
         .and;
   }
 
@@ -777,8 +773,7 @@ class DbAthlete {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbTagGroup()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .athletesId
-        .equals(id)
+        .where('athletesId=?', parameterValue: id)
         .and;
   }
 
@@ -1225,8 +1220,7 @@ class DbAthlete {
     {
       result = await DbActivity()
           .select()
-          .athletesId
-          .equals(id)
+          .where('athletesId=?', parameterValue: id)
           .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -1235,8 +1229,7 @@ class DbAthlete {
     {
       result = await DbWeight()
           .select()
-          .athletesId
-          .equals(id)
+          .where('athletesId=?', parameterValue: id)
           .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -1245,8 +1238,7 @@ class DbAthlete {
     {
       result = await DbHeartRateZoneSchema()
           .select()
-          .athletesId
-          .equals(id)
+          .where('athletesId=?', parameterValue: id)
           .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -1255,8 +1247,7 @@ class DbAthlete {
     {
       result = await DbPowerZoneSchema()
           .select()
-          .athletesId
-          .equals(id)
+          .where('athletesId=?', parameterValue: id)
           .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -1265,8 +1256,7 @@ class DbAthlete {
     {
       result = await DbTagGroup()
           .select()
-          .athletesId
-          .equals(id)
+          .where('athletesId=?', parameterValue: id)
           .and /*.athletesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -2740,8 +2730,7 @@ class DbActivity {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbEvent()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .activitiesId
-        .equals(id)
+        .where('activitiesId=?', parameterValue: id)
         .and;
   }
 
@@ -2754,8 +2743,7 @@ class DbActivity {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbLap()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .activitiesId
-        .equals(id)
+        .where('activitiesId=?', parameterValue: id)
         .and;
   }
 
@@ -2768,8 +2756,7 @@ class DbActivity {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbActivityTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .activitiesId
-        .equals(id)
+        .where('activitiesId=?', parameterValue: id)
         .and;
   }
 
@@ -3864,8 +3851,7 @@ class DbActivity {
     {
       result = await DbEvent()
           .select()
-          .activitiesId
-          .equals(id)
+          .where('activitiesId=?', parameterValue: id)
           .and /*.activitiesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -3874,8 +3860,7 @@ class DbActivity {
     {
       result = await DbLap()
           .select()
-          .activitiesId
-          .equals(id)
+          .where('activitiesId=?', parameterValue: id)
           .and /*.activitiesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -3884,8 +3869,7 @@ class DbActivity {
     {
       result = await DbActivityTagging()
           .select()
-          .activitiesId
-          .equals(id)
+          .where('activitiesId=?', parameterValue: id)
           .and /*.activitiesId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -7603,8 +7587,7 @@ class DbLap {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbEvent()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .lapsId
-        .equals(id)
+        .where('lapsId=?', parameterValue: id)
         .and;
   }
 
@@ -7617,8 +7600,7 @@ class DbLap {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbLapTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .lapsId
-        .equals(id)
+        .where('lapsId=?', parameterValue: id)
         .and;
   }
 
@@ -8500,8 +8482,7 @@ class DbLap {
     {
       result = await DbEvent()
           .select()
-          .lapsId
-          .equals(id)
+          .where('lapsId=?', parameterValue: id)
           .and /*.lapsId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -8510,8 +8491,7 @@ class DbLap {
     {
       result = await DbLapTagging()
           .select()
-          .lapsId
-          .equals(id)
+          .where('lapsId=?', parameterValue: id)
           .and /*.lapsId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -11050,8 +11030,7 @@ class DbHeartRateZoneSchema {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbHeartRateZone()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .heartRateZoneSchemataId
-        .equals(id)
+        .where('heartRateZoneSchemataId=?', parameterValue: id)
         .and;
   }
 
@@ -11375,8 +11354,7 @@ class DbHeartRateZoneSchema {
     {
       result = await DbHeartRateZone()
           .select()
-          .heartRateZoneSchemataId
-          .equals(id)
+          .where('heartRateZoneSchemataId=?', parameterValue: id)
           .and /*.heartRateZoneSchemataId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -13530,8 +13508,7 @@ class DbPowerZoneSchema {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbPowerZone()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .powerZoneSchemataId
-        .equals(id)
+        .where('powerZoneSchemataId=?', parameterValue: id)
         .and;
   }
 
@@ -13854,8 +13831,7 @@ class DbPowerZoneSchema {
     {
       result = await DbPowerZone()
           .select()
-          .powerZoneSchemataId
-          .equals(id)
+          .where('powerZoneSchemataId=?', parameterValue: id)
           .and /*.powerZoneSchemataId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -15980,8 +15956,7 @@ class DbTag {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbLapTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .tagsId
-        .equals(id)
+        .where('tagsId=?', parameterValue: id)
         .and;
   }
 
@@ -15994,8 +15969,7 @@ class DbTag {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbActivityTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .tagsId
-        .equals(id)
+        .where('tagsId=?', parameterValue: id)
         .and;
   }
 
@@ -16324,8 +16298,7 @@ class DbTag {
     {
       result = await DbLapTagging()
           .select()
-          .tagsId
-          .equals(id)
+          .where('tagsId=?', parameterValue: id)
           .and /*.tagsId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -16334,8 +16307,7 @@ class DbTag {
     {
       result = await DbActivityTagging()
           .select()
-          .tagsId
-          .equals(id)
+          .where('tagsId=?', parameterValue: id)
           .and /*.tagsId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {
@@ -17219,8 +17191,7 @@ class DbTagGroup {
       {List<String> columnsToSelect, bool getIsDeleted}) {
     return DbTag()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .tagGroupsId
-        .equals(id)
+        .where('tagGroupsId=?', parameterValue: id)
         .and;
   }
 
@@ -17530,8 +17501,7 @@ class DbTagGroup {
     {
       result = await DbTag()
           .select()
-          .tagGroupsId
-          .equals(id)
+          .where('tagGroupsId=?', parameterValue: id)
           .and /*.tagGroupsId.equals(id)*/ .delete(hardDelete);
     }
     if (!result.success) {

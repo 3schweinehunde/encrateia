@@ -37,16 +37,13 @@ class PowerZone extends ChangeNotifier {
 
   static Future<List<PowerZone>> all(
       {@required PowerZoneSchema powerZoneSchema}) async {
-    if (powerZoneSchema.db.id != null) {
-      var dbPowerZoneList = await powerZoneSchema.db
-          .getDbPowerZones()
-          .orderByDesc('lowerlimit')
-          .toList();
-      var powerZones = dbPowerZoneList
-          .map((dbPowerZone) => PowerZone.fromDb(dbPowerZone))
-          .toList();
-      return powerZones;
-    } else
-      return [];
+    var dbPowerZoneList = await powerZoneSchema.db
+        .getDbPowerZones()
+        .orderByDesc('lowerlimit')
+        .toList();
+    var powerZones = dbPowerZoneList
+        .map((dbPowerZone) => PowerZone.fromDb(dbPowerZone))
+        .toList();
+    return powerZones;
   }
 }
