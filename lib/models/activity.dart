@@ -215,11 +215,14 @@ class Activity extends ChangeNotifier {
       lap.db.avgHeartRate = Lap.calculateAverageHeartRate(records: records);
       lap.db.avgSpeed = Lap.calculateAverageSpeed(records: records);
       lap.db.avgGroundTime = Lap.calculateAverageGroundTime(records: records);
-      lap.db.avgStrydCadence = Lap.calculateAverageStrydCadence(records: records);
-      lap.db.avgLegSpringStiffness = Lap.calculateAverageLegSpringStiffness(records: records);
+      lap.db.avgStrydCadence =
+          Lap.calculateAverageStrydCadence(records: records);
+      lap.db.avgLegSpringStiffness =
+          Lap.calculateAverageLegSpringStiffness(records: records);
       lap.db.avgStrideRatio = Lap.calculateAverageStrideRatio(records: records);
       lap.db.avgPowerRatio = Lap.calculateAverageStrideRatio(records: records);
-      lap.db.avgVerticalOscillation = Lap.calculateAverageVerticalOscillation(records: records);
+      lap.db.avgVerticalOscillation =
+          Lap.calculateAverageVerticalOscillation(records: records);
       await lap.db.save();
     }
     await db.save();
@@ -358,8 +361,10 @@ class Activity extends ChangeNotifier {
             lap: currentLap,
           );
           await lap.db.save();
-          await DbEvent()
-              .upsertAll(eventsForCurrentLap.map((event) => event.db).toList());
+          await DbEvent().upsertAll(eventsForCurrentLap
+              .where((event) => event.db != null)
+              .map((event) => event.db)
+              .toList());
 
           await resetCurrentLap();
           break;
