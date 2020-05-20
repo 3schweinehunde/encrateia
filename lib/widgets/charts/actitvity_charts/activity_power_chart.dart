@@ -57,7 +57,6 @@ class ActivityPowerChart extends StatelessWidget {
               domainTitle: 'Power (W)',
               measureTickProviderSpec: BasicNumericTickProviderSpec(
                   zeroBound: false,
-                  dataIsInWholeNumbers: true,
                   desiredTickCount: 6),
               domainTickProviderSpec:
                   BasicNumericTickProviderSpec(desiredTickCount: 6),
