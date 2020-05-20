@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -22,14 +23,11 @@ class MyLineChart extends LineChart {
             tickProviderSpec: domainTickProviderSpec,
           ),
           primaryMeasureAxis: NumericAxisSpec(
-            tickProviderSpec: measureTickProviderSpec,
-            viewport: (powerZones != null)
-                ? NumericExtents(
-                    calcyMin(powerZones),
-                    calcyMax(powerZones),
-                  )
-                : null,
-          ),
+              tickProviderSpec: measureTickProviderSpec,
+              viewport: determineViewport(
+                powerZones: powerZones,
+                heartRateZones: heartRateZones,
+              )),
           animate: false,
           layoutConfig: GraphUtils.layoutConfig,
           behaviors: [
@@ -58,15 +56,26 @@ class MyLineChart extends LineChart {
           ],
         );
 
-  static num calcyMin(List<PowerZone> powerZones) =>
-      powerZones
-          .map((PowerZone powerZone) => powerZone.db.lowerLimit)
-          .reduce(min) -
-      5.0;
-
-  static num calcyMax(List<PowerZone> powerZones) =>
-      powerZones
-          .map((PowerZone powerZone) => powerZone.db.upperLimit)
-          .reduce(max) +
-      5.0;
+  static determineViewport({List<PowerZone> powerZones, List<HeartRateZone> heartRateZones, }) {
+    if (powerZones != null)
+      return NumericExtents(
+          powerZones
+                  .map((PowerZone powerZone) => powerZone.db.lowerLimit)
+                  .reduce(min) -
+              5.0,
+          powerZones
+                  .map((PowerZone powerZone) => powerZone.db.upperLimit)
+                  .reduce(max) +
+              5.0);
+    else if (heartRateZones != null)
+      return NumericExtents(
+          heartRateZones
+              .map((HeartRateZone heartRateZone) => heartRateZone.db.lowerLimit)
+              .reduce(min) -
+              5.0,
+          heartRateZones
+              .map((HeartRateZone heartRateZone) => heartRateZone.db.upperLimit)
+              .reduce(max) +
+              5.0);
+  }
 }
