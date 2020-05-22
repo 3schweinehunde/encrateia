@@ -22,8 +22,9 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flushbar/flushbar.dart';
 
-class ShowActivityScreen extends StatelessWidget {
+class ShowActivityScreen extends StatefulWidget {
   final Activity activity;
   final Athlete athlete;
 
@@ -34,12 +35,19 @@ class ShowActivityScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _ShowActivityScreenState createState() => _ShowActivityScreenState();
+}
+
+class _ShowActivityScreenState extends State<ShowActivityScreen> {
+  Flushbar flushbar = Flushbar();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.activity,
         title: Text(
-          '${activity.db.name}',
+          '${widget.activity.db.name}',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -57,8 +65,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.overView,
               context: context,
               nextWidget: ActivityOverviewWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -68,8 +76,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.laps,
               context: context,
               nextWidget: LapsListWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -78,8 +86,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.heartRate,
               context: context,
               nextWidget: ActivityHeartRateWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -88,8 +96,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.power,
               context: context,
               nextWidget: ActivityPowerWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -98,8 +106,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.powerDuration,
               context: context,
               nextWidget: ActivityPowerDurationWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -108,8 +116,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.power,
               context: context,
               nextWidget: ActivityPowerPerHeartRateWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -118,8 +126,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.power,
               context: context,
               nextWidget: ActivityEcorWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -128,8 +136,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.speed,
               context: context,
               nextWidget: ActivitySpeedPerHeartRateWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -138,8 +146,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.groundTime,
               context: context,
               nextWidget: ActivityGroundTimeWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -148,8 +156,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.formPower,
               context: context,
               nextWidget: ActivityFormPowerWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -158,8 +166,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.formPower,
               context: context,
               nextWidget: ActivityPowerRatioWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -168,8 +176,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.verticalOscillation,
               context: context,
               nextWidget: ActivityVerticalOscillationWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -178,8 +186,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.strideRatio,
               context: context,
               nextWidget: ActivityStrideRatioWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -188,8 +196,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.cadence,
               context: context,
               nextWidget: ActivityStrydCadenceWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -198,8 +206,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.legSpringStiffness,
               context: context,
               nextWidget: ActivityLegSpringStiffnessWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -208,8 +216,8 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.metaData,
               context: context,
               nextWidget: ActivityMetadataWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
             ),
             navigationButton(
@@ -218,9 +226,16 @@ class ShowActivityScreen extends StatelessWidget {
               icon: MyIcon.tag,
               context: context,
               nextWidget: ActivityTagWidget(
-                activity: activity,
-                athlete: athlete,
+                activity: widget.activity,
+                athlete: widget.athlete,
               ),
+            ),
+            RaisedButton.icon(
+              color: MyColor.add,
+              icon: MyIcon.settings,
+              textColor: MyColor.textColor(backgroundColor: MyColor.add),
+              label: Text("Rerun\n Autotagging"),
+              onPressed: () => autoTagger(),
             ),
           ],
         );
@@ -245,7 +260,7 @@ class ShowActivityScreen extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => ShowActivityDetailScreen(
-            activity: activity,
+            activity: widget.activity,
             widget: nextWidget,
             title: title,
             backgroundColor: backgroundColor,
@@ -253,5 +268,23 @@ class ShowActivityScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  autoTagger() async {
+    flushbar = Flushbar(
+      message: "Starting Autotagger",
+      duration: Duration(seconds: 10),
+      icon: MyIcon.stravaDownloadWhite,
+    )..show(context);
+
+    await widget.activity.autoTagger(athlete: widget.athlete);
+
+    flushbar.dismiss();
+    Flushbar(
+      message: "Autotagging finished",
+      duration: Duration(seconds: 2),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+    setState(() {});
   }
 }

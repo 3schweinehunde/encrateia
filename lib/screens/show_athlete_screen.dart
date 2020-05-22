@@ -117,6 +117,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             ),
             RaisedButton.icon(
               color: MyColor.add,
+              textColor: MyColor.textColor(backgroundColor: MyColor.add),
               icon: MyIcon.downloadLocal,
               label: Text("Import .fit\nfrom Folder"),
               onPressed: () => importLocal(),
@@ -124,6 +125,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             RaisedButton.icon(
               color: MyColor.add,
               icon: MyIcon.settings,
+              textColor: MyColor.textColor(backgroundColor: MyColor.add),
               label: Text("Recalculate\nAverages"),
               onPressed: () => recalculate(),
             ),

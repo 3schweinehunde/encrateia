@@ -52,12 +52,12 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
                       style: TextStyle(
                         color: MyColor.textColor(
                           selected: tag.selected,
-                          backgroundColor: Color(tag.db.color),
+                          backgroundColor: Color(tag.db.color ?? 99999),
                         ),
                       ),
                     ),
                     avatar: CircleAvatar(
-                      backgroundColor: Color(tag.db.color),
+                      backgroundColor: Color(tag.db.color ?? 99999),
                     ),
                     onSelected: (selected) {
                       setState(() {
@@ -76,7 +76,7 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
                       });
                     },
                     selected: tag.selected,
-                    selectedColor: Color(tag.db.color),
+                    selectedColor: Color(tag.db.color ?? 99999),
                     backgroundColor: MyColor.white,
                     elevation: 3,
                     padding: EdgeInsets.all(10),

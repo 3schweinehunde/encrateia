@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/tag_group.dart';
 
+import 'athlete.dart';
+
 class Tag extends ChangeNotifier {
   DbTag db;
   bool selected = false;
@@ -28,5 +30,63 @@ class Tag extends ChangeNotifier {
     var dbTagList = await tagGroup.db.getDbTags().orderBy('name').toList();
     var tags = dbTagList.map((dbTag) => Tag.fromDb(dbTag)).toList();
     return tags;
+  }
+
+  static ensureAutoPowerTag({
+    @required Athlete athlete,
+    @required String name,
+    @required int color,
+  }) async {
+    DbTag dbPowerTag;
+
+    TagGroup autoPowerTagGroup =
+        await TagGroup.autoPowerTagGroup(athlete: athlete);
+    dbPowerTag = await DbTag()
+        .select()
+        .tagGroupsId
+        .equals(autoPowerTagGroup.db.id)
+        .and
+        .name
+        .equals(name)
+        .toSingle();
+
+    if (dbPowerTag == null) {
+      dbPowerTag = DbTag()
+        ..tagGroupsId = autoPowerTagGroup.db.id
+        ..color = color
+        ..name = name
+        ..system = true;
+      await dbPowerTag.save();
+    }
+    return Tag.fromDb(dbPowerTag);
+  }
+
+  static ensureAutoHeartRateTag({
+    @required Athlete athlete,
+    @required String name,
+    @required int color,
+}) async {
+    DbTag dbHeartRateTag;
+
+    TagGroup autoHeartRateTagGroup =
+    await TagGroup.autoHeartRateTagGroup(athlete: athlete);
+     dbHeartRateTag = await DbTag()
+        .select()
+        .tagGroupsId
+        .equals(autoHeartRateTagGroup.db.id)
+        .and
+        .name
+        .equals(name)
+        .toSingle();
+
+    if (dbHeartRateTag == null) {
+      dbHeartRateTag = DbTag()
+        ..tagGroupsId = autoHeartRateTagGroup.db.id
+        ..color = color
+        ..name = name
+        ..system = true;
+      await dbHeartRateTag.save();
+    }
+    return Tag.fromDb(dbHeartRateTag);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/strava_fit_download.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
@@ -7,6 +8,7 @@ import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,6 +18,8 @@ import 'package:intl/intl.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'dart:io';
 
+import 'activity_tagging.dart';
+import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';
 
 class Activity extends ChangeNotifier {
@@ -518,5 +522,69 @@ class Activity extends ChangeNotifier {
       date: db.timeCreated,
     );
     return heartRateZoneSchema;
+  }
+
+  getPowerZone() async {
+    var powerZoneSchema = await getPowerZoneSchema();
+    var dbPowerZone = await DbPowerZone()
+        .select()
+        .powerZoneSchemataId
+        .equals(powerZoneSchema.db.id)
+        .and
+        .lowerLimit
+        .lessThanOrEquals(db.avgPower)
+        .and
+        .upperLimit
+        .greaterThanOrEquals(db.avgPower)
+        .toSingle();
+
+    return PowerZone.fromDb(dbPowerZone);
+  }
+
+  getHeartRateZone() async {
+    var heartRateZoneSchema = await getHeartRateZoneSchema();
+    var dbHeartRateZone = await DbHeartRateZone()
+        .select()
+        .heartRateZoneSchemataId
+        .equals(heartRateZoneSchema.db.id)
+        .and
+        .lowerLimit
+        .lessThanOrEquals(db.avgHeartRate)
+        .and
+        .upperLimit
+        .greaterThanOrEquals(db.avgHeartRate)
+        .toSingle();
+
+    return HeartRateZone.fromDb(dbHeartRateZone);
+  }
+
+  autoTagger({Athlete athlete}) async {
+    PowerZone powerZone = await getPowerZone();
+    if (powerZone.db != null) {
+      Tag powerTag = await Tag.ensureAutoPowerTag(
+        athlete: athlete,
+        color: powerZone.db.color,
+        name: powerZone.db.name,
+      );
+      await ActivityTagging.createBy(
+        activity: this,
+        tag: powerTag,
+        system: true,
+      );
+    }
+
+    HeartRateZone heartRateZone = await getHeartRateZone();
+    if (heartRateZone.db != null) {
+      Tag heartRateTag = await Tag.ensureAutoHeartRateTag(
+        athlete: athlete,
+        color: heartRateZone.db.color,
+        name: heartRateZone.db.name,
+      );
+      await ActivityTagging.createBy(
+        activity: this,
+        tag: heartRateTag,
+        system: true,
+      );
+    }
   }
 }

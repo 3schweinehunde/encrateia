@@ -62,6 +62,36 @@ class TagGroup extends ChangeNotifier {
     await autoPowerZonesTagGroup.db.save();
   }
 
+  static autoPowerTagGroup({Athlete athlete}) async {
+    var dbTagGroup = await DbTagGroup()
+        .select()
+        .system
+        .equals(true)
+        .and
+        .athletesId
+        .equals(athlete.db.id)
+        .and
+        .name
+        .equals("Auto Power Zones")
+        .toSingle();
+    return TagGroup.fromDb(dbTagGroup);
+  }
+
+  static autoHeartRateTagGroup({Athlete athlete}) async {
+    var dbTagGroup = await DbTagGroup()
+        .select()
+        .system
+        .equals(true)
+        .and
+        .athletesId
+        .equals(athlete.db.id)
+        .and
+        .name
+        .equals("Auto Heart Rate Zones")
+        .toSingle();
+    return TagGroup.fromDb(dbTagGroup);
+  }
+
   static includingActivityTaggings({
     @required Athlete athlete,
     @required Activity activity,
@@ -91,14 +121,11 @@ class TagGroup extends ChangeNotifier {
   }) async {
     var tagGroups = await all(athlete: athlete);
 
-    var dbLapTaggings = await DbLapTagging()
-        .select()
-        .lapsId
-        .equals(lap.db.id)
-        .toList();
+    var dbLapTaggings =
+        await DbLapTagging().select().lapsId.equals(lap.db.id).toList();
 
-    var selectedTagIds = dbLapTaggings
-        .map((DbLapTagging dbLapTagging) => dbLapTagging.tagsId);
+    var selectedTagIds =
+        dbLapTaggings.map((DbLapTagging dbLapTagging) => dbLapTagging.tagsId);
 
     for (TagGroup tagGroup in tagGroups) {
       tagGroup.cachedTags = await tagGroup.tags;

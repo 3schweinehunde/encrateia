@@ -9,11 +9,12 @@ class ActivityTagging extends ChangeNotifier {
   ActivityTagging({
     @required Activity activity,
     @required Tag tag,
+    bool system,
   }) {
     db = DbActivityTagging()
       ..activitiesId = activity.db.id
       ..tagsId = tag.db.id
-      ..system = false;
+      ..system = system ?? false;
   }
 
   ActivityTagging.fromDb(this.db);
@@ -21,6 +22,7 @@ class ActivityTagging extends ChangeNotifier {
   static createBy({
     @required Activity activity,
     @required Tag tag,
+    bool system,
   }) async {
     var dbActivityTagging = await DbActivityTagging()
         .select()
@@ -37,6 +39,7 @@ class ActivityTagging extends ChangeNotifier {
       var activityTagging = ActivityTagging(
         activity: activity,
         tag: tag,
+        system: system ?? false
       );
       await activityTagging.db.save();
       return activityTagging;

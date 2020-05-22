@@ -1,13 +1,11 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityOverviewWidget extends StatefulWidget {
   final Activity activity;
