@@ -2,6 +2,9 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
+import 'package:encrateia/models/plot_point.dart';
+import 'package:encrateia/utils/enums.dart';
 
 class RecordList<E> extends DelegatingList<E> {
   final List<Event> _records;
@@ -263,4 +266,93 @@ class RecordList<E> extends DelegatingList<E> {
           record.db.strydCadence /
           record.db.verticalOscillation)
       .sdev();
+
+  List<IntPlotPoint> toIntDataPoints({
+    int amount,
+    @required LapIntAttr attribute,
+  }) {
+    int index = 0;
+    List<IntPlotPoint> plotPoints = [];
+    int sum = 0;
+
+    for (var record in _records) {
+      switch (attribute) {
+        case LapIntAttr.power:
+          sum = sum + record.db.power;
+          break;
+        case LapIntAttr.formPower:
+          sum = sum + record.db.formPower;
+          break;
+        case LapIntAttr.heartRate:
+          sum = sum + record.db.heartRate;
+      }
+
+      if (index++ % amount == amount - 1) {
+        plotPoints.add(IntPlotPoint(
+          domain: record.db.distance.round(),
+          measure: (sum / amount).round(),
+        ));
+        sum = 0;
+      }
+    }
+
+    return plotPoints;
+  }
+
+  List<DoublePlotPoint> toDoubleDataPoints({
+    int amount,
+    @required LapDoubleAttr attribute,
+    double weight
+  }) {
+    int index = 0;
+    List<DoublePlotPoint> plotPoints = [];
+    double sum = 0.0;
+
+    for (var record in _records) {
+      switch (attribute) {
+        case LapDoubleAttr.powerPerHeartRate:
+          sum = sum + (record.db.power / record.db.heartRate);
+          break;
+        case LapDoubleAttr.speedPerHeartRate:
+          sum = sum + 100 * (record.db.speed / record.db.heartRate);
+          break;
+        case LapDoubleAttr.groundTime:
+          sum = sum + record.db.groundTime;
+          break;
+        case LapDoubleAttr.strydCadence:
+          sum = sum + 2 * record.db.strydCadence;
+          break;
+        case LapDoubleAttr.verticalOscillation:
+          sum = sum + record.db.verticalOscillation;
+          break;
+        case LapDoubleAttr.legSpringStiffness:
+          sum = sum + record.db.legSpringStiffness;
+          break;
+        case LapDoubleAttr.powerRatio:
+          sum = sum +
+              ((record.db.power - record.db.formPower) / record.db.power * 100);
+          break;
+        case LapDoubleAttr.strideRatio:
+          sum = sum +
+              (10000 /
+                  6 *
+                  record.db.speed /
+                  record.db.strydCadence /
+                  record.db.verticalOscillation);
+          break;
+        case LapDoubleAttr.ecor:
+          sum = sum + (record.db.power / record.db.speed / weight);
+      }
+
+      if (index++ % amount == amount - 1) {
+        plotPoints.add(DoublePlotPoint(
+          domain: record.db.distance.round(),
+          measure: sum / amount,
+        ));
+        sum = 0;
+      }
+    }
+
+    return plotPoints;
+  }
 }

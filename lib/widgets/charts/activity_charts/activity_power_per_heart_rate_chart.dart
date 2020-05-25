@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -10,7 +11,7 @@ import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 
 class ActivityPowerPerHeartRateChart extends StatelessWidget {
-  final List<Event> records;
+  final RecordList<Event> records;
   final Activity activity;
   final Athlete athlete;
 
@@ -22,9 +23,8 @@ class ActivityPowerPerHeartRateChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var smoothedRecords = Event.toDoubleDataPoints(
+    var smoothedRecords = records.toDoubleDataPoints(
       attribute: LapDoubleAttr.powerPerHeartRate,
-      records: records,
       amount: athlete.db.recordAggregationCount,
     );
 

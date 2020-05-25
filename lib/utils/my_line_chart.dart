@@ -56,26 +56,17 @@ class MyLineChart extends LineChart {
           ],
         );
 
-  static determineViewport({List<PowerZone> powerZones, List<HeartRateZone> heartRateZones, }) {
+  static determineViewport({
+    List<PowerZone> powerZones,
+    List<HeartRateZone> heartRateZones,
+  }) {
     if (powerZones != null)
       return NumericExtents(
-          powerZones
-                  .map((PowerZone powerZone) => powerZone.db.lowerLimit)
-                  .reduce(min) -
-              5.0,
-          powerZones
-                  .map((PowerZone powerZone) => powerZone.db.upperLimit)
-                  .reduce(max) +
-              5.0);
+          powerZones.map((i) => i.db.lowerLimit).reduce(min) - 5.0,
+          powerZones.map((u) => u.db.upperLimit).reduce(max) + 5.0);
     else if (heartRateZones != null)
       return NumericExtents(
-          heartRateZones
-              .map((HeartRateZone heartRateZone) => heartRateZone.db.lowerLimit)
-              .reduce(min) -
-              5.0,
-          heartRateZones
-              .map((HeartRateZone heartRateZone) => heartRateZone.db.upperLimit)
-              .reduce(max) +
-              5.0);
+          heartRateZones.map((i) => i.db.lowerLimit).reduce(min) - 5.0,
+          heartRateZones.map((i) => i.db.upperLimit).reduce(max) + 5.0);
   }
 }
