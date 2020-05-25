@@ -1,4 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -21,7 +22,7 @@ class ActivityStrideRatioWidget extends StatefulWidget {
 }
 
 class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
-  List<Event> records = [];
+  var records = RecordList(<Event>[]);
   String avgStrideRatioString = "Loading ...";
   String sdevStrideRatioString = "Loading ...";
 
@@ -48,7 +49,7 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityStrideRatioChart(
-                records: strideRatioRecords,
+                records: RecordList(strideRatioRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
@@ -92,7 +93,7 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
 
   getData() async {
     Activity activity = widget.activity;
-    records = await activity.records;
+    records = RecordList(await activity.records);
     avgStrideRatioString = activity.db.avgStrideRatio.toStringOrDashes(1);
     sdevStrideRatioString = activity.db.sdevStrideRatio.toStringOrDashes(2);
     setState(() {});

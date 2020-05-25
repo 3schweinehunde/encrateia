@@ -4,6 +4,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/models/event.dart';
 
 class LapStrydCadenceWidget extends StatefulWidget {
   final Lap lap;
@@ -15,7 +16,7 @@ class LapStrydCadenceWidget extends StatefulWidget {
 }
 
 class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
-  var records = RecordList({});
+  var records = RecordList(<Event>[]);
   String avgStrydCadenceString = "Loading ...";
   String sdevStrydCadenceString = "Loading ...";
 
@@ -45,7 +46,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapStrydCadenceChart(records: strydCadenceRecords),
+              LapStrydCadenceChart(records: RecordList(strydCadenceRecords)),
               Text('Only records where cadence > 0 s/min are shown.'),
               Text('Swipe left/write to compare with other laps.'),
               Divider(),

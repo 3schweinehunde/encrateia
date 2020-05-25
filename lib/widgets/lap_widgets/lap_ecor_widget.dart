@@ -1,6 +1,7 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/weight.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_ecor_chart.dart';
@@ -21,7 +22,7 @@ class LapEcorWidget extends StatefulWidget {
 }
 
 class _LapEcorWidgetState extends State<LapEcorWidget> {
-  var records = RecordList([]);
+  var records = RecordList(<Event>[]);
   Weight weight;
   String weightString;
 
@@ -55,7 +56,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapEcorChart(
-                records: powerRecords,
+                records: RecordList(powerRecords),
                 weight: weight.db.value,
               ),
               Text('${widget.athlete.db.recordAggregationCount} records are '

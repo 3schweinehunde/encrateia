@@ -1,4 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
@@ -22,7 +23,7 @@ class ActivityHeartRateWidget extends StatefulWidget {
 }
 
 class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
-  var records = RecordList([]);
+  var records = RecordList(<Event>[]);
   HeartRateZoneSchema heartRateZoneSchema;
   List<HeartRateZone> heartRateZones;
 
@@ -47,7 +48,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityHeartRateChart(
-                records: heartRateRecords,
+                records: RecordList(heartRateRecords),
                 activity: widget.activity,
                 heartRateZones: heartRateZones,
                 athlete: widget.athlete,

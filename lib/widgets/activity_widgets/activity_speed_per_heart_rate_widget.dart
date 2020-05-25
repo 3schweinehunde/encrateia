@@ -1,4 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_speed_per_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -22,7 +23,7 @@ class ActivitySpeedPerHeartRateWidget extends StatefulWidget {
 
 class _ActivitySpeedPerHeartRateWidgetState
     extends State<ActivitySpeedPerHeartRateWidget> {
-  List<Event> records = [];
+  var records = RecordList(<Event>[]);
   String avgSpeedPerHeartRateString = "Loading ...";
 
   @override
@@ -48,7 +49,7 @@ class _ActivitySpeedPerHeartRateWidgetState
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivitySpeedPerHeartRateChart(
-                records: speedPerHeartRateRecords,
+                records: RecordList(speedPerHeartRateRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
@@ -78,7 +79,7 @@ class _ActivitySpeedPerHeartRateWidgetState
 
   getData() async {
     Activity activity = widget.activity;
-    records = await activity.records;
+    records = RecordList(await activity.records);
 
     double avg = 1000 * activity.db.avgSpeed / activity.db.avgHeartRate;
     avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + " m/h / bpm";

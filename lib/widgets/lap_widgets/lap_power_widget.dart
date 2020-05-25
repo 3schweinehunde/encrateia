@@ -3,6 +3,7 @@ import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -17,7 +18,7 @@ class LapPowerWidget extends StatefulWidget {
 }
 
 class _LapPowerWidgetState extends State<LapPowerWidget> {
-  var records = RecordList({});
+  var records = RecordList(<Event>[]);
   String avgPowerString = "Loading ...";
   String minPowerString = "Loading ...";
   String maxPowerString = "Loading ...";
@@ -51,7 +52,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapPowerChart(
-                records: powerRecords,
+                records: RecordList(powerRecords),
                 powerZones: powerZones,
               ),
               Text('Only records where power > 100 W are shown.'),

@@ -1,6 +1,7 @@
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
@@ -16,7 +17,7 @@ class LapHeartRateWidget extends StatefulWidget {
 }
 
 class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
-  var records = RecordList([]);
+  var records = RecordList(<Event>[]);
   String avgHeartRateString = "Loading ...";
   String sdevHeartRateString = "Loading ...";
   HeartRateZoneSchema heartRateZoneSchema;
@@ -49,7 +50,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapHeartRateChart(
-                records: records,
+                records: RecordList(heartRateRecords),
                 heartRateZones: heartRateZones,
               ),
               Text('Only records where heart rate > 10 bpm are shown.'),

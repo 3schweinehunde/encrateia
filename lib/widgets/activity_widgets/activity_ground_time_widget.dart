@@ -1,4 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -21,7 +22,7 @@ class ActivityGroundTimeWidget extends StatefulWidget {
 }
 
 class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
-  List<Event> records = [];
+  var records = RecordList(<Event>[]);
   String avgGroundTimeString = "Loading ...";
   String sdevGroundTimeString = "Loading ...";
 
@@ -46,7 +47,7 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityGroundTimeChart(
-                records: groundTimeRecords,
+                records: RecordList(groundTimeRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
@@ -86,7 +87,7 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
 
   getData() async {
     Activity activity = widget.activity;
-    records = await activity.records;
+    records = RecordList(await activity.records);
     avgGroundTimeString = activity.db.avgGroundTime != null
         ? activity.db.avgGroundTime.toStringOrDashes(1) + " ms"
         : "- - -";

@@ -4,6 +4,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_form_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/models/event.dart';
 
 class LapFormPowerWidget extends StatefulWidget {
   final Lap lap;
@@ -15,7 +16,7 @@ class LapFormPowerWidget extends StatefulWidget {
 }
 
 class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
-  var records = RecordList([]);
+  var records = RecordList(<Event>[]);
   String avgFormPowerString = "Loading ...";
   String sdevFormPowerString = "Loading ...";
 
@@ -45,7 +46,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapFormPowerChart(records: records),
+              LapFormPowerChart(records: RecordList(formPowerRecords)),
               Text('Only records where 0 W < form power < 200 W are shown.'),
               Text('Swipe left/write to compare with other laps.'),
               Divider(),

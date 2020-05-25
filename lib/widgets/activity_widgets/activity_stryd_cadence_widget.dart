@@ -1,4 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -22,7 +23,7 @@ class ActivityStrydCadenceWidget extends StatefulWidget {
 
 class _ActivityStrydCadenceWidgetState
     extends State<ActivityStrydCadenceWidget> {
-  List<Event> records = [];
+  var records = RecordList(<Event>[]);
   String avgStrydCadenceString = "Loading ...";
   String sdevStrydCadenceString = "Loading ...";
 
@@ -47,7 +48,7 @@ class _ActivityStrydCadenceWidgetState
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityStrydCadenceChart(
-                records: powerRecords,
+                records: RecordList(powerRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
@@ -87,7 +88,7 @@ class _ActivityStrydCadenceWidgetState
 
   getData() async {
     Activity activity = widget.activity;
-    records = await activity.records;
+    records = RecordList(await activity.records);
     avgStrydCadenceString =
         activity.db.avgStrydCadence.toStringOrDashes(1) + " spm";
     sdevStrydCadenceString =

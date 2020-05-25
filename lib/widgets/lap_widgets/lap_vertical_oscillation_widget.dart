@@ -4,6 +4,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/models/event.dart';
 
 class LapVerticalOscillationWidget extends StatefulWidget {
   final Lap lap;
@@ -17,7 +18,7 @@ class LapVerticalOscillationWidget extends StatefulWidget {
 
 class _LapVerticalOscillationWidgetState
     extends State<LapVerticalOscillationWidget> {
-  var records = RecordList({});
+  var records = RecordList(<Event>[]);
   String avgVerticalOscillationString = "Loading ...";
   String sdevVerticalOscillationString = "Loading ...";
 
@@ -48,8 +49,11 @@ class _LapVerticalOscillationWidgetState
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapVerticalOscillationChart(records: verticalOscillationRecords),
-              Text('Only records where vertical oscillation is present are shown.'),
+              LapVerticalOscillationChart(
+                records: RecordList(verticalOscillationRecords),
+              ),
+              Text(
+                  'Only records where vertical oscillation is present are shown.'),
               Text('Swipe left/write to compare with other laps.'),
               Divider(),
               ListTile(

@@ -1,6 +1,7 @@
 import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_ground_time_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -15,7 +16,7 @@ class LapGroundTimeWidget extends StatefulWidget {
 }
 
 class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
-  var records = RecordList([]);
+  var records = RecordList(<Event>[]);
   String avgGroundTimeString = "Loading ...";
   String sdevGroundTimeString = "Loading ...";
 
@@ -45,7 +46,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapGroundTimeChart(records: groundTimeRecords),
+              LapGroundTimeChart(records: RecordList(groundTimeRecords)),
               Text('Only records where ground time > 0 ms are shown.'),
               Text('Swipe left/write to compare with other laps.'),
               Divider(),

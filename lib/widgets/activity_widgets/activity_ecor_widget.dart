@@ -3,6 +3,7 @@ import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_ecor_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -21,7 +22,7 @@ class ActivityEcorWidget extends StatefulWidget {
 }
 
 class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
-  var records = RecordList([]);
+  var records = RecordList(<Event>[]);
   Weight weight;
   String weightString = "Loading ...";
 
@@ -49,7 +50,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
             padding: EdgeInsets.only(left: 25),
             children: [
               ActivityEcorChart(
-                records: ecorRecords,
+                records: RecordList(ecorRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
                 weight: weight.db.value,

@@ -1,4 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -21,7 +22,7 @@ class ActivityFormPowerWidget extends StatefulWidget {
 }
 
 class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
-  List<Event> records = [];
+  var records = RecordList(<Event>[]);
   String avgFormPowerString = "Loading ...";
   String sdevFormPowerString = "Loading ...";
 
@@ -48,7 +49,7 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityFormPowerChart(
-                records: formPowerRecords,
+                records: RecordList(formPowerRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
@@ -88,7 +89,7 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
 
   getData() async {
     Activity activity = widget.activity;
-    records = await activity.records;
+    records = RecordList(await activity.records);
     avgFormPowerString = activity.db.avgFormPower.toStringOrDashes(1) + " W";
     sdevFormPowerString = activity.db.sdevFormPower.toStringOrDashes(2) + " W";
     setState(() {});

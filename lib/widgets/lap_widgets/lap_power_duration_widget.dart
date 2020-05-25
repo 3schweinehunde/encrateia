@@ -1,4 +1,5 @@
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/power_duration_chart.dart';
@@ -13,7 +14,7 @@ class LapPowerDurationWidget extends StatefulWidget {
 }
 
 class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
-  var records = RecordList({});
+  List<Event> records = [];
 
   @override
   void initState() {

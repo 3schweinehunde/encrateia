@@ -4,6 +4,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/models/event.dart';
 
 class LapLegSpringStiffnessWidget extends StatefulWidget {
   final Lap lap;
@@ -17,7 +18,7 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
 
 class _LapLegSpringStiffnessWidgetState
     extends State<LapLegSpringStiffnessWidget> {
-  var records = RecordList([]);
+  var records = RecordList(<Event>[]);
   String avgLegSpringStiffnessString = "Loading ...";
   String sdevLegSpringStiffnessString = "Loading ...";
 
@@ -48,8 +49,11 @@ class _LapLegSpringStiffnessWidgetState
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapLegSpringStiffnessChart(records: legSpringStiffnessRecords),
-              Text('Only records where leg spring stiffness > 0 kN/m are shown.'),
+              LapLegSpringStiffnessChart(
+                records: RecordList(legSpringStiffnessRecords),
+              ),
+              Text(
+                  'Only records where leg spring stiffness > 0 kN/m are shown.'),
               Text('Swipe left/write to compare with other laps.'),
               Divider(),
               ListTile(

@@ -1,4 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -22,7 +23,7 @@ class ActivityLegSpringStiffnessWidget extends StatefulWidget {
 
 class _ActivityLegSpringStiffnessWidgetState
     extends State<ActivityLegSpringStiffnessWidget> {
-  List<Event> records = [];
+  var records = RecordList(<Event>[]);
   String avgLegSpringStiffnessString = "Loading ...";
   String sdevLegSpringStiffnessString = "Loading ...";
 
@@ -48,7 +49,7 @@ class _ActivityLegSpringStiffnessWidgetState
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityLegSpringStiffnessChart(
-                records: legSpringStiffnessRecords,
+                records: RecordList(legSpringStiffnessRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
@@ -88,7 +89,7 @@ class _ActivityLegSpringStiffnessWidgetState
 
   getData() async {
     Activity activity = widget.activity;
-    records = await activity.records;
+    records = RecordList(await activity.records);
     avgLegSpringStiffnessString =
         activity.db.avgLegSpringStiffness.toStringOrDashes(1) + " ms";
 

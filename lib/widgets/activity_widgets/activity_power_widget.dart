@@ -1,13 +1,14 @@
+import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 
 class ActivityPowerWidget extends StatefulWidget {
   final Activity activity;
@@ -23,7 +24,7 @@ class ActivityPowerWidget extends StatefulWidget {
 }
 
 class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
-  List<Event> records = [];
+  var records = RecordList(<Event>[]);
   String avgPowerString = "Loading ...";
   String minPowerString = "Loading ...";
   String maxPowerString = "Loading ...";
@@ -45,14 +46,14 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
           .toList();
 
       if (powerRecords.length > 0) {
-        var lastRecord = powerRecords.last;
+        Event lastRecord = powerRecords.last;
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityPowerChart(
-                records: powerRecords,
+                records: RecordList(powerRecords),
                 activity: widget.activity,
                 powerZones: powerZones,
                 athlete: widget.athlete,
@@ -110,7 +111,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
 
   getData() async {
     Activity activity = widget.activity;
-    records = await activity.records;
+    records = RecordList(await activity.records);
     avgPowerString = activity.db.avgPower.toStringOrDashes(1) + " W";
     minPowerString = activity.db.minPower.toString() + " W";
     maxPowerString = activity.db.maxPower.toString() + " W";
