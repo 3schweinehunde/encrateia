@@ -1,8 +1,8 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_ecor_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
@@ -21,7 +21,7 @@ class LapEcorWidget extends StatefulWidget {
 }
 
 class _LapEcorWidgetState extends State<LapEcorWidget> {
-  List<Event> records = [];
+  var recordList = RecordList([]);
   Weight weight;
   String weightString;
 
@@ -39,8 +39,8 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
-      var powerRecords = records
+    if (recordList.length > 0) {
+      var powerRecords = recordList
           .where((value) =>
               value.db.power != null &&
               value.db.power > 100 &&
@@ -88,7 +88,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
   }
 
   getData() async {
-    records = await widget.lap.records;
+    recordList = RecordList(await widget.lap.records);
     weight = await Weight.getBy(
       athletesId: widget.athlete.db.id,
       date: widget.lap.db.startTime,

@@ -1,6 +1,6 @@
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/widgets/charts/power_duration_chart.dart';
 
 class LapPowerDurationWidget extends StatefulWidget {
@@ -13,7 +13,7 @@ class LapPowerDurationWidget extends StatefulWidget {
 }
 
 class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
-  List<Event> records = [];
+  var recordList = RecordList({});
 
   @override
   void initState() {
@@ -29,8 +29,8 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
-      var powerRecords = records
+    if (recordList.length > 0) {
+      var powerRecords = recordList
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
 
@@ -56,7 +56,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   }
 
   getData() async {
-    records = await widget.lap.records;
+    recordList = RecordList(await widget.lap.records);
     setState(() {});
   }
 }

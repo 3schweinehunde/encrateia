@@ -1,12 +1,10 @@
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
-import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/num_utils.dart';
-
 import 'heart_rate_zone_schema.dart';
 
 class Lap {
@@ -75,8 +73,7 @@ class Lap {
 
   Future<double> get avgPower async {
     if (db.avgPower == null) {
-      List<Event> records = await this.records;
-      db.avgPower = calculateAveragePower(records: records);
+      db.avgPower = RecordList(await this.records).calculateAveragePower();
       await db.save();
     }
     return db.avgPower;
@@ -84,8 +81,7 @@ class Lap {
 
   Future<double> get sdevPower async {
     if (db.sdevPower == null) {
-      List<Event> records = await this.records;
-      db.sdevPower = calculateSdevPower(records: records);
+      db.sdevPower = RecordList(await this.records).calculateSdevPower();
       await db.save();
     }
     return db.sdevPower;
@@ -93,8 +89,7 @@ class Lap {
 
   Future<int> get minPower async {
     if (db.minPower == null) {
-      List<Event> records = await this.records;
-      db.minPower = calculateMinPower(records: records);
+      db.minPower = RecordList(await this.records).calculateMinPower();
       await db.save();
     }
     return db.minPower;
@@ -102,8 +97,7 @@ class Lap {
 
   Future<int> get maxPower async {
     if (db.maxPower == null) {
-      List<Event> records = await this.records;
-      db.maxPower = calculateMaxPower(records: records);
+      db.maxPower = RecordList(await this.records).calculateMaxPower();
       await db.save();
     }
     return db.maxPower;
@@ -111,8 +105,8 @@ class Lap {
 
   Future<double> get avgGroundTime async {
     if (db.avgGroundTime == null) {
-      List<Event> records = await this.records;
-      db.avgGroundTime = calculateAverageGroundTime(records: records);
+      db.avgGroundTime =
+          RecordList(await this.records).calculateAverageGroundTime();
       await db.save();
     }
     return db.avgGroundTime;
@@ -120,8 +114,8 @@ class Lap {
 
   Future<double> get sdevGroundTime async {
     if (db.sdevGroundTime == null) {
-      List<Event> records = await this.records;
-      db.sdevGroundTime = calculateSdevGroundTime(records: records);
+      db.sdevGroundTime =
+          RecordList(await this.records).calculateSdevGroundTime();
       await db.save();
     }
     return db.sdevGroundTime;
@@ -130,9 +124,8 @@ class Lap {
   Future<double> get avgVerticalOscillation async {
     if (db.avgVerticalOscillation == null ||
         db.avgVerticalOscillation == 6553.5) {
-      List<Event> records = await this.records;
       db.avgVerticalOscillation =
-          calculateAverageVerticalOscillation(records: records);
+          RecordList(await this.records).calculateAverageVerticalOscillation();
       await db.save();
     }
     return db.avgVerticalOscillation;
@@ -140,9 +133,8 @@ class Lap {
 
   Future<double> get sdevVerticalOscillation async {
     if (db.sdevVerticalOscillation == null) {
-      List<Event> records = await this.records;
       db.sdevVerticalOscillation =
-          calculateSdevVerticalOscillation(records: records);
+          RecordList(await this.records).calculateSdevVerticalOscillation();
       await db.save();
     }
     return db.sdevVerticalOscillation;
@@ -150,8 +142,8 @@ class Lap {
 
   Future<double> get avgStrydCadence async {
     if (db.avgStrydCadence == null) {
-      List<Event> records = await this.records;
-      db.avgStrydCadence = calculateAverageStrydCadence(records: records);
+      db.avgStrydCadence =
+          RecordList(await this.records).calculateAverageStrydCadence();
       await db.save();
     }
     return db.avgStrydCadence;
@@ -159,8 +151,8 @@ class Lap {
 
   Future<double> get sdevStrydCadence async {
     if (db.sdevStrydCadence == null) {
-      List<Event> records = await this.records;
-      db.sdevStrydCadence = calculateSdevStrydCadence(records: records);
+      db.sdevStrydCadence =
+          RecordList(await this.records).calculateSdevStrydCadence();
       await db.save();
     }
     return db.sdevStrydCadence;
@@ -168,9 +160,8 @@ class Lap {
 
   Future<double> get avgLegSpringStiffness async {
     if (db.avgLegSpringStiffness == null) {
-      List<Event> records = await this.records;
       db.avgLegSpringStiffness =
-          calculateAverageLegSpringStiffness(records: records);
+          RecordList(await this.records).calculateAverageLegSpringStiffness();
       await db.save();
     }
     return db.avgLegSpringStiffness;
@@ -178,9 +169,8 @@ class Lap {
 
   Future<double> get sdevLegSpringStiffness async {
     if (db.sdevLegSpringStiffness == null) {
-      List<Event> records = await this.records;
       db.sdevLegSpringStiffness =
-          calculateSdevLegSpringStiffness(records: records);
+          RecordList(await this.records).calculateSdevLegSpringStiffness();
       await db.save();
     }
     return db.sdevLegSpringStiffness;
@@ -188,8 +178,8 @@ class Lap {
 
   Future<double> get avgFormPower async {
     if (db.avgFormPower == null) {
-      List<Event> records = await this.records;
-      db.avgFormPower = calculateAverageFormPower(records: records);
+      db.avgFormPower =
+          RecordList(await this.records).calculateAverageFormPower();
       await db.save();
     }
     return db.avgFormPower;
@@ -197,8 +187,8 @@ class Lap {
 
   Future<double> get sdevFormPower async {
     if (db.sdevFormPower == null) {
-      List<Event> records = await this.records;
-      db.sdevFormPower = calculateSdevFormPower(records: records);
+      db.sdevFormPower =
+          RecordList(await this.records).calculateSdevFormPower();
       await db.save();
     }
     return db.sdevFormPower;
@@ -219,258 +209,6 @@ class Lap {
     return lapList;
   }
 
-  static String sdevHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
-    return heartRates.sdev().toStringAsFixed(2);
-  }
-
-  static String minHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
-    return heartRates.min().toString();
-  }
-
-  static String avgHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
-    return heartRates.mean().toStringOrDashes(1);
-  }
-
-  static String maxHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
-    return heartRates.max().toString();
-  }
-
-  static double calculateAveragePower({List<Event> records}) {
-    var powers = records
-        .where((record) =>
-            record.db.power != null &&
-            record.db.power > 0 &&
-            record.db.power < 2000)
-        .map((record) => record.db.power);
-    if (powers.length > 0) {
-      return powers.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevPower({List<Event> records}) {
-    var powers = records
-        .where((record) =>
-            record.db.power != null &&
-            record.db.power > 0 &&
-            record.db.power < 2000)
-        .map((record) => record.db.power);
-    return powers.sdev();
-  }
-
-  static int calculateMinPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power).nonZeroInts();
-    if (powers.length > 0)
-      return powers.min();
-    else
-      return 0;
-  }
-
-  static int calculateMaxPower({List<Event> records}) {
-    var powers = records.map((record) => record.db.power).nonZeroInts();
-    if (powers.length > 0)
-      return powers.max();
-    else
-      return 0;
-  }
-
-  static int calculateAverageHeartRate({List<Event> records}) {
-    var heartRates = records
-        .where((record) =>
-    record.db.heartRate != null &&
-        record.db.heartRate > 0 &&
-        record.db.heartRate < 2000)
-        .map((record) => record.db.heartRate);
-    if (heartRates.length > 0) {
-      return heartRates.mean().round();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevHeartRate({List<Event> records}) {
-    var heartRates = records
-        .where((record) =>
-    record.db.heartRate != null &&
-        record.db.heartRate > 0 &&
-        record.db.heartRate < 2000)
-        .map((record) => record.db.heartRate);
-    return heartRates.sdev();
-  }
-
-  static int calculateMinHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
-    if (heartRates.length > 0)
-      return heartRates.min();
-    else
-      return 0;
-  }
-
-  static int calculateMaxHeartRate({List<Event> records}) {
-    var heartRates = records.map((record) => record.db.heartRate).nonZeroInts();
-    if (heartRates.length > 0)
-      return heartRates.max();
-    else
-      return 0;
-  }
-
-  static double calculateAverageSpeed({List<Event> records}) {
-    var speeds = records.map((record) => record.db.speed).nonZeroDoubles();
-    if (speeds.length > 0) {
-      return speeds.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateAverageGroundTime({List<Event> records}) {
-    var groundTimes =
-        records.map((record) => record.db.groundTime).nonZeroDoubles();
-    if (groundTimes.length > 0) {
-      return groundTimes.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevGroundTime({List<Event> records}) {
-    var groundTimes =
-        records.map((record) => record.db.groundTime).nonZeroDoubles();
-    return groundTimes.sdev();
-  }
-
-  static double calculateAverageStrydCadence({List<Event> records}) {
-    var strydCadences = records
-        .map((record) => record.db.strydCadence ?? 0.0 * 2)
-        .nonZeroDoubles();
-    if (strydCadences.length > 0) {
-      return strydCadences.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevStrydCadence({List<Event> records}) {
-    var strydCadences = records
-        .map((record) => record.db.strydCadence ?? 0.0 * 2)
-        .nonZeroDoubles();
-    return strydCadences.sdev();
-  }
-
-  static double calculateAverageLegSpringStiffness({List<Event> records}) {
-    var legSpringStiffnesses =
-        records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
-    if (legSpringStiffnesses.length > 0) {
-      return legSpringStiffnesses.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevLegSpringStiffness({List<Event> records}) {
-    var legSpringStiffnesses =
-        records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
-    return legSpringStiffnesses.sdev();
-  }
-
-  static double calculateAverageVerticalOscillation({List<Event> records}) {
-    var verticalOscillation =
-        records.map((record) => record.db.verticalOscillation).nonZeroDoubles();
-    if (verticalOscillation.length > 0) {
-      return verticalOscillation.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevVerticalOscillation({List<Event> records}) {
-    var verticalOscillation =
-        records.map((record) => record.db.verticalOscillation).nonZeroDoubles();
-    return verticalOscillation.sdev();
-  }
-
-  static double calculateAverageFormPower({List<Event> records}) {
-    var formPowers = records
-        .where((record) =>
-            record.db.formPower != null && record.db.formPower < 200)
-        .map((record) => record.db.formPower);
-
-    if (formPowers.length > 0) {
-      return formPowers.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevFormPower({List<Event> records}) {
-    var formPowers = records
-        .where((record) =>
-            record.db.formPower != null && record.db.formPower < 200)
-        .map((record) => record.db.formPower);
-    return formPowers.sdev();
-  }
-
-  static double calculateAveragePowerRatio({List<Event> records}) {
-    var powerRatios = records
-        .where((record) =>
-            record.db.power != null &&
-            record.db.power != 0 &&
-            record.db.formPower != null &&
-            record.db.formPower != 0)
-        .map((record) =>
-            (record.db.power - record.db.formPower) / record.db.power * 100);
-    if (powerRatios.length > 0) {
-      return powerRatios.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevPowerRatio({List<Event> records}) {
-    var powerRatios = records
-        .where((record) =>
-            record.db.power != null &&
-            record.db.power != 0 &&
-            record.db.formPower != null &&
-            record.db.formPower != 0)
-        .map((record) =>
-            (record.db.power - record.db.formPower) / record.db.power * 100);
-    return powerRatios.sdev();
-  }
-
-  static double calculateAverageStrideRatio({List<Event> records}) {
-    var powerRatios = records
-        .where((record) =>
-            record.db.speed != null &&
-            record.db.strydCadence != null &&
-            record.db.strydCadence != 0 &&
-            record.db.verticalOscillation != null &&
-            record.db.verticalOscillation != 0)
-        .map((record) =>
-            10000 /
-            6 *
-            record.db.speed /
-            record.db.strydCadence /
-            record.db.verticalOscillation);
-    if (powerRatios.length > 0) {
-      return powerRatios.mean();
-    } else
-      return -1;
-  }
-
-  static double calculateSdevStrideRatio({List<Event> records}) {
-    var powerRatios = records
-        .where((record) =>
-            record.db.speed != null &&
-            record.db.strydCadence != null &&
-            record.db.strydCadence != 0 &&
-            record.db.verticalOscillation != null &&
-            record.db.verticalOscillation != 0)
-        .map((record) =>
-            10000 /
-            6 *
-            record.db.speed /
-            record.db.strydCadence /
-            record.db.verticalOscillation);
-    return powerRatios.sdev();
-  }
-
   getPowerZoneSchema() async {
     var dbActivity = await DbActivity().getById(db.activitiesId);
 
@@ -489,5 +227,22 @@ class Lap {
       date: dbActivity.timeCreated,
     );
     return heartRateZoneSchema;
+  }
+
+  calculateAverages() async {
+    var recordList = RecordList(await this.records);
+    db
+      ..avgPower = recordList.calculateAveragePower()
+      ..avgFormPower = recordList.calculateAverageFormPower()
+      ..avgHeartRate = recordList.calculateAverageHeartRate()
+      ..avgSpeed = recordList.calculateAverageSpeed()
+      ..avgGroundTime = recordList.calculateAverageGroundTime()
+      ..avgStrydCadence = recordList.calculateAverageStrydCadence()
+      ..avgLegSpringStiffness = recordList.calculateAverageLegSpringStiffness()
+      ..avgStrideRatio = recordList.calculateAverageStrideRatio()
+      ..avgPowerRatio = recordList.calculateAverageStrideRatio()
+      ..avgVerticalOscillation =
+          recordList.calculateAverageVerticalOscillation();
+    await db.save();
   }
 }

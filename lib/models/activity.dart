@@ -6,6 +6,7 @@ import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/tag.dart';
@@ -186,48 +187,32 @@ class Activity extends ChangeNotifier {
   }
 
   recalculateAverages() async {
-    var records = await this.records;
-    db.avgPower = Lap.calculateAveragePower(records: records);
-    db.sdevPower = Lap.calculateSdevPower(records: records);
-    db.minPower = Lap.calculateMinPower(records: records);
-    db.maxPower = Lap.calculateMaxPower(records: records);
-    db.avgSpeed = Lap.calculateAverageSpeed(records: records);
-    db.avgGroundTime = Lap.calculateAverageGroundTime(records: records);
-    db.sdevGroundTime = Lap.calculateSdevGroundTime(records: records);
-    db.avgVerticalOscillation =
-        Lap.calculateAverageVerticalOscillation(records: records);
-    db.sdevVerticalOscillation =
-        Lap.calculateSdevVerticalOscillation(records: records);
-    db.avgStrydCadence = Lap.calculateAverageStrydCadence(records: records);
-    db.sdevStrydCadence = Lap.calculateSdevStrydCadence(records: records);
-    db.avgLegSpringStiffness =
-        Lap.calculateAverageLegSpringStiffness(records: records);
-    db.sdevLegSpringStiffness =
-        Lap.calculateSdevLegSpringStiffness(records: records);
-    db.avgFormPower = Lap.calculateAverageFormPower(records: records);
-    db.sdevFormPower = Lap.calculateSdevFormPower(records: records);
-    db.avgPowerRatio = Lap.calculateAveragePowerRatio(records: records);
-    db.sdevPowerRatio = Lap.calculateSdevPowerRatio(records: records);
-    db.avgStrideRatio = Lap.calculateAverageStrideRatio(records: records);
-    db.sdevStrideRatio = Lap.calculateSdevStrideRatio(records: records);
+    var recordList = RecordList(await this.records);
+    db
+      ..avgPower = recordList.calculateAveragePower()
+      ..sdevPower = recordList.calculateSdevPower()
+      ..minPower = recordList.calculateMinPower()
+      ..maxPower = recordList.calculateMaxPower()
+      ..avgSpeed = recordList.calculateAverageSpeed()
+      ..avgGroundTime = recordList.calculateAverageGroundTime()
+      ..sdevGroundTime = recordList.calculateSdevGroundTime()
+      ..avgVerticalOscillation =
+          recordList.calculateAverageVerticalOscillation()
+      ..sdevVerticalOscillation = recordList.calculateSdevVerticalOscillation()
+      ..avgStrydCadence = recordList.calculateAverageStrydCadence()
+      ..sdevStrydCadence = recordList.calculateSdevStrydCadence()
+      ..avgLegSpringStiffness = recordList.calculateAverageLegSpringStiffness()
+      ..sdevLegSpringStiffness = recordList.calculateSdevLegSpringStiffness()
+      ..avgFormPower = recordList.calculateAverageFormPower()
+      ..sdevFormPower = recordList.calculateSdevFormPower()
+      ..avgPowerRatio = recordList.calculateAveragePowerRatio()
+      ..sdevPowerRatio = recordList.calculateSdevPowerRatio()
+      ..avgStrideRatio = recordList.calculateAverageStrideRatio()
+      ..sdevStrideRatio = recordList.calculateSdevStrideRatio();
 
     var laps = await this.laps;
     for (Lap lap in laps) {
-      var records = await lap.records;
-      lap.db.avgPower = Lap.calculateAveragePower(records: records);
-      lap.db.avgFormPower = Lap.calculateAverageFormPower(records: records);
-      lap.db.avgHeartRate = Lap.calculateAverageHeartRate(records: records);
-      lap.db.avgSpeed = Lap.calculateAverageSpeed(records: records);
-      lap.db.avgGroundTime = Lap.calculateAverageGroundTime(records: records);
-      lap.db.avgStrydCadence =
-          Lap.calculateAverageStrydCadence(records: records);
-      lap.db.avgLegSpringStiffness =
-          Lap.calculateAverageLegSpringStiffness(records: records);
-      lap.db.avgStrideRatio = Lap.calculateAverageStrideRatio(records: records);
-      lap.db.avgPowerRatio = Lap.calculateAverageStrideRatio(records: records);
-      lap.db.avgVerticalOscillation =
-          Lap.calculateAverageVerticalOscillation(records: records);
-      await lap.db.save();
+      await lap.calculateAverages();
     }
     await db.save();
     return true;

@@ -1,6 +1,6 @@
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -15,7 +15,7 @@ class LapStrydCadenceWidget extends StatefulWidget {
 }
 
 class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
-  List<Event> records = [];
+  var recordList = RecordList({});
   String avgStrydCadenceString = "Loading ...";
   String sdevStrydCadenceString = "Loading ...";
 
@@ -33,8 +33,8 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
-      var strydCadenceRecords = records
+    if (recordList.length > 0) {
+      var strydCadenceRecords = recordList
           .where((value) =>
               value.db.strydCadence != null && value.db.strydCadence > 0)
           .toList();
@@ -81,7 +81,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
 
   getData() async {
     Lap lap = widget.lap;
-    records = await lap.records;
+    recordList = RecordList(await lap.records);
 
     double avg = await lap.avgStrydCadence;
     avgStrydCadenceString = avg.toStringOrDashes(1) + " spm";

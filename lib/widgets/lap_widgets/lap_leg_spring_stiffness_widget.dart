@@ -1,6 +1,6 @@
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -17,7 +17,7 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
 
 class _LapLegSpringStiffnessWidgetState
     extends State<LapLegSpringStiffnessWidget> {
-  List<Event> records = [];
+  var recordList = RecordList([]);
   String avgLegSpringStiffnessString = "Loading ...";
   String sdevLegSpringStiffnessString = "Loading ...";
 
@@ -35,8 +35,8 @@ class _LapLegSpringStiffnessWidgetState
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
-      var legSpringStiffnessRecords = records
+    if (recordList.length > 0) {
+      var legSpringStiffnessRecords = recordList
           .where((value) =>
               value.db.legSpringStiffness != null &&
               value.db.legSpringStiffness > 0)
@@ -84,7 +84,7 @@ class _LapLegSpringStiffnessWidgetState
 
   getData() async {
     Lap lap = widget.lap;
-    records = await lap.records;
+    recordList = RecordList(await lap.records);
     double avg = await lap.avgLegSpringStiffness;
     double sdev = await lap.sdevLegSpringStiffness;
     setState(() {

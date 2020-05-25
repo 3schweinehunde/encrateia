@@ -1,8 +1,8 @@
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -17,7 +17,7 @@ class LapPowerWidget extends StatefulWidget {
 }
 
 class _LapPowerWidgetState extends State<LapPowerWidget> {
-  List<Event> records = [];
+  var recordList = RecordList({});
   String avgPowerString = "Loading ...";
   String minPowerString = "Loading ...";
   String maxPowerString = "Loading ...";
@@ -39,8 +39,8 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
-      var powerRecords = records
+    if (recordList.length > 0) {
+      var powerRecords = recordList
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
 
@@ -99,7 +99,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
 
   getData() async {
     Lap lap = widget.lap;
-    records = await lap.records;
+    recordList = RecordList(await lap.records);
 
     double avg = await lap.avgPower;
     avgPowerString = avg.toStringOrDashes(1) + " W";

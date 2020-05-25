@@ -8,7 +8,6 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'dart:io';
-
 import 'heart_rate_zone_schema.dart';
 
 class Athlete extends ChangeNotifier {

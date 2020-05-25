@@ -1,11 +1,10 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/widgets/charts/actitvity_charts/activity_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityHeartRateWidget extends StatefulWidget {
@@ -23,7 +22,7 @@ class ActivityHeartRateWidget extends StatefulWidget {
 }
 
 class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
-  List<Event> records = [];
+  var recordList = RecordList([]);
   HeartRateZoneSchema heartRateZoneSchema;
   List<HeartRateZone> heartRateZones;
 
@@ -35,8 +34,8 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
 
   @override
   Widget build(context) {
-    if (records != null) {
-      var heartRateRecords = records
+    if (recordList.length != 0) {
+      var heartRateRecords = recordList
           .where(
               (value) => value.db.heartRate != null && value.db.heartRate > 10)
           .toList();
@@ -64,7 +63,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(Lap.minHeartRate(records: records)),
+                title: Text(recordList.minHeartRate()),
                 subtitle: Text("minimum heart rate"),
               ),
               ListTile(
@@ -74,7 +73,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(Lap.sdevHeartRate(records: records)),
+                title: Text(recordList.sdevHeartRate()),
                 subtitle: Text("standard deviation heart rate"),
               ),
               ListTile(
@@ -99,7 +98,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
 
   getData() async {
     Activity activity = widget.activity;
-    records = await activity.records;
+    recordList = RecordList(await activity.records);
 
     heartRateZoneSchema = await activity.getHeartRateZoneSchema();
     if (heartRateZoneSchema != null)

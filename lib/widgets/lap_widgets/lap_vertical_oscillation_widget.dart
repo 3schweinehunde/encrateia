@@ -1,6 +1,6 @@
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -17,7 +17,7 @@ class LapVerticalOscillationWidget extends StatefulWidget {
 
 class _LapVerticalOscillationWidgetState
     extends State<LapVerticalOscillationWidget> {
-  List<Event> records = [];
+  var recordList = RecordList({});
   String avgVerticalOscillationString = "Loading ...";
   String sdevVerticalOscillationString = "Loading ...";
 
@@ -35,8 +35,8 @@ class _LapVerticalOscillationWidgetState
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
-      var verticalOscillationRecords = records
+    if (recordList.length > 0) {
+      var verticalOscillationRecords = recordList
           .where((value) =>
               value.db.verticalOscillation != null &&
               value.db.verticalOscillation > 0)
@@ -84,7 +84,7 @@ class _LapVerticalOscillationWidgetState
 
   getData() async {
     Lap lap = widget.lap;
-    records = await lap.records;
+    recordList = RecordList(await lap.records);
 
     double avg = await lap.avgVerticalOscillation;
     avgVerticalOscillationString = avg.toStringOrDashes(1) + " cm";

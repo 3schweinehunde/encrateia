@@ -1,6 +1,6 @@
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_ground_time_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -15,7 +15,7 @@ class LapGroundTimeWidget extends StatefulWidget {
 }
 
 class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
-  List<Event> records = [];
+  var recordList = RecordList([]);
   String avgGroundTimeString = "Loading ...";
   String sdevGroundTimeString = "Loading ...";
 
@@ -33,8 +33,8 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
-      var groundTimeRecords = records
+    if (recordList.length > 0) {
+      var groundTimeRecords = recordList
           .where(
               (value) => value.db.groundTime != null && value.db.groundTime > 0)
           .toList();
@@ -81,7 +81,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
 
   getData() async {
     Lap lap = widget.lap;
-    records = await lap.records;
+    recordList = RecordList(await lap.records);
 
     double avg = await lap.avgGroundTime;
     avgGroundTimeString = avg.toStringOrDashes(1) + " ms";

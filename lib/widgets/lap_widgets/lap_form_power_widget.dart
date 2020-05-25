@@ -1,6 +1,6 @@
+import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_form_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -15,7 +15,7 @@ class LapFormPowerWidget extends StatefulWidget {
 }
 
 class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
-  List<Event> records = [];
+  var recordList = RecordList([]);
   String avgFormPowerString = "Loading ...";
   String sdevFormPowerString = "Loading ...";
 
@@ -33,8 +33,8 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
 
   @override
   Widget build(context) {
-    if (records.length > 0) {
-      var formPowerRecords = records
+    if (recordList.length > 0) {
+      var formPowerRecords = recordList
           .where(
               (value) => value.db.formPower != null && value.db.formPower > 0)
           .toList();
@@ -45,7 +45,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
           child: ListView(
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapFormPowerChart(records: records),
+              LapFormPowerChart(recordList: recordList),
               Text('Only records where 0 W < form power < 200 W are shown.'),
               Text('Swipe left/write to compare with other laps.'),
               Divider(),
@@ -81,7 +81,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
 
   getData() async {
     Lap lap = widget.lap;
-    records = await lap.records;
+    recordList = RecordList(await lap.records);
 
     double avg = await lap.avgFormPower;
     avgFormPowerString = avg.toStringOrDashes(1) + " W";
