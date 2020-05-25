@@ -29,6 +29,10 @@ class Activity extends ChangeNotifier {
   List<Lap> _laps;
   double glidingMeasureAttribute;
   double weight;
+  PowerZoneSchema _powerZoneSchema;
+  PowerZone _powerZone;
+  HeartRateZone _heartRateZone;
+  HeartRateZoneSchema _heartRateZoneSchema;
 
   // intermediate data structures used for parsing
   Lap currentLap;
@@ -494,53 +498,62 @@ class Activity extends ChangeNotifier {
   }
 
   getPowerZoneSchema() async {
-    var powerZoneSchema = await PowerZoneSchema.getBy(
-      athletesId: db.athletesId,
-      date: db.timeCreated,
-    );
-    return powerZoneSchema;
+    if (_powerZoneSchema == null) {
+      _powerZoneSchema = await PowerZoneSchema.getBy(
+        athletesId: db.athletesId,
+        date: db.timeCreated,
+      );
+    }
+    return _powerZoneSchema;
   }
 
   getHeartRateZoneSchema() async {
-    var heartRateZoneSchema = await HeartRateZoneSchema.getBy(
-      athletesId: db.athletesId,
-      date: db.timeCreated,
-    );
-    return heartRateZoneSchema;
+    if (_heartRateZoneSchema == null) {
+      _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
+        athletesId: db.athletesId,
+        date: db.timeCreated,
+      );
+    }
+    return _heartRateZoneSchema;
   }
 
   getPowerZone() async {
-    var powerZoneSchema = await getPowerZoneSchema();
-    var dbPowerZone = await DbPowerZone()
-        .select()
-        .powerZoneSchemataId
-        .equals(powerZoneSchema.db.id)
-        .and
-        .lowerLimit
-        .lessThanOrEquals(db.avgPower)
-        .and
-        .upperLimit
-        .greaterThanOrEquals(db.avgPower)
-        .toSingle();
-
-    return PowerZone.fromDb(dbPowerZone);
+    if (_powerZone == null) {
+      var powerZoneSchema = await getPowerZoneSchema();
+      var dbPowerZone = await DbPowerZone()
+          .select()
+          .powerZoneSchemataId
+          .equals(powerZoneSchema.db.id)
+          .and
+          .lowerLimit
+          .lessThanOrEquals(db.avgPower)
+          .and
+          .upperLimit
+          .greaterThanOrEquals(db.avgPower)
+          .toSingle();
+      _powerZone = PowerZone.fromDb(dbPowerZone);
+    }
+    return _powerZone;
   }
 
   getHeartRateZone() async {
-    var heartRateZoneSchema = await getHeartRateZoneSchema();
-    var dbHeartRateZone = await DbHeartRateZone()
-        .select()
-        .heartRateZoneSchemataId
-        .equals(heartRateZoneSchema.db.id)
-        .and
-        .lowerLimit
-        .lessThanOrEquals(db.avgHeartRate)
-        .and
-        .upperLimit
-        .greaterThanOrEquals(db.avgHeartRate)
-        .toSingle();
+    if (_heartRateZone == null) {
+      var heartRateZoneSchema = await getHeartRateZoneSchema();
+      var dbHeartRateZone = await DbHeartRateZone()
+          .select()
+          .heartRateZoneSchemataId
+          .equals(heartRateZoneSchema.db.id)
+          .and
+          .lowerLimit
+          .lessThanOrEquals(db.avgHeartRate)
+          .and
+          .upperLimit
+          .greaterThanOrEquals(db.avgHeartRate)
+          .toSingle();
 
-    return HeartRateZone.fromDb(dbHeartRateZone);
+      _heartRateZone = HeartRateZone.fromDb(dbHeartRateZone);
+    }
+    return _heartRateZone;
   }
 
   autoTagger({Athlete athlete}) async {
@@ -570,6 +583,10 @@ class Activity extends ChangeNotifier {
         tag: heartRateTag,
         system: true,
       );
+    }
+
+    for (Lap lap in await Lap.all(activity: this)) {
+      await lap.autoTagger(athlete: athlete);
     }
   }
 }

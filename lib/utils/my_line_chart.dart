@@ -62,11 +62,11 @@ class MyLineChart extends LineChart {
   }) {
     if (powerZones != null)
       return NumericExtents(
-          powerZones.map((i) => i.db.lowerLimit).reduce(min) - 5.0,
-          powerZones.map((u) => u.db.upperLimit).reduce(max) + 5.0);
+          powerZones.map((e) => e.db.lowerLimit).reduce(min) - 5.0,
+          powerZones.map((e) => e.db.upperLimit).reduce(max) + 5.0);
     else if (heartRateZones != null)
       return NumericExtents(
-          heartRateZones.map((i) => i.db.lowerLimit).reduce(min) - 5.0,
-          heartRateZones.map((i) => i.db.upperLimit).reduce(max) + 5.0);
+          heartRateZones.map((e) => e.db.lowerLimit).reduce(min) - 5.0,
+          heartRateZones.map((e) => e.db.upperLimit).reduce(max) + 5.0);
   }
 }

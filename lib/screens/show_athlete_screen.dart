@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
@@ -166,6 +167,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               icon: MyIcon.delete,
               label: Text("Delete\nAthlete"),
               onPressed: () => deleteUser(),
+            ),
+            RaisedButton.icon(
+              color: MyColor.danger,
+              textColor: MyColor.white,
+              icon: MyIcon.delete,
+              label: Text("Delete all \n Autotags"),
+              onPressed: () => deleteAllAutoTags(),
             ),
             RaisedButton.icon(
               color: MyColor.primary,
@@ -437,5 +445,14 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   deleteAthleteAndPop() async {
     await widget.athlete.delete();
     Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  deleteAllAutoTags() async {
+    await TagGroup.deleteAllAutoTags(athlete: widget.athlete);
+    Flushbar(
+      message: "All Autotags have been deleted.",
+      duration: Duration(seconds: 2),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
   }
 }

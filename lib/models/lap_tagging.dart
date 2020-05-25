@@ -9,11 +9,12 @@ class LapTagging extends ChangeNotifier {
   LapTagging({
     @required Lap lap,
     @required Tag tag,
+    bool system,
   }) {
     db = DbLapTagging()
       ..lapsId = lap.db.id
       ..tagsId = tag.db.id
-      ..system = false;
+      ..system = system ?? false;
   }
 
   LapTagging.fromDb(this.db);
@@ -21,6 +22,7 @@ class LapTagging extends ChangeNotifier {
   static createBy({
     @required Lap lap,
     @required Tag tag,
+    bool system,
   }) async {
     var dbLapTagging = await DbLapTagging()
         .select()
@@ -37,6 +39,7 @@ class LapTagging extends ChangeNotifier {
       var lapTagging = LapTagging(
         lap: lap,
         tag: tag,
+        system: system ?? false,
       );
       await lapTagging.db.save();
       return lapTagging;

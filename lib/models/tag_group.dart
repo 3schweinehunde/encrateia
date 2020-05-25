@@ -148,4 +148,12 @@ class TagGroup extends ChangeNotifier {
     }
     return tagGroups;
   }
+
+  static deleteAllAutoTags({Athlete athlete}) async {
+    TagGroup autoPowerTagGroup = await TagGroup.autoPowerTagGroup(athlete: athlete);
+    await autoPowerTagGroup.db.getDbTags().delete();
+
+    TagGroup autoHeartRateTagGroup = await TagGroup.autoHeartRateTagGroup(athlete: athlete);
+    await autoHeartRateTagGroup.db.getDbTags().delete();
+  }
 }

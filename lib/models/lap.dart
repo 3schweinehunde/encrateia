@@ -1,10 +1,15 @@
 import 'package:encrateia/model/model.dart';
+import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/models/tag.dart';
+import 'package:encrateia/models/lap_tagging.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/activity.dart';
+import 'athlete.dart';
 import 'heart_rate_zone_schema.dart';
 
 class Lap {
@@ -12,6 +17,10 @@ class Lap {
   Activity activity;
   int index;
   List<Event> _records;
+  PowerZoneSchema _powerZoneSchema;
+  PowerZone _powerZone;
+  HeartRateZone _heartRateZone;
+  HeartRateZoneSchema _heartRateZoneSchema;
 
   Lap() {
     db = DbLap();
@@ -210,23 +219,27 @@ class Lap {
   }
 
   getPowerZoneSchema() async {
-    var dbActivity = await DbActivity().getById(db.activitiesId);
+    if (_powerZoneSchema == null) {
+      var dbActivity = await DbActivity().getById(db.activitiesId);
 
-    var powerZoneSchema = await PowerZoneSchema.getBy(
-      athletesId: dbActivity.athletesId,
-      date: dbActivity.timeCreated,
-    );
-    return powerZoneSchema;
+      _powerZoneSchema = await PowerZoneSchema.getBy(
+        athletesId: dbActivity.athletesId,
+        date: dbActivity.timeCreated,
+      );
+    }
+    return _powerZoneSchema;
   }
 
   getHeartRateZoneSchema() async {
-    var dbActivity = await DbActivity().getById(db.activitiesId);
+    if (_heartRateZoneSchema == null) {
+      var dbActivity = await DbActivity().getById(db.activitiesId);
 
-    var heartRateZoneSchema = await HeartRateZoneSchema.getBy(
-      athletesId: dbActivity.athletesId,
-      date: dbActivity.timeCreated,
-    );
-    return heartRateZoneSchema;
+      _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
+        athletesId: dbActivity.athletesId,
+        date: dbActivity.timeCreated,
+      );
+    }
+    return _heartRateZoneSchema;
   }
 
   calculateAverages() async {
@@ -244,5 +257,74 @@ class Lap {
       ..avgVerticalOscillation =
           recordList.calculateAverageVerticalOscillation();
     await db.save();
+  }
+
+  getPowerZone() async {
+    if (_powerZone == null) {
+      var powerZoneSchema = await getPowerZoneSchema();
+      var dbPowerZone = await DbPowerZone()
+          .select()
+          .powerZoneSchemataId
+          .equals(powerZoneSchema.db.id)
+          .and
+          .lowerLimit
+          .lessThanOrEquals(db.avgPower)
+          .and
+          .upperLimit
+          .greaterThanOrEquals(db.avgPower)
+          .toSingle();
+      _powerZone = PowerZone.fromDb(dbPowerZone);
+    }
+    return _powerZone;
+  }
+
+  getHeartRateZone() async {
+    if (_heartRateZone == null) {
+      var heartRateZoneSchema = await getHeartRateZoneSchema();
+      var dbHeartRateZone = await DbHeartRateZone()
+          .select()
+          .heartRateZoneSchemataId
+          .equals(heartRateZoneSchema.db.id)
+          .and
+          .lowerLimit
+          .lessThanOrEquals(db.avgHeartRate)
+          .and
+          .upperLimit
+          .greaterThanOrEquals(db.avgHeartRate)
+          .toSingle();
+
+      _heartRateZone = HeartRateZone.fromDb(dbHeartRateZone);
+    }
+    return _heartRateZone;
+  }
+
+  autoTagger({Athlete athlete}) async {
+    PowerZone powerZone = await getPowerZone();
+    if (powerZone.db != null) {
+      Tag powerTag = await Tag.ensureAutoPowerTag(
+        athlete: athlete,
+        color: powerZone.db.color,
+        name: powerZone.db.name,
+      );
+      await LapTagging.createBy(
+        lap: this,
+        tag: powerTag,
+        system: true,
+      );
+    }
+
+    HeartRateZone heartRateZone = await getHeartRateZone();
+    if (heartRateZone.db != null) {
+      Tag heartRateTag = await Tag.ensureAutoHeartRateTag(
+        athlete: athlete,
+        color: heartRateZone.db.color,
+        name: heartRateZone.db.name,
+      );
+      await LapTagging.createBy(
+        lap: this,
+        tag: heartRateTag,
+        system: true,
+      );
+    }
   }
 }
