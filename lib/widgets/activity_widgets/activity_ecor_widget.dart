@@ -1,10 +1,10 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'package:encrateia/widgets/charts/actitvity_charts/activity_ecor_chart.dart';
+import 'package:encrateia/widgets/charts/activity_charts/activity_ecor_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityEcorWidget extends StatefulWidget {
@@ -21,7 +21,7 @@ class ActivityEcorWidget extends StatefulWidget {
 }
 
 class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
-  List<Event> records = [];
+  var records = RecordList([]);
   Weight weight;
   String weightString = "Loading ...";
 
@@ -84,7 +84,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   }
 
   getData() async {
-    records = await widget.activity.records;
+    records = RecordList(await widget.activity.records);
     weight = await Weight.getBy(
       athletesId: widget.athlete.db.id,
       date: widget.activity.db.timeCreated,

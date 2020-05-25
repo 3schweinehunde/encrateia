@@ -17,7 +17,7 @@ class LapVerticalOscillationWidget extends StatefulWidget {
 
 class _LapVerticalOscillationWidgetState
     extends State<LapVerticalOscillationWidget> {
-  var recordList = RecordList({});
+  var records = RecordList({});
   String avgVerticalOscillationString = "Loading ...";
   String sdevVerticalOscillationString = "Loading ...";
 
@@ -35,8 +35,8 @@ class _LapVerticalOscillationWidgetState
 
   @override
   Widget build(context) {
-    if (recordList.length > 0) {
-      var verticalOscillationRecords = recordList
+    if (records.length > 0) {
+      var verticalOscillationRecords = records
           .where((value) =>
               value.db.verticalOscillation != null &&
               value.db.verticalOscillation > 0)
@@ -84,7 +84,7 @@ class _LapVerticalOscillationWidgetState
 
   getData() async {
     Lap lap = widget.lap;
-    recordList = RecordList(await lap.records);
+    records = RecordList(await lap.records);
 
     double avg = await lap.avgVerticalOscillation;
     avgVerticalOscillationString = avg.toStringOrDashes(1) + " cm";

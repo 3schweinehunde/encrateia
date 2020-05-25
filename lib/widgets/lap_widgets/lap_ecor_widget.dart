@@ -21,7 +21,7 @@ class LapEcorWidget extends StatefulWidget {
 }
 
 class _LapEcorWidgetState extends State<LapEcorWidget> {
-  var recordList = RecordList([]);
+  var records = RecordList([]);
   Weight weight;
   String weightString;
 
@@ -39,8 +39,8 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
 
   @override
   Widget build(context) {
-    if (recordList.length > 0) {
-      var powerRecords = recordList
+    if (records.length > 0) {
+      var powerRecords = records
           .where((value) =>
               value.db.power != null &&
               value.db.power > 100 &&
@@ -88,7 +88,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
   }
 
   getData() async {
-    recordList = RecordList(await widget.lap.records);
+    records = RecordList(await widget.lap.records);
     weight = await Weight.getBy(
       athletesId: widget.athlete.db.id,
       date: widget.lap.db.startTime,

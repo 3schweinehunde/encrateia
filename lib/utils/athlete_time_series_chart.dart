@@ -42,7 +42,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
   Widget build(BuildContext context) {
     int xAxesDays = 60;
 
-    ActivityList(activities: widget.activities).enrichGlidingAverage(
+    ActivityList(widget.activities).enrichGlidingAverage(
       activityAttr: widget.activityAttr,
       fullDecay: 30,
     );

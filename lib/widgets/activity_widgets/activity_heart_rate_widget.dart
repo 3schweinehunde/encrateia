@@ -2,7 +2,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/widgets/charts/actitvity_charts/activity_heart_rate_chart.dart';
+import 'package:encrateia/widgets/charts/activity_charts/activity_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -22,7 +22,7 @@ class ActivityHeartRateWidget extends StatefulWidget {
 }
 
 class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
-  var recordList = RecordList([]);
+  var records = RecordList([]);
   HeartRateZoneSchema heartRateZoneSchema;
   List<HeartRateZone> heartRateZones;
 
@@ -34,8 +34,8 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
 
   @override
   Widget build(context) {
-    if (recordList.length != 0) {
-      var heartRateRecords = recordList
+    if (records.length != 0) {
+      var heartRateRecords = records
           .where(
               (value) => value.db.heartRate != null && value.db.heartRate > 10)
           .toList();
@@ -63,7 +63,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(recordList.minHeartRate()),
+                title: Text(records.minHeartRate()),
                 subtitle: Text("minimum heart rate"),
               ),
               ListTile(
@@ -73,7 +73,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(recordList.sdevHeartRate()),
+                title: Text(records.sdevHeartRate()),
                 subtitle: Text("standard deviation heart rate"),
               ),
               ListTile(
@@ -98,7 +98,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
 
   getData() async {
     Activity activity = widget.activity;
-    recordList = RecordList(await activity.records);
+    records = RecordList(await activity.records);
 
     heartRateZoneSchema = await activity.getHeartRateZoneSchema();
     if (heartRateZoneSchema != null)

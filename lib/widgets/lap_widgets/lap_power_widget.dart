@@ -17,7 +17,7 @@ class LapPowerWidget extends StatefulWidget {
 }
 
 class _LapPowerWidgetState extends State<LapPowerWidget> {
-  var recordList = RecordList({});
+  var records = RecordList({});
   String avgPowerString = "Loading ...";
   String minPowerString = "Loading ...";
   String maxPowerString = "Loading ...";
@@ -39,8 +39,8 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
 
   @override
   Widget build(context) {
-    if (recordList.length > 0) {
-      var powerRecords = recordList
+    if (records.length > 0) {
+      var powerRecords = records
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
 
@@ -99,7 +99,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
 
   getData() async {
     Lap lap = widget.lap;
-    recordList = RecordList(await lap.records);
+    records = RecordList(await lap.records);
 
     double avg = await lap.avgPower;
     avgPowerString = avg.toStringOrDashes(1) + " W";

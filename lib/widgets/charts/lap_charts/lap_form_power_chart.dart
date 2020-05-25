@@ -5,13 +5,13 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 
 class LapFormPowerChart extends StatelessWidget {
-  final RecordList<Event> recordList;
+  final RecordList<Event> records;
 
-  LapFormPowerChart({this.recordList});
+  LapFormPowerChart({this.records});
 
   @override
   Widget build(BuildContext context) {
-    var offset = recordList.first.db.distance.round();
+    var offset = records.first.db.distance.round();
 
     List<Series<dynamic, num>> data = [
        Series<Event, int>(
@@ -19,7 +19,7 @@ class LapFormPowerChart extends StatelessWidget {
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Event record, _) => record.db.distance.round() - offset,
         measureFn: (Event record, _) => record.db.formPower,
-        data: recordList,
+        data: records,
       )
     ];
 

@@ -15,7 +15,7 @@ class LapGroundTimeWidget extends StatefulWidget {
 }
 
 class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
-  var recordList = RecordList([]);
+  var records = RecordList([]);
   String avgGroundTimeString = "Loading ...";
   String sdevGroundTimeString = "Loading ...";
 
@@ -33,8 +33,8 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
 
   @override
   Widget build(context) {
-    if (recordList.length > 0) {
-      var groundTimeRecords = recordList
+    if (records.length > 0) {
+      var groundTimeRecords = records
           .where(
               (value) => value.db.groundTime != null && value.db.groundTime > 0)
           .toList();
@@ -81,7 +81,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
 
   getData() async {
     Lap lap = widget.lap;
-    recordList = RecordList(await lap.records);
+    records = RecordList(await lap.records);
 
     double avg = await lap.avgGroundTime;
     avgGroundTimeString = avg.toStringOrDashes(1) + " ms";

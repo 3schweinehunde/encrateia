@@ -1,5 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/widgets/charts/actitvity_charts/activity_speed_per_heart_rate_chart.dart';
+import 'package:encrateia/widgets/charts/activity_charts/activity_speed_per_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';

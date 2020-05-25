@@ -17,7 +17,7 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
 
 class _LapLegSpringStiffnessWidgetState
     extends State<LapLegSpringStiffnessWidget> {
-  var recordList = RecordList([]);
+  var records = RecordList([]);
   String avgLegSpringStiffnessString = "Loading ...";
   String sdevLegSpringStiffnessString = "Loading ...";
 
@@ -35,8 +35,8 @@ class _LapLegSpringStiffnessWidgetState
 
   @override
   Widget build(context) {
-    if (recordList.length > 0) {
-      var legSpringStiffnessRecords = recordList
+    if (records.length > 0) {
+      var legSpringStiffnessRecords = records
           .where((value) =>
               value.db.legSpringStiffness != null &&
               value.db.legSpringStiffness > 0)
@@ -84,7 +84,7 @@ class _LapLegSpringStiffnessWidgetState
 
   getData() async {
     Lap lap = widget.lap;
-    recordList = RecordList(await lap.records);
+    records = RecordList(await lap.records);
     double avg = await lap.avgLegSpringStiffness;
     double sdev = await lap.sdevLegSpringStiffness;
     setState(() {

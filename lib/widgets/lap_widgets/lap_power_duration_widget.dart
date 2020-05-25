@@ -13,7 +13,7 @@ class LapPowerDurationWidget extends StatefulWidget {
 }
 
 class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
-  var recordList = RecordList({});
+  var records = RecordList({});
 
   @override
   void initState() {
@@ -29,8 +29,8 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
 
   @override
   Widget build(context) {
-    if (recordList.length > 0) {
-      var powerRecords = recordList
+    if (records.length > 0) {
+      var powerRecords = records
           .where((value) => value.db.power != null && value.db.power > 100)
           .toList();
 
@@ -56,7 +56,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   }
 
   getData() async {
-    recordList = RecordList(await widget.lap.records);
+    records = RecordList(await widget.lap.records);
     setState(() {});
   }
 }

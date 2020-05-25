@@ -15,7 +15,7 @@ class LapStrydCadenceWidget extends StatefulWidget {
 }
 
 class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
-  var recordList = RecordList({});
+  var records = RecordList({});
   String avgStrydCadenceString = "Loading ...";
   String sdevStrydCadenceString = "Loading ...";
 
@@ -33,8 +33,8 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
 
   @override
   Widget build(context) {
-    if (recordList.length > 0) {
-      var strydCadenceRecords = recordList
+    if (records.length > 0) {
+      var strydCadenceRecords = records
           .where((value) =>
               value.db.strydCadence != null && value.db.strydCadence > 0)
           .toList();
@@ -81,7 +81,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
 
   getData() async {
     Lap lap = widget.lap;
-    recordList = RecordList(await lap.records);
+    records = RecordList(await lap.records);
 
     double avg = await lap.avgStrydCadence;
     avgStrydCadenceString = avg.toStringOrDashes(1) + " spm";

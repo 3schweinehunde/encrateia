@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
-import 'package:encrateia/widgets/charts/actitvity_charts/activity_stride_ratio_chart.dart';
+import 'package:encrateia/widgets/charts/activity_charts/activity_stride_ratio_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityStrideRatioWidget extends StatefulWidget {

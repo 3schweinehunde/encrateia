@@ -16,7 +16,7 @@ class LapHeartRateWidget extends StatefulWidget {
 }
 
 class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
-  var recordList = RecordList([]);
+  var records = RecordList([]);
   String avgHeartRateString = "Loading ...";
   String sdevHeartRateString = "Loading ...";
   HeartRateZoneSchema heartRateZoneSchema;
@@ -36,8 +36,8 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
 
   @override
   Widget build(context) {
-    if (recordList.length > 0) {
-      var heartRateRecords = recordList
+    if (records.length > 0) {
+      var heartRateRecords = records
           .where(
               (value) => value.db.heartRate != null && value.db.heartRate > 0)
           .toList();
@@ -49,7 +49,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
             padding: EdgeInsets.only(left: 25),
             children: <Widget>[
               LapHeartRateChart(
-                records: recordList,
+                records: records,
                 heartRateZones: heartRateZones,
               ),
               Text('Only records where heart rate > 10 bpm are shown.'),
@@ -57,22 +57,22 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
               Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(recordList.avgHeartRate()),
+                title: Text(records.avgHeartRate()),
                 subtitle: Text("average heart rate"),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(recordList.minHeartRate()),
+                title: Text(records.minHeartRate()),
                 subtitle: Text("minimum heart rate"),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: Text(recordList.maxHeartRate()),
+                title: Text(records.maxHeartRate()),
                 subtitle: Text("maximum heart rate"),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(recordList.sdevHeartRate()),
+                title: Text(records.sdevHeartRate()),
                 subtitle: Text("standard deviation heart rate"),
               ),
               ListTile(
@@ -97,7 +97,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
 
   getData() async {
     Lap lap = widget.lap;
-    recordList = RecordList(await lap.records);
+    records = RecordList(await lap.records);
 
     heartRateZoneSchema = await lap.getHeartRateZoneSchema();
     if (heartRateZoneSchema != null)

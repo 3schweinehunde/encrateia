@@ -4,38 +4,38 @@ import 'package:encrateia/utils/num_utils.dart';
 import 'package:collection/collection.dart';
 
 class RecordList<E> extends DelegatingList<E> {
-  final List<Event> _recordList;
+  final List<Event> _records;
 
-  RecordList(recordList)
-      : _recordList = recordList,
-        super(recordList);
+  RecordList(records)
+      : _records = records,
+        super(records);
 
-  String sdevHeartRate() => _recordList
+  String sdevHeartRate() => _records
       .map((record) => record.db.heartRate)
       .nonZeroInts()
       .sdev()
       .toStringAsFixed(2);
 
-  String minHeartRate() => _recordList
+  String minHeartRate() => _records
       .map((record) => record.db.heartRate)
       .nonZeroInts()
       .min()
       .toString();
 
-  String avgHeartRate() => _recordList
+  String avgHeartRate() => _records
       .map((record) => record.db.heartRate)
       .nonZeroInts()
       .mean()
       .toStringOrDashes(1);
 
-  String maxHeartRate() => _recordList
+  String maxHeartRate() => _records
       .map((record) => record.db.heartRate)
       .nonZeroInts()
       .max()
       .toString();
 
   double calculateAveragePower() {
-    var powers = _recordList
+    var powers = _records
         .where((record) =>
             record.db.power != null &&
             record.db.power > 0 &&
@@ -48,7 +48,7 @@ class RecordList<E> extends DelegatingList<E> {
       return -1;
   }
 
-  double calculateSdevPower() => _recordList
+  double calculateSdevPower() => _records
       .where((record) =>
           record.db.power != null &&
           record.db.power > 0 &&
@@ -57,7 +57,7 @@ class RecordList<E> extends DelegatingList<E> {
       .sdev();
 
   int calculateMinPower() {
-    var powers = _recordList.map((record) => record.db.power).nonZeroInts();
+    var powers = _records.map((record) => record.db.power).nonZeroInts();
     if (powers.length > 0)
       return powers.min();
     else
@@ -65,7 +65,7 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   int calculateMaxPower() {
-    var powers = _recordList.map((record) => record.db.power).nonZeroInts();
+    var powers = _records.map((record) => record.db.power).nonZeroInts();
     if (powers.length > 0)
       return powers.max();
     else
@@ -73,7 +73,7 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   int calculateAverageHeartRate() {
-    var heartRates = _recordList
+    var heartRates = _records
         .where((record) =>
             record.db.heartRate != null &&
             record.db.heartRate > 0 &&
@@ -86,7 +86,7 @@ class RecordList<E> extends DelegatingList<E> {
       return -1;
   }
 
-  double calculateSdevHeartRate() => _recordList
+  double calculateSdevHeartRate() => _records
       .where((record) =>
           record.db.heartRate != null &&
           record.db.heartRate > 0 &&
@@ -96,7 +96,7 @@ class RecordList<E> extends DelegatingList<E> {
 
   int calculateMinHeartRate() {
     var heartRates =
-        _recordList.map((record) => record.db.heartRate).nonZeroInts();
+        _records.map((record) => record.db.heartRate).nonZeroInts();
 
     if (heartRates.length > 0)
       return heartRates.min();
@@ -106,7 +106,7 @@ class RecordList<E> extends DelegatingList<E> {
 
   int calculateMaxHeartRate() {
     var heartRates =
-        _recordList.map((record) => record.db.heartRate).nonZeroInts();
+        _records.map((record) => record.db.heartRate).nonZeroInts();
 
     if (heartRates.length > 0)
       return heartRates.max();
@@ -115,7 +115,7 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   double calculateAverageSpeed() {
-    var speeds = _recordList.map((record) => record.db.speed).nonZeroDoubles();
+    var speeds = _records.map((record) => record.db.speed).nonZeroDoubles();
 
     if (speeds.length > 0) {
       return speeds.mean();
@@ -125,7 +125,7 @@ class RecordList<E> extends DelegatingList<E> {
 
   double calculateAverageGroundTime() {
     var groundTimes =
-        _recordList.map((record) => record.db.groundTime).nonZeroDoubles();
+        _records.map((record) => record.db.groundTime).nonZeroDoubles();
 
     if (groundTimes.length > 0) {
       return groundTimes.mean();
@@ -134,10 +134,10 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   double calculateSdevGroundTime() =>
-      _recordList.map((record) => record.db.groundTime).nonZeroDoubles().sdev();
+      _records.map((record) => record.db.groundTime).nonZeroDoubles().sdev();
 
   double calculateAverageStrydCadence() {
-    var strydCadences = _recordList
+    var strydCadences = _records
         .map((record) => record.db.strydCadence ?? 0.0 * 2)
         .nonZeroDoubles();
 
@@ -147,13 +147,13 @@ class RecordList<E> extends DelegatingList<E> {
       return -1;
   }
 
-  double calculateSdevStrydCadence() => _recordList
+  double calculateSdevStrydCadence() => _records
       .map((record) => record.db.strydCadence ?? 0.0 * 2)
       .nonZeroDoubles()
       .sdev();
 
   double calculateAverageLegSpringStiffness() {
-    var legSpringStiffnesses = _recordList
+    var legSpringStiffnesses = _records
         .map((record) => record.db.legSpringStiffness)
         .nonZeroDoubles();
 
@@ -163,13 +163,13 @@ class RecordList<E> extends DelegatingList<E> {
       return -1;
   }
 
-  double calculateSdevLegSpringStiffness() => _recordList
+  double calculateSdevLegSpringStiffness() => _records
       .map((record) => record.db.legSpringStiffness)
       .nonZeroDoubles()
       .sdev();
 
   double calculateAverageVerticalOscillation() {
-    var verticalOscillation = _recordList
+    var verticalOscillation = _records
         .map((record) => record.db.verticalOscillation)
         .nonZeroDoubles();
 
@@ -179,13 +179,13 @@ class RecordList<E> extends DelegatingList<E> {
       return -1;
   }
 
-  double calculateSdevVerticalOscillation() => _recordList
+  double calculateSdevVerticalOscillation() => _records
       .map((record) => record.db.verticalOscillation)
       .nonZeroDoubles()
       .sdev();
 
   double calculateAverageFormPower() {
-    var formPowers = _recordList
+    var formPowers = _records
         .where((record) =>
             record.db.formPower != null && record.db.formPower < 200)
         .map((record) => record.db.formPower);
@@ -196,14 +196,14 @@ class RecordList<E> extends DelegatingList<E> {
       return -1;
   }
 
-  double calculateSdevFormPower() => _recordList
+  double calculateSdevFormPower() => _records
       .where(
           (record) => record.db.formPower != null && record.db.formPower < 200)
       .map((record) => record.db.formPower)
       .sdev();
 
   double calculateAveragePowerRatio() {
-    var powerRatios = _recordList
+    var powerRatios = _records
         .where((record) =>
             record.db.power != null &&
             record.db.power != 0 &&
@@ -218,7 +218,7 @@ class RecordList<E> extends DelegatingList<E> {
       return -1;
   }
 
-  double calculateSdevPowerRatio() => _recordList
+  double calculateSdevPowerRatio() => _records
       .where((record) =>
           record.db.power != null &&
           record.db.power != 0 &&
@@ -229,7 +229,7 @@ class RecordList<E> extends DelegatingList<E> {
       .sdev();
 
   double calculateAverageStrideRatio() {
-    var powerRatios = _recordList
+    var powerRatios = _records
         .where((record) =>
             record.db.speed != null &&
             record.db.strydCadence != null &&
@@ -249,7 +249,7 @@ class RecordList<E> extends DelegatingList<E> {
       return -1;
   }
 
-  double calculateSdevStrideRatio() => _recordList
+  double calculateSdevStrideRatio() => _records
       .where((record) =>
           record.db.speed != null &&
           record.db.strydCadence != null &&
