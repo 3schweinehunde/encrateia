@@ -31,6 +31,12 @@ class _LapTagWidgetState extends State<LapTagWidget> {
   }
 
   @override
+  void didUpdateWidget(oldWidget) {
+    getData();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(context) {
     if (tagGroups == null)
       return Center(child: Text("Loading ..."));
@@ -47,6 +53,7 @@ class _LapTagWidgetState extends State<LapTagWidget> {
               children: [
                 for (Tag tag in tagGroups[index].cachedTags)
                   InputChip(
+                    isEnabled: tag.db.system != true,
                     label: Text(
                       tag.db.name,
                       style: TextStyle(

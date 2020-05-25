@@ -562,6 +562,7 @@ class Activity extends ChangeNotifier {
       Tag powerTag = await Tag.ensureAutoPowerTag(
         athlete: athlete,
         color: powerZone.db.color,
+        sortOrder: powerZone.db.lowerLimit,
         name: powerZone.db.name,
       );
       await ActivityTagging.createBy(
@@ -576,6 +577,7 @@ class Activity extends ChangeNotifier {
       Tag heartRateTag = await Tag.ensureAutoHeartRateTag(
         athlete: athlete,
         color: heartRateZone.db.color,
+        sortOrder: heartRateZone.db.lowerLimit,
         name: heartRateZone.db.name,
       );
       await ActivityTagging.createBy(

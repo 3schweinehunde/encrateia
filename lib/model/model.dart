@@ -334,6 +334,7 @@ const tableTag = SqfEntityTable(
   fields: [
     SqfEntityField('name', DbType.text),
     SqfEntityField('color', DbType.integer),
+    SqfEntityField('sortOrder', DbType.integer),
     SqfEntityField('system', DbType.bool),
     SqfEntityFieldRelationship(
         parentTable: tableTagGroup,

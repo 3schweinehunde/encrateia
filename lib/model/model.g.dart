@@ -471,6 +471,7 @@ class TableDbTag extends SqfEntityTableBase {
     fields = [
       SqfEntityFieldBase('name', DbType.text, isNotNull: false),
       SqfEntityFieldBase('color', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('sortOrder', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('system', DbType.bool, isNotNull: false),
       SqfEntityFieldRelationshipBase(
           TableDbTagGroup.getInstance, DeleteRule.CASCADE,
@@ -15891,13 +15892,21 @@ class DbPowerZoneManager extends SqfEntityProvider {
 //endregion DbPowerZoneManager
 // region DbTag
 class DbTag {
-  DbTag({this.id, this.name, this.color, this.system, this.tagGroupsId}) {
+  DbTag(
+      {this.id,
+      this.name,
+      this.color,
+      this.sortOrder,
+      this.system,
+      this.tagGroupsId}) {
     _setDefaultValues();
   }
-  DbTag.withFields(this.name, this.color, this.system, this.tagGroupsId) {
+  DbTag.withFields(
+      this.name, this.color, this.sortOrder, this.system, this.tagGroupsId) {
     _setDefaultValues();
   }
-  DbTag.withId(this.id, this.name, this.color, this.system, this.tagGroupsId) {
+  DbTag.withId(this.id, this.name, this.color, this.sortOrder, this.system,
+      this.tagGroupsId) {
     _setDefaultValues();
   }
   DbTag.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -15910,6 +15919,9 @@ class DbTag {
     }
     if (o['color'] != null) {
       color = int.tryParse(o['color'].toString());
+    }
+    if (o['sortOrder'] != null) {
+      sortOrder = int.tryParse(o['sortOrder'].toString());
     }
     if (o['system'] != null) {
       system = o['system'] == 1 || o['system'] == true;
@@ -15926,6 +15938,7 @@ class DbTag {
   int id;
   String name;
   int color;
+  int sortOrder;
   bool system;
   int tagGroupsId;
 
@@ -15997,6 +16010,10 @@ class DbTag {
       map['color'] = color;
     }
 
+    if (sortOrder != null) {
+      map['sortOrder'] = sortOrder;
+    }
+
     if (system != null) {
       map['system'] = forQuery ? (system ? 1 : 0) : system;
     }
@@ -16022,6 +16039,10 @@ class DbTag {
 
     if (color != null) {
       map['color'] = color;
+    }
+
+    if (sortOrder != null) {
+      map['sortOrder'] = sortOrder;
     }
 
     if (system != null) {
@@ -16055,11 +16076,11 @@ class DbTag {
   }
 
   List<dynamic> toArgs() {
-    return [name, color, system, tagGroupsId];
+    return [name, color, sortOrder, system, tagGroupsId];
   }
 
   List<dynamic> toArgsWithIds() {
-    return [id, name, color, system, tagGroupsId];
+    return [id, name, color, sortOrder, system, tagGroupsId];
   }
 
   static Future<List<DbTag>> fromWebUrl(String url) async {
@@ -16244,7 +16265,7 @@ class DbTag {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<DbTag> dbtags) async {
-    // final results = _mnDbTag.saveAll('INSERT OR REPLACE INTO tags (id,name, color, system, tagGroupsId)  VALUES (?,?,?,?,?)',dbtags);
+    // final results = _mnDbTag.saveAll('INSERT OR REPLACE INTO tags (id,name, color, sortOrder, system, tagGroupsId)  VALUES (?,?,?,?,?,?)',dbtags);
     // return results; removed in sqfentity_gen 1.3.0+6
     DbEncrateia().batchStart();
     for (final obj in dbtags) {
@@ -16259,8 +16280,8 @@ class DbTag {
   Future<int> upsert() async {
     try {
       if (await _mnDbTag.rawInsert(
-              'INSERT OR REPLACE INTO tags (id,name, color, system, tagGroupsId)  VALUES (?,?,?,?,?)',
-              [id, name, color, system, tagGroupsId]) ==
+              'INSERT OR REPLACE INTO tags (id,name, color, sortOrder, system, tagGroupsId)  VALUES (?,?,?,?,?,?)',
+              [id, name, color, sortOrder, system, tagGroupsId]) ==
           1) {
         saveResult = BoolResult(
             success: true, successMessage: 'DbTag id=$id updated successfully');
@@ -16284,7 +16305,7 @@ class DbTag {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbTag> dbtags) async {
     final results = await _mnDbTag.rawInsertAll(
-        'INSERT OR REPLACE INTO tags (id,name, color, system, tagGroupsId)  VALUES (?,?,?,?,?)',
+        'INSERT OR REPLACE INTO tags (id,name, color, sortOrder, system, tagGroupsId)  VALUES (?,?,?,?,?,?)',
         dbtags);
     return results;
   }
@@ -16740,6 +16761,11 @@ class DbTagFilterBuilder extends SearchCriteria {
     return _color = setField(_color, 'color', DbType.integer);
   }
 
+  DbTagField _sortOrder;
+  DbTagField get sortOrder {
+    return _sortOrder = setField(_sortOrder, 'sortOrder', DbType.integer);
+  }
+
   DbTagField _system;
   DbTagField get system {
     return _system = setField(_system, 'system', DbType.bool);
@@ -17094,6 +17120,12 @@ class DbTagFields {
   static TableField get color {
     return _fColor =
         _fColor ?? SqlSyntax.setField(_fColor, 'color', DbType.integer);
+  }
+
+  static TableField _fSortOrder;
+  static TableField get sortOrder {
+    return _fSortOrder = _fSortOrder ??
+        SqlSyntax.setField(_fSortOrder, 'sortOrder', DbType.integer);
   }
 
   static TableField _fSystem;

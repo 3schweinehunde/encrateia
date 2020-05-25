@@ -12,9 +12,11 @@ class Tag extends ChangeNotifier {
     @required TagGroup tagGroup,
     String name,
     int color,
+    int sortOrder,
   }) {
     db = DbTag()
       ..tagGroupsId = tagGroup.db.id
+      ..sortOrder = sortOrder ?? 0
       ..name = name ?? "my Tag"
       ..color = color ?? 0xFFFFc107;
   }
@@ -27,7 +29,7 @@ class Tag extends ChangeNotifier {
   }
 
   static Future<List<Tag>> all({@required TagGroup tagGroup}) async {
-    var dbTagList = await tagGroup.db.getDbTags().orderBy('name').toList();
+    var dbTagList = await tagGroup.db.getDbTags().orderBy('sortOrder').orderBy('name').toList();
     var tags = dbTagList.map((dbTag) => Tag.fromDb(dbTag)).toList();
     return tags;
   }
@@ -35,6 +37,7 @@ class Tag extends ChangeNotifier {
   static ensureAutoPowerTag({
     @required Athlete athlete,
     @required String name,
+    @required int sortOrder,
     @required int color,
   }) async {
     DbTag dbPowerTag;
@@ -54,6 +57,7 @@ class Tag extends ChangeNotifier {
       dbPowerTag = DbTag()
         ..tagGroupsId = autoPowerTagGroup.db.id
         ..color = color
+        ..sortOrder = sortOrder
         ..name = name
         ..system = true;
       await dbPowerTag.save();
@@ -64,6 +68,7 @@ class Tag extends ChangeNotifier {
   static ensureAutoHeartRateTag({
     @required Athlete athlete,
     @required String name,
+    @required int sortOrder,
     @required int color,
 }) async {
     DbTag dbHeartRateTag;
@@ -83,6 +88,7 @@ class Tag extends ChangeNotifier {
       dbHeartRateTag = DbTag()
         ..tagGroupsId = autoHeartRateTagGroup.db.id
         ..color = color
+        ..sortOrder = sortOrder
         ..name = name
         ..system = true;
       await dbHeartRateTag.save();

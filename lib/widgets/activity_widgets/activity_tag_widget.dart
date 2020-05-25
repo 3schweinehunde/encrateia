@@ -47,6 +47,7 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
               children: [
                 for (Tag tag in tagGroups[index].cachedTags)
                   InputChip(
+                    isEnabled: tag.db.system != true,
                     label: Text(
                       tag.db.name,
                       style: TextStyle(

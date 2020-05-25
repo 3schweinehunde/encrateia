@@ -303,6 +303,7 @@ class Lap {
     if (powerZone.db != null) {
       Tag powerTag = await Tag.ensureAutoPowerTag(
         athlete: athlete,
+        sortOrder: powerZone.db.lowerLimit,
         color: powerZone.db.color,
         name: powerZone.db.name,
       );
@@ -317,6 +318,7 @@ class Lap {
     if (heartRateZone.db != null) {
       Tag heartRateTag = await Tag.ensureAutoHeartRateTag(
         athlete: athlete,
+        sortOrder: heartRateZone.db.lowerLimit,
         color: heartRateZone.db.color,
         name: heartRateZone.db.name,
       );
