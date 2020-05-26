@@ -38,12 +38,11 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
       separatorBuilder: (context, index) => Divider(
         color: Colors.black,
       ),
-      padding: EdgeInsets.only(left: 10),
+      padding: EdgeInsets.only(top: 20),
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {
         var activity = activities[index];
         return ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 0),
           leading: sportsIcon(sport: activity.db.sport),
           title: Text(activity.db.name ?? "Activity"),
           subtitle: Row(

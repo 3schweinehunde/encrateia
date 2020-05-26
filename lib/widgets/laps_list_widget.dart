@@ -24,35 +24,15 @@ class LapsListWidget extends StatelessWidget {
           List<Lap> laps = snapshot.data;
           return SingleChildScrollView(
             child: DataTable(
-              dataRowHeight: kMinInteractiveDimension * 0.60,
-              columnSpacing: 1,
-              horizontalMargin: 12,
+              showCheckboxColumn: false,
               onSelectAll: (_) {},
               columns: <DataColumn>[
-                DataColumn(
-                  label: Text("Lap"),
-                  numeric: true,
-                ),
-                DataColumn(
-                  label: Text("HR\nbpm"),
-                  numeric: true,
-                ),
-                DataColumn(
-                  label: Text("Pace\nmin:ss"),
-                  numeric: true,
-                ),
-                DataColumn(
-                  label: Text("Power\nWatts"),
-                  numeric: true,
-                ),
-                DataColumn(
-                  label: Text("Dist.\nkm"),
-                  numeric: true,
-                ),
-                DataColumn(
-                  label: Text("Ascent\nm"),
-                  numeric: true,
-                ),
+                DataColumn(label: Text("Lap"), numeric: true),
+                DataColumn(label: Text("HR\nbpm"), numeric: true),
+                DataColumn(label: Text("Pace\nmin:s"), numeric: true),
+                DataColumn(label: Text("Power\nWatt"), numeric: true),
+                DataColumn(label: Text("Dist.\nkm"), numeric: true),
+                DataColumn(label: Text("Ascent\nm"), numeric: true),
               ],
               rows: laps.map((Lap lap) {
                 return DataRow(
