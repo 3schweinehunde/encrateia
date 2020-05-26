@@ -18,7 +18,6 @@ import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'dart:io';
-
 import 'activity_tagging.dart';
 import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';
@@ -556,7 +555,7 @@ class Activity extends ChangeNotifier {
     return _heartRateZone;
   }
 
-  autoTagger({Athlete athlete}) async {
+  autoTagger({@required Athlete athlete}) async {
     PowerZone powerZone = await getPowerZone();
     if (powerZone.db != null) {
       Tag powerTag = await Tag.ensureAutoPowerTag(

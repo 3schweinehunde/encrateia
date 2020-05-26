@@ -62,7 +62,7 @@ class TagGroup extends ChangeNotifier {
     await autoPowerZonesTagGroup.db.save();
   }
 
-  static autoPowerTagGroup({Athlete athlete}) async {
+  static autoPowerTagGroup({@required Athlete athlete}) async {
     var dbTagGroup = await DbTagGroup()
         .select()
         .system
@@ -77,7 +77,7 @@ class TagGroup extends ChangeNotifier {
     return TagGroup.fromDb(dbTagGroup);
   }
 
-  static autoHeartRateTagGroup({Athlete athlete}) async {
+  static autoHeartRateTagGroup({@required Athlete athlete}) async {
     var dbTagGroup = await DbTagGroup()
         .select()
         .system

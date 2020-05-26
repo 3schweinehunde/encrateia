@@ -11,6 +11,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/activity.dart';
 import 'athlete.dart';
 import 'heart_rate_zone_schema.dart';
+import 'package:flutter/material.dart';
 
 class Lap {
   DbLap db;
@@ -298,7 +299,7 @@ class Lap {
     return _heartRateZone;
   }
 
-  autoTagger({Athlete athlete}) async {
+  autoTagger({@required Athlete athlete}) async {
     PowerZone powerZone = await getPowerZone();
     if (powerZone.db != null) {
       Tag powerTag = await Tag.ensureAutoPowerTag(

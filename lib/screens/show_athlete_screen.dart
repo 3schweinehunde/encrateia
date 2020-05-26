@@ -123,13 +123,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               label: Text("Import .fit\nfrom Folder"),
               onPressed: () => importLocal(),
             ),
-            RaisedButton.icon(
-              color: MyColor.add,
-              icon: MyIcon.settings,
-              textColor: MyColor.textColor(backgroundColor: MyColor.add),
-              label: Text("Recalculate\nAverages"),
-              onPressed: () => recalculate(),
-            ),
             navigationButton(
               color: MyColor.settings,
               title: "Body Weight",
@@ -163,17 +156,24 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             ),
             RaisedButton.icon(
               color: MyColor.danger,
-              textColor: MyColor.white,
+              textColor: MyColor.textColor(backgroundColor: MyColor.danger),
               icon: MyIcon.delete,
               label: Text("Delete\nAthlete"),
               onPressed: () => deleteUser(),
             ),
             RaisedButton.icon(
-              color: MyColor.danger,
-              textColor: MyColor.white,
-              icon: MyIcon.delete,
-              label: Text("Delete all \n Autotags"),
-              onPressed: () => deleteAllAutoTags(),
+              color: MyColor.settings,
+              icon: MyIcon.settings,
+              textColor: MyColor.textColor(backgroundColor: MyColor.add),
+              label: Text("Recalculate\nAverages"),
+              onPressed: () => recalculate(),
+            ),
+            RaisedButton.icon(
+              color: MyColor.settings,
+              textColor: MyColor.textColor(backgroundColor: MyColor.settings),
+              icon: MyIcon.settings,
+              label: Text("Redo \n Autotagging"),
+              onPressed: () => redoAutoTagging(),
             ),
             RaisedButton.icon(
               color: MyColor.primary,
@@ -267,6 +267,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         .toList();
     for (Activity activity in downloadedActivities) {
       await parse(activity: activity);
+      await activity.autoTagger(athlete: widget.athlete);
     }
     flushbar.dismiss();
     flushbar = Flushbar(
@@ -313,6 +314,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         .toList();
     for (Activity activity in downloadedActivities) {
       await parse(activity: activity);
+      await activity.autoTagger(athlete: widget.athlete);
     }
     flushbar.dismiss();
     flushbar = Flushbar(
@@ -339,6 +341,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         activities.where((activity) => activity.db.state == "downloaded");
     for (Activity activity in downloadedActivities) {
       await parse(activity: activity);
+      await activity.autoTagger(athlete: widget.athlete);
     }
 
     flushbar.dismiss();
@@ -447,12 +450,44 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
-  deleteAllAutoTags() async {
+  redoAutoTagging() async {
+    flushbar = Flushbar(
+      message: "Started cleaning up...",
+      duration: Duration(seconds: 5),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+
+    List<Activity> activities;
+    activities = await Activity.all(athlete: widget.athlete);
+    int index = 0;
+    int percent;
+
     await TagGroup.deleteAllAutoTags(athlete: widget.athlete);
     Flushbar(
-      message: "All Autotags have been deleted.",
+      message: "All existing autotaggings have been deleted.",
       duration: Duration(seconds: 2),
       icon: MyIcon.finishedWhite,
     )..show(context);
+
+    for (Activity activity in activities) {
+      index += 1;
+      await activity.autoTagger(athlete: widget.athlete);
+      flushbar.dismiss();
+      percent = 100 * index ~/ activities.length;
+      flushbar = Flushbar(
+        titleText: LinearProgressIndicator(value: percent / 100),
+        message: "$percent% done (autotagging »${activity.db.name}« )",
+        duration: Duration(seconds: 2),
+        animationDuration: Duration(milliseconds: 1),
+      )..show(context);
+    }
+
+    flushbar.dismiss();
+    Flushbar(
+      message: "Autotaggings are now up to date.",
+      duration: Duration(seconds: 5),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
   }
+
 }
