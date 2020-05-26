@@ -23,6 +23,7 @@ class LapsListWidget extends StatelessWidget {
         if (snapshot.hasData) {
           List<Lap> laps = snapshot.data;
           return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
             child: DataTable(
               showCheckboxColumn: false,
               onSelectAll: (_) {},

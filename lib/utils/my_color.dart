@@ -56,9 +56,9 @@ class MyColor {
   static Color save = success;
   static Color cancel = warning;
   static Color delete = danger;
-  static Color navigate = white;
+  static Color navigate = brightGoldenYellow;
 
-  static Color athlete = brightGoldenYellow;
+  static Color athlete = sunFlowerAccent;
   static Color activity = aquaAccent;
   static Color lap = grassAccent;
   static Color tag = lavender;

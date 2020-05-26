@@ -16,6 +16,7 @@ import 'package:encrateia/widgets/lap_widgets/lap_vertical_oscillation_widget.da
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ShowLapScreen extends StatelessWidget {
   final Lap lap;
@@ -39,108 +40,105 @@ class ShowLapScreen extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      body: new OrientationBuilder(builder: (context, orientation) {
-        return GridView.count(
-          padding: EdgeInsets.all(5),
-          crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
-          childAspectRatio: 3,
-          crossAxisSpacing: 3,
-          mainAxisSpacing: 3,
-          children: [
-            navigationButton(
-              title: "Overview",
-              color: MyColor.settings,
-              icon: MyIcon.metaData,
-              context: context,
-              nextWidget: ({lap}) => LapOverviewWidget(lap: lap),
+      body: StaggeredGridView.count(
+        staggeredTiles: List.filled(12, StaggeredTile.fit(1)),
+        crossAxisSpacing: 10,
+        padding: EdgeInsets.all(10),
+        crossAxisCount:
+            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+        children: [
+          navigationButton(
+            title: "Overview",
+            color: MyColor.settings,
+            icon: MyIcon.metaData,
+            context: context,
+            nextWidget: ({lap}) => LapOverviewWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Heart Rate",
+            color: MyColor.navigate,
+            icon: MyIcon.heartRate,
+            context: context,
+            nextWidget: ({lap}) => LapHeartRateWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Power",
+            color: MyColor.navigate,
+            icon: MyIcon.power,
+            context: context,
+            nextWidget: ({lap}) => LapPowerWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Power\nDuration",
+            color: MyColor.navigate,
+            icon: MyIcon.powerDuration,
+            context: context,
+            nextWidget: ({lap}) => LapPowerDurationWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Ecor",
+            color: MyColor.navigate,
+            icon: MyIcon.power,
+            context: context,
+            nextWidget: ({lap}) => LapEcorWidget(
+              lap: lap,
+              athlete: athlete,
             ),
-            navigationButton(
-              title: "Heart Rate",
-              color: MyColor.navigate,
-              icon: MyIcon.heartRate,
-              context: context,
-              nextWidget: ({lap}) => LapHeartRateWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Ground Time",
+            color: MyColor.navigate,
+            icon: MyIcon.groundTime,
+            context: context,
+            nextWidget: ({lap}) => LapGroundTimeWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Leg Spring\nStiffness",
+            color: MyColor.navigate,
+            icon: MyIcon.legSpringStiffness,
+            context: context,
+            nextWidget: ({lap}) => LapLegSpringStiffnessWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Form Power",
+            color: MyColor.navigate,
+            icon: MyIcon.formPower,
+            context: context,
+            nextWidget: ({lap}) => LapFormPowerWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Cadence",
+            color: MyColor.navigate,
+            icon: MyIcon.cadence,
+            context: context,
+            nextWidget: ({lap}) => LapStrydCadenceWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Vertical\nOscillation",
+            color: MyColor.navigate,
+            icon: MyIcon.verticalOscillation,
+            context: context,
+            nextWidget: ({lap}) => LapVerticalOscillationWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Metadata",
+            color: MyColor.settings,
+            icon: MyIcon.metaData,
+            context: context,
+            nextWidget: ({lap}) => LapMetadataWidget(lap: lap),
+          ),
+          navigationButton(
+            title: "Tags",
+            color: MyColor.tag,
+            icon: MyIcon.tag,
+            context: context,
+            nextWidget: ({lap}) => LapTagWidget(
+              lap: lap,
+              athlete: athlete,
             ),
-            navigationButton(
-              title: "Power",
-              color: MyColor.navigate,
-              icon: MyIcon.power,
-              context: context,
-              nextWidget: ({lap}) => LapPowerWidget(lap: lap),
-            ),
-            navigationButton(
-              title: "Power\nDuration",
-              color: MyColor.navigate,
-              icon: MyIcon.powerDuration,
-              context: context,
-              nextWidget: ({lap}) => LapPowerDurationWidget(lap: lap),
-            ),
-            navigationButton(
-              title: "Ecor",
-              color: MyColor.navigate,
-              icon: MyIcon.power,
-              context: context,
-              nextWidget: ({lap}) => LapEcorWidget(
-                lap: lap,
-                athlete: athlete,
-              ),
-            ),
-            navigationButton(
-              title: "Ground Time",
-              color: MyColor.navigate,
-              icon: MyIcon.groundTime,
-              context: context,
-              nextWidget: ({lap}) => LapGroundTimeWidget(lap: lap),
-            ),
-            navigationButton(
-              title: "Leg Spring\nStiffness",
-              color: MyColor.navigate,
-              icon: MyIcon.legSpringStiffness,
-              context: context,
-              nextWidget: ({lap}) => LapLegSpringStiffnessWidget(lap: lap),
-            ),
-            navigationButton(
-              title: "Form Power",
-              color: MyColor.navigate,
-              icon: MyIcon.formPower,
-              context: context,
-              nextWidget: ({lap}) => LapFormPowerWidget(lap: lap),
-            ),
-            navigationButton(
-              title: "Cadence",
-              color: MyColor.navigate,
-              icon: MyIcon.cadence,
-              context: context,
-              nextWidget: ({lap}) => LapStrydCadenceWidget(lap: lap),
-            ),
-            navigationButton(
-              title: "Vertical\nOscillation",
-              color: MyColor.navigate,
-              icon: MyIcon.verticalOscillation,
-              context: context,
-              nextWidget: ({lap}) => LapVerticalOscillationWidget(lap: lap),
-            ),
-            navigationButton(
-              title: "Metadata",
-              color: MyColor.settings,
-              icon: MyIcon.metaData,
-              context: context,
-              nextWidget: ({lap}) => LapMetadataWidget(lap: lap),
-            ),
-            navigationButton(
-              title: "Tags",
-              color: MyColor.tag,
-              icon: MyIcon.tag,
-              context: context,
-              nextWidget: ({lap}) => LapTagWidget(
-                lap: lap,
-                athlete: athlete,
-              ),
-            ),
-
-          ],
-        );
-      }),
+          ),
+        ],
+      ),
     );
   }
 

@@ -19,6 +19,7 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_ecor_widget.dart';
 import 'package:encrateia/screens/show_athlete_detail_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ShowAthleteScreen extends StatefulWidget {
@@ -63,127 +64,123 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           icon: MyIcon.stravaDownload,
         ),
       ),
-      body: new OrientationBuilder(builder: (context, orientation) {
-        return GridView.count(
-          padding: EdgeInsets.all(5),
-          crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
-          childAspectRatio: 3,
-          crossAxisSpacing: 3,
-          mainAxisSpacing: 3,
-          children: [
-            navigationButton(
-              color: MyColor.activity,
-              title: "Activities List",
-              icon: MyIcon.activities,
-              backgroundColor: MyColor.activity,
-              nextWidget: ActivitiesListWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.navigate,
-              title: "Power",
-              icon: MyIcon.power,
-              nextWidget: AthletePowerWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              title: "Power Ratio",
-              color: MyColor.navigate,
-              icon: MyIcon.power,
-              nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.navigate,
-              title: "Power /\nHeart Rate",
-              icon: MyIcon.power,
-              nextWidget:
-                  AthletePowerPerHeartRateWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.navigate,
-              title: "Ecor",
-              icon: MyIcon.power,
-              nextWidget: AthleteEcorWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.navigate,
-              title: "Stride Ratio",
-              icon: MyIcon.strideRatio,
-              nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.navigate,
-              title: "Speed /\nHeart Rate",
-              icon: MyIcon.speed,
-              nextWidget:
-                  AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
-            ),
-            RaisedButton.icon(
-              color: MyColor.add,
-              textColor: MyColor.textColor(backgroundColor: MyColor.add),
-              icon: MyIcon.downloadLocal,
-              label: Text("Import .fit\nfrom Folder"),
-              onPressed: () => importLocal(),
-            ),
-            navigationButton(
-              color: MyColor.settings,
-              title: "Body Weight",
-              icon: MyIcon.weight,
-              nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.settings,
-              title: "Power Zone\nSchemas",
-              icon: MyIcon.power,
-              nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.settings,
-              title: "Heart Rate\nZone Schemas",
-              icon: MyIcon.heartRate,
-              nextWidget:
-                  AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.tag,
-              title: "Tags",
-              icon: MyIcon.tag,
-              nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
-            ),
-            navigationButton(
-              color: MyColor.settings,
-              title: "Settings",
-              icon: MyIcon.settings,
-              nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
-            ),
-            RaisedButton.icon(
-              color: MyColor.danger,
-              textColor: MyColor.textColor(backgroundColor: MyColor.danger),
-              icon: MyIcon.delete,
-              label: Text("Delete\nAthlete"),
-              onPressed: () => deleteUser(),
-            ),
-            RaisedButton.icon(
-              color: MyColor.settings,
-              icon: MyIcon.settings,
-              textColor: MyColor.textColor(backgroundColor: MyColor.add),
-              label: Text("Recalculate\nAverages"),
-              onPressed: () => recalculate(),
-            ),
-            RaisedButton.icon(
-              color: MyColor.settings,
-              textColor: MyColor.textColor(backgroundColor: MyColor.settings),
-              icon: MyIcon.settings,
-              label: Text("Redo \n Autotagging"),
-              onPressed: () => redoAutoTagging(),
-            ),
-            RaisedButton.icon(
-              color: MyColor.primary,
-              icon: MyIcon.download,
-              label: Text("Download\nDemo Data"),
-              onPressed: () => downloadDemoData(),
-            ),
-          ],
-        );
-      }),
+      body: StaggeredGridView.count(
+        staggeredTiles: List.filled(17, StaggeredTile.fit(1)),
+        crossAxisSpacing: 10,
+        padding: EdgeInsets.all(10),
+        crossAxisCount:
+            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+        children: [
+          navigationButton(
+            color: MyColor.activity,
+            title: "Activities List",
+            icon: MyIcon.activities,
+            backgroundColor: MyColor.activity,
+            nextWidget: ActivitiesListWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.navigate,
+            title: "Power",
+            icon: MyIcon.power,
+            nextWidget: AthletePowerWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            title: "Power Ratio",
+            color: MyColor.navigate,
+            icon: MyIcon.power,
+            nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.navigate,
+            title: "Power /\nHeart Rate",
+            icon: MyIcon.power,
+            nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.navigate,
+            title: "Ecor",
+            icon: MyIcon.power,
+            nextWidget: AthleteEcorWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.navigate,
+            title: "Stride Ratio",
+            icon: MyIcon.strideRatio,
+            nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.navigate,
+            title: "Speed /\nHeart Rate",
+            icon: MyIcon.speed,
+            nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
+          ),
+          RaisedButton.icon(
+            color: MyColor.add,
+            textColor: MyColor.textColor(backgroundColor: MyColor.add),
+            icon: MyIcon.downloadLocal,
+            label: Text("Import .fit\nfrom Folder"),
+            onPressed: () => importLocal(),
+          ),
+          navigationButton(
+            color: MyColor.settings,
+            title: "Body Weight",
+            icon: MyIcon.weight,
+            nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.settings,
+            title: "Power Zone\nSchemas",
+            icon: MyIcon.power,
+            nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.settings,
+            title: "Heart Rate\nZone Schemas",
+            icon: MyIcon.heartRate,
+            nextWidget:
+                AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.tag,
+            title: "Tags",
+            icon: MyIcon.tag,
+            nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
+          ),
+          navigationButton(
+            color: MyColor.settings,
+            title: "Settings",
+            icon: MyIcon.settings,
+            nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
+          ),
+          RaisedButton.icon(
+            color: MyColor.danger,
+            textColor: MyColor.textColor(backgroundColor: MyColor.danger),
+            icon: MyIcon.delete,
+            label: Text("Delete\nAthlete"),
+            onPressed: () => deleteUser(),
+          ),
+          RaisedButton.icon(
+            color: MyColor.settings,
+            icon: MyIcon.settings,
+            textColor: MyColor.textColor(backgroundColor: MyColor.add),
+            label: Text("Recalculate\nAverages"),
+            onPressed: () => recalculate(),
+          ),
+          RaisedButton.icon(
+            color: MyColor.settings,
+            textColor: MyColor.textColor(backgroundColor: MyColor.settings),
+            icon: MyIcon.settings,
+            label: Text("Redo\nAutotagging"),
+            onPressed: () => redoAutoTagging(),
+          ),
+          RaisedButton.icon(
+            color: MyColor.primary,
+            icon: MyIcon.download,
+            label: Text("Download\nDemo Data"),
+            onPressed: () => downloadDemoData(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -489,5 +486,4 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       icon: MyIcon.finishedWhite,
     )..show(context);
   }
-
 }
