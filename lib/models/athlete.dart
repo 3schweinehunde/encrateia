@@ -20,7 +20,8 @@ class Athlete extends ChangeNotifier {
   Athlete();
   Athlete.fromDb(this.db);
 
-  String toString() => '< Athlete | ${db.firstName} ${db.lastName} | ${db.stravaId} >';
+  String toString() =>
+      '< Athlete | ${db.firstName} ${db.lastName} | ${db.stravaId} >';
 
   updateFromStravaAthlete(DetailedAthlete athlete) {
     db
@@ -91,7 +92,9 @@ class Athlete extends ChangeNotifier {
     for (Activity activity in await activities) {
       await activity.db.getDbEvents().delete();
       await activity.db.getDbLaps().delete();
-      await File(appDocDir.path + '/${db.stravaId}.fit').delete();
+
+      if (await File(appDocDir.path + '/${db.stravaId}.fit').exists())
+        await File(appDocDir.path + '/${db.stravaId}.fit').delete();
     }
     await db.getDbActivities().delete();
     await db.delete();
@@ -102,4 +105,7 @@ class Athlete extends ChangeNotifier {
     await db.save();
     notifyListeners();
   }
+
+  checkForSchemas() async => ((await powerZoneSchemas).length > 0 &&
+      (await heartRateZoneSchemas).length > 0);
 }

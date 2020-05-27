@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:encrateia/models/tag_group.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
@@ -275,80 +276,97 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   }
 
   downloadDemoData() async {
-    List<Activity> activities;
-    var appDocDir = await getApplicationDocumentsDirectory();
-    var dio = Dio();
-    var downloadDir = "https://encrateia.informatom.com/assets/fit-files/";
-    var fileNames = [
-      "munich_half_marathon.fit",
-      "listener_meetup_run_cologne.fit",
-      "stockholm_half_marathon.fit",
-      "upper_palatinate_winter_challenge_half_marathon.fit",
-    ];
+    if (await widget.athlete.checkForSchemas()) {
+      List<Activity> activities;
+      var appDocDir = await getApplicationDocumentsDirectory();
+      var dio = Dio();
+      var downloadDir = "https://encrateia.informatom.com/assets/fit-files/";
+      var fileNames = [
+        "munich_half_marathon.fit",
+        "listener_meetup_run_cologne.fit",
+        "stockholm_half_marathon.fit",
+        "upper_palatinate_winter_challenge_half_marathon.fit",
+      ];
 
-    flushbar = Flushbar(
-      message: "Downloading Demo data ...",
-      duration: Duration(seconds: 1),
-      icon: MyIcon.stravaDownloadWhite,
-    )..show(context);
+      flushbar = Flushbar(
+        message: "Downloading Demo data ...",
+        duration: Duration(seconds: 1),
+        icon: MyIcon.stravaDownloadWhite,
+      )..show(context);
 
-    for (String filename in fileNames) {
-      var activity = Activity.fromLocalDirectory(athlete: widget.athlete);
-      await dio.download(downloadDir + filename,
-          appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
-      await activity.setState("downloaded");
+      for (String filename in fileNames) {
+        var activity = Activity.fromLocalDirectory(athlete: widget.athlete);
+        await dio.download(downloadDir + filename,
+            appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
+        await activity.setState("downloaded");
+      }
+
+      flushbar = Flushbar(
+        message: "Downloading demo data finished",
+        duration: Duration(seconds: 1),
+        icon: MyIcon.finishedWhite,
+      )..show(context);
+
+      activities = await Activity.all(athlete: widget.athlete);
+      var downloadedActivities = activities
+          .where((activity) => activity.db.state == "downloaded")
+          .toList();
+      for (Activity activity in downloadedActivities) {
+        await parse(activity: activity);
+        await activity.autoTagger(athlete: widget.athlete);
+      }
+      flushbar.dismiss();
+      flushbar = Flushbar(
+        message: "Activities imported!",
+        duration: Duration(seconds: 5),
+        icon: MyIcon.finishedWhite,
+      )..show(context);
+    } else {
+      Flushbar(
+        message:
+            "Please set up Power Zone Schema and Heart Rate Zone Schema first!",
+        duration: Duration(seconds: 5),
+        icon: MyIcon.finishedWhite,
+      )..show(context);
     }
-
-    flushbar = Flushbar(
-      message: "Downloading demo data finished",
-      duration: Duration(seconds: 1),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
-
-    activities = await Activity.all(athlete: widget.athlete);
-    var downloadedActivities = activities
-        .where((activity) => activity.db.state == "downloaded")
-        .toList();
-    for (Activity activity in downloadedActivities) {
-      await parse(activity: activity);
-      await activity.autoTagger(athlete: widget.athlete);
-    }
-    flushbar.dismiss();
-    flushbar = Flushbar(
-      message: "Activities imported!",
-      duration: Duration(seconds: 5),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
   }
 
   updateJob() async {
     List<Activity> activities;
     setState(() => floatingActionButtonVisible = false);
 
-    await queryStrava();
+    if (await widget.athlete.checkForSchemas()) {
+      await queryStrava();
 
-    activities = await Activity.all(athlete: widget.athlete);
-    var newActivities =
-        activities.where((activity) => activity.db.state == "new");
-    for (Activity activity in newActivities) {
-      await download(activity: activity);
+      activities = await Activity.all(athlete: widget.athlete);
+      var newActivities =
+          activities.where((activity) => activity.db.state == "new");
+      for (Activity activity in newActivities) {
+        await download(activity: activity);
+      }
+
+      var downloadedActivities =
+          activities.where((activity) => activity.db.state == "downloaded");
+      for (Activity activity in downloadedActivities) {
+        await parse(activity: activity);
+        await activity.autoTagger(athlete: widget.athlete);
+      }
+      flushbar.dismiss();
+      Flushbar(
+        message: "You are now up to date!",
+        duration: Duration(seconds: 5),
+        icon: MyIcon.finishedWhite,
+      )..show(context);
+
+      setState(() => floatingActionButtonVisible = true);
+    } else {
+      Flushbar(
+        message:
+            "Please set up Power Zone Schema and Heart Rate Zone Schema first!",
+        duration: Duration(seconds: 5),
+        icon: MyIcon.finishedWhite,
+      )..show(context);
     }
-
-    var downloadedActivities =
-        activities.where((activity) => activity.db.state == "downloaded");
-    for (Activity activity in downloadedActivities) {
-      await parse(activity: activity);
-      await activity.autoTagger(athlete: widget.athlete);
-    }
-
-    flushbar.dismiss();
-    Flushbar(
-      message: "You are now up to date!",
-      duration: Duration(seconds: 5),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
-
-    setState(() => floatingActionButtonVisible = true);
   }
 
   Future queryStrava() async {
@@ -426,14 +444,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
-              child: Text('Cancel'),
+            MyButton.cancel(
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
-              child: Text('Delete'),
+            MyButton.delete(
               onPressed: () => deleteAthleteAndPop(),
             ),
           ],
@@ -448,42 +464,51 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   }
 
   redoAutoTagging() async {
-    flushbar = Flushbar(
-      message: "Started cleaning up...",
-      duration: Duration(seconds: 5),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
-
-    List<Activity> activities;
-    activities = await Activity.all(athlete: widget.athlete);
-    int index = 0;
-    int percent;
-
-    await TagGroup.deleteAllAutoTags(athlete: widget.athlete);
-    Flushbar(
-      message: "All existing autotaggings have been deleted.",
-      duration: Duration(seconds: 2),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
-
-    for (Activity activity in activities) {
-      index += 1;
-      await activity.autoTagger(athlete: widget.athlete);
-      flushbar.dismiss();
-      percent = 100 * index ~/ activities.length;
+    if (await widget.athlete.checkForSchemas()) {
       flushbar = Flushbar(
-        titleText: LinearProgressIndicator(value: percent / 100),
-        message: "$percent% done (autotagging »${activity.db.name}« )",
+        message: "Started cleaning up...",
+        duration: Duration(seconds: 5),
+        icon: MyIcon.finishedWhite,
+      )..show(context);
+
+      List<Activity> activities;
+      activities = await Activity.all(athlete: widget.athlete);
+      int index = 0;
+      int percent;
+
+      await TagGroup.deleteAllAutoTags(athlete: widget.athlete);
+      Flushbar(
+        message: "All existing autotaggings have been deleted.",
         duration: Duration(seconds: 2),
-        animationDuration: Duration(milliseconds: 1),
+        icon: MyIcon.finishedWhite,
+      )..show(context);
+
+      for (Activity activity in activities) {
+        index += 1;
+        await activity.autoTagger(athlete: widget.athlete);
+        flushbar.dismiss();
+        percent = 100 * index ~/ activities.length;
+        flushbar = Flushbar(
+          titleText: LinearProgressIndicator(value: percent / 100),
+          message: "$percent% done (autotagging »${activity.db.name}« )",
+          duration: Duration(seconds: 2),
+          animationDuration: Duration(milliseconds: 1),
+        )..show(context);
+      }
+
+      flushbar.dismiss();
+      Flushbar(
+        message: "Autotaggings are now up to date.",
+        duration: Duration(seconds: 5),
+        icon: MyIcon.finishedWhite,
+      )..show(context);
+    } else {
+      Flushbar(
+        message:
+            "Please set up Power Zone Schema and Heart Rate Zone Schema first!",
+        duration: Duration(seconds: 5),
+        icon: MyIcon.finishedWhite,
       )..show(context);
     }
-
-    flushbar.dismiss();
-    Flushbar(
-      message: "Autotaggings are now up to date.",
-      duration: Duration(seconds: 5),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
   }
 }
