@@ -454,6 +454,7 @@ class Activity extends ChangeNotifier {
         // debugger();
       }
     }
+    return null;
   }
 
   Future<void> resetCurrentLap() async {

@@ -1,97 +1,97 @@
 import 'package:flutter/material.dart';
-
 // import 'package:encrateia/utils/icon_utils.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class MyIcon {
   // A
-  static final activities = Icon(Icons.view_list);
-  static final amount = Icon(Icons.playlist_add);
-  static final analyze = Icon(Icons.multiline_chart);
-  static final ascent = Icon(Icons.trending_up);
-  static final athlete = Icon(
+  static final Icon activities = Icon(Icons.view_list);
+  static final Icon amount = Icon(Icons.playlist_add);
+  static final Icon analyze = Icon(Icons.multiline_chart);
+  static final Icon ascent = Icon(Icons.trending_up);
+  static final Icon athlete = Icon(
     Icons.face,
     color: Colors.deepOrange,
   );
-  static final average = Icon(Icons.filter_tilt_shift);
+  static final Icon average = Icon(Icons.filter_tilt_shift);
   // B
-  static final brokenConnection = Icon(Icons.link_off);
+  static final Icon brokenConnection = Icon(Icons.link_off);
   // C
-  static final cadence = Icon(Icons.pets);
-  static final calories = Icon(Icons.battery_charging_full);
-  static final climb = ascent;
-  static final cycling = Icon(Icons.directions_bike);
-  static final cycles = Icon(Icons.repeat);
+  static final Icon cadence = Icon(Icons.pets);
+  static final Icon calories = Icon(Icons.battery_charging_full);
+  static final Icon climb = ascent;
+  static final Icon cycling = Icon(Icons.directions_bike);
+  static final Icon cycles = Icon(Icons.repeat);
   // D
-  static final delete = Icon(Icons.delete);
-  static final distance = Icon(Icons.redo);
-  static final download = Icon(Icons.cloud_download);
-  static final downloadLocal = Icon(Icons.file_download);
+  static final Icon delete = Icon(Icons.delete);
+  static final Icon distance = Icon(Icons.redo);
+  static final Icon download = Icon(Icons.cloud_download);
+  static final Icon downloadLocal = Icon(Icons.file_download);
 
   // E
-  static final edit = Icon(Icons.edit);
-  static final event = Icon(Icons.event);
+  static final Icon edit = Icon(Icons.edit);
+  static final Icon event = Icon(Icons.event);
   // F
-  static final finished = Icon(Icons.check_box);
-  static final finishedWhite =
+  static final Icon finished = Icon(Icons.check_box);
+  static final Icon finishedWhite =
       Icon(Icons.sentiment_very_satisfied, color: Colors.white);
-  static final formPower = Icon(Icons.ev_station);
+  static final Icon formPower = Icon(Icons.ev_station);
   // G
-  static final groundTime = Icon(Icons.vertical_align_bottom);
+  static final Icon groundTime = Icon(Icons.vertical_align_bottom);
   // H
-  static final heartRate = Icon(Icons.spa);
-  static final help = Icon(Icons.help);
+  static final Icon heartRate = Icon(Icons.spa);
+  static final Icon help = Icon(Icons.help);
   // I
-  static final id = Icon(Icons.fingerprint);
-  static final information = Icon(
+  static final Icon id = Icon(Icons.fingerprint);
+  static final Icon information = Icon(
     Icons.info_outline,
     color: Colors.blue,
   );
-  static final intensity = Icon(Icons.power);
+  static final Icon intensity = Icon(Icons.power);
   // L
-  static final laps = Icon(Icons.timer);
-  static final legSpringStiffness = Icon(Icons.airline_seat_recline_extra);
+  static final Icon laps = Icon(Icons.timer);
+  static final Icon legSpringStiffness = Icon(Icons.airline_seat_recline_extra);
   // M
-  static final maximum = Icon(Icons.expand_less);
-  static final metaData = Icon(Icons.storage);
-  static final minimum = Icon(Icons.expand_more);
+  static final Icon maximum = Icon(Icons.expand_less);
+  static final Icon metaData = Icon(Icons.storage);
+  static final Icon minimum = Icon(Icons.expand_more);
   // N
-  static final number = amount;
+  static final Icon number = amount;
   // O
-  static final overView = Icon(Icons.landscape);
+  static final Icon overView = Icon(Icons.landscape);
   // P
-  static final parse = Icon(Icons.build);
-  static final position = Icon(Icons.map);
-  static final power = Icon(Icons.ev_station);
-  static final powerDuration = Icon(Icons.multiline_chart);
+  static final Icon parse = Icon(Icons.build);
+  static final Icon position = Icon(Icons.map);
+  static final Icon power = Icon(Icons.ev_station);
+  static final Icon powerDuration = Icon(Icons.multiline_chart);
   // R
-  static final repeats = Icon(Icons.loop);
-  static final running = Icon(Icons.directions_run);
-  static final runningBig = Icon(Icons.directions_run, size: 50);
+  static final Icon repeats = Icon(Icons.loop);
+  static final Icon running = Icon(Icons.directions_run);
+  static final Icon runningBig = Icon(Icons.directions_run, size: 50);
   // S
-  static final settings = Icon(Icons.settings);
-  static final show = Icon(Icons.remove_red_eye);
-  static final speed = Icon(Icons.shutter_speed);
-  static final sport = Icon(Icons.fitness_center);
-  static final stanceTime = cadence;
-  static final standardDeviation = Icon(Icons.unfold_more);
-  static final stravaDownload = Icon(Icons.cloud_download);
-  static final stravaDownloadWhite =
+  static final Icon settings = Icon(Icons.settings);
+  static final Icon show = Icon(Icons.remove_red_eye);
+  static final Icon speed = Icon(Icons.shutter_speed);
+  static final Icon sport = Icon(Icons.fitness_center);
+  static final Icon stanceTime = cadence;
+  static final Icon standardDeviation = Icon(Icons.unfold_more);
+  static final Icon stravaDownload = Icon(Icons.cloud_download);
+  static final Icon stravaDownloadWhite =
       Icon(Icons.cloud_download, color: Colors.white);
-  static final strideRatio = Icon(Icons.signal_cellular_null);
-  static final strides = Icon(Icons.directions_walk);
+  static final Icon strideRatio = Icon(Icons.signal_cellular_null);
+  static final Icon strides = Icon(Icons.directions_walk);
   // T
-  static final tag = Icon(Icons.label);
-  static final temperature = Icon(Icons.ac_unit);
-  static final time = Icon(Icons.timer);
-  static final timeStamp = Icon(Icons.access_time);
-  static final title = Icon(Icons.title);
-  static final trainingEffect = Icon(Icons.fitness_center);
+  static final Icon tag = Icon(Icons.label);
+  static final Icon temperature = Icon(Icons.ac_unit);
+  static final Icon time = Icon(Icons.timer);
+  static final Icon timeStamp = Icon(Icons.access_time);
+  static final Icon title = Icon(Icons.title);
+  static final Icon trainingEffect = Icon(Icons.fitness_center);
   //
-  static final upload = Icon(Icons.file_upload);
+  static final Icon upload = Icon(Icons.file_upload);
   // V
-  static final verticalOscillation = Icon(Icons.unfold_more);
+  static final Icon verticalOscillation = Icon(Icons.unfold_more);
   // W
-  static final warning = Icon(Icons.warning);
-  static final website = Icon(Icons.web);
-  static final weight = Icon(Icons.restaurant_menu);
+  static final Icon warning = Icon(Icons.warning);
+  static final Icon website = Icon(Icons.web);
+  static final Icon weight = Icon(Icons.restaurant_menu);
 }

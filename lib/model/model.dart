@@ -9,14 +9,14 @@ import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 part 'model.g.dart';
 
-const tableAthlete = SqfEntityTable(
+const SqfEntityTable tableAthlete = SqfEntityTable(
   tableName: 'athletes',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbAthlete',
-  fields: [
-    SqfEntityField('state', DbType.text, defaultValue: "new"),
+  fields: <SqfEntityField>[
+    SqfEntityField('state', DbType.text, defaultValue: 'new'),
     SqfEntityField('firstName', DbType.text),
     SqfEntityField('lastName', DbType.text),
     SqfEntityField('stravaUsername', DbType.text),
@@ -28,14 +28,14 @@ const tableAthlete = SqfEntityTable(
   ],
 );
 
-const tableActivity = SqfEntityTable(
+const SqfEntityTable tableActivity = SqfEntityTable(
   tableName: 'activities',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbActivity',
-  fields: [
-    SqfEntityField('state', DbType.text, defaultValue: "new"),
+  fields: <SqfEntityField>[
+    SqfEntityField('state', DbType.text, defaultValue: 'new'),
     SqfEntityField('path', DbType.text),
     SqfEntityField('stravaId', DbType.integer),
     SqfEntityField('name', DbType.text),
@@ -111,13 +111,13 @@ const tableActivity = SqfEntityTable(
   ],
 );
 
-const tableEvent = SqfEntityTable(
+const SqfEntityTable tableEvent = SqfEntityTable(
   tableName: 'events',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbEvent',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('event', DbType.text),
     SqfEntityField('eventType', DbType.text),
     SqfEntityField('eventGroup', DbType.integer),
@@ -151,13 +151,13 @@ const tableEvent = SqfEntityTable(
   ],
 );
 
-const tableLap = SqfEntityTable(
+const SqfEntityTable tableLap = SqfEntityTable(
   tableName: 'laps',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbLap',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('timeStamp', DbType.datetime),
     SqfEntityField('startTime', DbType.datetime),
     SqfEntityField('startPositionLat', DbType.real),
@@ -218,13 +218,13 @@ const tableLap = SqfEntityTable(
   ],
 );
 
-const tableWeight = SqfEntityTable(
+const SqfEntityTable tableWeight = SqfEntityTable(
   tableName: 'weights',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbWeight',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('date', DbType.date),
     SqfEntityField('value', DbType.real),
     SqfEntityFieldRelationship(
@@ -234,13 +234,13 @@ const tableWeight = SqfEntityTable(
   ],
 );
 
-const tablePowerZoneSchema = SqfEntityTable(
+const SqfEntityTable tablePowerZoneSchema = SqfEntityTable(
   tableName: 'powerZoneSchemata',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbPowerZoneSchema',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('date', DbType.date),
     SqfEntityField('name', DbType.text),
     SqfEntityField('base', DbType.integer),
@@ -251,13 +251,13 @@ const tablePowerZoneSchema = SqfEntityTable(
   ],
 );
 
-const tablePowerZone = SqfEntityTable(
+const SqfEntityTable tablePowerZone = SqfEntityTable(
   tableName: 'powerZone',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbPowerZone',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('name', DbType.text),
     SqfEntityField('lowerPercentage', DbType.integer),
     SqfEntityField('upperPercentage', DbType.integer),
@@ -271,13 +271,13 @@ const tablePowerZone = SqfEntityTable(
   ],
 );
 
-const tableHeartRateZoneSchema = SqfEntityTable(
+const SqfEntityTable tableHeartRateZoneSchema = SqfEntityTable(
   tableName: 'heartRateZoneSchemata',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbHeartRateZoneSchema',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('date', DbType.date),
     SqfEntityField('name', DbType.text),
     SqfEntityField('base', DbType.integer),
@@ -288,13 +288,13 @@ const tableHeartRateZoneSchema = SqfEntityTable(
   ],
 );
 
-const tableHeartRateZone = SqfEntityTable(
+const SqfEntityTable tableHeartRateZone = SqfEntityTable(
   tableName: 'heartRateZone',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbHeartRateZone',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('name', DbType.text),
     SqfEntityField('lowerPercentage', DbType.integer),
     SqfEntityField('upperPercentage', DbType.integer),
@@ -308,13 +308,13 @@ const tableHeartRateZone = SqfEntityTable(
   ],
 );
 
-const tableTagGroup = SqfEntityTable(
+const SqfEntityTable tableTagGroup = SqfEntityTable(
   tableName: 'tagGroups',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbTagGroup',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('name', DbType.text),
     SqfEntityField('color', DbType.integer),
     SqfEntityField('system', DbType.bool),
@@ -325,13 +325,13 @@ const tableTagGroup = SqfEntityTable(
   ],
 );
 
-const tableTag = SqfEntityTable(
+const SqfEntityTable tableTag = SqfEntityTable(
   tableName: 'tags',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbTag',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('name', DbType.text),
     SqfEntityField('color', DbType.integer),
     SqfEntityField('sortOrder', DbType.integer),
@@ -343,13 +343,13 @@ const tableTag = SqfEntityTable(
   ],
 );
 
-const tableLapTagging = SqfEntityTable(
+const SqfEntityTable tableLapTagging = SqfEntityTable(
   tableName: 'lapTaggings',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbLapTagging',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('system', DbType.bool),
     SqfEntityFieldRelationship(
         parentTable: tableTag,
@@ -362,13 +362,13 @@ const tableLapTagging = SqfEntityTable(
   ],
 );
 
-const tableActivityTagging = SqfEntityTable(
+const SqfEntityTable tableActivityTagging = SqfEntityTable(
   tableName: 'activityTaggings',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
   modelName: 'DbActivityTagging',
-  fields: [
+  fields: <SqfEntityField>[
     SqfEntityField('system', DbType.bool),
     SqfEntityFieldRelationship(
         parentTable: tableTag,
@@ -383,10 +383,10 @@ const tableActivityTagging = SqfEntityTable(
 
 
 @SqfEntityBuilder(encrateia)
-const encrateia = SqfEntityModel(
+const SqfEntityModel encrateia = SqfEntityModel(
   modelName: 'DbEncrateia', // optional
   databaseName: 'encrateia.db',
-  databaseTables: [
+  databaseTables: <SqfEntityTable>[
     tableAthlete,
     tableActivity,
     tableEvent,
@@ -401,6 +401,6 @@ const encrateia = SqfEntityModel(
     tableLapTagging,
     tableActivityTagging,
   ],
-  sequences: [],
+  sequences: <SqfEntitySequence>[],
   bundledDatabasePath: null,
 );

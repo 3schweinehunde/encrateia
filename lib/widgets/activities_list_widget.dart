@@ -18,9 +18,10 @@ class ActivitiesListWidget extends StatefulWidget {
 
 class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   List<Activity> activities = <Activity>[];
+  Flushbar<Object> flushbar;
 
   @override
-  initState() {
+  void initState() {
     getActivities();
     WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
@@ -96,7 +97,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   }
 
   Future<void> download({Activity activity}) async {
-    final Flushbar<Object> flushbar = Flushbar<Object>(
+    flushbar = Flushbar<Object>(
       message: 'Download .fit-File for »${activity.db.name}«',
       duration: const Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
@@ -105,11 +106,11 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     await activity.download(athlete: widget.athlete);
 
     flushbar.dismiss();
-    Flushbar<Object>(
+    flushbar = Flushbar<Object>(
       message: 'Download finished',
       duration: const Duration(seconds: 1),
       icon: MyIcon.finishedWhite,
-    ).show(context);
+    )..show(context);
 
     setState(() {});
   }
@@ -214,17 +215,17 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
   void showMyFlushbar() {
     if (widget.athlete.email == null) {
-      Flushbar<Object>(
+      flushbar = Flushbar<Object>(
         message: 'Strava email not provided yet or not a Strava User!',
         duration: const Duration(seconds: 3),
         backgroundColor: Colors.yellow[900],
-      ).show(context);
+      )..show(context);
     } else if (widget.athlete.password == null) {
-      Flushbar<Object>(
+      flushbar = Flushbar<Object>(
         message: 'Strava password not provided yet!',
         duration: const Duration(seconds: 3),
         backgroundColor: Colors.red,
-      ).show(context);
+      )..show(context);
     }
   }
 }

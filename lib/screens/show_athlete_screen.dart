@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/my_button.dart';
@@ -24,26 +26,26 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ShowAthleteScreen extends StatefulWidget {
-  final Athlete athlete;
-
   const ShowAthleteScreen({
     Key key,
     this.athlete,
   }) : super(key: key);
+
+  final Athlete athlete;
 
   @override
   _ShowAthleteScreenState createState() => _ShowAthleteScreenState();
 }
 
 class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
-  Flushbar flushbar;
+  Flushbar<Object> flushbar;
   Visibility floatingActionButton;
   bool floatingActionButtonVisible;
 
   @override
   void initState() {
     floatingActionButtonVisible =
-        (widget.athlete.email != null && widget.athlete.password != null);
+        widget.athlete.email != null && widget.athlete.password != null;
     super.initState();
   }
 
@@ -61,57 +63,57 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         visible: floatingActionButtonVisible,
         child: FloatingActionButton.extended(
           onPressed: () => updateJob(),
-          label: Text("from Strava"),
+          label: const Text('from Strava'),
           icon: MyIcon.stravaDownload,
         ),
       ),
       body: StaggeredGridView.count(
         staggeredTiles: List.filled(17, StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        children: [
+        children: <Widget>[
           navigationButton(
             color: MyColor.activity,
-            title: "Activities List",
+            title: 'Activities List',
             icon: MyIcon.activities,
             backgroundColor: MyColor.activity,
             nextWidget: ActivitiesListWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: "Power",
+            title: 'Power',
             icon: MyIcon.power,
             nextWidget: AthletePowerWidget(athlete: widget.athlete),
           ),
           navigationButton(
-            title: "Power Ratio",
+            title: 'Power Ratio',
             color: MyColor.navigate,
             icon: MyIcon.power,
             nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: "Power /\nHeart Rate",
+            title: 'Power /\nHeart Rate',
             icon: MyIcon.power,
             nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: "Ecor",
+            title: 'Ecor',
             icon: MyIcon.power,
             nextWidget: AthleteEcorWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: "Stride Ratio",
+            title: 'Stride Ratio',
             icon: MyIcon.strideRatio,
             nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: "Speed /\nHeart Rate",
+            title: 'Speed /\nHeart Rate',
             icon: MyIcon.speed,
             nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
           ),
@@ -119,37 +121,37 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.add,
             textColor: MyColor.textColor(backgroundColor: MyColor.add),
             icon: MyIcon.downloadLocal,
-            label: Text("Import .fit\nfrom Folder"),
+            label: const Text('Import .fit\nfrom Folder'),
             onPressed: () => importLocal(),
           ),
           navigationButton(
             color: MyColor.settings,
-            title: "Body Weight",
+            title: 'Body Weight',
             icon: MyIcon.weight,
             nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.settings,
-            title: "Power Zone\nSchemas",
+            title: 'Power Zone\nSchemas',
             icon: MyIcon.power,
             nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.settings,
-            title: "Heart Rate\nZone Schemas",
+            title: 'Heart Rate\nZone Schemas',
             icon: MyIcon.heartRate,
             nextWidget:
                 AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.tag,
-            title: "Tags",
+            title: 'Tags',
             icon: MyIcon.tag,
             nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.settings,
-            title: "Settings",
+            title: 'Settings',
             icon: MyIcon.settings,
             nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
           ),
@@ -157,27 +159,27 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.danger,
             textColor: MyColor.textColor(backgroundColor: MyColor.danger),
             icon: MyIcon.delete,
-            label: Text("Delete\nAthlete"),
+            label: const Text('Delete\nAthlete'),
             onPressed: () => deleteUser(),
           ),
           RaisedButton.icon(
             color: MyColor.settings,
             icon: MyIcon.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.add),
-            label: Text("Recalculate\nAverages"),
+            label: const Text('Recalculate\nAverages'),
             onPressed: () => recalculate(),
           ),
           RaisedButton.icon(
             color: MyColor.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.settings),
             icon: MyIcon.settings,
-            label: Text("Redo\nAutotagging"),
+            label: const Text('Redo\nAutotagging'),
             onPressed: () => redoAutoTagging(),
           ),
           RaisedButton.icon(
             color: MyColor.primary,
             icon: MyIcon.download,
-            label: Text("Download\nDemo Data"),
+            label: const Text('Download\nDemo Data'),
             onPressed: () => downloadDemoData(),
           ),
         ],
@@ -185,7 +187,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     );
   }
 
-  navigationButton({
+  Widget navigationButton({
     @required Widget nextWidget,
     @required Widget icon,
     @required String title,
@@ -200,7 +202,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ShowAthleteDetailScreen(
+          builder: (BuildContext context) => ShowAthleteDetailScreen(
             athlete: widget.athlete,
             widget: nextWidget,
             title: title,
@@ -211,127 +213,129 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     );
   }
 
-  recalculate() async {
+  Future<void> recalculate() async {
     List<Activity> activities;
     activities = await Activity.all(athlete: widget.athlete);
     int index = 0;
     int percent;
 
-    flushbar = Flushbar(
-      message: "Calculating...",
-      duration: Duration(seconds: 5),
+    flushbar = Flushbar<Object>(
+      message: 'Calculating...',
+      duration: const Duration(seconds: 5),
       icon: MyIcon.finishedWhite,
     )..show(context);
 
-    for (Activity activity in activities) {
+    for (final Activity activity in activities) {
       index += 1;
       await activity.recalculateAverages();
       flushbar.dismiss();
       percent = 100 * index ~/ activities.length;
-      flushbar = Flushbar(
+      flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: percent / 100),
-        message: "$percent% done (recalculating »${activity.db.name}« )",
-        duration: Duration(seconds: 2),
-        animationDuration: Duration(milliseconds: 1),
+        message: '$percent% done (recalculating »${activity.db.name}« )',
+        duration: const Duration(seconds: 2),
+        animationDuration: const Duration(milliseconds: 1),
       )..show(context);
     }
 
     flushbar.dismiss();
-    Flushbar(
-      message: "Averages are now up to date.",
-      duration: Duration(seconds: 5),
+    flushbar = Flushbar<Object>(
+      message: 'Averages are now up to date.',
+      duration: const Duration(seconds: 5),
       icon: MyIcon.finishedWhite,
     )..show(context);
   }
 
-  importLocal() async {
+  Future<void> importLocal() async {
     List<Activity> activities;
 
-    flushbar = Flushbar(
-      message: "Importing activities from local directory",
-      duration: Duration(seconds: 1),
+    flushbar = Flushbar<Object>(
+      message: 'Importing activities from local directory',
+      duration: const Duration(seconds: 1),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
     await Activity.importFromLocalDirectory(athlete: widget.athlete);
-    flushbar = Flushbar(
-      message: "Activities moved into application",
-      duration: Duration(seconds: 1),
+    flushbar = Flushbar<Object>(
+      message: 'Activities moved into application',
+      duration: const Duration(seconds: 1),
       icon: MyIcon.finishedWhite,
     )..show(context);
 
     activities = await Activity.all(athlete: widget.athlete);
-    var downloadedActivities = activities
-        .where((activity) => activity.db.state == "downloaded")
+    final List<Activity> downloadedActivities = activities
+        .where((Activity activity) => activity.db.state == 'downloaded')
         .toList();
-    for (Activity activity in downloadedActivities) {
+    for (final Activity activity in downloadedActivities) {
       await parse(activity: activity);
       await activity.autoTagger(athlete: widget.athlete);
     }
     flushbar.dismiss();
-    flushbar = Flushbar(
-      message: "Activities imported!",
-      duration: Duration(seconds: 5),
+    flushbar = Flushbar<Object>(
+      message: 'Activities imported!',
+      duration: const Duration(seconds: 5),
       icon: MyIcon.finishedWhite,
     )..show(context);
   }
 
-  downloadDemoData() async {
+  Future<void> downloadDemoData() async {
     if (await widget.athlete.checkForSchemas()) {
       List<Activity> activities;
-      var appDocDir = await getApplicationDocumentsDirectory();
-      var dio = Dio();
-      var downloadDir = "https://encrateia.informatom.com/assets/fit-files/";
-      var fileNames = [
-        "munich_half_marathon.fit",
-        "listener_meetup_run_cologne.fit",
-        "stockholm_half_marathon.fit",
-        "upper_palatinate_winter_challenge_half_marathon.fit",
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final Dio dio = Dio();
+      const String downloadDir =
+          'https://encrateia.informatom.com/assets/fit-files/';
+      final List<String> fileNames = <String>[
+        'munich_half_marathon.fit',
+        'listener_meetup_run_cologne.fit',
+        'stockholm_half_marathon.fit',
+        'upper_palatinate_winter_challenge_half_marathon.fit',
       ];
 
-      flushbar = Flushbar(
-        message: "Downloading Demo data ...",
-        duration: Duration(seconds: 1),
+      flushbar = Flushbar<Object>(
+        message: 'Downloading Demo data ...',
+        duration: const Duration(seconds: 1),
         icon: MyIcon.stravaDownloadWhite,
       )..show(context);
 
-      for (String filename in fileNames) {
-        var activity = Activity.fromLocalDirectory(athlete: widget.athlete);
+      for (final String filename in fileNames) {
+        final Activity activity =
+            Activity.fromLocalDirectory(athlete: widget.athlete);
         await dio.download(downloadDir + filename,
-            appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
-        await activity.setState("downloaded");
+            appDocDir.path + '/' + activity.db.stravaId.toString() + '.fit');
+        await activity.setState('downloaded');
       }
 
-      flushbar = Flushbar(
-        message: "Downloading demo data finished",
-        duration: Duration(seconds: 1),
+      flushbar = Flushbar<Object>(
+        message: 'Downloading demo data finished',
+        duration: const Duration(seconds: 1),
         icon: MyIcon.finishedWhite,
       )..show(context);
 
       activities = await Activity.all(athlete: widget.athlete);
-      var downloadedActivities = activities
-          .where((activity) => activity.db.state == "downloaded")
+      final List<Activity> downloadedActivities = activities
+          .where((Activity activity) => activity.db.state == 'downloaded')
           .toList();
-      for (Activity activity in downloadedActivities) {
+      for (final Activity activity in downloadedActivities) {
         await parse(activity: activity);
         await activity.autoTagger(athlete: widget.athlete);
       }
       flushbar.dismiss();
-      flushbar = Flushbar(
-        message: "Activities imported!",
-        duration: Duration(seconds: 5),
+      flushbar = Flushbar<Object>(
+        message: 'Activities imported!',
+        duration: const Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
       )..show(context);
     } else {
-      Flushbar(
+      flushbar = Flushbar<Object>(
         message:
-            "Please set up Power Zone Schema and Heart Rate Zone Schema first!",
-        duration: Duration(seconds: 5),
+            'Please set up Power Zone Schema and Heart Rate Zone Schema first!',
+        duration: const Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
       )..show(context);
     }
   }
 
-  updateJob() async {
+  Future<void> updateJob() async {
     List<Activity> activities;
     setState(() => floatingActionButtonVisible = false);
 
@@ -352,7 +356,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         await activity.autoTagger(athlete: widget.athlete);
       }
       flushbar.dismiss();
-      Flushbar(
+      Flushbar<Object>(
         message: "You are now up to date!",
         duration: Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
@@ -427,7 +431,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     setState(() {});
   }
 
-  deleteUser() {
+  Future<void> deleteUser() {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -437,7 +441,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('All the athlete\'s data including'),
+                const Text('All the athlete\'s data including'),
                 Text('activities will be deleted as well.'),
                 Text('There is no undo function.'),
               ],
@@ -458,16 +462,16 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     );
   }
 
-  deleteAthleteAndPop() async {
+  Future<void> deleteAthleteAndPop() async {
     await widget.athlete.delete();
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
-  redoAutoTagging() async {
+  Future<void> redoAutoTagging() async {
     if (await widget.athlete.checkForSchemas()) {
-      flushbar = Flushbar(
-        message: "Started cleaning up...",
-        duration: Duration(seconds: 5),
+      flushbar = Flushbar<Object>(
+        message: 'Started cleaning up...',
+        duration: const Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
       )..show(context);
 
@@ -477,7 +481,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       int percent;
 
       await TagGroup.deleteAllAutoTags(athlete: widget.athlete);
-      Flushbar(
+      flushbar = Flushbar<Object>(
         message: "All existing autotaggings have been deleted.",
         duration: Duration(seconds: 2),
         icon: MyIcon.finishedWhite,
@@ -497,13 +501,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       }
 
       flushbar.dismiss();
-      Flushbar(
+      flushbar = Flushbar<Object>(
         message: "Autotaggings are now up to date.",
         duration: Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
       )..show(context);
     } else {
-      Flushbar(
+      flushbar = Flushbar<Object>(
         message:
             "Please set up Power Zone Schema and Heart Rate Zone Schema first!",
         duration: Duration(seconds: 5),
