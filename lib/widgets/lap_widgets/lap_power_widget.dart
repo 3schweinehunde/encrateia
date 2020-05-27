@@ -114,7 +114,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
     double sdev = await lap.sdevPower;
     sdevPowerString = sdev.toStringOrDashes(2) + " W";
 
-    powerZoneSchema = await lap.getPowerZoneSchema();
+    powerZoneSchema = await lap.powerZoneSchema;
     if (powerZoneSchema != null)
       powerZones = await powerZoneSchema.powerZones;
     else

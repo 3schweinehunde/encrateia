@@ -121,7 +121,6 @@ class Event {
       event.index = counter;
       counter = counter + 1;
     }
-
     return eventList;
   }
 
@@ -137,7 +136,6 @@ class Event {
       event.index = counter;
       counter = counter + 1;
     }
-
     return eventList;
   }
 }

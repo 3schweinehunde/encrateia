@@ -63,7 +63,7 @@ class Activity extends ChangeNotifier {
   String toString() => '< Activity | ${db.name} | ${db.startTime} >';
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
 
-  get({ActivityAttr activityAttr}) {
+  getAttribute(ActivityAttr activityAttr) {
     switch (activityAttr) {
       case ActivityAttr.avgPower:
         return db.avgPower;
@@ -496,7 +496,7 @@ class Activity extends ChangeNotifier {
     return activities;
   }
 
-  getPowerZoneSchema() async {
+  get powerZoneSchema async {
     if (_powerZoneSchema == null) {
       _powerZoneSchema = await PowerZoneSchema.getBy(
         athletesId: db.athletesId,
@@ -506,7 +506,7 @@ class Activity extends ChangeNotifier {
     return _powerZoneSchema;
   }
 
-  getHeartRateZoneSchema() async {
+  get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
       _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
         athletesId: db.athletesId,
@@ -516,13 +516,12 @@ class Activity extends ChangeNotifier {
     return _heartRateZoneSchema;
   }
 
-  getPowerZone() async {
+  get powerZone async {
     if (_powerZone == null) {
-      var powerZoneSchema = await getPowerZoneSchema();
       var dbPowerZone = await DbPowerZone()
           .select()
           .powerZoneSchemataId
-          .equals(powerZoneSchema.db.id)
+          .equals((await powerZoneSchema).db.id)
           .and
           .lowerLimit
           .lessThanOrEquals(db.avgPower)
@@ -535,13 +534,12 @@ class Activity extends ChangeNotifier {
     return _powerZone;
   }
 
-  getHeartRateZone() async {
+  get heartRateZone async {
     if (_heartRateZone == null) {
-      var heartRateZoneSchema = await getHeartRateZoneSchema();
       var dbHeartRateZone = await DbHeartRateZone()
           .select()
           .heartRateZoneSchemataId
-          .equals(heartRateZoneSchema.db.id)
+          .equals((await heartRateZoneSchema).db.id)
           .and
           .lowerLimit
           .lessThanOrEquals(db.avgHeartRate)
@@ -556,7 +554,7 @@ class Activity extends ChangeNotifier {
   }
 
   autoTagger({@required Athlete athlete}) async {
-    PowerZone powerZone = await getPowerZone();
+    var powerZone = await this.powerZone;
     if (powerZone.db != null) {
       Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete,
@@ -571,7 +569,7 @@ class Activity extends ChangeNotifier {
       );
     }
 
-    HeartRateZone heartRateZone = await getHeartRateZone();
+    var heartRateZone = await this.heartRateZone;
     if (heartRateZone.db != null) {
       Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete,

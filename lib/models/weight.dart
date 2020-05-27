@@ -15,11 +15,9 @@ class Weight extends ChangeNotifier {
 
   String toString() => '< Weight | ${db.date} | ${db.value} >';
 
-  delete() async {
-    await this.db.delete();
-  }
+  delete() async => await this.db.delete();
 
-  static Future<List<Weight>> all({@required Athlete athlete}) async {
+  static all({@required Athlete athlete}) async {
     var dbWeightList =
         await athlete.db.getDbWeights().orderByDesc('date').toList();
     var weights =
@@ -27,10 +25,7 @@ class Weight extends ChangeNotifier {
     return weights;
   }
 
-  static getBy({
-    int athletesId,
-    DateTime date,
-  }) async {
+  static getBy({int athletesId, DateTime date}) async {
     var dbWeights = await DbWeight()
         .select()
         .athletesId
@@ -41,7 +36,6 @@ class Weight extends ChangeNotifier {
         .orderByDesc("date")
         .top(1)
         .toList();
-    if (dbWeights.length != 0)
-      return Weight.fromDb(dbWeights.first);
+    if (dbWeights.length != 0) return Weight.fromDb(dbWeights.first);
   }
 }

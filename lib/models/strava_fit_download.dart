@@ -16,7 +16,7 @@ abstract class StravaFitDownload {
         "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
   };
 
-  static Future<int> byId({String id, Athlete athlete}) async {
+  static byId({String id, Athlete athlete}) async {
     String exportUri = baseUri + 'activities/$id/export_original';
     Directory appDocDir = await getApplicationDocumentsDirectory();
 
@@ -38,7 +38,7 @@ abstract class StravaFitDownload {
     }
   }
 
-  static Future<bool> logInIfNecessary({Dio dio, Athlete athlete}) async {
+  static logInIfNecessary({Dio dio, Athlete athlete}) async {
     var dashboardResponse = await getDashboard(dio: dio);
     if (dashboardResponse.data.toString().contains("logged-in")) {
       print("Already logged in to Strava");
@@ -57,7 +57,7 @@ abstract class StravaFitDownload {
     }
   }
 
-  static Future<Response> getDashboard({Dio dio}) async {
+  static getDashboard({Dio dio}) async {
     return await dio.get(
       dashboardUri,
       options: Options(headers: headers, validateStatus: (_) => true),

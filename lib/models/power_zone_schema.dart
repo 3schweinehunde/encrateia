@@ -179,11 +179,9 @@ class PowerZoneSchema extends ChangeNotifier {
 
   String toString() => '< PowerZoneSchema | ${db.name} | ${db.date} >';
 
-  delete() async {
-    await this.db.delete();
-  }
+  delete() async => await this.db.delete();
 
-  static Future<List<PowerZoneSchema>> all({@required Athlete athlete}) async {
+  static all({@required Athlete athlete}) async {
     var dbPowerZoneSchemaList =
         await athlete.db.getDbPowerZoneSchemas().orderByDesc('date').toList();
     var powerZoneSchemas = dbPowerZoneSchemaList
@@ -192,10 +190,7 @@ class PowerZoneSchema extends ChangeNotifier {
     return powerZoneSchemas;
   }
 
-  static getBy({
-    int athletesId,
-    DateTime date,
-  }) async {
+  static getBy({int athletesId, DateTime date}) async {
     var dbPowerZoneSchemas = await DbPowerZoneSchema()
         .select()
         .athletesId

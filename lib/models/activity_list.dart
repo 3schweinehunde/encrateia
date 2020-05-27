@@ -15,7 +15,7 @@ class ActivityList<E> extends DelegatingList<E> {
     @required ActivityAttr activityAttr,
   }) {
     _activities.asMap().forEach((index, activity) {
-      double sumOfAvg = activity.get(activityAttr: activityAttr) * fullDecay;
+      double sumOfAvg = activity.getAttribute(activityAttr) * fullDecay;
       double sumOfWeightings = fullDecay * 1.0;
       for (var olderIndex = index + 1;
           olderIndex < _activities.length;
@@ -26,7 +26,7 @@ class ActivityList<E> extends DelegatingList<E> {
             24;
         if (daysAgo > fullDecay) break;
         sumOfAvg += (fullDecay - daysAgo) *
-            _activities[olderIndex].get(activityAttr: activityAttr);
+            _activities[olderIndex].getAttribute(activityAttr);
         sumOfWeightings += (fullDecay - daysAgo);
       }
 

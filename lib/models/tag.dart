@@ -24,12 +24,14 @@ class Tag extends ChangeNotifier {
 
   String toString() => '< Tag | ${db.name} >';
 
-  delete() async {
-    await this.db.delete();
-  }
+  delete() async => await this.db.delete();
 
-  static Future<List<Tag>> all({@required TagGroup tagGroup}) async {
-    var dbTagList = await tagGroup.db.getDbTags().orderBy('sortOrder').orderBy('name').toList();
+  static all({@required TagGroup tagGroup}) async {
+    var dbTagList = await tagGroup.db
+        .getDbTags()
+        .orderBy('sortOrder')
+        .orderBy('name')
+        .toList();
     var tags = dbTagList.map((dbTag) => Tag.fromDb(dbTag)).toList();
     return tags;
   }
@@ -70,12 +72,12 @@ class Tag extends ChangeNotifier {
     @required String name,
     @required int sortOrder,
     @required int color,
-}) async {
+  }) async {
     DbTag dbHeartRateTag;
 
     TagGroup autoHeartRateTagGroup =
-    await TagGroup.autoHeartRateTagGroup(athlete: athlete);
-     dbHeartRateTag = await DbTag()
+        await TagGroup.autoHeartRateTagGroup(athlete: athlete);
+    dbHeartRateTag = await DbTag()
         .select()
         .tagGroupsId
         .equals(autoHeartRateTagGroup.db.id)

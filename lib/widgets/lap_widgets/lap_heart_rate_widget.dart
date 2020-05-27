@@ -58,22 +58,22 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
               Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(records.avgHeartRate()),
+                title: Text(records.avgHeartRateString),
                 subtitle: Text("average heart rate"),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(records.minHeartRate()),
+                title: Text(records.minHeartRateString),
                 subtitle: Text("minimum heart rate"),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: Text(records.maxHeartRate()),
+                title: Text(records.maxHeartRateString),
                 subtitle: Text("maximum heart rate"),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(records.sdevHeartRate()),
+                title: Text(records.sdevHeartRateString),
                 subtitle: Text("standard deviation heart rate"),
               ),
               ListTile(
@@ -100,7 +100,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
     Lap lap = widget.lap;
     records = RecordList(await lap.records);
 
-    heartRateZoneSchema = await lap.getHeartRateZoneSchema();
+    heartRateZoneSchema = await lap.heartRateZoneSchema;
     if (heartRateZoneSchema != null)
       heartRateZones = await heartRateZoneSchema.heartRateZones;
     else

@@ -74,14 +74,14 @@ class Lap {
     return lap;
   }
 
-  Future<List<Event>> get records async {
+  get records async {
     if (_records == null) {
       _records = await Event.recordsByLap(lap: this);
     }
     return _records;
   }
 
-  Future<double> get avgPower async {
+  get avgPower async {
     if (db.avgPower == null) {
       db.avgPower = RecordList(await this.records).calculateAveragePower();
       await db.save();
@@ -89,7 +89,7 @@ class Lap {
     return db.avgPower;
   }
 
-  Future<double> get sdevPower async {
+  get sdevPower async {
     if (db.sdevPower == null) {
       db.sdevPower = RecordList(await this.records).calculateSdevPower();
       await db.save();
@@ -97,7 +97,7 @@ class Lap {
     return db.sdevPower;
   }
 
-  Future<int> get minPower async {
+  get minPower async {
     if (db.minPower == null) {
       db.minPower = RecordList(await this.records).calculateMinPower();
       await db.save();
@@ -105,7 +105,7 @@ class Lap {
     return db.minPower;
   }
 
-  Future<int> get maxPower async {
+  get maxPower async {
     if (db.maxPower == null) {
       db.maxPower = RecordList(await this.records).calculateMaxPower();
       await db.save();
@@ -113,7 +113,7 @@ class Lap {
     return db.maxPower;
   }
 
-  Future<double> get avgGroundTime async {
+  get avgGroundTime async {
     if (db.avgGroundTime == null) {
       db.avgGroundTime =
           RecordList(await this.records).calculateAverageGroundTime();
@@ -122,7 +122,7 @@ class Lap {
     return db.avgGroundTime;
   }
 
-  Future<double> get sdevGroundTime async {
+  get sdevGroundTime async {
     if (db.sdevGroundTime == null) {
       db.sdevGroundTime =
           RecordList(await this.records).calculateSdevGroundTime();
@@ -131,7 +131,7 @@ class Lap {
     return db.sdevGroundTime;
   }
 
-  Future<double> get avgVerticalOscillation async {
+  get avgVerticalOscillation async {
     if (db.avgVerticalOscillation == null ||
         db.avgVerticalOscillation == 6553.5) {
       db.avgVerticalOscillation =
@@ -141,7 +141,7 @@ class Lap {
     return db.avgVerticalOscillation;
   }
 
-  Future<double> get sdevVerticalOscillation async {
+  get sdevVerticalOscillation async {
     if (db.sdevVerticalOscillation == null) {
       db.sdevVerticalOscillation =
           RecordList(await this.records).calculateSdevVerticalOscillation();
@@ -150,7 +150,7 @@ class Lap {
     return db.sdevVerticalOscillation;
   }
 
-  Future<double> get avgStrydCadence async {
+  get avgStrydCadence async {
     if (db.avgStrydCadence == null) {
       db.avgStrydCadence =
           RecordList(await this.records).calculateAverageStrydCadence();
@@ -159,7 +159,7 @@ class Lap {
     return db.avgStrydCadence;
   }
 
-  Future<double> get sdevStrydCadence async {
+  get sdevStrydCadence async {
     if (db.sdevStrydCadence == null) {
       db.sdevStrydCadence =
           RecordList(await this.records).calculateSdevStrydCadence();
@@ -168,7 +168,7 @@ class Lap {
     return db.sdevStrydCadence;
   }
 
-  Future<double> get avgLegSpringStiffness async {
+  get avgLegSpringStiffness async {
     if (db.avgLegSpringStiffness == null) {
       db.avgLegSpringStiffness =
           RecordList(await this.records).calculateAverageLegSpringStiffness();
@@ -177,7 +177,7 @@ class Lap {
     return db.avgLegSpringStiffness;
   }
 
-  Future<double> get sdevLegSpringStiffness async {
+  get sdevLegSpringStiffness async {
     if (db.sdevLegSpringStiffness == null) {
       db.sdevLegSpringStiffness =
           RecordList(await this.records).calculateSdevLegSpringStiffness();
@@ -186,7 +186,7 @@ class Lap {
     return db.sdevLegSpringStiffness;
   }
 
-  Future<double> get avgFormPower async {
+  get avgFormPower async {
     if (db.avgFormPower == null) {
       db.avgFormPower =
           RecordList(await this.records).calculateAverageFormPower();
@@ -195,7 +195,7 @@ class Lap {
     return db.avgFormPower;
   }
 
-  Future<double> get sdevFormPower async {
+  get sdevFormPower async {
     if (db.sdevFormPower == null) {
       db.sdevFormPower =
           RecordList(await this.records).calculateSdevFormPower();
@@ -219,7 +219,7 @@ class Lap {
     return lapList;
   }
 
-  getPowerZoneSchema() async {
+  get powerZoneSchema async {
     if (_powerZoneSchema == null) {
       var dbActivity = await DbActivity().getById(db.activitiesId);
 
@@ -231,7 +231,7 @@ class Lap {
     return _powerZoneSchema;
   }
 
-  getHeartRateZoneSchema() async {
+  get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
       var dbActivity = await DbActivity().getById(db.activitiesId);
 
@@ -260,13 +260,12 @@ class Lap {
     await db.save();
   }
 
-  getPowerZone() async {
+  get powerZone async {
     if (_powerZone == null) {
-      var powerZoneSchema = await getPowerZoneSchema();
       var dbPowerZone = await DbPowerZone()
           .select()
           .powerZoneSchemataId
-          .equals(powerZoneSchema.db.id)
+          .equals((await powerZoneSchema).db.id)
           .and
           .lowerLimit
           .lessThanOrEquals(db.avgPower)
@@ -279,13 +278,12 @@ class Lap {
     return _powerZone;
   }
 
-  getHeartRateZone() async {
+  get heartRateZone async {
     if (_heartRateZone == null) {
-      var heartRateZoneSchema = await getHeartRateZoneSchema();
       var dbHeartRateZone = await DbHeartRateZone()
           .select()
           .heartRateZoneSchemataId
-          .equals(heartRateZoneSchema.db.id)
+          .equals((await heartRateZoneSchema).db.id)
           .and
           .lowerLimit
           .lessThanOrEquals(db.avgHeartRate)
@@ -300,7 +298,7 @@ class Lap {
   }
 
   autoTagger({@required Athlete athlete}) async {
-    PowerZone powerZone = await getPowerZone();
+    var powerZone = await this.powerZone;
     if (powerZone.db != null) {
       Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete,
@@ -315,7 +313,7 @@ class Lap {
       );
     }
 
-    HeartRateZone heartRateZone = await getHeartRateZone();
+    var heartRateZone = await this.heartRateZone;
     if (heartRateZone.db != null) {
       Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete,

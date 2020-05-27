@@ -117,7 +117,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
     maxPowerString = activity.db.maxPower.toString() + " W";
     sdevPowerString = activity.db.sdevPower.toStringOrDashes(2) + " W";
 
-    powerZoneSchema = await activity.getPowerZoneSchema();
+    powerZoneSchema = await activity.powerZoneSchema;
     if (powerZoneSchema != null)
       powerZones = await powerZoneSchema.powerZones;
     else

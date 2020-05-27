@@ -64,7 +64,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(records.minHeartRate()),
+                title: Text(records.minHeartRateString),
                 subtitle: Text("minimum heart rate"),
               ),
               ListTile(
@@ -74,7 +74,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(records.sdevHeartRate()),
+                title: Text(records.sdevHeartRateString),
                 subtitle: Text("standard deviation heart rate"),
               ),
               ListTile(
@@ -101,7 +101,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
     Activity activity = widget.activity;
     records = RecordList(await activity.records);
 
-    heartRateZoneSchema = await activity.getHeartRateZoneSchema();
+    heartRateZoneSchema = await activity.heartRateZoneSchema;
     if (heartRateZoneSchema != null)
       heartRateZones = await heartRateZoneSchema.heartRateZones;
     else

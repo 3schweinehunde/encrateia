@@ -27,16 +27,14 @@ class PowerZone extends ChangeNotifier {
     if (upperPercentage != null)
       db.upperLimit = (upperPercentage * powerZoneSchema.db.base / 100).round();
   }
+
   PowerZone.fromDb(this.db);
 
   String toString() => '< PowerZone | ${db.name} | ${db.lowerLimit} >';
 
-  delete() async {
-    await this.db.delete();
-  }
+  delete() async => await this.db.delete();
 
-  static Future<List<PowerZone>> all(
-      {@required PowerZoneSchema powerZoneSchema}) async {
+  static all({@required PowerZoneSchema powerZoneSchema}) async {
     var dbPowerZoneList = await powerZoneSchema.db
         .getDbPowerZones()
         .orderByDesc('lowerlimit')

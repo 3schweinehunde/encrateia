@@ -140,7 +140,7 @@ class TagGroup extends ChangeNotifier {
     return tagGroups;
   }
 
-  static Future<List<TagGroup>> all({@required Athlete athlete}) async {
+  static all({@required Athlete athlete}) async {
     var dbTagGroupList =
         await athlete.db.getDbTagGroups().orderBy('name').toList();
     var tagGroups = dbTagGroupList

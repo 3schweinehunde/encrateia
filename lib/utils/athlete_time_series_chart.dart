@@ -63,7 +63,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.db.timeCreated,
         measureFn: (Activity activity, _) =>
-            activity.get(activityAttr: widget.activityAttr),
+            activity.getAttribute(widget.activityAttr),
         data: recentActivities,
       ),
       Series<Activity, DateTime>(

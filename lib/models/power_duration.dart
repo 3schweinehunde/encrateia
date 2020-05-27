@@ -35,7 +35,7 @@ class PowerDuration {
     }
   }
 
-  List<IntPlotPoint> asList() {
+  asList() {
     List<IntPlotPoint> plotPoints = [];
 
     powerMap.forEach((duration, power) {
@@ -49,5 +49,5 @@ class PowerDuration {
     return plotPoints;
   }
 
-  static int scaled({int seconds}) => (200 * log(seconds)).round();
+  static scaled({int seconds}) => (200 * log(seconds)).round();
 }
