@@ -44,24 +44,6 @@ class TagGroup extends ChangeNotifier {
     await this.db.delete();
   }
 
-  static createDefaultTagGroups({Athlete athlete}) async {
-    var autoHeartRateZones = TagGroup.by(
-      name: "Auto Heart Rate Zones",
-      athlete: athlete,
-      system: true,
-      color: MyColor.grapeFruit.value,
-    );
-    await autoHeartRateZones.db.save();
-
-    var autoPowerZonesTagGroup = TagGroup.by(
-      name: "Auto Power Zones",
-      athlete: athlete,
-      system: true,
-      color: MyColor.bitterSweet.value,
-    );
-    await autoPowerZonesTagGroup.db.save();
-  }
-
   static autoPowerTagGroup({@required Athlete athlete}) async {
     var dbTagGroup = await DbTagGroup()
         .select()
@@ -74,7 +56,18 @@ class TagGroup extends ChangeNotifier {
         .name
         .equals("Auto Power Zones")
         .toSingle();
-    return TagGroup.fromDb(dbTagGroup);
+    if (dbTagGroup != null)
+      return TagGroup.fromDb(dbTagGroup);
+    else {
+      var autoPowerTagGroup = TagGroup.by(
+        name: "Auto Power Zones",
+        athlete: athlete,
+        system: true,
+        color: MyColor.bitterSweet.value,
+      );
+      await autoPowerTagGroup.db.save();
+      return autoPowerTagGroup;
+    }
   }
 
   static autoHeartRateTagGroup({@required Athlete athlete}) async {
@@ -89,7 +82,18 @@ class TagGroup extends ChangeNotifier {
         .name
         .equals("Auto Heart Rate Zones")
         .toSingle();
+    if (dbTagGroup != null)
     return TagGroup.fromDb(dbTagGroup);
+    else {
+      var autoHeartRateTagGroup = TagGroup.by(
+        name: "Auto Heart Rate Zones",
+        athlete: athlete,
+        system: true,
+        color: MyColor.grapeFruit.value,
+      );
+      await autoHeartRateTagGroup.db.save();
+      return autoHeartRateTagGroup;
+    }
   }
 
   static includingActivityTaggings({
@@ -150,10 +154,12 @@ class TagGroup extends ChangeNotifier {
   }
 
   static deleteAllAutoTags({Athlete athlete}) async {
-    TagGroup autoPowerTagGroup = await TagGroup.autoPowerTagGroup(athlete: athlete);
+    TagGroup autoPowerTagGroup =
+        await TagGroup.autoPowerTagGroup(athlete: athlete);
     await autoPowerTagGroup.db.getDbTags().delete();
 
-    TagGroup autoHeartRateTagGroup = await TagGroup.autoHeartRateTagGroup(athlete: athlete);
+    TagGroup autoHeartRateTagGroup =
+        await TagGroup.autoHeartRateTagGroup(athlete: athlete);
     await autoHeartRateTagGroup.db.getDbTags().delete();
   }
 }

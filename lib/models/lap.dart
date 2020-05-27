@@ -302,7 +302,7 @@ class Lap {
   autoTagger({@required Athlete athlete}) async {
     PowerZone powerZone = await getPowerZone();
     if (powerZone.db != null) {
-      Tag powerTag = await Tag.ensureAutoPowerTag(
+      Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete,
         sortOrder: powerZone.db.lowerLimit,
         color: powerZone.db.color,
@@ -317,7 +317,7 @@ class Lap {
 
     HeartRateZone heartRateZone = await getHeartRateZone();
     if (heartRateZone.db != null) {
-      Tag heartRateTag = await Tag.ensureAutoHeartRateTag(
+      Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete,
         sortOrder: heartRateZone.db.lowerLimit,
         color: heartRateZone.db.color,

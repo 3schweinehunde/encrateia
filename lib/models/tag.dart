@@ -34,7 +34,7 @@ class Tag extends ChangeNotifier {
     return tags;
   }
 
-  static ensureAutoPowerTag({
+  static autoPowerTag({
     @required Athlete athlete,
     @required String name,
     @required int sortOrder,
@@ -65,7 +65,7 @@ class Tag extends ChangeNotifier {
     return Tag.fromDb(dbPowerTag);
   }
 
-  static ensureAutoHeartRateTag({
+  static autoHeartRateTag({
     @required Athlete athlete,
     @required String name,
     @required int sortOrder,

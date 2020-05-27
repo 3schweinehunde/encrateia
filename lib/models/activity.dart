@@ -558,7 +558,7 @@ class Activity extends ChangeNotifier {
   autoTagger({@required Athlete athlete}) async {
     PowerZone powerZone = await getPowerZone();
     if (powerZone.db != null) {
-      Tag powerTag = await Tag.ensureAutoPowerTag(
+      Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete,
         color: powerZone.db.color,
         sortOrder: powerZone.db.lowerLimit,
@@ -573,7 +573,7 @@ class Activity extends ChangeNotifier {
 
     HeartRateZone heartRateZone = await getHeartRateZone();
     if (heartRateZone.db != null) {
-      Tag heartRateTag = await Tag.ensureAutoHeartRateTag(
+      Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete,
         color: heartRateZone.db.color,
         sortOrder: heartRateZone.db.lowerLimit,

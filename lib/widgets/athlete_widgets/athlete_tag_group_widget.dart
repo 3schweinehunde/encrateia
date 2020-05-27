@@ -30,106 +30,100 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
   @override
   Widget build(context) {
     if (tagGroups != null) {
-      if (tagGroups.length > 0) {
-        rows = (tagGroups.length < 8) ? tagGroups.length : 8;
-        return ListView(
-          children: <Widget>[
-            Center(
-              child: Text(
-                "\nTag Groups ${offset + 1} - ${offset + rows} "
-                "of ${tagGroups.length}",
-                style: Theme.of(context).textTheme.headline6,
-              ),
+      rows = (tagGroups.length < 8) ? tagGroups.length : 8;
+      return ListView(
+        children: <Widget>[
+          Center(
+            child: Text(
+              "\nTag Groups ${offset + 1} - ${offset + rows} "
+              "of ${tagGroups.length}",
+              style: Theme.of(context).textTheme.headline6,
             ),
-            DataTable(
-              headingRowHeight: kMinInteractiveDimension * 0.80,
-              dataRowHeight: kMinInteractiveDimension * 0.80,
-              columnSpacing: 9,
-              columns: <DataColumn>[
-                DataColumn(label: Text("Name")),
-                DataColumn(label: Text("Color")),
-                DataColumn(label: Text("Edit")),
-              ],
-              rows: tagGroups
-                  .sublist(offset, offset + rows)
-                  .map((TagGroup tagGroup) {
-                return DataRow(
-                  key: Key(tagGroup.db.id.toString()),
-                  cells: [
-                    DataCell(Text(tagGroup.db.name)),
-                    DataCell(CircleColor(
-                      circleSize: 20,
-                      elevation: 0,
-                      color: Color(tagGroup.db.color),
-                    )),
-                    DataCell(
-                      tagGroup.db.system ? MyIcon.show : MyIcon.edit,
-                      onTap: () async {
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              if (tagGroup.db.system)
-                              return ShowTagGroupScreen(tagGroup:tagGroup); else
-                              return AddTagGroupScreen(tagGroup: tagGroup);
-                            },
-                          ),
-                        );
-                        getData();
-                      },
-                    )
-                  ],
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 20),
-            Row(
-              children: <Widget>[
-                Spacer(),
-                MyButton.add(
-                    child: Text("New tag group"),
-                    onPressed: () async {
+          ),
+          DataTable(
+            headingRowHeight: kMinInteractiveDimension * 0.80,
+            dataRowHeight: kMinInteractiveDimension * 0.80,
+            columnSpacing: 9,
+            columns: <DataColumn>[
+              DataColumn(label: Text("Name")),
+              DataColumn(label: Text("Color")),
+              DataColumn(label: Text("Edit")),
+            ],
+            rows: tagGroups
+                .sublist(offset, offset + rows)
+                .map((TagGroup tagGroup) {
+              return DataRow(
+                key: Key(tagGroup.db.id.toString()),
+                cells: [
+                  DataCell(Text(tagGroup.db.name)),
+                  DataCell(CircleColor(
+                    circleSize: 20,
+                    elevation: 0,
+                    color: Color(tagGroup.db.color),
+                  )),
+                  DataCell(
+                    tagGroup.db.system ? MyIcon.show : MyIcon.edit,
+                    onTap: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddTagGroupScreen(
-                            tagGroup: TagGroup(athlete: widget.athlete),
-                          ),
+                          builder: (context) {
+                            if (tagGroup.db.system)
+                              return ShowTagGroupScreen(tagGroup: tagGroup);
+                            else
+                              return AddTagGroupScreen(tagGroup: tagGroup);
+                          },
                         ),
                       );
                       getData();
-                    }),
-                Spacer(),
-                MyButton.navigate(
-                  child: Text("<<"),
-                  onPressed: (offset == 0)
-                      ? null
-                      : () => setState(() {
-                            offset > 8 ? offset = offset - rows : offset = 0;
-                          }),
-                ),
-                Spacer(),
-                MyButton.navigate(
-                  child: Text(">>"),
-                  onPressed: (offset + rows == tagGroups.length)
-                      ? null
-                      : () => setState(() {
-                            offset + rows < tagGroups.length - rows
-                                ? offset = offset + rows
-                                : offset = tagGroups.length - rows;
-                          }),
-                ),
-                Spacer(),
-              ],
-            ),
-          ],
-        );
-      } else {
-        createDefaultTagGroups();
-        return Center(
-          child: Text("creating defaults ..."),
-        );
-      }
+                    },
+                  )
+                ],
+              );
+            }).toList(),
+          ),
+          SizedBox(height: 20),
+          Row(
+            children: <Widget>[
+              Spacer(),
+              MyButton.add(
+                  child: Text("New tag group"),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddTagGroupScreen(
+                          tagGroup: TagGroup(athlete: widget.athlete),
+                        ),
+                      ),
+                    );
+                    getData();
+                  }),
+              Spacer(),
+              MyButton.navigate(
+                child: Text("<<"),
+                onPressed: (offset == 0)
+                    ? null
+                    : () => setState(() {
+                          offset > 8 ? offset = offset - rows : offset = 0;
+                        }),
+              ),
+              Spacer(),
+              MyButton.navigate(
+                child: Text(">>"),
+                onPressed: (offset + rows == tagGroups.length)
+                    ? null
+                    : () => setState(() {
+                          offset + rows < tagGroups.length - rows
+                              ? offset = offset + rows
+                              : offset = tagGroups.length - rows;
+                        }),
+              ),
+              Spacer(),
+            ],
+          ),
+        ],
+      );
     } else {
       return Center(
         child: Text("loading"),
@@ -138,14 +132,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
   }
 
   getData() async {
-    Athlete athlete = widget.athlete;
-    tagGroups = await athlete.tagGroups;
-    setState(() {});
-  }
-
-  createDefaultTagGroups() async {
-    await TagGroup.createDefaultTagGroups(athlete: widget.athlete);
-    await getData();
+    tagGroups = await widget.athlete.tagGroups;
     setState(() {});
   }
 }
