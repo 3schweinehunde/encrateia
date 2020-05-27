@@ -7,18 +7,18 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/models/event.dart';
 
 class LapStrydCadenceWidget extends StatefulWidget {
-  final Lap lap;
+  const LapStrydCadenceWidget({this.lap});
 
-  LapStrydCadenceWidget({this.lap});
+  final Lap lap;
 
   @override
   _LapStrydCadenceWidgetState createState() => _LapStrydCadenceWidgetState();
 }
 
 class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
-  var records = RecordList(<Event>[]);
-  String avgStrydCadenceString = "Loading ...";
-  String sdevStrydCadenceString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgStrydCadenceString = 'Loading ...';
+  String sdevStrydCadenceString = 'Loading ...';
 
   @override
   void initState() {
@@ -27,69 +27,69 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
   }
 
   @override
-  void didUpdateWidget(oldWidget) {
+  void didUpdateWidget(LapStrydCadenceWidget oldWidget) {
     getData();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var strydCadenceRecords = records
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> strydCadenceRecords = records
+          .where((Event value) =>
               value.db.strydCadence != null && value.db.strydCadence > 0)
           .toList();
 
-      if (strydCadenceRecords.length > 0) {
+      if (strydCadenceRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapStrydCadenceChart(records: RecordList(strydCadenceRecords)),
-              Text('Only records where cadence > 0 s/min are shown.'),
-              Text('Swipe left/write to compare with other laps.'),
-              Divider(),
+              LapStrydCadenceChart(records: RecordList<Event>(strydCadenceRecords)),
+              const Text('Only records where cadence > 0 s/min are shown.'),
+              const Text('Swipe left/write to compare with other laps.'),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgStrydCadenceString),
-                subtitle: Text("average cadence"),
+                subtitle: const Text('average cadence'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevStrydCadenceString),
-                subtitle: Text("standard deviation cadence"),
+                subtitle: const Text('standard deviation cadence'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(strydCadenceRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No cadence data available."),
+        return const Center(
+          child: Text('No cadence data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Lap lap = widget.lap;
-    records = RecordList(await lap.records);
+  Future<void> getData() async {
+    final Lap lap = widget.lap;
+    records = RecordList<Event>(await lap.records);
 
-    double avg = await lap.avgStrydCadence;
-    avgStrydCadenceString = avg.toStringOrDashes(1) + " spm";
+    final double avg = await lap.avgStrydCadence;
+    avgStrydCadenceString = avg.toStringOrDashes(1) + ' spm';
 
-    double sdev = await lap.sdevStrydCadence;
+    final double sdev = await lap.sdevStrydCadence;
     setState(() {
-      sdevStrydCadenceString = sdev.toStringOrDashes(2) + " spm";
+      sdevStrydCadenceString = sdev.toStringOrDashes(2) + ' spm';
     });
   }
 }

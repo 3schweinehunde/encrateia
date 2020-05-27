@@ -8,18 +8,18 @@ import 'package:encrateia/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class LapHeartRateWidget extends StatefulWidget {
-  final Lap lap;
+  const LapHeartRateWidget({this.lap});
 
-  LapHeartRateWidget({this.lap});
+  final Lap lap;
 
   @override
   _LapHeartRateWidgetState createState() => _LapHeartRateWidgetState();
 }
 
 class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
-  var records = RecordList(<Event>[]);
-  String avgHeartRateString = "Loading ...";
-  String sdevHeartRateString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgHeartRateString = 'Loading ...';
+  String sdevHeartRateString = 'Loading ...';
   HeartRateZoneSchema heartRateZoneSchema;
   List<HeartRateZone> heartRateZones;
 
@@ -30,81 +30,81 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   }
 
   @override
-  void didUpdateWidget(oldWidget) {
+  void didUpdateWidget(LapHeartRateWidget oldWidget) {
     getData();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var heartRateRecords = records
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> heartRateRecords = records
           .where(
-              (value) => value.db.heartRate != null && value.db.heartRate > 0)
+              (Event value) => value.db.heartRate != null && value.db.heartRate > 0)
           .toList();
 
-      if (heartRateRecords.length > 0) {
+      if (heartRateRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               LapHeartRateChart(
-                records: RecordList(heartRateRecords),
+                records: records,
                 heartRateZones: heartRateZones,
               ),
-              Text('Only records where heart rate > 10 bpm are shown.'),
-              Text('Swipe left/write to compare with other laps.'),
-              Divider(),
+              const Text('Only records where heart rate > 10 bpm are shown.'),
+              const Text('Swipe left/write to compare with other laps.'),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(records.avgHeartRateString),
-                subtitle: Text("average heart rate"),
+                subtitle: const Text('average heart rate'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
                 title: Text(records.minHeartRateString),
-                subtitle: Text("minimum heart rate"),
+                subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
                 title: Text(records.maxHeartRateString),
-                subtitle: Text("maximum heart rate"),
+                subtitle: const Text('maximum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(records.sdevHeartRateString),
-                subtitle: Text("standard deviation heart rate"),
+                subtitle: const Text('standard deviation heart rate'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(heartRateRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No heart rate data available."),
+        return const Center(
+          child: Text('No heart rate data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Lap lap = widget.lap;
-    records = RecordList(await lap.records);
+  Future<void> getData() async {
+    final Lap lap = widget.lap;
+    records.addAll(await lap.records);
 
     heartRateZoneSchema = await lap.heartRateZoneSchema;
     if (heartRateZoneSchema != null)
       heartRateZones = await heartRateZoneSchema.heartRateZones;
     else
-      heartRateZones = [];
+      heartRateZones = <HeartRateZone>[];
     setState(() {});
   }
 }

@@ -2,6 +2,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class ActivityTagging extends ChangeNotifier {
   DbActivityTagging db;
@@ -19,7 +20,7 @@ class ActivityTagging extends ChangeNotifier {
 
   ActivityTagging.fromDb(this.db);
 
-  static createBy({
+  static Future<ActivityTagging> createBy({
     @required Activity activity,
     @required Tag tag,
     bool system,
@@ -37,20 +38,17 @@ class ActivityTagging extends ChangeNotifier {
       return ActivityTagging.fromDb(dbActivityTagging);
     else {
       var activityTagging = ActivityTagging(
-        activity: activity,
-        tag: tag,
-        system: system ?? false
-      );
+          activity: activity, tag: tag, system: system ?? false);
       await activityTagging.db.save();
       return activityTagging;
     }
   }
 
-  static getBy({
+  static Future<ActivityTagging> getBy({
     @required Activity activity,
     @required Tag tag,
   }) async {
-    var dbActivityTagging = await DbActivityTagging()
+    final DbActivityTagging dbActivityTagging = await DbActivityTagging()
         .select()
         .activitiesId
         .equals(activity.db.id)
@@ -62,11 +60,11 @@ class ActivityTagging extends ChangeNotifier {
       return ActivityTagging.fromDb(dbActivityTagging);
   }
 
-  static deleteBy({
+  static Future<BoolResult> deleteBy({
     @required Activity activity,
     @required Tag tag,
   }) async {
-    var dbActivityTagging = await DbActivityTagging()
+    final DbActivityTagging dbActivityTagging = await DbActivityTagging()
         .select()
         .activitiesId
         .equals(activity.db.id)
@@ -77,10 +75,9 @@ class ActivityTagging extends ChangeNotifier {
     await dbActivityTagging.delete();
   }
 
+  @override
   String toString() =>
       '< ActivityTagging | actvityId ${db.activitiesId} | tagId ${db.tagsId} >';
 
-  delete() async {
-    await this.db.delete();
-  }
+  Future<BoolResult> delete() async => await db.delete();
 }

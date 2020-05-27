@@ -2,10 +2,9 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class LapTagging extends ChangeNotifier {
-  DbLapTagging db;
-
   LapTagging({
     @required Lap lap,
     @required Tag tag,
@@ -19,12 +18,14 @@ class LapTagging extends ChangeNotifier {
 
   LapTagging.fromDb(this.db);
 
-  static createBy({
+  DbLapTagging db;
+
+  static Future<LapTagging> createBy({
     @required Lap lap,
     @required Tag tag,
     bool system,
   }) async {
-    var dbLapTagging = await DbLapTagging()
+    final DbLapTagging dbLapTagging = await DbLapTagging()
         .select()
         .lapsId
         .equals(lap.db.id)
@@ -36,7 +37,7 @@ class LapTagging extends ChangeNotifier {
     if (dbLapTagging != null)
       return LapTagging.fromDb(dbLapTagging);
     else {
-      var lapTagging = LapTagging(
+      final LapTagging lapTagging = LapTagging(
         lap: lap,
         tag: tag,
         system: system ?? false,
@@ -46,11 +47,11 @@ class LapTagging extends ChangeNotifier {
     }
   }
 
-  static getBy({
+  static Future<LapTagging> getBy({
     @required Lap lap,
     @required Tag tag,
   }) async {
-    var dbLapTagging = await DbLapTagging()
+    final DbLapTagging dbLapTagging = await DbLapTagging()
         .select()
         .lapsId
         .equals(lap.db.id)
@@ -58,14 +59,14 @@ class LapTagging extends ChangeNotifier {
         .tagsId
         .equals(tag.db.id)
         .toSingle();
-    if (dbLapTagging != null) return LapTagging.fromDb(dbLapTagging);
+    return (dbLapTagging != null) ? LapTagging.fromDb(dbLapTagging) : null;
   }
 
-  static deleteBy({
+  static Future<void> deleteBy({
     @required Lap lap,
     @required Tag tag,
   }) async {
-    var dbLapTagging = await DbLapTagging()
+    final DbLapTagging dbLapTagging = await DbLapTagging()
         .select()
         .lapsId
         .equals(lap.db.id)
@@ -76,10 +77,9 @@ class LapTagging extends ChangeNotifier {
     await dbLapTagging.delete();
   }
 
+  @override
   String toString() =>
       '< LapTagging | lapId ${db.lapsId} | tagId ${db.tagsId} >';
 
-  delete() async {
-    await this.db.delete();
-  }
+  Future<BoolResult> delete() async => await db.delete();
 }

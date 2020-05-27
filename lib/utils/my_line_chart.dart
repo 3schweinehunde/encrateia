@@ -1,21 +1,26 @@
+import 'dart:math';
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
+import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:flutter/foundation.dart';
-import 'dart:math';
+import 'package:charts_common/common.dart' as common
+show
+    Series,
+    ChartBehavior;
 
 class MyLineChart extends LineChart {
   MyLineChart({
-    @required data,
-    @required maxDomain,
-    @required laps,
-    powerZones,
-    heartRateZones,
-    @required domainTitle,
-    measureTitle,
-    measureTickProviderSpec,
-    domainTickProviderSpec,
+    @required List<common.Series<dynamic, dynamic>> data,
+    @required double maxDomain,
+    @required List<Lap> laps,
+    List<PowerZone> powerZones,
+    List<HeartRateZone> heartRateZones,
+    @required String domainTitle,
+    String measureTitle,
+    NumericTickProviderSpec measureTickProviderSpec,
+    NumericTickProviderSpec domainTickProviderSpec,
   }) : super(
           data,
           domainAxis: NumericAxisSpec(
@@ -30,7 +35,7 @@ class MyLineChart extends LineChart {
               )),
           animate: false,
           layoutConfig: GraphUtils.layoutConfig,
-          behaviors: [
+          behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
             PanAndZoomBehavior(),
             RangeAnnotation(
               GraphUtils.rangeAnnotations(laps: laps) +
@@ -43,30 +48,47 @@ class MyLineChart extends LineChart {
             ),
             ChartTitle(
               domainTitle,
-              titleStyleSpec: TextStyleSpec(fontSize: 13),
+              titleStyleSpec: const TextStyleSpec(fontSize: 13),
               behaviorPosition: BehaviorPosition.start,
               titleOutsideJustification: OutsideJustification.end,
             ),
             ChartTitle(
               measureTitle ?? 'Distance (m)',
-              titleStyleSpec: TextStyleSpec(fontSize: 13),
+              titleStyleSpec: const TextStyleSpec(fontSize: 13),
               behaviorPosition: BehaviorPosition.bottom,
               titleOutsideJustification: OutsideJustification.end,
             ),
           ],
         );
 
-  static determineViewport({
+  static NumericExtents determineViewport({
     List<PowerZone> powerZones,
     List<HeartRateZone> heartRateZones,
   }) {
     if (powerZones != null)
       return NumericExtents(
-          powerZones.map((e) => e.db.lowerLimit).reduce(min) - 5.0,
-          powerZones.map((e) => e.db.upperLimit).reduce(max) + 5.0);
+          powerZones
+                  .map((PowerZone powerZone) => powerZone.db.lowerLimit)
+                  .reduce(min) -
+              5.0,
+          powerZones
+                  .map((PowerZone powerZone) => powerZone.db.upperLimit)
+                  .reduce(max) +
+              5.0);
     else if (heartRateZones != null)
       return NumericExtents(
-          heartRateZones.map((e) => e.db.lowerLimit).reduce(min) - 5.0,
-          heartRateZones.map((e) => e.db.upperLimit).reduce(max) + 5.0);
+          heartRateZones
+                  .map((HeartRateZone heartRateZone) =>
+                      heartRateZone.db.lowerLimit)
+                  .reduce(min) -
+              5.0,
+          heartRateZones
+                  .map((HeartRateZone heartRateZone) =>
+                      heartRateZone.db.upperLimit)
+                  .reduce(max) +
+              5.0);
+    else
+      return null;
   }
+
 }

@@ -1,17 +1,17 @@
 import 'package:encrateia/model/model.dart';
 
 class Db {
-  static Db _dB;
-  static bool _isConnected = false;
-
   Db();
 
   factory Db.create() {
-    if (_dB == null) _dB = Db();
+    _dB ??= Db();
     return _dB;
   }
 
-  connect() async {
+  static Db _dB;
+  static bool _isConnected = false;
+
+  Future<bool> connect() async {
     if (_isConnected == false)
       _isConnected = await DbEncrateia().initializeDB();
     return _isConnected;

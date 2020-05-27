@@ -7,33 +7,33 @@ import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 
 class LapsListWidget extends StatelessWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  LapsListWidget({
+  const LapsListWidget({
     @required this.activity,
     @required this.athlete,
   });
 
+  final Activity activity;
+  final Athlete athlete;
+
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return FutureBuilder<List<Lap>>(
       future: Lap.all(activity: activity),
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data;
           return SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: DataTable(
               showCheckboxColumn: false,
               onSelectAll: (_) {},
-              columns: <DataColumn>[
-                DataColumn(label: Text("Lap"), numeric: true),
-                DataColumn(label: Text("HR\nbpm"), numeric: true),
-                DataColumn(label: Text("Pace\nmin:s"), numeric: true),
-                DataColumn(label: Text("Power\nWatt"), numeric: true),
-                DataColumn(label: Text("Dist.\nkm"), numeric: true),
-                DataColumn(label: Text("Ascent\nm"), numeric: true),
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Lap'), numeric: true),
+                DataColumn(label: Text('HR\nbpm'), numeric: true),
+                DataColumn(label: Text('Pace\nmin:s'), numeric: true),
+                DataColumn(label: Text('Power\nWatt'), numeric: true),
+                DataColumn(label: Text('Dist.\nkm'), numeric: true),
+                DataColumn(label: Text('Ascent\nm'), numeric: true),
               ],
               rows: laps.map((Lap lap) {
                 return DataRow(
@@ -43,7 +43,7 @@ class LapsListWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ShowLapScreen(
+                          builder: (BuildContext context) => ShowLapScreen(
                             lap: lap,
                             laps: laps,
                             athlete: athlete,
@@ -52,7 +52,7 @@ class LapsListWidget extends StatelessWidget {
                       );
                     }
                   },
-                  cells: [
+                  cells: <DataCell>[
                     DataCell(Text(lap.index.toString())),
                     DataCell(Text(avgHeartRateString(lap.db.avgHeartRate))),
                     DataCell(Text(lap.db.avgSpeed.toPace())),
@@ -70,18 +70,19 @@ class LapsListWidget extends StatelessWidget {
             ),
           );
         } else {
-          return Center(
-            child: Text("Loading"),
+
+          return const Center(
+            child: Text('Loading'),
           );
         }
       },
     );
   }
 
-  avgHeartRateString(avgHeartRate) {
+  String avgHeartRateString(int avgHeartRate) {
     if (avgHeartRate != 255)
       return avgHeartRate.toString();
     else
-      return "-";
+      return '-';
   }
 }

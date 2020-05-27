@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:flutter/material.dart';
@@ -7,23 +8,23 @@ import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'dart:io';
 import 'heart_rate_zone_schema.dart';
 
 class Athlete extends ChangeNotifier {
+  Athlete();
+  Athlete.fromDb(this.db);
+
   String email;
   String password;
   String firstName;
   String lastName;
   DbAthlete db = DbAthlete();
 
-  Athlete();
-  Athlete.fromDb(this.db);
-
+  @override
   String toString() =>
       '< Athlete | ${db.firstName} ${db.lastName} | ${db.stravaId} >';
 
-  updateFromStravaAthlete(DetailedAthlete athlete) {
+  void updateFromStravaAthlete(DetailedAthlete athlete) {
     db
       ..firstName = athlete.firstname
       ..lastName = athlete.lastname
@@ -31,17 +32,17 @@ class Athlete extends ChangeNotifier {
       ..stravaUsername = athlete.username
       ..photoPath = athlete.profile
       ..geoState = athlete.state
-      ..state = "fromStrava"
+      ..state = 'fromStrava'
       ..downloadInterval = 21
       ..recordAggregationCount = 16;
     notifyListeners();
   }
 
-  setupStandaloneAthlete() async {
+  Future<void> setupStandaloneAthlete() async {
     db
-      ..state = "standalone"
-      ..firstName = "Jane"
-      ..lastName = "Doe"
+      ..state = 'standalone'
+      ..firstName = 'Jane'
+      ..lastName = 'Doe'
       ..downloadInterval = 21
       ..recordAggregationCount = 16;
     await db.save();
@@ -50,49 +51,54 @@ class Athlete extends ChangeNotifier {
 
   String get stateText {
     switch (db.state) {
-      case "new":
-        return "Loading athlete data from Strava ...";
-      case "unsaved":
-        return "Strava data loaded successfully.";
-      case "fromStrava":
-        return "Data received from Strava.";
+      case 'new':
+        return 'Loading athlete data from Strava ...';
+      case 'unsaved':
+        return 'Strava data loaded successfully.';
+      case 'fromStrava':
+        return 'Data received from Strava.';
       default:
-        return "Unknown state ${db.state}, should have never come here.";
+        return 'Unknown state ${db.state}, should have never come here.';
     }
   }
 
-  storeCredentials() async {
-    final storage = FlutterSecureStorage();
-    await storage.write(key: "email", value: email);
-    await storage.write(key: "password", value: password);
+  Future<void> storeCredentials() async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    await storage.write(key: 'email', value: email);
+    await storage.write(key: 'password', value: password);
     notifyListeners();
   }
 
-  readCredentials() async {
-    final storage = FlutterSecureStorage();
-    email = await storage.read(key: "email");
-    password = await storage.read(key: "password");
+  Future<void> readCredentials() async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    email = await storage.read(key: 'email');
+    password = await storage.read(key: 'password');
     notifyListeners();
   }
 
   static Future<List<Athlete>> all() async {
-    List<DbAthlete> dbAthleteList = await DbAthlete().select().toList();
-    return dbAthleteList.map((dbAthlete) => Athlete.fromDb(dbAthlete)).toList();
+    final List<DbAthlete> dbAthleteList = await DbAthlete().select().toList();
+    return dbAthleteList
+        .map((DbAthlete dbAthlete) => Athlete.fromDb(dbAthlete))
+        .toList();
   }
 
-  get activities => Activity.all(athlete: this);
-  get weights => Weight.all(athlete: this);
-  get powerZoneSchemas => PowerZoneSchema.all(athlete: this);
-  get heartRateZoneSchemas => HeartRateZoneSchema.all(athlete: this);
-  get tagGroups => TagGroup.all(athlete: this);
+  Future<List<Activity>> get activities => Activity.all(athlete: this);
+  Future<List<Weight>> get weights => Weight.all(athlete: this);
+  Future<List<PowerZoneSchema>> get powerZoneSchemas =>
+      PowerZoneSchema.all(athlete: this);
+  Future<List<HeartRateZoneSchema>> get heartRateZoneSchemas =>
+      HeartRateZoneSchema.all(athlete: this);
+  Future<List<TagGroup>> get tagGroups => TagGroup.all(athlete: this);
 
-  delete() async {
-    var appDocDir = await getApplicationDocumentsDirectory();
+  Future<void> delete() async {
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
 
-    for (Activity activity in await activities) {
+    for (final Activity activity in await activities) {
       await activity.db.getDbEvents().delete();
       await activity.db.getDbLaps().delete();
 
+      // ignore: avoid_slow_async_io
       if (await File(appDocDir.path + '/${db.stravaId}.fit').exists())
         await File(appDocDir.path + '/${db.stravaId}.fit').delete();
     }
@@ -101,11 +107,12 @@ class Athlete extends ChangeNotifier {
     notifyListeners();
   }
 
-  save() async {
+  Future<void> save() async {
     await db.save();
     notifyListeners();
   }
 
-  checkForSchemas() async => ((await powerZoneSchemas).length > 0 &&
-      (await heartRateZoneSchemas).length > 0);
+  Future<bool> checkForSchemas() async =>
+      (await powerZoneSchemas).isNotEmpty &&
+      (await heartRateZoneSchemas).isNotEmpty;
 }

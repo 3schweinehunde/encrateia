@@ -7,258 +7,264 @@ import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/utils/enums.dart';
 
 class RecordList<E> extends DelegatingList<E> {
-  final List<Event> _records;
-
-  RecordList(records)
-      : _records = records,
+  RecordList(List<E> records)
+      : _records = records as List<Event>,
         super(records);
 
-  get sdevHeartRateString => _records
-      .map((record) => record.db.heartRate)
+  final List<Event> _records;
+
+  String get sdevHeartRateString => _records
+      .map((Event record) => record.db.heartRate)
       .nonZeroInts()
       .sdev()
       .toStringAsFixed(2);
 
-  get minHeartRateString => _records
-      .map((record) => record.db.heartRate)
+  String get minHeartRateString => _records
+      .map((Event record) => record.db.heartRate)
       .nonZeroInts()
       .min()
       .toString();
 
-  get avgHeartRateString => _records
-      .map((record) => record.db.heartRate)
+  String get avgHeartRateString => _records
+      .map((Event record) => record.db.heartRate)
       .nonZeroInts()
       .mean()
       .toStringOrDashes(1);
 
-  get maxHeartRateString => _records
-      .map((record) => record.db.heartRate)
+  String get maxHeartRateString => _records
+      .map((Event record) => record.db.heartRate)
       .nonZeroInts()
       .max()
       .toString();
 
-  calculateAveragePower() {
-    var powers = _records
-        .where((record) =>
+  double calculateAveragePower() {
+    final Iterable<int> powers = _records
+        .where((Event record) =>
             record.db.power != null &&
             record.db.power > 0 &&
             record.db.power < 2000)
-        .map((record) => record.db.power);
+        .map((Event record) => record.db.power);
 
-    if (powers.length > 0) {
+    if (powers.isNotEmpty) {
       return powers.mean();
     } else
       return -1;
   }
 
-  calculateSdevPower() => _records
-      .where((record) =>
+  double calculateSdevPower() => _records
+      .where((Event record) =>
           record.db.power != null &&
           record.db.power > 0 &&
           record.db.power < 2000)
-      .map((record) => record.db.power)
+      .map((Event record) => record.db.power)
       .sdev();
 
-  calculateMinPower() {
-    var powers = _records.map((record) => record.db.power).nonZeroInts();
-    if (powers.length > 0)
+  int calculateMinPower() {
+    final List<int> powers =
+        _records.map((Event record) => record.db.power).nonZeroInts();
+    if (powers.isNotEmpty)
       return powers.min();
     else
       return 0;
   }
 
-  calculateMaxPower() {
-    var powers = _records.map((record) => record.db.power).nonZeroInts();
-    if (powers.length > 0)
+  int calculateMaxPower() {
+    final List<int> powers =
+        _records.map((Event record) => record.db.power).nonZeroInts();
+    if (powers.isNotEmpty)
       return powers.max();
     else
       return 0;
   }
 
-  calculateAverageHeartRate() {
-    var heartRates = _records
-        .where((record) =>
+  int calculateAverageHeartRate() {
+    final Iterable<int> heartRates = _records
+        .where((Event record) =>
             record.db.heartRate != null &&
             record.db.heartRate > 0 &&
             record.db.heartRate < 2000)
-        .map((record) => record.db.heartRate);
+        .map((Event record) => record.db.heartRate);
 
-    if (heartRates.length > 0) {
+    if (heartRates.isNotEmpty) {
       return heartRates.mean().round();
     } else
       return -1;
   }
 
-  calculateSdevHeartRate() => _records
-      .where((record) =>
+  double calculateSdevHeartRate() => _records
+      .where((Event record) =>
           record.db.heartRate != null &&
           record.db.heartRate > 0 &&
           record.db.heartRate < 2000)
-      .map((record) => record.db.heartRate)
+      .map((Event record) => record.db.heartRate)
       .sdev();
 
-  calculateMinHeartRate() {
-    var heartRates =
-        _records.map((record) => record.db.heartRate).nonZeroInts();
+  int calculateMinHeartRate() {
+    final List<int> heartRates =
+        _records.map((Event record) => record.db.heartRate).nonZeroInts();
 
-    if (heartRates.length > 0)
+    if (heartRates.isNotEmpty)
       return heartRates.min();
     else
       return 0;
   }
 
-  calculateMaxHeartRate() {
-    var heartRates =
-        _records.map((record) => record.db.heartRate).nonZeroInts();
+  int calculateMaxHeartRate() {
+    final List<int> heartRates =
+        _records.map((Event record) => record.db.heartRate).nonZeroInts();
 
-    if (heartRates.length > 0)
+    if (heartRates.isNotEmpty)
       return heartRates.max();
     else
       return 0;
   }
 
-  calculateAverageSpeed() {
-    var speeds = _records.map((record) => record.db.speed).nonZeroDoubles();
+  double calculateAverageSpeed() {
+    final List<double> speeds =
+        _records.map((Event record) => record.db.speed).nonZeroDoubles();
 
-    if (speeds.length > 0) {
+    if (speeds.isNotEmpty) {
       return speeds.mean();
     } else
       return -1;
   }
 
-  calculateAverageGroundTime() {
-    var groundTimes =
-        _records.map((record) => record.db.groundTime).nonZeroDoubles();
+  double calculateAverageGroundTime() {
+    final List<double> groundTimes =
+        _records.map((Event record) => record.db.groundTime).nonZeroDoubles();
 
-    if (groundTimes.length > 0) {
+    if (groundTimes.isNotEmpty) {
       return groundTimes.mean();
     } else
       return -1;
   }
 
-  calculateSdevGroundTime() =>
-      _records.map((record) => record.db.groundTime).nonZeroDoubles().sdev();
+  double calculateSdevGroundTime() => _records
+      .map((Event record) => record.db.groundTime)
+      .nonZeroDoubles()
+      .sdev();
 
-  calculateAverageStrydCadence() {
-    var strydCadences = _records
-        .map((record) => record.db.strydCadence ?? 0.0 * 2)
+  double calculateAverageStrydCadence() {
+    final List<double> strydCadences = _records
+        .map((Event record) => record.db.strydCadence ?? 0.0 * 2)
         .nonZeroDoubles();
 
-    if (strydCadences.length > 0) {
+    if (strydCadences.isNotEmpty) {
       return strydCadences.mean();
     } else
       return -1;
   }
 
-  calculateSdevStrydCadence() => _records
-      .map((record) => record.db.strydCadence ?? 0.0 * 2)
+  double calculateSdevStrydCadence() => _records
+      .map((Event record) => record.db.strydCadence ?? 0.0 * 2)
       .nonZeroDoubles()
       .sdev();
 
-  calculateAverageLegSpringStiffness() {
-    var legSpringStiffnesses =
-        _records.map((record) => record.db.legSpringStiffness).nonZeroDoubles();
+  double calculateAverageLegSpringStiffness() {
+    final List<double> legSpringStiffnesses = _records
+        .map((Event record) => record.db.legSpringStiffness)
+        .nonZeroDoubles();
 
-    if (legSpringStiffnesses.length > 0) {
+    if (legSpringStiffnesses.isNotEmpty) {
       return legSpringStiffnesses.mean();
     } else
       return -1;
   }
 
-  calculateSdevLegSpringStiffness() => _records
-      .map((record) => record.db.legSpringStiffness)
+  double calculateSdevLegSpringStiffness() => _records
+      .map((Event record) => record.db.legSpringStiffness)
       .nonZeroDoubles()
       .sdev();
 
-  calculateAverageVerticalOscillation() {
-    var verticalOscillation = _records
-        .map((record) => record.db.verticalOscillation)
+  double calculateAverageVerticalOscillation() {
+    final List<double> verticalOscillation = _records
+        .map((Event record) => record.db.verticalOscillation)
         .nonZeroDoubles();
 
-    if (verticalOscillation.length > 0) {
+    if (verticalOscillation.isNotEmpty) {
       return verticalOscillation.mean();
     } else
       return -1;
   }
 
-  calculateSdevVerticalOscillation() => _records
-      .map((record) => record.db.verticalOscillation)
+  double calculateSdevVerticalOscillation() => _records
+      .map((Event record) => record.db.verticalOscillation)
       .nonZeroDoubles()
       .sdev();
 
-  calculateAverageFormPower() {
-    var formPowers = _records
-        .where((record) =>
+  double calculateAverageFormPower() {
+    final Iterable<int> formPowers = _records
+        .where((Event record) =>
             record.db.formPower != null && record.db.formPower < 200)
-        .map((record) => record.db.formPower);
+        .map((Event record) => record.db.formPower);
 
-    if (formPowers.length > 0) {
+    if (formPowers.isNotEmpty) {
       return formPowers.mean();
     } else
       return -1;
   }
 
-  calculateSdevFormPower() => _records
-      .where(
-          (record) => record.db.formPower != null && record.db.formPower < 200)
-      .map((record) => record.db.formPower)
+  double calculateSdevFormPower() => _records
+      .where((Event record) =>
+          record.db.formPower != null && record.db.formPower < 200)
+      .map((Event record) => record.db.formPower)
       .sdev();
 
-  calculateAveragePowerRatio() {
-    var powerRatios = _records
-        .where((record) =>
+  double calculateAveragePowerRatio() {
+    final Iterable<double> powerRatios = _records
+        .where((Event record) =>
             record.db.power != null &&
             record.db.power != 0 &&
             record.db.formPower != null &&
             record.db.formPower != 0)
-        .map((record) =>
+        .map((Event record) =>
             (record.db.power - record.db.formPower) / record.db.power * 100);
 
-    if (powerRatios.length > 0) {
+    if (powerRatios.isNotEmpty) {
       return powerRatios.mean();
     } else
       return -1;
   }
 
-  calculateSdevPowerRatio() => _records
-      .where((record) =>
+  double calculateSdevPowerRatio() => _records
+      .where((Event record) =>
           record.db.power != null &&
           record.db.power != 0 &&
           record.db.formPower != null &&
           record.db.formPower != 0)
-      .map((record) =>
+      .map((Event record) =>
           (record.db.power - record.db.formPower) / record.db.power * 100)
       .sdev();
 
-  calculateAverageStrideRatio() {
-    var powerRatios = _records
-        .where((record) =>
+  double calculateAverageStrideRatio() {
+    final Iterable<double> powerRatios = _records
+        .where((Event record) =>
             record.db.speed != null &&
             record.db.strydCadence != null &&
             record.db.strydCadence != 0 &&
             record.db.verticalOscillation != null &&
             record.db.verticalOscillation != 0)
-        .map((record) =>
+        .map((Event record) =>
             10000 /
             6 *
             record.db.speed /
             record.db.strydCadence /
             record.db.verticalOscillation);
 
-    if (powerRatios.length > 0) {
+    if (powerRatios.isNotEmpty) {
       return powerRatios.mean();
     } else
       return -1;
   }
 
-  calculateSdevStrideRatio() => _records
-      .where((record) =>
+  double calculateSdevStrideRatio() => _records
+      .where((Event record) =>
           record.db.speed != null &&
           record.db.strydCadence != null &&
           record.db.strydCadence != 0 &&
           record.db.verticalOscillation != null &&
           record.db.verticalOscillation != 0)
-      .map((record) =>
+      .map((Event record) =>
           10000 /
           6 *
           record.db.speed /
@@ -271,10 +277,10 @@ class RecordList<E> extends DelegatingList<E> {
     @required LapIntAttr attribute,
   }) {
     int index = 0;
-    List<IntPlotPoint> plotPoints = [];
+    final List<IntPlotPoint> plotPoints = <IntPlotPoint>[];
     int sum = 0;
 
-    for (var record in _records) {
+    for (final Event record in _records) {
       switch (attribute) {
         case LapIntAttr.power:
           sum = sum + record.db.power;
@@ -304,10 +310,10 @@ class RecordList<E> extends DelegatingList<E> {
     double weight,
   }) {
     int index = 0;
-    List<DoublePlotPoint> plotPoints = [];
+    final List<DoublePlotPoint> plotPoints = <DoublePlotPoint>[];
     double sum = 0.0;
 
-    for (var record in _records) {
+    for (final Event record in _records) {
       switch (attribute) {
         case LapDoubleAttr.powerPerHeartRate:
           sum = sum + (record.db.power / record.db.heartRate);

@@ -1,17 +1,19 @@
 class IntPlotPoint {
+  IntPlotPoint({this.domain, this.measure});
+
   int domain;
   int measure;
 
-  IntPlotPoint({this.domain, this.measure});
-
+  @override
   toString() => '< IntPlotPoint | $domain | $measure >';
 }
 
 class DoublePlotPoint {
+  DoublePlotPoint({this.domain, this.measure});
+
   int domain;
   double measure;
 
-  DoublePlotPoint({this.domain, this.measure});
-
+  @override
   toString() => '< DoublePlotPoint | $domain | $measure >';
 }

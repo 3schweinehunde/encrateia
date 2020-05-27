@@ -7,10 +7,10 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/models/event.dart';
 
 class LapVerticalOscillationWidget extends StatefulWidget {
+  const LapVerticalOscillationWidget({this.lap});
+
   final Lap lap;
-
-  LapVerticalOscillationWidget({this.lap});
-
+  
   @override
   _LapVerticalOscillationWidgetState createState() =>
       _LapVerticalOscillationWidgetState();
@@ -18,9 +18,9 @@ class LapVerticalOscillationWidget extends StatefulWidget {
 
 class _LapVerticalOscillationWidgetState
     extends State<LapVerticalOscillationWidget> {
-  var records = RecordList(<Event>[]);
-  String avgVerticalOscillationString = "Loading ...";
-  String sdevVerticalOscillationString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgVerticalOscillationString = 'Loading ...';
+  String sdevVerticalOscillationString = 'Loading ...';
 
   @override
   void initState() {
@@ -29,73 +29,73 @@ class _LapVerticalOscillationWidgetState
   }
 
   @override
-  void didUpdateWidget(oldWidget) {
+  void didUpdateWidget(LapVerticalOscillationWidget oldWidget) {
     getData();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var verticalOscillationRecords = records
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> verticalOscillationRecords = records
+          .where((Event value) =>
               value.db.verticalOscillation != null &&
               value.db.verticalOscillation > 0)
           .toList();
 
-      if (verticalOscillationRecords.length > 0) {
+      if (verticalOscillationRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               LapVerticalOscillationChart(
-                records: RecordList(verticalOscillationRecords),
+                records: RecordList<Event>(verticalOscillationRecords),
               ),
-              Text(
+              const Text(
                   'Only records where vertical oscillation is present are shown.'),
-              Text('Swipe left/write to compare with other laps.'),
-              Divider(),
+              const Text('Swipe left/write to compare with other laps.'),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),
-                subtitle: Text("average vertical oscillation"),
+                subtitle: const Text('average vertical oscillation'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevVerticalOscillationString),
-                subtitle: Text("standard deviation vertical oscillation"),
+                subtitle: const Text('standard deviation vertical oscillation'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(verticalOscillationRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No vertical oscillation data available."),
+        return const Center(
+          child: Text('No vertical oscillation data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Lap lap = widget.lap;
-    records = RecordList(await lap.records);
+  Future<void> getData() async {
+    final Lap lap = widget.lap;
+    records.addAll(await lap.records);
 
-    double avg = await lap.avgVerticalOscillation;
-    avgVerticalOscillationString = avg.toStringOrDashes(1) + " cm";
+    final double avg = await lap.avgVerticalOscillation;
+    avgVerticalOscillationString = avg.toStringOrDashes(1) + ' cm';
 
-    double sdev = await lap.sdevVerticalOscillation;
+    final double sdev = await lap.sdevVerticalOscillation;
     setState(() {
-      sdevVerticalOscillationString = sdev.toStringOrDashes(2) + " cm";
+      sdevVerticalOscillationString = sdev.toStringOrDashes(2) + ' cm';
     });
   }
 }

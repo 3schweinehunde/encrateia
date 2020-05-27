@@ -4,30 +4,32 @@ import 'package:encrateia/utils/enums.dart';
 import 'package:collection/collection.dart';
 
 class ActivityList<E> extends DelegatingList<E> {
+  ActivityList(List<E> activities)
+      : _activities = activities as List<Activity>,
+        super(activities);
+
   final List<Activity> _activities;
 
-  ActivityList(activityList)
-      : _activities = activityList,
-        super(activityList);
-
-  enrichGlidingAverage({
+  void enrichGlidingAverage({
     @required int fullDecay,
     @required ActivityAttr activityAttr,
   }) {
-    _activities.asMap().forEach((index, activity) {
-      double sumOfAvg = activity.getAttribute(activityAttr) * fullDecay;
+    _activities.asMap().forEach((int index, Activity activity) {
+      double sumOfAvg =
+          (activity.getAttribute(activityAttr) as double) * fullDecay;
       double sumOfWeightings = fullDecay * 1.0;
-      for (var olderIndex = index + 1;
+      for (int olderIndex = index + 1;
           olderIndex < _activities.length;
           olderIndex++) {
-        double daysAgo = activity.db.timeCreated
+        final double daysAgo = activity.db.timeCreated
                 .difference(_activities[olderIndex].db.timeCreated)
                 .inHours /
             24;
-        if (daysAgo > fullDecay) break;
+        if (daysAgo > fullDecay)
+          break;
         sumOfAvg += (fullDecay - daysAgo) *
-            _activities[olderIndex].getAttribute(activityAttr);
-        sumOfWeightings += (fullDecay - daysAgo);
+            (_activities[olderIndex].getAttribute(activityAttr) as num);
+        sumOfWeightings += fullDecay - daysAgo;
       }
 
       activity.glidingMeasureAttribute = sumOfAvg / sumOfWeightings;

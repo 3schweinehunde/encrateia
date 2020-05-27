@@ -1,6 +1,6 @@
 import 'dart:math';
 
-dateTimeFromStrava(double dateTime) {
+DateTime dateTimeFromStrava(double dateTime) {
   return DateTime.fromMillisecondsSinceEpoch(
       // Strava's datetime offset: 31.12.1989, 00:00
       (dateTime.round() + 631065600) * 1000);
@@ -9,38 +9,38 @@ dateTimeFromStrava(double dateTime) {
 extension DurationFormatters on Duration {
   String asString() {
     return inHours.toString() +
-        "h " +
+        'h ' +
         inMinutes.remainder(60).toString() +
-        "min " +
+        'min ' +
         inSeconds.remainder(60).toString() +
-        "s";
+        's';
   }
 }
 
 extension DegreeFormatters on double {
   String semicirclesAsDegrees() {
     if (this != null) {
-      var fractionalDegrees = this * (180 / pow(2, 31));
-      var degrees = fractionalDegrees.floor();
-      var minutes = ((fractionalDegrees - degrees) * 60).floor();
-      var seconds = (((fractionalDegrees - degrees) * 60) - minutes) * 60;
+      final double fractionalDegrees = this * (180 / pow(2, 31));
+      final int degrees = fractionalDegrees.floor();
+      final int minutes = ((fractionalDegrees - degrees) * 60).floor();
+      final double seconds =
+          (((fractionalDegrees - degrees) * 60) - minutes) * 60;
 
       return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}"';
     } else {
-      return "- - - ";
+      return '- - - ';
     }
   }
 
   String toPace() {
     if (this != null) {
-       var totalSeconds = 1000 / this;
-       var minutes = (totalSeconds / 60).floor();
-       var seconds = (totalSeconds - minutes * 60).round().toString().padLeft(2, "0");
-       return "$minutes:$seconds";
+      final double totalSeconds = 1000 / this;
+      final int minutes = (totalSeconds / 60).floor();
+      final String seconds =
+          (totalSeconds - minutes * 60).round().toString().padLeft(2, '0');
+      return '$minutes:$seconds';
     } else {
-      return "- - - ";
+      return '- - - ';
     }
   }
 }
-
-

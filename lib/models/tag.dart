@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/tag_group.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 import 'athlete.dart';
 
 class Tag extends ChangeNotifier {
-  DbTag db;
-  bool selected = false;
-
   Tag({
     @required TagGroup tagGroup,
     String name,
@@ -17,26 +15,31 @@ class Tag extends ChangeNotifier {
     db = DbTag()
       ..tagGroupsId = tagGroup.db.id
       ..sortOrder = sortOrder ?? 0
-      ..name = name ?? "my Tag"
+      ..name = name ?? 'my Tag'
       ..color = color ?? 0xFFFFc107;
   }
   Tag.fromDb(this.db);
 
+  DbTag db;
+  bool selected = false;
+
+  @override
   String toString() => '< Tag | ${db.name} >';
 
-  delete() async => await this.db.delete();
+  Future<BoolResult> delete() async => await db.delete();
 
-  static all({@required TagGroup tagGroup}) async {
-    var dbTagList = await tagGroup.db
+  static Future<List<Tag>> all({@required TagGroup tagGroup}) async {
+    final List<DbTag> dbTagList = await tagGroup.db
         .getDbTags()
         .orderBy('sortOrder')
         .orderBy('name')
         .toList();
-    var tags = dbTagList.map((dbTag) => Tag.fromDb(dbTag)).toList();
+    final List<Tag> tags =
+        dbTagList.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
     return tags;
   }
 
-  static autoPowerTag({
+  static Future<Tag> autoPowerTag({
     @required Athlete athlete,
     @required String name,
     @required int sortOrder,
@@ -44,7 +47,7 @@ class Tag extends ChangeNotifier {
   }) async {
     DbTag dbPowerTag;
 
-    TagGroup autoPowerTagGroup =
+    final TagGroup autoPowerTagGroup =
         await TagGroup.autoPowerTagGroup(athlete: athlete);
     dbPowerTag = await DbTag()
         .select()
@@ -67,7 +70,7 @@ class Tag extends ChangeNotifier {
     return Tag.fromDb(dbPowerTag);
   }
 
-  static autoHeartRateTag({
+  static Future<Tag> autoHeartRateTag({
     @required Athlete athlete,
     @required String name,
     @required int sortOrder,
@@ -75,7 +78,7 @@ class Tag extends ChangeNotifier {
   }) async {
     DbTag dbHeartRateTag;
 
-    TagGroup autoHeartRateTagGroup =
+    final TagGroup autoHeartRateTagGroup =
         await TagGroup.autoHeartRateTagGroup(athlete: athlete);
     dbHeartRateTag = await DbTag()
         .select()

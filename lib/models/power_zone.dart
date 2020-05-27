@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class PowerZone extends ChangeNotifier {
-  DbPowerZone db;
-
   PowerZone(
       {@required PowerZoneSchema powerZoneSchema,
       String name,
@@ -15,7 +14,7 @@ class PowerZone extends ChangeNotifier {
       int color}) {
     db = DbPowerZone()
       ..powerZoneSchemataId = powerZoneSchema.db.id
-      ..name = name ?? "My Zone"
+      ..name = name ?? 'My Zone'
       ..lowerLimit = lowerLimit ?? 70
       ..upperLimit = upperLimit ?? 100
       ..lowerPercentage = lowerPercentage ?? 0
@@ -30,17 +29,21 @@ class PowerZone extends ChangeNotifier {
 
   PowerZone.fromDb(this.db);
 
+  DbPowerZone db;
+
+  @override
   String toString() => '< PowerZone | ${db.name} | ${db.lowerLimit} >';
 
-  delete() async => await this.db.delete();
+  Future<BoolResult> delete() async => await db.delete();
 
-  static all({@required PowerZoneSchema powerZoneSchema}) async {
-    var dbPowerZoneList = await powerZoneSchema.db
+  static Future<List<PowerZone>> all(
+      {@required PowerZoneSchema powerZoneSchema}) async {
+    final List<DbPowerZone> dbPowerZoneList = await powerZoneSchema.db
         .getDbPowerZones()
         .orderByDesc('lowerlimit')
         .toList();
-    var powerZones = dbPowerZoneList
-        .map((dbPowerZone) => PowerZone.fromDb(dbPowerZone))
+    final List<PowerZone> powerZones = dbPowerZoneList
+        .map((DbPowerZone dbPowerZone) => PowerZone.fromDb(dbPowerZone))
         .toList();
     return powerZones;
   }

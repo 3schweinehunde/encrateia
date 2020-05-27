@@ -11,27 +11,27 @@ import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 
 class ActivityEcorChart extends StatelessWidget {
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-  final double weight;
-
-  ActivityEcorChart({
+  const ActivityEcorChart({
     this.records,
     @required this.activity,
     @required this.weight,
     @required this.athlete,
   });
 
+  final RecordList<Event> records;
+  final Activity activity;
+  final Athlete athlete;
+  final double weight;
+
   @override
   Widget build(BuildContext context) {
-    var smoothedRecords = records.toDoubleDataPoints(
+    final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
       attribute: LapDoubleAttr.ecor,
       amount: athlete.db.recordAggregationCount,
       weight: weight,
     );
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<dynamic, num>> data = <Series<dynamic, num>>[
       Series<DoublePlotPoint, int>(
         id: 'Ecor',
         colorFn: (_, __) => MaterialPalette.gray.shade700,
@@ -45,7 +45,7 @@ class ActivityEcorChart extends StatelessWidget {
       future: activity.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          var laps = snapshot.data;
+          final List<Lap> laps = snapshot.data;
 
           return Container(
             height: 300,
@@ -54,12 +54,12 @@ class ActivityEcorChart extends StatelessWidget {
               maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Ecor (W s/kg m)',
-              measureTickProviderSpec: BasicNumericTickProviderSpec(
+              measureTickProviderSpec: const BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: false,
                   desiredTickCount: 6),
               domainTickProviderSpec:
-              BasicNumericTickProviderSpec(desiredTickCount: 6),
+              const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
         } else

@@ -9,13 +9,13 @@ import 'package:encrateia/models/activity.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ActivityTagWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityTagWidget({
+  const ActivityTagWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityTagWidgetState createState() => _ActivityTagWidgetState();
@@ -31,20 +31,22 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     if (tagGroups == null)
-      return Center(child: Text("Loading ..."));
+      return const Center(
+        child: Text('Loading ...'),
+      );
     else
       return StaggeredGridView.countBuilder(
         crossAxisCount:
-        MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
         itemCount: tagGroups.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups[index].db.name + "\n"),
+            title: Text(tagGroups[index].db.name + '\n'),
             subtitle: Wrap(
               spacing: 15,
-              children: [
+              children: <Widget>[
                 for (Tag tag in tagGroups[index].cachedTags)
                   InputChip(
                     isEnabled: tag.db.system != true,
@@ -60,7 +62,7 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
                     avatar: CircleAvatar(
                       backgroundColor: Color(tag.db.color ?? 99999),
                     ),
-                    onSelected: (selected) {
+                    onSelected: (bool selected) {
                       setState(() {
                         if (selected) {
                           ActivityTagging.createBy(
@@ -80,19 +82,19 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
                     selectedColor: Color(tag.db.color ?? 99999),
                     backgroundColor: MyColor.white,
                     elevation: 3,
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                   )
               ],
             ),
           ),
         ),
-        staggeredTileBuilder: (_) => StaggeredTile.fit(1),
+        staggeredTileBuilder: (_) => const StaggeredTile.fit(1),
         mainAxisSpacing: 3,
         crossAxisSpacing: 3,
       );
   }
 
-  getData() async {
+  Future<void> getData() async {
     tagGroups = await TagGroup.includingActivityTaggings(
       athlete: widget.athlete,
       activity: widget.activity,

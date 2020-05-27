@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class HeartRateZone extends ChangeNotifier {
-  DbHeartRateZone db;
-
   HeartRateZone(
       {@required HeartRateZoneSchema heartRateZoneSchema,
       String name,
@@ -15,7 +14,7 @@ class HeartRateZone extends ChangeNotifier {
       int color}) {
     db = DbHeartRateZone()
       ..heartRateZoneSchemataId = heartRateZoneSchema.db.id
-      ..name = name ?? "My Zone"
+      ..name = name ?? 'My Zone'
       ..lowerLimit = lowerLimit ?? 70
       ..upperLimit = upperLimit ?? 100
       ..lowerPercentage = lowerPercentage ?? 0
@@ -31,20 +30,23 @@ class HeartRateZone extends ChangeNotifier {
   }
   HeartRateZone.fromDb(this.db);
 
+  DbHeartRateZone db;
+
+  @override
   String toString() => '< HeartRateZone | ${db.name} | ${db.lowerLimit} >';
 
-  delete() async {
-    await this.db.delete();
-  }
+  Future<BoolResult> delete() async => await db.delete();
 
   static Future<List<HeartRateZone>> all(
       {@required HeartRateZoneSchema heartRateZoneSchema}) async {
-    var dbHeartRateZoneList = await heartRateZoneSchema.db
+    final List<DbHeartRateZone> dbHeartRateZoneList = await heartRateZoneSchema
+        .db
         .getDbHeartRateZones()
         .orderByDesc('lowerlimit')
         .toList();
-    var heartRateZones = dbHeartRateZoneList
-        .map((dbHeartRateZone) => HeartRateZone.fromDb(dbHeartRateZone))
+    final List<HeartRateZone> heartRateZones = dbHeartRateZoneList
+        .map((DbHeartRateZone dbHeartRateZone) =>
+            HeartRateZone.fromDb(dbHeartRateZone))
         .toList();
     return heartRateZones;
   }

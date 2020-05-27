@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class Weight extends ChangeNotifier {
-  DbWeight db;
-
   Weight({@required Athlete athlete}) {
     db = DbWeight()
       ..athletesId = athlete.db.id
@@ -13,29 +12,33 @@ class Weight extends ChangeNotifier {
   }
   Weight.fromDb(this.db);
 
+  DbWeight db;
+
+  @override
   String toString() => '< Weight | ${db.date} | ${db.value} >';
 
-  delete() async => await this.db.delete();
+  Future<BoolResult> delete() async => await db.delete();
 
-  static all({@required Athlete athlete}) async {
-    var dbWeightList =
+  static Future<List<Weight>> all({@required Athlete athlete}) async {
+    final List<DbWeight> dbWeightList =
         await athlete.db.getDbWeights().orderByDesc('date').toList();
-    var weights =
-        dbWeightList.map((dbWeight) => Weight.fromDb(dbWeight)).toList();
+    final List<Weight> weights = dbWeightList
+        .map((DbWeight dbWeight) => Weight.fromDb(dbWeight))
+        .toList();
     return weights;
   }
 
-  static getBy({int athletesId, DateTime date}) async {
-    var dbWeights = await DbWeight()
+  static Future<Weight> getBy({int athletesId, DateTime date}) async {
+    final List<DbWeight> dbWeights = await DbWeight()
         .select()
         .athletesId
         .equals(athletesId)
         .and
         .date
         .lessThanOrEquals(date)
-        .orderByDesc("date")
+        .orderByDesc('date')
         .top(1)
         .toList();
-    if (dbWeights.length != 0) return Weight.fromDb(dbWeights.first);
+    return dbWeights.isNotEmpty ? Weight.fromDb(dbWeights.first) : null;
   }
 }

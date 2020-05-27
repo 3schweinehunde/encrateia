@@ -11,9 +11,9 @@ import 'package:csv/csv.dart';
 import 'package:intl/intl.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
-  final Athlete athlete;
+  const AthleteBodyWeightWidget({this.athlete});
 
-  AthleteBodyWeightWidget({this.athlete});
+  final Athlete athlete;
 
   @override
   _AthleteBodyWeightWidgetState createState() =>
@@ -21,7 +21,7 @@ class AthleteBodyWeightWidget extends StatefulWidget {
 }
 
 class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
-  List<Weight> weights = [];
+  List<Weight> weights = <Weight>[];
   int offset = 0;
   int rows;
 
@@ -32,35 +32,35 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     if (weights != null) {
-      if (weights.length > 0) {
+      if (weights.isNotEmpty) {
         rows = (weights.length < 8) ? weights.length : 8;
         return ListView(
           children: <Widget>[
             DataTable(
               headingRowHeight: kMinInteractiveDimension * 0.80,
               dataRowHeight: kMinInteractiveDimension * 0.80,
-              columns: <DataColumn>[
-                DataColumn(label: Text("Date")),
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Date')),
                 DataColumn(
-                  label: Text("Weight in kg"),
+                  label: Text('Weight in kg'),
                   numeric: true,
                 ),
-                DataColumn(label: Text("Edit"))
+                DataColumn(label: Text('Edit'))
               ],
               rows: weights.sublist(offset, offset + rows).map((Weight weight) {
                 return DataRow(
                   key: Key(weight.db.id.toString()),
-                  cells: [
+                  cells: <DataCell>[
                     DataCell(
-                        Text(DateFormat("d MMM yyyy").format(weight.db.date))),
+                        Text(DateFormat('d MMM yyyy').format(weight.db.date))),
                     DataCell(Text(weight.db.value.toString())),
                     DataCell(MyIcon.edit, onTap: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddWeightScreen(weight: weight),
+                          builder: (BuildContext context) => AddWeightScreen(weight: weight),
                         ),
                       );
                       getData();
@@ -70,41 +70,41 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
               }).toList(),
             ),
             Padding(
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: Text(
-                "${offset + 1} - ${offset + rows} "
-                "of ${weights.length} ",
+                '${offset + 1} - ${offset + rows} '
+                'of ${weights.length} ',
                 textAlign: TextAlign.right,
               ),
             ),
             Row(
               children: <Widget>[
-                Spacer(),
+                const Spacer(),
                 MyButton.add(
-                    child: Text("New weighting"),
+                    child: const Text('New weighting'),
                     onPressed: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddWeightScreen(
+                          builder: (BuildContext context) => AddWeightScreen(
                             weight: Weight(athlete: widget.athlete),
                           ),
                         ),
                       );
                       getData();
                     }),
-                Spacer(),
+                const Spacer(),
                 MyButton.navigate(
-                  child: Text("<<"),
+                  child: const Text('<<'),
                   onPressed: (offset == 0)
                       ? null
                       : () => setState(() {
                             offset > 8 ? offset = offset - rows : offset = 0;
                           }),
                 ),
-                Spacer(),
+                const Spacer(),
                 MyButton.navigate(
-                  child: Text(">>"),
+                  child: const Text('>>'),
                   onPressed: (offset + rows == weights.length)
                       ? null
                       : () => setState(() {
@@ -113,7 +113,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                                 : offset = weights.length - rows;
                           }),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
           ],
@@ -121,7 +121,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
       } else {
         return ListView(
           children: <Widget>[
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(25.0),
               child: Text('''
 No weight data so far:
@@ -137,71 +137,74 @@ Or you can simply enter your current weight using the New Weighting button.
             ),
             Row(
               children: <Widget>[
-                Spacer(),
+                const Spacer(),
                 RaisedButton(
                   // MyIcon.downloadLocal,
                   color: Colors.orange,
-                  child: Text("Import Weights"),
+                  child: const Text('Import Weights'),
                   onPressed: () => importWeights(),
                 ),
-                Spacer(),
+                const Spacer(),
                 RaisedButton(
                     color: Colors.green,
-                    child: Text("New weighting"),
+                    child: const Text('New weighting'),
                     onPressed: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddWeightScreen(
+                          builder: (BuildContext context) => AddWeightScreen(
                             weight: Weight(athlete: widget.athlete),
                           ),
                         ),
                       );
                       getData();
                     }),
-                Spacer(),
+                const Spacer(),
               ],
             )
           ],
         );
       }
     } else {
-      return Center(child: Text("loading"));
+      return const Center(
+        child: Text('loading'),
+      );
     }
   }
 
-  getData() async {
-    Athlete athlete = widget.athlete;
+  Future<void> getData() async {
+    final Athlete athlete = widget.athlete;
     weights = await athlete.weights;
     setState(() {});
   }
 
-  importWeights() async {
+  Future<void> importWeights() async {
     Directory directory;
     Weight weight;
 
     if (Platform.isAndroid) {
-      var directories = await getExternalStorageDirectories();
+      final List<Directory> directories = await getExternalStorageDirectories();
       directory = directories[0];
     } else {
       directory = await getApplicationDocumentsDirectory();
     }
-    var pathToFile = directory.path + "/weights.csv";
-    var isFile = await FileSystemEntity.isFile(pathToFile);
+    final String pathToFile = directory.path + '/weights.csv';
+    // ignore: avoid_slow_async_io
+    final bool isFile = await FileSystemEntity.isFile(pathToFile);
     if (isFile == true) {
-      var input = File(pathToFile).openRead();
-      final weightings = await input
+      final Stream<List<int>> input = File(pathToFile).openRead();
+      final List<List<dynamic>> weightings = await input
           .transform(utf8.decoder)
-          .transform(CsvToListConverter(eol: "\n"))
+          .transform(const CsvToListConverter(eol: '\n'))
           .toList();
-      for (List weighting in weightings) {
+      for (final List<dynamic> weighting in weightings) {
         weight = Weight(athlete: widget.athlete);
         weight.db.date = DateTime.utc(
-          int.parse(weighting[0].split("-")[0]),
-          int.parse(weighting[0].split("-")[1]),
-          int.parse(weighting[0].split("-")[2]),
+          int.parse((weighting[0] as String).split('-')[0]),
+          int.parse((weighting[0] as String).split('-')[1]),
+          int.parse((weighting[0] as String).split('-')[2]),
         );
-        weight.db.value = weighting[1].toDouble();
+        weight.db.value = double.parse(weighting[1] as String);
         await weight.db.save();
       }
       await getData();

@@ -1,9 +1,9 @@
 extension DurationFormatters on num {
-  toStringOrDashes(int precision) {
+  String toStringOrDashes(int precision) {
     if (this == -1 || this == null) {
-      return "- - -";
+      return '- - -';
     } else {
-      return this.toStringAsFixed(precision);
+      return toStringAsFixed(precision);
     }
   }
 }

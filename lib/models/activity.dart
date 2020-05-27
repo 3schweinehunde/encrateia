@@ -1,10 +1,15 @@
+import 'dart:developer';
+import 'dart:io';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/strava_fit_download.dart';
+// ignore: implementation_imports
+import 'package:fit_parser/src/value.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
 import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';
-import 'package:strava_flutter/Models/activity.dart' as StravaActivity;
+import 'package:strava_flutter/Models/activity.dart' as strava_activity;
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
@@ -14,34 +19,18 @@ import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
-import 'dart:developer';
 import 'package:intl/intl.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'dart:io';
 import 'activity_tagging.dart';
 import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';
 
 class Activity extends ChangeNotifier {
-  DbActivity db;
-  List<Event> _records;
-  List<Lap> _laps;
-  double glidingMeasureAttribute;
-  double weight;
-  PowerZoneSchema _powerZoneSchema;
-  PowerZone _powerZone;
-  HeartRateZone _heartRateZone;
-  HeartRateZoneSchema _heartRateZoneSchema;
-
-  // intermediate data structures used for parsing
-  Lap currentLap;
-  List<Event> eventsForCurrentLap;
-
   Activity();
   Activity.fromDb(this.db);
 
   Activity.fromStrava({
-    StravaActivity.SummaryActivity summaryActivity,
+    strava_activity.SummaryActivity summaryActivity,
     Athlete athlete,
   }) {
     db = DbActivity()
@@ -57,20 +46,35 @@ class Activity extends ChangeNotifier {
     db = DbActivity()
       ..athletesId = athlete.db.id
       ..stravaId = DateTime.now().millisecondsSinceEpoch
-      ..name = "t.b.d.";
+      ..name = 't.b.d.';
   }
 
+  DbActivity db;
+  List<Event> _records;
+  List<Lap> _laps;
+  double glidingMeasureAttribute;
+  double weight;
+  PowerZoneSchema _powerZoneSchema;
+  PowerZone _powerZone;
+  HeartRateZone _heartRateZone;
+  HeartRateZoneSchema _heartRateZoneSchema;
+
+  // intermediate data structures used for parsing
+  Lap currentLap;
+  List<Event> eventsForCurrentLap;
+
+  @override
   String toString() => '< Activity | ${db.name} | ${db.startTime} >';
   Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
 
-  getAttribute(ActivityAttr activityAttr) {
+  dynamic getAttribute(ActivityAttr activityAttr) {
     switch (activityAttr) {
       case ActivityAttr.avgPower:
         return db.avgPower;
       case ActivityAttr.ecor:
-        return (db.avgPower / db.avgSpeed / weight);
+        return db.avgPower / db.avgSpeed / weight;
       case ActivityAttr.avgPowerPerHeartRate:
-        return (db.avgPower / db.avgHeartRate);
+        return db.avgPower / db.avgHeartRate;
       case ActivityAttr.avgSpeedPerHeartRate:
         return 100 * (db.avgSpeed / db.avgHeartRate);
       case ActivityAttr.avgPowerRatio:
@@ -84,113 +88,107 @@ class Activity extends ChangeNotifier {
     }
   }
 
-  download({@required Athlete athlete}) async {
+  Future<void> download({@required Athlete athlete}) async {
     await StravaFitDownload.byId(id: db.stravaId.toString(), athlete: athlete);
-    setState("downloaded");
+    setState('downloaded');
   }
 
-  static importFromLocalDirectory({Athlete athlete}) async {
+  static Future<void> importFromLocalDirectory({Athlete athlete}) async {
     if (Platform.isAndroid) {
-      var directories = await getExternalStorageDirectories();
-      var localDir = directories[0];
-      var appDocDir = await getApplicationDocumentsDirectory();
+      final List<Directory> directories = await getExternalStorageDirectories();
+      final Directory localDir = directories[0];
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
 
-      var entityStream = localDir.list(
+      final Stream<FileSystemEntity> entityStream = localDir.list(
         recursive: false,
         followLinks: false,
       );
 
-      await for (var entity in entityStream) {
-        var activity = Activity.fromLocalDirectory(athlete: athlete);
-        var isFile = await FileSystemEntity.isFile(entity.path);
+      await for (final FileSystemEntity entity in entityStream) {
+        final Activity activity = Activity.fromLocalDirectory(athlete: athlete);
+        // ignore: avoid_slow_async_io
+        final bool isFile = await FileSystemEntity.isFile(entity.path);
         if (isFile == true && entity.path.endsWith('.fit')) {
-          var sourceFile = File(entity.path);
+          final File sourceFile = File(entity.path);
           await sourceFile.copy(
-              appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
+              appDocDir.path + '/' + activity.db.stravaId.toString() + '.fit');
           sourceFile.delete();
-          await activity.setState("downloaded");
+          await activity.setState('downloaded');
         }
       }
     } else {
-      var appDocDir = await getApplicationDocumentsDirectory();
-      var entityStream = appDocDir.list(
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final Stream<FileSystemEntity> entityStream = appDocDir.list(
         recursive: false,
         followLinks: false,
       );
 
-      await for (var entity in entityStream) {
-        var activity = Activity.fromLocalDirectory(athlete: athlete);
-        var isFile = await FileSystemEntity.isFile(entity.path);
+      await for (final FileSystemEntity entity in entityStream) {
+        final Activity activity = Activity.fromLocalDirectory(athlete: athlete);
+        // ignore: avoid_slow_async_io
+        final bool isFile = await FileSystemEntity.isFile(entity.path);
         if (isFile == true && entity.path.endsWith('.fit')) {
-          var sourceFile = File(entity.path);
+          final File sourceFile = File(entity.path);
           await sourceFile.rename(
-              appDocDir.path + "/" + activity.db.stravaId.toString() + ".fit");
-          await activity.setState("downloaded");
+              appDocDir.path + '/' + activity.db.stravaId.toString() + '.fit');
+          await activity.setState('downloaded');
         }
       }
     }
   }
 
-  setState(String state) async {
+  Future<void> setState(String state) async {
     db.state = state;
     await db.save();
     notifyListeners();
   }
 
-  distanceString() {
+  String distanceString() {
     return db.totalDistance == null
-        ? "- - -"
-        : (db.totalDistance / 1000).toStringAsFixed(2) + " km";
+        ? '- - -'
+        : (db.totalDistance / 1000).toStringAsFixed(2) + ' km';
   }
 
-  heartRateString() {
+  String heartRateString() {
     return (db.avgHeartRate == null || db.avgHeartRate == 255)
-        ? "- - -"
-        : db.avgHeartRate.toString() + " bpm";
+        ? '- - -'
+        : db.avgHeartRate.toString() + ' bpm';
   }
 
-  averagePowerString() {
+  String averagePowerString() {
     return (db.avgPower == null || db.avgPower == -1)
-        ? "- - -"
-        : db.avgPower.toStringAsFixed(1) + " W";
+        ? '- - -'
+        : db.avgPower.toStringAsFixed(1) + ' W';
   }
 
-  timeString() {
+  String timeString() {
     return db.timeCreated == null
-        ? "- - -"
-        : DateFormat("H:mm").format(db.timeCreated);
+        ? '- - -'
+        : DateFormat('H:mm').format(db.timeCreated);
   }
 
-  dateString() {
+  String dateString() {
     return db.timeCreated == null
-        ? "- - -"
-        : DateFormat("d MMM yy").format(db.timeCreated);
+        ? '- - -'
+        : DateFormat('d MMM yy').format(db.timeCreated);
   }
 
-  shortDateString() {
+  String shortDateString() {
     return db.timeCreated == null
-        ? "- - -"
-        : DateFormat("d.M.").format(db.timeCreated);
+        ? '- - -'
+        : DateFormat('d.M.').format(db.timeCreated);
   }
 
-  paceString() => db.avgSpeed.toPace() + "/km";
+  String paceString() => db.avgSpeed.toPace() + '/km';
 
-  Future<List<Event>> get records async {
-    if (_records == null) {
-      _records = await Event.recordsByActivity(activity: this);
-    }
-    return _records;
-  }
+  Future<List<Event>> get records async =>
+      _records ??= await Event.recordsByActivity(activity: this);
 
-  Future<List<Lap>> get laps async {
-    if (_laps == null) {
-      _laps = await Lap.all(activity: this);
-    }
-    return _laps;
-  }
+  Future<List<Lap>> get laps async => _laps ??= await Lap.all(activity: this);
 
-  recalculateAverages() async {
-    var recordList = RecordList(await this.records);
+  Future<bool> recalculateAverages() async {
+    final RecordList<Event> recordList = RecordList(<Event>[]);
+    recordList.addAll(await records);
     db
       ..avgPower = recordList.calculateAveragePower()
       ..sdevPower = recordList.calculateSdevPower()
@@ -213,9 +211,9 @@ class Activity extends ChangeNotifier {
       ..avgStrideRatio = recordList.calculateAverageStrideRatio()
       ..sdevStrideRatio = recordList.calculateSdevStrideRatio();
 
-    var laps = await this.laps;
-    for (Lap lap in laps) {
-      await lap.calculateAverages();
+    final List<Lap> laps = await this.laps;
+    for (final Lap lap in laps) {
+      await lap.averages();
     }
     await db.save();
     return true;
@@ -225,9 +223,10 @@ class Activity extends ChangeNotifier {
     int counter = 0;
     int percentage;
 
-    var appDocDir = await getApplicationDocumentsDirectory();
-    var fitFile = FitFile(path: appDocDir.path + '/${db.stravaId}.fit').parse();
-    print("Parsing .fit-File for »${db.name}« done.");
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final FitFile fitFile =
+        FitFile(path: appDocDir.path + '/${db.stravaId}.fit').parse();
+    print('Parsing .fit-File for »${db.name}« done.');
 
     // delete left overs from prior runs:
     await db.getDbEvents().delete();
@@ -248,10 +247,10 @@ class Activity extends ChangeNotifier {
       ..sdevVerticalOscillation = null;
     await db.save();
 
-    int numberOfMessages = fitFile.dataMessages.length;
+    final int numberOfMessages = fitFile.dataMessages.length;
     await resetCurrentLap();
 
-    for (DataMessage dataMessage in fitFile.dataMessages) {
+    for (final DataMessage dataMessage in fitFile.dataMessages) {
       counter++;
       percentage = await handleDataMessage(dataMessage: dataMessage);
 
@@ -261,15 +260,15 @@ class Activity extends ChangeNotifier {
       }
     }
 
-    db.state = "persisted";
+    db.state = 'persisted';
     await recalculateAverages();
     await db.save();
     notifyListeners();
-    print("Activity data for »${db.name}« stored in database.");
+    print('Activity data for »${db.name}« stored in database.');
     yield 100;
   }
 
-  handleDataMessage({DataMessage dataMessage}) async {
+  Future<int> handleDataMessage({DataMessage dataMessage}) async {
     if (dataMessage.definitionMessage.globalMessageName == null) {
       switch (dataMessage.definitionMessage.globalMessageNumber) {
         // Garmin Forerunner 235uses global message numbers, which are not specified:
@@ -291,47 +290,48 @@ class Activity extends ChangeNotifier {
         case 327:
           break;
         default:
-          print("Message number "
-              "${dataMessage.definitionMessage.globalMessageNumber} "
-              "unknown.");
+          print('Message number ' +
+              dataMessage.definitionMessage.globalMessageNumber.toString() +
+              'unknown.');
           debugger();
       }
     } else {
       switch (dataMessage.definitionMessage.globalMessageName) {
         case 'developer_data_id':
-        case "device_info":
-        case "device_settings":
-        case "field_description":
-        case "file_creator":
-        case "user_profile":
-        case "zones_target":
+        case 'device_info':
+        case 'device_settings':
+        case 'field_description':
+        case 'file_creator':
+        case 'user_profile':
+        case 'zones_target':
           break; // we are currently not storing these kinds of messages
 
-        case "file_id":
+        case 'file_id':
           db
-            ..serialNumber = dataMessage.get('serial_number')?.round()
-            ..timeCreated = dateTimeFromStrava(dataMessage.get('time_created'));
+            ..serialNumber = dataMessage.get('serial_number')?.round() as int
+            ..timeCreated =
+                dateTimeFromStrava(dataMessage.get('time_created') as double);
           await db.save();
           break;
 
-        case "sport":
+        case 'sport':
           db
-            ..sportName = dataMessage.get('name')
-            ..sport = dataMessage.get('sport')
-            ..subSport = dataMessage.get('sub_sport');
+            ..sportName = dataMessage.get('name') as String
+            ..sport = dataMessage.get('sport') as String
+            ..subSport = dataMessage.get('sub_sport') as String;
           await db.save();
           break;
 
-        case "event":
-          var event = Event(
+        case 'event':
+          final Event event = Event(
             dataMessage: dataMessage,
             activity: this,
           );
           eventsForCurrentLap.add(event);
           break;
 
-        case "record":
-          var event = Event.fromRecord(
+        case 'record':
+          final Event event = Event.fromRecord(
             dataMessage: dataMessage,
             activity: this,
             lapsId: currentLap.db.id,
@@ -339,123 +339,134 @@ class Activity extends ChangeNotifier {
           eventsForCurrentLap.add(event);
           break;
 
-        case "lap":
-          var event = Event.fromLap(
+        case 'lap':
+          final Event event = Event.fromLap(
             dataMessage: dataMessage,
             activity: this,
             lapsId: currentLap.db.id,
           );
           eventsForCurrentLap.add(event);
 
-          var lap = Lap.fromLap(
+          final Lap lap = Lap.fromLap(
             dataMessage: dataMessage,
             activity: this,
             lap: currentLap,
           );
           await lap.db.save();
           await DbEvent().upsertAll(eventsForCurrentLap
-              .where((event) => event.db != null)
-              .map((event) => event.db)
+              .where((Event event) => event.db != null)
+              .map((Event event) => event.db)
               .toList());
 
           await resetCurrentLap();
           break;
 
-        case "segment_lap":
-        case "gps_metadata":
-        case "training_file":
-        case "workout":
-        case "workout_step":
+        case 'segment_lap':
+        case 'gps_metadata':
+        case 'training_file':
+        case 'workout':
+        case 'workout_step':
           break;
 
-        case "session":
-          var startTime = dateTimeFromStrava(dataMessage.get('start_time'));
-          if (db.name == "t.b.d.")
+        case 'session':
+          final DateTime startTime =
+              dateTimeFromStrava(dataMessage.get('start_time') as double);
+          if (db.name == 't.b.d.')
             db
               ..name =
-                  "Activity on " + DateFormat.yMMMMd('en_US').format(startTime);
-
-          db
-            ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp'))
-            ..startTime = startTime
-            ..startPositionLat = dataMessage.get('start_position_lat')
-            ..startPositionLong = dataMessage.get('start_position_long')
-            ..totalElapsedTime = dataMessage.get('total_elapsed_time')?.round()
-            ..totalTimerTime = dataMessage.get('total_timer_time')?.round()
-            ..distance =
-                db.distance ?? dataMessage.get('total_distance')?.round()
-            ..totalDistance = dataMessage.get('total_distance')?.round()
-            ..totalStrides = dataMessage.get('total_strides')?.round()
-            ..necLat = dataMessage.get('nec_lat')
-            ..necLong = dataMessage.get('nec_long')
-            ..swcLat = dataMessage.get('swc_lat')
-            ..swcLong = dataMessage.get('swc_long')
-            ..totalCalories = dataMessage.get('total_calories')?.round()
-            ..avgSpeed = dataMessage.get('avg_speed')
-            ..maxSpeed = dataMessage.get('max_speed')
-            ..totalAscent = dataMessage.get('total_ascent')?.round()
-            ..totalDescent = dataMessage.get('total_descent')?.round()
-            ..maxRunningCadence =
-                dataMessage.get('max_running_cadence')?.round()
-            ..firstLapIndex = dataMessage.get('first_lap_index')?.round()
-            ..numLaps = dataMessage.get('num_laps')?.round()
-            ..event = dataMessage.get('event')?.toString()
-            ..type = db.type ?? dataMessage.get('event_type')
-            ..eventType = dataMessage.get('event_type')
-            ..eventGroup = dataMessage.get('event_group')?.round()
-            ..trigger = dataMessage.get('trigger')
-            ..avgVerticalOscillation =
-                dataMessage.get('avg_vertical_oscillation')
-            ..avgStanceTimePercent = dataMessage.get('avg_stance_time_percent')
-            ..avgStanceTime = dataMessage.get('avg_stance_time')
-            ..sport = dataMessage.get('sport')
-            ..subSport = dataMessage.get('sub_sport')
-            ..avgHeartRate = dataMessage.get('avg_heart_rate')?.round()
-            ..maxHeartRate = dataMessage.get('max_heart_rate')?.round()
-            ..avgRunningCadence = dataMessage.get('avg_running_cadence')
-            ..totalTrainingEffect =
-                dataMessage.get('total_training_effect')?.round()
-            ..avgTemperature = dataMessage.get('avg_temperature')?.round()
-            ..maxTemperature = dataMessage.get('max_temperature')?.round()
-            ..avgFractionalCadence = dataMessage.get('avg_fractional_cadence')
-            ..maxFractionalCadence = dataMessage.get('max_fractional_cadence')
-            ..totalFractionalCycles =
-                dataMessage.get('total_fractional_cycles');
+                  'Activity on ' + DateFormat.yMMMMd('en_US').format(startTime)
+              ..timeStamp =
+                  dateTimeFromStrava(dataMessage.get('timestamp') as double)
+              ..startTime = startTime
+              ..startPositionLat =
+                  dataMessage.get('start_position_lat') as double
+              ..startPositionLong =
+                  dataMessage.get('start_position_long') as double
+              ..totalElapsedTime =
+                  dataMessage.get('total_elapsed_time')?.round() as int
+              ..totalTimerTime =
+                  dataMessage.get('total_timer_time')?.round() as int
+              ..distance = (db.distance ??
+                  dataMessage.get('total_distance')?.round()) as int
+              ..totalDistance =
+                  dataMessage.get('total_distance')?.round() as int
+              ..totalStrides = dataMessage.get('total_strides')?.round() as int
+              ..necLat = dataMessage.get('nec_lat') as double
+              ..necLong = dataMessage.get('nec_long') as double
+              ..swcLat = dataMessage.get('swc_lat') as double
+              ..swcLong = dataMessage.get('swc_long') as double
+              ..totalCalories =
+                  dataMessage.get('total_calories')?.round() as int
+              ..avgSpeed = dataMessage.get('avg_speed') as double
+              ..maxSpeed = dataMessage.get('max_speed') as double
+              ..totalAscent = dataMessage.get('total_ascent')?.round() as int
+              ..totalDescent = dataMessage.get('total_descent')?.round() as int
+              ..maxRunningCadence =
+                  dataMessage.get('max_running_cadence')?.round() as int
+              ..firstLapIndex =
+                  dataMessage.get('first_lap_index')?.round() as int
+              ..numLaps = dataMessage.get('num_laps')?.round() as int
+              ..event = dataMessage.get('event')?.toString()
+              ..type = (db.type ?? dataMessage.get('event_type')) as String
+              ..eventType = dataMessage.get('event_type') as String
+              ..eventGroup = dataMessage.get('event_group')?.round() as int
+              ..trigger = dataMessage.get('trigger') as String
+              ..avgVerticalOscillation =
+                  dataMessage.get('avg_vertical_oscillation') as double
+              ..avgStanceTimePercent =
+                  dataMessage.get('avg_stance_time_percent') as double
+              ..avgStanceTime = dataMessage.get('avg_stance_time') as double
+              ..sport = dataMessage.get('sport') as String
+              ..subSport = dataMessage.get('sub_sport') as String
+              ..avgHeartRate = dataMessage.get('avg_heart_rate')?.round() as int
+              ..maxHeartRate = dataMessage.get('max_heart_rate')?.round() as int
+              ..avgRunningCadence =
+                  dataMessage.get('avg_running_cadence') as double
+              ..totalTrainingEffect =
+                  dataMessage.get('total_training_effect')?.round() as int
+              ..avgTemperature =
+                  dataMessage.get('avg_temperature')?.round() as int
+              ..maxTemperature =
+                  dataMessage.get('max_temperature')?.round() as int
+              ..avgFractionalCadence =
+                  dataMessage.get('avg_fractional_cadence') as double
+              ..maxFractionalCadence =
+                  dataMessage.get('max_fractional_cadence') as double
+              ..totalFractionalCycles =
+                  dataMessage.get('total_fractional_cycles') as double;
           await db.save();
           break;
 
-        case "activity":
+        case 'activity':
           db
-            ..numSessions = dataMessage.get('num_sessions')?.round()
-            ..localTimestamp =
-                dateTimeFromStrava(dataMessage.get('local_timestamp'));
+            ..numSessions = dataMessage.get('num_sessions')?.round() as int
+            ..localTimestamp = dateTimeFromStrava(
+                dataMessage.get('local_timestamp') as double);
           await db.save();
           break;
 
         default:
-          print("Messages of type "
-              "${dataMessage.definitionMessage.globalMessageName} "
-              "are not implemented yet.");
-          print(dataMessage.values.map((v) => v.fieldName).toList());
+          print('Messages of type ' +
+              dataMessage.definitionMessage.globalMessageName +
+              'are not implemented yet.');
+          print(dataMessage.values.map((Value v) => v.fieldName).toList());
         // Use this debugger to implement additional message types!
         // debugger();
       }
     }
   }
 
-  resetCurrentLap() async {
+  Future<void> resetCurrentLap() async {
     currentLap = Lap();
     await currentLap.db.save();
-    eventsForCurrentLap = [];
+    eventsForCurrentLap = <Event>[];
   }
 
-  delete() async {
-    await this.db.delete();
-  }
+  Future<BoolResult> delete() async => await db.delete();
 
-  static queryStrava({Athlete athlete}) async {
-    var strava = Strava(true, secret);
-    final prompt = 'auto';
+  static Future<void> queryStrava({Athlete athlete}) async {
+    final Strava strava = Strava(true, secret);
+    const String prompt = 'auto';
 
     await strava.oauth(
         clientId,
@@ -463,62 +474,54 @@ class Activity extends ChangeNotifier {
         secret,
         prompt);
 
-    final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final startDate = now - athlete.db.downloadInterval * 86400;
+    final int now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final int startDate = now - athlete.db.downloadInterval * 86400;
 
-    List<StravaActivity.SummaryActivity> summaryActivities =
+    final List<strava_activity.SummaryActivity> summaryActivities =
         await strava.getLoggedInAthleteActivities(now, startDate);
 
     await Future.forEach(summaryActivities,
-        (StravaActivity.SummaryActivity summaryActivity) async {
-      var activity = Activity.fromStrava(
+        (strava_activity.SummaryActivity summaryActivity) async {
+      final Activity activity = Activity.fromStrava(
         summaryActivity: summaryActivity,
         athlete: athlete,
       );
 
-      var existingAlready = await DbActivity()
+      final List<DbActivity> existingAlready = await DbActivity()
           .select()
           .stravaId
           .equals(activity.db.stravaId)
           .toList();
-      if (existingAlready.length == 0) {
+      if (existingAlready.isEmpty) {
         await activity.db.save();
       }
     });
   }
 
   static Future<List<Activity>> all({@required Athlete athlete}) async {
-    var dbActivityList =
+    final List<DbActivity> dbActivityList =
         await athlete.db.getDbActivities().orderByDesc('stravaId').toList();
-    var activities = dbActivityList
-        .map((dbActivity) => Activity.fromDb(dbActivity))
+    final List<Activity> activities = dbActivityList
+        .map((DbActivity dbActivity) => Activity.fromDb(dbActivity))
         .toList();
     return activities;
   }
 
-  get powerZoneSchema async {
-    if (_powerZoneSchema == null) {
-      _powerZoneSchema = await PowerZoneSchema.getBy(
+  Future<PowerZoneSchema> get powerZoneSchema async =>
+      _powerZoneSchema ??= await PowerZoneSchema.getBy(
         athletesId: db.athletesId,
         date: db.timeCreated,
       );
-    }
-    return _powerZoneSchema;
-  }
 
-  get heartRateZoneSchema async {
-    if (_heartRateZoneSchema == null) {
-      _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
+  Future<HeartRateZoneSchema> get heartRateZoneSchema async =>
+      _heartRateZoneSchema ??= await HeartRateZoneSchema.getBy(
         athletesId: db.athletesId,
         date: db.timeCreated,
       );
-    }
-    return _heartRateZoneSchema;
-  }
 
-  get powerZone async {
+  Future<PowerZone> get powerZone async {
     if (_powerZone == null) {
-      var dbPowerZone = await DbPowerZone()
+      final DbPowerZone dbPowerZone = await DbPowerZone()
           .select()
           .powerZoneSchemataId
           .equals((await powerZoneSchema).db.id)
@@ -534,9 +537,9 @@ class Activity extends ChangeNotifier {
     return _powerZone;
   }
 
-  get heartRateZone async {
+  Future<HeartRateZone> get heartRateZone async {
     if (_heartRateZone == null) {
-      var dbHeartRateZone = await DbHeartRateZone()
+      final DbHeartRateZone dbHeartRateZone = await DbHeartRateZone()
           .select()
           .heartRateZoneSchemataId
           .equals((await heartRateZoneSchema).db.id)
@@ -553,10 +556,10 @@ class Activity extends ChangeNotifier {
     return _heartRateZone;
   }
 
-  autoTagger({@required Athlete athlete}) async {
-    var powerZone = await this.powerZone;
+  Future<void> autoTagger({@required Athlete athlete}) async {
+    final PowerZone powerZone = await this.powerZone;
     if (powerZone.db != null) {
-      Tag powerTag = await Tag.autoPowerTag(
+      final Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete,
         color: powerZone.db.color,
         sortOrder: powerZone.db.lowerLimit,
@@ -569,9 +572,9 @@ class Activity extends ChangeNotifier {
       );
     }
 
-    var heartRateZone = await this.heartRateZone;
+    final HeartRateZone heartRateZone = await this.heartRateZone;
     if (heartRateZone.db != null) {
-      Tag heartRateTag = await Tag.autoHeartRateTag(
+      final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete,
         color: heartRateZone.db.color,
         sortOrder: heartRateZone.db.lowerLimit,
@@ -584,7 +587,7 @@ class Activity extends ChangeNotifier {
       );
     }
 
-    for (Lap lap in await Lap.all(activity: this)) {
+    for (final Lap lap in await Lap.all(activity: this)) {
       await lap.autoTagger(athlete: athlete);
     }
   }

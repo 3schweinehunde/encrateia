@@ -1,9 +1,9 @@
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 
-class MyTheme {
+class MyTheme{
 
-  static call() {
+  static ThemeData call() {
     var redness = MyColor.primary.red;
     var greenness = MyColor.primary.green;
     var blueness = MyColor.primary.blue;

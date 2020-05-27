@@ -5,37 +5,40 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/widgets/charts/power_duration_chart.dart';
 
 class ActivityPowerDurationWidget extends StatelessWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityPowerDurationWidget({
+  const ActivityPowerDurationWidget({
     @required this.activity,
     @required this.athlete,
   });
 
+  final Activity activity;
+  final Athlete athlete;
+
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return FutureBuilder<List<Event>>(
       future: activity.records,
       builder: (BuildContext context, AsyncSnapshot<List<Event>> snapshot) {
         if (snapshot.hasData) {
-          var powerRecords = snapshot.data
-              .where((value) => value.db.power != null && value.db.power > 100)
+          final List<Event> powerRecords = snapshot.data
+              .where((Event value) =>
+                  value.db.power != null && value.db.power > 100)
               .toList();
 
-          if (powerRecords.length > 0) {
+          if (powerRecords.isNotEmpty) {
             return SingleChildScrollView(
               child: PowerDurationChart(records: powerRecords),
             );
           } else {
-            return Center(
-              child: Text("No power data available."),
+            return const Center(
+              child: Text('No power data available.'),
             );
           }
         } else {
           return Container(
             height: 100,
-            child: Center(child: Text("Loading")),
+            child: const Center(
+              child: Text('Loading'),
+            ),
           );
         }
       },
