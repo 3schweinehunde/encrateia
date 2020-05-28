@@ -69,7 +69,7 @@ class Lap {
       ..avgStanceTime = dataMessage.get('avg_stance_time') as double
       ..maxRunningCadence =
           (dataMessage.get('max_running_cadence') as double)?.round()
-      ..intensity = (dataMessage.get('intensity') as double)?.round()
+      ..intensity = dataMessage.get('intensity') as int
       ..lapTrigger = dataMessage.get('lap_trigger') as String
       ..avgTemperature = (dataMessage.get('avg_temperature') as double)?.round()
       ..maxTemperature = (dataMessage.get('max_temperature') as double)?.round()

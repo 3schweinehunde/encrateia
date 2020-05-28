@@ -308,7 +308,8 @@ class Activity extends ChangeNotifier {
 
         case 'file_id':
           db
-            ..serialNumber = (dataMessage.get('serial_number') as double)?.round()
+            ..serialNumber =
+                (dataMessage.get('serial_number') as double)?.round()
             ..timeCreated =
                 dateTimeFromStrava(dataMessage.get('time_created') as double);
           await db.save();
@@ -371,74 +372,73 @@ class Activity extends ChangeNotifier {
         case 'session':
           final DateTime startTime =
               dateTimeFromStrava(dataMessage.get('start_time') as double);
+
           if (db.name == 't.b.d.')
-            db
-              ..name =
-                  'Activity on ' + DateFormat.yMMMMd('en_US').format(startTime)
-              ..timeStamp =
-                  dateTimeFromStrava(dataMessage.get('timestamp') as double)
-              ..startTime = startTime
-              ..startPositionLat =
-                  dataMessage.get('start_position_lat') as double
-              ..startPositionLong =
-                  dataMessage.get('start_position_long') as double
-              ..totalElapsedTime =
-                  (dataMessage.get('total_elapsed_time') as double)?.round()
-              ..totalTimerTime =
-                  (dataMessage.get('total_timer_time') as double)?.round()
-              ..distance = (db.distance ??
-                  (dataMessage.get('total_distance') as double)?.round())
-              ..totalDistance =
-                  (dataMessage.get('total_distance') as double)?.round()
-              ..totalStrides =
-                  (dataMessage.get('total_strides') as double)?.round()
-              ..necLat = dataMessage.get('nec_lat') as double
-              ..necLong = dataMessage.get('nec_long') as double
-              ..swcLat = dataMessage.get('swc_lat') as double
-              ..swcLong = dataMessage.get('swc_long') as double
-              ..totalCalories =
-                  (dataMessage.get('total_calories') as double)?.round()
-              ..avgSpeed = dataMessage.get('avg_speed') as double
-              ..maxSpeed = dataMessage.get('max_speed') as double
-              ..totalAscent =
-                  (dataMessage.get('total_ascent') as double)?.round()
-              ..totalDescent =
-                  (dataMessage.get('total_descent') as double)?.round()
-              ..maxRunningCadence =
-                  (dataMessage.get('max_running_cadence') as double)?.round()
-              ..firstLapIndex =
-                  (dataMessage.get('first_lap_index') as double)?.round()
-              ..numLaps = (dataMessage.get('num_laps') as double)?.round()
-              ..event = dataMessage.get('event')?.toString()
-              ..type = db.type ?? dataMessage.get('event_type') as String
-              ..eventType = dataMessage.get('event_type') as String
-              ..eventGroup = (dataMessage.get('event_group') as double)?.round()
-              ..trigger = dataMessage.get('trigger') as String
-              ..avgVerticalOscillation =
-                  dataMessage.get('avg_vertical_oscillation') as double
-              ..avgStanceTimePercent =
-                  dataMessage.get('avg_stance_time_percent') as double
-              ..avgStanceTime = dataMessage.get('avg_stance_time') as double
-              ..sport = dataMessage.get('sport') as String
-              ..subSport = dataMessage.get('sub_sport') as String
-              ..avgHeartRate =
-                  (dataMessage.get('avg_heart_rate') as double)?.round()
-              ..maxHeartRate =
-                  (dataMessage.get('max_heart_rate') as double)?.round()
-              ..avgRunningCadence =
-                  dataMessage.get('avg_running_cadence') as double
-              ..totalTrainingEffect =
-                  (dataMessage.get('total_training_effect') as double)?.round()
-              ..avgTemperature =
-                  (dataMessage.get('avg_temperature') as double)?.round()
-              ..maxTemperature =
-                  (dataMessage.get('max_temperature') as double)?.round()
-              ..avgFractionalCadence =
-                  dataMessage.get('avg_fractional_cadence') as double
-              ..maxFractionalCadence =
-                  dataMessage.get('max_fractional_cadence') as double
-              ..totalFractionalCycles =
-                  dataMessage.get('total_fractional_cycles') as double;
+            db.name =
+                'Activity on ' + DateFormat.yMMMMd('en_US').format(startTime);
+          db
+            ..timeStamp =
+                dateTimeFromStrava(dataMessage.get('timestamp') as double)
+            ..startTime = startTime
+            ..startPositionLat = dataMessage.get('start_position_lat') as double
+            ..startPositionLong =
+                dataMessage.get('start_position_long') as double
+            ..totalElapsedTime =
+                (dataMessage.get('total_elapsed_time') as double)?.round()
+            ..totalTimerTime =
+                (dataMessage.get('total_timer_time') as double)?.round()
+            ..distance = (db.distance ??
+                (dataMessage.get('total_distance') as double)?.round())
+            ..totalDistance =
+                (dataMessage.get('total_distance') as double)?.round()
+            ..totalStrides =
+                (dataMessage.get('total_strides') as double)?.round()
+            ..necLat = dataMessage.get('nec_lat') as double
+            ..necLong = dataMessage.get('nec_long') as double
+            ..swcLat = dataMessage.get('swc_lat') as double
+            ..swcLong = dataMessage.get('swc_long') as double
+            ..totalCalories =
+                (dataMessage.get('total_calories') as double)?.round()
+            ..avgSpeed = dataMessage.get('avg_speed') as double
+            ..maxSpeed = dataMessage.get('max_speed') as double
+            ..totalAscent = (dataMessage.get('total_ascent') as double)?.round()
+            ..totalDescent =
+                (dataMessage.get('total_descent') as double)?.round()
+            ..maxRunningCadence =
+                (dataMessage.get('max_running_cadence') as double)?.round()
+            ..firstLapIndex =
+                (dataMessage.get('first_lap_index') as double)?.round()
+            ..numLaps = (dataMessage.get('num_laps') as double)?.round()
+            ..event = dataMessage.get('event')?.toString()
+            ..type = db.type ?? dataMessage.get('event_type') as String
+            ..eventType = dataMessage.get('event_type') as String
+            ..eventGroup = (dataMessage.get('event_group') as double)?.round()
+            ..trigger = dataMessage.get('trigger') as String
+            ..avgVerticalOscillation =
+                dataMessage.get('avg_vertical_oscillation') as double
+            ..avgStanceTimePercent =
+                dataMessage.get('avg_stance_time_percent') as double
+            ..avgStanceTime = dataMessage.get('avg_stance_time') as double
+            ..sport = dataMessage.get('sport') as String
+            ..subSport = dataMessage.get('sub_sport') as String
+            ..avgHeartRate =
+                (dataMessage.get('avg_heart_rate') as double)?.round()
+            ..maxHeartRate =
+                (dataMessage.get('max_heart_rate') as double)?.round()
+            ..avgRunningCadence =
+                dataMessage.get('avg_running_cadence') as double
+            ..totalTrainingEffect =
+                (dataMessage.get('total_training_effect') as double)?.round()
+            ..avgTemperature =
+                (dataMessage.get('avg_temperature') as double)?.round()
+            ..maxTemperature =
+                (dataMessage.get('max_temperature') as double)?.round()
+            ..avgFractionalCadence =
+                dataMessage.get('avg_fractional_cadence') as double
+            ..maxFractionalCadence =
+                dataMessage.get('max_fractional_cadence') as double
+            ..totalFractionalCycles =
+                dataMessage.get('total_fractional_cycles') as double;
           await db.save();
           break;
 
