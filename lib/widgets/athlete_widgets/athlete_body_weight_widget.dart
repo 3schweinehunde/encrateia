@@ -39,12 +39,10 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
         return ListView(
           children: <Widget>[
             DataTable(
-              headingRowHeight: kMinInteractiveDimension * 0.80,
-              dataRowHeight: kMinInteractiveDimension * 0.80,
               columns: const <DataColumn>[
                 DataColumn(label: Text('Date')),
                 DataColumn(
-                  label: Text('Weight in kg'),
+                  label: Text('Weight\nin kg'),
                   numeric: true,
                 ),
                 DataColumn(label: Text('Edit'))

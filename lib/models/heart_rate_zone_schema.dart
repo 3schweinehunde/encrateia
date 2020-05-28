@@ -31,12 +31,8 @@ class HeartRateZoneSchema extends ChangeNotifier {
   }
 
   DbHeartRateZoneSchema db;
-  Future<List<HeartRateZone>> get heartRateZones async {
-    if (db.id != null) {
-      return HeartRateZone.all(heartRateZoneSchema: this);
-    } else
-      return <HeartRateZone>[];
-  }
+  Future<List<HeartRateZone>> get heartRateZones async =>
+      HeartRateZone.all(heartRateZoneSchema: this);
 
   Future<void> addGarminZones() async {
     await HeartRateZone(

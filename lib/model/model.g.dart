@@ -594,7 +594,7 @@ class DbEncrateia extends SqfEntityModelProvider {
   DbEncrateia() {
     databaseName = encrateia.databaseName;
     password = encrateia.password;
-
+    dbVersion = encrateia.dbVersion;
     databaseTables = [
       TableDbAthlete.getInstance,
       TableDbActivity.getInstance,
@@ -720,9 +720,13 @@ class DbAthlete {
   /// get DbActivity(s) filtered by id=athletesId
   DbActivityFilterBuilder getDbActivities(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbActivity()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('athletesId=?', parameterValue: id)
+        .athletesId
+        .equals(id)
         .and;
   }
 
@@ -733,9 +737,13 @@ class DbAthlete {
   /// get DbWeight(s) filtered by id=athletesId
   DbWeightFilterBuilder getDbWeights(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbWeight()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('athletesId=?', parameterValue: id)
+        .athletesId
+        .equals(id)
         .and;
   }
 
@@ -746,9 +754,13 @@ class DbAthlete {
   /// get DbHeartRateZoneSchema(s) filtered by id=athletesId
   DbHeartRateZoneSchemaFilterBuilder getDbHeartRateZoneSchemas(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbHeartRateZoneSchema()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('athletesId=?', parameterValue: id)
+        .athletesId
+        .equals(id)
         .and;
   }
 
@@ -759,9 +771,13 @@ class DbAthlete {
   /// get DbPowerZoneSchema(s) filtered by id=athletesId
   DbPowerZoneSchemaFilterBuilder getDbPowerZoneSchemas(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbPowerZoneSchema()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('athletesId=?', parameterValue: id)
+        .athletesId
+        .equals(id)
         .and;
   }
 
@@ -772,9 +788,13 @@ class DbAthlete {
   /// get DbTagGroup(s) filtered by id=athletesId
   DbTagGroupFilterBuilder getDbTagGroups(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbTagGroup()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('athletesId=?', parameterValue: id)
+        .athletesId
+        .equals(id)
         .and;
   }
 
@@ -1221,8 +1241,10 @@ class DbAthlete {
     {
       result = await DbActivity()
           .select()
-          .where('athletesId=?', parameterValue: id)
-          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
+          .athletesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -1230,8 +1252,10 @@ class DbAthlete {
     {
       result = await DbWeight()
           .select()
-          .where('athletesId=?', parameterValue: id)
-          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
+          .athletesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -1239,8 +1263,10 @@ class DbAthlete {
     {
       result = await DbHeartRateZoneSchema()
           .select()
-          .where('athletesId=?', parameterValue: id)
-          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
+          .athletesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -1248,8 +1274,10 @@ class DbAthlete {
     {
       result = await DbPowerZoneSchema()
           .select()
-          .where('athletesId=?', parameterValue: id)
-          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
+          .athletesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -1257,8 +1285,10 @@ class DbAthlete {
     {
       result = await DbTagGroup()
           .select()
-          .where('athletesId=?', parameterValue: id)
-          .and /*.athletesId.equals(id)*/ .delete(hardDelete);
+          .athletesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -2729,9 +2759,13 @@ class DbActivity {
   /// get DbEvent(s) filtered by id=activitiesId
   DbEventFilterBuilder getDbEvents(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbEvent()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('activitiesId=?', parameterValue: id)
+        .activitiesId
+        .equals(id)
         .and;
   }
 
@@ -2742,9 +2776,13 @@ class DbActivity {
   /// get DbLap(s) filtered by id=activitiesId
   DbLapFilterBuilder getDbLaps(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbLap()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('activitiesId=?', parameterValue: id)
+        .activitiesId
+        .equals(id)
         .and;
   }
 
@@ -2755,9 +2793,13 @@ class DbActivity {
   /// get DbActivityTagging(s) filtered by id=activitiesId
   DbActivityTaggingFilterBuilder getDbActivityTaggings(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbActivityTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('activitiesId=?', parameterValue: id)
+        .activitiesId
+        .equals(id)
         .and;
   }
 
@@ -3852,17 +3894,17 @@ class DbActivity {
     {
       result = await DbEvent()
           .select()
-          .where('activitiesId=?', parameterValue: id)
-          .and /*.activitiesId.equals(id)*/ .delete(hardDelete);
+          .activitiesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
     }
     {
-      result = await DbLap()
-          .select()
-          .where('activitiesId=?', parameterValue: id)
-          .and /*.activitiesId.equals(id)*/ .delete(hardDelete);
+      result =
+          await DbLap().select().activitiesId.equals(id).and.delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -3870,8 +3912,10 @@ class DbActivity {
     {
       result = await DbActivityTagging()
           .select()
-          .where('activitiesId=?', parameterValue: id)
-          .and /*.activitiesId.equals(id)*/ .delete(hardDelete);
+          .activitiesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -7586,9 +7630,13 @@ class DbLap {
   /// get DbEvent(s) filtered by id=lapsId
   DbEventFilterBuilder getDbEvents(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbEvent()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('lapsId=?', parameterValue: id)
+        .lapsId
+        .equals(id)
         .and;
   }
 
@@ -7599,9 +7647,13 @@ class DbLap {
   /// get DbLapTagging(s) filtered by id=lapsId
   DbLapTaggingFilterBuilder getDbLapTaggings(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbLapTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('lapsId=?', parameterValue: id)
+        .lapsId
+        .equals(id)
         .and;
   }
 
@@ -8481,10 +8533,8 @@ class DbLap {
     print('SQFENTITIY: delete DbLap invoked (id=$id)');
     var result = BoolResult();
     {
-      result = await DbEvent()
-          .select()
-          .where('lapsId=?', parameterValue: id)
-          .and /*.lapsId.equals(id)*/ .delete(hardDelete);
+      result =
+          await DbEvent().select().lapsId.equals(id).and.delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -8492,8 +8542,10 @@ class DbLap {
     {
       result = await DbLapTagging()
           .select()
-          .where('lapsId=?', parameterValue: id)
-          .and /*.lapsId.equals(id)*/ .delete(hardDelete);
+          .lapsId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -11029,9 +11081,13 @@ class DbHeartRateZoneSchema {
   /// get DbHeartRateZone(s) filtered by id=heartRateZoneSchemataId
   DbHeartRateZoneFilterBuilder getDbHeartRateZones(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbHeartRateZone()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('heartRateZoneSchemataId=?', parameterValue: id)
+        .heartRateZoneSchemataId
+        .equals(id)
         .and;
   }
 
@@ -11355,8 +11411,10 @@ class DbHeartRateZoneSchema {
     {
       result = await DbHeartRateZone()
           .select()
-          .where('heartRateZoneSchemataId=?', parameterValue: id)
-          .and /*.heartRateZoneSchemataId.equals(id)*/ .delete(hardDelete);
+          .heartRateZoneSchemataId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -13507,9 +13565,13 @@ class DbPowerZoneSchema {
   /// get DbPowerZone(s) filtered by id=powerZoneSchemataId
   DbPowerZoneFilterBuilder getDbPowerZones(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbPowerZone()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('powerZoneSchemataId=?', parameterValue: id)
+        .powerZoneSchemataId
+        .equals(id)
         .and;
   }
 
@@ -13832,8 +13894,10 @@ class DbPowerZoneSchema {
     {
       result = await DbPowerZone()
           .select()
-          .where('powerZoneSchemataId=?', parameterValue: id)
-          .and /*.powerZoneSchemataId.equals(id)*/ .delete(hardDelete);
+          .powerZoneSchemataId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -15967,9 +16031,13 @@ class DbTag {
   /// get DbLapTagging(s) filtered by id=tagsId
   DbLapTaggingFilterBuilder getDbLapTaggings(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbLapTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('tagsId=?', parameterValue: id)
+        .tagsId
+        .equals(id)
         .and;
   }
 
@@ -15980,9 +16048,13 @@ class DbTag {
   /// get DbActivityTagging(s) filtered by id=tagsId
   DbActivityTaggingFilterBuilder getDbActivityTaggings(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbActivityTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('tagsId=?', parameterValue: id)
+        .tagsId
+        .equals(id)
         .and;
   }
 
@@ -16319,8 +16391,10 @@ class DbTag {
     {
       result = await DbLapTagging()
           .select()
-          .where('tagsId=?', parameterValue: id)
-          .and /*.tagsId.equals(id)*/ .delete(hardDelete);
+          .tagsId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -16328,8 +16402,10 @@ class DbTag {
     {
       result = await DbActivityTagging()
           .select()
-          .where('tagsId=?', parameterValue: id)
-          .and /*.tagsId.equals(id)*/ .delete(hardDelete);
+          .tagsId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -17221,9 +17297,13 @@ class DbTagGroup {
   /// get DbTag(s) filtered by id=tagGroupsId
   DbTagFilterBuilder getDbTags(
       {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
     return DbTag()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .where('tagGroupsId=?', parameterValue: id)
+        .tagGroupsId
+        .equals(id)
         .and;
   }
 
@@ -17531,10 +17611,8 @@ class DbTagGroup {
     print('SQFENTITIY: delete DbTagGroup invoked (id=$id)');
     var result = BoolResult();
     {
-      result = await DbTag()
-          .select()
-          .where('tagGroupsId=?', parameterValue: id)
-          .and /*.tagGroupsId.equals(id)*/ .delete(hardDelete);
+      result =
+          await DbTag().select().tagGroupsId.equals(id).and.delete(hardDelete);
     }
     if (!result.success) {
       return result;

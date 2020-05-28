@@ -36,47 +36,50 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        color: Colors.black,
-      ),
-      padding: const EdgeInsets.only(top: 20),
-      itemCount: activities.length,
-      itemBuilder: (BuildContext context, int index) {
-        final Activity activity = activities[index];
-        return ListTile(
-          leading: sportsIcon(sport: activity.db.sport),
-          title: Text(activity.db.name ?? 'Activity'),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(activity.dateString() + '\n' + activity.distanceString()),
-              Text(activity.timeString() + '\n' + activity.paceString()),
-              Text(activity.heartRateString() +
-                  '\n' +
-                  activity.averagePowerString()),
-            ],
-          ),
-          trailing: ChangeNotifierProvider<Activity>.value(
-            value: activity,
-            child: Consumer<Activity>(
-              builder: (BuildContext context, Activity activity, Widget _child) =>
-                  popupMenuButton(activity: activity),
+        separatorBuilder: (BuildContext context, int index) => Divider(
+          color: Colors.black,
+        ),
+        padding: const EdgeInsets.only(top: 20),
+        itemCount: activities.length,
+        itemBuilder: (BuildContext context, int index) {
+          final Activity activity = activities[index];
+          return ListTile(
+            leading: sportsIcon(sport: activity.db.sport),
+            title: Text(activity.db.name ?? 'Activity'),
+            subtitle: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(activity.dateString() + '\n' + activity.distanceString()),
+                  Text(activity.timeString() + '\n' + activity.paceString()),
+                  Text(activity.heartRateString() +
+                      '\n' +
+                      activity.averagePowerString()),
+                ],
+              ),
             ),
-          ),
-          onTap: () {
-            if (activity.db.state == 'persisted')
-              Navigator.push(
-                context,
-                MaterialPageRoute<BuildContext>(
-                  builder: (BuildContext context) => ShowActivityScreen(
-                    activity: activity,
-                    athlete: widget.athlete,
+            trailing: ChangeNotifierProvider<Activity>.value(
+              value: activity,
+              child: Consumer<Activity>(
+                builder: (BuildContext context, Activity activity, Widget _child) =>
+                    popupMenuButton(activity: activity),
+              ),
+            ),
+            onTap: () {
+              if (activity.db.state == 'persisted')
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<BuildContext>(
+                    builder: (BuildContext context) => ShowActivityScreen(
+                      activity: activity,
+                      athlete: widget.athlete,
+                    ),
                   ),
-                ),
-              );
-          },
-        );
-      },
+                );
+            },
+          );
+        },
     );
   }
 

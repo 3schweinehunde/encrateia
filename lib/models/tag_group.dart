@@ -33,12 +33,7 @@ class TagGroup extends ChangeNotifier {
   DbTagGroup db;
   List<Tag> cachedTags;
 
-  Future<List<Tag>> get tags async {
-    if (db.id != null) {
-      return await Tag.all(tagGroup: this);
-    } else
-    return <Tag>[];
-  }
+  Future<List<Tag>> get tags async => await Tag.all(tagGroup: this);
 
   @override
   String toString() => '< Taggroup | ${db.name} >';
