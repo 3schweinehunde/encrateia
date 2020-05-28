@@ -258,7 +258,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       label: Text(title),
       onPressed: () => Navigator.push(
         context,
-        MaterialPageRoute(
+        MaterialPageRoute<BuildContext>(
           builder: (BuildContext context) => ShowActivityDetailScreen(
             activity: widget.activity,
             widget: nextWidget,

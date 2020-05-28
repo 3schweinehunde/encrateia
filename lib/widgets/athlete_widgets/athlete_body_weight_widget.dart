@@ -59,7 +59,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                     DataCell(MyIcon.edit, onTap: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddWeightScreen(weight: weight),
                         ),
                       );
@@ -85,7 +85,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                     onPressed: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddWeightScreen(
                             weight: Weight(athlete: widget.athlete),
                           ),
@@ -151,7 +151,7 @@ Or you can simply enter your current weight using the New Weighting button.
                     onPressed: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddWeightScreen(
                             weight: Weight(athlete: widget.athlete),
                           ),

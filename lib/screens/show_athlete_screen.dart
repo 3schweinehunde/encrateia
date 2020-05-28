@@ -201,7 +201,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       label: Text(title),
       onPressed: () => Navigator.push(
         context,
-        MaterialPageRoute(
+        MaterialPageRoute<BuildContext>(
           builder: (BuildContext context) => ShowAthleteDetailScreen(
             athlete: widget.athlete,
             widget: nextWidget,

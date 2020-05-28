@@ -42,7 +42,7 @@ class LapsListWidget extends StatelessWidget {
                     if (selected) {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => ShowLapScreen(
                             lap: lap,
                             laps: laps,

@@ -138,7 +138,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                   child: Text(selectedActivity.db.name),
                   onPressed: () => Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute<BuildContext>(
                       builder: (BuildContext context) => ShowActivityScreen(
                         activity: selectedActivity,
                         athlete: widget.athlete,

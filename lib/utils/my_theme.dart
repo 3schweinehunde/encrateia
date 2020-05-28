@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 class MyTheme{
 
   static ThemeData call() {
-    var redness = MyColor.primary.red;
-    var greenness = MyColor.primary.green;
-    var blueness = MyColor.primary.blue;
+    final int redness = MyColor.primary.red;
+    final int greenness = MyColor.primary.green;
+    final int blueness = MyColor.primary.blue;
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: MyColor.primary,
       primarySwatch: MaterialColor(
         MyColor.sunFlowerAccent.value,
-        {
+        <int, Color>{
           50: Color.fromRGBO(redness, greenness, blueness, .1),
           100: Color.fromRGBO(redness, greenness, blueness, .2),
           200: Color.fromRGBO(redness, greenness, blueness, .3),

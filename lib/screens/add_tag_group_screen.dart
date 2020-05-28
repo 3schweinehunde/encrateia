@@ -123,7 +123,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
                     onTap: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute<dynamic>(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddTagScreen(
                             tag: tag,
                           ),
@@ -145,7 +145,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
                 onPressed: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute<dynamic>(
+                    MaterialPageRoute<BuildContext>(
                       builder: (BuildContext context) => AddTagScreen(
                         tag: Tag(tagGroup: widget.tagGroup),
                       ),

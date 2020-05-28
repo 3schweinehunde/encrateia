@@ -66,7 +66,7 @@ class MyColor {
 
   static Color textColor({
     @required Color backgroundColor,
-    bool selected:true,
+    bool selected = true,
   }) {
     if (selected) {
       if (ThemeData.estimateBrightnessForColor(backgroundColor) ==

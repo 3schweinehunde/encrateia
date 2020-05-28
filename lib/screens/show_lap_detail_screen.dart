@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class ShowLapDetailScreen extends StatefulWidget {
-  final Lap lap;
-  final List<Lap> laps;
-  final Function({Lap lap}) nextWidget;
-  final String title;
-
   const ShowLapDetailScreen({
     Key key,
     @required this.lap,
@@ -16,6 +11,11 @@ class ShowLapDetailScreen extends StatefulWidget {
     @required this.nextWidget,
     @required this.title,
   }) : super(key: key);
+
+  final Lap lap;
+  final List<Lap> laps;
+  final Widget Function({Lap lap}) nextWidget;
+  final String title;
 
   @override
   _ShowLapDetailScreenState createState() => _ShowLapDetailScreenState();
@@ -43,10 +43,10 @@ class _ShowLapDetailScreenState extends State<ShowLapDetailScreen> {
       ),
       body: GestureDetector(
         child: widget.nextWidget(lap: currentLap),
-        onHorizontalDragUpdate: (details) {
+        onHorizontalDragUpdate: (DragUpdateDetails details) {
           dragAmount = dragAmount + details.primaryDelta;
         },
-        onHorizontalDragEnd: (details) {
+        onHorizontalDragEnd: (DragEndDetails details) {
           if (dragAmount < -50) {
             dragAmount = 0;
             if (currentLap.index < widget.laps.length) {

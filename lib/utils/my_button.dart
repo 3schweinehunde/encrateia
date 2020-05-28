@@ -10,35 +10,35 @@ class MyButton extends RaisedButton {
       : super(
           color: MyColor.delete,
           textColor: Colors.white,
-          child: child ?? Text('Delete'),
+          child: child ?? const Text('Delete'),
           onPressed: onPressed,
         );
 
   MyButton.cancel({Widget child, VoidCallback onPressed})
       : super(
           color: MyColor.cancel,
-          child: child ?? Text('Cancel'),
+          child: child ?? const Text('Cancel'),
           onPressed: onPressed,
         );
 
   MyButton.save({Widget child, VoidCallback onPressed})
       : super(
           color: MyColor.save,
-          child: child ?? Text('Save'),
+          child: child ?? const Text('Save'),
           onPressed: onPressed,
         );
 
   MyButton.add({Widget child, VoidCallback onPressed})
       : super(
           color: MyColor.add,
-          child: child ?? Text('Add'),
+          child: child ?? const Text('Add'),
           onPressed: onPressed,
         );
 
   MyButton.navigate({Widget child, VoidCallback onPressed})
       : super(
           color: MyColor.navigate,
-          child: child ?? Text('Navigate'),
+          child: child ?? const Text('Navigate'),
           onPressed: onPressed,
         );
 
@@ -46,7 +46,7 @@ class MyButton extends RaisedButton {
       : super(
           color: MyColor.detail,
           textColor: Colors.white,
-          child: child ?? Text('Detail'),
+          child: child ?? const Text('Detail'),
           onPressed: onPressed,
         );
 
@@ -54,7 +54,7 @@ class MyButton extends RaisedButton {
       : super(
     color: MyColor.activity,
     textColor: Colors.white,
-    child: child ?? Text('Activity'),
+    child: child ?? const Text('Activity'),
     onPressed: onPressed,
   );
 }

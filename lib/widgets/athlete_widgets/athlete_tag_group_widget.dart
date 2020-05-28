@@ -8,9 +8,9 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class AthleteTagGroupWidget extends StatefulWidget {
-  final Athlete athlete;
+  const AthleteTagGroupWidget({this.athlete});
 
-  AthleteTagGroupWidget({this.athlete});
+  final Athlete athlete;
 
   @override
   _AthleteTagGroupWidgetState createState() => _AthleteTagGroupWidgetState();
@@ -28,15 +28,15 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     if (tagGroups != null) {
       rows = (tagGroups.length < 8) ? tagGroups.length : 8;
       return ListView(
         children: <Widget>[
           Center(
             child: Text(
-              "\nTag Groups ${offset + 1} - ${offset + rows} "
-              "of ${tagGroups.length}",
+              '\nTag Groups ${offset + 1} - ${offset + rows} '
+              'of ${tagGroups.length}',
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
@@ -44,17 +44,17 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
             headingRowHeight: kMinInteractiveDimension * 0.80,
             dataRowHeight: kMinInteractiveDimension * 0.80,
             columnSpacing: 9,
-            columns: <DataColumn>[
-              DataColumn(label: Text("Name")),
-              DataColumn(label: Text("Color")),
-              DataColumn(label: Text("Edit")),
+            columns: const <DataColumn>[
+              DataColumn(label: Text('Name')),
+              DataColumn(label: Text('Color')),
+              DataColumn(label: Text('Edit')),
             ],
             rows: tagGroups
                 .sublist(offset, offset + rows)
                 .map((TagGroup tagGroup) {
               return DataRow(
                 key: Key(tagGroup.db.id.toString()),
-                cells: [
+                cells: <DataCell>[
                   DataCell(Text(tagGroup.db.name)),
                   DataCell(CircleColor(
                     circleSize: 20,
@@ -66,8 +66,8 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                     onTap: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) {
+                        MaterialPageRoute<BuildContext>(
+                          builder: (BuildContext context) {
                             if (tagGroup.db.system)
                               return ShowTagGroupScreen(tagGroup: tagGroup);
                             else
@@ -82,35 +82,35 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
               );
             }).toList(),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             children: <Widget>[
-              Spacer(),
+              const Spacer(),
               MyButton.add(
-                  child: Text("New tag group"),
+                  child: const Text('New tag group'),
                   onPressed: () async {
                     await Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => AddTagGroupScreen(
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) => AddTagGroupScreen(
                           tagGroup: TagGroup(athlete: widget.athlete),
                         ),
                       ),
                     );
                     getData();
                   }),
-              Spacer(),
+              const Spacer(),
               MyButton.navigate(
-                child: Text("<<"),
+                child: const Text('<<'),
                 onPressed: (offset == 0)
                     ? null
                     : () => setState(() {
                           offset > 8 ? offset = offset - rows : offset = 0;
                         }),
               ),
-              Spacer(),
+              const Spacer(),
               MyButton.navigate(
-                child: Text(">>"),
+                child: const Text('>>'),
                 onPressed: (offset + rows == tagGroups.length)
                     ? null
                     : () => setState(() {
@@ -119,19 +119,19 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                               : offset = tagGroups.length - rows;
                         }),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ],
       );
     } else {
-      return Center(
-        child: Text("loading"),
+      return const Center(
+        child: Text('loading'),
       );
     }
   }
 
-  getData() async {
+  Future<void> getData() async {
     tagGroups = await widget.athlete.tagGroups;
     setState(() {});
   }

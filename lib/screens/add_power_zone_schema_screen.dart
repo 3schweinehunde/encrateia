@@ -114,7 +114,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                     onTap: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute<dynamic>(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddPowerZoneScreen(
                             powerZone: powerZone,
                             base: widget.powerZoneSchema.db.base,
@@ -137,7 +137,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                 onPressed: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute<dynamic>(
+                    MaterialPageRoute<BuildContext>(
                       builder: (BuildContext context) => AddPowerZoneScreen(
                         powerZone:
                             PowerZone(powerZoneSchema: widget.powerZoneSchema),

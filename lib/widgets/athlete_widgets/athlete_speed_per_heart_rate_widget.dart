@@ -5,10 +5,10 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
 class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
+  const AthleteSpeedPerHeartRateWidget({this.athlete});
+
   final Athlete athlete;
-
-  AthleteSpeedPerHeartRateWidget({this.athlete});
-
+  
   @override
   _AthleteSpeedPerHeartRateWidgetState createState() =>
       _AthleteSpeedPerHeartRateWidgetState();
@@ -16,7 +16,7 @@ class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
 
 class _AthleteSpeedPerHeartRateWidgetState
     extends State<AthleteSpeedPerHeartRateWidget> {
-  List<Activity> activities = [];
+  List<Activity> activities = <Activity>[];
 
   @override
   void initState() {
@@ -25,10 +25,10 @@ class _AthleteSpeedPerHeartRateWidgetState
   }
 
   @override
-  Widget build(context) {
-    if (activities.length > 0) {
-      var speedPerHeartRateActivities = activities
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (activities.isNotEmpty) {
+      final List<Activity> speedPerHeartRateActivities = activities
+          .where((Activity value) =>
               value.db.avgSpeed != null &&
               value.db.avgSpeed > 0 &&
               value.db.avgHeartRate != null &&
@@ -36,11 +36,11 @@ class _AthleteSpeedPerHeartRateWidgetState
               value.db.avgHeartRate != 255)
           .toList();
 
-      if (speedPerHeartRateActivities.length > 0) {
+      if (speedPerHeartRateActivities.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               AthleteTimeSeriesChart(
                 activities: speedPerHeartRateActivities,
@@ -52,22 +52,22 @@ class _AthleteSpeedPerHeartRateWidgetState
           ),
         );
       } else {
-        return Center(
-          child: Text("No speed per heart rate data available."),
+        return const Center(
+          child: Text('No speed per heart rate data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Athlete athlete = widget.athlete;
+  Future<void> getData() async {
+    final Athlete athlete = widget.athlete;
     activities = await athlete.activities;
     activities =
-        activities.where((activity) => activity.db.sport == "running").toList();
+        activities.where((Activity activity) => activity.db.sport == 'running').toList();
     setState(() {});
   }
 }

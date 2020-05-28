@@ -70,7 +70,7 @@ class _AthletePowerZoneSchemaWidgetState
                       onTap: () async {
                         await Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          MaterialPageRoute<BuildContext>(
                             builder: (BuildContext context) => AddPowerZoneSchemaScreen(
                               powerZoneSchema: powerZoneSchema,
                             ),
@@ -92,7 +92,7 @@ class _AthletePowerZoneSchemaWidgetState
                     onPressed: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddPowerZoneSchemaScreen(
                             powerZoneSchema:
                                 PowerZoneSchema(athlete: widget.athlete),
@@ -150,7 +150,7 @@ You could also create a schema from scratch.
                 onPressed: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute<BuildContext>(
                       builder: (BuildContext context) => AddPowerZoneSchemaScreen(
                         powerZoneSchema:
                             PowerZoneSchema(athlete: widget.athlete),

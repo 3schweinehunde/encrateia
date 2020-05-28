@@ -21,7 +21,7 @@ class EditAthleteScreen extends StatelessWidget {
         backgroundColor: MyColor.athlete,
         title: const Text('Create Athlete'),
       ),
-      body: ChangeNotifierProvider.value(
+      body: ChangeNotifierProvider<Athlete>.value(
         value: athlete,
         child: Consumer<Athlete>(
           builder: (BuildContext context, Athlete athlete, Widget _child) =>
@@ -56,7 +56,7 @@ class EditAthleteScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          MaterialPageRoute<BuildContext>(
                             builder: (BuildContext context) =>
                                 StravaGetUser(athlete: athlete),
                           ),
@@ -104,7 +104,7 @@ class EditAthleteScreen extends StatelessWidget {
           TextFormField(
             decoration: const InputDecoration(labelText: 'First name'),
             initialValue: athlete.db.firstName,
-            onChanged: (value) => athlete.firstName = value,
+            onChanged: (String value) => athlete.firstName = value,
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Last name'),
@@ -190,13 +190,13 @@ class EditAthleteScreen extends StatelessWidget {
     }
   }
 
-  saveStravaUser(BuildContext context) async {
+  Future<void> saveStravaUser(BuildContext context) async {
     await athlete.db.save();
     await athlete.storeCredentials();
     Navigator.of(context).pop();
   }
 
-  saveStandaloneUser(BuildContext context) async {
+  Future<void> saveStandaloneUser(BuildContext context) async {
     athlete.db.firstName = athlete.firstName ?? athlete.db.firstName;
     athlete.db.lastName = athlete.lastName ?? athlete.db.lastName;
     await athlete.save();

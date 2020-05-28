@@ -56,7 +56,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
                   activity.averagePowerString()),
             ],
           ),
-          trailing: ChangeNotifierProvider.value(
+          trailing: ChangeNotifierProvider<Activity>.value(
             value: activity,
             child: Consumer<Activity>(
               builder: (BuildContext context, Activity activity, Widget _child) =>
@@ -67,7 +67,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             if (activity.db.state == 'persisted')
               Navigator.push(
                 context,
-                MaterialPageRoute(
+                MaterialPageRoute<BuildContext>(
                   builder: (BuildContext context) => ShowActivityScreen(
                     activity: activity,
                     athlete: widget.athlete,

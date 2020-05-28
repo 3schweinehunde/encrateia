@@ -41,7 +41,7 @@ class ShowLapScreen extends StatelessWidget {
         ),
       ),
       body: StaggeredGridView.count(
-        staggeredTiles: List.filled(12, const StaggeredTile.fit(1)),
+        staggeredTiles: List<StaggeredTile>.filled(12, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
@@ -144,7 +144,7 @@ class ShowLapScreen extends StatelessWidget {
 
   Widget navigationButton({
     @required BuildContext context,
-    @required Function({Lap lap}) nextWidget,
+    @required Widget Function({Lap lap}) nextWidget,
     @required Widget icon,
     @required String title,
     @required Color color,
@@ -156,7 +156,7 @@ class ShowLapScreen extends StatelessWidget {
       label: Text(title),
       onPressed: () => Navigator.push(
         context,
-        MaterialPageRoute(
+        MaterialPageRoute<BuildContext>(
           builder: (BuildContext context) => ShowLapDetailScreen(
             lap: lap,
             laps: laps,

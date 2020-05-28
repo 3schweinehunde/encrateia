@@ -118,7 +118,7 @@ class _AddHeartRateZoneSchemaScreenState
                     onTap: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute<dynamic>(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) =>
                               AddHeartRateZoneScreen(
                             heartRateZone: heartRateZone,
@@ -142,7 +142,7 @@ class _AddHeartRateZoneSchemaScreenState
                 onPressed: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute<dynamic>(
+                    MaterialPageRoute<BuildContext>(
                       builder: (BuildContext context) => AddHeartRateZoneScreen(
                         heartRateZone: HeartRateZone(
                             heartRateZoneSchema: widget.heartRateZoneSchema),

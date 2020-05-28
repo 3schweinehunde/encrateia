@@ -5,9 +5,9 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
 class AthleteStrideRatioWidget extends StatefulWidget {
-  final Athlete athlete;
+  const AthleteStrideRatioWidget({this.athlete});
 
-  AthleteStrideRatioWidget({this.athlete});
+  final Athlete athlete;
 
   @override
   _AthleteStrideRatioWidgetState createState() =>
@@ -15,7 +15,7 @@ class AthleteStrideRatioWidget extends StatefulWidget {
 }
 
 class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
-  List<Activity> activities = [];
+  List<Activity> activities = <Activity>[];
 
   @override
   void initState() {
@@ -24,18 +24,18 @@ class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
   }
 
   @override
-  Widget build(context) {
-    if (activities.length > 0) {
-      var strideRatioActivities = activities
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (activities.isNotEmpty) {
+      final List<Activity> strideRatioActivities = activities
+          .where((Activity value) =>
               value.db.avgStrideRatio != null && value.db.avgStrideRatio > 0)
           .toList();
 
-      if (strideRatioActivities.length > 0) {
+      if (strideRatioActivities.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               AthleteTimeSeriesChart(
                 activities: strideRatioActivities,
@@ -47,19 +47,19 @@ class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
           ),
         );
       } else {
-        return Center(
-          child: Text("No stride ratio data available."),
+        return const Center(
+          child: Text('No stride ratio data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Athlete athlete = widget.athlete;
+  Future<void> getData() async {
+    final Athlete athlete = widget.athlete;
     activities = await athlete.activities;
     setState(() {});
   }

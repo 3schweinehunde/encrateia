@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 
 class ShowActivityDetailScreen extends StatelessWidget {
-  final Activity activity;
-  final Widget widget;
-  final String title;
-  final Color backgroundColor;
-
   const ShowActivityDetailScreen({
     Key key,
     this.activity,
@@ -15,6 +10,11 @@ class ShowActivityDetailScreen extends StatelessWidget {
     this.title,
     this.backgroundColor,
   }) : super(key: key);
+
+  final Activity activity;
+  final Widget widget;
+  final String title;
+  final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {

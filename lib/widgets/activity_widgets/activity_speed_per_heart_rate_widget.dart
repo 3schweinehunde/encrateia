@@ -8,13 +8,13 @@ import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivitySpeedPerHeartRateWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivitySpeedPerHeartRateWidget({
+  const ActivitySpeedPerHeartRateWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivitySpeedPerHeartRateWidgetState createState() =>
@@ -23,8 +23,8 @@ class ActivitySpeedPerHeartRateWidget extends StatefulWidget {
 
 class _ActivitySpeedPerHeartRateWidgetState
     extends State<ActivitySpeedPerHeartRateWidget> {
-  var records = RecordList(<Event>[]);
-  String avgSpeedPerHeartRateString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgSpeedPerHeartRateString = 'Loading ...';
 
   @override
   void initState() {
@@ -33,56 +33,56 @@ class _ActivitySpeedPerHeartRateWidgetState
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var speedPerHeartRateRecords = records
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> speedPerHeartRateRecords = records
+          .where((Event value) =>
               value.db.speed != null &&
               value.db.heartRate != null &&
               value.db.heartRate > 0)
           .toList();
 
-      if (speedPerHeartRateRecords.length > 0) {
+      if (speedPerHeartRateRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivitySpeedPerHeartRateChart(
-                records: RecordList(speedPerHeartRateRecords),
+                records: RecordList<Event>(speedPerHeartRateRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'speed is present and heart rate > 0 bpm are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgSpeedPerHeartRateString),
-                subtitle: Text("average speed per heart rate"),
+                subtitle: const Text('average speed per heart rate'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No speed per heart rate data available."),
+        return const Center(
+          child: Text('No speed per heart rate data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = RecordList(await activity.records);
+  Future<void> getData() async {
+    final Activity activity = widget.activity;
+    records = RecordList<Event>(await activity.records);
 
-    double avg = 1000 * activity.db.avgSpeed / activity.db.avgHeartRate;
-    avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + " m/h / bpm";
+    final double avg = 1000 * activity.db.avgSpeed / activity.db.avgHeartRate;
+    avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + ' m/h / bpm';
     setState(() {});
   }
 }

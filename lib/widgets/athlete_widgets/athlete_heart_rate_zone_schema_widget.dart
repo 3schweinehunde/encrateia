@@ -71,7 +71,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                       onTap: () async {
                         await Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          MaterialPageRoute<BuildContext>(
                             builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
                               heartRateZoneSchema: heartRateZoneSchema,
                             ),
@@ -93,7 +93,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                     onPressed: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
                             heartRateZoneSchema:
                                 HeartRateZoneSchema(athlete: widget.athlete),
@@ -148,7 +148,7 @@ You could also create a schema from scratch.
                 onPressed: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute<BuildContext>(
                       builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
                         heartRateZoneSchema:
                             HeartRateZoneSchema(athlete: widget.athlete),

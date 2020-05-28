@@ -44,7 +44,7 @@ class _DashboardState extends State<Dashboard> {
     await athlete.readCredentials();
     await Navigator.push(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<BuildContext>(
         builder: (BuildContext context) => ShowAthleteScreen(athlete: athlete),
       ),
     );
@@ -55,7 +55,7 @@ class _DashboardState extends State<Dashboard> {
     await athlete.readCredentials();
     await Navigator.push(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<BuildContext>(
         builder: (BuildContext context) => EditAthleteScreen(athlete: athlete),
       ),
     );
@@ -86,7 +86,7 @@ class _DashboardState extends State<Dashboard> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
+                          MaterialPageRoute<BuildContext>(
                             builder: (BuildContext context) => IntroductionScreen(),
                           ),
                         );

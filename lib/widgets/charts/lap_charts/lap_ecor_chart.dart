@@ -38,7 +38,7 @@ class LapEcorChart extends StatelessWidget {
               desiredTickCount: 6),
         ),
         animate: false,
-        behaviors: [
+        behaviors: <ChartTitle>[
           ChartTitle(
             'Ecor (W s/kg m)',
             titleStyleSpec: const TextStyleSpec(fontSize: 13),
