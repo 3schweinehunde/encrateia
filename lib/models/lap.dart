@@ -45,32 +45,34 @@ class Lap {
       ..endPositionLat = dataMessage.get('end_position_lat') as double
       ..endPositionLong = dataMessage.get('end_position_long') as double
       ..startPositionLat = dataMessage.get('end_position_lat') as double
-      ..avgHeartRate = dataMessage.get('avg_heart_rate')?.round() as int
-      ..maxHeartRate = dataMessage.get('max_heart_rate')?.round() as int
+      ..avgHeartRate = (dataMessage.get('avg_heart_rate') as double)?.round()
+      ..maxHeartRate = (dataMessage.get('max_heart_rate') as double)?.round()
       ..avgRunningCadence = dataMessage.get('avg_running_cadence') as double
       ..event = dataMessage.get('event') as String
       ..eventType = dataMessage.get('event_type') as String
-      ..eventGroup = dataMessage.get('event_group')?.round() as int
+      ..eventGroup = (dataMessage.get('event_group') as double)?.round()
       ..sport = dataMessage.get('sport') as String
       ..subSport = dataMessage.get('sub_sport') as String
       ..avgVerticalOscillation =
           dataMessage.get('avg_vertical_oscillation') as double
-      ..totalElapsedTime = dataMessage.get('total_elapsed_time')?.round() as int
-      ..totalTimerTime = dataMessage.get('total_timer_time')?.round() as int
-      ..totalDistance = dataMessage.get('total_distance')?.round() as int
-      ..totalStrides = dataMessage.get('total_strides')?.round() as int
-      ..totalCalories = dataMessage.get('total_calories')?.round() as int
-      ..totalAscent = dataMessage.get('total_ascent')?.round() as int
-      ..totalDescent = dataMessage.get('total_descent')?.round() as int
+      ..totalElapsedTime =
+          (dataMessage.get('total_elapsed_time') as double)?.round()
+      ..totalTimerTime =
+          (dataMessage.get('total_timer_time') as double)?.round()
+      ..totalDistance = (dataMessage.get('total_distance') as double)?.round()
+      ..totalStrides = (dataMessage.get('total_strides') as double)?.round()
+      ..totalCalories = (dataMessage.get('total_calories') as double)?.round()
+      ..totalAscent = (dataMessage.get('total_ascent') as double)?.round()
+      ..totalDescent = (dataMessage.get('total_descent') as double)?.round()
       ..avgStanceTimePercent =
           dataMessage.get('avg_stance_time_percent') as double
       ..avgStanceTime = dataMessage.get('avg_stance_time') as double
       ..maxRunningCadence =
-          dataMessage.get('max_running_cadence')?.round() as int
-      ..intensity = dataMessage.get('intensity')?.round() as int
+          (dataMessage.get('max_running_cadence') as double)?.round()
+      ..intensity = (dataMessage.get('intensity') as double)?.round()
       ..lapTrigger = dataMessage.get('lap_trigger') as String
-      ..avgTemperature = dataMessage.get('avg_temperature')?.round() as int
-      ..maxTemperature = dataMessage.get('max_temperature')?.round() as int
+      ..avgTemperature = (dataMessage.get('avg_temperature') as double)?.round()
+      ..maxTemperature = (dataMessage.get('max_temperature') as double)?.round()
       ..avgFractionalCadence =
           dataMessage.get('avg_fractional_cadence') as double
       ..maxFractionalCadence =

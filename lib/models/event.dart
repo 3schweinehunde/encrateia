@@ -14,7 +14,7 @@ class Event {
   }) {
     if (dataMessage.any('max_heart_rate') != null) {
       activity.db
-        ..maxHeartRate = (dataMessage.get('max_heart_rate') as int)?.round()
+        ..maxHeartRate = (dataMessage.get('max_heart_rate') as double)?.round()
         ..save();
     } else if (dataMessage.values.any((Value value) =>
         value.fieldName == 'event_type' &&
@@ -23,7 +23,7 @@ class Event {
         ..activitiesId = activity.db.id
         ..event = dataMessage.get('event') as String
         ..eventType = dataMessage.get('event_type') as String
-        ..eventGroup = dataMessage.get('event_group')?.round() as int
+        ..eventGroup = (dataMessage.get('event_group') as double)?.round()
         ..timerTrigger = dataMessage.get('timer_trigger') as String
         ..timeStamp =
             dateTimeFromStrava(dataMessage.get('timestamp') as double);
@@ -33,7 +33,7 @@ class Event {
         ..activitiesId = activity.db.id
         ..event = dataMessage.get('event')?.toString()
         ..eventType = dataMessage.get('event_type') as String
-        ..eventGroup = dataMessage.get('event_group')?.round() as int
+        ..eventGroup = (dataMessage.get('event_group') as double)?.round()
         ..data = dataMessage.get('data') as double
         ..timeStamp =
             dateTimeFromStrava(dataMessage.get('timestamp') as double);
@@ -60,14 +60,14 @@ class Event {
       ..distance = dataMessage.get('distance') as double
       ..altitude = dataMessage.get('altitude') as double
       ..speed = dataMessage.get('speed') as double
-      ..heartRate = dataMessage.get('heart_rate')?.round() as int
+      ..heartRate = (dataMessage.get('heart_rate') as double)?.round()
       ..cadence = dataMessage.get('cadence') as double
       ..fractionalCadence = dataMessage.get('fractional_cadence') as double
-      ..power = dataMessage.get('Power')?.round() as int
+      ..power = (dataMessage.get('Power') as double)?.round()
       ..strydCadence = dataMessage.get('Cadence') as double
       ..groundTime = dataMessage.get('Ground Time') as double
       ..verticalOscillation = dataMessage.get('Vertical Oscillation') as double
-      ..formPower = dataMessage.get('Form Power')?.round() as int
+      ..formPower = (dataMessage.get('Form Power') as double)?.round()
       ..legSpringStiffness = dataMessage.get('Leg Spring Stiffness') as double;
   }
 
@@ -84,12 +84,12 @@ class Event {
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp') as double)
       ..event = dataMessage.get('event')?.toString()
       ..eventType = dataMessage.get('event_type') as String
-      ..eventGroup = dataMessage.get('event_group')?.round() as int
+      ..eventGroup = (dataMessage.get('event_group') as double)?.round()
       ..speed = dataMessage.get('avg_speed') as double
       ..verticalOscillation =
           dataMessage.get('avg_vertical_oscillation') as double
       ..fractionalCadence = dataMessage.get('avg_fractional_cadence') as double
-      ..heartRate = dataMessage.get('avg_heart_rate')?.round() as int
+      ..heartRate = (dataMessage.get('avg_heart_rate') as double)?.round()
       ..cadence = dataMessage.get('avg_running_cadence') as double
       ..timerTrigger = dataMessage.get('lap_trigger') as String
       ..distance = dataMessage.get('total_distance') as double;

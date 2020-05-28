@@ -308,7 +308,7 @@ class Activity extends ChangeNotifier {
 
         case 'file_id':
           db
-            ..serialNumber = dataMessage.get('serial_number')?.round() as int
+            ..serialNumber = (dataMessage.get('serial_number') as double)?.round()
             ..timeCreated =
                 dateTimeFromStrava(dataMessage.get('time_created') as double);
           await db.save();
@@ -383,33 +383,36 @@ class Activity extends ChangeNotifier {
               ..startPositionLong =
                   dataMessage.get('start_position_long') as double
               ..totalElapsedTime =
-                  dataMessage.get('total_elapsed_time')?.round() as int
+                  (dataMessage.get('total_elapsed_time') as double)?.round()
               ..totalTimerTime =
-                  dataMessage.get('total_timer_time')?.round() as int
+                  (dataMessage.get('total_timer_time') as double)?.round()
               ..distance = (db.distance ??
-                  dataMessage.get('total_distance')?.round()) as int
+                  (dataMessage.get('total_distance') as double)?.round())
               ..totalDistance =
-                  dataMessage.get('total_distance')?.round() as int
-              ..totalStrides = dataMessage.get('total_strides')?.round() as int
+                  (dataMessage.get('total_distance') as double)?.round()
+              ..totalStrides =
+                  (dataMessage.get('total_strides') as double)?.round()
               ..necLat = dataMessage.get('nec_lat') as double
               ..necLong = dataMessage.get('nec_long') as double
               ..swcLat = dataMessage.get('swc_lat') as double
               ..swcLong = dataMessage.get('swc_long') as double
               ..totalCalories =
-                  dataMessage.get('total_calories')?.round() as int
+                  (dataMessage.get('total_calories') as double)?.round()
               ..avgSpeed = dataMessage.get('avg_speed') as double
               ..maxSpeed = dataMessage.get('max_speed') as double
-              ..totalAscent = dataMessage.get('total_ascent')?.round() as int
-              ..totalDescent = dataMessage.get('total_descent')?.round() as int
+              ..totalAscent =
+                  (dataMessage.get('total_ascent') as double)?.round()
+              ..totalDescent =
+                  (dataMessage.get('total_descent') as double)?.round()
               ..maxRunningCadence =
-                  dataMessage.get('max_running_cadence')?.round() as int
+                  (dataMessage.get('max_running_cadence') as double)?.round()
               ..firstLapIndex =
-                  dataMessage.get('first_lap_index')?.round() as int
-              ..numLaps = dataMessage.get('num_laps')?.round() as int
+                  (dataMessage.get('first_lap_index') as double)?.round()
+              ..numLaps = (dataMessage.get('num_laps') as double)?.round()
               ..event = dataMessage.get('event')?.toString()
-              ..type = (db.type ?? dataMessage.get('event_type')) as String
+              ..type = db.type ?? dataMessage.get('event_type') as String
               ..eventType = dataMessage.get('event_type') as String
-              ..eventGroup = dataMessage.get('event_group')?.round() as int
+              ..eventGroup = (dataMessage.get('event_group') as double)?.round()
               ..trigger = dataMessage.get('trigger') as String
               ..avgVerticalOscillation =
                   dataMessage.get('avg_vertical_oscillation') as double
@@ -418,16 +421,18 @@ class Activity extends ChangeNotifier {
               ..avgStanceTime = dataMessage.get('avg_stance_time') as double
               ..sport = dataMessage.get('sport') as String
               ..subSport = dataMessage.get('sub_sport') as String
-              ..avgHeartRate = dataMessage.get('avg_heart_rate')?.round() as int
-              ..maxHeartRate = dataMessage.get('max_heart_rate')?.round() as int
+              ..avgHeartRate =
+                  (dataMessage.get('avg_heart_rate') as double)?.round()
+              ..maxHeartRate =
+                  (dataMessage.get('max_heart_rate') as double)?.round()
               ..avgRunningCadence =
                   dataMessage.get('avg_running_cadence') as double
               ..totalTrainingEffect =
-                  dataMessage.get('total_training_effect')?.round() as int
+                  (dataMessage.get('total_training_effect') as double)?.round()
               ..avgTemperature =
-                  dataMessage.get('avg_temperature')?.round() as int
+                  (dataMessage.get('avg_temperature') as double)?.round()
               ..maxTemperature =
-                  dataMessage.get('max_temperature')?.round() as int
+                  (dataMessage.get('max_temperature') as double)?.round()
               ..avgFractionalCadence =
                   dataMessage.get('avg_fractional_cadence') as double
               ..maxFractionalCadence =
@@ -439,7 +444,7 @@ class Activity extends ChangeNotifier {
 
         case 'activity':
           db
-            ..numSessions = dataMessage.get('num_sessions')?.round() as int
+            ..numSessions = (dataMessage.get('num_sessions') as double)?.round()
             ..localTimestamp = dateTimeFromStrava(
                 dataMessage.get('local_timestamp') as double);
           await db.save();
