@@ -98,7 +98,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             ],
             rows: powerZones.map((PowerZone powerZone) {
               return DataRow(
-                key: Key(powerZone.db.id.toString()),
+                key: ValueKey<int>(powerZone.db.id),
                 cells: <DataCell>[
                   DataCell(Text(powerZone.db.name)),
                   DataCell(Text(powerZone.db.lowerLimit.toString() +
@@ -213,7 +213,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     await DbPowerZone()
         .upsertAll(powerZones.map((PowerZone powerZone) => powerZone.db).toList());
     await getData();
-    showDialog<dynamic>(
+    showDialog<BuildContext>(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Power Zone Schema has been copied'),

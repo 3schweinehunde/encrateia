@@ -59,7 +59,7 @@ class _AthletePowerZoneSchemaWidgetState
                   .sublist(offset, offset + rows)
                   .map((PowerZoneSchema powerZoneSchema) {
                 return DataRow(
-                  key: Key(powerZoneSchema.db.id.toString()),
+                  key: ValueKey<int>(powerZoneSchema.db.id),
                   cells: <DataCell>[
                     DataCell(Text(DateFormat('d MMM yyyy')
                         .format(powerZoneSchema.db.date))),

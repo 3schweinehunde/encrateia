@@ -53,7 +53,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                 .sublist(offset, offset + rows)
                 .map((TagGroup tagGroup) {
               return DataRow(
-                key: Key(tagGroup.db.id.toString()),
+                key: ValueKey<int>(tagGroup.db.id),
                 cells: <DataCell>[
                   DataCell(Text(tagGroup.db.name)),
                   DataCell(CircleColor(

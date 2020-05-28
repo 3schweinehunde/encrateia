@@ -102,7 +102,7 @@ class _AddHeartRateZoneSchemaScreenState
             ],
             rows: heartRateZones.map((HeartRateZone heartRateZone) {
               return DataRow(
-                key: Key(heartRateZone.db.id.toString()),
+                key: ValueKey<int>(heartRateZone.db.id),
                 cells: <DataCell>[
                   DataCell(Text(heartRateZone.db.name)),
                   DataCell(Text(heartRateZone.db.lowerLimit.toString() +
@@ -221,7 +221,7 @@ class _AddHeartRateZoneSchemaScreenState
         .map((HeartRateZone heartRateZone) => heartRateZone.db)
         .toList());
     await getData();
-    showDialog<dynamic>(
+    showDialog<BuildContext>(
       context: context,
       builder: (_) => AlertDialog(
         title: const Text('Heart Rate Zone Schema has been copied'),

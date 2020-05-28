@@ -51,7 +51,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
               ],
               rows: weights.sublist(offset, offset + rows).map((Weight weight) {
                 return DataRow(
-                  key: Key(weight.db.id.toString()),
+                  key: ValueKey<int>(weight.db.id),
                   cells: <DataCell>[
                     DataCell(
                         Text(DateFormat('d MMM yyyy').format(weight.db.date))),

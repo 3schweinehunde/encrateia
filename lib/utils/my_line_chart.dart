@@ -90,5 +90,4 @@ class MyLineChart extends LineChart {
     else
       return null;
   }
-
 }

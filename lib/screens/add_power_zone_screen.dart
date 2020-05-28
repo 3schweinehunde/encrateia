@@ -20,7 +20,7 @@ class AddPowerZoneScreen extends StatefulWidget {
 
 class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
   void _openDialog(Widget content) {
-    showDialog<dynamic>(
+    showDialog<BuildContext>(
       context: context,
       builder: (_) {
         return AlertDialog(

@@ -20,7 +20,7 @@ class AddHeartRateZoneScreen extends StatefulWidget {
 
 class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
   void _openDialog(Widget content) {
-    showDialog<dynamic>(
+    showDialog<BuildContext>(
       context: context,
       builder: (_) {
         return AlertDialog(

@@ -32,7 +32,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
   }
 
   void _openDialog(Widget content) {
-    showDialog<dynamic>(
+    showDialog<BuildContext>(
       context: context,
       builder: (_) {
         return AlertDialog(
@@ -110,7 +110,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
             ],
             rows: tags.map((Tag tag) {
               return DataRow(
-                key: Key(tag.db.id.toString()),
+                key: ValueKey<int>(tag.db.id),
                 cells: <DataCell>[
                   DataCell(Text(tag.db.name)),
                   DataCell(CircleColor(

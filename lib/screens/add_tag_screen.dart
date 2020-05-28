@@ -20,7 +20,7 @@ class AddTagScreen extends StatefulWidget {
 
 class _AddTagScreenState extends State<AddTagScreen> {
   void _openDialog(Widget content) {
-    showDialog<dynamic>(
+    showDialog<BuildContext>(
       context: context,
       builder: (_) {
         return AlertDialog(

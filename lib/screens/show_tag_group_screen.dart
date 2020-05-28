@@ -62,7 +62,7 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
             ],
             rows: tags.map((Tag tag) {
               return DataRow(
-                key: Key(tag.db.id.toString()),
+                key: ValueKey<int>(tag.db.id),
                 cells: <DataCell>[
                   DataCell(Text(tag.db.name)),
                   DataCell(CircleColor(

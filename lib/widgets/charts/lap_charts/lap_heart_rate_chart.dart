@@ -5,6 +5,10 @@ import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
+import 'package:charts_common/common.dart' as common
+    show
+    ChartBehavior;
+
 
 class LapHeartRateChart extends StatelessWidget {
   const LapHeartRateChart({
@@ -43,7 +47,7 @@ class LapHeartRateChart extends StatelessWidget {
               desiredTickCount: 6),
         ),
         animate: false,
-        behaviors: [
+        behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
           RangeAnnotation(
             GraphUtils.heartRateZoneAnnotations(
               heartRateZones: heartRateZones,

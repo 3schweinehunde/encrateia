@@ -37,7 +37,7 @@ class LapsListWidget extends StatelessWidget {
               ],
               rows: laps.map((Lap lap) {
                 return DataRow(
-                  key: Key(lap.db.id.toString()),
+                  key: ValueKey<int>(lap.db.id),
                   onSelectChanged: (bool selected) {
                     if (selected) {
                       Navigator.push(

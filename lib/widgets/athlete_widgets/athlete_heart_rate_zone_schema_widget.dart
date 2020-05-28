@@ -60,7 +60,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                   .sublist(offset, offset + rows)
                   .map((HeartRateZoneSchema heartRateZoneSchema) {
                 return DataRow(
-                  key: Key(heartRateZoneSchema.db.id.toString()),
+                  key: ValueKey<int>(heartRateZoneSchema.db.id),
                   cells: <DataCell>[
                     DataCell(Text(DateFormat('d MMM yyyy')
                         .format(heartRateZoneSchema.db.date))),
