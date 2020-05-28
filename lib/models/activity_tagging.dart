@@ -5,8 +5,6 @@ import 'package:encrateia/model/model.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class ActivityTagging extends ChangeNotifier {
-  DbActivityTagging db;
-
   ActivityTagging({
     @required Activity activity,
     @required Tag tag,
@@ -20,12 +18,14 @@ class ActivityTagging extends ChangeNotifier {
 
   ActivityTagging.fromDb(this.db);
 
+  DbActivityTagging db;
+
   static Future<ActivityTagging> createBy({
     @required Activity activity,
     @required Tag tag,
     bool system,
   }) async {
-    var dbActivityTagging = await DbActivityTagging()
+    final DbActivityTagging dbActivityTagging = await DbActivityTagging()
         .select()
         .activitiesId
         .equals(activity.db.id)
@@ -37,7 +37,7 @@ class ActivityTagging extends ChangeNotifier {
     if (dbActivityTagging != null)
       return ActivityTagging.fromDb(dbActivityTagging);
     else {
-      var activityTagging = ActivityTagging(
+      final ActivityTagging activityTagging = ActivityTagging(
           activity: activity, tag: tag, system: system ?? false);
       await activityTagging.db.save();
       return activityTagging;
@@ -58,9 +58,10 @@ class ActivityTagging extends ChangeNotifier {
         .toSingle();
     if (dbActivityTagging != null)
       return ActivityTagging.fromDb(dbActivityTagging);
+    return null;
   }
 
-  static Future<BoolResult> deleteBy({
+  static Future<void> deleteBy({
     @required Activity activity,
     @required Tag tag,
   }) async {

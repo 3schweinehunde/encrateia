@@ -9,13 +9,13 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityHeartRateWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityHeartRateWidget({
+  const ActivityHeartRateWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityHeartRateWidgetState createState() =>
@@ -23,7 +23,7 @@ class ActivityHeartRateWidget extends StatefulWidget {
 }
 
 class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
-  var records = RecordList(<Event>[]);
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
   HeartRateZoneSchema heartRateZoneSchema;
   List<HeartRateZone> heartRateZones;
 
@@ -34,21 +34,21 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
   }
 
   @override
-  Widget build(context) {
-    if (records.length != 0) {
-      var heartRateRecords = records
-          .where(
-              (value) => value.db.heartRate != null && value.db.heartRate > 10)
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> heartRateRecords = records
+          .where((Event value) =>
+              value.db.heartRate != null && value.db.heartRate > 10)
           .toList();
 
-      if (heartRateRecords.length > 0) {
+      if (heartRateRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityHeartRateChart(
-                records: RecordList(heartRateRecords),
+                records: RecordList<Event>(heartRateRecords),
                 activity: widget.activity,
                 heartRateZones: heartRateZones,
                 athlete: widget.athlete,
@@ -56,56 +56,56 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'heart rate > 10 bpm are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(widget.activity.db.avgHeartRate.toString()),
-                subtitle: Text("average heart rate"),
+                subtitle: const Text('average heart rate'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
                 title: Text(records.minHeartRateString),
-                subtitle: Text("minimum heart rate"),
+                subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
                 title: Text(widget.activity.db.maxHeartRate.toString()),
-                subtitle: Text("maximum heart rate"),
+                subtitle: const Text('maximum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(records.sdevHeartRateString),
-                subtitle: Text("standard deviation heart rate"),
+                subtitle: const Text('standard deviation heart rate'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(heartRateRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No heart rate data available."),
+        return const Center(
+          child: Text('No heart rate data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = RecordList(await activity.records);
+  Future<void> getData() async {
+    final Activity activity = widget.activity;
+    records = RecordList<Event>(await activity.records);
 
     heartRateZoneSchema = await activity.heartRateZoneSchema;
     if (heartRateZoneSchema != null)
       heartRateZones = await heartRateZoneSchema.heartRateZones;
     else
-      heartRateZones = [];
+      heartRateZones = <HeartRateZone>[];
     setState(() {});
   }
 }

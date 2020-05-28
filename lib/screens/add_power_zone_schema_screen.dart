@@ -114,7 +114,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                     onTap: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute<dynamic>(
                           builder: (BuildContext context) => AddPowerZoneScreen(
                             powerZone: powerZone,
                             base: widget.powerZoneSchema.db.base,
@@ -137,7 +137,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                 onPressed: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute<dynamic>(
                       builder: (BuildContext context) => AddPowerZoneScreen(
                         powerZone:
                             PowerZone(powerZoneSchema: widget.powerZoneSchema),
@@ -197,6 +197,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             (powerZone.db.upperPercentage * base / 100).round();
       }
     });
+    return null;
   }
 
   Future<void> copyPowerZoneSchema({DateTime date}) async {

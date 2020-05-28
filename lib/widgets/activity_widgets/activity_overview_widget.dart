@@ -8,13 +8,13 @@ import 'package:intl/intl.dart';
 import 'package:encrateia/models/activity.dart';
 
 class ActivityOverviewWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityOverviewWidget({
+  const ActivityOverviewWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityOverviewWidgetState createState() => _ActivityOverviewWidgetState();
@@ -28,83 +28,83 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return StaggeredGridView.count(
-      staggeredTiles: List.filled(12, StaggeredTile.fit(1)),
+      staggeredTiles: List<StaggeredTile>.filled(12, const StaggeredTile.fit(1)),
       mainAxisSpacing: 4,
       crossAxisCount:
           MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-      children: [
+      children: <ListTile>[
         ListTile(
           title: Text(
               '${(widget.activity.db.distance / 1000).toStringAsFixed(2)} km'),
-          subtitle: Text('distance'),
+          subtitle: const Text('distance'),
         ),
         ListTile(
           title: Text(
               Duration(seconds: widget.activity.db.movingTime ?? 0).asString()),
-          subtitle: Text('moving time'),
+          subtitle: const Text('moving time'),
         ),
         ListTile(
           title: Text(widget.activity.db.avgSpeed.toPace() +
-              " / " +
+              ' / ' +
               widget.activity.db.maxSpeed.toPace()),
-          subtitle: Text('avg / max pace'),
+          subtitle: const Text('avg / max pace'),
         ),
         ListTile(
           title: Text((widget.activity.weight != null)
-              ? widget.activity
-                      .getAttribute(ActivityAttr.ecor)
+              ? (widget.activity
+                      .getAttribute(ActivityAttr.ecor) as double)
                       .toStringAsFixed(2) +
-                  " W s/kg m"
-              : "not available"),
-          subtitle: Text('ecor'),
+                  ' W s/kg m'
+              : 'not available'),
+          subtitle: const Text('ecor'),
         ),
         ListTile(
           title: Text(
-              "${widget.activity.db.avgHeartRate} / ${widget.activity.db.maxHeartRate} bpm"),
-          subtitle: Text('avg / max heart rate'),
+              '${widget.activity.db.avgHeartRate} / ${widget.activity.db.maxHeartRate} bpm'),
+          subtitle: const Text('avg / max heart rate'),
         ),
         ListTile(
-          title: Text("${widget.activity.db.avgPower.toStringAsFixed(1)} W"),
-          subtitle: Text('avg power'),
+          title: Text('${widget.activity.db.avgPower.toStringAsFixed(1)} W'),
+          subtitle: const Text('avg power'),
         ),
         ListTile(
           title: Text(
-              "${(widget.activity.db.avgPower / widget.activity.db.avgHeartRate).toStringAsFixed(2)} W/bpm"),
-          subtitle: Text('power / heart rate'),
+              '${(widget.activity.db.avgPower / widget.activity.db.avgHeartRate).toStringAsFixed(2)} W/bpm'),
+          subtitle: const Text('power / heart rate'),
         ),
         ListTile(
           title: Text('${widget.activity.db.totalCalories} kcal'),
-          subtitle: Text('total calories'),
+          subtitle: const Text('total calories'),
         ),
         ListTile(
-          title: Text(DateFormat("dd MMM yyyy, h:mm:ss")
+          title: Text(DateFormat('dd MMM yyyy, h:mm:ss')
               .format(widget.activity.db.timeCreated)),
-          subtitle: Text('time created'),
+          subtitle: const Text('time created'),
         ),
         ListTile(
           title: Text(
-              "${widget.activity.db.totalAscent} - ${widget.activity.db.totalDescent}"
-              " = ${widget.activity.db.totalAscent - widget.activity.db.totalDescent} m"),
-          subtitle: Text('total ascent - descent = total climb'),
+              '${widget.activity.db.totalAscent} - ${widget.activity.db.totalDescent}'
+              ' = ${widget.activity.db.totalAscent - widget.activity.db.totalDescent} m'),
+          subtitle: const Text('total ascent - descent = total climb'),
         ),
         ListTile(
           title: Text(
-              "${(widget.activity.db.avgRunningCadence ?? 0 * 2).round()} / "
-              "${widget.activity.db.maxRunningCadence ?? 0 * 2} spm"),
-          subtitle: Text('avg / max steps per minute'),
+              '${(widget.activity.db.avgRunningCadence ?? 0 * 2).round()} / '
+              '${widget.activity.db.maxRunningCadence ?? 0 * 2} spm'),
+          subtitle: const Text('avg / max steps per minute'),
         ),
         ListTile(
           title: Text(widget.activity.db.totalTrainingEffect.toString()),
-          subtitle: Text('total training effect'),
+          subtitle: const Text('total training effect'),
         ),
       ],
     );
   }
 
-  getData() async {
-    var weight = await Weight.getBy(
+  Future<void> getData() async {
+    final Weight weight = await Weight.getBy(
       athletesId: widget.athlete.db.id,
       date: widget.activity.db.timeCreated,
     );

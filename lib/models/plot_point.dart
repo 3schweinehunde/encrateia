@@ -5,7 +5,7 @@ class IntPlotPoint {
   int measure;
 
   @override
-  toString() => '< IntPlotPoint | $domain | $measure >';
+  String toString() => '< IntPlotPoint | $domain | $measure >';
 }
 
 class DoublePlotPoint {
@@ -15,5 +15,5 @@ class DoublePlotPoint {
   double measure;
 
   @override
-  toString() => '< DoublePlotPoint | $domain | $measure >';
+  String toString() => '< DoublePlotPoint | $domain | $measure >';
 }

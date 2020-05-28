@@ -11,24 +11,24 @@ import 'package:encrateia/widgets/charts/activity_charts/activity_power_chart.da
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityPowerWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityPowerWidget({
+  const ActivityPowerWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityPowerWidgetState createState() => _ActivityPowerWidgetState();
 }
 
 class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
-  var records = RecordList(<Event>[]);
-  String avgPowerString = "Loading ...";
-  String minPowerString = "Loading ...";
-  String maxPowerString = "Loading ...";
-  String sdevPowerString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgPowerString = 'Loading ...';
+  String minPowerString = 'Loading ...';
+  String maxPowerString = 'Loading ...';
+  String sdevPowerString = 'Loading ...';
   PowerZoneSchema powerZoneSchema;
   List<PowerZone> powerZones;
 
@@ -39,21 +39,21 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0 && powerZones != null) {
-      var powerRecords = records
-          .where((value) => value.db.power != null && value.db.power > 100)
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty && powerZones != null) {
+      final List<Event> powerRecords = records
+          .where((Event value) => value.db.power != null && value.db.power > 100)
           .toList();
 
-      if (powerRecords.length > 0) {
-        Event lastRecord = powerRecords.last;
+      if (powerRecords.isNotEmpty) {
+        final Event lastRecord = powerRecords.last;
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityPowerChart(
-                records: RecordList(powerRecords),
+                records: RecordList<Event>(powerRecords),
                 activity: widget.activity,
                 powerZones: powerZones,
                 athlete: widget.athlete,
@@ -61,67 +61,67 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgPowerString),
-                subtitle: Text("average power"),
+                subtitle: const Text('average power'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
                 title: Text(minPowerString),
-                subtitle: Text("minimum power"),
+                subtitle: const Text('minimum power'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
                 title: Text(maxPowerString),
-                subtitle: Text("maximum power"),
+                subtitle: const Text('maximum power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevPowerString),
-                subtitle: Text("standard deviation power"),
+                subtitle: const Text('standard deviation power'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(powerRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
               ListTile(
-                leading: Text("🕵️‍♀️", style: TextStyle(fontSize: 25)),
+                leading: const Text('🕵️‍♀️', style: TextStyle(fontSize: 25)),
                 title: Text(lastRecord.db.positionLong.semicirclesAsDegrees() +
-                    " / " +
+                    ' / ' +
                     lastRecord.db.positionLat.semicirclesAsDegrees()),
-                subtitle: Text("findYourStryd (last power record)"),
+                subtitle: const Text('findYourStryd (last power record)'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No power data available."),
+        return const Center(
+          child: Text('No power data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = RecordList(await activity.records);
-    avgPowerString = activity.db.avgPower.toStringOrDashes(1) + " W";
-    minPowerString = activity.db.minPower.toString() + " W";
-    maxPowerString = activity.db.maxPower.toString() + " W";
-    sdevPowerString = activity.db.sdevPower.toStringOrDashes(2) + " W";
+  Future<void> getData() async {
+    final Activity activity = widget.activity;
+    records = RecordList<Event>(await activity.records);
+    avgPowerString = activity.db.avgPower.toStringOrDashes(1) + ' W';
+    minPowerString = activity.db.minPower.toString() + ' W';
+    maxPowerString = activity.db.maxPower.toString() + ' W';
+    sdevPowerString = activity.db.sdevPower.toStringOrDashes(2) + ' W';
 
     powerZoneSchema = await activity.powerZoneSchema;
     if (powerZoneSchema != null)
       powerZones = await powerZoneSchema.powerZones;
     else
-      powerZones = [];
+      powerZones = <PowerZone>[];
     setState(() {});
   }
 }

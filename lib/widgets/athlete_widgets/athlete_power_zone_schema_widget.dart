@@ -7,10 +7,10 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:intl/intl.dart';
 
 class AthletePowerZoneSchemaWidget extends StatefulWidget {
+  const AthletePowerZoneSchemaWidget({this.athlete});
+
   final Athlete athlete;
-
-  AthletePowerZoneSchemaWidget({this.athlete});
-
+  
   @override
   _AthletePowerZoneSchemaWidgetState createState() =>
       _AthletePowerZoneSchemaWidgetState();
@@ -18,7 +18,7 @@ class AthletePowerZoneSchemaWidget extends StatefulWidget {
 
 class _AthletePowerZoneSchemaWidgetState
     extends State<AthletePowerZoneSchemaWidget> {
-  List<PowerZoneSchema> powerZoneSchemas = [];
+  List<PowerZoneSchema> powerZoneSchemas = <PowerZoneSchema>[];
   int offset = 0;
   int rows;
 
@@ -29,16 +29,16 @@ class _AthletePowerZoneSchemaWidgetState
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     if (powerZoneSchemas != null) {
-      if (powerZoneSchemas.length > 0) {
+      if (powerZoneSchemas.isNotEmpty) {
         rows = (powerZoneSchemas.length < 8) ? powerZoneSchemas.length : 8;
         return ListView(
           children: <Widget>[
             Center(
               child: Text(
-                "\nPowerZoneSchemas ${offset + 1} - ${offset + rows} "
-                "of ${powerZoneSchemas.length}",
+                '\nPowerZoneSchemas ${offset + 1} - ${offset + rows} '
+                'of ${powerZoneSchemas.length}',
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
@@ -46,22 +46,22 @@ class _AthletePowerZoneSchemaWidgetState
               headingRowHeight: kMinInteractiveDimension * 0.80,
               dataRowHeight: kMinInteractiveDimension * 0.80,
               columnSpacing: 9,
-              columns: <DataColumn>[
-                DataColumn(label: Text("Date")),
-                DataColumn(label: Text("Name")),
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Date')),
+                DataColumn(label: Text('Name')),
                 DataColumn(
-                  label: Text("Base (W)"),
+                  label: Text('Base (W)'),
                   numeric: true,
                 ),
-                DataColumn(label: Text("Edit")),
+                DataColumn(label: Text('Edit')),
               ],
               rows: powerZoneSchemas
                   .sublist(offset, offset + rows)
                   .map((PowerZoneSchema powerZoneSchema) {
                 return DataRow(
                   key: Key(powerZoneSchema.db.id.toString()),
-                  cells: [
-                    DataCell(Text(DateFormat("d MMM yyyy")
+                  cells: <DataCell>[
+                    DataCell(Text(DateFormat('d MMM yyyy')
                         .format(powerZoneSchema.db.date))),
                     DataCell(Text(powerZoneSchema.db.name)),
                     DataCell(Text(powerZoneSchema.db.base.toString())),
@@ -71,7 +71,7 @@ class _AthletePowerZoneSchemaWidgetState
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddPowerZoneSchemaScreen(
+                            builder: (BuildContext context) => AddPowerZoneSchemaScreen(
                               powerZoneSchema: powerZoneSchema,
                             ),
                           ),
@@ -83,17 +83,17 @@ class _AthletePowerZoneSchemaWidgetState
                 );
               }).toList(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: <Widget>[
-                Spacer(),
+                const Spacer(),
                 MyButton.add(
-                    child: Text("New schema"),
+                    child: const Text('New schema'),
                     onPressed: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddPowerZoneSchemaScreen(
+                          builder: (BuildContext context) => AddPowerZoneSchemaScreen(
                             powerZoneSchema:
                                 PowerZoneSchema(athlete: widget.athlete),
                           ),
@@ -101,18 +101,18 @@ class _AthletePowerZoneSchemaWidgetState
                       );
                       getData();
                     }),
-                Spacer(),
+                const Spacer(),
                 MyButton.navigate(
-                  child: Text("<<"),
+                  child: const Text('<<'),
                   onPressed: (offset == 0)
                       ? null
                       : () => setState(() {
                             offset > 8 ? offset = offset - rows : offset = 0;
                           }),
                 ),
-                Spacer(),
+                const Spacer(),
                 MyButton.navigate(
-                  child: Text(">>"),
+                  child: const Text('>>'),
                   onPressed: (offset + rows == powerZoneSchemas.length)
                       ? null
                       : () => setState(() {
@@ -121,21 +121,21 @@ class _AthletePowerZoneSchemaWidgetState
                                 : offset = powerZoneSchemas.length - rows;
                           }),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
             Padding(
-              padding: EdgeInsets.all(25.0),
+              padding: const EdgeInsets.all(25.0),
               child: templateButtons(),
             )
           ],
         );
       } else {
         return Padding(
-          padding: EdgeInsets.all(25.0),
+          padding: const EdgeInsets.all(25.0),
           child: ListView(
             children: <Widget>[
-              Text('''
+              const Text('''
 No power schema defined so far:
                 
 You can easily start with one of the three pre defined power schemas,
@@ -146,12 +146,12 @@ You could also create a schema from scratch.
 '''),
               RaisedButton(
                 color: Colors.green,
-                child: Text("New schema"),
+                child: const Text('New schema'),
                 onPressed: () async {
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddPowerZoneSchemaScreen(
+                      builder: (BuildContext context) => AddPowerZoneSchemaScreen(
                         powerZoneSchema:
                             PowerZoneSchema(athlete: widget.athlete),
                       ),
@@ -166,60 +166,60 @@ You could also create a schema from scratch.
         );
       }
     } else {
-      return Center(child: Text("loading"));
+      return const Center(child: Text('loading'));
     }
   }
 
-  getData() async {
-    Athlete athlete = widget.athlete;
+  Future<void> getData() async {
+    final Athlete athlete = widget.athlete;
     powerZoneSchemas = await athlete.powerZoneSchemas;
     setState(() {});
   }
 
-  likeStryd() async {
-    Athlete athlete = widget.athlete;
-    var powerZoneSchema = PowerZoneSchema.likeStryd(athlete: athlete);
+  Future<void> likeStryd() async {
+    final Athlete athlete = widget.athlete;
+    final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeStryd(athlete: athlete);
     await powerZoneSchema.db.save();
     await powerZoneSchema.addStrydZones();
     await getData();
   }
 
-  likeJimVance() async {
-    Athlete athlete = widget.athlete;
-    var powerZoneSchema = PowerZoneSchema.likeJimVance(athlete: athlete);
+  Future<void> likeJimVance() async {
+    final Athlete athlete = widget.athlete;
+    final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeJimVance(athlete: athlete);
     await powerZoneSchema.db.save();
     await powerZoneSchema.addJimVanceZones();
     await getData();
   }
 
-  likeStefanDillinger() async {
-    Athlete athlete = widget.athlete;
-    var powerZoneSchema = PowerZoneSchema.likeStefanDillinger(athlete: athlete);
+  Future<void> likeStefanDillinger() async {
+    final Athlete athlete = widget.athlete;
+    final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeStefanDillinger(athlete: athlete);
     await powerZoneSchema.db.save();
     await powerZoneSchema.addStefanDillingerZones();
     await getData();
   }
 
-  templateButtons() {
-    return Column(children: [
-      Divider(),
-      Text("Add power zone schema from template:"),
+  Column templateButtons() {
+    return Column(children: <Widget>[
+      const Divider(),
+      const Text('Add power zone schema from template:'),
       RaisedButton(
         // MyIcon.downloadLocal,
         color: Colors.orange,
-        child: Text("like Stryd"),
+        child: const Text('like Stryd'),
         onPressed: () => likeStryd(),
       ),
       RaisedButton(
         // MyIcon.downloadLocal,
         color: Colors.orange,
-        child: Text("like Jim Vance"),
+        child: const Text('like Jim Vance'),
         onPressed: () => likeJimVance(),
       ),
       RaisedButton(
         // MyIcon.downloadLocal,
         color: Colors.orange,
-        child: Text("like Stefan Dillinger"),
+        child: const Text('like Stefan Dillinger'),
         onPressed: () => likeStefanDillinger(),
       ),
     ]);

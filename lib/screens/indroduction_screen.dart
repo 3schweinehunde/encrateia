@@ -6,10 +6,10 @@ class IntroductionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Introduction"),
+        title: const Text('Introduction'),
         backgroundColor: MyColor.primary,
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Card(
           margin: EdgeInsets.all(10),
           child: Padding(

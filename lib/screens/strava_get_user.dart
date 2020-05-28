@@ -7,10 +7,10 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 
 class StravaGetUser extends StatelessWidget {
-  final String title = "Strava Login";
-  final Athlete athlete;
+  const StravaGetUser({this.athlete});
 
-  StravaGetUser({this.athlete});
+  String get title => 'Strava Login';
+  final Athlete athlete;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +18,18 @@ class StravaGetUser extends StatelessWidget {
       value: athlete,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Create Athlete'),
+          title: const Text('Create Athlete'),
           backgroundColor: MyColor.primary,
         ),
         body: Consumer<Athlete>(
-          builder: (context, athlete, _child) {
-            if (athlete.db.firstName == null) loginToStrava();
-            if (athlete.db.state == 'fromStrava') Navigator.of(context).pop();
+          builder: (BuildContext context, Athlete athlete, Widget _child) {
+            if (athlete.db.firstName == null)
+              loginToStrava();
+            if (athlete.db.state == 'fromStrava')
+              Navigator.of(context).pop();
             return Container(
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Text(athlete.stateText),
               ),
             );
@@ -37,16 +39,16 @@ class StravaGetUser extends StatelessWidget {
     );
   }
 
-  loginToStrava() async {
-    Strava strava = Strava(true, secret);
-    final prompt = 'auto';
+  Future<void> loginToStrava() async {
+    final Strava strava = Strava(true, secret);
+    const String prompt = 'auto';
 
     await strava.oauth(
         clientId,
         'activity:write,activity:read_all,profile:read_all,profile:write',
         secret,
         prompt);
-    DetailedAthlete stravaAthlete = await strava.getLoggedInAthlete();
+    final DetailedAthlete stravaAthlete = await strava.getLoggedInAthlete();
     athlete.updateFromStravaAthlete(stravaAthlete);
   }
 }

@@ -187,7 +187,7 @@ class Activity extends ChangeNotifier {
   Future<List<Lap>> get laps async => _laps ??= await Lap.all(activity: this);
 
   Future<bool> recalculateAverages() async {
-    final RecordList<Event> recordList = RecordList(<Event>[]);
+    final RecordList<Event> recordList = RecordList<Event>(<Event>[]);
     recordList.addAll(await records);
     db
       ..avgPower = recordList.calculateAveragePower()

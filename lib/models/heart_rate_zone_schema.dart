@@ -145,5 +145,6 @@ class HeartRateZoneSchema extends ChangeNotifier {
             .toList();
     if (dbHeartRateZoneSchemas.isNotEmpty)
       return HeartRateZoneSchema.fromDb(dbHeartRateZoneSchemas.first);
+    return null;
   }
 }

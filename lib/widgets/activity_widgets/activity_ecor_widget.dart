@@ -9,22 +9,22 @@ import 'package:encrateia/widgets/charts/activity_charts/activity_ecor_chart.dar
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityEcorWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityEcorWidget({
+  const ActivityEcorWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityEcorWidgetState createState() => _ActivityEcorWidgetState();
 }
 
 class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
-  var records = RecordList(<Event>[]);
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
   Weight weight;
-  String weightString = "Loading ...";
+  String weightString = 'Loading ...';
 
   @override
   void initState() {
@@ -33,24 +33,24 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var ecorRecords = records
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> ecorRecords = records
+          .where((Event value) =>
               value.db.power != null &&
               value.db.power > 100 &&
               value.db.speed != null &&
               value.db.speed >= 1)
           .toList();
 
-      if (ecorRecords.length > 0 && ecorRecords != null) {
+      if (ecorRecords.isNotEmpty && ecorRecords != null) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
-            children: [
+            padding: const EdgeInsets.only(left: 25),
+            children: <Widget>[
               ActivityEcorChart(
-                records: RecordList(ecorRecords),
+                records: RecordList<Event>(ecorRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
                 weight: weight.db.value,
@@ -58,39 +58,39 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 0 W and speed > 1 m/s are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.weight,
                 title: Text(weightString),
-                subtitle: Text("weight"),
+                subtitle: const Text('weight'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(ecorRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No ecor data available."),
+        return const Center(
+          child: Text('No ecor data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    records = RecordList(await widget.activity.records);
+  Future<void> getData() async {
+    records = RecordList<Event>(await widget.activity.records);
     weight = await Weight.getBy(
       athletesId: widget.athlete.db.id,
       date: widget.activity.db.timeCreated,
     );
-    weightString = weight.db.value.toStringOrDashes(2) + " kg";
+    weightString = weight.db.value.toStringOrDashes(2) + ' kg';
     setState(() {});
   }
 }

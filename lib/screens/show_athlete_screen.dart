@@ -68,7 +68,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
       ),
       body: StaggeredGridView.count(
-        staggeredTiles: List.filled(17, StaggeredTile.fit(1)),
+        staggeredTiles: List<StaggeredTile>.filled(17, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
@@ -343,89 +343,90 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       await queryStrava();
 
       activities = await Activity.all(athlete: widget.athlete);
-      var newActivities =
-          activities.where((activity) => activity.db.state == "new");
+      final Iterable<Activity> newActivities =
+          activities.where((Activity activity) => activity.db.state == 'new');
+      // ignore: prefer_final_in_for_each
       for (Activity activity in newActivities) {
         await download(activity: activity);
       }
 
-      var downloadedActivities =
-          activities.where((activity) => activity.db.state == "downloaded");
-      for (Activity activity in downloadedActivities) {
+      final Iterable<Activity> downloadedActivities =
+          activities.where((Activity activity) => activity.db.state == 'downloaded');
+      for (final Activity activity in downloadedActivities) {
         await parse(activity: activity);
         await activity.autoTagger(athlete: widget.athlete);
       }
       flushbar.dismiss();
-      Flushbar<Object>(
-        message: "You are now up to date!",
-        duration: Duration(seconds: 5),
+      flushbar = Flushbar<Object>(
+        message: 'You are now up to date!',
+        duration: const Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
       )..show(context);
 
       setState(() => floatingActionButtonVisible = true);
     } else {
-      Flushbar(
+      flushbar = Flushbar<Object>(
         message:
-            "Please set up Power Zone Schema and Heart Rate Zone Schema first!",
-        duration: Duration(seconds: 5),
+            'Please set up Power Zone Schema and Heart Rate Zone Schema first!',
+        duration: const Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
       )..show(context);
     }
   }
 
-  Future queryStrava() async {
-    flushbar = Flushbar(
-      message: "Downloading new activities",
-      duration: Duration(seconds: 10),
+  Future<void> queryStrava() async {
+    flushbar = Flushbar<Object>(
+      message: 'Downloading new activities',
+      duration: const Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
     await Activity.queryStrava(athlete: widget.athlete);
     flushbar.dismiss();
-    Flushbar(
-      message: "Download finished",
-      duration: Duration(seconds: 1),
+    flushbar = Flushbar<Object>(
+      message: 'Download finished',
+      duration: const Duration(seconds: 1),
       icon: MyIcon.finishedWhite,
     )..show(context);
 
     setState(() {});
   }
 
-  Future download({Activity activity}) async {
+  Future<void> download({Activity activity}) async {
     flushbar.dismiss();
-    flushbar = Flushbar(
-      message: "Download .fit-File for »${activity.db.name}«",
-      duration: Duration(seconds: 10),
+    flushbar = Flushbar<Object>(
+      message: 'Download .fit-File for »${activity.db.name}«',
+      duration: const Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
 
     await activity.download(athlete: widget.athlete);
 
     flushbar.dismiss();
-    Flushbar(
-      message: "Download finished",
-      duration: Duration(seconds: 2),
+    flushbar = Flushbar<Object>(
+      message: 'Download finished',
+      duration: const Duration(seconds: 2),
       icon: MyIcon.finishedWhite,
     )..show(context);
     setState(() {});
   }
 
-  Future parse({Activity activity}) async {
+  Future<void> parse({Activity activity}) async {
     flushbar.dismiss();
-    flushbar = Flushbar(
-      message: "0% of storing »${activity.db.name}«",
-      duration: Duration(seconds: 10),
-      animationDuration: Duration(milliseconds: 1),
-      titleText: LinearProgressIndicator(value: 0),
+    flushbar = Flushbar<Object>(
+      message: '0% of storing »${activity.db.name}«',
+      duration: const Duration(seconds: 10),
+      animationDuration: const Duration(milliseconds: 1),
+      titleText: const LinearProgressIndicator(value: 0),
     )..show(context);
 
-    var percentageStream = activity.parse(athlete: widget.athlete);
-    await for (var value in percentageStream) {
+    final Stream<int> percentageStream = activity.parse(athlete: widget.athlete);
+    await for (final int value in percentageStream) {
       flushbar.dismiss();
-      flushbar = Flushbar(
+      flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: value / 100),
-        message: "$value% of storing »${activity.db.name}«",
-        duration: Duration(seconds: 20),
-        animationDuration: Duration(milliseconds: 1),
+        message: '$value% of storing »${activity.db.name}«',
+        duration: const Duration(seconds: 20),
+        animationDuration: const Duration(milliseconds: 1),
       )..show(context);
     }
     setState(() {});
@@ -437,11 +438,11 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Are you sure?'),
+          title: const Text('Are you sure?'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: <Widget>[
-                const Text('All the athlete\'s data including'),
+              children: const <Widget>[
+                Text('All the athlete\'s data including'),
                 Text('activities will be deleted as well.'),
                 Text('There is no undo function.'),
               ],
@@ -464,7 +465,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
   Future<void> deleteAthleteAndPop() async {
     await widget.athlete.delete();
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Navigator.of(context).popUntil((Route<dynamic> route) => route.isFirst);
   }
 
   Future<void> redoAutoTagging() async {
@@ -482,35 +483,35 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
       await TagGroup.deleteAllAutoTags(athlete: widget.athlete);
       flushbar = Flushbar<Object>(
-        message: "All existing autotaggings have been deleted.",
-        duration: Duration(seconds: 2),
+        message: 'All existing autotaggings have been deleted.',
+        duration: const Duration(seconds: 2),
         icon: MyIcon.finishedWhite,
       )..show(context);
 
-      for (Activity activity in activities) {
+      for (final Activity activity in activities) {
         index += 1;
         await activity.autoTagger(athlete: widget.athlete);
         flushbar.dismiss();
         percent = 100 * index ~/ activities.length;
-        flushbar = Flushbar(
+        flushbar = Flushbar<Object>(
           titleText: LinearProgressIndicator(value: percent / 100),
-          message: "$percent% done (autotagging »${activity.db.name}« )",
-          duration: Duration(seconds: 2),
-          animationDuration: Duration(milliseconds: 1),
+          message: '$percent% done (autotagging »${activity.db.name}« )',
+          duration: const Duration(seconds: 2),
+          animationDuration: const Duration(milliseconds: 1),
         )..show(context);
       }
 
       flushbar.dismiss();
       flushbar = Flushbar<Object>(
-        message: "Autotaggings are now up to date.",
-        duration: Duration(seconds: 5),
+        message: 'Autotaggings are now up to date.',
+        duration: const Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
       )..show(context);
     } else {
       flushbar = Flushbar<Object>(
         message:
-            "Please set up Power Zone Schema and Heart Rate Zone Schema first!",
-        duration: Duration(seconds: 5),
+            'Please set up Power Zone Schema and Heart Rate Zone Schema first!',
+        duration: const Duration(seconds: 5),
         icon: MyIcon.finishedWhite,
       )..show(context);
     }

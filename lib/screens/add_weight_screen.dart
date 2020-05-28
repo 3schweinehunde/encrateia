@@ -6,28 +6,28 @@ import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class AddWeightScreen extends StatelessWidget {
-  final Weight weight;
-
   const AddWeightScreen({
     Key key,
     this.weight,
   }) : super(key: key);
+
+  final Weight weight;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.settings,
-        title: Text('Add your Weight'),
+        title: const Text('Add your Weight'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         children: <Widget>[
           DateTimeField(
-            decoration: InputDecoration(labelText: "Date"),
-            format: DateFormat("yyyy-MM-dd"),
+            decoration: const InputDecoration(labelText: 'Date'),
+            format: DateFormat('yyyy-MM-dd'),
             initialValue: weight.db.date,
-            onShowPicker: (context, currentValue) {
+            onShowPicker: (BuildContext context, DateTime currentValue) {
               return showDatePicker(
                 context: context,
                 firstDate: DateTime(1990),
@@ -35,24 +35,24 @@ class AddWeightScreen extends StatelessWidget {
                 lastDate: DateTime(2100),
               );
             },
-            onChanged: (value) => weight.db.date = value,
+            onChanged: (DateTime value) => weight.db.date = value,
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: "Weight in kg"),
+            decoration: const InputDecoration(labelText: 'Weight in kg'),
             initialValue: weight.db.value.toString(),
-            keyboardType: TextInputType.numberWithOptions(decimal: true),
-            onChanged: (value) => weight.db.value = double.parse(value),
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            onChanged: (String value) => weight.db.value = double.parse(value),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               MyButton.delete(
                 onPressed: () => deleteWeight(context),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               MyButton.save(onPressed: () => saveWeight(context)),
             ],
           ),
@@ -61,12 +61,12 @@ class AddWeightScreen extends StatelessWidget {
     );
   }
 
-  saveWeight(BuildContext context) async {
+  Future<void> saveWeight(BuildContext context) async {
     await weight.db.save();
     Navigator.of(context).pop();
   }
 
-  deleteWeight(BuildContext context) async {
+  Future<void> deleteWeight(BuildContext context) async {
     await weight.delete();
     Navigator.of(context).pop();
   }

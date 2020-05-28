@@ -206,5 +206,6 @@ class PowerZoneSchema extends ChangeNotifier {
         .toList();
     if (dbPowerZoneSchemas.isNotEmpty)
       return PowerZoneSchema.fromDb(dbPowerZoneSchemas.first);
+    return null;
   }
 }

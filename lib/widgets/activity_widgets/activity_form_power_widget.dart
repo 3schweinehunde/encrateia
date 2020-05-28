@@ -8,13 +8,13 @@ import 'package:encrateia/widgets/charts/activity_charts/activity_form_power_cha
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityFormPowerWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityFormPowerWidget({
+  const ActivityFormPowerWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityFormPowerWidgetState createState() =>
@@ -22,9 +22,9 @@ class ActivityFormPowerWidget extends StatefulWidget {
 }
 
 class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
-  var records = RecordList(<Event>[]);
-  String avgFormPowerString = "Loading ...";
-  String sdevFormPowerString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgFormPowerString = 'Loading ...';
+  String sdevFormPowerString = 'Loading ...';
 
   @override
   void initState() {
@@ -33,65 +33,65 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var formPowerRecords = records
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> formPowerRecords = records
+          .where((Event value) =>
               value.db.formPower != null &&
               value.db.formPower > 0 &&
               value.db.formPower < 200)
           .toList();
 
-      if (formPowerRecords.length > 0) {
+      if (formPowerRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityFormPowerChart(
-                records: RecordList(formPowerRecords),
+                records: RecordList<Event>(formPowerRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   '0 W < form power < 200 W are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.formPower,
                 title: Text(avgFormPowerString),
-                subtitle: Text("average form power"),
+                subtitle: const Text('average form power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevFormPowerString),
-                subtitle: Text("standard deviation form power"),
+                subtitle: const Text('standard deviation form power'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(formPowerRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No form power data available."),
+        return const Center(
+          child: Text('No form power data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = RecordList(await activity.records);
-    avgFormPowerString = activity.db.avgFormPower.toStringOrDashes(1) + " W";
-    sdevFormPowerString = activity.db.sdevFormPower.toStringOrDashes(2) + " W";
+  Future<void> getData() async {
+    final Activity activity = widget.activity;
+    records = RecordList<Event>(await activity.records);
+    avgFormPowerString = activity.db.avgFormPower.toStringOrDashes(1) + ' W';
+    sdevFormPowerString = activity.db.sdevFormPower.toStringOrDashes(2) + ' W';
     setState(() {});
   }
 }

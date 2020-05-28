@@ -3,7 +3,7 @@ import 'package:encrateia/utils/my_theme.dart';
 import 'package:flutter/material.dart';
 import 'screens/dashboard.dart';
 
-void main() async {
+Future<void> main() async {
   await Setup.init();
   runApp(MyApp());
 }
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Encrateia',
       theme: MyTheme.call(),
-      home: Dashboard(),
+      home: const Dashboard(),
     );
   }
 }

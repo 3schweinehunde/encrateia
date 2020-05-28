@@ -9,16 +9,19 @@ import 'package:encrateia/model/model.dart';
 import 'add_tag_screen.dart';
 
 class AddTagGroupScreen extends StatefulWidget {
-  final TagGroup tagGroup;
+  const AddTagGroupScreen({
+    Key key,
+    this.tagGroup,
+  }) : super(key: key);
 
-  const AddTagGroupScreen({Key key, this.tagGroup}) : super(key: key);
+  final TagGroup tagGroup;
 
   @override
   _AddTagGroupScreenState createState() => _AddTagGroupScreenState();
 }
 
 class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
-  List<Tag> tags = [];
+  List<Tag> tags = <Tag>[];
   int offset = 0;
   int rows;
 
@@ -29,21 +32,21 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
   }
 
   void _openDialog(Widget content) {
-    showDialog(
+    showDialog<dynamic>(
       context: context,
       builder: (_) {
         return AlertDialog(
           contentPadding: const EdgeInsets.all(6.0),
-          title: Text("Select Color"),
+          title: const Text('Select Color'),
           content: content,
-          actions: [
+          actions: <Widget>[
             MyButton.cancel(onPressed: Navigator.of(context).pop),
             MyButton.save(
-              child: Text('Select'),
+              child: const Text('Select'),
               onPressed: () {
                 Navigator.of(context).pop();
                 MaterialColorPicker(
-                    onColorChange: (color) =>
+                    onColorChange: (Color color) =>
                         widget.tagGroup.db.color = color.value,
                     selectedColor: Color(widget.tagGroup.db.color));
               },
@@ -54,13 +57,13 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
     );
   }
 
-  void openColorPicker() async {
+  Future<void> openColorPicker() async {
     _openDialog(
       MaterialColorPicker(
         selectedColor: Color(widget.tagGroup.db.color),
-        onColorChange: (color) =>
+        onColorChange: (Color color) =>
             setState(() => widget.tagGroup.db.color = color.value),
-        onBack: () => {},
+        onBack: () {},
       ),
     );
   }
@@ -70,45 +73,45 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.settings,
-        title: Text('Add Tag Group'),
+        title: const Text('Add Tag Group'),
       ),
       body: ListView(
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         children: <Widget>[
           TextFormField(
-            decoration: InputDecoration(labelText: "Name"),
+            decoration: const InputDecoration(labelText: 'Name'),
             initialValue: widget.tagGroup.db.name,
-            onChanged: (value) => widget.tagGroup.db.name = value,
+            onChanged: (String value) => widget.tagGroup.db.name = value,
           ),
-          SizedBox(height: 20),
-          Row(children: [
-            Text("Color"),
-            Spacer(),
+          const SizedBox(height: 20),
+          Row(children: <Widget>[
+            const Text('Color'),
+            const Spacer(),
             CircleAvatar(
               backgroundColor: Color(widget.tagGroup.db.color),
               radius: 20.0,
             ),
-            Spacer(),
+            const Spacer(),
             MyButton.detail(
               onPressed: openColorPicker,
-              child: Text('Edit'),
+              child: const Text('Edit'),
             ),
           ]),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           DataTable(
             headingRowHeight: kMinInteractiveDimension * 0.80,
             dataRowHeight: kMinInteractiveDimension * 0.75,
             columnSpacing: 20,
             horizontalMargin: 10,
-            columns: <DataColumn>[
-              DataColumn(label: Text("Tag")),
-              DataColumn(label: Text("Color")),
-              DataColumn(label: Text("Edit")),
+            columns: const <DataColumn>[
+              DataColumn(label: Text('Tag')),
+              DataColumn(label: Text('Color')),
+              DataColumn(label: Text('Edit')),
             ],
             rows: tags.map((Tag tag) {
               return DataRow(
                 key: Key(tag.db.id.toString()),
-                cells: [
+                cells: <DataCell>[
                   DataCell(Text(tag.db.name)),
                   DataCell(CircleColor(
                     circleSize: 20,
@@ -120,8 +123,8 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
                     onTap: () async {
                       await Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => AddTagScreen(
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => AddTagScreen(
                             tag: tag,
                           ),
                         ),
@@ -133,17 +136,17 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
               );
             }).toList(),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               MyButton.add(
-                child: Text("Add tag"),
+                child: const Text('Add tag'),
                 onPressed: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => AddTagScreen(
+                    MaterialPageRoute<dynamic>(
+                      builder: (BuildContext context) => AddTagScreen(
                         tag: Tag(tagGroup: widget.tagGroup),
                       ),
                     ),
@@ -153,7 +156,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -162,9 +165,9 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
                   tagGroup: widget.tagGroup,
                 ),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               MyButton.save(onPressed: () => saveTagGroup(context)),
             ],
           ),
@@ -173,18 +176,18 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
     );
   }
 
-  saveTagGroup(BuildContext context) async {
+  Future<void> saveTagGroup(BuildContext context) async {
     await widget.tagGroup.db.save();
-    await DbTag().upsertAll(tags.map((tag) => tag.db).toList());
+    await DbTag().upsertAll(tags.map((Tag tag) => tag.db).toList());
     Navigator.of(context).pop();
   }
 
-  getData() async {
+  Future<void> getData() async {
     tags = await widget.tagGroup.tags;
     setState(() {});
   }
 
-  deleteTagGroup({TagGroup tagGroup}) async {
+  Future<void> deleteTagGroup({TagGroup tagGroup}) async {
     await tagGroup.delete();
     Navigator.of(context).pop();
   }
