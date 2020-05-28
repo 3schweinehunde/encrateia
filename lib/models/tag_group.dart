@@ -35,9 +35,8 @@ class TagGroup extends ChangeNotifier {
 
   Future<List<Tag>> get tags async {
     if (db.id != null) {
-      final List<Tag> tags = await Tag.all(tagGroup: this);
-      return tags;
-    }
+      return await Tag.all(tagGroup: this);
+    } else
     return <Tag>[];
   }
 

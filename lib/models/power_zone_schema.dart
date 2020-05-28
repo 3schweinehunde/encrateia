@@ -40,8 +40,12 @@ class PowerZoneSchema extends ChangeNotifier {
   }
 
   DbPowerZoneSchema db;
-  Future<List<PowerZone>> get powerZones =>
-      PowerZone.all(powerZoneSchema: this);
+  Future<List<PowerZone>> get powerZones async {
+    if (db.id != null) {
+      return PowerZone.all(powerZoneSchema: this);
+    } else
+    return <PowerZone>[];
+  }
 
   Future<void> addStrydZones() async {
     await PowerZone(

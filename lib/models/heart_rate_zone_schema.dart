@@ -5,7 +5,6 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class HeartRateZoneSchema extends ChangeNotifier {
-
   HeartRateZoneSchema({@required Athlete athlete}) {
     db = DbHeartRateZoneSchema()
       ..athletesId = athlete.db.id
@@ -32,7 +31,12 @@ class HeartRateZoneSchema extends ChangeNotifier {
   }
 
   DbHeartRateZoneSchema db;
-  Future<List<HeartRateZone>> get heartRateZones => HeartRateZone.all(heartRateZoneSchema: this);
+  Future<List<HeartRateZone>> get heartRateZones async {
+    if (db.id != null) {
+      return HeartRateZone.all(heartRateZoneSchema: this);
+    } else
+      return <HeartRateZone>[];
+  }
 
   Future<void> addGarminZones() async {
     await HeartRateZone(
@@ -117,14 +121,16 @@ class HeartRateZoneSchema extends ChangeNotifier {
 
   static Future<List<HeartRateZoneSchema>> all(
       {@required Athlete athlete}) async {
-    final List<DbHeartRateZoneSchema> dbHeartRateZoneSchemaList = await athlete.db
+    final List<DbHeartRateZoneSchema> dbHeartRateZoneSchemaList = await athlete
+        .db
         .getDbHeartRateZoneSchemas()
         .orderByDesc('date')
         .toList();
-    final List<HeartRateZoneSchema> heartRateZoneSchemas = dbHeartRateZoneSchemaList
-        .map((DbHeartRateZoneSchema dbHeartRateZoneSchema) =>
-            HeartRateZoneSchema.fromDb(dbHeartRateZoneSchema))
-        .toList();
+    final List<HeartRateZoneSchema> heartRateZoneSchemas =
+        dbHeartRateZoneSchemaList
+            .map((DbHeartRateZoneSchema dbHeartRateZoneSchema) =>
+                HeartRateZoneSchema.fromDb(dbHeartRateZoneSchema))
+            .toList();
     return heartRateZoneSchemas;
   }
 
