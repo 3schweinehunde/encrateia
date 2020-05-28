@@ -41,7 +41,8 @@ class ShowLapScreen extends StatelessWidget {
         ),
       ),
       body: StaggeredGridView.count(
-        staggeredTiles: List<StaggeredTile>.filled(12, const StaggeredTile.fit(1)),
+        staggeredTiles:
+            List<StaggeredTile>.filled(12, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
@@ -69,7 +70,7 @@ class ShowLapScreen extends StatelessWidget {
             nextWidget: ({Lap lap}) => LapPowerWidget(lap: lap),
           ),
           navigationButton(
-            title: 'Power\nDuration',
+            title: 'Power Duration',
             color: MyColor.navigate,
             icon: MyIcon.powerDuration,
             context: context,
@@ -93,7 +94,7 @@ class ShowLapScreen extends StatelessWidget {
             nextWidget: ({Lap lap}) => LapGroundTimeWidget(lap: lap),
           ),
           navigationButton(
-            title: 'Leg Spring\nStiffness',
+            title: 'Leg Spring Stiffness',
             color: MyColor.navigate,
             icon: MyIcon.legSpringStiffness,
             context: context,
@@ -114,7 +115,7 @@ class ShowLapScreen extends StatelessWidget {
             nextWidget: ({Lap lap}) => LapStrydCadenceWidget(lap: lap),
           ),
           navigationButton(
-            title: 'Vertical\nOscillation',
+            title: 'Vertical Oscillation',
             color: MyColor.navigate,
             icon: MyIcon.verticalOscillation,
             context: context,
@@ -153,7 +154,9 @@ class ShowLapScreen extends StatelessWidget {
       color: color ?? MyColor.primary,
       textColor: MyColor.textColor(backgroundColor: color),
       icon: icon,
-      label: Text(title),
+      label: Flexible(
+        child: Text(title),
+      ),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(

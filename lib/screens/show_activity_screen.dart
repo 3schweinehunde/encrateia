@@ -102,7 +102,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: 'Power\nDuration',
+            title: 'Power Duration',
             color: MyColor.navigate,
             icon: MyIcon.powerDuration,
             context: context,
@@ -112,7 +112,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: 'Power /\nHeart Rate',
+            title: 'Power / Heart Rate',
             color: MyColor.navigate,
             icon: MyIcon.power,
             context: context,
@@ -132,7 +132,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: 'Speed /\nHeart Rate',
+            title: 'Speed / Heart Rate',
             color: MyColor.navigate,
             icon: MyIcon.speed,
             context: context,
@@ -172,7 +172,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: 'Vertical\nOscillation',
+            title: 'Vertical Oscillation',
             color: MyColor.navigate,
             icon: MyIcon.verticalOscillation,
             context: context,
@@ -202,7 +202,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: 'Leg Spring\nStiffness',
+            title: 'Leg Spring Stiffness',
             color: MyColor.navigate,
             icon: MyIcon.legSpringStiffness,
             context: context,
@@ -235,7 +235,9 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             color: MyColor.add,
             icon: MyIcon.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.add),
-            label: const Text('Rerun\n Autotagging'),
+            label: const Flexible(
+              child: Text('Rerun Autotagging'),
+            ),
             onPressed: () => autoTagger(),
           ),
         ],
@@ -255,7 +257,9 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       color: color,
       textColor: MyColor.textColor(backgroundColor: color),
       icon: icon,
-      label: Text(title),
+      label: Flexible(
+        child: Text(title),
+      ),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(

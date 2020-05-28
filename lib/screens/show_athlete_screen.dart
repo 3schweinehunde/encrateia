@@ -68,7 +68,8 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
       ),
       body: StaggeredGridView.count(
-        staggeredTiles: List<StaggeredTile>.filled(17, const StaggeredTile.fit(1)),
+        staggeredTiles:
+            List<StaggeredTile>.filled(17, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
@@ -95,7 +96,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: 'Power /\nHeart Rate',
+            title: 'Power / Heart Rate',
             icon: MyIcon.power,
             nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
           ),
@@ -113,7 +114,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: 'Speed /\nHeart Rate',
+            title: 'Speed / Heart Rate',
             icon: MyIcon.speed,
             nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
           ),
@@ -121,7 +122,9 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.add,
             textColor: MyColor.textColor(backgroundColor: MyColor.add),
             icon: MyIcon.downloadLocal,
-            label: const Text('Import .fit\nfrom Folder'),
+            label: const Flexible(
+              child: Text('Import .fit from Folder'),
+            ),
             onPressed: () => importLocal(),
           ),
           navigationButton(
@@ -132,13 +135,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           ),
           navigationButton(
             color: MyColor.settings,
-            title: 'Power Zone\nSchemas',
+            title: 'Power Zone Schemas',
             icon: MyIcon.power,
             nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.settings,
-            title: 'Heart Rate\nZone Schemas',
+            title: 'Heart Rate Zone Schemas',
             icon: MyIcon.heartRate,
             nextWidget:
                 AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
@@ -159,27 +162,35 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.danger,
             textColor: MyColor.textColor(backgroundColor: MyColor.danger),
             icon: MyIcon.delete,
-            label: const Text('Delete\nAthlete'),
+            label: const Flexible(
+              child: Text('Delete Athlete'),
+            ),
             onPressed: () => deleteUser(),
           ),
           RaisedButton.icon(
             color: MyColor.settings,
             icon: MyIcon.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.add),
-            label: const Text('Recalculate\nAverages'),
+            label: const Flexible(
+              child: Text('Recalculate Averages'),
+            ),
             onPressed: () => recalculate(),
           ),
           RaisedButton.icon(
             color: MyColor.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.settings),
             icon: MyIcon.settings,
-            label: const Text('Redo\nAutotagging'),
+            label: const Flexible(
+              child: Text('Redo Autotagging'),
+            ),
             onPressed: () => redoAutoTagging(),
           ),
           RaisedButton.icon(
             color: MyColor.primary,
             icon: MyIcon.download,
-            label: const Text('Download\nDemo Data'),
+            label: const Flexible(
+              child: Text('Download Demo Data'),
+            ),
             onPressed: () => downloadDemoData(),
           ),
         ],
@@ -198,7 +209,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       color: color ?? MyColor.primary,
       textColor: MyColor.textColor(backgroundColor: color),
       icon: icon,
-      label: Text(title),
+      label: Flexible(child: Text(title)),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(
@@ -349,8 +360,8 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         await download(activity: activity);
       }
 
-      final Iterable<Activity> downloadedActivities =
-          activities.where((Activity activity) => activity.db.state == 'downloaded');
+      final Iterable<Activity> downloadedActivities = activities
+          .where((Activity activity) => activity.db.state == 'downloaded');
       for (final Activity activity in downloadedActivities) {
         await parse(activity: activity);
         await activity.autoTagger(athlete: widget.athlete);
@@ -418,7 +429,8 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       titleText: const LinearProgressIndicator(value: 0),
     )..show(context);
 
-    final Stream<int> percentageStream = activity.parse(athlete: widget.athlete);
+    final Stream<int> percentageStream =
+        activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
       flushbar.dismiss();
       flushbar = Flushbar<Object>(
