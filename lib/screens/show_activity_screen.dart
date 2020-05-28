@@ -26,21 +26,21 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ShowActivityScreen extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
   const ShowActivityScreen({
     Key key,
     @required this.activity,
     @required this.athlete,
   }) : super(key: key);
 
+  final Activity activity;
+  final Athlete athlete;
+
   @override
   _ShowActivityScreenState createState() => _ShowActivityScreenState();
 }
 
 class _ShowActivityScreenState extends State<ShowActivityScreen> {
-  Flushbar flushbar = Flushbar();
+  Flushbar<Object> flushbar = Flushbar<Object>();
 
   @override
   Widget build(BuildContext context) {
@@ -48,20 +48,21 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       appBar: AppBar(
         backgroundColor: MyColor.activity,
         title: Text(
-          '${widget.activity.db.name}',
+          widget.activity.db.name,
           overflow: TextOverflow.ellipsis,
         ),
       ),
       body: StaggeredGridView.count(
-        staggeredTiles: List.filled(18, StaggeredTile.fit(1)),
+        staggeredTiles:
+            List<StaggeredTile>.filled(18, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        children: [
+        children: <Widget>[
           navigationButton(
             color: MyColor.settings,
-            title: "Overview",
+            title: 'Overview',
             icon: MyIcon.overView,
             context: context,
             nextWidget: ActivityOverviewWidget(
@@ -81,7 +82,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Heart Rate",
+            title: 'Heart Rate',
             color: MyColor.navigate,
             icon: MyIcon.heartRate,
             context: context,
@@ -91,7 +92,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Power",
+            title: 'Power',
             color: MyColor.navigate,
             icon: MyIcon.power,
             context: context,
@@ -101,7 +102,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Power\nDuration",
+            title: 'Power\nDuration',
             color: MyColor.navigate,
             icon: MyIcon.powerDuration,
             context: context,
@@ -111,7 +112,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Power /\nHeart Rate",
+            title: 'Power /\nHeart Rate',
             color: MyColor.navigate,
             icon: MyIcon.power,
             context: context,
@@ -121,7 +122,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Ecor",
+            title: 'Ecor',
             color: MyColor.navigate,
             icon: MyIcon.power,
             context: context,
@@ -131,7 +132,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Speed /\nHeart Rate",
+            title: 'Speed /\nHeart Rate',
             color: MyColor.navigate,
             icon: MyIcon.speed,
             context: context,
@@ -141,7 +142,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Ground Time",
+            title: 'Ground Time',
             color: MyColor.navigate,
             icon: MyIcon.groundTime,
             context: context,
@@ -151,7 +152,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Form Power",
+            title: 'Form Power',
             color: MyColor.navigate,
             icon: MyIcon.formPower,
             context: context,
@@ -161,7 +162,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Power Ratio",
+            title: 'Power Ratio',
             color: MyColor.navigate,
             icon: MyIcon.formPower,
             context: context,
@@ -171,7 +172,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Vertical\nOscillation",
+            title: 'Vertical\nOscillation',
             color: MyColor.navigate,
             icon: MyIcon.verticalOscillation,
             context: context,
@@ -181,7 +182,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Stride Ratio",
+            title: 'Stride Ratio',
             color: MyColor.navigate,
             icon: MyIcon.strideRatio,
             context: context,
@@ -191,7 +192,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Cadence",
+            title: 'Cadence',
             color: MyColor.navigate,
             icon: MyIcon.cadence,
             context: context,
@@ -201,7 +202,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Leg Spring\nStiffness",
+            title: 'Leg Spring\nStiffness',
             color: MyColor.navigate,
             icon: MyIcon.legSpringStiffness,
             context: context,
@@ -211,7 +212,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Metadata",
+            title: 'Metadata',
             color: MyColor.settings,
             icon: MyIcon.metaData,
             context: context,
@@ -221,7 +222,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: "Tags",
+            title: 'Tags',
             color: MyColor.tag,
             icon: MyIcon.tag,
             context: context,
@@ -234,7 +235,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             color: MyColor.add,
             icon: MyIcon.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.add),
-            label: Text("Rerun\n Autotagging"),
+            label: const Text('Rerun\n Autotagging'),
             onPressed: () => autoTagger(),
           ),
         ],
@@ -242,7 +243,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
     );
   }
 
-  navigationButton({
+  Widget navigationButton({
     @required BuildContext context,
     @required Widget nextWidget,
     @required Widget icon,
@@ -258,7 +259,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ShowActivityDetailScreen(
+          builder: (BuildContext context) => ShowActivityDetailScreen(
             activity: widget.activity,
             widget: nextWidget,
             title: title,
@@ -269,19 +270,19 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
     );
   }
 
-  autoTagger() async {
-    flushbar = Flushbar(
-      message: "Starting Autotagger",
-      duration: Duration(seconds: 10),
+  Future<void> autoTagger() async {
+    flushbar = Flushbar<Object>(
+      message: 'Starting Autotagger',
+      duration: const Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
 
     await widget.activity.autoTagger(athlete: widget.athlete);
 
     flushbar.dismiss();
-    Flushbar(
-      message: "Autotagging finished",
-      duration: Duration(seconds: 2),
+    flushbar = Flushbar<Object>(
+      message: 'Autotagging finished',
+      duration: const Duration(seconds: 2),
       icon: MyIcon.finishedWhite,
     )..show(context);
     setState(() {});
