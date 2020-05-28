@@ -29,11 +29,13 @@ class Tag extends ChangeNotifier {
   Future<BoolResult> delete() async => await db.delete();
 
   static Future<List<Tag>> all({@required TagGroup tagGroup}) async {
+    print('before');
     final List<DbTag> dbTagList = await tagGroup.db
         .getDbTags()
         .orderBy('sortOrder')
         .orderBy('name')
         .toList();
+    print('after');
     final List<Tag> tags =
         dbTagList.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
     return tags;
