@@ -7,19 +7,19 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 
 class LapPowerChart extends StatelessWidget {
-  final RecordList<Event> records;
-  final List<PowerZone> powerZones;
-
-  LapPowerChart({
+  const LapPowerChart({
     this.records,
     this.powerZones,
   });
 
+  final RecordList<Event> records;
+  final List<PowerZone> powerZones;
+
   @override
   Widget build(BuildContext context) {
-    var offset = records.first.db.distance.round();
+    final int offset = records.first.db.distance.round();
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Power',
         colorFn: (_, __) => MaterialPalette.gray.shade700,
@@ -37,7 +37,7 @@ class LapPowerChart extends StatelessWidget {
           viewport: MyLineChart.determineViewport(
             powerZones: powerZones,
           ),
-          tickProviderSpec: BasicNumericTickProviderSpec(
+          tickProviderSpec: const BasicNumericTickProviderSpec(
               zeroBound: false,
               dataIsInWholeNumbers: true,
               desiredTickCount: 6),
@@ -48,8 +48,8 @@ class LapPowerChart extends StatelessWidget {
             GraphUtils.powerZoneAnnotations(powerZones: powerZones),
           ),
           ChartTitle(
-            "Power (W)",
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
+            'Power (W)',
+            titleStyleSpec: const TextStyleSpec(fontSize: 13),
             behaviorPosition: BehaviorPosition.bottom,
             titleOutsideJustification: OutsideJustification.end,
           ),

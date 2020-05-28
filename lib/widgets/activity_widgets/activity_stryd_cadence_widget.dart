@@ -8,13 +8,13 @@ import 'package:encrateia/widgets/charts/activity_charts/activity_stryd_cadence_
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityStrydCadenceWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityStrydCadenceWidget({
+  const ActivityStrydCadenceWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityStrydCadenceWidgetState createState() =>
@@ -23,9 +23,9 @@ class ActivityStrydCadenceWidget extends StatefulWidget {
 
 class _ActivityStrydCadenceWidgetState
     extends State<ActivityStrydCadenceWidget> {
-  var records = RecordList(<Event>[]);
-  String avgStrydCadenceString = "Loading ...";
-  String sdevStrydCadenceString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgStrydCadenceString = 'Loading ...';
+  String sdevStrydCadenceString = 'Loading ...';
 
   @override
   void initState() {
@@ -34,65 +34,65 @@ class _ActivityStrydCadenceWidgetState
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var powerRecords = records
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> powerRecords = records
+          .where((Event value) =>
               value.db.strydCadence != null && value.db.strydCadence > 0)
           .toList();
 
-      if (powerRecords.length > 0) {
+      if (powerRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityStrydCadenceChart(
-                records: RecordList(powerRecords),
+                records: RecordList<Event>(powerRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'cadence > 0 s/min are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgStrydCadenceString),
-                subtitle: Text("average cadence"),
+                subtitle: const Text('average cadence'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevStrydCadenceString),
-                subtitle: Text("standard deviation cadence"),
+                subtitle: const Text('standard deviation cadence'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(powerRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No cadence data available."),
+        return const Center(
+          child: Text('No cadence data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = RecordList(await activity.records);
+  Future<void> getData() async {
+    final Activity activity = widget.activity;
+    records = RecordList<Event>(await activity.records);
     avgStrydCadenceString =
-        activity.db.avgStrydCadence.toStringOrDashes(1) + " spm";
+        activity.db.avgStrydCadence.toStringOrDashes(1) + ' spm';
     sdevStrydCadenceString =
-        activity.db.sdevStrydCadence.toStringOrDashes(2) + " spm";
+        activity.db.sdevStrydCadence.toStringOrDashes(2) + ' spm';
     setState(() {});
   }
 }

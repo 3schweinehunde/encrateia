@@ -11,24 +11,24 @@ import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 
 class ActivityFormPowerChart extends StatelessWidget {
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityFormPowerChart({
+  const ActivityFormPowerChart({
     this.records,
     @required this.activity,
     @required this.athlete,
   });
 
+  final RecordList<Event> records;
+  final Activity activity;
+  final Athlete athlete;
+
   @override
   Widget build(BuildContext context) {
-    var smoothedRecords = records.toIntDataPoints(
+    final List<IntPlotPoint> smoothedRecords = records.toIntDataPoints(
       attribute: LapIntAttr.formPower,
       amount: athlete.db.recordAggregationCount,
     );
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
       Series<IntPlotPoint, int>(
         id: 'Form power',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
@@ -42,7 +42,7 @@ class ActivityFormPowerChart extends StatelessWidget {
       future: activity.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          var laps = snapshot.data;
+          final List<Lap> laps = snapshot.data;
           return Container(
             height: 300,
             child: MyLineChart(
@@ -50,12 +50,12 @@ class ActivityFormPowerChart extends StatelessWidget {
               maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Form Power (W)',
-              measureTickProviderSpec: BasicNumericTickProviderSpec(
+              measureTickProviderSpec: const BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: true,
                   desiredTickCount: 5),
               domainTickProviderSpec:
-                  BasicNumericTickProviderSpec(desiredTickCount: 6),
+                  const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
         } else

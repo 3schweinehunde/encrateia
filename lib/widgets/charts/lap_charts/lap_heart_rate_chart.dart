@@ -7,19 +7,19 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 
 class LapHeartRateChart extends StatelessWidget {
-  final RecordList<Event> records;
-  final List<HeartRateZone> heartRateZones;
-
-  LapHeartRateChart({
+  const LapHeartRateChart({
     this.records,
     this.heartRateZones,
   });
 
+  final RecordList<Event> records;
+  final List<HeartRateZone> heartRateZones;
+
   @override
   Widget build(BuildContext context) {
-    var offset = records.first.db.distance.round();
+    final int offset = records.first.db.distance.round();
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Heart Rate',
         colorFn: (_, __) => MaterialPalette.red.shadeDefault,
@@ -37,7 +37,7 @@ class LapHeartRateChart extends StatelessWidget {
           viewport: MyLineChart.determineViewport(
             heartRateZones: heartRateZones,
           ),
-          tickProviderSpec: BasicNumericTickProviderSpec(
+          tickProviderSpec: const BasicNumericTickProviderSpec(
               zeroBound: false,
               dataIsInWholeNumbers: true,
               desiredTickCount: 6),
@@ -50,8 +50,8 @@ class LapHeartRateChart extends StatelessWidget {
             ),
           ),
           ChartTitle(
-            "Heart Rate (bpm)",
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
+            'Heart Rate (bpm)',
+            titleStyleSpec: const TextStyleSpec(fontSize: 13),
             behaviorPosition: BehaviorPosition.bottom,
             titleOutsideJustification: OutsideJustification.end,
           ),

@@ -5,10 +5,10 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
 class AthletePowerPerHeartRateWidget extends StatefulWidget {
+  const AthletePowerPerHeartRateWidget({this.athlete});
+
   final Athlete athlete;
-
-  AthletePowerPerHeartRateWidget({this.athlete});
-
+  
   @override
   _AthletePowerPerHeartRateWidgetState createState() =>
       _AthletePowerPerHeartRateWidgetState();
@@ -16,7 +16,7 @@ class AthletePowerPerHeartRateWidget extends StatefulWidget {
 
 class _AthletePowerPerHeartRateWidgetState
     extends State<AthletePowerPerHeartRateWidget> {
-  List<Activity> activities = [];
+  List<Activity> activities = <Activity>[];
 
   @override
   void initState() {
@@ -25,10 +25,10 @@ class _AthletePowerPerHeartRateWidgetState
   }
 
   @override
-  Widget build(context) {
-    if (activities.length > 0) {
-      var powerPerHeartRateActivities = activities
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (activities.isNotEmpty) {
+      final List<Activity> powerPerHeartRateActivities = activities
+          .where((Activity value) =>
               value.db.avgPower != null &&
               value.db.avgPower > 0 &&
               value.db.avgHeartRate != null &&
@@ -36,11 +36,11 @@ class _AthletePowerPerHeartRateWidgetState
               value.db.avgHeartRate != 255)
           .toList();
 
-      if (powerPerHeartRateActivities.length > 0) {
+      if (powerPerHeartRateActivities.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               AthleteTimeSeriesChart(
                 activities: powerPerHeartRateActivities,
@@ -52,19 +52,19 @@ class _AthletePowerPerHeartRateWidgetState
           ),
         );
       } else {
-        return Center(
-          child: Text("No power per heart rate data available."),
+        return const Center(
+          child: Text('No power per heart rate data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Athlete athlete = widget.athlete;
+  Future<void> getData() async {
+    final Athlete athlete = widget.athlete;
     activities = await athlete.activities;
     setState(() {});
   }

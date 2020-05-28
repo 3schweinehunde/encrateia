@@ -1,3 +1,4 @@
+import 'package:encrateia/model/model.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +8,16 @@ import 'package:encrateia/models/activity.dart';
 class AthleteSettingsWidget extends StatefulWidget {
   final Athlete athlete;
 
-  AthleteSettingsWidget({this.athlete});
+  // ignore: sort_constructors_first
+  const AthleteSettingsWidget({this.athlete});
 
   @override
   _AthleteSettingsWidgetState createState() => _AthleteSettingsWidgetState();
 }
 
 class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
-  List<Activity> activities = [];
-  String numberOfActivitiesString = "---";
+  List<Activity> activities = <Activity>[];
+  String numberOfActivitiesString = '---';
 
   @override
   void initState() {
@@ -25,74 +27,76 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var userDB = widget.athlete.db;
+    final DbAthlete userDB = widget.athlete.db;
     return ListView(
       children: <Widget>[
         ListTile(
           leading: MyIcon.athlete,
-          title: Text("Name"),
+          title: const Text('Name'),
           subtitle: Text(
-            userDB.firstName + " " + userDB.lastName,
+            userDB.firstName + ' ' + userDB.lastName,
           ),
         ),
         stravaTile(userDB: userDB),
         ListTile(
           leading: MyIcon.activities,
-          title: Text("Number of activities"),
+          title: const Text('Number of activities'),
           subtitle: Text(numberOfActivitiesString),
         ),
         ListTile(
           leading: MyIcon.time,
-          title: Text("Days back in Time, activities are downloaded"),
+          title: const Text('Days back in Time, activities are downloaded'),
           subtitle: Row(
             children: <Widget>[
-              Spacer(),
+              const Spacer(),
               MyButton.save(
-                child: Text("- 7 days"),
+                child: const Text('- 7 days'),
                 onPressed: () => decreaseDownloadInterval(),
               ),
-              Spacer(),
+              const Spacer(),
               Text(widget.athlete.db.downloadInterval.toString()),
-              Spacer(),
+              const Spacer(),
               MyButton.save(
-                child: Text("+ 7 days"),
+                child: const Text('+ 7 days'),
                 onPressed: () => increaseDownloadInterval(),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
         ListTile(
           leading: MyIcon.number,
-          title: Text("number of records that are averaged in diagrams on activity level"),
+          title: const Text(
+            'number of records that are averaged in diagrams on'
+            ' activity level',
+          ),
           subtitle: Row(
             children: <Widget>[
-              Spacer(),
+              const Spacer(),
               MyButton.save(
-                child: Text("/ 2"),
+                child: const Text('/ 2'),
                 onPressed: () => decreaseRecordAggregationCount(),
               ),
-              Spacer(),
+              const Spacer(),
               Text(widget.athlete.db.recordAggregationCount.toString()),
-              Spacer(),
+              const Spacer(),
               MyButton.save(
-                child: Text("* 2"),
+                child: const Text('* 2'),
                 onPressed: () => increaseRecordAggregationCount(),
               ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
         ListTile(
-          leading: MyIcon.weight,
-          title: Text("Last known weight"),
-          subtitle: Text("no data available")
-        )
+            leading: MyIcon.weight,
+            title: const Text('Last known weight'),
+            subtitle: const Text('no data available'))
       ],
     );
   }
 
-  getData() async {
+  Future<void> getData() async {
     activities = await widget.athlete.activities;
 
     setState(() {
@@ -100,48 +104,48 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
     });
   }
 
-  increaseDownloadInterval() async {
-    var userDB = widget.athlete.db;
+  Future<void> increaseDownloadInterval() async {
+    final DbAthlete userDB = widget.athlete.db;
     userDB.downloadInterval = (userDB.downloadInterval ?? 21) + 7;
     await userDB.save();
     setState(() {});
   }
 
-  decreaseDownloadInterval() async {
-    var userDB = widget.athlete.db;
+  Future<void> decreaseDownloadInterval() async {
+    final DbAthlete userDB = widget.athlete.db;
     userDB.downloadInterval = (userDB.downloadInterval ?? 21) - 7;
-    if (userDB.downloadInterval < 7) userDB.downloadInterval = 7;
+    if (userDB.downloadInterval < 7) 
+      userDB.downloadInterval = 7;
     await userDB.save();
     setState(() {});
   }
 
-  increaseRecordAggregationCount() async {
-    var userDB = widget.athlete.db;
+  Future<void> increaseRecordAggregationCount() async {
+    final DbAthlete userDB = widget.athlete.db;
     userDB.recordAggregationCount = (userDB.recordAggregationCount ?? 16) * 2;
     await userDB.save();
     setState(() {});
   }
 
-  decreaseRecordAggregationCount() async {
-    var userDB = widget.athlete.db;
-    userDB.recordAggregationCount = ((userDB.recordAggregationCount ?? 16) / 2).round();
-    if (userDB.recordAggregationCount < 1) userDB.recordAggregationCount = 1;
+  Future<void> decreaseRecordAggregationCount() async {
+    final DbAthlete userDB = widget.athlete.db;
+    userDB.recordAggregationCount =
+        ((userDB.recordAggregationCount ?? 16) / 2).round();
+    if (userDB.recordAggregationCount < 1) 
+      userDB.recordAggregationCount = 1;
     await userDB.save();
     setState(() {});
   }
 
-
-
-  stravaTile({userDB}) {
+  Widget stravaTile({DbAthlete userDB}) {
     if (userDB.stravaId != null)
       return ListTile(
           leading: MyIcon.stravaDownload,
-          title: Text("Strava ID / Username / Location"),
-          subtitle: Text(
-              userDB.stravaId.toString() +
-              " / " +
+          title: const Text('Strava ID / Username / Location'),
+          subtitle: Text(userDB.stravaId.toString() +
+              ' / ' +
               userDB.stravaUsername +
-              " / " +
+              ' / ' +
               userDB.geoState));
     else
       return Container(width: 0, height: 0);

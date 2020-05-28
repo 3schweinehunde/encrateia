@@ -8,13 +8,13 @@ import 'package:encrateia/widgets/charts/activity_charts/activity_stride_ratio_c
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityStrideRatioWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityStrideRatioWidget({
+  const ActivityStrideRatioWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityStrideRatioWidgetState createState() =>
@@ -22,9 +22,9 @@ class ActivityStrideRatioWidget extends StatefulWidget {
 }
 
 class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
-  var records = RecordList(<Event>[]);
-  String avgStrideRatioString = "Loading ...";
-  String sdevStrideRatioString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgStrideRatioString = 'Loading ...';
+  String sdevStrideRatioString = 'Loading ...';
 
   @override
   void initState() {
@@ -33,67 +33,67 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var strideRatioRecords = records
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> strideRatioRecords = records
+          .where((Event value) =>
               value.db.strydCadence != null &&
               value.db.verticalOscillation != null &&
               value.db.verticalOscillation != 0)
           .toList();
 
-      if (strideRatioRecords.length > 0) {
+      if (strideRatioRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityStrideRatioChart(
-                records: RecordList(strideRatioRecords),
+                records: RecordList<Event>(strideRatioRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
-              Text("stride ratio = stride length (cm) / vertical oscillation"
-                  " (cm)"),
-              Text("stridelength (cm) = 10 000 / 6 * speed (km/h) / cadence "
-                  "(strides/min)"),
+              const Text('stride ratio = stride length (cm) / vertical oscillation'
+                  ' (cm)'),
+              const Text('stride length (cm) = 10 000 / 6 * speed (km/h) / cadence '
+                  '(strides/min)'),
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'cadence is present and vertical oscillation > 0 mm are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.strideRatio,
                 title: Text(avgStrideRatioString),
-                subtitle: Text("average stride ratio"),
+                subtitle: const Text('average stride ratio'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevStrideRatioString),
-                subtitle: Text("standard deviation stride ratio "),
+                subtitle: const Text('standard deviation stride ratio '),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(strideRatioRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No stride ratio data available."),
+        return const Center(
+          child: Text('No stride ratio data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = RecordList(await activity.records);
+  Future<void> getData() async {
+    final Activity activity = widget.activity;
+    records = RecordList<Event>(await activity.records);
     avgStrideRatioString = activity.db.avgStrideRatio.toStringOrDashes(1);
     sdevStrideRatioString = activity.db.sdevStrideRatio.toStringOrDashes(2);
     setState(() {});

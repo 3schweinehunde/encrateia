@@ -5,16 +5,16 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
 class AthletePowerWidget extends StatefulWidget {
+  const AthletePowerWidget({this.athlete});
+
   final Athlete athlete;
-
-  AthletePowerWidget({this.athlete});
-
+  
   @override
   _AthletePowerWidgetState createState() => _AthletePowerWidgetState();
 }
 
 class _AthletePowerWidgetState extends State<AthletePowerWidget> {
-  List<Activity> activities = [];
+  List<Activity> activities = <Activity>[];
 
   @override
   void initState() {
@@ -23,17 +23,17 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   }
 
   @override
-  Widget build(context) {
-    if (activities.length > 0) {
-      var powerActivities = activities
-          .where((activity) =>
+  Widget build(BuildContext context) {
+    if (activities.isNotEmpty) {
+      final List<Activity> powerActivities = activities
+          .where((Activity activity) =>
               activity.db.avgPower != null && activity.db.avgPower > 0)
           .toList();
-      if (powerActivities.length > 0) {
+      if (powerActivities.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.orange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               AthleteTimeSeriesChart(
                 activities: powerActivities,
@@ -45,19 +45,19 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
           ),
         );
       } else {
-        return Center(
-          child: Text("No power data available."),
+        return const Center(
+          child: Text('No power data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Athlete athlete = widget.athlete;
+  Future<void> getData() async {
+    final Athlete athlete = widget.athlete;
     activities = await athlete.activities;
     setState(() {});
   }

@@ -11,24 +11,25 @@ import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 
 class ActivityPowerPerHeartRateChart extends StatelessWidget {
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityPowerPerHeartRateChart({
+  const ActivityPowerPerHeartRateChart({
     this.records,
     @required this.activity,
     @required this.athlete,
   });
 
+  final RecordList<Event> records;
+  final Activity activity;
+  final Athlete athlete;
+
   @override
   Widget build(BuildContext context) {
-    var smoothedRecords = records.toDoubleDataPoints(
+    final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
       attribute: LapDoubleAttr.powerPerHeartRate,
       amount: athlete.db.recordAggregationCount,
     );
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<DoublePlotPoint, int>> data =
+        <Series<DoublePlotPoint, int>>[
       Series<DoublePlotPoint, int>(
         id: 'Power per Heart Rate',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
@@ -42,7 +43,7 @@ class ActivityPowerPerHeartRateChart extends StatelessWidget {
       future: activity.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          var laps = snapshot.data;
+          final List<Lap> laps = snapshot.data;
           return Container(
             height: 300,
             child: MyLineChart(
@@ -50,12 +51,12 @@ class ActivityPowerPerHeartRateChart extends StatelessWidget {
               maxDomain: records.last.db.distance,
               laps: laps,
               domainTitle: 'Power per Heart Rate (W/bpm)',
-              measureTickProviderSpec: BasicNumericTickProviderSpec(
+              measureTickProviderSpec: const BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: false,
                   desiredTickCount: 6),
               domainTickProviderSpec:
-                  BasicNumericTickProviderSpec(desiredTickCount: 6),
+                  const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
         } else

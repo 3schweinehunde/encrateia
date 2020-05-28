@@ -5,94 +5,94 @@ import 'package:intl/intl.dart';
 import 'package:encrateia/models/lap.dart';
 
 class LapMetadataWidget extends StatelessWidget {
+  const LapMetadataWidget({this.lap});
+
   final Lap lap;
-
-  LapMetadataWidget({this.lap});
-
+  
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     return StaggeredGridView.count(
-      staggeredTiles: List.filled(16, StaggeredTile.fit(1)),
+      staggeredTiles: List<StaggeredTile>.filled(16, const StaggeredTile.fit(1)),
       mainAxisSpacing: 4,
       crossAxisCount:
           MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-      children: [
+      children: <Widget>[
         ListTile(
           title:
-              Text(DateFormat("dd MMM yyyy, h:mm:ss").format(lap.db.timeStamp)),
-          subtitle: Text('timestamp'),
+              Text(DateFormat('dd MMM yyyy, h:mm:ss').format(lap.db.timeStamp)),
+          subtitle: const Text('timestamp'),
         ),
         ListTile(
           title: Text(lap.db.event),
-          subtitle: Text("event"),
+          subtitle: const Text('event'),
         ),
         ListTile(
           title: Text(lap.db.sport + ' / ' + lap.db.subSport),
-          subtitle: Text('sport / sub sport'),
+          subtitle: const Text('sport / sub sport'),
         ),
         ListTile(
-          title: Text(lap.db.eventType + " / " + lap.db.eventGroup.toString()),
-          subtitle: Text('event type / group'),
+          title: Text(lap.db.eventType + ' / ' + lap.db.eventGroup.toString()),
+          subtitle: const Text('event type / group'),
         ),
         ListTile(
           title: Text(lap.db.avgVerticalOscillation.toStringAsFixed(2)),
-          subtitle: Text('avg vertical oscillation'),
+          subtitle: const Text('avg vertical oscillation'),
         ),
         ListTile(
           title: Text(Duration(seconds: lap.db.totalElapsedTime).asString()),
-          subtitle: Text('total elapsed time'),
+          subtitle: const Text('total elapsed time'),
         ),
         ListTile(
           title: Text(Duration(seconds: lap.db.totalTimerTime).asString()),
-          subtitle: Text('total timer time'),
+          subtitle: const Text('total timer time'),
         ),
         ListTile(
           title: Text(
               '${lap.db.avgStanceTime} ms / ${lap.db.avgStanceTimePercent} %'),
-          subtitle: Text('avg stance time / avg stance time percent'),
+          subtitle: const Text('avg stance time / avg stance time percent'),
         ),
         ListTile(
           title: Text(lap.db.lapTrigger),
-          subtitle: Text('lap trigger'),
+          subtitle: const Text('lap trigger'),
         ),
         ListTile(
           title: Text('${lap.db.avgTemperature}° / ${lap.db.maxTemperature}°'),
-          subtitle: Text('avg / max temperature'),
+          subtitle: const Text('avg / max temperature'),
         ),
         ListTile(
           title: Text(lap.db.avgFractionalCadence.toStringAsFixed(2) +
-              " / " +
+              ' / ' +
               lap.db.maxFractionalCadence.toStringAsFixed(2)),
-          subtitle: Text('avg / max fractional cadence'),
+          subtitle: const Text('avg / max fractional cadence'),
         ),
         ListTile(
           title: Text(lap.db.totalFractionalCycles.toStringAsFixed(2)),
-          subtitle: Text('total fractional cycles'),
+          subtitle: const Text('total fractional cycles'),
         ),
         ListTile(
           title: Text(lap.db.startPositionLong.semicirclesAsDegrees() +
-              " E\n" +
+              ' E\n' +
               lap.db.startPositionLat.semicirclesAsDegrees() +
-              " N"),
-          subtitle: Text('start position'),
+              ' N'),
+          subtitle: const Text('start position'),
         ),
         ListTile(
           title: Text(lap.db.endPositionLong.semicirclesAsDegrees() +
-              " E\n" +
+              ' E\n' +
               lap.db.endPositionLat.semicirclesAsDegrees() +
-              " N"),
-          subtitle: Text('end position'),
+              ' N'),
+          subtitle: const Text('end position'),
         ),
         ListTile(
           title: Text(lap.db.intensity.toString()),
-          subtitle: Text('intensity'),
+          subtitle: const Text('intensity'),
         ),
         ListTile(
           title: Text((lap.db.avgSpeed * 3.6).toStringAsFixed(2) +
-              " km/h / " +
+              ' km/h / ' +
               (lap.db.maxSpeed * 3.6).toStringAsFixed(2) +
-              " km/h"),
-          subtitle: Text('avg / max speed'),
+              ' km/h'),
+          subtitle: const Text('avg / max speed'),
         ),
       ],
     );

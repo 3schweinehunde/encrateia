@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 
 class LapEcorChart extends StatelessWidget {
-  final RecordList<Event> records;
-  final double weight;
-
-  LapEcorChart({
+  const LapEcorChart({
     this.records,
     @required this.weight,
   });
 
+  final RecordList<Event> records;
+  final double weight;
+
   @override
   Widget build(BuildContext context) {
-    var offset = records.first.db.distance.round();
+    final int offset = records.first.db.distance.round();
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Ecor',
         colorFn: (_, __) => MaterialPalette.gray.shade700,
@@ -31,7 +31,7 @@ class LapEcorChart extends StatelessWidget {
       height: 300,
       child: LineChart(
         data,
-        primaryMeasureAxis: NumericAxisSpec(
+        primaryMeasureAxis: const NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
               zeroBound: false,
               dataIsInWholeNumbers: false,
@@ -40,8 +40,8 @@ class LapEcorChart extends StatelessWidget {
         animate: false,
         behaviors: [
           ChartTitle(
-            "Ecor (W s/kg m)",
-            titleStyleSpec: TextStyleSpec(fontSize: 13),
+            'Ecor (W s/kg m)',
+            titleStyleSpec: const TextStyleSpec(fontSize: 13),
             behaviorPosition: BehaviorPosition.bottom,
             titleOutsideJustification: OutsideJustification.end,
           ),

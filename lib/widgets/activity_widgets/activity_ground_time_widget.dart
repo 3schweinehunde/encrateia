@@ -8,13 +8,13 @@ import 'package:encrateia/widgets/charts/activity_charts/activity_ground_time_ch
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityGroundTimeWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityGroundTimeWidget({
+  const ActivityGroundTimeWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityGroundTimeWidgetState createState() =>
@@ -22,9 +22,9 @@ class ActivityGroundTimeWidget extends StatefulWidget {
 }
 
 class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
-  var records = RecordList(<Event>[]);
-  String avgGroundTimeString = "Loading ...";
-  String sdevGroundTimeString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgGroundTimeString = 'Loading ...';
+  String sdevGroundTimeString = 'Loading ...';
 
   @override
   void initState() {
@@ -33,66 +33,66 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var groundTimeRecords = records
-          .where(
-              (value) => value.db.groundTime != null && value.db.groundTime > 0)
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> groundTimeRecords = records
+          .where((Event value) =>
+              value.db.groundTime != null && value.db.groundTime > 0)
           .toList();
 
-      if (groundTimeRecords.length > 0) {
+      if (groundTimeRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityGroundTimeChart(
-                records: RecordList(groundTimeRecords),
+                records: RecordList<Event>(groundTimeRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'ground time > 0 ms are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgGroundTimeString),
-                subtitle: Text("average ground time"),
+                subtitle: const Text('average ground time'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevGroundTimeString),
-                subtitle: Text("standard deviation ground time"),
+                subtitle: const Text('standard deviation ground time'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(groundTimeRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No ground time data available."),
+        return const Center(
+          child: Text('No ground time data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = RecordList(await activity.records);
+  Future<void> getData() async {
+    final Activity activity = widget.activity;
+    records = RecordList<Event>(await activity.records);
     avgGroundTimeString = activity.db.avgGroundTime != null
-        ? activity.db.avgGroundTime.toStringOrDashes(1) + " ms"
-        : "- - -";
+        ? activity.db.avgGroundTime.toStringOrDashes(1) + ' ms'
+        : '- - -';
     sdevGroundTimeString =
-        activity.db.sdevGroundTime.toStringOrDashes(2) + " ms";
+        activity.db.sdevGroundTime.toStringOrDashes(2) + ' ms';
     setState(() {});
   }
 }

@@ -7,18 +7,18 @@ import 'package:encrateia/widgets/charts/lap_charts/lap_ground_time_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class LapGroundTimeWidget extends StatefulWidget {
-  final Lap lap;
+  const LapGroundTimeWidget({this.lap});
 
-  LapGroundTimeWidget({this.lap});
+  final Lap lap;
 
   @override
   _LapGroundTimeWidgetState createState() => _LapGroundTimeWidgetState();
 }
 
 class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
-  var records = RecordList(<Event>[]);
-  String avgGroundTimeString = "Loading ...";
-  String sdevGroundTimeString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgGroundTimeString = 'Loading ...';
+  String sdevGroundTimeString = 'Loading ...';
 
   @override
   void initState() {
@@ -27,69 +27,69 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   }
 
   @override
-  void didUpdateWidget(oldWidget) {
+  void didUpdateWidget(LapGroundTimeWidget oldWidget) {
     getData();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var groundTimeRecords = records
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> groundTimeRecords = records
           .where(
-              (value) => value.db.groundTime != null && value.db.groundTime > 0)
+              (Event value) => value.db.groundTime != null && value.db.groundTime > 0)
           .toList();
 
-      if (groundTimeRecords.length > 0) {
+      if (groundTimeRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapGroundTimeChart(records: RecordList(groundTimeRecords)),
-              Text('Only records where ground time > 0 ms are shown.'),
-              Text('Swipe left/write to compare with other laps.'),
-              Divider(),
+              LapGroundTimeChart(records: RecordList<Event>(groundTimeRecords)),
+              const Text('Only records where ground time > 0 ms are shown.'),
+              const Text('Swipe left/write to compare with other laps.'),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgGroundTimeString),
-                subtitle: Text("average ground time"),
+                subtitle: const Text('average ground time'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevGroundTimeString),
-                subtitle: Text("standard deviation ground time"),
+                subtitle: const Text('standard deviation ground time'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(groundTimeRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No ground time available."),
+        return const Center(
+          child: Text('No ground time available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Lap lap = widget.lap;
-    records = RecordList(await lap.records);
+  Future<void> getData() async {
+    final Lap lap = widget.lap;
+    records = RecordList<Event>(await lap.records);
 
-    double avg = await lap.avgGroundTime;
-    avgGroundTimeString = avg.toStringOrDashes(1) + " ms";
+    final double avg = await lap.avgGroundTime;
+    avgGroundTimeString = avg.toStringOrDashes(1) + ' ms';
 
-    double sdev = await lap.sdevGroundTime;
+    final double sdev = await lap.sdevGroundTime;
     setState(() {
-      sdevGroundTimeString = sdev.toStringOrDashes(2) + " ms";
+      sdevGroundTimeString = sdev.toStringOrDashes(2) + ' ms';
     });
   }
 }

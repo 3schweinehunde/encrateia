@@ -5,16 +5,16 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/power_duration_chart.dart';
 
 class LapPowerDurationWidget extends StatefulWidget {
-  final Lap lap;
+  const LapPowerDurationWidget({@required this.lap});
 
-  LapPowerDurationWidget({@required this.lap});
+  final Lap lap;
 
   @override
   _LapPowerDurationWidgetState createState() => _LapPowerDurationWidgetState();
 }
 
 class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
-  List<Event> records = [];
+  List<Event> records = <Event>[];
 
   @override
   void initState() {
@@ -23,41 +23,41 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   }
 
   @override
-  void didUpdateWidget(oldWidget) {
+  void didUpdateWidget(LapPowerDurationWidget oldWidget) {
     getData();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var powerRecords = records
-          .where((value) => value.db.power != null && value.db.power > 100)
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> powerRecords = records
+          .where((Event value) => value.db.power != null && value.db.power > 100)
           .toList();
 
-      if (powerRecords.length > 0) {
+      if (powerRecords.isNotEmpty) {
         return ListView(
-          padding: EdgeInsets.only(left: 15),
+          padding: const EdgeInsets.only(left: 15),
           children: <Widget>[
             PowerDurationChart(records: powerRecords),
-            Text('Swipe left/write to compare with other laps.'),
-            Divider(),
+            const Text('Swipe left/write to compare with other laps.'),
+            const Divider(),
           ],
         );
       } else {
-        return Center(
-          child: Text("No power data available."),
+        return const Center(
+          child: Text('No power data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    records = RecordList(await widget.lap.records);
+  Future<void> getData() async {
+    records = RecordList<Event>(await widget.lap.records);
     setState(() {});
   }
 }

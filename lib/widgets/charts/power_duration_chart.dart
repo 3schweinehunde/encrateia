@@ -5,16 +5,16 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/plot_point.dart';
 
 class PowerDurationChart extends StatelessWidget {
-  final List<Event> records;
+  const PowerDurationChart({this.records});
 
-  PowerDurationChart({this.records});
+  final List<Event> records;
 
   @override
   Widget build(BuildContext context) {
-    PowerDuration powerDuration = PowerDuration(records: records);
+    final PowerDuration powerDuration = PowerDuration(records: records);
 
-    List<Series<dynamic, num>> data = [
-       Series<IntPlotPoint, int>(
+    final List<Series<IntPlotPoint, num>> data = <Series<IntPlotPoint, num>>[
+      Series<IntPlotPoint, int>(
         id: 'Power Duration',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (IntPlotPoint record, _) => record.domain,
@@ -23,35 +23,36 @@ class PowerDurationChart extends StatelessWidget {
       )
     ];
 
-    final staticTicks = StaticNumericTickProviderSpec([
-      TickSpec(PowerDuration.scaled(seconds: 1), label: '1s'),
-      TickSpec(PowerDuration.scaled(seconds: 10), label: '10s'),
-      TickSpec(PowerDuration.scaled(seconds: 60), label: '1min'),
-      TickSpec(PowerDuration.scaled(seconds: 600), label: '10min'),
-      TickSpec(PowerDuration.scaled(seconds: 3600), label: '1h'),
+    final StaticNumericTickProviderSpec staticTicks =
+        StaticNumericTickProviderSpec(<TickSpec<int>>[
+      TickSpec<int>(PowerDuration.scaled(seconds: 1), label: '1s'),
+      TickSpec<int>(PowerDuration.scaled(seconds: 10), label: '10s'),
+      TickSpec<int>(PowerDuration.scaled(seconds: 60), label: '1min'),
+      TickSpec<int>(PowerDuration.scaled(seconds: 600), label: '10min'),
+      TickSpec<int>(PowerDuration.scaled(seconds: 3600), label: '1h'),
     ]);
 
-    final chartTitles = [
+    final List<ChartTitle> chartTitles = <ChartTitle>[
       ChartTitle(
         'Power (W)',
-        titleStyleSpec: TextStyleSpec(fontSize: 13),
+        titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.start,
         titleOutsideJustification: OutsideJustification.end,
       ),
       ChartTitle(
         'Time',
-        titleStyleSpec: TextStyleSpec(fontSize: 13),
+        titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
     ];
 
-    return  Container(
+    return Container(
       height: 300,
-      padding: EdgeInsets.all(2),
+      padding: const EdgeInsets.all(2),
       child: LineChart(
         data,
-        primaryMeasureAxis: NumericAxisSpec(
+        primaryMeasureAxis: const NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
               zeroBound: false,
               dataIsInWholeNumbers: true,

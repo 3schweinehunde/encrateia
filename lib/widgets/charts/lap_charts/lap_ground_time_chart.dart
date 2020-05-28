@@ -5,15 +5,15 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 
 class LapGroundTimeChart extends StatelessWidget {
-  final RecordList<Event> records;
+  const LapGroundTimeChart({this.records});
 
-  LapGroundTimeChart({this.records});
+  final RecordList<Event> records;
 
   @override
   Widget build(BuildContext context) {
-    var offset = records.first.db.distance.round();
+    final int offset = records.first.db.distance.round();
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Ground Time',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
@@ -28,7 +28,7 @@ class LapGroundTimeChart extends StatelessWidget {
       child: LineChart(
         data,
         animate: false,
-        primaryMeasureAxis: NumericAxisSpec(
+        primaryMeasureAxis: const NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
             zeroBound: false,
             dataIsInWholeNumbers: false,

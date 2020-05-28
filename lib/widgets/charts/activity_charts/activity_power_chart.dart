@@ -12,26 +12,26 @@ import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 
 class ActivityPowerChart extends StatelessWidget {
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-  final List<PowerZone> powerZones;
-
-  ActivityPowerChart({
+  const ActivityPowerChart({
     this.records,
     @required this.activity,
     @required this.athlete,
     this.powerZones,
   });
 
+  final RecordList<Event> records;
+  final Activity activity;
+  final Athlete athlete;
+  final List<PowerZone> powerZones;
+
   @override
   Widget build(BuildContext context) {
-    var smoothedRecords = records.toIntDataPoints(
+    final List<IntPlotPoint> smoothedRecords = records.toIntDataPoints(
       attribute: LapIntAttr.power,
       amount: athlete.db.recordAggregationCount,
     );
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
       Series<IntPlotPoint, int>(
         id: 'Power',
         colorFn: (_, __) => MaterialPalette.gray.shade700,
@@ -45,7 +45,7 @@ class ActivityPowerChart extends StatelessWidget {
       future: activity.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          var laps = snapshot.data;
+          final List<Lap> laps = snapshot.data;
 
           return Container(
             height: 300,
@@ -55,11 +55,11 @@ class ActivityPowerChart extends StatelessWidget {
               laps: laps,
               powerZones: powerZones,
               domainTitle: 'Power (W)',
-              measureTickProviderSpec: BasicNumericTickProviderSpec(
+              measureTickProviderSpec: const BasicNumericTickProviderSpec(
                   zeroBound: false,
                   desiredTickCount: 6),
               domainTickProviderSpec:
-                  BasicNumericTickProviderSpec(desiredTickCount: 6),
+                  const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
         } else

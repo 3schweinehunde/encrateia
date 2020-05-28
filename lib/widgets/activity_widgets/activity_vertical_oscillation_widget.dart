@@ -8,13 +8,13 @@ import 'package:encrateia/widgets/charts/activity_charts/activity_vertical_oscil
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityVerticalOscillationWidget extends StatefulWidget {
-  final Activity activity;
-  final Athlete athlete;
-
-  ActivityVerticalOscillationWidget({
+  const ActivityVerticalOscillationWidget({
     @required this.activity,
     @required this.athlete,
   });
+
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ActivityVerticalOscillationWidgetState createState() =>
@@ -23,9 +23,9 @@ class ActivityVerticalOscillationWidget extends StatefulWidget {
 
 class _ActivityVerticalOscillationWidgetState
     extends State<ActivityVerticalOscillationWidget> {
-  var records = RecordList(<Event>[]);
-  String avgVerticalOscillationString = "Loading ...";
-  String sdevVerticalOscillationString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgVerticalOscillationString = 'Loading ...';
+  String sdevVerticalOscillationString = 'Loading ...';
 
   @override
   void initState() {
@@ -34,64 +34,64 @@ class _ActivityVerticalOscillationWidgetState
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var powerRecords = records
-          .where((value) => value.db.verticalOscillation != null)
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> powerRecords = records
+          .where((Event value) => value.db.verticalOscillation != null)
           .toList();
 
-      if (powerRecords.length > 0) {
+      if (powerRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               ActivityVerticalOscillationChart(
-                records: RecordList(powerRecords),
+                records: RecordList<Event>(powerRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'vertical oscillation is present are shown.'),
-              Divider(),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgVerticalOscillationString),
-                subtitle: Text("average vertical oscillation"),
+                subtitle: const Text('average vertical oscillation'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevVerticalOscillationString),
-                subtitle: Text("standard deviation vertical oscillation"),
+                subtitle: const Text('standard deviation vertical oscillation'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(powerRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No vertical oscillation data available."),
+        return const Center(
+          child: Text('No vertical oscillation data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Activity activity = widget.activity;
-    records = RecordList(await activity.records);
+  Future<void> getData() async {
+    final Activity activity = widget.activity;
+    records = RecordList<Event>(await activity.records);
     avgVerticalOscillationString =
-        activity.db.avgVerticalOscillation.toStringOrDashes(1) + " cm";
+        activity.db.avgVerticalOscillation.toStringOrDashes(1) + ' cm';
     sdevVerticalOscillationString =
-        activity.db.sdevVerticalOscillation.toStringOrDashes(2) + " cm";
+        activity.db.sdevVerticalOscillation.toStringOrDashes(2) + ' cm';
     setState(() {});
   }
 }

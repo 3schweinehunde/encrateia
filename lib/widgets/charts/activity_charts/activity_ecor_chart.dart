@@ -31,7 +31,8 @@ class ActivityEcorChart extends StatelessWidget {
       weight: weight,
     );
 
-    final List<Series<dynamic, num>> data = <Series<dynamic, num>>[
+    final List<Series<DoublePlotPoint, int>> data =
+        <Series<DoublePlotPoint, int>>[
       Series<DoublePlotPoint, int>(
         id: 'Ecor',
         colorFn: (_, __) => MaterialPalette.gray.shade700,
@@ -59,7 +60,7 @@ class ActivityEcorChart extends StatelessWidget {
                   dataIsInWholeNumbers: false,
                   desiredTickCount: 6),
               domainTickProviderSpec:
-              const BasicNumericTickProviderSpec(desiredTickCount: 6),
+                  const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
         } else

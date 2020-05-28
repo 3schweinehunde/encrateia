@@ -7,10 +7,10 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/models/event.dart';
 
 class LapLegSpringStiffnessWidget extends StatefulWidget {
+  const LapLegSpringStiffnessWidget({this.lap});
+
   final Lap lap;
-
-  LapLegSpringStiffnessWidget({this.lap});
-
+  
   @override
   _LapLegSpringStiffnessWidgetState createState() =>
       _LapLegSpringStiffnessWidgetState();
@@ -18,9 +18,9 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
 
 class _LapLegSpringStiffnessWidgetState
     extends State<LapLegSpringStiffnessWidget> {
-  var records = RecordList(<Event>[]);
-  String avgLegSpringStiffnessString = "Loading ...";
-  String sdevLegSpringStiffnessString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgLegSpringStiffnessString = 'Loading ...';
+  String sdevLegSpringStiffnessString = 'Loading ...';
 
   @override
   void initState() {
@@ -29,71 +29,71 @@ class _LapLegSpringStiffnessWidgetState
   }
 
   @override
-  void didUpdateWidget(oldWidget) {
+  void didUpdateWidget(LapLegSpringStiffnessWidget oldWidget) {
     getData();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var legSpringStiffnessRecords = records
-          .where((value) =>
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> legSpringStiffnessRecords = records
+          .where((Event value) =>
               value.db.legSpringStiffness != null &&
               value.db.legSpringStiffness > 0)
           .toList();
 
-      if (legSpringStiffnessRecords.length > 0) {
+      if (legSpringStiffnessRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               LapLegSpringStiffnessChart(
-                records: RecordList(legSpringStiffnessRecords),
+                records: RecordList<Event>(legSpringStiffnessRecords),
               ),
-              Text(
+              const Text(
                   'Only records where leg spring stiffness > 0 kN/m are shown.'),
-              Text('Swipe left/write to compare with other laps.'),
-              Divider(),
+              const Text('Swipe left/write to compare with other laps.'),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgLegSpringStiffnessString),
-                subtitle: Text("average ground time"),
+                subtitle: const Text('average ground time'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevLegSpringStiffnessString),
-                subtitle: Text("standard deviation ground time"),
+                subtitle: const Text('standard deviation ground time'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(legSpringStiffnessRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No leg spring stiffness data available."),
+        return const Center(
+          child: Text('No leg spring stiffness data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Lap lap = widget.lap;
-    records = RecordList(await lap.records);
-    double avg = await lap.avgLegSpringStiffness;
-    double sdev = await lap.sdevLegSpringStiffness;
+  Future<void> getData() async {
+    final Lap lap = widget.lap;
+    records = RecordList<Event>(await lap.records);
+    final double avg = await lap.avgLegSpringStiffness;
+    final double sdev = await lap.sdevLegSpringStiffness;
     setState(() {
-      avgLegSpringStiffnessString = avg.toStringOrDashes(1) + " ms";
-      sdevLegSpringStiffnessString = sdev.toStringOrDashes(2) + " ms";
+      avgLegSpringStiffnessString = avg.toStringOrDashes(1) + ' ms';
+      sdevLegSpringStiffnessString = sdev.toStringOrDashes(2) + ' ms';
     });
   }
 }

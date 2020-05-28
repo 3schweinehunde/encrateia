@@ -345,8 +345,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       activities = await Activity.all(athlete: widget.athlete);
       final Iterable<Activity> newActivities =
           activities.where((Activity activity) => activity.db.state == 'new');
-      // ignore: prefer_final_in_for_each
-      for (Activity activity in newActivities) {
+      for (final Activity activity in newActivities) {
         await download(activity: activity);
       }
 

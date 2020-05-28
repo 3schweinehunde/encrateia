@@ -7,18 +7,18 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/models/event.dart';
 
 class LapFormPowerWidget extends StatefulWidget {
-  final Lap lap;
+  const LapFormPowerWidget({this.lap});
 
-  LapFormPowerWidget({this.lap});
+  final Lap lap;
 
   @override
   _LapFormPowerWidgetState createState() => _LapFormPowerWidgetState();
 }
 
 class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
-  var records = RecordList(<Event>[]);
-  String avgFormPowerString = "Loading ...";
-  String sdevFormPowerString = "Loading ...";
+  RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String avgFormPowerString = 'Loading ...';
+  String sdevFormPowerString = 'Loading ...';
 
   @override
   void initState() {
@@ -27,69 +27,69 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   }
 
   @override
-  void didUpdateWidget(oldWidget) {
+  void didUpdateWidget(LapFormPowerWidget oldWidget) {
     getData();
     super.didUpdateWidget(oldWidget);
   }
 
   @override
-  Widget build(context) {
-    if (records.length > 0) {
-      var formPowerRecords = records
+  Widget build(BuildContext context) {
+    if (records.isNotEmpty) {
+      final List<Event> formPowerRecords = records
           .where(
-              (value) => value.db.formPower != null && value.db.formPower > 0)
+              (Event value) => value.db.formPower != null && value.db.formPower > 0)
           .toList();
 
-      if (formPowerRecords.length > 0) {
+      if (formPowerRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.lightGreen,
           child: ListView(
-            padding: EdgeInsets.only(left: 25),
+            padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapFormPowerChart(records: RecordList(formPowerRecords)),
-              Text('Only records where 0 W < form power < 200 W are shown.'),
-              Text('Swipe left/write to compare with other laps.'),
-              Divider(),
+              LapFormPowerChart(records: RecordList<Event>(formPowerRecords)),
+              const Text('Only records where 0 W < form power < 200 W are shown.'),
+              const Text('Swipe left/write to compare with other laps.'),
+              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgFormPowerString),
-                subtitle: Text("average form power"),
+                subtitle: const Text('average form power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevFormPowerString),
-                subtitle: Text("standard deviation form power"),
+                subtitle: const Text('standard deviation form power'),
               ),
               ListTile(
                 leading: MyIcon.amount,
                 title: Text(formPowerRecords.length.toString()),
-                subtitle: Text("number of measurements"),
+                subtitle: const Text('number of measurements'),
               ),
             ],
           ),
         );
       } else {
-        return Center(
-          child: Text("No form power data available."),
+        return const Center(
+          child: Text('No form power data available.'),
         );
       }
     } else {
-      return Center(
-        child: Text("Loading"),
+      return const Center(
+        child: Text('Loading'),
       );
     }
   }
 
-  getData() async {
-    Lap lap = widget.lap;
-    records = RecordList(await lap.records);
+  Future<void> getData() async {
+    final Lap lap = widget.lap;
+    records = RecordList<Event>(await lap.records);
 
-    double avg = await lap.avgFormPower;
-    avgFormPowerString = avg.toStringOrDashes(1) + " W";
+    final double avg = await lap.avgFormPower;
+    avgFormPowerString = avg.toStringOrDashes(1) + ' W';
 
-    double sdev = await lap.sdevFormPower;
+    final double sdev = await lap.sdevFormPower;
     setState(() {
-      sdevFormPowerString = sdev.toStringOrDashes(2) + " W";
+      sdevFormPowerString = sdev.toStringOrDashes(2) + ' W';
     });
   }
 }

@@ -12,26 +12,26 @@ import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 
 class ActivityHeartRateChart extends StatelessWidget {
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-  final List<HeartRateZone> heartRateZones;
-
-  ActivityHeartRateChart({
+  const ActivityHeartRateChart({
     @required this.records,
     @required this.activity,
     @required this.athlete,
     this.heartRateZones,
   });
 
+  final RecordList<Event> records;
+  final Activity activity;
+  final Athlete athlete;
+  final List<HeartRateZone> heartRateZones;
+
   @override
   Widget build(BuildContext context) {
-    var smoothedRecords = records.toIntDataPoints(
+    final List<IntPlotPoint> smoothedRecords = records.toIntDataPoints(
       attribute: LapIntAttr.heartRate,
       amount: athlete.db.recordAggregationCount,
     );
 
-    List<Series<dynamic, num>> data = [
+    final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
       Series<IntPlotPoint, int>(
         id: 'Heart Rate',
         colorFn: (_, __) => MaterialPalette.red.shadeDefault,
@@ -45,7 +45,7 @@ class ActivityHeartRateChart extends StatelessWidget {
       future: Lap.all(activity: activity),
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          var laps = snapshot.data;
+          final List<Lap> laps = snapshot.data;
           return Container(
             height: 300,
             child: MyLineChart(
@@ -54,12 +54,12 @@ class ActivityHeartRateChart extends StatelessWidget {
               laps: laps,
               heartRateZones: heartRateZones,
               domainTitle: 'Heart Rate (bpm)',
-              measureTickProviderSpec: BasicNumericTickProviderSpec(
+              measureTickProviderSpec: const BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: true,
                   desiredTickCount: 6),
               domainTickProviderSpec:
-                  BasicNumericTickProviderSpec(desiredTickCount: 6),
+                  const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
         } else
