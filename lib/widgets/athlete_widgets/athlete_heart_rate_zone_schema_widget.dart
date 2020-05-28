@@ -7,9 +7,9 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:intl/intl.dart';
 
 class AthleteHeartRateZoneSchemaWidget extends StatefulWidget {
-  final Athlete athlete;
+  const AthleteHeartRateZoneSchemaWidget({this.athlete});
 
-  AthleteHeartRateZoneSchemaWidget({this.athlete});
+  final Athlete athlete;
 
   @override
   _AthleteHeartRateZoneSchemaWidgetState createState() =>
@@ -18,7 +18,7 @@ class AthleteHeartRateZoneSchemaWidget extends StatefulWidget {
 
 class _AthleteHeartRateZoneSchemaWidgetState
     extends State<AthleteHeartRateZoneSchemaWidget> {
-  List<HeartRateZoneSchema> heartRateZoneSchemas = [];
+  List<HeartRateZoneSchema> heartRateZoneSchemas = <HeartRateZoneSchema>[];
   int offset = 0;
   int rows;
 
@@ -29,17 +29,17 @@ class _AthleteHeartRateZoneSchemaWidgetState
   }
 
   @override
-  Widget build(context) {
+  Widget build(BuildContext context) {
     if (heartRateZoneSchemas != null) {
-      if (heartRateZoneSchemas.length > 0) {
+      if (heartRateZoneSchemas.isNotEmpty) {
         rows =
             (heartRateZoneSchemas.length < 8) ? heartRateZoneSchemas.length : 8;
         return ListView(
           children: <Widget>[
             Center(
               child: Text(
-                "\nHeart Rate Zone Schemas ${offset + 1} - ${offset + rows} "
-                "of ${heartRateZoneSchemas.length}",
+                '\nHeart Rate Zone Schemas ${offset + 1} - ${offset + rows} '
+                'of ${heartRateZoneSchemas.length}',
                 style: Theme.of(context).textTheme.headline6,
               ),
             ),
@@ -47,22 +47,22 @@ class _AthleteHeartRateZoneSchemaWidgetState
               headingRowHeight: kMinInteractiveDimension * 0.80,
               dataRowHeight: kMinInteractiveDimension * 0.80,
               columnSpacing: 9,
-              columns: <DataColumn>[
-                DataColumn(label: Text("Date")),
-                DataColumn(label: Text("Name")),
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Date')),
+                DataColumn(label: Text('Name')),
                 DataColumn(
-                  label: Text("Base (W)"),
+                  label: Text('Base (W)'),
                   numeric: true,
                 ),
-                DataColumn(label: Text("Edit")),
+                DataColumn(label: Text('Edit')),
               ],
               rows: heartRateZoneSchemas
                   .sublist(offset, offset + rows)
                   .map((HeartRateZoneSchema heartRateZoneSchema) {
                 return DataRow(
                   key: Key(heartRateZoneSchema.db.id.toString()),
-                  cells: [
-                    DataCell(Text(DateFormat("d MMM yyyy")
+                  cells: <DataCell>[
+                    DataCell(Text(DateFormat('d MMM yyyy')
                         .format(heartRateZoneSchema.db.date))),
                     DataCell(Text(heartRateZoneSchema.db.name)),
                     DataCell(Text(heartRateZoneSchema.db.base.toString())),
@@ -72,7 +72,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                         await Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddHeartRateZoneSchemaScreen(
+                            builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
                               heartRateZoneSchema: heartRateZoneSchema,
                             ),
                           ),
@@ -84,17 +84,17 @@ class _AthleteHeartRateZoneSchemaWidgetState
                 );
               }).toList(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               children: <Widget>[
-                Spacer(),
+                const Spacer(),
                 MyButton.add(
-                    child: Text("New schema"),
+                    child: const Text('New schema'),
                     onPressed: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddHeartRateZoneSchemaScreen(
+                          builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
                             heartRateZoneSchema:
                                 HeartRateZoneSchema(athlete: widget.athlete),
                           ),
@@ -102,18 +102,18 @@ class _AthleteHeartRateZoneSchemaWidgetState
                       );
                       getData();
                     }),
-                Spacer(),
+                const Spacer(),
                 MyButton.navigate(
-                  child: Text("<<"),
+                  child: const Text('<<'),
                   onPressed: (offset == 0)
                       ? null
                       : () => setState(() {
                             offset > 8 ? offset = offset - rows : offset = 0;
                           }),
                 ),
-                Spacer(),
+                const Spacer(),
                 MyButton.navigate(
-                  child: Text(">>"),
+                  child: const Text('>>'),
                   onPressed: (offset + rows == heartRateZoneSchemas.length)
                       ? null
                       : () => setState(() {
@@ -122,7 +122,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                                 : offset = heartRateZoneSchemas.length - rows;
                           }),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
             templateButtons(),
@@ -130,10 +130,10 @@ class _AthleteHeartRateZoneSchemaWidgetState
         );
       } else {
         return Padding(
-          padding: EdgeInsets.all(25.0),
+          padding: const EdgeInsets.all(25.0),
           child: ListView(
             children: <Widget>[
-              Text('''
+              const Text('''
 No heart rate schema defined so far:
                 
 You can easily start with a pre defined heartRate schema,
@@ -144,12 +144,12 @@ You could also create a schema from scratch.
 '''),
               RaisedButton(
                 color: Colors.green,
-                child: Text("New schema"),
+                child: const Text('New schema'),
                 onPressed: () async {
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddHeartRateZoneSchemaScreen(
+                      builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
                         heartRateZoneSchema:
                             HeartRateZoneSchema(athlete: widget.athlete),
                       ),
@@ -164,47 +164,47 @@ You could also create a schema from scratch.
         );
       }
     } else {
-      return Center(child: Text("loading"));
+      return const Center(child: Text('loading'));
     }
   }
 
-  getData() async {
-    Athlete athlete = widget.athlete;
+  Future<void> getData() async {
+    final Athlete athlete = widget.athlete;
     heartRateZoneSchemas = await athlete.heartRateZoneSchemas;
     setState(() {});
   }
 
-  likeGarmin() async {
-    Athlete athlete = widget.athlete;
-    var heartRateZoneSchema = HeartRateZoneSchema.likeGarmin(athlete: athlete);
+  Future<void> likeGarmin() async {
+    final Athlete athlete = widget.athlete;
+    final HeartRateZoneSchema heartRateZoneSchema = HeartRateZoneSchema.likeGarmin(athlete: athlete);
     await heartRateZoneSchema.db.save();
     await heartRateZoneSchema.addGarminZones();
     await getData();
   }
 
-  likeStefanDillinger() async {
-    Athlete athlete = widget.athlete;
-    var heartRateZoneSchema =
+  Future<void> likeStefanDillinger() async {
+    final Athlete athlete = widget.athlete;
+    final HeartRateZoneSchema heartRateZoneSchema =
         HeartRateZoneSchema.likeStefanDillinger(athlete: athlete);
     await heartRateZoneSchema.db.save();
     await heartRateZoneSchema.addStefanDillingerZones();
     await getData();
   }
 
-  templateButtons() {
-    return Column(children: [
-      Divider(),
-      Text("Add heart rate zone schema from template:"),
+  Widget templateButtons() {
+    return Column(children: <Widget>[
+      const Divider(),
+      const Text('Add heart rate zone schema from template:'),
       RaisedButton(
         // MyIcon.downloadLocal,
         color: Colors.orange,
-        child: Text("like Garmin"),
+        child: const Text('like Garmin'),
         onPressed: () => likeGarmin(),
       ),
       RaisedButton(
         // MyIcon.downloadLocal,
         color: Colors.orange,
-        child: Text("like Stefan Dillinger"),
+        child: const Text('like Stefan Dillinger'),
         onPressed: () => likeStefanDillinger(),
       ),
     ]);

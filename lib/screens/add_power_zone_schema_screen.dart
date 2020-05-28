@@ -11,10 +11,10 @@ import 'package:encrateia/model/model.dart';
 import 'add_power_zone_screen.dart';
 
 class AddPowerZoneSchemaScreen extends StatefulWidget {
-  final PowerZoneSchema powerZoneSchema;
-
   const AddPowerZoneSchemaScreen({Key key, this.powerZoneSchema})
       : super(key: key);
+
+  final PowerZoneSchema powerZoneSchema;
 
   @override
   _AddPowerZoneSchemaScreenState createState() =>
@@ -22,7 +22,7 @@ class AddPowerZoneSchemaScreen extends StatefulWidget {
 }
 
 class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
-  List<PowerZone> powerZones = [];
+  List<PowerZone> powerZones = <PowerZone>[];
   int offset = 0;
   int rows;
 
@@ -37,30 +37,29 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.settings,
-        title: Text('Add Power Zone Schema'),
+        title: const Text('Add Power Zone Schema'),
       ),
       body: ListView(
-        padding: EdgeInsets.only(left: 20, right: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20),
         children: <Widget>[
           Card(
-            margin: EdgeInsets.all(40),
+            margin: const EdgeInsets.all(40),
             child: ListTile(
               leading: MyIcon.warning,
-              title: Text("Instructions to update your current base value"),
-              subtitle: Text(
-                "1) Change the VALID FROM date to today to copy the power zone schema.\n"
-                "2) Edit the BASE VALUE to the new value.\n"
-                "3) Click SAVE to persist your changes.",
+              title:
+                  const Text('Instructions to update your current base value'),
+              subtitle: const Text(
+                '1) Change the VALID FROM date to today to copy the power zone schema.\n'
+                '2) Edit the BASE VALUE to the new value.\n'
+                '3) Click SAVE to persist your changes.',
               ),
             ),
           ),
           DateTimeField(
-            decoration: InputDecoration(
-              labelText: "Valid from",
-            ),
-            format: DateFormat("yyyy-MM-dd"),
+            decoration: const InputDecoration(labelText: 'Valid from'),
+            format: DateFormat('yyyy-MM-dd'),
             initialValue: widget.powerZoneSchema.db.date,
-            onShowPicker: (context, currentValue) {
+            onShowPicker: (BuildContext context, DateTime currentValue) {
               return showDatePicker(
                 context: context,
                 firstDate: DateTime(1969),
@@ -68,41 +67,42 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                 lastDate: DateTime(2100),
               );
             },
-            onChanged: (value) => copyPowerZoneSchema(date: value),
+            onChanged: (DateTime value) => copyPowerZoneSchema(date: value),
           ),
           TextFormField(
-            decoration: InputDecoration(labelText: "Name"),
+            decoration: const InputDecoration(labelText: 'Name'),
             initialValue: widget.powerZoneSchema.db.name,
-            onChanged: (value) => widget.powerZoneSchema.db.name = value,
+            onChanged: (String value) => widget.powerZoneSchema.db.name = value,
           ),
           TextFormField(
-            decoration: InputDecoration(
-              labelText: "Base value in W",
-              helperText: "e.g. Critical Power, Functional Threshold Power",
+            decoration: const InputDecoration(
+              labelText: 'Base value in W',
+              helperText: 'e.g. Critical Power, Functional Threshold Power',
             ),
             initialValue: widget.powerZoneSchema.db.base.toString(),
             keyboardType: TextInputType.number,
-            onChanged: (value) => updatePowerZoneBase(base: int.parse(value)),
+            onChanged: (String value) =>
+                updatePowerZoneBase(base: int.parse(value)),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           DataTable(
             headingRowHeight: kMinInteractiveDimension * 0.80,
             dataRowHeight: kMinInteractiveDimension * 0.75,
             columnSpacing: 20,
             horizontalMargin: 10,
-            columns: <DataColumn>[
-              DataColumn(label: Text("Zone")),
-              DataColumn(label: Text("Limits (W)")),
-              DataColumn(label: Text("Color")),
-              DataColumn(label: Text("Edit")),
+            columns: const <DataColumn>[
+              DataColumn(label: Text('Zone')),
+              DataColumn(label: Text('Limits (W)')),
+              DataColumn(label: Text('Color')),
+              DataColumn(label: Text('Edit')),
             ],
             rows: powerZones.map((PowerZone powerZone) {
               return DataRow(
                 key: Key(powerZone.db.id.toString()),
-                cells: [
+                cells: <DataCell>[
                   DataCell(Text(powerZone.db.name)),
                   DataCell(Text(powerZone.db.lowerLimit.toString() +
-                      " - " +
+                      ' - ' +
                       powerZone.db.upperLimit.toString())),
                   DataCell(CircleColor(
                     circleSize: 20,
@@ -115,7 +115,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => AddPowerZoneScreen(
+                          builder: (BuildContext context) => AddPowerZoneScreen(
                             powerZone: powerZone,
                             base: widget.powerZoneSchema.db.base,
                           ),
@@ -128,17 +128,17 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
               );
             }).toList(),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               MyButton.add(
-                child: Text("Add power zone"),
+                child: const Text('Add power zone'),
                 onPressed: () async {
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => AddPowerZoneScreen(
+                      builder: (BuildContext context) => AddPowerZoneScreen(
                         powerZone:
                             PowerZone(powerZoneSchema: widget.powerZoneSchema),
                         base: widget.powerZoneSchema.db.base,
@@ -150,7 +150,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -159,9 +159,9 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                   powerZoneSchema: widget.powerZoneSchema,
                 ),
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               MyButton.save(onPressed: () => savePowerZoneSchema(context)),
             ],
           ),
@@ -170,27 +170,27 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     );
   }
 
-  savePowerZoneSchema(BuildContext context) async {
+  Future<void> savePowerZoneSchema(BuildContext context) async {
     await widget.powerZoneSchema.db.save();
     await DbPowerZone()
-        .upsertAll(powerZones.map((powerZone) => powerZone.db).toList());
+        .upsertAll(powerZones.map((PowerZone powerZone) => powerZone.db).toList());
     Navigator.of(context).pop();
   }
 
-  getData() async {
+  Future<void> getData() async {
     powerZones = await widget.powerZoneSchema.powerZones;
     setState(() {});
   }
 
-  deletePowerZoneSchema({PowerZoneSchema powerZoneSchema}) async {
+  Future<void> deletePowerZoneSchema({PowerZoneSchema powerZoneSchema}) async {
     await powerZoneSchema.delete();
     Navigator.of(context).pop();
   }
 
-  updatePowerZoneBase({int base}) {
+  Future<void> updatePowerZoneBase({int base}) {
     setState(() {
       widget.powerZoneSchema.db.base = base;
-      for (PowerZone powerZone in powerZones) {
+      for (final PowerZone powerZone in powerZones) {
         powerZone.db.lowerLimit =
             (powerZone.db.lowerPercentage * base / 100).round();
         powerZone.db.upperLimit =
@@ -199,28 +199,29 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     });
   }
 
-  copyPowerZoneSchema({DateTime date}) async {
+  Future<void> copyPowerZoneSchema({DateTime date}) async {
     widget.powerZoneSchema.db
       ..date = date
       ..id = null;
-    int powerZoneSchemaId = await widget.powerZoneSchema.db.save();
-    for (PowerZone powerZone in powerZones) {
+    final int powerZoneSchemaId = await widget.powerZoneSchema.db.save();
+    for (final PowerZone powerZone in powerZones) {
       powerZone.db
         ..powerZoneSchemataId = powerZoneSchemaId
         ..id = null;
     }
     await DbPowerZone()
-        .upsertAll(powerZones.map((powerZone) => powerZone.db).toList());
+        .upsertAll(powerZones.map((PowerZone powerZone) => powerZone.db).toList());
     await getData();
-    showDialog(
+    showDialog<dynamic>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text("Power Zone Schema has been copied"),
-        content: Text(
-            "If you only wanted to fix the date you need to delete the old power zone schema manually."),
-        actions: [
+        title: const Text('Power Zone Schema has been copied'),
+        content: const Text(
+            'If you only wanted to fix the date you need to delete the old '
+            'power zone schema manually.'),
+        actions: <Widget>[
           FlatButton(
-            child: Text("OK"),
+            child: const Text('OK'),
             onPressed: () => Navigator.of(context).pop(),
           ),
         ],

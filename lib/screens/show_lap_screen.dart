@@ -19,16 +19,16 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ShowLapScreen extends StatelessWidget {
-  final Lap lap;
-  final List<Lap> laps;
-  final Athlete athlete;
-
   const ShowLapScreen({
     Key key,
     @required this.lap,
     @required this.laps,
     @required this.athlete,
   }) : super(key: key);
+
+  final Lap lap;
+  final List<Lap> laps;
+  final Athlete athlete;
 
   @override
   Widget build(BuildContext context) {
@@ -41,98 +41,98 @@ class ShowLapScreen extends StatelessWidget {
         ),
       ),
       body: StaggeredGridView.count(
-        staggeredTiles: List.filled(12, StaggeredTile.fit(1)),
+        staggeredTiles: List.filled(12, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        children: [
+        children: <Widget>[
           navigationButton(
-            title: "Overview",
+            title: 'Overview',
             color: MyColor.settings,
             icon: MyIcon.metaData,
             context: context,
-            nextWidget: ({lap}) => LapOverviewWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapOverviewWidget(lap: lap),
           ),
           navigationButton(
-            title: "Heart Rate",
+            title: 'Heart Rate',
             color: MyColor.navigate,
             icon: MyIcon.heartRate,
             context: context,
-            nextWidget: ({lap}) => LapHeartRateWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapHeartRateWidget(lap: lap),
           ),
           navigationButton(
-            title: "Power",
+            title: 'Power',
             color: MyColor.navigate,
             icon: MyIcon.power,
             context: context,
-            nextWidget: ({lap}) => LapPowerWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapPowerWidget(lap: lap),
           ),
           navigationButton(
-            title: "Power\nDuration",
+            title: 'Power\nDuration',
             color: MyColor.navigate,
             icon: MyIcon.powerDuration,
             context: context,
-            nextWidget: ({lap}) => LapPowerDurationWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapPowerDurationWidget(lap: lap),
           ),
           navigationButton(
-            title: "Ecor",
+            title: 'Ecor',
             color: MyColor.navigate,
             icon: MyIcon.power,
             context: context,
-            nextWidget: ({lap}) => LapEcorWidget(
+            nextWidget: ({Lap lap}) => LapEcorWidget(
               lap: lap,
               athlete: athlete,
             ),
           ),
           navigationButton(
-            title: "Ground Time",
+            title: 'Ground Time',
             color: MyColor.navigate,
             icon: MyIcon.groundTime,
             context: context,
-            nextWidget: ({lap}) => LapGroundTimeWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapGroundTimeWidget(lap: lap),
           ),
           navigationButton(
-            title: "Leg Spring\nStiffness",
+            title: 'Leg Spring\nStiffness',
             color: MyColor.navigate,
             icon: MyIcon.legSpringStiffness,
             context: context,
-            nextWidget: ({lap}) => LapLegSpringStiffnessWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapLegSpringStiffnessWidget(lap: lap),
           ),
           navigationButton(
-            title: "Form Power",
+            title: 'Form Power',
             color: MyColor.navigate,
             icon: MyIcon.formPower,
             context: context,
-            nextWidget: ({lap}) => LapFormPowerWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapFormPowerWidget(lap: lap),
           ),
           navigationButton(
-            title: "Cadence",
+            title: 'Cadence',
             color: MyColor.navigate,
             icon: MyIcon.cadence,
             context: context,
-            nextWidget: ({lap}) => LapStrydCadenceWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapStrydCadenceWidget(lap: lap),
           ),
           navigationButton(
-            title: "Vertical\nOscillation",
+            title: 'Vertical\nOscillation',
             color: MyColor.navigate,
             icon: MyIcon.verticalOscillation,
             context: context,
-            nextWidget: ({lap}) => LapVerticalOscillationWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapVerticalOscillationWidget(lap: lap),
           ),
           navigationButton(
-            title: "Metadata",
+            title: 'Metadata',
             color: MyColor.settings,
             icon: MyIcon.metaData,
             context: context,
-            nextWidget: ({lap}) => LapMetadataWidget(lap: lap),
+            nextWidget: ({Lap lap}) => LapMetadataWidget(lap: lap),
           ),
           navigationButton(
-            title: "Tags",
+            title: 'Tags',
             color: MyColor.tag,
             icon: MyIcon.tag,
             context: context,
-            nextWidget: ({lap}) => LapTagWidget(
+            nextWidget: ({Lap lap}) => LapTagWidget(
               lap: lap,
               athlete: athlete,
             ),
@@ -142,7 +142,7 @@ class ShowLapScreen extends StatelessWidget {
     );
   }
 
-  navigationButton({
+  Widget navigationButton({
     @required BuildContext context,
     @required Function({Lap lap}) nextWidget,
     @required Widget icon,
@@ -157,7 +157,7 @@ class ShowLapScreen extends StatelessWidget {
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ShowLapDetailScreen(
+          builder: (BuildContext context) => ShowLapDetailScreen(
             lap: lap,
             laps: laps,
             nextWidget: nextWidget,
