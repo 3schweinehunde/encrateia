@@ -30,7 +30,8 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
   @override
   Widget build(BuildContext context) {
     return StaggeredGridView.count(
-      staggeredTiles: List<StaggeredTile>.filled(12, const StaggeredTile.fit(1)),
+      staggeredTiles:
+          List<StaggeredTile>.filled(12, const StaggeredTile.fit(1)),
       mainAxisSpacing: 4,
       crossAxisCount:
           MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
@@ -53,8 +54,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
         ),
         ListTile(
           title: Text((widget.activity.weight != null)
-              ? (widget.activity
-                      .getAttribute(ActivityAttr.ecor) as double)
+              ? (widget.activity.getAttribute(ActivityAttr.ecor) as double)
                       .toStringAsFixed(2) +
                   ' W s/kg m'
               : 'not available'),
@@ -70,8 +70,10 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
           subtitle: const Text('avg power'),
         ),
         ListTile(
-          title: Text(
-              '${(widget.activity.db.avgPower / widget.activity.db.avgHeartRate).toStringAsFixed(2)} W/bpm'),
+          title: (widget.activity.db.avgPower != -1)
+              ? Text(
+                  '${(widget.activity.db.avgPower / widget.activity.db.avgHeartRate).toStringAsFixed(2)} W/bpm')
+              : const Text('No power data available'),
           subtitle: const Text('power / heart rate'),
         ),
         ListTile(
@@ -85,8 +87,8 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
         ),
         ListTile(
           title: Text(
-              '${widget.activity.db.totalAscent} - ${widget.activity.db.totalDescent}'
-              ' = ${widget.activity.db.totalAscent - widget.activity.db.totalDescent} m'),
+              '${widget.activity.db.totalAscent ?? 0} - ${widget.activity.db.totalDescent ?? 0}'
+              ' = ${(widget.activity.db.totalAscent ?? 0) - (widget.activity.db.totalDescent ?? 0)} m'),
           subtitle: const Text('total ascent - descent = total climb'),
         ),
         ListTile(
