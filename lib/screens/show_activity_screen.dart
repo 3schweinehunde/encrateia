@@ -1,5 +1,6 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/my_color.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_bargraph_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_metadata_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.dart';
@@ -66,6 +67,16 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             icon: MyIcon.overView,
             context: context,
             nextWidget: ActivityOverviewWidget(
+              activity: widget.activity,
+              athlete: widget.athlete,
+            ),
+          ),
+          navigationButton(
+            color: MyColor.settings,
+            title: 'Bargraphs',
+            icon: MyIcon.barGraph,
+            context: context,
+            nextWidget: ActivityBarGraphWidget(
               activity: widget.activity,
               athlete: widget.athlete,
             ),

@@ -14,6 +14,7 @@ class MyIcon {
   );
   static final Icon average = Icon(Icons.filter_tilt_shift);
   // B
+  static final Icon barGraph = Icon(Icons.storage);
   static final Icon brokenConnection = Icon(Icons.link_off);
   // C
   static final Icon cadence = Icon(Icons.pets);
@@ -52,7 +53,7 @@ class MyIcon {
   static final Icon legSpringStiffness = Icon(Icons.airline_seat_recline_extra);
   // M
   static final Icon maximum = Icon(Icons.expand_less);
-  static final Icon metaData = Icon(Icons.storage);
+  static final Icon metaData = Icon(Icons.list);
   static final Icon minimum = Icon(Icons.expand_more);
   // N
   static final Icon number = amount;
