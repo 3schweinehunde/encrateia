@@ -22,6 +22,7 @@ import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'activity_tagging.dart';
+import 'bar_zone.dart';
 import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';
 
@@ -596,5 +597,25 @@ class Activity extends ChangeNotifier {
     for (final Lap lap in await Lap.all(activity: this)) {
       await lap.autoTagger(athlete: athlete);
     }
+  }
+
+  Future<List<BarZone>> powerZoneCounts() async {
+    final PowerZoneSchema powerZoneSchema = await this.powerZoneSchema;
+    final List<Event> records = await this.records;
+    final List<Event> powerRecords =
+        records.where((Event record) => record.db.power != null).toList();
+    final List<BarZone> powerZoneCounts = await RecordList<Event>(powerRecords)
+        .powerZoneCounts(powerZoneSchema: powerZoneSchema);
+    return powerZoneCounts;
+  }
+
+  Future<List<BarZone>> heartRateZoneCounts() async {
+    final HeartRateZoneSchema heartRateZoneSchema = await this.heartRateZoneSchema;
+    final List<Event> records = await this.records;
+    final List<Event> heartRateRecords =
+    records.where((Event record) => record.db.heartRate != null).toList();
+    final List<BarZone> heartRateZoneCounts = await RecordList<Event>(heartRateRecords)
+        .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);
+    return heartRateZoneCounts;
   }
 }

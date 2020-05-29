@@ -15,7 +15,7 @@ class MyBarChart extends StatelessWidget {
     num minimum,
     List<PowerZone> powerZones,
     List<HeartRateZone> heartRateZones,
-  })  : _width = width?.toDouble() ?? 300.0,
+  })  : _width = width?.toDouble() ?? 200.0,
         _height = height?.toDouble() ?? 30.0,
         _value = value.toDouble(),
         _maximum = maxFromZones(
@@ -32,6 +32,15 @@ class MyBarChart extends StatelessWidget {
           powerZones: powerZones,
           heartRateZones: heartRateZones,
         );
+
+  MyBarChart.visualizeDistributions(
+      {int width, int height, List<BarZone> distributions})
+      : _width = width?.toDouble() ?? 200.0,
+        _height = height?.toDouble() ?? 30.0,
+        _minimum = 0,
+        _maximum = distributions.last.upper.toDouble(),
+        _value = distributions.last.upper.toDouble(),
+        _barZones = distributions;
 
   final double _width;
   final double _height;

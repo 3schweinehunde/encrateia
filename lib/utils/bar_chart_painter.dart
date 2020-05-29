@@ -17,7 +17,7 @@ class BarChartPainter extends CustomPainter {
   final double value;
   final double maximum;
   final double minimum;
-  final double strokeWidth = 2;
+  final double strokeWidth = 1;
   final List<BarZone> barZones;
 
   @override
@@ -42,7 +42,7 @@ class BarChartPainter extends CustomPainter {
             Offset(barWidth, height - strokeWidth),
           ),
           Paint()
-            ..color = MyColor.grapeFruit
+            ..color = MyColor.lightGray
             ..strokeWidth = strokeWidth
             ..style = PaintingStyle.fill);
     } else {
@@ -50,7 +50,8 @@ class BarChartPainter extends CustomPainter {
         double lowerInPixel;
         double upperInPixel;
 
-        if (value < barZone.lower) continue;
+        if (value < barZone.lower)
+          continue;
         if (value >= barZone.upper) {
           lowerInPixel = (width - 2 * strokeWidth) /
                   (maximum - minimum) *

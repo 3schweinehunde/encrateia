@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 
+import 'bar_zone.dart';
+
 class Lap {
   Lap() {
     db = DbLap();
@@ -28,6 +30,8 @@ class Lap {
   PowerZone _powerZone;
   HeartRateZone _heartRateZone;
   HeartRateZoneSchema _heartRateZoneSchema;
+  List<BarZone> powerDistributions;
+  List<BarZone> heartRateDistributions;
 
   static Lap fromLap({
     DataMessage dataMessage,
@@ -334,5 +338,25 @@ class Lap {
         system: true,
       );
     }
+  }
+
+  Future<List<BarZone>> powerZoneCounts() async {
+    final PowerZoneSchema powerZoneSchema = await this.powerZoneSchema;
+    final List<Event> records = await this.records;
+    final List<Event> powerRecords =
+    records.where((Event record) => record.db.power != null).toList();
+    final List<BarZone> powerZoneCounts = await RecordList<Event>(powerRecords)
+        .powerZoneCounts(powerZoneSchema: powerZoneSchema);
+    return powerZoneCounts;
+  }
+
+  Future<List<BarZone>> heartRateZoneCounts() async {
+    final HeartRateZoneSchema heartRateZoneSchema = await this.heartRateZoneSchema;
+    final List<Event> records = await this.records;
+    final List<Event> heartRateRecords =
+    records.where((Event record) => record.db.heartRate != null).toList();
+    final List<BarZone> heartRateZoneCounts = await RecordList<Event>(heartRateRecords)
+        .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);
+    return heartRateZoneCounts;
   }
 }

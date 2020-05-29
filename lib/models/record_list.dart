@@ -1,10 +1,15 @@
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/power_zone.dart';
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/num_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'bar_zone.dart';
+import 'heart_rate_zone.dart';
+import 'heart_rate_zone_schema.dart';
 
 class RecordList<E> extends DelegatingList<E> {
   RecordList(List<E> records)
@@ -359,5 +364,52 @@ class RecordList<E> extends DelegatingList<E> {
     }
 
     return plotPoints;
+  }
+
+  Future<List<BarZone>> powerZoneCounts(
+      {PowerZoneSchema powerZoneSchema}) async {
+    final List<BarZone> distributions = <BarZone>[];
+    double counter = 0.0;
+
+    final List<PowerZone> powerZones = await powerZoneSchema.powerZones;
+
+    for (final PowerZone powerZone in powerZones.reversed) {
+      final int numberInZone = _records
+          .where((Event event) =>
+              (event.db.power >= powerZone.db.lowerLimit) &&
+              (event.db.power <= powerZone.db.upperLimit))
+          .length;
+      distributions.add(BarZone(
+        lower: counter,
+        upper: counter + numberInZone,
+        color: powerZone.db.color,
+      ));
+      counter = counter + numberInZone;
+    }
+    return distributions;
+  }
+
+  Future<List<BarZone>> heartRateZoneCounts(
+      {HeartRateZoneSchema heartRateZoneSchema}) async {
+    final List<BarZone> distributions = <BarZone>[];
+    double counter = 0.0;
+
+    final List<HeartRateZone> heartRateZones =
+        await heartRateZoneSchema.heartRateZones;
+
+    for (final HeartRateZone heartRateZone in heartRateZones.reversed) {
+      final int numberInZone = _records
+          .where((Event event) =>
+              (event.db.heartRate >= heartRateZone.db.lowerLimit) &&
+              (event.db.heartRate <= heartRateZone.db.upperLimit))
+          .length;
+      distributions.add(BarZone(
+        lower: counter,
+        upper: counter + numberInZone,
+        color: heartRateZone.db.color,
+      ));
+      counter = counter + numberInZone;
+    }
+    return distributions;
   }
 }

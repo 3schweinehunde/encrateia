@@ -43,4 +43,10 @@ extension DegreeFormatters on double {
       return '- - - ';
     }
   }
+
+  double toPaceDouble() {
+    if (this != null)
+      return 1000 / this;
+    return 0;
+  }
 }
