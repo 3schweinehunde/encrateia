@@ -49,10 +49,12 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             subtitle: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(activity.dateString() + '\n' + activity.distanceString()),
+                  const SizedBox(width: 20),
                   Text(activity.timeString() + '\n' + activity.paceString()),
+                  const SizedBox(width: 20),
                   Text(activity.heartRateString() +
                       '\n' +
                       activity.averagePowerString()),
