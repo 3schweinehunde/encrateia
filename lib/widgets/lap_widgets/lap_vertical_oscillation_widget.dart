@@ -88,7 +88,7 @@ class _LapVerticalOscillationWidgetState
 
   Future<void> getData() async {
     final Lap lap = widget.lap;
-    records.addAll(await lap.records);
+    records = RecordList<Event>(await lap.records);
 
     final double avg = await lap.avgVerticalOscillation;
     avgVerticalOscillationString = avg.toStringOrDashes(1) + ' cm';
