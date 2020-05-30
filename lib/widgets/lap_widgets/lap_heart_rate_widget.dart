@@ -50,7 +50,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               LapHeartRateChart(
-                records: records,
+                records: RecordList<Event>(heartRateRecords),
                 heartRateZones: heartRateZones,
               ),
               const Text('Only records where heart rate > 10 bpm are shown.'),
