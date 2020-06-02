@@ -19,6 +19,7 @@ class Athlete extends ChangeNotifier {
   String firstName;
   String lastName;
   DbAthlete db = DbAthlete();
+  List<int> filters = <int> [];
 
   @override
   String toString() =>

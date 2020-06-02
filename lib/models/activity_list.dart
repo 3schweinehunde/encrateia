@@ -1,7 +1,11 @@
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/tag.dart';
+import 'package:encrateia/models/tag_group.dart';
+import 'package:encrateia/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:collection/collection.dart';
+import 'athlete.dart';
 
 class ActivityList<E> extends DelegatingList<E> {
   ActivityList(List<E> activities)
@@ -25,8 +29,9 @@ class ActivityList<E> extends DelegatingList<E> {
                 .difference(_activities[olderIndex].db.timeCreated)
                 .inHours /
             24;
-        if (daysAgo > fullDecay)
+        if (daysAgo > fullDecay) {
           break;
+        }
         sumOfAvg += (fullDecay - daysAgo) *
             (_activities[olderIndex].getAttribute(activityAttr) as num);
         sumOfWeightings += fullDecay - daysAgo;
@@ -34,5 +39,54 @@ class ActivityList<E> extends DelegatingList<E> {
 
       activity.glidingMeasureAttribute = sumOfAvg / sumOfWeightings;
     });
+  }
+
+  Future<ActivityList<Activity>> applyFilter({
+    Athlete athlete,
+    List<TagGroup> tagGroups,
+  }) async {
+    List<int> activityIds = <int>[];
+    List<int> tagIds = <int>[];
+
+    if (athlete.filters.isEmpty) {
+      return ActivityList<Activity>(_activities);
+    }
+
+    if (tagGroups != null && athlete.filters.isNotEmpty) {
+      // get active filters for TagGroup
+      for (final TagGroup tagGroup in tagGroups) {
+        tagIds = tagGroup.cachedTags.map((Tag tag) => tag.db.id).toList();
+        tagIds.removeWhere((int tagId) => !athlete.filters.contains(tagId));
+
+        // If there are restrictions for this group:
+        if (tagIds.isNotEmpty) {
+          // get ActivityTaggings ...
+          final List<DbActivityTagging> dbTaggings = await DbActivityTagging()
+              .select()
+              .tagsId
+              .inValues(tagIds)
+              .toList();
+          // ... and the Activity's ids
+          final List<int> activityIdsFromThisGroup = dbTaggings
+              .map((DbActivityTagging dbActivityTagging) =>
+                  dbActivityTagging.activitiesId)
+              .toList();
+
+          // For the first result set ...
+          if (activityIds.isEmpty)
+            // use that result set.
+            activityIds = activityIdsFromThisGroup;
+          else
+            // For the others: intersect.
+            activityIds.removeWhere(
+                (int tagId) => !activityIdsFromThisGroup.contains(tagId));
+        }
+      }
+    }
+
+    final List<Activity> activityList = _activities
+        .where((Activity activity) => activityIds.contains(activity.db.id))
+        .toList();
+    return ActivityList<Activity>(activityList);
   }
 }
