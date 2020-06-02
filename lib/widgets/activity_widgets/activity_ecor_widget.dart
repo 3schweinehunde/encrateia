@@ -66,9 +66,9 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
                     ? (widget.activity.getAttribute(ActivityAttr.ecor)
                                 as double)
                             .toStringAsFixed(3) +
-                        ' W s/kg m'
+                        ' kJ / kg / km'
                     : 'not available'),
-                subtitle: const Text('ecor (running economy'),
+                subtitle: const Text('ecor (Energy cost of running '),
               ),
               ListTile(
                 leading: MyIcon.weight,

@@ -56,7 +56,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
           title: Text((widget.activity.weight != null)
               ? (widget.activity.getAttribute(ActivityAttr.ecor) as double)
                       .toStringAsFixed(3) +
-                  ' W s/kg m'
+                  ' kJ / kg / km'
               : 'not available'),
           subtitle: const Text('ecor'),
         ),

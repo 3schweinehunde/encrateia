@@ -52,7 +52,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
             children: <Widget>[
               AthleteTimeSeriesChart(
                 activities: ecorActivities,
-                chartTitleText: 'Ecor (W s/kg m)',
+                chartTitleText: 'Ecor (kJ / kg / km)',
                 activityAttr: ActivityAttr.ecor,
                 athlete: widget.athlete,
               )
