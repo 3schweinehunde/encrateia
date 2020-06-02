@@ -55,7 +55,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
         ListTile(
           title: Text((widget.activity.weight != null)
               ? (widget.activity.getAttribute(ActivityAttr.ecor) as double)
-                      .toStringAsFixed(2) +
+                      .toStringAsFixed(3) +
                   ' W s/kg m'
               : 'not available'),
           subtitle: const Text('ecor'),
