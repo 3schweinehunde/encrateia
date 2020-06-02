@@ -1,6 +1,7 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/weight.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -59,6 +60,16 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
                   'aggregated into one point in the plot. Only records where '
                   'power > 0 W and speed > 1 m/s are shown.'),
               const Divider(),
+              ListTile(
+                leading: MyIcon.power,
+                title: Text((widget.activity.weight != null)
+                    ? (widget.activity.getAttribute(ActivityAttr.ecor)
+                                as double)
+                            .toStringAsFixed(3) +
+                        ' W s/kg m'
+                    : 'not available'),
+                subtitle: const Text('ecor (running economy'),
+              ),
               ListTile(
                 leading: MyIcon.weight,
                 title: Text(weightString),
