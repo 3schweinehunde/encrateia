@@ -6,10 +6,9 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
 class AthleteSettingsWidget extends StatefulWidget {
-  final Athlete athlete;
-
-  // ignore: sort_constructors_first
   const AthleteSettingsWidget({this.athlete});
+
+  final Athlete athlete;
 
   @override
   _AthleteSettingsWidgetState createState() => _AthleteSettingsWidgetState();

@@ -32,6 +32,7 @@ analyzer:
   exclude:
     - "lib/i18n/messages_*.dart"
     # HAS:20200527 This is generated code, so I cannot influence it
+    - "lib/model/model.dart"
     - "lib/model/model.g.dart"
 
 linter:
