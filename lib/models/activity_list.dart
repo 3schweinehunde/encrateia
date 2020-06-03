@@ -44,6 +44,7 @@ class ActivityList<E> extends DelegatingList<E> {
   Future<ActivityList<Activity>> applyFilter({
     Athlete athlete,
     List<TagGroup> tagGroups,
+    bool firstGroupWithData = true,
   }) async {
     List<int> activityIds = <int>[];
     List<int> tagIds = <int>[];
@@ -73,10 +74,12 @@ class ActivityList<E> extends DelegatingList<E> {
               .toList();
 
           // For the first result set ...
-          if (activityIds.isEmpty)
-            // use that result set.
+          if (firstGroupWithData)
+          // use that result set.
+          {
+            firstGroupWithData = false;
             activityIds = activityIdsFromThisGroup;
-          else
+          } else
             // For the others: intersect.
             activityIds.removeWhere(
                 (int tagId) => !activityIdsFromThisGroup.contains(tagId));
