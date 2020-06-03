@@ -1,14 +1,18 @@
+import 'package:encrateia/models/activity_list.dart';
+import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/athlete_time_series_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
+import 'athlete_filter_widget.dart';
+
 class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
   const AthleteSpeedPerHeartRateWidget({this.athlete});
 
   final Athlete athlete;
-  
+
   @override
   _AthleteSpeedPerHeartRateWidgetState createState() =>
       _AthleteSpeedPerHeartRateWidgetState();
@@ -16,7 +20,9 @@ class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
 
 class _AthleteSpeedPerHeartRateWidgetState
     extends State<AthleteSpeedPerHeartRateWidget> {
-  List<Activity> activities = <Activity>[];
+  ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
+  List<TagGroup> tagGroups = <TagGroup>[];
+  String loadingStatus = 'Loading ...';
 
   @override
   void initState() {
@@ -48,6 +54,11 @@ class _AthleteSpeedPerHeartRateWidgetState
                 chartTitleText: 'Average speed per heart rate',
                 athlete: widget.athlete,
               ),
+              AthleteFilterWidget(
+                athlete: widget.athlete,
+                tagGroups: tagGroups,
+                callBackFunction: getData,
+              ),
             ],
           ),
         );
@@ -57,17 +68,37 @@ class _AthleteSpeedPerHeartRateWidgetState
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
-      );
+      return ListView(children: <Widget>[
+        const SizedBox(
+          height: 50,
+        ),
+        Center(
+          child: Text(loadingStatus),
+        ),
+        const SizedBox(
+          height: 50,
+        ),
+        AthleteFilterWidget(
+          athlete: widget.athlete,
+          tagGroups: tagGroups,
+          callBackFunction: getData,
+        )
+      ]);
     }
   }
 
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
-    activities = await athlete.activities;
-    activities =
-        activities.where((Activity activity) => activity.db.sport == 'running').toList();
+    List<Activity> unfilteredActivities = await athlete.activities;
+    unfilteredActivities = unfilteredActivities
+        .where((Activity activity) => activity.db.sport == 'running')
+        .toList();
+    tagGroups = await TagGroup.all(athlete: widget.athlete);
+    activities = await ActivityList<Activity>(unfilteredActivities).applyFilter(
+      athlete: widget.athlete,
+      tagGroups: tagGroups,
+    );
+    loadingStatus = activities.length.toString() + ' activities found';
     setState(() {});
   }
 }

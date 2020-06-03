@@ -1,14 +1,13 @@
 import 'package:encrateia/models/activity_list.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/screens/add_filter_screen.dart';
 import 'package:encrateia/utils/athlete_time_series_chart.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/my_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
-import 'athlete_current_filter_widget.dart';
+import 'athlete_filter_widget.dart';
 
 class AthletePowerWidget extends StatefulWidget {
   const AthletePowerWidget({this.athlete});
@@ -41,17 +40,20 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
         return ListTileTheme(
           iconColor: Colors.orange,
           child: ListView(
-            padding: const EdgeInsets.only(left: 25),
-            children: <Widget>[
-                  AthleteTimeSeriesChart(
-                    activities: powerActivities,
-                    chartTitleText: 'Power (W)',
-                    activityAttr: ActivityAttr.avgPower,
-                    athlete: widget.athlete,
-                  ),
-                ] +
-                filterWidgets(),
-          ),
+              padding: const EdgeInsets.only(left: 25),
+              children: <Widget>[
+                AthleteTimeSeriesChart(
+                  activities: powerActivities,
+                  chartTitleText: 'Power (W)',
+                  activityAttr: ActivityAttr.avgPower,
+                  athlete: widget.athlete,
+                ),
+                AthleteFilterWidget(
+                  athlete: widget.athlete,
+                  tagGroups: tagGroups,
+                  callBackFunction: getData,
+                )
+              ]),
         );
       } else {
         return const Center(
@@ -59,15 +61,22 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
         );
       }
     } else {
-      return ListView(
-          children: <Widget>[
-                const SizedBox(height: 50,),
-                Center(
-                  child: Text(loadingStatus),
-                ),
-                const SizedBox(height: 50,),
-              ] +
-              filterWidgets());
+      return ListView(children: <Widget>[
+        const SizedBox(
+          height: 50,
+        ),
+        Center(
+          child: Text(loadingStatus),
+        ),
+        const SizedBox(
+          height: 50,
+        ),
+        AthleteFilterWidget(
+          athlete: widget.athlete,
+          tagGroups: tagGroups,
+          callBackFunction: getData,
+        )
+      ]);
     }
   }
 
@@ -81,35 +90,5 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
     );
     loadingStatus = activities.length.toString() + ' activities found';
     setState(() {});
-  }
-
-  List<Widget> filterWidgets() {
-    return <Widget>[
-      const SizedBox(height: 40),
-      AthleteCurrentFilterWidget(
-        athlete: widget.athlete,
-        tagGroups: tagGroups,
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          MyButton.add(
-            child: const Text('Add filter'),
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute<BuildContext>(
-                  builder: (BuildContext context) => AddFilterScreen(
-                    athlete: widget.athlete,
-                  ),
-                ),
-              );
-              getData();
-            },
-          ),
-          const SizedBox(width: 20),
-        ],
-      ),
-    ];
   }
 }
