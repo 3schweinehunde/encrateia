@@ -30,24 +30,17 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
   @override
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
-      final List<Event> ecorRecords = records
+      final List<Event> geoRecords = records
           .where((Event value) =>
-              value.db.power != null &&
-              value.db.power > 100 &&
-              value.db.speed != null &&
-              value.db.speed >= 1)
+              value.db.positionLong != null && value.db.positionLat != null)
           .toList();
 
-      if (ecorRecords.isNotEmpty && ecorRecords != null) {
+      if (geoRecords.isNotEmpty && geoRecords != null) {
         return Center(
           child: MyPath(
             activity: widget.activity,
-            records: records,
+            records: RecordList<Event>(geoRecords),
           ),
-        );
-      } else {
-        return const Center(
-          child: Text('No ecor data available.'),
         );
       }
     } else {

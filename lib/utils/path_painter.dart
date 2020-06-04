@@ -17,11 +17,22 @@ class PathPainter extends CustomPainter {
   final double width;
   final double height;
   final RecordList<Event> records;
-  final double strokeWidth = 1;
+  final double strokeWidth = 2;
   final Activity activity;
 
   @override
   void paint(Canvas canvas, Size size) {
+    canvas.drawRect(
+      Rect.fromPoints(
+        Offset(0 + strokeWidth / 2, strokeWidth / 2),
+        Offset(width - strokeWidth / 2, height - strokeWidth / 2),
+      ),
+      Paint()
+        ..color = MyColor.lightGray
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = strokeWidth,
+    );
+
     final double scaleX = width / (activity.db.necLong - activity.db.swcLong);
     final double scaleY = height / (activity.db.necLat - activity.db.swcLat);
     final double scale = min(scaleX, scaleY);
@@ -30,8 +41,16 @@ class PathPainter extends CustomPainter {
       records
           .map(
             (Event record) => Offset(
-              scale * (record.db.positionLong - activity.db.swcLong),
-              scale * (activity.db.swcLat - record.db.positionLat),
+              width / 2 +
+                  scale *
+                      (record.db.positionLong -
+                          activity.db.swcLong / 2 -
+                          activity.db.necLong / 2),
+              height / 2 +
+                  scale *
+                      (activity.db.necLat / 2 +
+                          activity.db.swcLat / 2 -
+                          record.db.positionLat),
             ),
           )
           .toList(),
