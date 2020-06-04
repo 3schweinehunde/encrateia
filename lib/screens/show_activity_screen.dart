@@ -8,6 +8,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_speed_per_heart_rate
 import 'package:encrateia/widgets/activity_widgets/activity_tag_widget.dart';
 import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_heart_rate_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_path_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_ecor_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_duration_widget.dart';
@@ -55,7 +56,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       ),
       body: StaggeredGridView.count(
         staggeredTiles:
-            List<StaggeredTile>.filled(18, const StaggeredTile.fit(1)),
+            List<StaggeredTile>.filled(19, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
@@ -88,6 +89,17 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             icon: MyIcon.laps,
             context: context,
             nextWidget: LapsListWidget(
+              activity: widget.activity,
+              athlete: widget.athlete,
+            ),
+          ),
+          navigationButton(
+            title: 'Path',
+            color: MyColor.navigate,
+            backgroundColor: MyColor.navigate,
+            icon: MyIcon.map,
+            context: context,
+            nextWidget: ActivityPathWidget(
               activity: widget.activity,
               athlete: widget.athlete,
             ),

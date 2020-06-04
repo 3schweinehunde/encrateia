@@ -3,7 +3,6 @@ import 'package:encrateia/models/bar_zone.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter/material.dart';
-
 import 'bar_chart_painter.dart';
 
 class MyBarChart extends StatelessWidget {

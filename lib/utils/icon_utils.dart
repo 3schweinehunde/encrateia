@@ -52,6 +52,7 @@ class MyIcon {
   static final Icon laps = Icon(Icons.timer);
   static final Icon legSpringStiffness = Icon(Icons.airline_seat_recline_extra);
   // M
+  static final Icon map = Icon(Icons.map);
   static final Icon maximum = Icon(Icons.expand_less);
   static final Icon metaData = Icon(Icons.list);
   static final Icon minimum = Icon(Icons.expand_more);
