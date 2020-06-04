@@ -68,7 +68,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
                             .toStringAsFixed(3) +
                         ' kJ / kg / km'
                     : 'not available'),
-                subtitle: const Text('ecor (Energy cost of running '),
+                subtitle: const Text('ecor (Energy cost of running)'),
               ),
               ListTile(
                 leading: MyIcon.weight,
@@ -101,6 +101,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
       athletesId: widget.athlete.db.id,
       date: widget.activity.db.timeCreated,
     );
+    widget.activity.weight = weight.db.value;
     weightString = weight.db.value.toStringOrDashes(2) + ' kg';
     setState(() {});
   }
