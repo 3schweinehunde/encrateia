@@ -39,63 +39,64 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
         children: <Widget>[
           const Card(
             child: ListTile(
-              title: Text('Filter Logic'),
               subtitle:
                   Text('Tags within the same group are applied with an OR '
                       'operation, filters from different groups with an AND '
                       'operation.'),
             ),
           ),
-          StaggeredGridView.countBuilder(
-            shrinkWrap: true,
-            crossAxisCount:
-                MediaQuery.of(context).orientation == Orientation.portrait
-                    ? 2
-                    : 3,
-            itemCount: tagGroups == null ? 0 : tagGroups.length,
-            itemBuilder: (BuildContext context, int index) => Card(
-              child: ListTile(
-                title: Text(tagGroups[index].db.name + '\n'),
-                subtitle: Wrap(
-                  spacing: 15,
-                  children: <Widget>[
-                    for (Tag tag in tagGroups[index].cachedTags)
-                      FilterChip(
-                        label: Text(
-                          tag.db.name,
-                          style: TextStyle(
-                            color: MyColor.textColor(
-                              selected:
-                                  widget.athlete.filters.contains(tag.db.id),
-                              backgroundColor: Color(tag.db.color ?? 99999),
+          Expanded(
+            child: StaggeredGridView.countBuilder(
+              shrinkWrap: true,
+              crossAxisCount:
+                  MediaQuery.of(context).orientation == Orientation.portrait
+                      ? 1
+                      : 2,
+              itemCount: tagGroups == null ? 0 : tagGroups.length,
+              itemBuilder: (BuildContext context, int index) => Card(
+                child: ListTile(
+                  title: Text(tagGroups[index].db.name),
+                  subtitle: Wrap(
+                    spacing: 10,
+                    children: <Widget>[
+                      for (Tag tag in tagGroups[index].cachedTags)
+                        FilterChip(
+                          label: Text(
+                            tag.db.name,
+                            style: TextStyle(
+                              color: MyColor.textColor(
+                                selected:
+                                    widget.athlete.filters.contains(tag.db.id),
+                                backgroundColor: Color(tag.db.color ?? 99999),
+                              ),
                             ),
                           ),
-                        ),
-                        avatar: CircleAvatar(
-                          backgroundColor: Color(tag.db.color ?? 99999),
-                        ),
-                        onSelected: (bool selected) {
-                          setState(() {
-                            if (selected)
-                              widget.athlete.filters.add(tag.db.id);
-                            else
-                              widget.athlete.filters.removeWhere(
-                                  (int tagId) => tagId == tag.db.id);
-                          });
-                        },
-                        selected: widget.athlete.filters.contains(tag.db.id),
-                        selectedColor: Color(tag.db.color ?? 99999),
-                        backgroundColor: MyColor.white,
-                        elevation: 3,
-                        padding: const EdgeInsets.all(10),
-                      )
-                  ],
+                          avatar: CircleAvatar(
+                            backgroundColor: Color(tag.db.color ?? 99999),
+                          ),
+                          onSelected: (bool selected) {
+                            setState(() {
+                              if (selected)
+                                widget.athlete.filters.add(tag.db.id);
+                              else
+                                widget.athlete.filters.removeWhere(
+                                    (int tagId) => tagId == tag.db.id);
+                            });
+                          },
+                          selected: widget.athlete.filters.contains(tag.db.id),
+                          selectedColor: Color(tag.db.color ?? 99999),
+                          backgroundColor: MyColor.white,
+                          elevation: 3,
+                          padding: const EdgeInsets.all(10),
+                        )
+                    ],
+                  ),
                 ),
               ),
+              staggeredTileBuilder: (_) => const StaggeredTile.fit(1),
+              mainAxisSpacing: 3,
+              crossAxisSpacing: 3,
             ),
-            staggeredTileBuilder: (_) => const StaggeredTile.fit(1),
-            mainAxisSpacing: 3,
-            crossAxisSpacing: 3,
           ),
           Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
             MyButton.save(
