@@ -16,10 +16,6 @@ enum LapDoubleAttr {
   ecor,
 }
 
-enum ActivityAction {
-  parse,
-}
-
 enum ActivityAttr {
   avgPower,
   avgPowerPerHeartRate,

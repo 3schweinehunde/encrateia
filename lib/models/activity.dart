@@ -158,7 +158,7 @@ class Activity extends ChangeNotifier {
 
   String averagePowerString() {
     return (db.avgPower == null || db.avgPower == -1)
-        ? '- - -'
+        ? '-'
         : db.avgPower.toStringAsFixed(1) + ' W';
   }
 

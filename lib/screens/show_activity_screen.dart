@@ -242,7 +242,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         color: MyColor.add,
         icon: MyIcon.settings,
         textColor: MyColor.textColor(backgroundColor: MyColor.add),
-        label: const Flexible(
+        label: const Expanded(
           child: Text('Rerun Autotagging'),
         ),
         onPressed: () => autoTagger(),
@@ -253,10 +253,21 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           color: MyColor.add,
           icon: MyIcon.download,
           textColor: MyColor.textColor(backgroundColor: MyColor.add),
-          label: const Flexible(
-            child: Text('Redownload .fit'),
+          label: const Expanded(
+            child: Text('Download fit file'),
           ),
           onPressed: () => download(),
+        ),
+
+      if (<String>['downloaded', 'persisted'].contains(widget.activity.db.state))
+        RaisedButton.icon(
+          color: MyColor.add,
+          icon: MyIcon.parse,
+          textColor: MyColor.textColor(backgroundColor: MyColor.add),
+          label: const Expanded(
+            child: Text('Parse fit file'),
+          ),
+          onPressed: () => parse(),
         ),
 
       if (<String>['new', 'downloaded', 'persisted'].contains(widget.activity.db.state))
@@ -264,7 +275,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           color: MyColor.delete,
           icon: MyIcon.delete,
           textColor: MyColor.textColor(backgroundColor: MyColor.delete),
-          label: const Flexible(
+          label: const Expanded(
             child: Text('Delete Activity'),
           ),
           onPressed: () => delete(),
@@ -343,12 +354,12 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
     setState(() {});
   }
 
-  Future<void> delete({Activity activity}) async {
+  Future<void> delete() async {
     await widget.activity.delete();
     Navigator.of(context).pop();
   }
 
-  Future<void> download({Activity activity}) async {
+  Future<void> download() async {
     flushbar = Flushbar<Object>(
       message: 'Download .fit-File for »${widget.activity.db.name}«',
       duration: const Duration(seconds: 10),
@@ -364,6 +375,28 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       icon: MyIcon.finishedWhite,
     )..show(context);
 
+    setState(() {});
+  }
+
+  Future<void> parse() async {
+    Flushbar<Object> flushbar = Flushbar<Object>(
+      message: '0% of storing »${widget.activity.db.name}«',
+      duration: const Duration(seconds: 10),
+      animationDuration: const Duration(milliseconds: 1),
+      titleText: const LinearProgressIndicator(value: 0),
+    )..show(context);
+
+    final Stream<int> percentageStream =
+    widget.activity.parse(athlete: widget.athlete);
+    await for (final int value in percentageStream) {
+      flushbar.dismiss();
+      flushbar = Flushbar<Object>(
+        titleText: LinearProgressIndicator(value: value / 100),
+        message: '$value% of storing »${widget.activity.db.name}«',
+        duration: const Duration(seconds: 3),
+        animationDuration: const Duration(milliseconds: 1),
+      )..show(context);
+    }
     setState(() {});
   }
 }
