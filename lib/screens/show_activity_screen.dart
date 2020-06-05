@@ -44,6 +44,212 @@ class ShowActivityScreen extends StatefulWidget {
 class _ShowActivityScreenState extends State<ShowActivityScreen> {
   Flushbar<Object> flushbar = Flushbar<Object>();
 
+  List<Widget> get tiles {
+    return <Widget>[
+      navigationButton(
+        color: MyColor.settings,
+        title: 'Overview',
+        icon: MyIcon.overView,
+        context: context,
+        nextWidget: ActivityOverviewWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        color: MyColor.settings,
+        title: 'Bargraphs',
+        icon: MyIcon.barGraph,
+        context: context,
+        nextWidget: ActivityBarGraphWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Laps List',
+        color: MyColor.lap,
+        backgroundColor: MyColor.lap,
+        icon: MyIcon.laps,
+        context: context,
+        nextWidget: LapsListWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Path',
+        color: MyColor.navigate,
+        backgroundColor: MyColor.navigate,
+        icon: MyIcon.map,
+        context: context,
+        nextWidget: ActivityPathWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Heart Rate',
+        color: MyColor.navigate,
+        icon: MyIcon.heartRate,
+        context: context,
+        nextWidget: ActivityHeartRateWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Power',
+        color: MyColor.navigate,
+        icon: MyIcon.power,
+        context: context,
+        nextWidget: ActivityPowerWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Power Duration',
+        color: MyColor.navigate,
+        icon: MyIcon.powerDuration,
+        context: context,
+        nextWidget: ActivityPowerDurationWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Power / Heart Rate',
+        color: MyColor.navigate,
+        icon: MyIcon.power,
+        context: context,
+        nextWidget: ActivityPowerPerHeartRateWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Ecor',
+        color: MyColor.navigate,
+        icon: MyIcon.power,
+        context: context,
+        nextWidget: ActivityEcorWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Speed / Heart Rate',
+        color: MyColor.navigate,
+        icon: MyIcon.speed,
+        context: context,
+        nextWidget: ActivitySpeedPerHeartRateWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Ground Time',
+        color: MyColor.navigate,
+        icon: MyIcon.groundTime,
+        context: context,
+        nextWidget: ActivityGroundTimeWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Form Power',
+        color: MyColor.navigate,
+        icon: MyIcon.formPower,
+        context: context,
+        nextWidget: ActivityFormPowerWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Power Ratio',
+        color: MyColor.navigate,
+        icon: MyIcon.formPower,
+        context: context,
+        nextWidget: ActivityPowerRatioWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Vertical Oscillation',
+        color: MyColor.navigate,
+        icon: MyIcon.verticalOscillation,
+        context: context,
+        nextWidget: ActivityVerticalOscillationWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Stride Ratio',
+        color: MyColor.navigate,
+        icon: MyIcon.strideRatio,
+        context: context,
+        nextWidget: ActivityStrideRatioWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Cadence',
+        color: MyColor.navigate,
+        icon: MyIcon.cadence,
+        context: context,
+        nextWidget: ActivityStrydCadenceWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Leg Spring Stiffness',
+        color: MyColor.navigate,
+        icon: MyIcon.legSpringStiffness,
+        context: context,
+        nextWidget: ActivityLegSpringStiffnessWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Metadata',
+        color: MyColor.settings,
+        icon: MyIcon.metaData,
+        context: context,
+        nextWidget: ActivityMetadataWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'Tags',
+        color: MyColor.tag,
+        icon: MyIcon.tag,
+        context: context,
+        nextWidget: ActivityTagWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      RaisedButton.icon(
+        color: MyColor.add,
+        icon: MyIcon.settings,
+        textColor: MyColor.textColor(backgroundColor: MyColor.add),
+        label: const Flexible(
+          child: Text('Rerun Autotagging'),
+        ),
+        onPressed: () => autoTagger(),
+      ),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,215 +261,15 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         ),
       ),
       body: StaggeredGridView.count(
-        staggeredTiles:
-            List<StaggeredTile>.filled(19, const StaggeredTile.fit(1)),
+        staggeredTiles: List<StaggeredTile>.filled(
+          tiles.length,
+          const StaggeredTile.fit(1),
+        ),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        children: <Widget>[
-          navigationButton(
-            color: MyColor.settings,
-            title: 'Overview',
-            icon: MyIcon.overView,
-            context: context,
-            nextWidget: ActivityOverviewWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            color: MyColor.settings,
-            title: 'Bargraphs',
-            icon: MyIcon.barGraph,
-            context: context,
-            nextWidget: ActivityBarGraphWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Laps List',
-            color: MyColor.lap,
-            backgroundColor: MyColor.lap,
-            icon: MyIcon.laps,
-            context: context,
-            nextWidget: LapsListWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Path',
-            color: MyColor.navigate,
-            backgroundColor: MyColor.navigate,
-            icon: MyIcon.map,
-            context: context,
-            nextWidget: ActivityPathWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Heart Rate',
-            color: MyColor.navigate,
-            icon: MyIcon.heartRate,
-            context: context,
-            nextWidget: ActivityHeartRateWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Power',
-            color: MyColor.navigate,
-            icon: MyIcon.power,
-            context: context,
-            nextWidget: ActivityPowerWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Power Duration',
-            color: MyColor.navigate,
-            icon: MyIcon.powerDuration,
-            context: context,
-            nextWidget: ActivityPowerDurationWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Power / Heart Rate',
-            color: MyColor.navigate,
-            icon: MyIcon.power,
-            context: context,
-            nextWidget: ActivityPowerPerHeartRateWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Ecor',
-            color: MyColor.navigate,
-            icon: MyIcon.power,
-            context: context,
-            nextWidget: ActivityEcorWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Speed / Heart Rate',
-            color: MyColor.navigate,
-            icon: MyIcon.speed,
-            context: context,
-            nextWidget: ActivitySpeedPerHeartRateWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Ground Time',
-            color: MyColor.navigate,
-            icon: MyIcon.groundTime,
-            context: context,
-            nextWidget: ActivityGroundTimeWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Form Power',
-            color: MyColor.navigate,
-            icon: MyIcon.formPower,
-            context: context,
-            nextWidget: ActivityFormPowerWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Power Ratio',
-            color: MyColor.navigate,
-            icon: MyIcon.formPower,
-            context: context,
-            nextWidget: ActivityPowerRatioWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Vertical Oscillation',
-            color: MyColor.navigate,
-            icon: MyIcon.verticalOscillation,
-            context: context,
-            nextWidget: ActivityVerticalOscillationWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Stride Ratio',
-            color: MyColor.navigate,
-            icon: MyIcon.strideRatio,
-            context: context,
-            nextWidget: ActivityStrideRatioWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Cadence',
-            color: MyColor.navigate,
-            icon: MyIcon.cadence,
-            context: context,
-            nextWidget: ActivityStrydCadenceWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Leg Spring Stiffness',
-            color: MyColor.navigate,
-            icon: MyIcon.legSpringStiffness,
-            context: context,
-            nextWidget: ActivityLegSpringStiffnessWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Metadata',
-            color: MyColor.settings,
-            icon: MyIcon.metaData,
-            context: context,
-            nextWidget: ActivityMetadataWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          navigationButton(
-            title: 'Tags',
-            color: MyColor.tag,
-            icon: MyIcon.tag,
-            context: context,
-            nextWidget: ActivityTagWidget(
-              activity: widget.activity,
-              athlete: widget.athlete,
-            ),
-          ),
-          RaisedButton.icon(
-            color: MyColor.add,
-            icon: MyIcon.settings,
-            textColor: MyColor.textColor(backgroundColor: MyColor.add),
-            label: const Flexible(
-              child: Text('Rerun Autotagging'),
-            ),
-            onPressed: () => autoTagger(),
-          ),
-        ],
+        children: tiles,
       ),
     );
   }

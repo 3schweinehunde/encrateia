@@ -45,6 +45,143 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   Visibility floatingActionButton;
   bool floatingActionButtonVisible;
 
+  List<Widget> get tiles {
+    return <Widget>[
+      navigationButton(
+        color: MyColor.activity,
+        title: 'Activities Feed',
+        icon: MyIcon.activities,
+        backgroundColor: MyColor.activity,
+        nextWidget: ActivitiesFeedWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.activity,
+        title: 'Activities List',
+        icon: MyIcon.activities,
+        backgroundColor: MyColor.activity,
+        nextWidget: ActivitiesListWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Power',
+        icon: MyIcon.power,
+        nextWidget: AthletePowerWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        title: 'Power Ratio',
+        color: MyColor.navigate,
+        icon: MyIcon.power,
+        nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Power / Heart Rate',
+        icon: MyIcon.power,
+        nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Ecor',
+        icon: MyIcon.power,
+        nextWidget: AthleteEcorWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Stride Ratio',
+        icon: MyIcon.strideRatio,
+        nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Speed / Heart Rate',
+        icon: MyIcon.speed,
+        nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
+      ),
+      RaisedButton.icon(
+        color: MyColor.add,
+        textColor: MyColor.textColor(backgroundColor: MyColor.add),
+        icon: MyIcon.downloadLocal,
+        label: const Flexible(
+          child: Text('Import .fit from Folder'),
+        ),
+        onPressed: () => importLocal(),
+      ),
+      navigationButton(
+        color: MyColor.settings,
+        title: 'Body Weight',
+        icon: MyIcon.weight,
+        nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.settings,
+        title: 'Power Zone Schemas',
+        icon: MyIcon.power,
+        nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.settings,
+        title: 'Heart Rate Zone Schemas',
+        icon: MyIcon.heartRate,
+        nextWidget: AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.tag,
+        title: 'Tags',
+        icon: MyIcon.tag,
+        nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
+      ),
+      RaisedButton.icon(
+        icon: MyIcon.secrets,
+        color: MyColor.settings,
+        onPressed: () => goToEditAthleteScreen(athlete: widget.athlete),
+        label: const Expanded(
+          child: Text('Credentials'),
+        ),
+      ),
+      navigationButton(
+        color: MyColor.settings,
+        title: 'Settings',
+        icon: MyIcon.settings,
+        nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
+      ),
+      RaisedButton.icon(
+        color: MyColor.danger,
+        textColor: MyColor.textColor(backgroundColor: MyColor.danger),
+        icon: MyIcon.delete,
+        label: const Expanded(
+          child: Text('Delete Athlete'),
+        ),
+        onPressed: () => deleteUser(),
+      ),
+      RaisedButton.icon(
+        color: MyColor.settings,
+        icon: MyIcon.settings,
+        textColor: MyColor.textColor(backgroundColor: MyColor.add),
+        label: const Flexible(
+          child: Text('Recalculate Averages'),
+        ),
+        onPressed: () => recalculate(),
+      ),
+      RaisedButton.icon(
+        color: MyColor.settings,
+        textColor: MyColor.textColor(backgroundColor: MyColor.settings),
+        icon: MyIcon.settings,
+        label: const Flexible(
+          child: Text('Redo Autotagging'),
+        ),
+        onPressed: () => redoAutoTagging(),
+      ),
+      RaisedButton.icon(
+        color: MyColor.primary,
+        icon: MyIcon.download,
+        label: const Flexible(
+          child: Text('Download Demo Data'),
+        ),
+        onPressed: () => downloadDemoData(),
+      ),
+    ];
+  }
+
   @override
   void initState() {
     floatingActionButtonVisible =
@@ -71,147 +208,15 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
       ),
       body: StaggeredGridView.count(
-        staggeredTiles:
-            List<StaggeredTile>.filled(19, const StaggeredTile.fit(1)),
+        staggeredTiles: List<StaggeredTile>.filled(
+          tiles.length,
+          const StaggeredTile.fit(1),
+        ),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        children: <Widget>[
-          navigationButton(
-            color: MyColor.activity,
-            title: 'Activities Feed',
-            icon: MyIcon.activities,
-            backgroundColor: MyColor.activity,
-            nextWidget: ActivitiesFeedWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.activity,
-            title: 'Activities List',
-            icon: MyIcon.activities,
-            backgroundColor: MyColor.activity,
-            nextWidget: ActivitiesListWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: 'Power',
-            icon: MyIcon.power,
-            nextWidget: AthletePowerWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            title: 'Power Ratio',
-            color: MyColor.navigate,
-            icon: MyIcon.power,
-            nextWidget: AthletePowerRatioWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: 'Power / Heart Rate',
-            icon: MyIcon.power,
-            nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: 'Ecor',
-            icon: MyIcon.power,
-            nextWidget: AthleteEcorWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: 'Stride Ratio',
-            icon: MyIcon.strideRatio,
-            nextWidget: AthleteStrideRatioWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.navigate,
-            title: 'Speed / Heart Rate',
-            icon: MyIcon.speed,
-            nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
-          ),
-          RaisedButton.icon(
-            color: MyColor.add,
-            textColor: MyColor.textColor(backgroundColor: MyColor.add),
-            icon: MyIcon.downloadLocal,
-            label: const Flexible(
-              child: Text('Import .fit from Folder'),
-            ),
-            onPressed: () => importLocal(),
-          ),
-          navigationButton(
-            color: MyColor.settings,
-            title: 'Body Weight',
-            icon: MyIcon.weight,
-            nextWidget: AthleteBodyWeightWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.settings,
-            title: 'Power Zone Schemas',
-            icon: MyIcon.power,
-            nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.settings,
-            title: 'Heart Rate Zone Schemas',
-            icon: MyIcon.heartRate,
-            nextWidget:
-                AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
-          ),
-          navigationButton(
-            color: MyColor.tag,
-            title: 'Tags',
-            icon: MyIcon.tag,
-            nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
-          ),
-          RaisedButton.icon(
-            icon: MyIcon.secrets,
-            color: MyColor.settings,
-            onPressed: () => goToEditAthleteScreen(athlete: widget.athlete),
-            label: const Expanded(
-              child: Text('Credentials'),
-            ),
-          ),
-          navigationButton(
-            color: MyColor.settings,
-            title: 'Settings',
-            icon: MyIcon.settings,
-            nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
-          ),
-          RaisedButton.icon(
-            color: MyColor.danger,
-            textColor: MyColor.textColor(backgroundColor: MyColor.danger),
-            icon: MyIcon.delete,
-            label: const Expanded(
-              child: Text('Delete Athlete'),
-            ),
-            onPressed: () => deleteUser(),
-          ),
-          RaisedButton.icon(
-            color: MyColor.settings,
-            icon: MyIcon.settings,
-            textColor: MyColor.textColor(backgroundColor: MyColor.add),
-            label: const Flexible(
-              child: Text('Recalculate Averages'),
-            ),
-            onPressed: () => recalculate(),
-          ),
-          RaisedButton.icon(
-            color: MyColor.settings,
-            textColor: MyColor.textColor(backgroundColor: MyColor.settings),
-            icon: MyIcon.settings,
-            label: const Flexible(
-              child: Text('Redo Autotagging'),
-            ),
-            onPressed: () => redoAutoTagging(),
-          ),
-          RaisedButton.icon(
-            color: MyColor.primary,
-            icon: MyIcon.download,
-            label: const Flexible(
-              child: Text('Download Demo Data'),
-            ),
-            onPressed: () => downloadDemoData(),
-          ),
-        ],
+        children: tiles,
       ),
     );
   }

@@ -102,7 +102,7 @@ class _DashboardState extends State<Dashboard> {
       );
     } else {
       return ListView(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.all(20),
         children: <Widget>[
           for (Athlete athlete in athletes)
             Card(
