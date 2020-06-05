@@ -247,6 +247,18 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         ),
         onPressed: () => autoTagger(),
       ),
+
+      if (<String>['new', 'downloaded', 'persisted'].contains(widget.activity.db.state))
+        RaisedButton.icon(
+          color: MyColor.add,
+          icon: MyIcon.download,
+          textColor: MyColor.textColor(backgroundColor: MyColor.add),
+          label: const Flexible(
+            child: Text('Redownload .fit'),
+          ),
+          onPressed: () => download(),
+        ),
+
       if (<String>['new', 'downloaded', 'persisted'].contains(widget.activity.db.state))
         RaisedButton.icon(
           color: MyColor.delete,
@@ -334,5 +346,24 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
   Future<void> delete({Activity activity}) async {
     await widget.activity.delete();
     Navigator.of(context).pop();
+  }
+
+  Future<void> download({Activity activity}) async {
+    flushbar = Flushbar<Object>(
+      message: 'Download .fit-File for »${widget.activity.db.name}«',
+      duration: const Duration(seconds: 10),
+      icon: MyIcon.stravaDownloadWhite,
+    )..show(context);
+
+    await widget.activity.download(athlete: widget.athlete);
+
+    flushbar.dismiss();
+    flushbar = Flushbar<Object>(
+      message: 'Download finished',
+      duration: const Duration(seconds: 1),
+      icon: MyIcon.finishedWhite,
+    )..show(context);
+
+    setState(() {});
   }
 }

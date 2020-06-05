@@ -99,25 +99,6 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
     }
   }
 
-  Future<void> download({Activity activity}) async {
-    flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${activity.db.name}«',
-      duration: const Duration(seconds: 10),
-      icon: MyIcon.stravaDownloadWhite,
-    )..show(context);
-
-    await activity.download(athlete: widget.athlete);
-
-    flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Download finished',
-      duration: const Duration(seconds: 1),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
-
-    setState(() {});
-  }
-
   Future<void> parse({Activity activity}) async {
     Flushbar<Object> flushbar = Flushbar<Object>(
       message: '0% of storing »${activity.db.name}«',
@@ -150,12 +131,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
     List<String> actions;
 
     switch (activity.db.state) {
-      case 'new':
-        actions = <String>['download'];
-        break;
       case 'downloaded':
       case 'persisted':
-        actions = <String>['parse', 'download'];
+        actions = <String>['parse'];
         break;
     }
 
@@ -164,9 +142,6 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
         switch (action) {
           case ActivityAction.parse:
             parse(activity: activity);
-            break;
-          case ActivityAction.download:
-            download(activity: activity);
             break;
         }
       },
@@ -181,17 +156,6 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
               ],
             ),
           ),
-        if (actions.contains('download'))
-          PopupMenuItem<ActivityAction>(
-            value: ActivityAction.download,
-            child: Row(
-              children: <Widget>[
-                MyIcon.download,
-                const Text(' Download .fit-file'),
-              ],
-            ),
-          ),
-
       ],
     );
   }

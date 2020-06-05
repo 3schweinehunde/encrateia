@@ -18,7 +18,6 @@ enum LapDoubleAttr {
 
 enum ActivityAction {
   parse,
-  download,
 }
 
 enum ActivityAttr {
