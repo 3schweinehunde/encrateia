@@ -50,9 +50,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
               children: <Widget>[
                 Text(activity.dateString() + '\n' + activity.distanceString()),
                 const SizedBox(width: 20),
-                Text(activity.paceString() + "\n" + activity.heartRateString()),
+                Text(activity.paceString() + '\n' + activity.heartRateString()),
                 const SizedBox(width: 20),
-                Text(activity.averagePowerString()),
+                Text(activity.averagePowerString() + '\n'),
               ],
             ),
           ),
