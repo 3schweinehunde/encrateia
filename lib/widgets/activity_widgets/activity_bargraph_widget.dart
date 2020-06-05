@@ -43,93 +43,95 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
   Widget build(BuildContext context) {
     if (_powerZones.isNotEmpty && _laps.isNotEmpty) {
       return SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-            showCheckboxColumn: false,
-            columnSpacing: 20,
-            onSelectAll: (_) {},
-            columns: const <DataColumn>[
-              DataColumn(label: Text('Title'), numeric: false),
-              DataColumn(label: Text('Average Power'), numeric: false),
-              DataColumn(label: Text('Watts'), numeric: true),
-              DataColumn(label: Text('Power Zone Distribution'), numeric: false),
-              DataColumn(label: Text('Average Heart Rate'), numeric: false),
-              DataColumn(label: Text('bpm'), numeric: true),
-              DataColumn(label: Text('Heart Rate Zone Distribution'), numeric: false),
-              DataColumn(label: Text('Average Pace'), numeric: false),
-              DataColumn(label: Text('min/km'), numeric: true),
-            ],
-            rows: <DataRow>[
-              DataRow(cells: <DataCell>[
-                const DataCell(Text('Activity')),
-                DataCell(
-                  MyBarChart(
-                    value: widget.activity.db.avgPower,
-                    powerZones: _powerZones,
-                  ),
-                ),
-                DataCell(
-                  Text(widget.activity.db.avgPower.toStringAsFixed(1)),
-                ),
-                DataCell(
-                  MyBarChart.visualizeDistributions(distributions: _heartRateDistributions),
-                ),
-                DataCell(
-                  MyBarChart(
-                    value: widget.activity.db.avgHeartRate,
-                    heartRateZones: _heartRateZones,
-                  ),
-                ),
-                DataCell(Text(
-                  widget.activity.db.avgHeartRate.toString(),
-                )),
-                DataCell(
-                  MyBarChart.visualizeDistributions(distributions: _powerDistributions),
-                ),
-                DataCell(MyBarChart(
-                  value: widget.activity.db.avgSpeed.toPaceDouble(),
-                  maximum: 700,
-                )),
-                DataCell(Text(
-                  widget.activity.db.avgSpeed.toPace(),
-                )),
-              ]),
-              for (Lap lap in _laps)
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+              showCheckboxColumn: false,
+              columnSpacing: 20,
+              onSelectAll: (_) {},
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Title'), numeric: false),
+                DataColumn(label: Text('Average Power'), numeric: false),
+                DataColumn(label: Text('Watts'), numeric: true),
+                DataColumn(label: Text('Power Zone Distribution'), numeric: false),
+                DataColumn(label: Text('Average Heart Rate'), numeric: false),
+                DataColumn(label: Text('bpm'), numeric: true),
+                DataColumn(label: Text('Heart Rate Zone Distribution'), numeric: false),
+                DataColumn(label: Text('Average Pace'), numeric: false),
+                DataColumn(label: Text('min/km'), numeric: true),
+              ],
+              rows: <DataRow>[
                 DataRow(cells: <DataCell>[
-                  DataCell(Text('Lap ' + lap.index.toString())),
+                  const DataCell(Text('Activity')),
                   DataCell(
                     MyBarChart(
-                      value: lap.db.avgPower,
+                      value: widget.activity.db.avgPower,
                       powerZones: _powerZones,
                     ),
                   ),
                   DataCell(
-                    Text(lap.db.avgPower.toStringAsFixed(1)),
+                    Text(widget.activity.db.avgPower.toStringAsFixed(1)),
                   ),
                   DataCell(
-                    MyBarChart.visualizeDistributions(distributions: lap.powerDistributions),
+                    MyBarChart.visualizeDistributions(distributions: _heartRateDistributions),
                   ),
                   DataCell(
                     MyBarChart(
-                      value: lap.db.avgHeartRate,
+                      value: widget.activity.db.avgHeartRate,
                       heartRateZones: _heartRateZones,
                     ),
                   ),
+                  DataCell(Text(
+                    widget.activity.db.avgHeartRate.toString(),
+                  )),
                   DataCell(
-                    Text(lap.db.avgHeartRate.toString()),
-                  ),
-                  DataCell(
-                    MyBarChart.visualizeDistributions(distributions: lap.heartRateDistributions),
+                    MyBarChart.visualizeDistributions(distributions: _powerDistributions),
                   ),
                   DataCell(MyBarChart(
-                    value: lap.db.avgSpeed.toPaceDouble(),
+                    value: widget.activity.db.avgSpeed.toPaceDouble(),
                     maximum: 700,
                   )),
                   DataCell(Text(
-                    lap.db.avgSpeed.toPace(),
+                    widget.activity.db.avgSpeed.toPace(),
                   )),
                 ]),
-            ]),
+                for (Lap lap in _laps)
+                  DataRow(cells: <DataCell>[
+                    DataCell(Text('Lap ' + lap.index.toString())),
+                    DataCell(
+                      MyBarChart(
+                        value: lap.db.avgPower,
+                        powerZones: _powerZones,
+                      ),
+                    ),
+                    DataCell(
+                      Text(lap.db.avgPower.toStringAsFixed(1)),
+                    ),
+                    DataCell(
+                      MyBarChart.visualizeDistributions(distributions: lap.powerDistributions),
+                    ),
+                    DataCell(
+                      MyBarChart(
+                        value: lap.db.avgHeartRate,
+                        heartRateZones: _heartRateZones,
+                      ),
+                    ),
+                    DataCell(
+                      Text(lap.db.avgHeartRate.toString()),
+                    ),
+                    DataCell(
+                      MyBarChart.visualizeDistributions(distributions: lap.heartRateDistributions),
+                    ),
+                    DataCell(MyBarChart(
+                      value: lap.db.avgSpeed.toPaceDouble(),
+                      maximum: 700,
+                    )),
+                    DataCell(Text(
+                      lap.db.avgSpeed.toPace(),
+                    )),
+                  ]),
+              ]),
+        ),
       );
     } else {
       return const Center(
