@@ -135,7 +135,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: 'Power / Heart Rate',
+            title: 'Power / Heart Rate',
             color: MyColor.navigate,
             icon: MyIcon.power,
             context: context,
@@ -155,7 +155,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             ),
           ),
           navigationButton(
-            title: 'Speed / Heart Rate',
+            title: 'Speed / Heart Rate',
             color: MyColor.navigate,
             icon: MyIcon.speed,
             context: context,

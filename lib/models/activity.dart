@@ -174,6 +174,12 @@ class Activity extends ChangeNotifier {
         : DateFormat('d MMM yy').format(db.timeCreated);
   }
 
+  String longDateTimeString() {
+    return db.timeCreated == null
+        ? '- - -'
+        : DateFormat('E d MMM yy, H:mm').format(db.timeCreated);
+  }
+
   String shortDateString() {
     return db.timeCreated == null
         ? '- - -'

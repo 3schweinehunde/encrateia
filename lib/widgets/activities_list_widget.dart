@@ -1,11 +1,9 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:encrateia/utils/enums.dart';
 
 class ActivitiesListWidget extends StatefulWidget {
   const ActivitiesListWidget({Key key, this.athlete}) : super(key: key);
@@ -35,54 +33,27 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => Divider(
-          color: Colors.black,
-        ),
-        padding: const EdgeInsets.only(top: 20),
-        itemCount: activities.length,
-        itemBuilder: (BuildContext context, int index) {
-          final Activity activity = activities[index];
-          return ListTile(
-            leading: sportsIcon(sport: activity.db.sport),
-            title: Text(activity.db.name ?? 'Activity'),
-            subtitle: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(activity.dateString() + '\n' + activity.distanceString()),
-                  const SizedBox(width: 20),
-                  Text(activity.timeString() + '\n' + activity.paceString()),
-                  const SizedBox(width: 20),
-                  Text(activity.heartRateString() +
-                      '\n' +
-                      activity.averagePowerString()),
-                ],
-              ),
-            ),
-            trailing: ChangeNotifierProvider<Activity>.value(
-              value: activity,
-              child: Consumer<Activity>(
-                builder: (BuildContext context, Activity activity, Widget _child) =>
-                    popupMenuButton(activity: activity),
-              ),
-            ),
-            onTap: () {
-              if (activity.db.state == 'persisted')
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<BuildContext>(
-                    builder: (BuildContext context) => ShowActivityScreen(
-                      activity: activity,
-                      athlete: widget.athlete,
-                    ),
+    return ListView(children: [
+      for (Activity activity in activities)
+        ListTile(
+          dense: true,
+          leading: sportsIcon(sport: activity.db.sport),
+          title: Text(activity.db.name ?? 'Activity'),
+          subtitle: Text(activity.longDateTimeString()),
+          onTap: () {
+            if (activity.db.state == 'persisted')
+              Navigator.push(
+                context,
+                MaterialPageRoute<BuildContext>(
+                  builder: (BuildContext context) => ShowActivityScreen(
+                    activity: activity,
+                    athlete: widget.athlete,
                   ),
-                );
-            },
-          );
-        },
-    );
+                ),
+              );
+          },
+        )
+    ]);
   }
 
   Icon sportsIcon({String sport}) {
@@ -128,7 +99,8 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
       titleText: const LinearProgressIndicator(value: 0),
     )..show(context);
 
-    final Stream<int> percentageStream = activity.parse(athlete: widget.athlete);
+    final Stream<int> percentageStream =
+        activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
       flushbar.dismiss();
       flushbar = Flushbar<Object>(
@@ -145,77 +117,6 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   Future<void> getActivities() async {
     activities = await Activity.all(athlete: widget.athlete);
     setState(() {});
-  }
-
-  PopupMenuButton<ActivityAction> popupMenuButton({Activity activity}) {
-    List<String> actions;
-
-    switch (activity.db.state) {
-      case 'new':
-        actions = <String>['download', 'delete'];
-        break;
-      case 'downloaded':
-      case 'persisted':
-        actions = <String>['parse', 'download', 'delete'];
-        break;
-      case 'default':
-        actions = <String>['state'];
-    }
-
-    return PopupMenuButton<ActivityAction>(
-      onSelected: (ActivityAction action) {
-        switch (action) {
-          case ActivityAction.parse:
-            parse(activity: activity);
-            break;
-          case ActivityAction.download:
-            download(activity: activity);
-            break;
-          case ActivityAction.delete:
-            delete(activity: activity);
-            break;
-          case ActivityAction.state:
-            break;
-        }
-      },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<ActivityAction>>[
-        if (actions.contains('parse'))
-          PopupMenuItem<ActivityAction>(
-            value: ActivityAction.parse,
-            child: Row(
-              children: <Widget>[
-                MyIcon.parse,
-                const Text(' Parse .fit-file'),
-              ],
-            ),
-          ),
-        if (actions.contains('download'))
-          PopupMenuItem<ActivityAction>(
-            value: ActivityAction.download,
-            child: Row(
-              children: <Widget>[
-                MyIcon.download,
-                const Text(' Download .fit-file'),
-              ],
-            ),
-          ),
-        if (actions.contains('delete'))
-          PopupMenuItem<ActivityAction>(
-            value: ActivityAction.delete,
-            child: Row(
-              children: <Widget>[
-                MyIcon.delete,
-                const Text(' Delete activity'),
-              ],
-            ),
-          ),
-        if (actions.contains('state'))
-          PopupMenuItem<ActivityAction>(
-            value: ActivityAction.state,
-            child: Text('State: ${activity.db.state}'),
-          ),
-      ],
-    );
   }
 
   void showMyFlushbar() {

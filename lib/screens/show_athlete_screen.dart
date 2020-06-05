@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
+import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
@@ -11,7 +12,7 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart'
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/widgets/activities_list_widget.dart';
+import 'package:encrateia/widgets/activities_feed_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_stride_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_settings_widget.dart';
@@ -69,12 +70,19 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       ),
       body: StaggeredGridView.count(
         staggeredTiles:
-            List<StaggeredTile>.filled(17, const StaggeredTile.fit(1)),
+            List<StaggeredTile>.filled(18, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
         children: <Widget>[
+          navigationButton(
+            color: MyColor.activity,
+            title: 'Activities Feed',
+            icon: MyIcon.activities,
+            backgroundColor: MyColor.activity,
+            nextWidget: ActivitiesFeedWidget(athlete: widget.athlete),
+          ),
           navigationButton(
             color: MyColor.activity,
             title: 'Activities List',
@@ -96,7 +104,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: 'Power / Heart Rate',
+            title: 'Power / Heart Rate',
             icon: MyIcon.power,
             nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
           ),
@@ -114,7 +122,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           ),
           navigationButton(
             color: MyColor.navigate,
-            title: 'Speed / Heart Rate',
+            title: 'Speed / Heart Rate',
             icon: MyIcon.speed,
             nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
           ),
@@ -123,7 +131,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             textColor: MyColor.textColor(backgroundColor: MyColor.add),
             icon: MyIcon.downloadLocal,
             label: const Flexible(
-              child: Text('Import .fit from Folder'),
+              child: Text('Import .fit from Folder'),
             ),
             onPressed: () => importLocal(),
           ),
@@ -135,13 +143,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           ),
           navigationButton(
             color: MyColor.settings,
-            title: 'Power Zone Schemas',
+            title: 'Power Zone Schemas',
             icon: MyIcon.power,
             nextWidget: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
           ),
           navigationButton(
             color: MyColor.settings,
-            title: 'Heart Rate Zone Schemas',
+            title: 'Heart Rate Zone Schemas',
             icon: MyIcon.heartRate,
             nextWidget:
                 AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
@@ -162,7 +170,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.danger,
             textColor: MyColor.textColor(backgroundColor: MyColor.danger),
             icon: MyIcon.delete,
-            label: const Flexible(
+            label: const Expanded(
               child: Text('Delete Athlete'),
             ),
             onPressed: () => deleteUser(),
@@ -209,7 +217,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       color: color ?? MyColor.primary,
       textColor: MyColor.textColor(backgroundColor: color),
       icon: icon,
-      label: Flexible(child: Text(title)),
+      label: Expanded(child: Text(title),),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(
