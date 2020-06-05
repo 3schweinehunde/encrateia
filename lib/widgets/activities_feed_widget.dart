@@ -44,17 +44,15 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
         return ListTile(
           leading: sportsIcon(sport: activity.db.sport),
           title: Text(activity.db.name ?? 'Activity'),
-          subtitle: Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(activity.dateString() + '\n' + activity.distanceString()),
-                const SizedBox(width: 20),
-                Text(activity.paceString() + '\n' + activity.heartRateString()),
-                const SizedBox(width: 20),
-                Text(activity.averagePowerString() + '\n'),
-              ],
-            ),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text(activity.dateString() + '\n' + activity.distanceString()),
+              const SizedBox(width: 20),
+              Text(activity.paceString() + '\n' + activity.heartRateString()),
+              const SizedBox(width: 20),
+              Text(activity.averagePowerString() + '\n'),
+            ],
           ),
           onTap: () async {
             if (activity.db.state == 'persisted') {

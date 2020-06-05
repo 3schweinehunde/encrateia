@@ -14,6 +14,7 @@ class MyBarChart extends StatelessWidget {
     num minimum,
     List<PowerZone> powerZones,
     List<HeartRateZone> heartRateZones,
+    bool showPercentage,
   })  : _width = width?.toDouble() ?? 200.0,
         _height = height?.toDouble() ?? 30.0,
         _value = value.toDouble(),
@@ -30,7 +31,9 @@ class MyBarChart extends StatelessWidget {
         _barZones = toBarZones(
           powerZones: powerZones,
           heartRateZones: heartRateZones,
-        );
+
+        ),
+        _showPercentage = showPercentage;
 
   MyBarChart.visualizeDistributions(
       {int width, int height, List<BarZone> distributions})
@@ -39,7 +42,8 @@ class MyBarChart extends StatelessWidget {
         _minimum = 0,
         _maximum = distributions.last.upper.toDouble(),
         _value = distributions.last.upper.toDouble(),
-        _barZones = distributions;
+        _barZones = distributions,
+        _showPercentage = true;
 
   final double _width;
   final double _height;
@@ -47,6 +51,7 @@ class MyBarChart extends StatelessWidget {
   final double _maximum;
   final double _minimum;
   final List<BarZone> _barZones;
+  final bool _showPercentage;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +66,7 @@ class MyBarChart extends StatelessWidget {
           maximum: _maximum,
           minimum: _minimum,
           barZones: _barZones,
+          showPercentage: _showPercentage,
         ),
       ),
     );

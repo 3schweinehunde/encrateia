@@ -1,4 +1,5 @@
 import 'package:encrateia/models/bar_zone.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class BarChartPainter extends CustomPainter {
     @required this.maximum,
     @required this.minimum,
     @required this.barZones,
+    this.showPercentage,
   });
 
   final double width;
@@ -19,9 +21,15 @@ class BarChartPainter extends CustomPainter {
   final double minimum;
   final double strokeWidth = 1;
   final List<BarZone> barZones;
+  bool showPercentage = false;
 
   @override
   void paint(Canvas canvas, Size size) {
+    final TextStyle textStyle = TextStyle(
+      color: Colors.black,
+      fontSize: 12,
+    );
+
     canvas.drawRect(
       Rect.fromPoints(
         Offset(0 + strokeWidth / 2, strokeWidth / 2),
@@ -50,8 +58,7 @@ class BarChartPainter extends CustomPainter {
         double lowerInPixel;
         double upperInPixel;
 
-        if (value < barZone.lower)
-          continue;
+        if (value < barZone.lower) continue;
         if (value >= barZone.upper) {
           lowerInPixel = (width - 2 * strokeWidth) /
                   (maximum - minimum) *
@@ -81,6 +88,38 @@ class BarChartPainter extends CustomPainter {
               ..color = Color(barZone.color)
               ..strokeWidth = strokeWidth
               ..style = PaintingStyle.fill);
+
+        if (showPercentage == true) {
+          final int percentage =
+              ((barZone.upper - barZone.lower) / (maximum - minimum) * 100)
+                  .round();
+          String percentageString;
+          switch (percentage) {
+            case 0:
+              percentageString = '';
+              break;
+            case 1:
+              percentageString = '.';
+              break;
+            case 2:
+              percentageString = ':';
+              break;
+            case 3:
+              percentageString = '⋮';
+              break;
+            default:
+              percentageString = percentage.toString();
+          }
+          final TextSpan span =
+              TextSpan(style: textStyle, text: percentageString);
+          final TextPainter textPainter = TextPainter(
+            text: span,
+            textAlign: TextAlign.left,
+            textDirection: TextDirection.ltr,
+          );
+          textPainter.layout();
+          textPainter.paint(canvas, Offset(lowerInPixel, strokeWidth));
+        }
       }
     }
   }
