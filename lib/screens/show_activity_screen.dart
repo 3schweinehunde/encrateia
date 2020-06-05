@@ -280,7 +280,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       color: color,
       textColor: MyColor.textColor(backgroundColor: color),
       icon: icon,
-      label: Flexible(
+      label: Expanded(
         child: Text(title),
       ),
       onPressed: () => Navigator.push(
