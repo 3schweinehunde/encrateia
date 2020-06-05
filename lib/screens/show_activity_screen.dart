@@ -247,6 +247,16 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         ),
         onPressed: () => autoTagger(),
       ),
+      if (<String>['new', 'downloaded', 'persisted'].contains(widget.activity.db.state))
+        RaisedButton.icon(
+          color: MyColor.delete,
+          icon: MyIcon.delete,
+          textColor: MyColor.textColor(backgroundColor: MyColor.delete),
+          label: const Flexible(
+            child: Text('Delete Activity'),
+          ),
+          onPressed: () => delete(),
+        ),
     ];
   }
 
@@ -319,5 +329,10 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       icon: MyIcon.finishedWhite,
     )..show(context);
     setState(() {});
+  }
+
+  Future<void> delete({Activity activity}) async {
+    await widget.activity.delete();
+    Navigator.of(context).pop();
   }
 }

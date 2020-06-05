@@ -36,52 +36,55 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-        separatorBuilder: (BuildContext context, int index) => Divider(
-          color: Colors.black,
-        ),
-        padding: const EdgeInsets.only(top: 20),
-        itemCount: activities.length,
-        itemBuilder: (BuildContext context, int index) {
-          final Activity activity = activities[index];
-          return ListTile(
-            leading: sportsIcon(sport: activity.db.sport),
-            title: Text(activity.db.name ?? 'Activity'),
-            subtitle: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(activity.dateString() + '\n' + activity.distanceString()),
-                  const SizedBox(width: 20),
-                  Text(activity.paceString()),
-                  const SizedBox(width: 20),
-                  Text(activity.heartRateString() +
-                      '\n' +
-                      activity.averagePowerString()),
-                ],
-              ),
+      separatorBuilder: (BuildContext context, int index) => Divider(
+        color: Colors.black,
+      ),
+      padding: const EdgeInsets.only(top: 20),
+      itemCount: activities.length,
+      itemBuilder: (BuildContext context, int index) {
+        final Activity activity = activities[index];
+        return ListTile(
+          leading: sportsIcon(sport: activity.db.sport),
+          title: Text(activity.db.name ?? 'Activity'),
+          subtitle: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(activity.dateString() + '\n' + activity.distanceString()),
+                const SizedBox(width: 20),
+                Text(activity.paceString()),
+                const SizedBox(width: 20),
+                Text(activity.heartRateString() +
+                    '\n' +
+                    activity.averagePowerString()),
+              ],
             ),
-            trailing: ChangeNotifierProvider<Activity>.value(
-              value: activity,
-              child: Consumer<Activity>(
-                builder: (BuildContext context, Activity activity, Widget _child) =>
-                    popupMenuButton(activity: activity),
-              ),
+          ),
+          trailing: ChangeNotifierProvider<Activity>.value(
+            value: activity,
+            child: Consumer<Activity>(
+              builder:
+                  (BuildContext context, Activity activity, Widget _child) =>
+                      popupMenuButton(activity: activity),
             ),
-            onTap: () {
-              if (activity.db.state == 'persisted')
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<BuildContext>(
-                    builder: (BuildContext context) => ShowActivityScreen(
-                      activity: activity,
-                      athlete: widget.athlete,
-                    ),
+          ),
+          onTap: () async {
+            if (activity.db.state == 'persisted') {
+              await Navigator.push(
+                context,
+                MaterialPageRoute<BuildContext>(
+                  builder: (BuildContext context) => ShowActivityScreen(
+                    activity: activity,
+                    athlete: widget.athlete,
                   ),
-                );
-            },
-          );
-        },
+                ),
+              );
+              getActivities();
+            }
+          },
+        );
+      },
     );
   }
 
@@ -94,11 +97,6 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       default:
         return MyIcon.sport;
     }
-  }
-
-  Future<void> delete({Activity activity}) async {
-    await activity.delete();
-    getActivities();
   }
 
   Future<void> download({Activity activity}) async {
@@ -128,7 +126,8 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       titleText: const LinearProgressIndicator(value: 0),
     )..show(context);
 
-    final Stream<int> percentageStream = activity.parse(athlete: widget.athlete);
+    final Stream<int> percentageStream =
+        activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
       flushbar.dismiss();
       flushbar = Flushbar<Object>(
@@ -152,14 +151,12 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
 
     switch (activity.db.state) {
       case 'new':
-        actions = <String>['download', 'delete'];
+        actions = <String>['download'];
         break;
       case 'downloaded':
       case 'persisted':
-        actions = <String>['parse', 'download', 'delete'];
+        actions = <String>['parse', 'download'];
         break;
-      case 'default':
-        actions = <String>['state'];
     }
 
     return PopupMenuButton<ActivityAction>(
@@ -170,11 +167,6 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
             break;
           case ActivityAction.download:
             download(activity: activity);
-            break;
-          case ActivityAction.delete:
-            delete(activity: activity);
-            break;
-          case ActivityAction.state:
             break;
         }
       },
@@ -199,21 +191,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
               ],
             ),
           ),
-        if (actions.contains('delete'))
-          PopupMenuItem<ActivityAction>(
-            value: ActivityAction.delete,
-            child: Row(
-              children: <Widget>[
-                MyIcon.delete,
-                const Text(' Delete activity'),
-              ],
-            ),
-          ),
-        if (actions.contains('state'))
-          PopupMenuItem<ActivityAction>(
-            value: ActivityAction.state,
-            child: Text('State: ${activity.db.state}'),
-          ),
+
       ],
     );
   }
