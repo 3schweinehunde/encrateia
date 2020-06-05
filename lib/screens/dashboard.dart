@@ -7,7 +7,6 @@ import 'edit_athlete_screen.dart';
 import 'indroduction_screen.dart';
 import 'show_athlete_screen.dart';
 
-
 class Dashboard extends StatefulWidget {
   const Dashboard();
 
@@ -20,7 +19,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-    getAthletes();
+    getData();
     super.initState();
   }
 
@@ -35,7 +34,7 @@ class _DashboardState extends State<Dashboard> {
         floatingActionButton: floatingActionButton());
   }
 
-  Future<void> getAthletes() async {
+  Future<void> getData() async {
     athletes = await Athlete.all();
     setState(() {});
   }
@@ -48,7 +47,7 @@ class _DashboardState extends State<Dashboard> {
         builder: (BuildContext context) => ShowAthleteScreen(athlete: athlete),
       ),
     );
-    getAthletes();
+    getData();
   }
 
   Future<void> goToEditAthleteScreen({Athlete athlete}) async {
@@ -59,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
         builder: (BuildContext context) => EditAthleteScreen(athlete: athlete),
       ),
     );
-    getAthletes();
+    getData();
   }
 
   Widget dashboardBody() {
@@ -87,7 +86,8 @@ class _DashboardState extends State<Dashboard> {
                         Navigator.push(
                           context,
                           MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext context) => IntroductionScreen(),
+                            builder: (BuildContext context) =>
+                                IntroductionScreen(),
                           ),
                         );
                       },
@@ -105,38 +105,16 @@ class _DashboardState extends State<Dashboard> {
         padding: const EdgeInsets.only(top: 20),
         children: <Widget>[
           for (Athlete athlete in athletes)
-            ListTile(
-              leading: photoOrImage(athlete: athlete),
-              title: Text(
-                  '${athlete.db.firstName} ${athlete.db.lastName} ${stravaIdString(athlete: athlete)}'),
-              subtitle: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  RaisedButton.icon(
-                    icon: MyIcon.analyze,
-                    color: MyColor.athlete,
-                    onPressed: () => goToListActivitiesScreen(athlete: athlete),
-                    label: const Text('Analyze'),
-                  ),
-                  RaisedButton.icon(
-                    icon: MyIcon.edit,
-                    color: MyColor.settings,
-                    onPressed: () => goToEditAthleteScreen(athlete: athlete),
-                    label: const Text('Edit'),
-                  ),
-                ],
+            Card(
+              child: ListTile(
+                leading: photoOrImage(athlete: athlete),
+                title: Text('${athlete.db.firstName} ${athlete.db.lastName}'),
+                onTap: () => goToListActivitiesScreen(athlete: athlete),
               ),
             ),
         ],
       );
     }
-  }
-
-  String stravaIdString({Athlete athlete}) {
-    if (athlete.db.stravaId != null)
-      return '- ${athlete.db.stravaId}';
-    else
-      return '';
   }
 
   Widget photoOrImage({Athlete athlete}) {

@@ -33,7 +33,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(children: [
+    return ListView(children: <Widget>[
       for (Activity activity in activities)
         ListTile(
           dense: true,

@@ -42,6 +42,10 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
             records: RecordList<Event>(geoRecords),
           ),
         );
+      } else {
+        return const Center(
+          child: Text('No coordinates available'),
+        );
       }
     } else {
       return const Center(

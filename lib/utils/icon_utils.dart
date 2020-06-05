@@ -70,6 +70,7 @@ class MyIcon {
   static final Icon running = Icon(Icons.directions_run);
   static final Icon runningBig = Icon(Icons.directions_run, size: 50);
   // S
+  static final Icon secrets = Icon(Icons.vpn_key);
   static final Icon settings = Icon(Icons.settings);
   static final Icon show = Icon(Icons.remove_red_eye);
   static final Icon speed = Icon(Icons.shutter_speed);

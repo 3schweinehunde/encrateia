@@ -26,6 +26,8 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'edit_athlete_screen.dart';
+
 class ShowAthleteScreen extends StatefulWidget {
   const ShowAthleteScreen({
     Key key,
@@ -70,7 +72,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       ),
       body: StaggeredGridView.count(
         staggeredTiles:
-            List<StaggeredTile>.filled(18, const StaggeredTile.fit(1)),
+            List<StaggeredTile>.filled(19, const StaggeredTile.fit(1)),
         crossAxisSpacing: 10,
         padding: const EdgeInsets.all(10),
         crossAxisCount:
@@ -160,6 +162,14 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             icon: MyIcon.tag,
             nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
           ),
+          RaisedButton.icon(
+            icon: MyIcon.secrets,
+            color: MyColor.settings,
+            onPressed: () => goToEditAthleteScreen(athlete: widget.athlete),
+            label: const Expanded(
+              child: Text('Credentials'),
+            ),
+          ),
           navigationButton(
             color: MyColor.settings,
             title: 'Settings',
@@ -217,7 +227,9 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       color: color ?? MyColor.primary,
       textColor: MyColor.textColor(backgroundColor: color),
       icon: icon,
-      label: Expanded(child: Text(title),),
+      label: Expanded(
+        child: Text(title),
+      ),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(
@@ -228,6 +240,16 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             backgroundColor: backgroundColor,
           ),
         ),
+      ),
+    );
+  }
+
+  Future<void> goToEditAthleteScreen({Athlete athlete}) async {
+    await athlete.readCredentials();
+    await Navigator.push(
+      context,
+      MaterialPageRoute<BuildContext>(
+        builder: (BuildContext context) => EditAthleteScreen(athlete: athlete),
       ),
     );
   }
