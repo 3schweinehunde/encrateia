@@ -41,8 +41,10 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
   @override
   Widget build(BuildContext context) {
     if (_powerZones.isNotEmpty && _laps.isNotEmpty) {
-      return SingleChildScrollView(scrollDirection: Axis.horizontal,
-        child: Container(width: 500,
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          width: 500,
           child: ListView(padding: const EdgeInsets.all(20), children: <Widget>[
             Table(columnWidths: const <int, TableColumnWidth>{
               0: FixedColumnWidth(60),
@@ -62,12 +64,14 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 const Text('Activity'),
                 MyBarChart(
                   width: 150,
+                  height: 20,
                   value: widget.activity.db.avgPower,
                   powerZones: _powerZones,
                 ),
                 Text(widget.activity.db.avgPower.toStringAsFixed(1)),
                 MyBarChart(
                   width: 150,
+                  height: 20,
                   value: widget.activity.db.avgHeartRate,
                   heartRateZones: _heartRateZones,
                 ),
@@ -78,12 +82,14 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                   Text('Lap ' + lap.index.toString()),
                   MyBarChart(
                     width: 150,
+                    height: 20,
                     value: lap.db.avgPower,
                     powerZones: _powerZones,
                   ),
                   Text(lap.db.avgPower.toStringAsFixed(1)),
                   MyBarChart(
                     width: 150,
+                    height: 20,
                     value: lap.db.avgHeartRate,
                     heartRateZones: _heartRateZones,
                   ),
@@ -104,17 +110,25 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
               TableRow(children: <Widget>[
                 const Text('Activity'),
                 MyBarChart.visualizeDistributions(
-                    distributions: _heartRateDistributions),
+                  height: 20,
+                  distributions: _heartRateDistributions,
+                ),
                 MyBarChart.visualizeDistributions(
-                    distributions: _powerDistributions),
+                  height: 20,
+                  distributions: _powerDistributions,
+                ),
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[
                   Text('Lap ' + lap.index.toString()),
                   MyBarChart.visualizeDistributions(
-                      distributions: lap.powerDistributions),
+                    height: 20,
+                    distributions: lap.powerDistributions,
+                  ),
                   MyBarChart.visualizeDistributions(
-                      distributions: lap.heartRateDistributions),
+                    height: 20,
+                    distributions: lap.heartRateDistributions,
+                  ),
                 ]),
             ]),
             const SizedBox(height: 40),
@@ -131,6 +145,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
               TableRow(children: <Widget>[
                 const Text('Activity'),
                 MyBarChart(
+                  height: 20,
                   value: widget.activity.db.avgSpeed.toPaceDouble(),
                   maximum: 700,
                 ),
@@ -140,6 +155,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 TableRow(children: <Widget>[
                   Text('Lap ' + lap.index.toString()),
                   MyBarChart(
+                    height: 20,
                     value: lap.db.avgSpeed.toPaceDouble(),
                     maximum: 700,
                   ),

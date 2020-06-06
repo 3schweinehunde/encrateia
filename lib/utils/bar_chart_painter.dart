@@ -18,7 +18,7 @@ class BarChartPainter extends CustomPainter {
   final double value;
   final double maximum;
   final double minimum;
-  final double strokeWidth = 1;
+  final double strokeWidth = 0.5;
   final List<BarZone> barZones;
   bool showPercentage = false;
 
@@ -35,7 +35,7 @@ class BarChartPainter extends CustomPainter {
         Offset(width - strokeWidth / 2, height - strokeWidth / 2),
       ),
       Paint()
-        ..color = MyColor.darkGray
+        ..color = MyColor.lightGray
         ..style = PaintingStyle.stroke
         ..strokeWidth = strokeWidth,
     );
