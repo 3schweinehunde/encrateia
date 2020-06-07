@@ -1,8 +1,10 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flushbar/flushbar.dart';
 
 class ActivitiesFeedWidget extends StatefulWidget {
@@ -41,34 +43,66 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {
         final Activity activity = activities[index];
-        return ListTile(
-          leading: sportsIcon(sport: activity.db.sport),
-          title: Text(activity.db.name ?? 'Activity'),
-          subtitle: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        return Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(activity.dateString() + '\n' + activity.distanceString()),
-              const SizedBox(width: 20),
-              Text(activity.paceString() + '\n' + activity.heartRateString()),
-              const SizedBox(width: 20),
-              Text(activity.averagePowerString() + '\n'),
-            ],
-          ),
-          onTap: () async {
-            if (activity.db.state == 'persisted') {
-              await Navigator.push(
-                context,
-                MaterialPageRoute<BuildContext>(
-                  builder: (BuildContext context) => ShowActivityScreen(
-                    activity: activity,
-                    athlete: widget.athlete,
+          ListTile(
+            leading: sportsIcon(sport: activity.db.sport),
+            title: Text(activity.db.name ?? 'Activity'),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(activity.dateString() + '\n' + activity.distanceString()),
+                const SizedBox(width: 20),
+                Text(activity.paceString() + '\n' + activity.heartRateString()),
+                const SizedBox(width: 20),
+                Text(activity.averagePowerString() + '\n'),
+              ],
+            ),
+            onTap: () async {
+              if (activity.db.state == 'persisted') {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute<BuildContext>(
+                    builder: (BuildContext context) => ShowActivityScreen(
+                      activity: activity,
+                      athlete: widget.athlete,
+                    ),
                   ),
-                ),
-              );
-              getActivities();
-            }
-          },
-        );
+                );
+                getActivities();
+              }
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              spacing: 10,
+              runSpacing: 10,
+              children: <Widget>[
+                for (Tag tag in activity.cachedTags)
+                  Chip(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    padding: const EdgeInsets.fromLTRB(4, -6, 4, -6),
+                    labelPadding: const EdgeInsets.fromLTRB(0, -6, 0, -6),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(1))),
+                    label: Text(
+                      tag.db.name,
+                      style: TextStyle(
+                        color: MyColor.textColor(
+                          selected: true,
+                          backgroundColor: Color(tag.db.color ?? 99999),
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Color(tag.db.color ?? 99999),
+                    elevation: 3,
+                  ),
+              ],
+            ),
+          )
+        ]);
       },
     );
   }
@@ -86,6 +120,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
 
   Future<void> getActivities() async {
     activities = await Activity.all(athlete: widget.athlete);
+    for (final Activity activity in activities) {
+      await activity.tags;
+    }
     setState(() {});
   }
 

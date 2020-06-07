@@ -53,6 +53,7 @@ class Activity extends ChangeNotifier {
   DbActivity db;
   List<Event> _records;
   List<Lap> _laps;
+  List<Tag> cachedTags = [];
   double glidingMeasureAttribute;
   double weight;
   PowerZoneSchema _powerZoneSchema;
@@ -188,10 +189,20 @@ class Activity extends ChangeNotifier {
 
   String paceString() => db.avgSpeed.toPace() + '/km';
 
-  Future<List<Event>> get records async =>
-      _records ??= await Event.recordsByActivity(activity: this);
+  Future<List<Event>> get records async {
+    return _records ??= await Event.recordsByActivity(activity: this);
+  }
 
-  Future<List<Lap>> get laps async => _laps ??= await Lap.all(activity: this);
+  Future<List<Lap>> get laps async {
+    return _laps ??= await Lap.all(activity: this);
+  }
+
+  Future<List<Tag>> get tags async {
+    if (cachedTags.isEmpty) {
+      cachedTags = await Tag.allByActivity(activity: this);
+    }
+    return cachedTags;
+  }
 
   Future<bool> recalculateAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(<Event>[]);
@@ -616,12 +627,14 @@ class Activity extends ChangeNotifier {
   }
 
   Future<List<BarZone>> heartRateZoneCounts() async {
-    final HeartRateZoneSchema heartRateZoneSchema = await this.heartRateZoneSchema;
+    final HeartRateZoneSchema heartRateZoneSchema =
+        await this.heartRateZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> heartRateRecords =
-    records.where((Event record) => record.db.heartRate != null).toList();
-    final List<BarZone> heartRateZoneCounts = await RecordList<Event>(heartRateRecords)
-        .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);
+        records.where((Event record) => record.db.heartRate != null).toList();
+    final List<BarZone> heartRateZoneCounts =
+        await RecordList<Event>(heartRateRecords)
+            .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);
     return heartRateZoneCounts;
   }
 }

@@ -3,6 +3,7 @@ import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
+import 'activity.dart';
 import 'athlete.dart';
 
 class Tag extends ChangeNotifier {
@@ -29,14 +30,36 @@ class Tag extends ChangeNotifier {
   Future<BoolResult> delete() async => await db.delete();
 
   static Future<List<Tag>> all({@required TagGroup tagGroup}) async {
-    final List<DbTag> dbTagList = await tagGroup.db
+    final List<DbTag> dbTags = await tagGroup.db
         .getDbTags()
         .orderBy('sortOrder')
         .orderBy('name')
         .toList();
     final List<Tag> tags =
-        dbTagList.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
+        dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
     return tags;
+  }
+
+  static Future<List<Tag>> allByActivity({@required Activity activity}) async {
+    final List<DbActivityTagging> dbActivityTaggings = await DbActivityTagging()
+        .select()
+        .activitiesId
+        .equals(activity.db.id)
+        .toList();
+    if (dbActivityTaggings.isNotEmpty) {
+      final List<DbTag> dbTags = await DbTag()
+          .select()
+          .id
+          .inValues(dbActivityTaggings.map(
+              (DbActivityTagging dbActivityTagging) =>
+                  dbActivityTagging.tagsId).toList())
+          .toList();
+      final List<Tag> tags =
+          dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
+      return tags;
+    } else {
+      return <Tag>[];
+    }
   }
 
   static Future<Tag> autoPowerTag({
