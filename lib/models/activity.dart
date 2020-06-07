@@ -53,7 +53,7 @@ class Activity extends ChangeNotifier {
   DbActivity db;
   List<Event> _records;
   List<Lap> _laps;
-  List<Tag> cachedTags = [];
+  List<Tag> cachedTags = <Tag>[];
   double glidingMeasureAttribute;
   double weight;
   PowerZoneSchema _powerZoneSchema;

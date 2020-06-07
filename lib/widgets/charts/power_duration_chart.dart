@@ -13,12 +13,12 @@ class PowerDurationChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final PowerDuration powerDuration = PowerDuration(records: records);
 
-    final List<Series<IntPlotPoint, num>> data = <Series<IntPlotPoint, num>>[
-      Series<IntPlotPoint, int>(
+    final List<Series<DoublePlotPoint, num>> data = <Series<DoublePlotPoint, num>>[
+      Series<DoublePlotPoint, int>(
         id: 'Power Duration',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
-        domainFn: (IntPlotPoint record, _) => record.domain,
-        measureFn: (IntPlotPoint record, _) => record.measure,
+        domainFn: (DoublePlotPoint record, _) => record.domain,
+        measureFn: (DoublePlotPoint record, _) => record.measure,
         data: powerDuration.asList(),
       )
     ];

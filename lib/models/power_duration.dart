@@ -4,50 +4,66 @@ import 'package:encrateia/models/plot_point.dart';
 
 class PowerDuration {
   PowerDuration({List<Event> records}) {
-    for (int index = 0; index < records.length - 1; index++) {
+    final Map<int, EnergyPoint> powerSum = <int, EnergyPoint>{};
+
+    for (int index = 1; index <= records.length - 1; index++) {
       final int power = records[index].db.power;
-      final DateTime nextLower = records
-          .sublist(index + 1, records.length)
-          .firstWhere((Event record) => record.db.power < power,
-              orElse: () => records.last)
+      final int duration = records[index]
           .db
-          .timeStamp;
+          .timeStamp
+          .difference(records[index - 1].db.timeStamp)
+          .inSeconds;
 
-      final DateTime recentLower = records
-          .sublist(0, index)
-          .lastWhere((Event record) => record.db.power < power,
-              orElse: () => records.first)
-          .db
-          .timeStamp;
+      powerSum.forEach((int start, EnergyPoint energyPoint) {
+        final int newEnergy = energyPoint.energy + power * duration;
+        final int newDuration = energyPoint.duration + duration;
 
-      final int persistedFor = nextLower.difference(recentLower).inSeconds;
+        powerSum[start] = EnergyPoint(
+          energy: newEnergy,
+          duration: newDuration,
+        );
 
-      if (power > (powerMap[persistedFor] ?? 0)) {
-        for (int durationIndex = persistedFor;
-            durationIndex > 0;
-            durationIndex--) {
+        final double newPower = newEnergy / newDuration;
+        if (newPower > (powerMap[newDuration] ?? 0)) {
+          for (int durationIndex = newDuration;
+              durationIndex > 0;
+              durationIndex--) {
+            if (newPower <= (powerMap[durationIndex] ?? 0))
+              break;
+            powerMap[durationIndex] = newPower;
+          }
+        }
+      });
+
+      powerSum[index - 1] = EnergyPoint(
+        energy: power * duration,
+        duration: duration,
+      );
+
+      if (power > (powerMap[duration] ?? 0)) {
+        for (int durationIndex = duration; durationIndex > 0; durationIndex--) {
           if (power <= (powerMap[durationIndex] ?? 0))
             break;
-          powerMap[durationIndex] = power;
+          powerMap[durationIndex] = power.toDouble();
         }
       }
     }
   }
 
-  Map<int, int> powerMap = <int, int>{};
+  Map<int, double> powerMap = <int, double>{};
 
-  List<IntPlotPoint> asList() {
-    final List<IntPlotPoint> plotPoints = <IntPlotPoint>[];
+  List<DoublePlotPoint> asList() {
+    final List<DoublePlotPoint> plotPoints = <DoublePlotPoint>[];
 
-    powerMap.forEach((int duration, int power) {
-      plotPoints.add(IntPlotPoint(
+    powerMap.forEach((int duration, double power) {
+      plotPoints.add(DoublePlotPoint(
         domain: scaled(seconds: duration),
         measure: power,
       ));
     });
 
     plotPoints
-        .sort((IntPlotPoint a, IntPlotPoint b) => a.domain.compareTo(b.domain));
+        .sort((DoublePlotPoint a, DoublePlotPoint b) => a.domain.compareTo(b.domain));
     return plotPoints;
   }
 

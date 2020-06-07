@@ -17,3 +17,13 @@ class DoublePlotPoint {
   @override
   String toString() => '< DoublePlotPoint | $domain | $measure >';
 }
+
+class EnergyPoint {
+  EnergyPoint({this.energy, this.duration});
+
+  int energy;
+  int duration;
+
+  @override
+  String toString() => '< EnergyPlotPoint | $energy | $duration >';
+}
