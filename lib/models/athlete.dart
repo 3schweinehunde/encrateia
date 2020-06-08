@@ -10,6 +10,7 @@ import 'package:encrateia/model/model.dart'
         DbTagGroup,
         DbWeight;
 import 'package:path_provider/path_provider.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/weight.dart';
@@ -133,7 +134,7 @@ class Athlete {
     return tagGroups;
   }
 
-  Future<void> delete() async {
+  Future<BoolResult> delete() async {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
 
     for (final Activity activity in await activities) {
@@ -145,10 +146,10 @@ class Athlete {
         await File(appDocDir.path + '/$stravaId.fit').delete();
     }
     await _db.getDbActivities().delete();
-    await _db.delete();
+    return await _db.delete();
   }
 
-  Future<void> save() async => await _db.save();
+  Future<int> save() async => await _db.save();
 
   Future<bool> checkForSchemas() async =>
       (await powerZoneSchemas).isNotEmpty &&
