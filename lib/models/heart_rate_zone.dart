@@ -13,7 +13,7 @@ class HeartRateZone {
       int upperLimit,
       int color}) {
     db = DbHeartRateZone()
-      ..heartRateZoneSchemataId = heartRateZoneSchema.db.id
+      ..heartRateZoneSchemataId = heartRateZoneSchema.id
       ..name = name ?? 'My Zone'
       ..lowerLimit = lowerLimit ?? 70
       ..upperLimit = upperLimit ?? 100
@@ -23,10 +23,10 @@ class HeartRateZone {
 
     if (lowerPercentage != null)
       db.lowerLimit =
-          (lowerPercentage * heartRateZoneSchema.db.base / 100).round();
+          (lowerPercentage * heartRateZoneSchema.base / 100).round();
     if (upperPercentage != null)
       db.upperLimit =
-          (upperPercentage * heartRateZoneSchema.db.base / 100).round();
+          (upperPercentage * heartRateZoneSchema.base / 100).round();
   }
   HeartRateZone.fromDb(this.db);
 
@@ -36,18 +36,4 @@ class HeartRateZone {
   String toString() => '< HeartRateZone | ${db.name} | ${db.lowerLimit} >';
 
   Future<BoolResult> delete() async => await db.delete();
-
-  static Future<List<HeartRateZone>> all(
-      {@required HeartRateZoneSchema heartRateZoneSchema}) async {
-    final List<DbHeartRateZone> dbHeartRateZoneList = await heartRateZoneSchema
-        .db
-        .getDbHeartRateZones()
-        .orderByDesc('lowerlimit')
-        .toList();
-    final List<HeartRateZone> heartRateZones = dbHeartRateZoneList
-        .map((DbHeartRateZone dbHeartRateZone) =>
-            HeartRateZone.fromDb(dbHeartRateZone))
-        .toList();
-    return heartRateZones;
-  }
 }

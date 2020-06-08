@@ -60,12 +60,12 @@ class _AthleteHeartRateZoneSchemaWidgetState
                   .sublist(offset, offset + rows)
                   .map((HeartRateZoneSchema heartRateZoneSchema) {
                 return DataRow(
-                  key: ValueKey<int>(heartRateZoneSchema.db.id),
+                  key: ValueKey<int>(heartRateZoneSchema.id),
                   cells: <DataCell>[
                     DataCell(Text(DateFormat('d MMM yyyy')
-                        .format(heartRateZoneSchema.db.date))),
-                    DataCell(Text(heartRateZoneSchema.db.name)),
-                    DataCell(Text(heartRateZoneSchema.db.base.toString())),
+                        .format(heartRateZoneSchema.date))),
+                    DataCell(Text(heartRateZoneSchema.name)),
+                    DataCell(Text(heartRateZoneSchema.base.toString())),
                     DataCell(
                       MyIcon.edit,
                       onTap: () async {
@@ -177,7 +177,7 @@ You could also create a schema from scratch.
   Future<void> likeGarmin() async {
     final Athlete athlete = widget.athlete;
     final HeartRateZoneSchema heartRateZoneSchema = HeartRateZoneSchema.likeGarmin(athlete: athlete);
-    await heartRateZoneSchema.db.save();
+    await heartRateZoneSchema.save();
     await heartRateZoneSchema.addGarminZones();
     await getData();
   }
@@ -186,7 +186,7 @@ You could also create a schema from scratch.
     final Athlete athlete = widget.athlete;
     final HeartRateZoneSchema heartRateZoneSchema =
         HeartRateZoneSchema.likeStefanDillinger(athlete: athlete);
-    await heartRateZoneSchema.db.save();
+    await heartRateZoneSchema.save();
     await heartRateZoneSchema.addStefanDillingerZones();
     await getData();
   }

@@ -61,7 +61,7 @@ class _AddHeartRateZoneSchemaScreenState
               labelText: 'Valid from',
             ),
             format: DateFormat('yyyy-MM-dd'),
-            initialValue: widget.heartRateZoneSchema.db.date,
+            initialValue: widget.heartRateZoneSchema.date,
             onShowPicker: (BuildContext context, DateTime currentValue) {
               return showDatePicker(
                 context: context,
@@ -74,16 +74,16 @@ class _AddHeartRateZoneSchemaScreenState
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.heartRateZoneSchema.db.name,
+            initialValue: widget.heartRateZoneSchema.name,
             onChanged: (String value) =>
-                widget.heartRateZoneSchema.db.name = value,
+                widget.heartRateZoneSchema.name = value,
           ),
           TextFormField(
             decoration: const InputDecoration(
               labelText: 'Base value in bpm',
               helperText: 'e.g. maximum heart rate, threshold heart rate',
             ),
-            initialValue: widget.heartRateZoneSchema.db.base.toString(),
+            initialValue: widget.heartRateZoneSchema.base.toString(),
             keyboardType: TextInputType.number,
             onChanged: (String value) =>
                 updateHeartRateZoneBase(base: int.parse(value)),
@@ -122,7 +122,7 @@ class _AddHeartRateZoneSchemaScreenState
                           builder: (BuildContext context) =>
                               AddHeartRateZoneScreen(
                             heartRateZone: heartRateZone,
-                            base: widget.heartRateZoneSchema.db.base,
+                            base: widget.heartRateZoneSchema.base,
                           ),
                         ),
                       );
@@ -146,7 +146,7 @@ class _AddHeartRateZoneSchemaScreenState
                       builder: (BuildContext context) => AddHeartRateZoneScreen(
                         heartRateZone: HeartRateZone(
                             heartRateZoneSchema: widget.heartRateZoneSchema),
-                        base: widget.heartRateZoneSchema.db.base,
+                        base: widget.heartRateZoneSchema.base,
                       ),
                     ),
                   );
@@ -176,7 +176,7 @@ class _AddHeartRateZoneSchemaScreenState
   }
 
   Future<void> saveHeartRateZoneSchema(BuildContext context) async {
-    await widget.heartRateZoneSchema.db.save();
+    await widget.heartRateZoneSchema.save();
     await DbHeartRateZone().upsertAll(heartRateZones
         .map((HeartRateZone heartRateZone) => heartRateZone.db)
         .toList());
@@ -196,7 +196,7 @@ class _AddHeartRateZoneSchemaScreenState
 
   void updateHeartRateZoneBase({int base}) {
     setState(() {
-      widget.heartRateZoneSchema.db.base = base;
+      widget.heartRateZoneSchema.base = base;
       for (final HeartRateZone heartRateZone in heartRateZones) {
         heartRateZone.db.lowerLimit =
             (heartRateZone.db.lowerPercentage * base / 100).round();
@@ -207,11 +207,11 @@ class _AddHeartRateZoneSchemaScreenState
   }
 
   Future<void> copyHeartRateZoneSchema({DateTime date}) async {
-    widget.heartRateZoneSchema.db
+    widget.heartRateZoneSchema
       ..date = date
       ..id = null;
     final int heartRateZoneSchemaId =
-        await widget.heartRateZoneSchema.db.save();
+        await widget.heartRateZoneSchema.save();
     for (final HeartRateZone heartRateZone in heartRateZones) {
       heartRateZone.db
         ..heartRateZoneSchemataId = heartRateZoneSchemaId

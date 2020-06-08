@@ -1,21 +1,22 @@
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart' show DbHeartRateZoneSchema;
+import 'package:encrateia/model/model.dart'
+    show DbHeartRateZone, DbHeartRateZoneSchema;
 import 'package:encrateia/models/athlete.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class HeartRateZoneSchema {
   HeartRateZoneSchema({@required Athlete athlete}) {
-    db = DbHeartRateZoneSchema()
+    _db = DbHeartRateZoneSchema()
       ..athletesId = athlete.db.id
       ..base = 180
       ..name = 'My Schema'
       ..date = DateTime.now();
   }
-  HeartRateZoneSchema.fromDb(this.db);
+  HeartRateZoneSchema.fromDb(this._db);
 
   HeartRateZoneSchema.likeGarmin({Athlete athlete}) {
-    db = DbHeartRateZoneSchema()
+    _db = DbHeartRateZoneSchema()
       ..athletesId = athlete.db.id
       ..name = 'max HR based'
       ..date = DateTime(1970, 01, 01)
@@ -23,16 +24,33 @@ class HeartRateZoneSchema {
   }
 
   HeartRateZoneSchema.likeStefanDillinger({Athlete athlete}) {
-    db = DbHeartRateZoneSchema()
+    _db = DbHeartRateZoneSchema()
       ..athletesId = athlete.db.id
       ..name = 'threshold heart rate based'
       ..date = DateTime(1970, 01, 01)
       ..base = 165;
   }
 
-  DbHeartRateZoneSchema db;
-  Future<List<HeartRateZone>> get heartRateZones async =>
-      HeartRateZone.all(heartRateZoneSchema: this);
+  DbHeartRateZoneSchema _db;
+
+  int get id => _db.id;
+  String get name => _db.name;
+  DateTime get date => _db.date;
+  int get base => _db.base;
+  set name(String value) => _db.name = value;
+  set base(int value) => _db.base = value;
+  set date(DateTime value) => _db.date = value;
+  set id(int value) => _db.id = value;
+
+  Future<List<HeartRateZone>> get heartRateZones async {
+    final List<DbHeartRateZone> dbHeartRateZoneList =
+        await _db.getDbHeartRateZones().orderBy('lowerLimit').toList();
+    final List<HeartRateZone> heartRateZones = dbHeartRateZoneList
+        .map((DbHeartRateZone dbHeartRateZone) =>
+            HeartRateZone.fromDb(dbHeartRateZone))
+        .toList();
+    return heartRateZones;
+  }
 
   Future<void> addGarminZones() async {
     await HeartRateZone(
@@ -111,9 +129,10 @@ class HeartRateZoneSchema {
   }
 
   @override
-  String toString() => '< HeartRateZoneSchema | ${db.name} | ${db.date} >';
+  String toString() => '< HeartRateZoneSchema | $name | $date >';
 
-  Future<BoolResult> delete() async => await db.delete();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
 
   static Future<List<HeartRateZoneSchema>> all(
       {@required Athlete athlete}) async {

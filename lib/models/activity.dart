@@ -565,7 +565,7 @@ class Activity {
       final DbHeartRateZone dbHeartRateZone = await DbHeartRateZone()
           .select()
           .heartRateZoneSchemataId
-          .equals((await heartRateZoneSchema).db.id)
+          .equals((await heartRateZoneSchema).id)
           .and
           .lowerLimit
           .lessThanOrEquals(db.avgHeartRate)
