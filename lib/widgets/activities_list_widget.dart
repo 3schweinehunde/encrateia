@@ -110,12 +110,11 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         animationDuration: const Duration(milliseconds: 1),
       )..show(context);
     }
-    activities = await Activity.all(athlete: widget.athlete);
-    setState(() {});
+    getActivities();
   }
 
   Future<void> getActivities() async {
-    activities = await Activity.all(athlete: widget.athlete);
+    activities = await widget.athlete.activities;
     setState(() {});
   }
 

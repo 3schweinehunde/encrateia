@@ -11,7 +11,7 @@ import 'lap.dart';
 class TagGroup {
   TagGroup({@required Athlete athlete}) {
     _db = DbTagGroup()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..color = Colors.lightGreen.value
       ..system = false
       ..name = 'My Tag Group';
@@ -25,7 +25,7 @@ class TagGroup {
       @required bool system,
       @required int color}) {
     _db = DbTagGroup()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..color = color
       ..system = system
       ..name = name;
@@ -60,7 +60,7 @@ class TagGroup {
         .equals(true)
         .and
         .athletesId
-        .equals(athlete.db.id)
+        .equals(athlete.id)
         .and
         .name
         .equals('Auto Power Zones')
@@ -87,7 +87,7 @@ class TagGroup {
         .equals(true)
         .and
         .athletesId
-        .equals(athlete.db.id)
+        .equals(athlete.id)
         .and
         .name
         .equals('Auto Heart Rate Zones')
@@ -110,7 +110,7 @@ class TagGroup {
     @required Athlete athlete,
     @required Activity activity,
   }) async {
-    final List<TagGroup> tagGroups = await all(athlete: athlete);
+    final List<TagGroup> tagGroups = await athlete.tagGroups;
 
     final List<DbActivityTagging> dbActivityTaggings = await DbActivityTagging()
         .select()
@@ -133,7 +133,7 @@ class TagGroup {
     @required Athlete athlete,
     @required Lap lap,
   }) async {
-    final List<TagGroup> tagGroups = await all(athlete: athlete);
+    final List<TagGroup> tagGroups = await athlete.tagGroups;
 
     final List<DbLapTagging> dbLapTaggings =
         await DbLapTagging().select().lapsId.equals(lap.id).toList();
@@ -150,19 +150,6 @@ class TagGroup {
     return tagGroups;
   }
 
-  static Future<List<TagGroup>> all({@required Athlete athlete}) async {
-    final List<DbTagGroup> dbTagGroupList =
-        await athlete.db.getDbTagGroups().orderBy('name').toList();
-    final List<TagGroup> tagGroups = dbTagGroupList
-        .map((DbTagGroup dbTagGroup) => TagGroup.fromDb(dbTagGroup))
-        .toList();
-
-    for (final TagGroup tagGroup in tagGroups) {
-      tagGroup.cachedTags = await tagGroup.tags;
-    }
-    return tagGroups;
-  }
-
   static Future<void> deleteAllAutoTags({Athlete athlete}) async {
     final TagGroup autoPowerTagGroup =
         await TagGroup.autoPowerTagGroup(athlete: athlete);
@@ -172,4 +159,6 @@ class TagGroup {
         await TagGroup.autoHeartRateTagGroup(athlete: athlete);
     await autoHeartRateTagGroup._db.getDbTags().delete();
   }
+
+  static TagGroup exDb(DbTagGroup db) => TagGroup.fromDb(db);
 }

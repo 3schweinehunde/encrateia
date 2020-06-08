@@ -30,8 +30,8 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
   }
 
   Widget editAthleteForm(Athlete athlete, BuildContext context) {
-    if (athlete.db == null ||
-        (athlete.db.stravaId == null && athlete.db.state != 'standalone')) {
+    if (athlete.id == null ||
+        (athlete.stravaId == null && athlete.state != 'standalone')) {
       // Strava Connection Card
       return ListView(
         padding: const EdgeInsets.all(20),
@@ -82,7 +82,7 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
           ),
         ],
       );
-    } else if (athlete.db.state == 'standalone') {
+    } else if (athlete.state == 'standalone') {
       return ListView(
         padding: const EdgeInsets.all(20),
         children: <Widget>[
@@ -94,12 +94,12 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'First name'),
-            initialValue: athlete.db.firstName,
+            initialValue: athlete.firstName,
             onChanged: (String value) => athlete.firstName = value,
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Last name'),
-            initialValue: athlete.db.lastName,
+            initialValue: athlete.lastName,
             onChanged: (String value) => athlete.lastName = value,
           ),
 
@@ -134,19 +134,19 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
           ),
           ListTile(
             leading: const Text('First Name'),
-            title: Text(athlete.db.firstName ?? 't.b.d.'),
+            title: Text(athlete.firstName ?? 't.b.d.'),
           ),
           ListTile(
             leading: const Text('Last Name'),
-            title: Text(athlete.db.lastName ?? 't.b.d.'),
+            title: Text(athlete.lastName ?? 't.b.d.'),
           ),
           ListTile(
             leading: const Text('Strava ID'),
-            title: Text(athlete.db.stravaId?.toString() ?? 't.b.d.'),
+            title: Text(athlete.stravaId?.toString() ?? 't.b.d.'),
           ),
           ListTile(
             leading: const Text('Strava Username'),
-            title: Text(athlete.db.stravaUsername ?? 't.b.d.'),
+            title: Text(athlete.stravaUsername ?? 't.b.d.'),
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Email'),
@@ -182,16 +182,16 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
   }
 
   Future<void> saveStravaUser(BuildContext context) async {
-    await widget.athlete.db.save();
+    await widget.athlete.save();
     await widget.athlete.storeCredentials();
     Navigator.of(context).pop();
   }
 
   Future<void> saveStandaloneUser(BuildContext context) async {
-    widget.athlete.db.firstName =
-        widget.athlete.firstName ?? widget.athlete.db.firstName;
-    widget.athlete.db.lastName =
-        widget.athlete.lastName ?? widget.athlete.db.lastName;
+    widget.athlete.firstName =
+        widget.athlete.firstName ?? widget.athlete.firstName;
+    widget.athlete.lastName =
+        widget.athlete.lastName ?? widget.athlete.lastName;
     await widget.athlete.save();
     Navigator.of(context).pop();
   }

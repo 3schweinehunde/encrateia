@@ -1,7 +1,14 @@
 import 'dart:io';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/model/model.dart' show DbAthlete;
+import 'package:encrateia/model/model.dart'
+    show
+        DbActivity,
+        DbAthlete,
+        DbHeartRateZoneSchema,
+        DbPowerZoneSchema,
+        DbTagGroup,
+        DbWeight;
 import 'package:path_provider/path_provider.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:encrateia/models/activity.dart';
@@ -11,21 +18,35 @@ import 'heart_rate_zone_schema.dart';
 
 class Athlete {
   Athlete();
-  Athlete.fromDb(this.db);
+  Athlete._fromDb(this._db);
 
   String email;
   String password;
-  String firstName;
-  String lastName;
-  DbAthlete db = DbAthlete();
+
+  DbAthlete _db = DbAthlete();
   List<int> filters = <int>[];
 
+  int get id => _db.id;
+  String get firstName => _db.firstName;
+  String get lastName => _db.lastName;
+  int get stravaId => _db.stravaId;
+  String get state => _db.state;
+  int get recordAggregationCount => _db.recordAggregationCount;
+  int get downloadInterval => _db.downloadInterval;
+  String get photoPath => _db.photoPath;
+  String get stravaUsername => _db.stravaUsername;
+  String get geoState => _db.geoState;
+
+  set firstName(String value) => _db.firstName = value;
+  set lastName(String value) => _db.lastName = value;
+  set downloadInterval(int value) => _db.downloadInterval = value;
+  set recordAggregationCount(int value) => _db.recordAggregationCount = value;
+
   @override
-  String toString() =>
-      '< Athlete | ${db.firstName} ${db.lastName} | ${db.stravaId} >';
+  String toString() => '< Athlete | $firstName $lastName | $stravaId >';
 
   void updateFromStravaAthlete(DetailedAthlete athlete) {
-    db
+    _db
       ..firstName = athlete.firstname
       ..lastName = athlete.lastname
       ..stravaId = athlete.id
@@ -38,17 +59,17 @@ class Athlete {
   }
 
   Future<void> setupStandaloneAthlete() async {
-    db
+    _db
       ..state = 'standalone'
       ..firstName = 'Jane'
       ..lastName = 'Doe'
       ..downloadInterval = 21
       ..recordAggregationCount = 16;
-    await db.save();
+    await save();
   }
 
   String get stateText {
-    switch (db.state) {
+    switch (state) {
       case 'new':
         return 'Loading athlete data from Strava ...';
       case 'unsaved':
@@ -56,7 +77,7 @@ class Athlete {
       case 'fromStrava':
         return 'Data received from Strava.';
       default:
-        return 'Unknown state ${db.state}, should have never come here.';
+        return 'Unknown state $state, should have never come here.';
     }
   }
 
@@ -74,18 +95,45 @@ class Athlete {
 
   static Future<List<Athlete>> all() async {
     final List<DbAthlete> dbAthleteList = await DbAthlete().select().toList();
-    return dbAthleteList
-        .map((DbAthlete dbAthlete) => Athlete.fromDb(dbAthlete))
+    return dbAthleteList.map(Athlete.exDb).toList();
+  }
+
+  Future<List<Activity>> get activities async {
+    final List<DbActivity> dbActivityList =
+        await _db.getDbActivities().orderByDesc('stravaId').toList();
+    return dbActivityList
+        .map((DbActivity dbActivity) => Activity.fromDb(dbActivity))
         .toList();
   }
 
-  Future<List<Activity>> get activities => Activity.all(athlete: this);
-  Future<List<Weight>> get weights => Weight.all(athlete: this);
-  Future<List<PowerZoneSchema>> get powerZoneSchemas =>
-      PowerZoneSchema.all(athlete: this);
-  Future<List<HeartRateZoneSchema>> get heartRateZoneSchemas =>
-      HeartRateZoneSchema.all(athlete: this);
-  Future<List<TagGroup>> get tagGroups => TagGroup.all(athlete: this);
+  Future<List<Weight>> get weights async {
+    final List<DbWeight> dbWeightList =
+        await _db.getDbWeights().orderByDesc('date').toList();
+    return dbWeightList.map(Weight.exDb).toList();
+  }
+
+  Future<List<PowerZoneSchema>> get powerZoneSchemas async {
+    final List<DbPowerZoneSchema> dbPowerZoneSchemaList =
+        await _db.getDbPowerZoneSchemas().orderByDesc('date').toList();
+    return dbPowerZoneSchemaList.map(PowerZoneSchema.exDb).toList();
+  }
+
+  Future<List<HeartRateZoneSchema>> get heartRateZoneSchemas async {
+    final List<DbHeartRateZoneSchema> dbHeartRateZoneSchemaList =
+        await _db.getDbHeartRateZoneSchemas().orderByDesc('date').toList();
+    return dbHeartRateZoneSchemaList.map(HeartRateZoneSchema.exDb).toList();
+  }
+
+  Future<List<TagGroup>> get tagGroups async {
+    final List<DbTagGroup> dbTagGroupList =
+        await _db.getDbTagGroups().orderBy('name').toList();
+    final List<TagGroup> tagGroups = dbTagGroupList.map(TagGroup.exDb).toList();
+
+    for (final TagGroup tagGroup in tagGroups) {
+      tagGroup.cachedTags = await tagGroup.tags;
+    }
+    return tagGroups;
+  }
 
   Future<void> delete() async {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
@@ -95,16 +143,18 @@ class Athlete {
       await activity.db.getDbLaps().delete();
 
       // ignore: avoid_slow_async_io
-      if (await File(appDocDir.path + '/${db.stravaId}.fit').exists())
-        await File(appDocDir.path + '/${db.stravaId}.fit').delete();
+      if (await File(appDocDir.path + '/$stravaId.fit').exists())
+        await File(appDocDir.path + '/$stravaId.fit').delete();
     }
-    await db.getDbActivities().delete();
-    await db.delete();
+    await _db.getDbActivities().delete();
+    await _db.delete();
   }
 
-  Future<void> save() async => await db.save();
+  Future<void> save() async => await _db.save();
 
   Future<bool> checkForSchemas() async =>
       (await powerZoneSchemas).isNotEmpty &&
       (await heartRateZoneSchemas).isNotEmpty;
+
+  static Athlete exDb(DbAthlete db) => Athlete._fromDb(db);
 }

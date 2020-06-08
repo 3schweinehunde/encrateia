@@ -25,7 +25,7 @@ class ActivityPowerRatioChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
       attribute: LapDoubleAttr.powerRatio,
-      amount: athlete.db.recordAggregationCount,
+      amount: athlete.recordAggregationCount,
     );
 
     final List<Series<DoublePlotPoint, int>> data =

@@ -93,7 +93,7 @@ class _AthleteSpeedPerHeartRateWidgetState
     unfilteredActivities = unfilteredActivities
         .where((Activity activity) => activity.db.sport == 'running')
         .toList();
-    tagGroups = await TagGroup.all(athlete: widget.athlete);
+    tagGroups = await widget.athlete.tagGroups;
     activities = await ActivityList<Activity>(unfilteredActivities).applyFilter(
       athlete: widget.athlete,
       tagGroups: tagGroups,

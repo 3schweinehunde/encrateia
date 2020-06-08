@@ -54,7 +54,7 @@ class _ActivityPowerPerHeartRateWidgetState
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W and heart rate > 0 bpm are shown.'),
               const Divider(),

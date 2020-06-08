@@ -53,7 +53,7 @@ class _ActivityLegSpringStiffnessWidgetState
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'leg spring stiffness > 0 kN/m are shown.'),
               const Divider(),

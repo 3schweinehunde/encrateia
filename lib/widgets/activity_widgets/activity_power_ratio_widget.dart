@@ -56,7 +56,7 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
                 athlete: widget.athlete,
               ),
               const Text('power ratio (%) = (power - form power) / power * 100'),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W and 0 W < form power < 200 W are shown.'),
               const Divider(),

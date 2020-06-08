@@ -195,7 +195,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       appBar: AppBar(
         backgroundColor: MyColor.athlete,
         title: Text(
-          '${widget.athlete.db.firstName} ${widget.athlete.db.lastName}',
+          '${widget.athlete.firstName} ${widget.athlete.lastName}',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -261,7 +261,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
   Future<void> recalculate() async {
     List<Activity> activities;
-    activities = await Activity.all(athlete: widget.athlete);
+    activities = await widget.athlete.activities;
     int index = 0;
     int percent;
 
@@ -307,7 +307,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       icon: MyIcon.finishedWhite,
     )..show(context);
 
-    activities = await Activity.all(athlete: widget.athlete);
+    activities = await widget.athlete.activities;
     final List<Activity> downloadedActivities = activities
         .where((Activity activity) => activity.db.state == 'downloaded')
         .toList();
@@ -357,7 +357,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         icon: MyIcon.finishedWhite,
       )..show(context);
 
-      activities = await Activity.all(athlete: widget.athlete);
+      activities = await widget.athlete.activities;
       final List<Activity> downloadedActivities = activities
           .where((Activity activity) => activity.db.state == 'downloaded')
           .toList();
@@ -388,7 +388,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     if (await widget.athlete.checkForSchemas()) {
       await queryStrava();
 
-      activities = await Activity.all(athlete: widget.athlete);
+      activities = await widget.athlete.activities;
       final Iterable<Activity> newActivities =
           activities.where((Activity activity) => activity.db.state == 'new');
       for (final Activity activity in newActivities) {
@@ -523,7 +523,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       )..show(context);
 
       List<Activity> activities;
-      activities = await Activity.all(athlete: widget.athlete);
+      activities = await widget.athlete.activities;
       int index = 0;
       int percent;
 

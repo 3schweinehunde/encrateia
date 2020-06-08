@@ -51,7 +51,7 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'ground time > 0 ms are shown.'),
               const Divider(),

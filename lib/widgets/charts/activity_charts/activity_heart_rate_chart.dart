@@ -28,7 +28,7 @@ class ActivityHeartRateChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<IntPlotPoint> smoothedRecords = records.toIntDataPoints(
       attribute: LapIntAttr.heartRate,
-      amount: athlete.db.recordAggregationCount,
+      amount: athlete.recordAggregationCount,
     );
 
     final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[

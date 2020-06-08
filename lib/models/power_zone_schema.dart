@@ -7,7 +7,7 @@ import 'package:sqfentity_gen/sqfentity_gen.dart';
 class PowerZoneSchema {
   PowerZoneSchema({@required Athlete athlete}) {
     _db = DbPowerZoneSchema()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..base = 250
       ..name = 'My Schema'
       ..date = DateTime.now();
@@ -16,7 +16,7 @@ class PowerZoneSchema {
 
   PowerZoneSchema.likeStryd({Athlete athlete}) {
     _db = DbPowerZoneSchema()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..name = 'CP based'
       ..date = DateTime(1970, 01, 01)
       ..base = 250;
@@ -25,7 +25,7 @@ class PowerZoneSchema {
   // https://www.velopress.com/jim-vances-running-power-zones/
   PowerZoneSchema.likeJimVance({Athlete athlete}) {
     _db = DbPowerZoneSchema()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..name = 'FTP based'
       ..date = DateTime(1970, 01, 01)
       ..base = 250;
@@ -33,7 +33,7 @@ class PowerZoneSchema {
 
   PowerZoneSchema.likeStefanDillinger({Athlete athlete}) {
     _db = DbPowerZoneSchema()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..name = 'FTP based'
       ..date = DateTime(1970, 01, 01)
       ..base = 250;
@@ -199,16 +199,6 @@ class PowerZoneSchema {
   @override
   String toString() => '< PowerZoneSchema | $name | $date >';
 
-  static Future<List<PowerZoneSchema>> all({@required Athlete athlete}) async {
-    final List<DbPowerZoneSchema> dbPowerZoneSchemaList =
-        await athlete.db.getDbPowerZoneSchemas().orderByDesc('date').toList();
-    final List<PowerZoneSchema> powerZoneSchemas = dbPowerZoneSchemaList
-        .map((DbPowerZoneSchema dbPowerZoneSchema) =>
-            PowerZoneSchema.fromDb(dbPowerZoneSchema))
-        .toList();
-    return powerZoneSchemas;
-  }
-
   static Future<PowerZoneSchema> getBy({int athletesId, DateTime date}) async {
     final List<DbPowerZoneSchema> dbPowerZoneSchemas = await DbPowerZoneSchema()
         .select()
@@ -224,4 +214,7 @@ class PowerZoneSchema {
       return PowerZoneSchema.fromDb(dbPowerZoneSchemas.first);
     return null;
   }
+
+  static PowerZoneSchema exDb(DbPowerZoneSchema db) =>
+      PowerZoneSchema.fromDb(db);
 }

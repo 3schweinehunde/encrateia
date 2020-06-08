@@ -8,7 +8,7 @@ import 'package:sqfentity_gen/sqfentity_gen.dart';
 class HeartRateZoneSchema {
   HeartRateZoneSchema({@required Athlete athlete}) {
     _db = DbHeartRateZoneSchema()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..base = 180
       ..name = 'My Schema'
       ..date = DateTime.now();
@@ -17,7 +17,7 @@ class HeartRateZoneSchema {
 
   HeartRateZoneSchema.likeGarmin({Athlete athlete}) {
     _db = DbHeartRateZoneSchema()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..name = 'max HR based'
       ..date = DateTime(1970, 01, 01)
       ..base = 180;
@@ -25,7 +25,7 @@ class HeartRateZoneSchema {
 
   HeartRateZoneSchema.likeStefanDillinger({Athlete athlete}) {
     _db = DbHeartRateZoneSchema()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..name = 'threshold heart rate based'
       ..date = DateTime(1970, 01, 01)
       ..base = 165;
@@ -134,21 +134,6 @@ class HeartRateZoneSchema {
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
 
-  static Future<List<HeartRateZoneSchema>> all(
-      {@required Athlete athlete}) async {
-    final List<DbHeartRateZoneSchema> dbHeartRateZoneSchemaList = await athlete
-        .db
-        .getDbHeartRateZoneSchemas()
-        .orderByDesc('date')
-        .toList();
-    final List<HeartRateZoneSchema> heartRateZoneSchemas =
-        dbHeartRateZoneSchemaList
-            .map((DbHeartRateZoneSchema dbHeartRateZoneSchema) =>
-                HeartRateZoneSchema.fromDb(dbHeartRateZoneSchema))
-            .toList();
-    return heartRateZoneSchemas;
-  }
-
   static Future<HeartRateZoneSchema> getBy({
     int athletesId,
     DateTime date,
@@ -168,4 +153,7 @@ class HeartRateZoneSchema {
       return HeartRateZoneSchema.fromDb(dbHeartRateZoneSchemas.first);
     return null;
   }
+
+  static HeartRateZoneSchema exDb(DbHeartRateZoneSchema db) =>
+      HeartRateZoneSchema.fromDb(db);
 }

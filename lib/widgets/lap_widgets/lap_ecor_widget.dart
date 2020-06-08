@@ -59,7 +59,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
                 records: RecordList<Event>(powerRecords),
                 weight: weight.value,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 0 W and speed > 1 m/s are shown.'),
               const Divider(),
@@ -91,7 +91,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
   Future<void> getData() async {
     records = RecordList<Event>(await widget.lap.records);
     weight = await Weight.getBy(
-      athletesId: widget.athlete.db.id,
+      athletesId: widget.athlete.id,
       date: widget.lap.startTime,
     );
     weightString = weight.value.toStringOrDashes(2) + ' kg';

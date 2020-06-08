@@ -1,4 +1,3 @@
-import 'package:encrateia/model/model.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
@@ -26,17 +25,17 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final DbAthlete userDB = widget.athlete.db;
+
     return ListView(
       children: <Widget>[
         ListTile(
           leading: MyIcon.athlete,
           title: const Text('Name'),
           subtitle: Text(
-            userDB.firstName + ' ' + userDB.lastName,
+            widget.athlete.firstName + ' ' + widget.athlete.lastName,
           ),
         ),
-        stravaTile(userDB: userDB),
+        stravaTile(athlete: widget.athlete),
         ListTile(
           leading: MyIcon.activities,
           title: const Text('Number of activities'),
@@ -53,7 +52,7 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
                 onPressed: () => decreaseDownloadInterval(),
               ),
               const Spacer(),
-              Text(widget.athlete.db.downloadInterval.toString()),
+              Text(widget.athlete.downloadInterval.toString()),
               const Spacer(),
               MyButton.save(
                 child: const Text('+ 7 days'),
@@ -77,7 +76,7 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
                 onPressed: () => decreaseRecordAggregationCount(),
               ),
               const Spacer(),
-              Text(widget.athlete.db.recordAggregationCount.toString()),
+              Text(widget.athlete.recordAggregationCount.toString()),
               const Spacer(),
               MyButton.save(
                 child: const Text('* 2'),
@@ -104,48 +103,47 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
   }
 
   Future<void> increaseDownloadInterval() async {
-    final DbAthlete userDB = widget.athlete.db;
-    userDB.downloadInterval = (userDB.downloadInterval ?? 21) + 7;
-    await userDB.save();
+    widget.athlete.downloadInterval =
+        (widget.athlete.downloadInterval ?? 21) + 7;
+    await widget.athlete.save();
     setState(() {});
   }
 
   Future<void> decreaseDownloadInterval() async {
-    final DbAthlete userDB = widget.athlete.db;
-    userDB.downloadInterval = (userDB.downloadInterval ?? 21) - 7;
-    if (userDB.downloadInterval < 7) 
-      userDB.downloadInterval = 7;
-    await userDB.save();
+    widget.athlete.downloadInterval =
+        (widget.athlete.downloadInterval ?? 21) - 7;
+    if (widget.athlete.downloadInterval < 7)
+      widget.athlete.downloadInterval = 7;
+    await widget.athlete.save();
     setState(() {});
   }
 
   Future<void> increaseRecordAggregationCount() async {
-    final DbAthlete userDB = widget.athlete.db;
-    userDB.recordAggregationCount = (userDB.recordAggregationCount ?? 16) * 2;
-    await userDB.save();
+    widget.athlete.recordAggregationCount =
+        (widget.athlete.recordAggregationCount ?? 16) * 2;
+    await widget.athlete.save();
     setState(() {});
   }
 
   Future<void> decreaseRecordAggregationCount() async {
-    final DbAthlete userDB = widget.athlete.db;
-    userDB.recordAggregationCount =
-        ((userDB.recordAggregationCount ?? 16) / 2).round();
-    if (userDB.recordAggregationCount < 1) 
-      userDB.recordAggregationCount = 1;
-    await userDB.save();
+    widget.athlete.recordAggregationCount =
+        ((widget.athlete.recordAggregationCount ?? 16) / 2).round();
+    if (widget.athlete.recordAggregationCount < 1)
+      widget.athlete.recordAggregationCount = 1;
+    await widget.athlete.save();
     setState(() {});
   }
 
-  Widget stravaTile({DbAthlete userDB}) {
-    if (userDB.stravaId != null)
+  Widget stravaTile({Athlete athlete}) {
+    if (athlete.id != null)
       return ListTile(
           leading: MyIcon.stravaDownload,
           title: const Text('Strava ID / Username / Location'),
-          subtitle: Text(userDB.stravaId.toString() +
+          subtitle: Text(athlete.stravaId.toString() +
               ' / ' +
-              userDB.stravaUsername +
+              athlete.stravaUsername +
               ' / ' +
-              userDB.geoState));
+              athlete.geoState));
     else
       return Container(width: 0, height: 0);
   }

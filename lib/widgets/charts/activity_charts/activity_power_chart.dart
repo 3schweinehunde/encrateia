@@ -28,7 +28,7 @@ class ActivityPowerChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<IntPlotPoint> smoothedRecords = records.toIntDataPoints(
       attribute: LapIntAttr.power,
-      amount: athlete.db.recordAggregationCount,
+      amount: athlete.recordAggregationCount,
     );
 
     final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[

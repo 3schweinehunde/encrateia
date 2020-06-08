@@ -53,7 +53,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
                 heartRateZones: heartRateZones,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'heart rate > 10 bpm are shown.'),
               const Divider(),

@@ -51,7 +51,7 @@ class _ActivityVerticalOscillationWidgetState
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'vertical oscillation is present are shown.'),
               const Divider(),

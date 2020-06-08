@@ -53,11 +53,11 @@ class _StravaGetUserState extends State<StravaGetUser> {
   }
 
   Future<void> getData() async {
-    if (widget.athlete.db.firstName == null) {
+    if (widget.athlete.firstName == null) {
       await loginToStrava();
       setState((){});
     }
-    if (widget.athlete.db.state == 'fromStrava')
+    if (widget.athlete.state == 'fromStrava')
       Navigator.of(context).pop();
   }
 }

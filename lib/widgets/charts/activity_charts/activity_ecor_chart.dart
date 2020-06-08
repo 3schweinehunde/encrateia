@@ -27,7 +27,7 @@ class ActivityEcorChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
       attribute: LapDoubleAttr.ecor,
-      amount: athlete.db.recordAggregationCount,
+      amount: athlete.recordAggregationCount,
       weight: weight,
     );
 

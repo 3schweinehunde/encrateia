@@ -52,7 +52,7 @@ class _ActivityStrydCadenceWidgetState
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'cadence > 0 s/min are shown.'),
               const Divider(),

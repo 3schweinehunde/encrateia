@@ -56,7 +56,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
                 athlete: widget.athlete,
                 weight: weight.value,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 0 W and speed > 1 m/s are shown.'),
               const Divider(),
@@ -98,7 +98,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   Future<void> getData() async {
     records = RecordList<Event>(await widget.activity.records);
     weight = await Weight.getBy(
-      athletesId: widget.athlete.db.id,
+      athletesId: widget.athlete.id,
       date: widget.activity.db.timeCreated,
     );
     widget.activity.weight = weight.value;

@@ -113,7 +113,7 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
   }
 
   Future<void> getData() async {
-    tagGroups = await TagGroup.all(athlete: widget.athlete);
+    tagGroups = await widget.athlete.tagGroups;
     setState(() {});
   }
 }

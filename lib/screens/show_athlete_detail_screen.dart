@@ -22,7 +22,7 @@ class ShowAthleteDetailScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: backgroundColor ?? MyColor.athlete,
         title: Text(
-          '$title: ${athlete.db.firstName} ${athlete.db.lastName}',
+          '$title: ${athlete.firstName} ${athlete.lastName}',
           overflow: TextOverflow.ellipsis,
         ),
       ),

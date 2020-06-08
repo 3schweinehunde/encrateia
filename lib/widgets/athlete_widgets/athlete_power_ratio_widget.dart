@@ -88,7 +88,7 @@ class _AthletePowerRatioWidgetState extends State<AthletePowerRatioWidget> {
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.activities;
-    tagGroups = await TagGroup.all(athlete: widget.athlete);
+    tagGroups = await widget.athlete.tagGroups;
     activities = await ActivityList<Activity>(unfilteredActivities).applyFilter(
       athlete: widget.athlete,
       tagGroups: tagGroups,

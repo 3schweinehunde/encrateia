@@ -58,7 +58,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                 powerZones: powerZones,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W are shown.'),
               const Divider(),

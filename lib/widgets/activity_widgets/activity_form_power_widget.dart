@@ -53,7 +53,7 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   '0 W < form power < 200 W are shown.'),
               const Divider(),

@@ -119,7 +119,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   }
 
   Future<void> getActivities() async {
-    activities = await Activity.all(athlete: widget.athlete);
+    activities = await widget.athlete.activities;
     for (final Activity activity in activities) {
       await activity.tags;
     }

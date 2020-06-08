@@ -36,7 +36,7 @@ class Activity {
     Athlete athlete,
   }) {
     db = DbActivity()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..name = summaryActivity.name
       ..type = summaryActivity.type
       ..distance = summaryActivity.distance.toInt()
@@ -46,7 +46,7 @@ class Activity {
 
   Activity.fromLocalDirectory({Athlete athlete}) {
     db = DbActivity()
-      ..athletesId = athlete.db.id
+      ..athletesId = athlete.id
       ..stravaId = DateTime.now().millisecondsSinceEpoch
       ..name = 't.b.d.';
   }
@@ -495,7 +495,7 @@ class Activity {
         prompt);
 
     final int now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final int startDate = now - athlete.db.downloadInterval * 86400;
+    final int startDate = now - athlete.downloadInterval * 86400;
 
     final List<strava_activity.SummaryActivity> summaryActivities =
         await strava.getLoggedInAthleteActivities(now, startDate);
@@ -516,15 +516,6 @@ class Activity {
         await activity.db.save();
       }
     });
-  }
-
-  static Future<List<Activity>> all({@required Athlete athlete}) async {
-    final List<DbActivity> dbActivityList =
-        await athlete.db.getDbActivities().orderByDesc('stravaId').toList();
-    final List<Activity> activities = dbActivityList
-        .map((DbActivity dbActivity) => Activity.fromDb(dbActivity))
-        .toList();
-    return activities;
   }
 
   Future<PowerZoneSchema> get powerZoneSchema async =>

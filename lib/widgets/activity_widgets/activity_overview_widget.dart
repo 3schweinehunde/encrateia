@@ -117,7 +117,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
 
   Future<void> getData() async {
     final Weight weight = await Weight.getBy(
-      athletesId: widget.athlete.db.id,
+      athletesId: widget.athlete.id,
       date: widget.activity.db.timeCreated,
     );
     setState(() {

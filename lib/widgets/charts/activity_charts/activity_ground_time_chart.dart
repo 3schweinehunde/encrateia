@@ -25,7 +25,7 @@ class ActivityGroundTimeChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
       attribute: LapDoubleAttr.groundTime,
-      amount: athlete.db.recordAggregationCount,
+      amount: athlete.recordAggregationCount,
     );
 
     final List<Series<DoublePlotPoint, int>> data = <Series<DoublePlotPoint, int>>[

@@ -53,7 +53,7 @@ class _ActivitySpeedPerHeartRateWidgetState
                 activity: widget.activity,
                 athlete: widget.athlete,
               ),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'speed is present and heart rate > 0 bpm are shown.'),
               const Divider(),

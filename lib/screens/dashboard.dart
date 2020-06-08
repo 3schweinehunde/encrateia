@@ -108,7 +108,7 @@ class _DashboardState extends State<Dashboard> {
             Card(
               child: ListTile(
                 leading: photoOrImage(athlete: athlete),
-                title: Text('${athlete.db.firstName} ${athlete.db.lastName}'),
+                title: Text('${athlete.firstName} ${athlete.lastName}'),
                 onTap: () => goToListActivitiesScreen(athlete: athlete),
               ),
             ),
@@ -118,8 +118,8 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Widget photoOrImage({Athlete athlete}) {
-    if (athlete.db.photoPath != null)
-      return Image.network(athlete.db.photoPath);
+    if (athlete.photoPath != null)
+      return Image.network(athlete.photoPath);
     else
       return MyIcon.runningBig;
   }

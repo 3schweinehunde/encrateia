@@ -57,7 +57,7 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
                   ' (cm)'),
               const Text('stride length (cm) = 10 000 / 6 * speed (km/h) / cadence '
                   '(strides/min)'),
-              Text('${widget.athlete.db.recordAggregationCount} records are '
+              Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'cadence is present and vertical oscillation > 0 mm are shown.'),
               const Divider(),
