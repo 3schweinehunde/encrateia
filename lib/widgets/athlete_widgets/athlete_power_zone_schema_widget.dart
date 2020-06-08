@@ -59,12 +59,12 @@ class _AthletePowerZoneSchemaWidgetState
                   .sublist(offset, offset + rows)
                   .map((PowerZoneSchema powerZoneSchema) {
                 return DataRow(
-                  key: ValueKey<int>(powerZoneSchema.db.id),
+                  key: ValueKey<int>(powerZoneSchema.id),
                   cells: <DataCell>[
                     DataCell(Text(DateFormat('d MMM yyyy')
-                        .format(powerZoneSchema.db.date))),
-                    DataCell(Text(powerZoneSchema.db.name)),
-                    DataCell(Text(powerZoneSchema.db.base.toString())),
+                        .format(powerZoneSchema.date))),
+                    DataCell(Text(powerZoneSchema.name)),
+                    DataCell(Text(powerZoneSchema.base.toString())),
                     DataCell(
                       MyIcon.edit,
                       onTap: () async {
@@ -179,7 +179,7 @@ You could also create a schema from scratch.
   Future<void> likeStryd() async {
     final Athlete athlete = widget.athlete;
     final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeStryd(athlete: athlete);
-    await powerZoneSchema.db.save();
+    await powerZoneSchema.save();
     await powerZoneSchema.addStrydZones();
     await getData();
   }
@@ -187,7 +187,7 @@ You could also create a schema from scratch.
   Future<void> likeJimVance() async {
     final Athlete athlete = widget.athlete;
     final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeJimVance(athlete: athlete);
-    await powerZoneSchema.db.save();
+    await powerZoneSchema.save();
     await powerZoneSchema.addJimVanceZones();
     await getData();
   }
@@ -195,7 +195,7 @@ You could also create a schema from scratch.
   Future<void> likeStefanDillinger() async {
     final Athlete athlete = widget.athlete;
     final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeStefanDillinger(athlete: athlete);
-    await powerZoneSchema.db.save();
+    await powerZoneSchema.save();
     await powerZoneSchema.addStefanDillingerZones();
     await getData();
   }

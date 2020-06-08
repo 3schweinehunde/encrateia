@@ -13,7 +13,7 @@ class PowerZone {
       int upperLimit,
       int color}) {
     db = DbPowerZone()
-      ..powerZoneSchemataId = powerZoneSchema.db.id
+      ..powerZoneSchemataId = powerZoneSchema.id
       ..name = name ?? 'My Zone'
       ..lowerLimit = lowerLimit ?? 70
       ..upperLimit = upperLimit ?? 100
@@ -22,9 +22,9 @@ class PowerZone {
       ..color = color ?? 0xFFFFc107;
 
     if (lowerPercentage != null)
-      db.lowerLimit = (lowerPercentage * powerZoneSchema.db.base / 100).round();
+      db.lowerLimit = (lowerPercentage * powerZoneSchema.base / 100).round();
     if (upperPercentage != null)
-      db.upperLimit = (upperPercentage * powerZoneSchema.db.base / 100).round();
+      db.upperLimit = (upperPercentage * powerZoneSchema.base / 100).round();
   }
 
   PowerZone.fromDb(this.db);
@@ -35,16 +35,4 @@ class PowerZone {
   String toString() => '< PowerZone | ${db.name} | ${db.lowerLimit} >';
 
   Future<BoolResult> delete() async => await db.delete();
-
-  static Future<List<PowerZone>> all(
-      {@required PowerZoneSchema powerZoneSchema}) async {
-    final List<DbPowerZone> dbPowerZoneList = await powerZoneSchema.db
-        .getDbPowerZones()
-        .orderByDesc('lowerlimit')
-        .toList();
-    final List<PowerZone> powerZones = dbPowerZoneList
-        .map((DbPowerZone dbPowerZone) => PowerZone.fromDb(dbPowerZone))
-        .toList();
-    return powerZones;
-  }
 }

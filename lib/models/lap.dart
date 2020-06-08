@@ -277,7 +277,7 @@ class Lap {
       final DbPowerZone dbPowerZone = await DbPowerZone()
           .select()
           .powerZoneSchemataId
-          .equals((await powerZoneSchema).db.id)
+          .equals((await powerZoneSchema).id)
           .and
           .lowerLimit
           .lessThanOrEquals(db.avgPower)
