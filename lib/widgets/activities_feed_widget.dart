@@ -46,8 +46,8 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
         return Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
           ListTile(
-            leading: sportsIcon(sport: activity.db.sport),
-            title: Text(activity.db.name ?? 'Activity'),
+            leading: sportsIcon(sport: activity.sport),
+            title: Text(activity.name ?? 'Activity'),
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -59,7 +59,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
               ],
             ),
             onTap: () async {
-              if (activity.db.state == 'persisted') {
+              if (activity.state == 'persisted') {
                 await Navigator.push(
                   context,
                   MaterialPageRoute<BuildContext>(

@@ -31,18 +31,18 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
     return <ListTile>[
       ListTile(
         title: Text(
-            '${(widget.activity.db.distance / 1000).toStringAsFixed(2)} km'),
+            '${(widget.activity.distance / 1000).toStringAsFixed(2)} km'),
         subtitle: const Text('distance'),
       ),
       ListTile(
         title: Text(
-            Duration(seconds: widget.activity.db.movingTime ?? 0).asString()),
+            Duration(seconds: widget.activity.movingTime ?? 0).asString()),
         subtitle: const Text('moving time'),
       ),
       ListTile(
-        title: Text(widget.activity.db.avgSpeed.toPace() +
+        title: Text(widget.activity.avgSpeed.toPace() +
             ' / ' +
-            widget.activity.db.maxSpeed.toPace()),
+            widget.activity.maxSpeed.toPace()),
         subtitle: const Text('avg / max pace'),
       ),
       ListTile(
@@ -54,50 +54,50 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
         subtitle: const Text('ecor'),
       ),
       ListTile(
-        title: Text('${widget.activity.db.avgHeartRate} / '
-            '${widget.activity.db.maxHeartRate} bpm'),
+        title: Text('${widget.activity.avgHeartRate} / '
+            '${widget.activity.maxHeartRate} bpm'),
         subtitle: const Text('avg / max heart rate'),
       ),
       ListTile(
-        title: Text('${widget.activity.db.avgPower.toStringAsFixed(1)} W'),
+        title: Text('${widget.activity.avgPower.toStringAsFixed(1)} W'),
         subtitle: const Text('avg power'),
       ),
       ListTile(
-        title: (widget.activity.db.avgPower != -1)
+        title: (widget.activity.avgPower != -1)
             ? Text(
-                (widget.activity.db.avgPower / widget.activity.db.avgHeartRate)
+                (widget.activity.avgPower / widget.activity.avgHeartRate)
                         .toStringAsFixed(2) +
                     ' W/bpm')
             : const Text('No power data available'),
         subtitle: const Text('power / heart rate'),
       ),
       ListTile(
-        title: Text('${widget.activity.db.totalCalories} kcal'),
+        title: Text('${widget.activity.totalCalories} kcal'),
         subtitle: const Text('total calories'),
       ),
       ListTile(
         title: Text(DateFormat('dd MMM yyyy, h:mm:ss')
-            .format(widget.activity.db.timeCreated)),
+            .format(widget.activity.timeCreated)),
         subtitle: const Text('time created'),
       ),
       ListTile(
-        title: Text('${widget.activity.db.totalAscent ?? 0} - '
-                '${widget.activity.db.totalDescent ?? 0}'
+        title: Text('${widget.activity.totalAscent ?? 0} - '
+                '${widget.activity.totalDescent ?? 0}'
                 ' = ' +
-            ((widget.activity.db.totalAscent ?? 0) -
-                    (widget.activity.db.totalDescent ?? 0))
+            ((widget.activity.totalAscent ?? 0) -
+                    (widget.activity.totalDescent ?? 0))
                 .toString() +
             ' m'),
         subtitle: const Text('total ascent - descent = total climb'),
       ),
       ListTile(
         title:
-            Text('${(widget.activity.db.avgRunningCadence ?? 0 * 2).round()} / '
-                '${widget.activity.db.maxRunningCadence ?? 0 * 2} spm'),
+            Text('${(widget.activity.avgRunningCadence ?? 0 * 2).round()} / '
+                '${widget.activity.maxRunningCadence ?? 0 * 2} spm'),
         subtitle: const Text('avg / max steps per minute'),
       ),
       ListTile(
-        title: Text(widget.activity.db.totalTrainingEffect.toString()),
+        title: Text(widget.activity.totalTrainingEffect.toString()),
         subtitle: const Text('total training effect'),
       ),
     ];
@@ -118,7 +118,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
   Future<void> getData() async {
     final Weight weight = await Weight.getBy(
       athletesId: widget.athlete.id,
-      date: widget.activity.db.timeCreated,
+      date: widget.activity.timeCreated,
     );
     setState(() {
       widget.activity.weight = weight?.value;

@@ -51,9 +51,9 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
     } else {
       final List<Activity> ecorActivities = activities
           .where((Activity activity) =>
-              activity.db.avgPower != null &&
-              activity.db.avgPower > 0 &&
-              activity.db.avgSpeed != null)
+              activity.avgPower != null &&
+              activity.avgPower > 0 &&
+              activity.avgSpeed != null)
           .toList();
       if (ecorActivities.isEmpty) {
         return const Center(
@@ -99,8 +99,8 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
 
     for (final Activity activity in activities) {
       final Weight weight = await Weight.getBy(
-        athletesId: activity.db.athletesId,
-        date: activity.db.timeCreated,
+        athletesId: activity.athletesId,
+        date: activity.timeCreated,
       );
       activity.weight = weight?.value;
     }

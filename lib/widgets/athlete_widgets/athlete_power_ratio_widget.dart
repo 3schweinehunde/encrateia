@@ -34,10 +34,10 @@ class _AthletePowerRatioWidgetState extends State<AthletePowerRatioWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> powerRatioActivities = activities
           .where((Activity value) =>
-              value.db.avgPower != null &&
-              value.db.avgPower > 0 &&
-              value.db.avgFormPower != null &&
-              value.db.avgFormPower > 0)
+              value.avgPower != null &&
+              value.avgPower > 0 &&
+              value.avgFormPower != null &&
+              value.avgFormPower > 0)
           .toList();
 
       if (powerRatioActivities.isNotEmpty) {

@@ -34,7 +34,7 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> powerActivities = activities
           .where((Activity activity) =>
-              activity.db.avgPower != null && activity.db.avgPower > 0)
+              activity.avgPower != null && activity.avgPower > 0)
           .toList();
       if (powerActivities.isNotEmpty) {
         return ListTileTheme(

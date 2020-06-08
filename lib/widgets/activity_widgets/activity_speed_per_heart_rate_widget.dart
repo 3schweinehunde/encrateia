@@ -81,7 +81,7 @@ class _ActivitySpeedPerHeartRateWidgetState
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
 
-    final double avg = 1000 * activity.db.avgSpeed / activity.db.avgHeartRate;
+    final double avg = 1000 * activity.avgSpeed / activity.avgHeartRate;
     avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + ' m/h / bpm';
     setState(() {});
   }

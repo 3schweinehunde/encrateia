@@ -65,17 +65,17 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 MyBarChart(
                   width: 150,
                   height: 20,
-                  value: widget.activity.db.avgPower,
+                  value: widget.activity.avgPower,
                   powerZones: _powerZones,
                 ),
-                Text(widget.activity.db.avgPower.toStringAsFixed(1)),
+                Text(widget.activity.avgPower.toStringAsFixed(1)),
                 MyBarChart(
                   width: 150,
                   height: 20,
-                  value: widget.activity.db.avgHeartRate,
+                  value: widget.activity.avgHeartRate,
                   heartRateZones: _heartRateZones,
                 ),
-                Text(widget.activity.db.avgHeartRate.toString()),
+                Text(widget.activity.avgHeartRate.toString()),
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[
@@ -146,10 +146,10 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 const Text('Activity'),
                 MyBarChart(
                   height: 20,
-                  value: widget.activity.db.avgSpeed.toPaceDouble(),
+                  value: widget.activity.avgSpeed.toPaceDouble(),
                   maximum: 700,
                 ),
-                Text(widget.activity.db.avgSpeed.toPace()),
+                Text(widget.activity.avgSpeed.toPace()),
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[

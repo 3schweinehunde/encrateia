@@ -94,8 +94,8 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgStrideRatioString = activity.db.avgStrideRatio.toStringOrDashes(1);
-    sdevStrideRatioString = activity.db.sdevStrideRatio.toStringOrDashes(2);
+    avgStrideRatioString = activity.avgStrideRatio.toStringOrDashes(1);
+    sdevStrideRatioString = activity.sdevStrideRatio.toStringOrDashes(2);
     setState(() {});
   }
 }

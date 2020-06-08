@@ -59,7 +59,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(widget.activity.db.avgHeartRate.toString()),
+                title: Text(widget.activity.avgHeartRate.toString()),
                 subtitle: const Text('average heart rate'),
               ),
               ListTile(
@@ -69,7 +69,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: Text(widget.activity.db.maxHeartRate.toString()),
+                title: Text(widget.activity.maxHeartRate.toString()),
                 subtitle: const Text('maximum heart rate'),
               ),
               ListTile(

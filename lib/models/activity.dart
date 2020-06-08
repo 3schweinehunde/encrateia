@@ -6,7 +6,7 @@ import 'package:encrateia/models/strava_fit_download.dart';
 import 'package:fit_parser/src/value.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart'
-    show DbActivity, DbHeartRateZone, DbPowerZone;
+    show DbActivity, DbEvent, DbHeartRateZone, DbLap, DbPowerZone;
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';
@@ -29,13 +29,13 @@ import 'heart_rate_zone_schema.dart';
 
 class Activity {
   Activity();
-  Activity._fromDb(this.db);
+  Activity._fromDb(this._db);
 
   Activity.fromStrava({
     strava_activity.SummaryActivity summaryActivity,
     Athlete athlete,
   }) {
-    db = DbActivity()
+    _db = DbActivity()
       ..athletesId = athlete.id
       ..name = summaryActivity.name
       ..type = summaryActivity.type
@@ -45,15 +45,15 @@ class Activity {
   }
 
   Activity.fromLocalDirectory({Athlete athlete}) {
-    db = DbActivity()
+    _db = DbActivity()
       ..athletesId = athlete.id
       ..stravaId = DateTime.now().millisecondsSinceEpoch
       ..name = 't.b.d.';
   }
 
-  DbActivity db;
+  DbActivity _db;
   List<Event> _records;
-  List<Lap> _laps;
+  List<Lap> cachedLaps;
   List<Tag> cachedTags = <Tag>[];
   double glidingMeasureAttribute;
   double weight;
@@ -62,37 +62,105 @@ class Activity {
   HeartRateZone _heartRateZone;
   HeartRateZoneSchema _heartRateZoneSchema;
 
+  String get name => _db.name;
+  DateTime get startTime => _db.startTime;
+  int get movingTime => _db.movingTime;
+  double get avgPower => _db.avgPower;
+  double get avgSpeed => _db.avgSpeed;
+  int get avgHeartRate => _db.avgHeartRate;
+  double get avgFormPower => _db.avgFormPower;
+  double get avgStrydCadence => _db.avgStrydCadence;
+  double get avgVerticalOscillation => _db.avgVerticalOscillation;
+  int get stravaId => _db.stravaId;
+  int get totalDistance => _db.totalDistance;
+  DateTime get timeCreated => _db.timeCreated;
+  double get avgPowerRatio => _db.avgPowerRatio;
+  double get sdevPowerRatio => _db.sdevPowerRatio;
+  int get minPower => _db.minPower;
+  int get maxPower => _db.maxPower;
+  double get sdevPower => _db.sdevPower;
+  double get sdevStrydCadence => _db.sdevStrydCadence;
+  double get sdevFormPower => _db.sdevFormPower;
+  int get totalCalories => _db.totalCalories;
+  int get totalAscent => _db.totalAscent;
+  int get totalDescent => _db.totalDescent;
+  int get maxHeartRate => _db.maxHeartRate;
+  double get avgRunningCadence => _db.avgRunningCadence;
+  int get maxRunningCadence => _db.maxRunningCadence;
+  int get totalTrainingEffect => _db.totalTrainingEffect;
+  int get distance => _db.distance;
+  double get maxSpeed => _db.maxSpeed;
+  DateTime get timeStamp => _db.timeStamp;
+  String get event => _db.event;
+  int get totalStrides => _db.totalStrides;
+  int get avgTemperature => _db.avgTemperature;
+  int get maxTemperature => _db.maxTemperature;
+  double get totalFractionalCycles => _db.totalFractionalCycles;
+  int get totalElapsedTime => _db.totalElapsedTime;
+  int get totalTimerTime => _db.totalTimerTime;
+  int get serialNumber => _db.serialNumber;
+  String get type => _db.type;
+  String get sport => _db.sport;
+  String get subSport => _db.subSport;
+  String get eventType => _db.eventType;
+  String get trigger => _db.trigger;
+  int get numLaps => _db.numLaps;
+  int get numSessions => _db.numSessions;
+  double get avgFractionalCadence => _db.avgFractionalCadence;
+  double get maxFractionalCadence => _db.maxFractionalCadence;
+  double get avgStanceTime => _db.avgStanceTime;
+  double get avgStanceTimePercent => _db.avgStanceTimePercent;
+  double get startPositionLong => _db.startPositionLong;
+  double get startPositionLat => _db.startPositionLat;
+  double get necLong => _db.necLong;
+  double get necLat => _db.necLat;
+  double get swcLong => _db.swcLong;
+  double get swcLat => _db.swcLat;
+  double get avgStrideRatio => _db.avgStrideRatio;
+  String get state => _db.state;
+  int get athletesId => _db.athletesId;
+  double get avgLegSpringStiffness => _db.avgLegSpringStiffness;
+  double get sdevLegSpringStiffness => _db.sdevLegSpringStiffness;
+  double get sdevStrideRatio => _db.sdevStrideRatio;
+  double get avgGroundTime => _db.avgGroundTime;
+  double get sdevGroundTime => _db.sdevGroundTime;
+  double get sdevVerticalOscillation => _db.sdevVerticalOscillation;
+  int get id => _db.id;
+
+  set name(String value) => _db.name = value;
+  set state(String value) => _db.state = value;
+  set maxHeartRate(int value) => _db.maxHeartRate = value;
+
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
+
   // intermediate data structures used for parsing
   Lap currentLap;
   List<Event> eventsForCurrentLap;
 
   @override
-  String toString() => '< Activity | ${db.name} | ${db.startTime} >';
-  Duration movingDuration() => Duration(seconds: db.movingTime ?? 0);
+  String toString() => '< Activity | $name | $startTime >';
+  Duration movingDuration() => Duration(seconds: movingTime ?? 0);
 
   dynamic getAttribute(ActivityAttr activityAttr) {
     switch (activityAttr) {
       case ActivityAttr.avgPower:
-        return db.avgPower;
+        return avgPower;
       case ActivityAttr.ecor:
-        return db.avgPower / db.avgSpeed / weight;
+        return avgPower / avgSpeed / weight;
       case ActivityAttr.avgPowerPerHeartRate:
-        return db.avgPower / db.avgHeartRate;
+        return avgPower / avgHeartRate;
       case ActivityAttr.avgSpeedPerHeartRate:
-        return 100 * (db.avgSpeed / db.avgHeartRate);
+        return 100 * (avgSpeed / avgHeartRate);
       case ActivityAttr.avgPowerRatio:
-        return 100 * (db.avgPower - db.avgFormPower) / db.avgPower;
+        return 100 * (avgPower - avgFormPower) / avgPower;
       case ActivityAttr.avgStrideRatio:
-        return 10000 /
-            6 *
-            db.avgSpeed /
-            db.avgStrydCadence /
-            db.avgVerticalOscillation;
+        return 10000 / 6 * avgSpeed / avgStrydCadence / avgVerticalOscillation;
     }
   }
 
   Future<void> download({@required Athlete athlete}) async {
-    await StravaFitDownload.byId(id: db.stravaId.toString(), athlete: athlete);
+    await StravaFitDownload.byId(id: stravaId.toString(), athlete: athlete);
     setState('downloaded');
   }
 
@@ -114,7 +182,7 @@ class Activity {
         if (isFile == true && entity.path.endsWith('.fit')) {
           final File sourceFile = File(entity.path);
           await sourceFile.copy(
-              appDocDir.path + '/' + activity.db.stravaId.toString() + '.fit');
+              appDocDir.path + '/' + activity.stravaId.toString() + '.fit');
           sourceFile.delete();
           await activity.setState('downloaded');
         }
@@ -133,7 +201,7 @@ class Activity {
         if (isFile == true && entity.path.endsWith('.fit')) {
           final File sourceFile = File(entity.path);
           await sourceFile.rename(
-              appDocDir.path + '/' + activity.db.stravaId.toString() + '.fit');
+              appDocDir.path + '/' + activity.stravaId.toString() + '.fit');
           await activity.setState('downloaded');
         }
       }
@@ -141,60 +209,56 @@ class Activity {
   }
 
   Future<void> setState(String state) async {
-    db.state = state;
-    await db.save();
+    _db.state = state;
+    await save();
   }
 
   String distanceString() {
-    return db.totalDistance == null
+    return totalDistance == null
         ? '- - -'
-        : (db.totalDistance / 1000).toStringAsFixed(2) + ' km';
+        : (totalDistance / 1000).toStringAsFixed(2) + ' km';
   }
 
   String heartRateString() {
-    return (db.avgHeartRate == null || db.avgHeartRate == 255)
+    return (avgHeartRate == null || avgHeartRate == 255)
         ? '- - -'
-        : db.avgHeartRate.toString() + ' bpm';
+        : avgHeartRate.toString() + ' bpm';
   }
 
   String averagePowerString() {
-    return (db.avgPower == null || db.avgPower == -1)
+    return (avgPower == null || avgPower == -1)
         ? '-'
-        : db.avgPower.toStringAsFixed(1) + ' W';
+        : avgPower.toStringAsFixed(1) + ' W';
   }
 
   String timeString() {
-    return db.timeCreated == null
+    return timeCreated == null
         ? '- - -'
-        : DateFormat('H:mm').format(db.timeCreated);
+        : DateFormat('H:mm').format(timeCreated);
   }
 
   String dateString() {
-    return db.timeCreated == null
+    return timeCreated == null
         ? '- - -'
-        : DateFormat('d MMM yy').format(db.timeCreated);
+        : DateFormat('d MMM yy').format(timeCreated);
   }
 
   String longDateTimeString() {
-    return db.timeCreated == null
+    return timeCreated == null
         ? '- - -'
-        : DateFormat('E d MMM yy, H:mm').format(db.timeCreated);
+        : DateFormat('E d MMM yy, H:mm').format(timeCreated);
   }
 
   String shortDateString() {
-    return db.timeCreated == null
+    return timeCreated == null
         ? '- - -'
-        : DateFormat('d.M.').format(db.timeCreated);
+        : DateFormat('d.M.').format(timeCreated);
   }
 
-  String paceString() => db.avgSpeed.toPace() + '/km';
+  String paceString() => avgSpeed.toPace() + '/km';
 
   Future<List<Event>> get records async {
     return _records ??= await Event.recordsByActivity(activity: this);
-  }
-
-  Future<List<Lap>> get laps async {
-    return _laps ??= await Lap.all(activity: this);
   }
 
   Future<List<Tag>> get tags async {
@@ -207,7 +271,7 @@ class Activity {
   Future<bool> setAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(<Event>[]);
     recordList.addAll(await records);
-    db
+    _db
       ..avgPower = recordList.calculateAveragePower()
       ..sdevPower = recordList.calculateSdevPower()
       ..minPower = recordList.calculateMinPower()
@@ -233,7 +297,7 @@ class Activity {
     for (final Lap lap in laps) {
       await lap.setAverages();
     }
-    await db.save();
+    await save();
     return true;
   }
 
@@ -243,13 +307,13 @@ class Activity {
 
     final Directory appDocDir = await getApplicationDocumentsDirectory();
     final FitFile fitFile =
-        FitFile(path: appDocDir.path + '/${db.stravaId}.fit').parse();
-    print('Parsing .fit-File for »${db.name}« done.');
+        FitFile(path: appDocDir.path + '/$stravaId.fit').parse();
+    print('Parsing .fit-File for »$name« done.');
 
     // delete left overs from prior runs:
-    await db.getDbEvents().delete();
-    await db.getDbLaps().delete();
-    db
+    await _db.getDbEvents().delete();
+    await _db.getDbLaps().delete();
+    _db
       ..avgPower = null
       ..minPower = null
       ..maxPower = null
@@ -263,7 +327,7 @@ class Activity {
       ..avgStrydCadence = null
       ..sdevStrydCadence = null
       ..sdevVerticalOscillation = null;
-    await db.save();
+    await save();
 
     final int numberOfMessages = fitFile.dataMessages.length;
     await resetCurrentLap();
@@ -278,10 +342,10 @@ class Activity {
       }
     }
 
-    db.state = 'persisted';
+    state = 'persisted';
     await setAverages();
-    await db.save();
-    print('Activity data for »${db.name}« stored in database.');
+    await save();
+    print('Activity data for »$name« stored in database.');
     yield 100;
   }
 
@@ -324,20 +388,20 @@ class Activity {
           break; // we are currently not storing these kinds of messages
 
         case 'file_id':
-          db
+          _db
             ..serialNumber =
                 (dataMessage.get('serial_number') as double)?.round()
             ..timeCreated =
                 dateTimeFromStrava(dataMessage.get('time_created') as double);
-          await db.save();
+          await save();
           break;
 
         case 'sport':
-          db
+          _db
             ..sportName = dataMessage.get('name') as String
             ..sport = dataMessage.get('sport') as String
             ..subSport = dataMessage.get('sub_sport') as String;
-          await db.save();
+          await save();
           break;
 
         case 'event':
@@ -387,10 +451,10 @@ class Activity {
           final DateTime startTime =
               dateTimeFromStrava(dataMessage.get('start_time') as double);
 
-          if (db.name == 't.b.d.')
-            db.name =
+          if (name == 't.b.d.')
+            name =
                 'Activity on ' + DateFormat.yMMMMd('en_US').format(startTime);
-          db
+          _db
             ..timeStamp =
                 dateTimeFromStrava(dataMessage.get('timestamp') as double)
             ..startTime = startTime
@@ -401,7 +465,7 @@ class Activity {
                 (dataMessage.get('total_elapsed_time') as double)?.round()
             ..totalTimerTime =
                 (dataMessage.get('total_timer_time') as double)?.round()
-            ..distance = (db.distance ??
+            ..distance = (distance ??
                 (dataMessage.get('total_distance') as double)?.round())
             ..totalDistance =
                 (dataMessage.get('total_distance') as double)?.round()
@@ -424,7 +488,7 @@ class Activity {
                 (dataMessage.get('first_lap_index') as double)?.round()
             ..numLaps = (dataMessage.get('num_laps') as double)?.round()
             ..event = dataMessage.get('event')?.toString()
-            ..type = db.type ?? dataMessage.get('event_type') as String
+            ..type = type ?? dataMessage.get('event_type') as String
             ..eventType = dataMessage.get('event_type') as String
             ..eventGroup = (dataMessage.get('event_group') as double)?.round()
             ..trigger = dataMessage.get('trigger') as String
@@ -453,15 +517,15 @@ class Activity {
                 dataMessage.get('max_fractional_cadence') as double
             ..totalFractionalCycles =
                 dataMessage.get('total_fractional_cycles') as double;
-          await db.save();
+          await save();
           break;
 
         case 'activity':
-          db
+          _db
             ..numSessions = (dataMessage.get('num_sessions') as double)?.round()
             ..localTimestamp = dateTimeFromStrava(
                 dataMessage.get('local_timestamp') as double);
-          await db.save();
+          await save();
           break;
 
         default:
@@ -481,8 +545,6 @@ class Activity {
     await currentLap.save();
     eventsForCurrentLap = <Event>[];
   }
-
-  Future<BoolResult> delete() async => await db.delete();
 
   static Future<void> queryStrava({Athlete athlete}) async {
     final Strava strava = Strava(true, secret);
@@ -510,24 +572,24 @@ class Activity {
       final List<DbActivity> existingAlready = await DbActivity()
           .select()
           .stravaId
-          .equals(activity.db.stravaId)
+          .equals(activity.stravaId)
           .toList();
       if (existingAlready.isEmpty) {
-        await activity.db.save();
+        await activity.save();
       }
     });
   }
 
   Future<PowerZoneSchema> get powerZoneSchema async =>
       _powerZoneSchema ??= await PowerZoneSchema.getBy(
-        athletesId: db.athletesId,
-        date: db.timeCreated,
+        athletesId: athletesId,
+        date: timeCreated,
       );
 
   Future<HeartRateZoneSchema> get heartRateZoneSchema async =>
       _heartRateZoneSchema ??= await HeartRateZoneSchema.getBy(
-        athletesId: db.athletesId,
-        date: db.timeCreated,
+        athletesId: athletesId,
+        date: timeCreated,
       );
 
   Future<PowerZone> get powerZone async {
@@ -538,10 +600,10 @@ class Activity {
           .equals((await powerZoneSchema).id)
           .and
           .lowerLimit
-          .lessThanOrEquals(db.avgPower)
+          .lessThanOrEquals(avgPower)
           .and
           .upperLimit
-          .greaterThanOrEquals(db.avgPower)
+          .greaterThanOrEquals(avgPower)
           .toSingle();
       _powerZone = PowerZone.exDb(dbPowerZone);
     }
@@ -556,10 +618,10 @@ class Activity {
           .equals((await heartRateZoneSchema).id)
           .and
           .lowerLimit
-          .lessThanOrEquals(db.avgHeartRate)
+          .lessThanOrEquals(avgHeartRate)
           .and
           .upperLimit
-          .greaterThanOrEquals(db.avgHeartRate)
+          .greaterThanOrEquals(avgHeartRate)
           .toSingle();
 
       _heartRateZone = HeartRateZone.exDb(dbHeartRateZone);
@@ -598,7 +660,7 @@ class Activity {
       );
     }
 
-    for (final Lap lap in await Lap.all(activity: this)) {
+    for (final Lap lap in await laps) {
       await lap.autoTagger(athlete: athlete);
     }
   }
@@ -624,6 +686,31 @@ class Activity {
             .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);
     return heartRateZoneCounts;
   }
+
+  Future<List<Event>> get events async {
+    final List<DbEvent> dbEventList = await _db.getDbEvents().toList();
+    return dbEventList.map(Event.exDb).toList();
+  }
+
+  Future<List<Lap>> get laps async {
+    if (cachedLaps.isEmpty) {
+      int counter = 1;
+
+      final List<DbLap> dbLapList = await _db.getDbLaps().toList();
+      cachedLaps = dbLapList.map(Lap.exDb).toList();
+
+      for (final Lap lap in cachedLaps) {
+        lap
+          ..activity = this
+          ..index = counter;
+        counter = counter + 1;
+      }
+    }
+    return cachedLaps;
+  }
+
+  Future<BoolResult> deleteEvents() async => await _db.getDbEvents().delete();
+  Future<BoolResult> deleteLaps() async  => await _db.getDbLaps().delete();
 
   static Activity exDb(DbActivity db) => Activity._fromDb(db);
 }

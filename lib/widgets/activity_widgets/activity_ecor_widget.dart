@@ -99,7 +99,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
     records = RecordList<Event>(await widget.activity.records);
     weight = await Weight.getBy(
       athletesId: widget.athlete.id,
-      date: widget.activity.db.timeCreated,
+      date: widget.activity.timeCreated,
     );
     widget.activity.weight = weight.value;
     weightString = weight.value.toStringOrDashes(2) + ' kg';

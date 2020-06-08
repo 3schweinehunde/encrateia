@@ -278,7 +278,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       percent = 100 * index ~/ activities.length;
       flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: percent / 100),
-        message: '$percent% done (recalculating »${activity.db.name}« )',
+        message: '$percent% done (recalculating »${activity.name}« )',
         duration: const Duration(seconds: 2),
         animationDuration: const Duration(milliseconds: 1),
       )..show(context);
@@ -309,7 +309,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
     activities = await widget.athlete.activities;
     final List<Activity> downloadedActivities = activities
-        .where((Activity activity) => activity.db.state == 'downloaded')
+        .where((Activity activity) => activity.state == 'downloaded')
         .toList();
     for (final Activity activity in downloadedActivities) {
       await parse(activity: activity);
@@ -347,7 +347,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         final Activity activity =
             Activity.fromLocalDirectory(athlete: widget.athlete);
         await dio.download(downloadDir + filename,
-            appDocDir.path + '/' + activity.db.stravaId.toString() + '.fit');
+            appDocDir.path + '/' + activity.stravaId.toString() + '.fit');
         await activity.setState('downloaded');
       }
 
@@ -359,7 +359,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
       activities = await widget.athlete.activities;
       final List<Activity> downloadedActivities = activities
-          .where((Activity activity) => activity.db.state == 'downloaded')
+          .where((Activity activity) => activity.state == 'downloaded')
           .toList();
       for (final Activity activity in downloadedActivities) {
         await parse(activity: activity);
@@ -390,13 +390,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
       activities = await widget.athlete.activities;
       final Iterable<Activity> newActivities =
-          activities.where((Activity activity) => activity.db.state == 'new');
+          activities.where((Activity activity) => activity.state == 'new');
       for (final Activity activity in newActivities) {
         await download(activity: activity);
       }
 
       final Iterable<Activity> downloadedActivities = activities
-          .where((Activity activity) => activity.db.state == 'downloaded');
+          .where((Activity activity) => activity.state == 'downloaded');
       for (final Activity activity in downloadedActivities) {
         await parse(activity: activity);
         await activity.autoTagger(athlete: widget.athlete);
@@ -439,7 +439,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   Future<void> download({Activity activity}) async {
     flushbar.dismiss();
     flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${activity.db.name}«',
+      message: 'Download .fit-File for »${activity.name}«',
       duration: const Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
@@ -458,7 +458,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   Future<void> parse({Activity activity}) async {
     flushbar.dismiss();
     flushbar = Flushbar<Object>(
-      message: '0% of storing »${activity.db.name}«',
+      message: '0% of storing »${activity.name}«',
       duration: const Duration(seconds: 10),
       animationDuration: const Duration(milliseconds: 1),
       titleText: const LinearProgressIndicator(value: 0),
@@ -470,7 +470,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       flushbar.dismiss();
       flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: value / 100),
-        message: '$value% of storing »${activity.db.name}«',
+        message: '$value% of storing »${activity.name}«',
         duration: const Duration(seconds: 20),
         animationDuration: const Duration(milliseconds: 1),
       )..show(context);
@@ -541,7 +541,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         percent = 100 * index ~/ activities.length;
         flushbar = Flushbar<Object>(
           titleText: LinearProgressIndicator(value: percent / 100),
-          message: '$percent% done (autotagging »${activity.db.name}« )',
+          message: '$percent% done (autotagging »${activity.name}« )',
           duration: const Duration(seconds: 2),
           animationDuration: const Duration(milliseconds: 1),
         )..show(context);

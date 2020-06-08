@@ -115,7 +115,7 @@ class TagGroup {
     final List<DbActivityTagging> dbActivityTaggings = await DbActivityTagging()
         .select()
         .activitiesId
-        .equals(activity.db.id)
+        .equals(activity.id)
         .toList();
     final Iterable<int> selectedTagIds = dbActivityTaggings
         .map((DbActivityTagging dbActivityTagging) => dbActivityTagging.tagsId);

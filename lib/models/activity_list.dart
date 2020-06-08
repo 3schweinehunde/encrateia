@@ -25,8 +25,8 @@ class ActivityList<E> extends DelegatingList<E> {
       for (int olderIndex = index + 1;
           olderIndex < _activities.length;
           olderIndex++) {
-        final double daysAgo = activity.db.timeCreated
-                .difference(_activities[olderIndex].db.timeCreated)
+        final double daysAgo = activity.timeCreated
+                .difference(_activities[olderIndex].timeCreated)
                 .inHours /
             24;
         if (daysAgo > fullDecay) {
@@ -88,7 +88,7 @@ class ActivityList<E> extends DelegatingList<E> {
     }
 
     final List<Activity> activityList = _activities
-        .where((Activity activity) => activityIds.contains(activity.db.id))
+        .where((Activity activity) => activityIds.contains(activity.id))
         .toList();
     return ActivityList<Activity>(activityList);
   }

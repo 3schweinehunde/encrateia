@@ -37,11 +37,11 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
       for (Activity activity in activities)
         ListTile(
           dense: true,
-          leading: sportsIcon(sport: activity.db.sport),
-          title: Text(activity.db.name ?? 'Activity'),
+          leading: sportsIcon(sport: activity.sport),
+          title: Text(activity.name ?? 'Activity'),
           subtitle: Text(activity.longDateTimeString()),
           onTap: () {
-            if (activity.db.state == 'persisted')
+            if (activity.state == 'persisted')
               Navigator.push(
                 context,
                 MaterialPageRoute<BuildContext>(
@@ -74,7 +74,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
   Future<void> download({Activity activity}) async {
     flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${activity.db.name}«',
+      message: 'Download .fit-File for »${activity.name}«',
       duration: const Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
@@ -93,7 +93,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
   Future<void> parse({Activity activity}) async {
     Flushbar<Object> flushbar = Flushbar<Object>(
-      message: '0% of storing »${activity.db.name}«',
+      message: '0% of storing »${activity.name}«',
       duration: const Duration(seconds: 10),
       animationDuration: const Duration(milliseconds: 1),
       titleText: const LinearProgressIndicator(value: 0),
@@ -105,7 +105,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
       flushbar.dismiss();
       flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: value / 100),
-        message: '$value% of storing »${activity.db.name}«',
+        message: '$value% of storing »${activity.name}«',
         duration: const Duration(seconds: 3),
         animationDuration: const Duration(milliseconds: 1),
       )..show(context);

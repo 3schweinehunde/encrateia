@@ -35,11 +35,11 @@ class _AthletePowerPerHeartRateWidgetState
     if (activities.isNotEmpty) {
       final List<Activity> powerPerHeartRateActivities = activities
           .where((Activity value) =>
-              value.db.avgPower != null &&
-              value.db.avgPower > 0 &&
-              value.db.avgHeartRate != null &&
-              value.db.avgHeartRate > 0 &&
-              value.db.avgHeartRate != 255)
+              value.avgPower != null &&
+              value.avgPower > 0 &&
+              value.avgHeartRate != null &&
+              value.avgHeartRate > 0 &&
+              value.avgHeartRate != 255)
           .toList();
 
       if (powerPerHeartRateActivities.isNotEmpty) {

@@ -247,8 +247,8 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         ),
         onPressed: () => autoTagger(),
       ),
-
-      if (<String>['new', 'downloaded', 'persisted'].contains(widget.activity.db.state))
+      if (<String>['new', 'downloaded', 'persisted']
+          .contains(widget.activity.state))
         RaisedButton.icon(
           color: MyColor.add,
           icon: MyIcon.download,
@@ -258,8 +258,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           ),
           onPressed: () => download(),
         ),
-
-      if (<String>['downloaded', 'persisted'].contains(widget.activity.db.state))
+      if (<String>['downloaded', 'persisted'].contains(widget.activity.state))
         RaisedButton.icon(
           color: MyColor.add,
           icon: MyIcon.parse,
@@ -269,8 +268,8 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           ),
           onPressed: () => parse(),
         ),
-
-      if (<String>['new', 'downloaded', 'persisted'].contains(widget.activity.db.state))
+      if (<String>['new', 'downloaded', 'persisted']
+          .contains(widget.activity.state))
         RaisedButton.icon(
           color: MyColor.delete,
           icon: MyIcon.delete,
@@ -289,7 +288,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       appBar: AppBar(
         backgroundColor: MyColor.activity,
         title: Text(
-          widget.activity.db.name,
+          widget.activity.name,
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -361,7 +360,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
   Future<void> download() async {
     flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${widget.activity.db.name}«',
+      message: 'Download .fit-File for »${widget.activity.name}«',
       duration: const Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
@@ -380,19 +379,19 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
   Future<void> parse() async {
     Flushbar<Object> flushbar = Flushbar<Object>(
-      message: '0% of storing »${widget.activity.db.name}«',
+      message: '0% of storing »${widget.activity.name}«',
       duration: const Duration(seconds: 10),
       animationDuration: const Duration(milliseconds: 1),
       titleText: const LinearProgressIndicator(value: 0),
     )..show(context);
 
     final Stream<int> percentageStream =
-    widget.activity.parse(athlete: widget.athlete);
+        widget.activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
       flushbar.dismiss();
       flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: value / 100),
-        message: '$value% of storing »${widget.activity.db.name}«',
+        message: '$value% of storing »${widget.activity.name}«',
         duration: const Duration(seconds: 3),
         animationDuration: const Duration(milliseconds: 1),
       )..show(context);

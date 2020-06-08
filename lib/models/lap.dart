@@ -86,7 +86,7 @@ class Lap {
     Lap lap,
   }) {
     lap._db
-      ..activitiesId = activity.db.id
+      ..activitiesId = activity.id
       ..avgSpeed = dataMessage.get('avg_speed') as double
       ..maxSpeed = dataMessage.get('max_speed') as double
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp') as double)
@@ -205,22 +205,6 @@ class Lap {
       await save();
     }
     return _db.sdevFormPower;
-  }
-
-  static Future<List<Lap>> all({Activity activity}) async {
-    int counter = 1;
-
-    final List<DbLap> dbLapList = await activity.db.getDbLaps().toList();
-    final List<Lap> lapList =
-        dbLapList.map(Lap.exDb).toList();
-
-    for (final Lap lap in lapList) {
-      lap
-        ..activity = activity
-        ..index = counter;
-      counter = counter + 1;
-    }
-    return lapList;
   }
 
   Future<PowerZoneSchema> get powerZoneSchema async {

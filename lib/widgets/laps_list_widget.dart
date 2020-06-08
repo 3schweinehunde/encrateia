@@ -18,7 +18,7 @@ class LapsListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Lap>>(
-      future: Lap.all(activity: activity),
+      future: activity.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
           final List<Lap> laps = snapshot.data;

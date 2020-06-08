@@ -16,104 +16,104 @@ class ActivityMetadataWidget extends StatelessWidget {
 
   List<Widget> get tiles {
     return <Widget>[
-      ListTile(title: Text(activity.db.name)),
+      ListTile(title: Text(activity.name)),
       ListTile(
         title: Text(
-            DateFormat('dd MMM yyyy, h:mm:ss').format(activity.db.timeStamp)),
+            DateFormat('dd MMM yyyy, h:mm:ss').format(activity.timeStamp)),
         subtitle: const Text('timestamp'),
       ),
       ListTile(
-        title: Text(activity.db.event),
+        title: Text(activity.event),
         subtitle: const Text('last event'),
       ),
-      if (activity.db.totalStrides != null)
+      if (activity.totalStrides != null)
         ListTile(
-          title: Text(activity.db.totalStrides.toString()),
+          title: Text(activity.totalStrides.toString()),
           subtitle: const Text('total strides'),
         ),
-      if (activity.db.maxRunningCadence != null)
+      if (activity.maxRunningCadence != null)
         ListTile(
-          title: Text('${activity.db.avgRunningCadence.round()} /'
-              ' ${activity.db.maxRunningCadence}'),
+          title: Text('${activity.avgRunningCadence.round()} /'
+              ' ${activity.maxRunningCadence}'),
           subtitle: const Text('avg / max running cadence'),
         ),
       ListTile(
         title: Text(
-            '${activity.db.avgTemperature}° / ${activity.db.maxTemperature}°'),
+            '${activity.avgTemperature}° / ${activity.maxTemperature}°'),
         subtitle: const Text('avg / max temperature'),
       ),
       ListTile(
-        title: Text(activity.db.avgVerticalOscillation.toStringAsFixed(2)),
+        title: Text(activity.avgVerticalOscillation.toStringAsFixed(2)),
         subtitle: const Text('avg vertical oscillation'),
       ),
       ListTile(
-        title: Text(activity.db.totalFractionalCycles.toStringAsFixed(2)),
+        title: Text(activity.totalFractionalCycles.toStringAsFixed(2)),
         subtitle: const Text('total fractional cycles'),
       ),
       ListTile(
-        title: Text(Duration(seconds: activity.db.totalElapsedTime).asString()),
+        title: Text(Duration(seconds: activity.totalElapsedTime).asString()),
         subtitle: const Text('total elapsed time'),
       ),
       ListTile(
-        title: Text(Duration(seconds: activity.db.totalTimerTime).asString()),
+        title: Text(Duration(seconds: activity.totalTimerTime).asString()),
         subtitle: const Text('total timer time'),
       ),
       ListTile(
-        title: Text('${activity.db.stravaId} / ${activity.db.serialNumber}'),
+        title: Text('${activity.stravaId} / ${activity.serialNumber}'),
         subtitle: const Text('Strava / Garmin id'),
       ),
       ListTile(
-        title: Text(activity.db.type +
+        title: Text(activity.type +
             ' / ' +
-            activity.db.sport +
+            activity.sport +
             ' / ' +
-            activity.db.subSport),
+            activity.subSport),
         subtitle: const Text('activity type / sport / sub sport'),
       ),
       ListTile(
-        title: Text(activity.db.eventType + ' / ' + activity.db.trigger),
+        title: Text(activity.eventType + ' / ' + activity.trigger),
         subtitle: const Text('event type / trigger'),
       ),
       ListTile(
-        title: Text('${activity.db.numLaps} / ${activity.db.numSessions}'),
+        title: Text('${activity.numLaps} / ${activity.numSessions}'),
         subtitle: const Text('number of laps / sessions'),
       ),
       ListTile(
-        title: Text(activity.db.avgFractionalCadence.toStringAsFixed(2) +
+        title: Text(activity.avgFractionalCadence.toStringAsFixed(2) +
             ' / ' +
-            activity.db.maxFractionalCadence.toStringAsFixed(2)),
+            activity.maxFractionalCadence.toStringAsFixed(2)),
         subtitle: const Text('avg / max fractional cadence'),
       ),
       ListTile(
         title: Text(
-            '${activity.db.avgStanceTime} ms / ${activity.db.avgStanceTimePercent} %'),
+            '${activity.avgStanceTime} ms / ${activity.avgStanceTimePercent} %'),
         subtitle: const Text('avg stance time / avg stance time percent'),
       ),
       ListTile(
-        title: Text(activity.db.startPositionLong.semicirclesAsDegrees() +
+        title: Text(activity.startPositionLong.semicirclesAsDegrees() +
             ' E\n' +
-            activity.db.startPositionLat.semicirclesAsDegrees() +
+            activity.startPositionLat.semicirclesAsDegrees() +
             ' N'),
         subtitle: const Text('start position'),
       ),
       ListTile(
-        title: Text(activity.db.necLong.semicirclesAsDegrees() +
+        title: Text(activity.necLong.semicirclesAsDegrees() +
             ' E\n' +
-            activity.db.necLat.semicirclesAsDegrees() +
+            activity.necLat.semicirclesAsDegrees() +
             ' N'),
         subtitle: const Text('north east corner'),
       ),
       ListTile(
-        title: Text(activity.db.swcLong.semicirclesAsDegrees() +
+        title: Text(activity.swcLong.semicirclesAsDegrees() +
             ' E\n' +
-            activity.db.swcLat.semicirclesAsDegrees() +
+            activity.swcLat.semicirclesAsDegrees() +
             ' N'),
         subtitle: const Text('south west corner'),
       ),
       ListTile(
-        title: Text((activity.db.avgSpeed * 3.6).toStringAsFixed(2) +
+        title: Text((activity.avgSpeed * 3.6).toStringAsFixed(2) +
             ' km/h / ' +
-            (activity.db.maxSpeed * 3.6).toStringAsFixed(2) +
+            (activity.maxSpeed * 3.6).toStringAsFixed(2) +
             ' km/h'),
         subtitle: const Text('avg / max speed'),
       ),

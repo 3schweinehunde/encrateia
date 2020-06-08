@@ -89,9 +89,9 @@ class _ActivityVerticalOscillationWidgetState
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
     avgVerticalOscillationString =
-        activity.db.avgVerticalOscillation.toStringOrDashes(1) + ' cm';
+        activity.avgVerticalOscillation.toStringOrDashes(1) + ' cm';
     sdevVerticalOscillationString =
-        activity.db.sdevVerticalOscillation.toStringOrDashes(2) + ' cm';
+        activity.sdevVerticalOscillation.toStringOrDashes(2) + ' cm';
     setState(() {});
   }
 }

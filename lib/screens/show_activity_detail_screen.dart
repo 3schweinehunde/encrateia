@@ -22,7 +22,7 @@ class ShowActivityDetailScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: backgroundColor ?? MyColor.activity,
         title: Text(
-          '$title: ${activity.db.name}',
+          '$title: ${activity.name}',
           overflow: TextOverflow.ellipsis,
         ),
       ),

@@ -90,9 +90,9 @@ class _ActivityStrydCadenceWidgetState
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
     avgStrydCadenceString =
-        activity.db.avgStrydCadence.toStringOrDashes(1) + ' spm';
+        activity.avgStrydCadence.toStringOrDashes(1) + ' spm';
     sdevStrydCadenceString =
-        activity.db.sdevStrydCadence.toStringOrDashes(2) + ' spm';
+        activity.sdevStrydCadence.toStringOrDashes(2) + ' spm';
     setState(() {});
   }
 }

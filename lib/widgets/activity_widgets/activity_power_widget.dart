@@ -112,10 +112,10 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgPowerString = activity.db.avgPower.toStringOrDashes(1) + ' W';
-    minPowerString = activity.db.minPower.toString() + ' W';
-    maxPowerString = activity.db.maxPower.toString() + ' W';
-    sdevPowerString = activity.db.sdevPower.toStringOrDashes(2) + ' W';
+    avgPowerString = activity.avgPower.toStringOrDashes(1) + ' W';
+    minPowerString = activity.minPower.toString() + ' W';
+    maxPowerString = activity.maxPower.toString() + ' W';
+    sdevPowerString = activity.sdevPower.toStringOrDashes(2) + ' W';
 
     powerZoneSchema = await activity.powerZoneSchema;
     if (powerZoneSchema != null)

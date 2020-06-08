@@ -93,9 +93,9 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgPowerRatioString = activity.db.avgPowerRatio.toStringOrDashes(1) + ' %';
+    avgPowerRatioString = activity.avgPowerRatio.toStringOrDashes(1) + ' %';
     sdevPowerRatioString =
-        activity.db.sdevPowerRatio.toStringOrDashes(2) + ' %';
+        activity.sdevPowerRatio.toStringOrDashes(2) + ' %';
     setState(() {});
   }
 }

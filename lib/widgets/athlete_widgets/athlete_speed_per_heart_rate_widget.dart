@@ -35,11 +35,11 @@ class _AthleteSpeedPerHeartRateWidgetState
     if (activities.isNotEmpty) {
       final List<Activity> speedPerHeartRateActivities = activities
           .where((Activity value) =>
-              value.db.avgSpeed != null &&
-              value.db.avgSpeed > 0 &&
-              value.db.avgHeartRate != null &&
-              value.db.avgHeartRate > 0 &&
-              value.db.avgHeartRate != 255)
+              value.avgSpeed != null &&
+              value.avgSpeed > 0 &&
+              value.avgHeartRate != null &&
+              value.avgHeartRate > 0 &&
+              value.avgHeartRate != 255)
           .toList();
 
       if (speedPerHeartRateActivities.isNotEmpty) {
@@ -91,7 +91,7 @@ class _AthleteSpeedPerHeartRateWidgetState
     final Athlete athlete = widget.athlete;
     List<Activity> unfilteredActivities = await athlete.activities;
     unfilteredActivities = unfilteredActivities
-        .where((Activity activity) => activity.db.sport == 'running')
+        .where((Activity activity) => activity.sport == 'running')
         .toList();
     tagGroups = await widget.athlete.tagGroups;
     activities = await ActivityList<Activity>(unfilteredActivities).applyFilter(

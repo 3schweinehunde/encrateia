@@ -49,7 +49,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
     List<Activity> recentActivities = widget.activities
         .where((Activity activity) =>
-            DateTime.now().difference(activity.db.timeCreated).inDays <
+            DateTime.now().difference(activity.timeCreated).inDays <
             xAxesDays)
         .toList();
     if (recentActivities.length < 40) {
@@ -61,7 +61,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
       Series<Activity, DateTime>(
         id: widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
-        domainFn: (Activity activity, _) => activity.db.timeCreated,
+        domainFn: (Activity activity, _) => activity.timeCreated,
         measureFn: (Activity activity, _) =>
             activity.getAttribute(widget.activityAttr) as num,
         data: recentActivities,
@@ -69,7 +69,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
       Series<Activity, DateTime>(
         id: 'gliding_' + widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
-        domainFn: (Activity activity, _) => activity.db.timeCreated,
+        domainFn: (Activity activity, _) => activity.timeCreated,
         measureFn: (Activity activity, _) => activity.glidingMeasureAttribute,
         data: recentActivities,
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
@@ -135,7 +135,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
               mainAxisSpacing: 3,
               children: <Widget>[
                 MyButton.activity(
-                  child: Text(selectedActivity.db.name),
+                  child: Text(selectedActivity.name),
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute<BuildContext>(
@@ -148,23 +148,23 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                 ),
                 ListTile(
                   title: Text(DateFormat('dd MMM yyyy, h:mm:ss')
-                      .format(selectedActivity.db.timeCreated)),
+                      .format(selectedActivity.timeCreated)),
                   subtitle: const Text('Time created'),
                 ),
                 ListTile(
-                    title: Text(selectedActivity.db.distance.toString() + ' m'),
+                    title: Text(selectedActivity.distance.toString() + ' m'),
                     subtitle: const Text('Distance')),
                 ListTile(
                     title:
-                        Text(selectedActivity.db.avgSpeed.toPace() + ' min/km'),
+                        Text(selectedActivity.avgSpeed.toPace() + ' min/km'),
                     subtitle: const Text('Average speed')),
                 ListTile(
                     title: Text(
-                        selectedActivity.db.avgPower.toStringAsFixed(1) + ' W'),
+                        selectedActivity.avgPower.toStringAsFixed(1) + ' W'),
                     subtitle: const Text('Average power')),
                 ListTile(
                     title: Text(
-                        selectedActivity.db.avgHeartRate.toString() + ' bpm'),
+                        selectedActivity.avgHeartRate.toString() + ' bpm'),
                     subtitle: const Text('Average heart rate')),
               ],
             ),

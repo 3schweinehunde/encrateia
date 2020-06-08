@@ -11,7 +11,7 @@ class ActivityTagging {
     bool system,
   }) {
     _db = DbActivityTagging()
-      ..activitiesId = activity.db.id
+      ..activitiesId = activity.id
       ..tagsId = tag.id
       ..system = system ?? false;
   }
@@ -31,7 +31,7 @@ class ActivityTagging {
     final DbActivityTagging dbActivityTagging = await DbActivityTagging()
         .select()
         .activitiesId
-        .equals(activity.db.id)
+        .equals(activity.id)
         .and
         .tagsId
         .equals(tag.id)
@@ -54,7 +54,7 @@ class ActivityTagging {
     final DbActivityTagging dbActivityTagging = await DbActivityTagging()
         .select()
         .activitiesId
-        .equals(activity.db.id)
+        .equals(activity.id)
         .and
         .tagsId
         .equals(tag.id)
@@ -71,7 +71,7 @@ class ActivityTagging {
     final DbActivityTagging dbActivityTagging = await DbActivityTagging()
         .select()
         .activitiesId
-        .equals(activity.db.id)
+        .equals(activity.id)
         .and
         .tagsId
         .equals(tag.id)

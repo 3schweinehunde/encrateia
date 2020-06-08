@@ -33,8 +33,8 @@ class PathPainter extends CustomPainter {
         ..strokeWidth = strokeWidth,
     );
 
-    final double scaleX = width / (activity.db.necLong - activity.db.swcLong);
-    final double scaleY = height / (activity.db.necLat - activity.db.swcLat);
+    final double scaleX = width / (activity.necLong - activity.swcLong);
+    final double scaleY = height / (activity.necLat - activity.swcLat);
     final double scale = min(scaleX, scaleY);
     canvas.drawPoints(
       PointMode.points,
@@ -44,12 +44,12 @@ class PathPainter extends CustomPainter {
               width / 2 +
                   scale *
                       (record.positionLong -
-                          activity.db.swcLong / 2 -
-                          activity.db.necLong / 2),
+                          activity.swcLong / 2 -
+                          activity.necLong / 2),
               height / 2 +
                   scale *
-                      (activity.db.necLat / 2 +
-                          activity.db.swcLat / 2 -
+                      (activity.necLat / 2 +
+                          activity.swcLat / 2 -
                           record.positionLat),
             ),
           )

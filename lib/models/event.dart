@@ -14,14 +14,14 @@ class Event {
     @required this.activity,
   }) {
     if (dataMessage.any('max_heart_rate') != null) {
-      activity.db
+      activity
         ..maxHeartRate = (dataMessage.get('max_heart_rate') as double)?.round()
         ..save();
     } else if (dataMessage.values.any((Value value) =>
         value.fieldName == 'event_type' &&
         <String> ['start', 'stop_all'].contains(value.value))) {
       _db = DbEvent()
-        ..activitiesId = activity.db.id
+        ..activitiesId = activity.id
         ..event = dataMessage.get('event') as String
         ..eventType = dataMessage.get('event_type') as String
         ..eventGroup = (dataMessage.get('event_group') as double)?.round()
@@ -31,7 +31,7 @@ class Event {
     } else if (dataMessage.values.any((Value value) =>
         value.fieldName == 'event_type' && <String> ['marker'].contains(value.value))) {
       _db = DbEvent()
-        ..activitiesId = activity.db.id
+        ..activitiesId = activity.id
         ..event = dataMessage.get('event')?.toString()
         ..eventType = dataMessage.get('event_type') as String
         ..eventGroup = (dataMessage.get('event_group') as double)?.round()
@@ -52,7 +52,7 @@ class Event {
     @required int lapsId,
   }) {
     _db = DbEvent()
-      ..activitiesId = activity.db.id
+      ..activitiesId = activity.id
       ..lapsId = lapsId
       ..event = 'record'
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp') as double)
@@ -78,7 +78,7 @@ class Event {
     @required int lapsId,
   }) {
     _db = DbEvent()
-      ..activitiesId = activity.db.id
+      ..activitiesId = activity.id
       ..lapsId = lapsId
       ..positionLat = dataMessage.get('end_position_lat') as double
       ..positionLong = dataMessage.get('end_position_long') as double
@@ -150,16 +150,14 @@ class Event {
   static Future<List<Event>> by({Activity activity}) async {
     int counter = 1;
 
-    final List<DbEvent> dbEventList = await activity.db.getDbEvents().toList();
-    final List<Event> eventList =
-        dbEventList.map(Event.exDb).toList();
+    final List<Event> events = await activity.events;
 
-    for (final Event event in eventList) {
+    for (final Event event in events) {
       event.activity = activity;
       event.index = counter;
       counter = counter + 1;
     }
-    return eventList;
+    return events;
   }
 
   static Future<BoolCommitResult> upsertAll(List<Event> events) async {

@@ -91,10 +91,10 @@ class _ActivityLegSpringStiffnessWidgetState
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
     avgLegSpringStiffnessString =
-        activity.db.avgLegSpringStiffness.toStringOrDashes(1) + ' ms';
+        activity.avgLegSpringStiffness.toStringOrDashes(1) + ' ms';
 
     sdevLegSpringStiffnessString =
-        activity.db.sdevLegSpringStiffness.toStringOrDashes(2) + ' ms';
+        activity.sdevLegSpringStiffness.toStringOrDashes(2) + ' ms';
     setState(() {});
   }
 }

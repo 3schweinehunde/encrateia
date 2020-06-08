@@ -33,8 +33,8 @@ class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
   Widget build(BuildContext context) {
     if (activities.isNotEmpty) {
       final List<Activity> strideRatioActivities = activities
-          .where((Activity value) =>
-              value.db.avgStrideRatio != null && value.db.avgStrideRatio > 0)
+          .where((Activity activity) =>
+              activity.avgStrideRatio != null && activity.avgStrideRatio > 0)
           .toList();
 
       if (strideRatioActivities.isNotEmpty) {

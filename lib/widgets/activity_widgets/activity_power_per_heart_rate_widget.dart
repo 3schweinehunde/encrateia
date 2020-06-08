@@ -81,7 +81,7 @@ class _ActivityPowerPerHeartRateWidgetState
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    final double avg = activity.db.avgPower / activity.db.avgHeartRate;
+    final double avg = activity.avgPower / activity.avgHeartRate;
     avgPowerPerHeartRateString = avg.toStringOrDashes(2) + ' W / bpm';
     setState(() {});
   }

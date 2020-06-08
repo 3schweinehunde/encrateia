@@ -137,8 +137,8 @@ class Athlete {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
 
     for (final Activity activity in await activities) {
-      await activity.db.getDbEvents().delete();
-      await activity.db.getDbLaps().delete();
+      await activity.deleteEvents();
+      await activity.deleteLaps();
 
       // ignore: avoid_slow_async_io
       if (await File(appDocDir.path + '/$stravaId.fit').exists())

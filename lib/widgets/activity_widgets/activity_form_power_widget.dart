@@ -90,8 +90,8 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgFormPowerString = activity.db.avgFormPower.toStringOrDashes(1) + ' W';
-    sdevFormPowerString = activity.db.sdevFormPower.toStringOrDashes(2) + ' W';
+    avgFormPowerString = activity.avgFormPower.toStringOrDashes(1) + ' W';
+    sdevFormPowerString = activity.sdevFormPower.toStringOrDashes(2) + ' W';
     setState(() {});
   }
 }

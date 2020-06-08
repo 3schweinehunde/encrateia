@@ -42,7 +42,7 @@ class ActivityHeartRateChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: Lap.all(activity: activity),
+      future: activity.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
           final List<Lap> laps = snapshot.data;
