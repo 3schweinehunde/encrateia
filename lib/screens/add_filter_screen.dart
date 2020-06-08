@@ -55,7 +55,7 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
               itemCount: tagGroups == null ? 0 : tagGroups.length,
               itemBuilder: (BuildContext context, int index) => Card(
                 child: ListTile(
-                  title: Text(tagGroups[index].db.name),
+                  title: Text(tagGroups[index].name),
                   subtitle: Wrap(
                     spacing: 10,
                     children: <Widget>[

@@ -47,8 +47,8 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
                 Navigator.of(context).pop();
                 MaterialColorPicker(
                     onColorChange: (Color color) =>
-                        widget.tagGroup.db.color = color.value,
-                    selectedColor: Color(widget.tagGroup.db.color));
+                        widget.tagGroup.color = color.value,
+                    selectedColor: Color(widget.tagGroup.color));
               },
             ),
           ],
@@ -60,9 +60,9 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
   Future<void> openColorPicker() async {
     _openDialog(
       MaterialColorPicker(
-        selectedColor: Color(widget.tagGroup.db.color),
+        selectedColor: Color(widget.tagGroup.color),
         onColorChange: (Color color) =>
-            setState(() => widget.tagGroup.db.color = color.value),
+            setState(() => widget.tagGroup.color = color.value),
         onBack: () {},
       ),
     );
@@ -80,15 +80,15 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
         children: <Widget>[
           TextFormField(
             decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.tagGroup.db.name,
-            onChanged: (String value) => widget.tagGroup.db.name = value,
+            initialValue: widget.tagGroup.name,
+            onChanged: (String value) => widget.tagGroup.name = value,
           ),
           const SizedBox(height: 20),
           Row(children: <Widget>[
             const Text('Color'),
             const Spacer(),
             CircleAvatar(
-              backgroundColor: Color(widget.tagGroup.db.color),
+              backgroundColor: Color(widget.tagGroup.color),
               radius: 20.0,
             ),
             const Spacer(),
@@ -177,7 +177,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
   }
 
   Future<void> saveTagGroup(BuildContext context) async {
-    await widget.tagGroup.db.save();
+    await widget.tagGroup.save();
     await DbTag().upsertAll(tags.map((Tag tag) => tag.db).toList());
     Navigator.of(context).pop();
   }

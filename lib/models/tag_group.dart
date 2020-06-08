@@ -2,7 +2,7 @@ import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart'
-    show DbTagGroup, DbActivityTagging, DbLapTagging;
+    show DbActivityTagging, DbLapTagging, DbTag, DbTagGroup;
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
@@ -10,36 +10,48 @@ import 'lap.dart';
 
 class TagGroup {
   TagGroup({@required Athlete athlete}) {
-    db = DbTagGroup()
+    _db = DbTagGroup()
       ..athletesId = athlete.db.id
       ..color = Colors.lightGreen.value
       ..system = false
       ..name = 'My Tag Group';
   }
 
-  TagGroup.fromDb(this.db);
+  TagGroup.fromDb(this._db);
 
   TagGroup.by(
       {@required Athlete athlete,
       @required String name,
       @required bool system,
       @required int color}) {
-    db = DbTagGroup()
+    _db = DbTagGroup()
       ..athletesId = athlete.db.id
       ..color = color
       ..system = system
       ..name = name;
   }
 
-  DbTagGroup db;
+  DbTagGroup _db;
   List<Tag> cachedTags;
 
-  Future<List<Tag>> get tags async => await Tag.all(tagGroup: this);
+  int get id => _db.id;
+  int get color => _db.color;
+  String get name => _db.name;
+  bool get system => _db.system;
+  set color(int value) => _db.color = value;
+  set name(String value) => _db.name = value;
+
+  Future<List<Tag>> get tags async {
+    final List<DbTag> dbTags =
+        await _db.getDbTags().orderBy('sortOrder').orderBy('name').toList();
+    return dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
+  }
 
   @override
-  String toString() => '< Taggroup | ${db.name} >';
+  String toString() => '< Taggroup | ${_db.name} >';
 
-  Future<BoolResult> delete() async => await db.delete();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
 
   static Future<TagGroup> autoPowerTagGroup({@required Athlete athlete}) async {
     final DbTagGroup dbTagGroup = await DbTagGroup()
@@ -62,7 +74,7 @@ class TagGroup {
         system: true,
         color: MyColor.bitterSweet.value,
       );
-      await autoPowerTagGroup.db.save();
+      await autoPowerTagGroup._db.save();
       return autoPowerTagGroup;
     }
   }
@@ -89,7 +101,7 @@ class TagGroup {
         system: true,
         color: MyColor.grapeFruit.value,
       );
-      await autoHeartRateTagGroup.db.save();
+      await autoHeartRateTagGroup._db.save();
       return autoHeartRateTagGroup;
     }
   }
@@ -154,10 +166,10 @@ class TagGroup {
   static Future<void> deleteAllAutoTags({Athlete athlete}) async {
     final TagGroup autoPowerTagGroup =
         await TagGroup.autoPowerTagGroup(athlete: athlete);
-    await autoPowerTagGroup.db.getDbTags().delete();
+    await autoPowerTagGroup._db.getDbTags().delete();
 
     final TagGroup autoHeartRateTagGroup =
         await TagGroup.autoHeartRateTagGroup(athlete: athlete);
-    await autoHeartRateTagGroup.db.getDbTags().delete();
+    await autoHeartRateTagGroup._db.getDbTags().delete();
   }
 }

@@ -26,7 +26,7 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
           if (athlete.filters.contains(tag.db.id)) {
             if (empty == true) {
               widgets.add(const Text('('));
-              widgets.add(Text(' ${tagGroup.db.name}: '));
+              widgets.add(Text(' ${tagGroup.name}: '));
               empty = false;
             } else
               widgets.add(const Text('OR'));

@@ -13,7 +13,7 @@ class Tag {
     int sortOrder,
   }) {
     db = DbTag()
-      ..tagGroupsId = tagGroup.db.id
+      ..tagGroupsId = tagGroup.id
       ..sortOrder = sortOrder ?? 0
       ..name = name ?? 'my Tag'
       ..color = color ?? 0xFFFFc107;
@@ -27,17 +27,6 @@ class Tag {
   String toString() => '< Tag | ${db.name} >';
 
   Future<BoolResult> delete() async => await db.delete();
-
-  static Future<List<Tag>> all({@required TagGroup tagGroup}) async {
-    final List<DbTag> dbTags = await tagGroup.db
-        .getDbTags()
-        .orderBy('sortOrder')
-        .orderBy('name')
-        .toList();
-    final List<Tag> tags =
-        dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
-    return tags;
-  }
 
   static Future<List<Tag>> allByActivity({@required Activity activity}) async {
     final List<DbActivityTagging> dbActivityTaggings = await DbActivityTagging()
@@ -74,7 +63,7 @@ class Tag {
     dbPowerTag = await DbTag()
         .select()
         .tagGroupsId
-        .equals(autoPowerTagGroup.db.id)
+        .equals(autoPowerTagGroup.id)
         .and
         .name
         .equals(name)
@@ -82,7 +71,7 @@ class Tag {
 
     if (dbPowerTag == null) {
       dbPowerTag = DbTag()
-        ..tagGroupsId = autoPowerTagGroup.db.id
+        ..tagGroupsId = autoPowerTagGroup.id
         ..color = color
         ..sortOrder = sortOrder
         ..name = name
@@ -105,7 +94,7 @@ class Tag {
     dbHeartRateTag = await DbTag()
         .select()
         .tagGroupsId
-        .equals(autoHeartRateTagGroup.db.id)
+        .equals(autoHeartRateTagGroup.id)
         .and
         .name
         .equals(name)
@@ -113,7 +102,7 @@ class Tag {
 
     if (dbHeartRateTag == null) {
       dbHeartRateTag = DbTag()
-        ..tagGroupsId = autoHeartRateTagGroup.db.id
+        ..tagGroupsId = autoHeartRateTagGroup.id
         ..color = color
         ..sortOrder = sortOrder
         ..name = name

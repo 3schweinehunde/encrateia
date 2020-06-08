@@ -37,7 +37,7 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
         children: <Widget>[
           TextFormField(
             decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.tagGroup.db.name,
+            initialValue: widget.tagGroup.name,
             readOnly: true,
           ),
           const SizedBox(height: 20),
@@ -45,7 +45,7 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
             const Text('Color'),
             const Spacer(),
             CircleAvatar(
-              backgroundColor: Color(widget.tagGroup.db.color),
+              backgroundColor: Color(widget.tagGroup.color),
               radius: 20.0,
             ),
             const Spacer(),
