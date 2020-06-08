@@ -1,48 +1,44 @@
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
-import 'package:sqfentity_gen/sqfentity_gen.dart';
+import 'package:encrateia/model/model.dart' show DbLapTagging ;
 
-class LapTagging extends ChangeNotifier {
-  LapTagging({
+class LapTagging extends DbLapTagging {
+  LapTagging();
+
+  LapTagging.by({
     @required Lap lap,
     @required Tag tag,
-    bool system,
-  }) {
-    db = DbLapTagging()
-      ..lapsId = lap.db.id
-      ..tagsId = tag.db.id
-      ..system = system ?? false;
-  }
-
-  LapTagging.fromDb(this.db);
-
-  DbLapTagging db;
+    bool system = false,
+  }) : super(
+          lapsId: lap.db.id,
+          tagsId: tag.id,
+          system: system,
+        );
 
   static Future<LapTagging> createBy({
     @required Lap lap,
     @required Tag tag,
     bool system,
   }) async {
-    final DbLapTagging dbLapTagging = await DbLapTagging()
+    final LapTagging lapTagging = await LapTagging()
         .select()
         .lapsId
         .equals(lap.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
-        .toSingle();
+        .equals(tag.id)
+        .toSingle() as LapTagging;
 
-    if (dbLapTagging != null)
-      return LapTagging.fromDb(dbLapTagging);
+    if (lapTagging != null)
+      return lapTagging;
     else {
-      final LapTagging lapTagging = LapTagging(
+      final LapTagging lapTagging = LapTagging.by(
         lap: lap,
         tag: tag,
         system: system ?? false,
       );
-      await lapTagging.db.save();
+      await lapTagging.save();
       return lapTagging;
     }
   }
@@ -51,35 +47,33 @@ class LapTagging extends ChangeNotifier {
     @required Lap lap,
     @required Tag tag,
   }) async {
-    final DbLapTagging dbLapTagging = await DbLapTagging()
+    final LapTagging lapTagging = await LapTagging()
         .select()
         .lapsId
         .equals(lap.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
-        .toSingle();
-    return (dbLapTagging != null) ? LapTagging.fromDb(dbLapTagging) : null;
+        .equals(tag.id)
+        .toSingle() as LapTagging;
+    return lapTagging;
   }
 
   static Future<void> deleteBy({
     @required Lap lap,
     @required Tag tag,
   }) async {
-    final DbLapTagging dbLapTagging = await DbLapTagging()
+    final LapTagging lapTagging = await LapTagging()
         .select()
         .lapsId
         .equals(lap.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
-        .toSingle();
-    await dbLapTagging.delete();
+        .equals(tag.id)
+        .toSingle() as LapTagging;
+    await lapTagging.delete();
   }
 
   @override
   String toString() =>
-      '< LapTagging | lapId ${db.lapsId} | tagId ${db.tagsId} >';
-
-  Future<BoolResult> delete() async => await db.delete();
+      '< LapTagging | lapId $lapsId | tagId $tagsId >';
 }
