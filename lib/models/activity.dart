@@ -596,12 +596,12 @@ class Activity {
     }
 
     final HeartRateZone heartRateZone = await this.heartRateZone;
-    if (heartRateZone.db != null) {
+    if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete,
-        color: heartRateZone.db.color,
-        sortOrder: heartRateZone.db.lowerLimit,
-        name: heartRateZone.db.name,
+        color: heartRateZone.color,
+        sortOrder: heartRateZone.lowerLimit,
+        name: heartRateZone.name,
       );
       await ActivityTagging.createBy(
         activity: this,

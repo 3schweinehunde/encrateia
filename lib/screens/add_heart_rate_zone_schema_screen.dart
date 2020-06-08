@@ -7,7 +7,6 @@ import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:encrateia/model/model.dart';
 import 'add_heart_rate_zone_screen.dart';
 
 class AddHeartRateZoneSchemaScreen extends StatefulWidget {
@@ -102,16 +101,16 @@ class _AddHeartRateZoneSchemaScreenState
             ],
             rows: heartRateZones.map((HeartRateZone heartRateZone) {
               return DataRow(
-                key: ValueKey<int>(heartRateZone.db.id),
+                key: ValueKey<int>(heartRateZone.id),
                 cells: <DataCell>[
-                  DataCell(Text(heartRateZone.db.name)),
-                  DataCell(Text(heartRateZone.db.lowerLimit.toString() +
+                  DataCell(Text(heartRateZone.name)),
+                  DataCell(Text(heartRateZone.lowerLimit.toString() +
                       ' - ' +
-                      heartRateZone.db.upperLimit.toString())),
+                      heartRateZone.upperLimit.toString())),
                   DataCell(CircleColor(
                     circleSize: 20,
                     elevation: 0,
-                    color: Color(heartRateZone.db.color),
+                    color: Color(heartRateZone.color),
                   )),
                   DataCell(
                     MyIcon.edit,
@@ -177,9 +176,7 @@ class _AddHeartRateZoneSchemaScreenState
 
   Future<void> saveHeartRateZoneSchema(BuildContext context) async {
     await widget.heartRateZoneSchema.save();
-    await DbHeartRateZone().upsertAll(heartRateZones
-        .map((HeartRateZone heartRateZone) => heartRateZone.db)
-        .toList());
+    await HeartRateZone.upsertAll(heartRateZones);
     Navigator.of(context).pop();
   }
 
@@ -198,10 +195,10 @@ class _AddHeartRateZoneSchemaScreenState
     setState(() {
       widget.heartRateZoneSchema.base = base;
       for (final HeartRateZone heartRateZone in heartRateZones) {
-        heartRateZone.db.lowerLimit =
-            (heartRateZone.db.lowerPercentage * base / 100).round();
-        heartRateZone.db.upperLimit =
-            (heartRateZone.db.upperPercentage * base / 100).round();
+        heartRateZone.lowerLimit =
+            (heartRateZone.lowerPercentage * base / 100).round();
+        heartRateZone.upperLimit =
+            (heartRateZone.upperPercentage * base / 100).round();
       }
     });
   }
@@ -213,13 +210,11 @@ class _AddHeartRateZoneSchemaScreenState
     final int heartRateZoneSchemaId =
         await widget.heartRateZoneSchema.save();
     for (final HeartRateZone heartRateZone in heartRateZones) {
-      heartRateZone.db
+      heartRateZone
         ..heartRateZoneSchemataId = heartRateZoneSchemaId
         ..id = null;
     }
-    await DbHeartRateZone().upsertAll(heartRateZones
-        .map((HeartRateZone heartRateZone) => heartRateZone.db)
-        .toList());
+    await HeartRateZone.upsertAll(heartRateZones);
     await getData();
     showDialog<BuildContext>(
       context: context,

@@ -35,8 +35,8 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
                 Navigator.of(context).pop();
                 MaterialColorPicker(
                     onColorChange: (Color color) =>
-                    widget.heartRateZone.db.color = color.value,
-                    selectedColor: Color(widget.heartRateZone.db.color));
+                    widget.heartRateZone.color = color.value,
+                    selectedColor: Color(widget.heartRateZone.color));
               },
             ),
           ],
@@ -48,8 +48,8 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
   Future<void> openColorPicker() async {
     _openDialog(
       MaterialColorPicker(
-        selectedColor: Color(widget.heartRateZone.db.color),
-        onColorChange: (Color color) => setState(() => widget.heartRateZone.db.color = color.value),
+        selectedColor: Color(widget.heartRateZone.color),
+        onColorChange: (Color color) => setState(() => widget.heartRateZone.color = color.value),
         onBack: () {},
       ),
     );
@@ -58,13 +58,13 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController lowerLimitController =
-    TextEditingController(text: widget.heartRateZone.db.lowerLimit.toString());
+    TextEditingController(text: widget.heartRateZone.lowerLimit.toString());
     final TextEditingController upperLimitController =
-    TextEditingController(text: widget.heartRateZone.db.upperLimit.toString());
+    TextEditingController(text: widget.heartRateZone.upperLimit.toString());
     final TextEditingController lowerPercentageController = TextEditingController(
-        text: widget.heartRateZone.db.lowerPercentage.toString());
+        text: widget.heartRateZone.lowerPercentage.toString());
     final TextEditingController upperPercentageController = TextEditingController(
-        text: widget.heartRateZone.db.upperPercentage.toString());
+        text: widget.heartRateZone.upperPercentage.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -76,16 +76,16 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
         children: <Widget>[
           TextFormField(
             decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.heartRateZone.db.name,
-            onChanged: (String value) => widget.heartRateZone.db.name = value,
+            initialValue: widget.heartRateZone.name,
+            onChanged: (String value) => widget.heartRateZone.name = value,
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Lower Limit in bpm'),
             controller: lowerLimitController,
             keyboardType: TextInputType.number,
             onChanged: (String value) {
-              widget.heartRateZone.db.lowerLimit = int.parse(value);
-              widget.heartRateZone.db.lowerPercentage =
+              widget.heartRateZone.lowerLimit = int.parse(value);
+              widget.heartRateZone.lowerPercentage =
                   (int.parse(value) * 100 / widget.base).round();
               lowerPercentageController.text =
                   (int.parse(value) * 100 / widget.base).round().toString();
@@ -96,8 +96,8 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
             controller: upperLimitController,
             keyboardType: TextInputType.number,
             onChanged: (String value) {
-              widget.heartRateZone.db.upperLimit = int.parse(value);
-              widget.heartRateZone.db.upperPercentage =
+              widget.heartRateZone.upperLimit = int.parse(value);
+              widget.heartRateZone.upperPercentage =
                   (int.parse(value) * 100 / widget.base).round();
               upperPercentageController.text =
                   (int.parse(value) * 100 / widget.base).round().toString();
@@ -108,8 +108,8 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
             controller: lowerPercentageController,
             keyboardType: TextInputType.number,
             onChanged: (String value) {
-              widget.heartRateZone.db.lowerPercentage = int.parse(value);
-              widget.heartRateZone.db.lowerLimit =
+              widget.heartRateZone.lowerPercentage = int.parse(value);
+              widget.heartRateZone.lowerLimit =
                   (int.parse(value) * widget.base / 100).round();
               lowerLimitController.text =
                   (int.parse(value) * widget.base / 100).round().toString();
@@ -120,8 +120,8 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
             controller: upperPercentageController,
             keyboardType: TextInputType.number,
             onChanged: (String value) {
-              widget.heartRateZone.db.upperPercentage = int.parse(value);
-              widget.heartRateZone.db.upperLimit =
+              widget.heartRateZone.upperPercentage = int.parse(value);
+              widget.heartRateZone.upperLimit =
                   (int.parse(value) * widget.base / 100).round();
               upperLimitController.text =
                   (int.parse(value) * widget.base / 100).round().toString();
@@ -132,7 +132,7 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
             const Text('Color'),
             const Spacer(),
             CircleAvatar(
-              backgroundColor: Color(widget.heartRateZone.db.color),
+              backgroundColor: Color(widget.heartRateZone.color),
               radius: 20.0,
             ),
             const Spacer(),
@@ -158,12 +158,12 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
   }
 
   Future<void> saveHeartRateZone(BuildContext context) async {
-    await widget.heartRateZone.db.save();
+    await widget.heartRateZone.save();
     Navigator.of(context).pop();
   }
 
   Future<void> deleteHeartRateZone(BuildContext context) async {
-    await widget.heartRateZone.db.delete();
+    await widget.heartRateZone.delete();
     Navigator.of(context).pop();
   }
 }

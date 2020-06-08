@@ -326,12 +326,12 @@ class Lap {
     }
 
     final HeartRateZone heartRateZone = await this.heartRateZone;
-    if (heartRateZone.db != null) {
+    if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete,
-        sortOrder: heartRateZone.db.lowerLimit,
-        color: heartRateZone.db.color,
-        name: heartRateZone.db.name,
+        sortOrder: heartRateZone.lowerLimit,
+        color: heartRateZone.color,
+        name: heartRateZone.name,
       );
       await LapTagging.createBy(
         lap: this,

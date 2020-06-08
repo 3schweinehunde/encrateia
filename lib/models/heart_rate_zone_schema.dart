@@ -59,35 +59,35 @@ class HeartRateZoneSchema {
       lowerPercentage: 50,
       upperPercentage: 60,
       color: Colors.grey.value,
-    ).db.save();
+    ).save();
     await HeartRateZone(
       heartRateZoneSchema: this,
       name: 'Easy',
       lowerPercentage: 60,
       upperPercentage: 70,
       color: Colors.blue.value,
-    ).db.save();
+    ).save();
     await HeartRateZone(
       heartRateZoneSchema: this,
       name: 'Aerobic',
       lowerPercentage: 70,
       upperPercentage: 80,
       color: Colors.green.value,
-    ).db.save();
+    ).save();
     await HeartRateZone(
       heartRateZoneSchema: this,
       name: 'Threshold',
       lowerPercentage: 80,
       upperPercentage: 90,
       color: Colors.orange.value,
-    ).db.save();
+    ).save();
     await HeartRateZone(
       heartRateZoneSchema: this,
       name: 'Maximum',
       lowerPercentage: 90,
       upperPercentage: 100,
       color: Colors.red.value,
-    ).db.save();
+    ).save();
   }
 
   Future<void> addStefanDillingerZones() async {
@@ -97,35 +97,35 @@ class HeartRateZoneSchema {
       lowerPercentage: 70,
       upperPercentage: 80,
       color: Colors.grey.value,
-    ).db.save();
+    ).save();
     await HeartRateZone(
       heartRateZoneSchema: this,
       name: 'Z2',
       lowerPercentage: 80,
       upperPercentage: 88,
       color: Colors.blue.value,
-    ).db.save();
+    ).save();
     await HeartRateZone(
       heartRateZoneSchema: this,
       name: 'Z3',
       lowerPercentage: 88,
       upperPercentage: 95,
       color: Colors.green.value,
-    ).db.save();
+    ).save();
     await HeartRateZone(
       heartRateZoneSchema: this,
       name: 'Z4',
       lowerPercentage: 95,
       upperPercentage: 100,
       color: Colors.orange.value,
-    ).db.save();
+    ).save();
     await HeartRateZone(
       heartRateZoneSchema: this,
       name: 'Z5/6',
       lowerPercentage: 100,
       upperPercentage: 115,
       color: Colors.red.value,
-    ).db.save();
+    ).save();
   }
 
   @override

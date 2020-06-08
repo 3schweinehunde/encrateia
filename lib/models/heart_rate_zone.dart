@@ -12,7 +12,7 @@ class HeartRateZone {
       int lowerLimit,
       int upperLimit,
       int color}) {
-    db = DbHeartRateZone()
+    _db = DbHeartRateZone()
       ..heartRateZoneSchemataId = heartRateZoneSchema.id
       ..name = name ?? 'My Zone'
       ..lowerLimit = lowerLimit ?? 70
@@ -22,18 +22,40 @@ class HeartRateZone {
       ..color = color ?? 0xFFFFc107;
 
     if (lowerPercentage != null)
-      db.lowerLimit =
-          (lowerPercentage * heartRateZoneSchema.base / 100).round();
+      lowerLimit = (lowerPercentage * heartRateZoneSchema.base / 100).round();
     if (upperPercentage != null)
-      db.upperLimit =
-          (upperPercentage * heartRateZoneSchema.base / 100).round();
+      upperLimit = (upperPercentage * heartRateZoneSchema.base / 100).round();
   }
-  HeartRateZone.fromDb(this.db);
+  HeartRateZone.fromDb(this._db);
 
-  DbHeartRateZone db;
+  DbHeartRateZone _db;
+
+  int get id => _db.id;
+  int get color => _db.color;
+  String get name => _db.name;
+  int get lowerLimit => _db.lowerLimit;
+  int get upperLimit => _db.upperLimit;
+  int get lowerPercentage => _db.lowerPercentage;
+  int get upperPercentage => _db.upperPercentage;
+  set color(int value) => _db.color = value;
+  set name(String value) => _db.name = value;
+  set lowerLimit(int value) => _db.lowerLimit = value;
+  set upperLimit(int value) => _db.upperLimit = value;
+  set lowerPercentage(int value) => _db.lowerPercentage = value;
+  set upperPercentage(int value) => _db.upperPercentage = value;
+  set heartRateZoneSchemataId(int value) => _db.heartRateZoneSchemataId = value;
+  set id(int value) => _db.id = value;
 
   @override
-  String toString() => '< HeartRateZone | ${db.name} | ${db.lowerLimit} >';
+  String toString() => '< HeartRateZone | $name | $lowerLimit >';
 
-  Future<BoolResult> delete() async => await db.delete();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
+
+  static Future<BoolCommitResult> upsertAll(
+      List<HeartRateZone> heartRateZones) async {
+    return await DbHeartRateZone().upsertAll(heartRateZones
+        .map((HeartRateZone heartRateZone) => heartRateZone._db)
+        .toList());
+  }
 }

@@ -79,12 +79,12 @@ class MyLineChart extends LineChart {
       return NumericExtents(
           heartRateZones
                   .map((HeartRateZone heartRateZone) =>
-                      heartRateZone.db.lowerLimit)
+                      heartRateZone.lowerLimit)
                   .reduce(min) -
               5.0,
           heartRateZones
                   .map((HeartRateZone heartRateZone) =>
-                      heartRateZone.db.upperLimit)
+                      heartRateZone.upperLimit)
                   .reduce(max) +
               5.0);
     else

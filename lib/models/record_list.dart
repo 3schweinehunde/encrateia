@@ -400,13 +400,13 @@ class RecordList<E> extends DelegatingList<E> {
     for (final HeartRateZone heartRateZone in heartRateZones.reversed) {
       final int numberInZone = _records
           .where((Event event) =>
-              (event.db.heartRate >= heartRateZone.db.lowerLimit) &&
-              (event.db.heartRate <= heartRateZone.db.upperLimit))
+              (event.db.heartRate >= heartRateZone.lowerLimit) &&
+              (event.db.heartRate <= heartRateZone.upperLimit))
           .length;
       distributions.add(BarZone(
         lower: counter,
         upper: counter + numberInZone,
-        color: heartRateZone.db.color,
+        color: heartRateZone.color,
       ));
       counter = counter + numberInZone;
     }

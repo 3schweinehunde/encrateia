@@ -90,11 +90,11 @@ class GraphUtils {
       rangeAnnotationSegmentList = <RangeAnnotationSegment<int>>[
         for (HeartRateZone heartRateZone in heartRateZones)
           RangeAnnotationSegment<int>(
-            heartRateZone.db.lowerLimit,
-            heartRateZone.db.upperLimit,
+            heartRateZone.lowerLimit,
+            heartRateZone.upperLimit,
             RangeAnnotationAxisType.measure,
-            startLabel: heartRateZone.db.name,
-            color: convertedColor(dbColor: heartRateZone.db.color),
+            startLabel: heartRateZone.name,
+            color: convertedColor(dbColor: heartRateZone.color),
           )
       ];
     }

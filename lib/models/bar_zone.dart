@@ -23,9 +23,9 @@ class BarZone {
     return <BarZone>[
       for (final HeartRateZone heartRateZone in heartRateZones)
         BarZone(
-          lower: heartRateZone.db.lowerLimit.toDouble(),
-          upper: heartRateZone.db.upperLimit.toDouble(),
-          color: heartRateZone.db.color,
+          lower: heartRateZone.lowerLimit.toDouble(),
+          upper: heartRateZone.upperLimit.toDouble(),
+          color: heartRateZone.color,
         )
     ];
   }

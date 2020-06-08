@@ -97,7 +97,7 @@ class MyBarChart extends StatelessWidget {
     else if (heartRateZones != null)
       return heartRateZones
           .map((HeartRateZone heartRateZone) =>
-              heartRateZone.db.upperLimit.toDouble())
+              heartRateZone.upperLimit.toDouble())
           .reduce(math.max);
     else
       return 100.0;
@@ -116,7 +116,7 @@ class MyBarChart extends StatelessWidget {
     else if (heartRateZones != null)
       return heartRateZones
           .map((HeartRateZone heartRateZone) =>
-              heartRateZone.db.lowerLimit.toDouble())
+              heartRateZone.lowerLimit.toDouble())
           .reduce(math.min);
     else
       return 0.0;
