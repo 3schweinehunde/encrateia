@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-import 'package:encrateia/model/model.dart';
 import 'add_tag_screen.dart';
 
 class AddTagGroupScreen extends StatefulWidget {
@@ -110,13 +109,13 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
             ],
             rows: tags.map((Tag tag) {
               return DataRow(
-                key: ValueKey<int>(tag.db.id),
+                key: ValueKey<int>(tag.id),
                 cells: <DataCell>[
-                  DataCell(Text(tag.db.name)),
+                  DataCell(Text(tag.name)),
                   DataCell(CircleColor(
                     circleSize: 20,
                     elevation: 0,
-                    color: Color(tag.db.color),
+                    color: Color(tag.color),
                   )),
                   DataCell(
                     MyIcon.edit,
@@ -178,7 +177,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
 
   Future<void> saveTagGroup(BuildContext context) async {
     await widget.tagGroup.save();
-    await DbTag().upsertAll(tags.map((Tag tag) => tag.db).toList());
+    await Tag.upsertAll(tags);
     Navigator.of(context).pop();
   }
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart' show DbTag, DbActivityTagging;
 import 'package:encrateia/models/tag_group.dart';
-import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
+import 'package:sqfentity_gen/sqfentity_gen.dart'
+    show BoolCommitResult, BoolResult;
 import 'activity.dart';
 import 'athlete.dart';
 
@@ -12,21 +13,29 @@ class Tag {
     int color,
     int sortOrder,
   }) {
-    db = DbTag()
+    _db = DbTag()
       ..tagGroupsId = tagGroup.id
       ..sortOrder = sortOrder ?? 0
       ..name = name ?? 'my Tag'
       ..color = color ?? 0xFFFFc107;
   }
-  Tag.fromDb(this.db);
+  Tag.fromDb(this._db);
 
-  DbTag db;
+  DbTag _db;
   bool selected = false;
 
-  @override
-  String toString() => '< Tag | ${db.name} >';
+  int get id => _db.id;
+  int get color => _db.color;
+  String get name => _db.name;
+  bool get system => _db.system;
+  set color(int value) => _db.color = value;
+  set name(String value) => _db.name = value;
 
-  Future<BoolResult> delete() async => await db.delete();
+  @override
+  String toString() => '< Tag | $name >';
+
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
 
   static Future<List<Tag>> allByActivity({@required Activity activity}) async {
     final List<DbActivityTagging> dbActivityTaggings = await DbActivityTagging()
@@ -38,9 +47,10 @@ class Tag {
       final List<DbTag> dbTags = await DbTag()
           .select()
           .id
-          .inValues(dbActivityTaggings.map(
-              (DbActivityTagging dbActivityTagging) =>
-                  dbActivityTagging.tagsId).toList())
+          .inValues(dbActivityTaggings
+              .map((DbActivityTagging dbActivityTagging) =>
+                  dbActivityTagging.tagsId)
+              .toList())
           .toList();
       final List<Tag> tags =
           dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
@@ -48,6 +58,10 @@ class Tag {
     } else {
       return <Tag>[];
     }
+  }
+
+  static Future<BoolCommitResult> upsertAll(List<Tag> tags) async {
+    return await DbTag().upsertAll(tags.map((Tag tag) => tag._db).toList());
   }
 
   static Future<Tag> autoPowerTag({

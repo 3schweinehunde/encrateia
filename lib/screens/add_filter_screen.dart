@@ -62,29 +62,29 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
                       for (Tag tag in tagGroups[index].cachedTags)
                         FilterChip(
                           label: Text(
-                            tag.db.name,
+                            tag.name,
                             style: TextStyle(
                               color: MyColor.textColor(
                                 selected:
-                                    widget.athlete.filters.contains(tag.db.id),
-                                backgroundColor: Color(tag.db.color ?? 99999),
+                                    widget.athlete.filters.contains(tag.id),
+                                backgroundColor: Color(tag.color ?? 99999),
                               ),
                             ),
                           ),
                           avatar: CircleAvatar(
-                            backgroundColor: Color(tag.db.color ?? 99999),
+                            backgroundColor: Color(tag.color ?? 99999),
                           ),
                           onSelected: (bool selected) {
                             setState(() {
                               if (selected)
-                                widget.athlete.filters.add(tag.db.id);
+                                widget.athlete.filters.add(tag.id);
                               else
                                 widget.athlete.filters.removeWhere(
-                                    (int tagId) => tagId == tag.db.id);
+                                    (int tagId) => tagId == tag.id);
                             });
                           },
-                          selected: widget.athlete.filters.contains(tag.db.id),
-                          selectedColor: Color(tag.db.color ?? 99999),
+                          selected: widget.athlete.filters.contains(tag.id),
+                          selectedColor: Color(tag.color ?? 99999),
                           backgroundColor: MyColor.white,
                           elevation: 3,
                           padding: const EdgeInsets.all(10),

@@ -12,7 +12,7 @@ class LapTagging {
   }) {
     db = DbLapTagging()
       ..lapsId = lap.db.id
-      ..tagsId = tag.db.id
+      ..tagsId = tag.id
       ..system = system ?? false;
   }
 
@@ -31,7 +31,7 @@ class LapTagging {
         .equals(lap.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
+        .equals(tag.id)
         .toSingle();
 
     if (dbLapTagging != null)
@@ -57,7 +57,7 @@ class LapTagging {
         .equals(lap.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
+        .equals(tag.id)
         .toSingle();
     return (dbLapTagging != null) ? LapTagging.fromDb(dbLapTagging) : null;
   }
@@ -72,7 +72,7 @@ class LapTagging {
         .equals(lap.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
+        .equals(tag.id)
         .toSingle();
     await dbLapTagging.delete();
   }

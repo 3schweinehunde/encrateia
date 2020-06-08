@@ -48,7 +48,7 @@ class TagGroup {
   }
 
   @override
-  String toString() => '< Taggroup | ${_db.name} >';
+  String toString() => '< TagGroup | $name >';
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
@@ -123,7 +123,7 @@ class TagGroup {
     for (final TagGroup tagGroup in tagGroups) {
       tagGroup.cachedTags = await tagGroup.tags;
       for (final Tag tag in tagGroup.cachedTags) {
-        tag.selected = selectedTagIds.contains(tag.db.id);
+        tag.selected = selectedTagIds.contains(tag.id);
       }
     }
     return tagGroups;
@@ -144,7 +144,7 @@ class TagGroup {
     for (final TagGroup tagGroup in tagGroups) {
       tagGroup.cachedTags = await tagGroup.tags;
       for (final Tag tag in tagGroup.cachedTags) {
-        tag.selected = selectedTagIds.contains(tag.db.id);
+        tag.selected = selectedTagIds.contains(tag.id);
       }
     }
     return tagGroups;

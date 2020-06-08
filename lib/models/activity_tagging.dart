@@ -12,7 +12,7 @@ class ActivityTagging {
   }) {
     db = DbActivityTagging()
       ..activitiesId = activity.db.id
-      ..tagsId = tag.db.id
+      ..tagsId = tag.id
       ..system = system ?? false;
   }
 
@@ -31,7 +31,7 @@ class ActivityTagging {
         .equals(activity.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
+        .equals(tag.id)
         .toSingle();
 
     if (dbActivityTagging != null)
@@ -54,7 +54,7 @@ class ActivityTagging {
         .equals(activity.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
+        .equals(tag.id)
         .toSingle();
     if (dbActivityTagging != null)
       return ActivityTagging.fromDb(dbActivityTagging);
@@ -71,7 +71,7 @@ class ActivityTagging {
         .equals(activity.db.id)
         .and
         .tagsId
-        .equals(tag.db.id)
+        .equals(tag.id)
         .toSingle();
     await dbActivityTagging.delete();
   }

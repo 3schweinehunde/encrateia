@@ -49,18 +49,18 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
               children: <Widget>[
                 for (Tag tag in tagGroups[index].cachedTags)
                   InputChip(
-                    isEnabled: tag.db.system != true,
+                    isEnabled: tag.system != true,
                     label: Text(
-                      tag.db.name,
+                      tag.name,
                       style: TextStyle(
                         color: MyColor.textColor(
                           selected: tag.selected,
-                          backgroundColor: Color(tag.db.color ?? 99999),
+                          backgroundColor: Color(tag.color ?? 99999),
                         ),
                       ),
                     ),
                     avatar: CircleAvatar(
-                      backgroundColor: Color(tag.db.color ?? 99999),
+                      backgroundColor: Color(tag.color ?? 99999),
                     ),
                     onSelected: (bool selected) {
                       setState(() {
@@ -79,7 +79,7 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
                       });
                     },
                     selected: tag.selected,
-                    selectedColor: Color(tag.db.color ?? 99999),
+                    selectedColor: Color(tag.color ?? 99999),
                     backgroundColor: MyColor.white,
                     elevation: 3,
                     padding: const EdgeInsets.all(10),
