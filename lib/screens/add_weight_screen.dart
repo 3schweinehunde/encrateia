@@ -26,7 +26,7 @@ class AddWeightScreen extends StatelessWidget {
           DateTimeField(
             decoration: const InputDecoration(labelText: 'Date'),
             format: DateFormat('yyyy-MM-dd'),
-            initialValue: weight.db.date,
+            initialValue: weight.date,
             onShowPicker: (BuildContext context, DateTime currentValue) {
               return showDatePicker(
                 context: context,
@@ -35,13 +35,13 @@ class AddWeightScreen extends StatelessWidget {
                 lastDate: DateTime(2100),
               );
             },
-            onChanged: (DateTime value) => weight.db.date = value,
+            onChanged: (DateTime value) => weight.date = value,
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Weight in kg'),
-            initialValue: weight.db.value.toString(),
+            initialValue: weight.value.toString(),
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            onChanged: (String value) => weight.db.value = double.parse(value),
+            onChanged: (String value) => weight.value = double.parse(value),
           ),
           const SizedBox(height: 20),
           Row(
@@ -62,7 +62,7 @@ class AddWeightScreen extends StatelessWidget {
   }
 
   Future<void> saveWeight(BuildContext context) async {
-    await weight.db.save();
+    await weight.save();
     Navigator.of(context).pop();
   }
 

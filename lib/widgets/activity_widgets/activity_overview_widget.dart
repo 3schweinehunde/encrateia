@@ -121,7 +121,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
       date: widget.activity.db.timeCreated,
     );
     setState(() {
-      widget.activity.weight = weight?.db?.value;
+      widget.activity.weight = weight?.value;
     });
   }
 }

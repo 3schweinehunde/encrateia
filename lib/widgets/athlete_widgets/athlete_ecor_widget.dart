@@ -102,7 +102,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
         athletesId: activity.db.athletesId,
         date: activity.db.timeCreated,
       );
-      activity.weight = weight?.db?.value;
+      activity.weight = weight?.value;
     }
     setState(() {});
   }

@@ -5,19 +5,26 @@ import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class Weight {
   Weight({@required Athlete athlete}) {
-    db = DbWeight()
+    _db = DbWeight()
       ..athletesId = athlete.db.id
       ..value = 70
       ..date = DateTime.now();
   }
-  Weight.fromDb(this.db);
+  Weight.fromDb(this._db);
 
-  DbWeight db;
+  DbWeight _db;
+
+  int get id => _db.id;
+  DateTime get date => _db.date;
+  double get value => _db.value;
+  set date(DateTime value) => _db.date = value;
+  set value(double value) => _db.value = value;
 
   @override
-  String toString() => '< Weight | ${db.date} | ${db.value} >';
+  String toString() => '< Weight | $date | $value >';
 
-  Future<BoolResult> delete() async => await db.delete();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
 
   static Future<List<Weight>> all({@required Athlete athlete}) async {
     final List<DbWeight> dbWeightList =

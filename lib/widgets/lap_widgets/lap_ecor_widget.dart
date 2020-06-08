@@ -57,7 +57,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
             children: <Widget>[
               LapEcorChart(
                 records: RecordList<Event>(powerRecords),
-                weight: weight.db.value,
+                weight: weight.value,
               ),
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
@@ -94,7 +94,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
       athletesId: widget.athlete.db.id,
       date: widget.lap.db.startTime,
     );
-    weightString = weight.db.value.toStringOrDashes(2) + ' kg';
+    weightString = weight.value.toStringOrDashes(2) + ' kg';
     setState(() {});
   }
 }

@@ -23,6 +23,13 @@ class LapTagging {
   int get lapsId => _db.lapsId;
   int get tagsId => _db.tagsId;
 
+  @override
+  String toString() =>
+      '< LapTagging | lapId $lapsId | tagId $tagsId >';
+
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
+
   static Future<LapTagging> createBy({
     @required Lap lap,
     @required Tag tag,
@@ -79,11 +86,4 @@ class LapTagging {
         .toSingle();
     await dbLapTagging.delete();
   }
-
-  @override
-  String toString() =>
-      '< LapTagging | lapId $lapsId | tagId $tagsId >';
-
-  Future<BoolResult> delete() async => await _db.delete();
-  Future<int> save() async => await _db.save();
 }

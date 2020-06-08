@@ -49,11 +49,11 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
               ],
               rows: weights.sublist(offset, offset + rows).map((Weight weight) {
                 return DataRow(
-                  key: ValueKey<int>(weight.db.id),
+                  key: ValueKey<int>(weight.id),
                   cells: <DataCell>[
                     DataCell(
-                        Text(DateFormat('d MMM yyyy').format(weight.db.date))),
-                    DataCell(Text(weight.db.value.toString())),
+                        Text(DateFormat('d MMM yyyy').format(weight.date))),
+                    DataCell(Text(weight.value.toString())),
                     DataCell(MyIcon.edit, onTap: () async {
                       await Navigator.push(
                         context,
@@ -197,13 +197,13 @@ Or you can simply enter your current weight using the New Weighting button.
           .toList();
       for (final List<dynamic> weighting in weightings) {
         weight = Weight(athlete: widget.athlete);
-        weight.db.date = DateTime.utc(
+        weight.date = DateTime.utc(
           int.parse((weighting[0] as String).split('-')[0]),
           int.parse((weighting[0] as String).split('-')[1]),
           int.parse((weighting[0] as String).split('-')[2]),
         );
-        weight.db.value = double.parse(weighting[1] as String);
-        await weight.db.save();
+        weight.value = double.parse(weighting[1] as String);
+        await weight.save();
       }
       await getData();
     }

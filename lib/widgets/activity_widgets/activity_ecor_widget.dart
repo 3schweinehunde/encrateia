@@ -54,7 +54,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
                 records: RecordList<Event>(ecorRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
-                weight: weight.db.value,
+                weight: weight.value,
               ),
               Text('${widget.athlete.db.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
@@ -101,8 +101,8 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
       athletesId: widget.athlete.db.id,
       date: widget.activity.db.timeCreated,
     );
-    widget.activity.weight = weight.db.value;
-    weightString = weight.db.value.toStringOrDashes(2) + ' kg';
+    widget.activity.weight = weight.value;
+    weightString = weight.value.toStringOrDashes(2) + ' kg';
     setState(() {});
   }
 }
