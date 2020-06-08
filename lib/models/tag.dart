@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
+import 'package:encrateia/model/model.dart' show DbTag, DbActivityTagging;
 import 'package:encrateia/models/tag_group.dart';
-import 'package:sqfentity_gen/sqfentity_gen.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
 
 import 'activity.dart';
 import 'athlete.dart';

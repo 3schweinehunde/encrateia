@@ -5,7 +5,8 @@ import 'package:encrateia/models/strava_fit_download.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
+import 'package:encrateia/model/model.dart'
+    show DbActivity, DbEvent, DbHeartRateZone, DbPowerZone;
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';

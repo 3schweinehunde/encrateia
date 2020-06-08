@@ -1,10 +1,11 @@
 import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
+import 'package:encrateia/model/model.dart'
+    show DbTagGroup, DbActivityTagging, DbLapTagging;
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:sqfentity_gen/sqfentity_gen.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
 import 'lap.dart';
 
 class TagGroup extends ChangeNotifier {

@@ -1,7 +1,7 @@
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
+import 'package:encrateia/model/model.dart' show DbLapTagging;
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class LapTagging extends ChangeNotifier {

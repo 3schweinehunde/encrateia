@@ -1,7 +1,7 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/model/model.dart';
+import 'package:encrateia/model/model.dart' show DbActivityTagging;
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:collection/collection.dart';

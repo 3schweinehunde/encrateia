@@ -1,7 +1,7 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
+import 'package:encrateia/model/model.dart' show DbActivityTagging;
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class ActivityTagging extends ChangeNotifier {

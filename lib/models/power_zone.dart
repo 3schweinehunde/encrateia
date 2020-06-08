@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
+import 'package:encrateia/model/model.dart' show DbPowerZone;
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 

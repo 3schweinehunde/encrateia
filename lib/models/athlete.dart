@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
+import 'package:encrateia/model/model.dart' show DbAthlete;
 import 'package:path_provider/path_provider.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:encrateia/models/activity.dart';
