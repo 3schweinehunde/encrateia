@@ -43,14 +43,14 @@ class PathPainter extends CustomPainter {
             (Event record) => Offset(
               width / 2 +
                   scale *
-                      (record.db.positionLong -
+                      (record.positionLong -
                           activity.db.swcLong / 2 -
                           activity.db.necLong / 2),
               height / 2 +
                   scale *
                       (activity.db.necLat / 2 +
                           activity.db.swcLat / 2 -
-                          record.db.positionLat),
+                          record.positionLat),
             ),
           )
           .toList(),

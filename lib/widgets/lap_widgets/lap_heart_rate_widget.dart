@@ -40,7 +40,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
     if (records.isNotEmpty) {
       final List<Event> heartRateRecords = records
           .where(
-              (Event value) => value.db.heartRate != null && value.db.heartRate > 0)
+              (Event value) => value.heartRate != null && value.heartRate > 0)
           .toList();
 
       if (heartRateRecords.isNotEmpty) {

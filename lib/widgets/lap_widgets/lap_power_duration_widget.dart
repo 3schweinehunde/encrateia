@@ -32,7 +32,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.db.power != null && value.db.power > 100)
+          .where((Event value) => value.power != null && value.power > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {

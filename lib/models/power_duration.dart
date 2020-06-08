@@ -7,11 +7,10 @@ class PowerDuration {
     final Map<int, EnergyPoint> powerSum = <int, EnergyPoint>{};
 
     for (int index = 1; index <= records.length - 1; index++) {
-      final int power = records[index].db.power;
+      final int power = records[index].power;
       final int duration = records[index]
-          .db
           .timeStamp
-          .difference(records[index - 1].db.timeStamp)
+          .difference(records[index - 1].timeStamp)
           .inSeconds;
 
       powerSum.forEach((int start, EnergyPoint energyPoint) {

@@ -6,7 +6,7 @@ import 'package:encrateia/models/strava_fit_download.dart';
 import 'package:fit_parser/src/value.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart'
-    show DbActivity, DbEvent, DbHeartRateZone, DbPowerZone;
+    show DbActivity, DbHeartRateZone, DbPowerZone;
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 import 'package:strava_flutter/strava.dart';
 import 'package:encrateia/secrets/secrets.dart';
@@ -371,10 +371,7 @@ class Activity {
             lap: currentLap,
           );
           await lap.db.save();
-          await DbEvent().upsertAll(eventsForCurrentLap
-              .where((Event event) => event.db != null)
-              .map((Event event) => event.db)
-              .toList());
+          await Event.upsertAll(eventsForCurrentLap);
 
           await resetCurrentLap();
           break;
@@ -619,7 +616,7 @@ class Activity {
     final PowerZoneSchema powerZoneSchema = await this.powerZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> powerRecords =
-        records.where((Event record) => record.db.power != null).toList();
+        records.where((Event record) => record.power != null).toList();
     final List<BarZone> powerZoneCounts = await RecordList<Event>(powerRecords)
         .powerZoneCounts(powerZoneSchema: powerZoneSchema);
     return powerZoneCounts;
@@ -630,7 +627,7 @@ class Activity {
         await this.heartRateZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> heartRateRecords =
-        records.where((Event record) => record.db.heartRate != null).toList();
+        records.where((Event record) => record.heartRate != null).toList();
     final List<BarZone> heartRateZoneCounts =
         await RecordList<Event>(heartRateRecords)
             .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);

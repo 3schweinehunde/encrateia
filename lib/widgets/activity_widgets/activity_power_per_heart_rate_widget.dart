@@ -37,10 +37,10 @@ class _ActivityPowerPerHeartRateWidgetState
     if (records.isNotEmpty) {
       final List<Event> powerPerHeartRateRecords = records
           .where((Event value) =>
-              value.db.power != null &&
-              value.db.power > 100 &&
-              value.db.heartRate != null &&
-              value.db.heartRate > 0)
+              value.power != null &&
+              value.power > 100 &&
+              value.heartRate != null &&
+              value.heartRate > 0)
           .toList();
 
       if (powerPerHeartRateRecords.isNotEmpty) {

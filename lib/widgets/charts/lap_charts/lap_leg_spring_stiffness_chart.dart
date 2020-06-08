@@ -11,14 +11,14 @@ class LapLegSpringStiffnessChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.db.distance.round();
+    final int offset = records.first.distance.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
        Series<Event, int>(
         id: 'Leg Spring Stiffness',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
-        domainFn: (Event record, _) => record.db.distance.round() - offset,
-        measureFn: (Event record, _) => record.db.groundTime,
+        domainFn: (Event record, _) => record.distance.round() - offset,
+        measureFn: (Event record, _) => record.groundTime,
         data: records,
       )
     ];

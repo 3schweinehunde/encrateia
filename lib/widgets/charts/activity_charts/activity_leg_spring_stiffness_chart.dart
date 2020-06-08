@@ -48,7 +48,7 @@ class ActivityLegSpringStiffnessChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.db.distance,
+              maxDomain: records.last.distance,
               laps: laps,
               domainTitle: 'Leg Spring Stiffness (kN/m)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

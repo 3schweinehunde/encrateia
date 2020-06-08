@@ -5,19 +5,17 @@ import 'package:encrateia/models/plot_point.dart';
 class MinimumPowerDuration {
   MinimumPowerDuration({List<Event> records}) {
     for (int index = 0; index < records.length - 1; index++) {
-      final int power = records[index].db.power;
+      final int power = records[index].power;
       final DateTime nextLower = records
           .sublist(index + 1, records.length)
-          .firstWhere((Event record) => record.db.power < power,
+          .firstWhere((Event record) => record.power < power,
               orElse: () => records.last)
-          .db
           .timeStamp;
 
       final DateTime recentLower = records
           .sublist(0, index)
-          .lastWhere((Event record) => record.db.power < power,
+          .lastWhere((Event record) => record.power < power,
               orElse: () => records.first)
-          .db
           .timeStamp;
 
       final int persistedFor = nextLower.difference(recentLower).inSeconds;

@@ -37,7 +37,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
     if (records.isNotEmpty) {
       final List<Event> strydCadenceRecords = records
           .where((Event value) =>
-              value.db.strydCadence != null && value.db.strydCadence > 0)
+              value.strydCadence != null && value.strydCadence > 0)
           .toList();
 
       if (strydCadenceRecords.isNotEmpty) {

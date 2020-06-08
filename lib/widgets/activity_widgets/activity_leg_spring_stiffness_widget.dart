@@ -38,8 +38,8 @@ class _ActivityLegSpringStiffnessWidgetState
     if (records.isNotEmpty) {
       final List<Event> legSpringStiffnessRecords = records
           .where((Event value) =>
-              value.db.legSpringStiffness != null &&
-              value.db.legSpringStiffness > 0)
+              value.legSpringStiffness != null &&
+              value.legSpringStiffness > 0)
           .toList();
 
       if (legSpringStiffnessRecords.isNotEmpty) {

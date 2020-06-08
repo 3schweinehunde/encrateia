@@ -37,7 +37,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
     if (records.isNotEmpty) {
       final List<Event> formPowerRecords = records
           .where(
-              (Event value) => value.db.formPower != null && value.db.formPower > 0)
+              (Event value) => value.formPower != null && value.formPower > 0)
           .toList();
 
       if (formPowerRecords.isNotEmpty) {

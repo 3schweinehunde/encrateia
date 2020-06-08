@@ -47,7 +47,7 @@ class ActivityStrydCadenceChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.db.distance,
+              maxDomain: records.last.distance,
               laps: laps,
               domainTitle: 'Cadence (s/min)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

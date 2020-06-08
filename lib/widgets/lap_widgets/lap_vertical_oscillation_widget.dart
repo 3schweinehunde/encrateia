@@ -39,8 +39,8 @@ class _LapVerticalOscillationWidgetState
     if (records.isNotEmpty) {
       final List<Event> verticalOscillationRecords = records
           .where((Event value) =>
-              value.db.verticalOscillation != null &&
-              value.db.verticalOscillation > 0)
+              value.verticalOscillation != null &&
+              value.verticalOscillation > 0)
           .toList();
 
       if (verticalOscillationRecords.isNotEmpty) {

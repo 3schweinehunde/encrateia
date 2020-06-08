@@ -42,7 +42,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty && powerZones != null) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.db.power != null && value.db.power > 100)
+          .where((Event value) => value.power != null && value.power > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -89,9 +89,9 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
               ),
               ListTile(
                 leading: const Text('🕵️‍♀️', style: TextStyle(fontSize: 25)),
-                title: Text(lastRecord.db.positionLong.semicirclesAsDegrees() +
+                title: Text(lastRecord.positionLong.semicirclesAsDegrees() +
                     ' / ' +
-                    lastRecord.db.positionLat.semicirclesAsDegrees()),
+                    lastRecord.positionLat.semicirclesAsDegrees()),
                 subtitle: const Text('findYourStryd (last power record)'),
               ),
             ],

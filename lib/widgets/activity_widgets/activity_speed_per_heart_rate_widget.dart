@@ -37,9 +37,9 @@ class _ActivitySpeedPerHeartRateWidgetState
     if (records.isNotEmpty) {
       final List<Event> speedPerHeartRateRecords = records
           .where((Event value) =>
-              value.db.speed != null &&
-              value.db.heartRate != null &&
-              value.db.heartRate > 0)
+              value.speed != null &&
+              value.heartRate != null &&
+              value.heartRate > 0)
           .toList();
 
       if (speedPerHeartRateRecords.isNotEmpty) {

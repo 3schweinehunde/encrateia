@@ -37,9 +37,9 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
     if (records.isNotEmpty) {
       final List<Event> strideRatioRecords = records
           .where((Event value) =>
-              value.db.strydCadence != null &&
-              value.db.verticalOscillation != null &&
-              value.db.verticalOscillation != 0)
+              value.strydCadence != null &&
+              value.verticalOscillation != null &&
+              value.verticalOscillation != 0)
           .toList();
 
       if (strideRatioRecords.isNotEmpty) {

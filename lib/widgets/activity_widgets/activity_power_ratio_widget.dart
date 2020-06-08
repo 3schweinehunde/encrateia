@@ -37,11 +37,11 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
           .where((Event value) =>
-              value.db.power != null &&
-              value.db.power > 100 &&
-              value.db.formPower != null &&
-              value.db.formPower > 0 &&
-              value.db.formPower < 200)
+              value.power != null &&
+              value.power > 100 &&
+              value.formPower != null &&
+              value.formPower > 0 &&
+              value.formPower < 200)
           .toList();
 
       if (powerRecords.isNotEmpty) {

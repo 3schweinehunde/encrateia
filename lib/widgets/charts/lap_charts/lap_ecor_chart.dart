@@ -14,15 +14,15 @@ class LapEcorChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.db.distance.round();
+    final int offset = records.first.distance.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Ecor',
         colorFn: (_, __) => MaterialPalette.gray.shade700,
-        domainFn: (Event record, _) => record.db.distance.round() - offset,
+        domainFn: (Event record, _) => record.distance.round() - offset,
         measureFn: (Event record, _) =>
-            record.db.power / record.db.speed / weight,
+            record.power / record.speed / weight,
         data: records,
       )
     ];

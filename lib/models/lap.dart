@@ -345,7 +345,7 @@ class Lap {
     final PowerZoneSchema powerZoneSchema = await this.powerZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> powerRecords =
-        records.where((Event record) => record.db.power != null).toList();
+        records.where((Event record) => record.power != null).toList();
     final List<BarZone> powerZoneCounts = await RecordList<Event>(powerRecords)
         .powerZoneCounts(powerZoneSchema: powerZoneSchema);
     return powerZoneCounts;
@@ -356,7 +356,7 @@ class Lap {
         await this.heartRateZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> heartRateRecords =
-        records.where((Event record) => record.db.heartRate != null).toList();
+        records.where((Event record) => record.heartRate != null).toList();
     final List<BarZone> heartRateZoneCounts =
         await RecordList<Event>(heartRateRecords)
             .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);

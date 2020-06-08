@@ -48,7 +48,7 @@ class ActivityStrideRatioChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.db.distance,
+              maxDomain: records.last.distance,
               laps: laps,
               domainTitle: 'Stride Ratio (multiple)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

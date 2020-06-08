@@ -37,7 +37,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
     if (records.isNotEmpty) {
       final List<Event> groundTimeRecords = records
           .where(
-              (Event value) => value.db.groundTime != null && value.db.groundTime > 0)
+              (Event value) => value.groundTime != null && value.groundTime > 0)
           .toList();
 
       if (groundTimeRecords.isNotEmpty) {

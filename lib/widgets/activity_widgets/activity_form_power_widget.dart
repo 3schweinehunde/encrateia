@@ -37,9 +37,9 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
     if (records.isNotEmpty) {
       final List<Event> formPowerRecords = records
           .where((Event value) =>
-              value.db.formPower != null &&
-              value.db.formPower > 0 &&
-              value.db.formPower < 200)
+              value.formPower != null &&
+              value.formPower > 0 &&
+              value.formPower < 200)
           .toList();
 
       if (formPowerRecords.isNotEmpty) {

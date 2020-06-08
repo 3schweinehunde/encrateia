@@ -37,7 +37,7 @@ class _ActivityVerticalOscillationWidgetState
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.db.verticalOscillation != null)
+          .where((Event value) => value.verticalOscillation != null)
           .toList();
 
       if (powerRecords.isNotEmpty) {

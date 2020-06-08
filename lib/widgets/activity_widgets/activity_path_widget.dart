@@ -32,7 +32,7 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
     if (records.isNotEmpty) {
       final List<Event> geoRecords = records
           .where((Event value) =>
-              value.db.positionLong != null && value.db.positionLat != null)
+              value.positionLong != null && value.positionLat != null)
           .toList();
 
       if (geoRecords.isNotEmpty && geoRecords != null) {

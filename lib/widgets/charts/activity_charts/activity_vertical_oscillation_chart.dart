@@ -48,7 +48,7 @@ class ActivityVerticalOscillationChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.db.distance,
+              maxDomain: records.last.distance,
               laps: laps,
               domainTitle: 'Vertical Oscillation (cm)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

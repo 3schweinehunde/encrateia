@@ -38,7 +38,7 @@ class _ActivityStrydCadenceWidgetState
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
           .where((Event value) =>
-              value.db.strydCadence != null && value.db.strydCadence > 0)
+              value.strydCadence != null && value.strydCadence > 0)
           .toList();
 
       if (powerRecords.isNotEmpty) {

@@ -47,7 +47,7 @@ class ActivityFormPowerChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.db.distance,
+              maxDomain: records.last.distance,
               laps: laps,
               domainTitle: 'Form Power (W)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

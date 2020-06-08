@@ -51,7 +51,7 @@ class ActivityPowerChart extends StatelessWidget {
             height: 300,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.db.distance,
+              maxDomain: records.last.distance,
               laps: laps,
               powerZones: powerZones,
               domainTitle: 'Power (W)',

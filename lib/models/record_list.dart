@@ -19,25 +19,25 @@ class RecordList<E> extends DelegatingList<E> {
   final List<Event> _records;
 
   String get sdevHeartRateString => _records
-      .map((Event record) => record.db.heartRate)
+      .map((Event record) => record.heartRate)
       .nonZeroInts()
       .sdev()
       .toStringAsFixed(2);
 
   String get minHeartRateString => _records
-      .map((Event record) => record.db.heartRate)
+      .map((Event record) => record.heartRate)
       .nonZeroInts()
       .min()
       .toString();
 
   String get avgHeartRateString => _records
-      .map((Event record) => record.db.heartRate)
+      .map((Event record) => record.heartRate)
       .nonZeroInts()
       .mean()
       .toStringOrDashes(1);
 
   String get maxHeartRateString => _records
-      .map((Event record) => record.db.heartRate)
+      .map((Event record) => record.heartRate)
       .nonZeroInts()
       .max()
       .toString();
@@ -45,10 +45,10 @@ class RecordList<E> extends DelegatingList<E> {
   double calculateAveragePower() {
     final Iterable<int> powers = _records
         .where((Event record) =>
-            record.db.power != null &&
-            record.db.power > 0 &&
-            record.db.power < 2000)
-        .map((Event record) => record.db.power);
+            record.power != null &&
+            record.power > 0 &&
+            record.power < 2000)
+        .map((Event record) => record.power);
 
     if (powers.isNotEmpty) {
       return powers.mean();
@@ -58,15 +58,15 @@ class RecordList<E> extends DelegatingList<E> {
 
   double calculateSdevPower() => _records
       .where((Event record) =>
-          record.db.power != null &&
-          record.db.power > 0 &&
-          record.db.power < 2000)
-      .map((Event record) => record.db.power)
+          record.power != null &&
+          record.power > 0 &&
+          record.power < 2000)
+      .map((Event record) => record.power)
       .sdev();
 
   int calculateMinPower() {
     final List<int> powers =
-        _records.map((Event record) => record.db.power).nonZeroInts();
+        _records.map((Event record) => record.power).nonZeroInts();
     if (powers.isNotEmpty)
       return powers.min();
     else
@@ -75,7 +75,7 @@ class RecordList<E> extends DelegatingList<E> {
 
   int calculateMaxPower() {
     final List<int> powers =
-        _records.map((Event record) => record.db.power).nonZeroInts();
+        _records.map((Event record) => record.power).nonZeroInts();
     if (powers.isNotEmpty)
       return powers.max();
     else
@@ -85,10 +85,10 @@ class RecordList<E> extends DelegatingList<E> {
   int calculateAverageHeartRate() {
     final Iterable<int> heartRates = _records
         .where((Event record) =>
-            record.db.heartRate != null &&
-            record.db.heartRate > 0 &&
-            record.db.heartRate < 2000)
-        .map((Event record) => record.db.heartRate);
+            record.heartRate != null &&
+            record.heartRate > 0 &&
+            record.heartRate < 2000)
+        .map((Event record) => record.heartRate);
 
     if (heartRates.isNotEmpty) {
       return heartRates.mean().round();
@@ -98,15 +98,15 @@ class RecordList<E> extends DelegatingList<E> {
 
   double calculateSdevHeartRate() => _records
       .where((Event record) =>
-          record.db.heartRate != null &&
-          record.db.heartRate > 0 &&
-          record.db.heartRate < 2000)
-      .map((Event record) => record.db.heartRate)
+          record.heartRate != null &&
+          record.heartRate > 0 &&
+          record.heartRate < 2000)
+      .map((Event record) => record.heartRate)
       .sdev();
 
   int calculateMinHeartRate() {
     final List<int> heartRates =
-        _records.map((Event record) => record.db.heartRate).nonZeroInts();
+        _records.map((Event record) => record.heartRate).nonZeroInts();
 
     if (heartRates.isNotEmpty)
       return heartRates.min();
@@ -116,7 +116,7 @@ class RecordList<E> extends DelegatingList<E> {
 
   int calculateMaxHeartRate() {
     final List<int> heartRates =
-        _records.map((Event record) => record.db.heartRate).nonZeroInts();
+        _records.map((Event record) => record.heartRate).nonZeroInts();
 
     if (heartRates.isNotEmpty)
       return heartRates.max();
@@ -126,7 +126,7 @@ class RecordList<E> extends DelegatingList<E> {
 
   double calculateAverageSpeed() {
     final List<double> speeds =
-        _records.map((Event record) => record.db.speed).nonZeroDoubles();
+        _records.map((Event record) => record.speed).nonZeroDoubles();
 
     if (speeds.isNotEmpty) {
       return speeds.mean();
@@ -136,7 +136,7 @@ class RecordList<E> extends DelegatingList<E> {
 
   double calculateAverageGroundTime() {
     final List<double> groundTimes =
-        _records.map((Event record) => record.db.groundTime).nonZeroDoubles();
+        _records.map((Event record) => record.groundTime).nonZeroDoubles();
 
     if (groundTimes.isNotEmpty) {
       return groundTimes.mean();
@@ -145,13 +145,13 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   double calculateSdevGroundTime() => _records
-      .map((Event record) => record.db.groundTime)
+      .map((Event record) => record.groundTime)
       .nonZeroDoubles()
       .sdev();
 
   double calculateAverageStrydCadence() {
     final List<double> strydCadences = _records
-        .map((Event record) => record.db.strydCadence ?? 0.0 * 2)
+        .map((Event record) => record.strydCadence ?? 0.0 * 2)
         .nonZeroDoubles();
 
     if (strydCadences.isNotEmpty) {
@@ -161,13 +161,13 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   double calculateSdevStrydCadence() => _records
-      .map((Event record) => record.db.strydCadence ?? 0.0 * 2)
+      .map((Event record) => record.strydCadence ?? 0.0 * 2)
       .nonZeroDoubles()
       .sdev();
 
   double calculateAverageLegSpringStiffness() {
     final List<double> legSpringStiffnesses = _records
-        .map((Event record) => record.db.legSpringStiffness)
+        .map((Event record) => record.legSpringStiffness)
         .nonZeroDoubles();
 
     if (legSpringStiffnesses.isNotEmpty) {
@@ -177,13 +177,13 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   double calculateSdevLegSpringStiffness() => _records
-      .map((Event record) => record.db.legSpringStiffness)
+      .map((Event record) => record.legSpringStiffness)
       .nonZeroDoubles()
       .sdev();
 
   double calculateAverageVerticalOscillation() {
     final List<double> verticalOscillation = _records
-        .map((Event record) => record.db.verticalOscillation)
+        .map((Event record) => record.verticalOscillation)
         .nonZeroDoubles();
 
     if (verticalOscillation.isNotEmpty) {
@@ -193,15 +193,15 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   double calculateSdevVerticalOscillation() => _records
-      .map((Event record) => record.db.verticalOscillation)
+      .map((Event record) => record.verticalOscillation)
       .nonZeroDoubles()
       .sdev();
 
   double calculateAverageFormPower() {
     final Iterable<int> formPowers = _records
         .where((Event record) =>
-            record.db.formPower != null && record.db.formPower < 200)
-        .map((Event record) => record.db.formPower);
+            record.formPower != null && record.formPower < 200)
+        .map((Event record) => record.formPower);
 
     if (formPowers.isNotEmpty) {
       return formPowers.mean();
@@ -211,19 +211,19 @@ class RecordList<E> extends DelegatingList<E> {
 
   double calculateSdevFormPower() => _records
       .where((Event record) =>
-          record.db.formPower != null && record.db.formPower < 200)
-      .map((Event record) => record.db.formPower)
+          record.formPower != null && record.formPower < 200)
+      .map((Event record) => record.formPower)
       .sdev();
 
   double calculateAveragePowerRatio() {
     final Iterable<double> powerRatios = _records
         .where((Event record) =>
-            record.db.power != null &&
-            record.db.power != 0 &&
-            record.db.formPower != null &&
-            record.db.formPower != 0)
+            record.power != null &&
+            record.power != 0 &&
+            record.formPower != null &&
+            record.formPower != 0)
         .map((Event record) =>
-            (record.db.power - record.db.formPower) / record.db.power * 100);
+            (record.power - record.formPower) / record.power * 100);
 
     if (powerRatios.isNotEmpty) {
       return powerRatios.mean();
@@ -233,28 +233,28 @@ class RecordList<E> extends DelegatingList<E> {
 
   double calculateSdevPowerRatio() => _records
       .where((Event record) =>
-          record.db.power != null &&
-          record.db.power != 0 &&
-          record.db.formPower != null &&
-          record.db.formPower != 0)
+          record.power != null &&
+          record.power != 0 &&
+          record.formPower != null &&
+          record.formPower != 0)
       .map((Event record) =>
-          (record.db.power - record.db.formPower) / record.db.power * 100)
+          (record.power - record.formPower) / record.power * 100)
       .sdev();
 
   double calculateAverageStrideRatio() {
     final Iterable<double> powerRatios = _records
         .where((Event record) =>
-            record.db.speed != null &&
-            record.db.strydCadence != null &&
-            record.db.strydCadence != 0 &&
-            record.db.verticalOscillation != null &&
-            record.db.verticalOscillation != 0)
+            record.speed != null &&
+            record.strydCadence != null &&
+            record.strydCadence != 0 &&
+            record.verticalOscillation != null &&
+            record.verticalOscillation != 0)
         .map((Event record) =>
             10000 /
             6 *
-            record.db.speed /
-            record.db.strydCadence /
-            record.db.verticalOscillation);
+            record.speed /
+            record.strydCadence /
+            record.verticalOscillation);
 
     if (powerRatios.isNotEmpty) {
       return powerRatios.mean();
@@ -264,17 +264,17 @@ class RecordList<E> extends DelegatingList<E> {
 
   double calculateSdevStrideRatio() => _records
       .where((Event record) =>
-          record.db.speed != null &&
-          record.db.strydCadence != null &&
-          record.db.strydCadence != 0 &&
-          record.db.verticalOscillation != null &&
-          record.db.verticalOscillation != 0)
+          record.speed != null &&
+          record.strydCadence != null &&
+          record.strydCadence != 0 &&
+          record.verticalOscillation != null &&
+          record.verticalOscillation != 0)
       .map((Event record) =>
           10000 /
           6 *
-          record.db.speed /
-          record.db.strydCadence /
-          record.db.verticalOscillation)
+          record.speed /
+          record.strydCadence /
+          record.verticalOscillation)
       .sdev();
 
   List<IntPlotPoint> toIntDataPoints({
@@ -288,18 +288,18 @@ class RecordList<E> extends DelegatingList<E> {
     for (final Event record in _records) {
       switch (attribute) {
         case LapIntAttr.power:
-          sum = sum + record.db.power;
+          sum = sum + record.power;
           break;
         case LapIntAttr.formPower:
-          sum = sum + record.db.formPower;
+          sum = sum + record.formPower;
           break;
         case LapIntAttr.heartRate:
-          sum = sum + record.db.heartRate;
+          sum = sum + record.heartRate;
       }
 
       if (index++ % amount == amount - 1) {
         plotPoints.add(IntPlotPoint(
-          domain: record.db.distance.round(),
+          domain: record.distance.round(),
           measure: (sum / amount).round(),
         ));
         sum = 0;
@@ -321,42 +321,42 @@ class RecordList<E> extends DelegatingList<E> {
     for (final Event record in _records) {
       switch (attribute) {
         case LapDoubleAttr.powerPerHeartRate:
-          sum = sum + (record.db.power / record.db.heartRate);
+          sum = sum + (record.power / record.heartRate);
           break;
         case LapDoubleAttr.speedPerHeartRate:
-          sum = sum + 100 * (record.db.speed / record.db.heartRate);
+          sum = sum + 100 * (record.speed / record.heartRate);
           break;
         case LapDoubleAttr.groundTime:
-          sum = sum + record.db.groundTime;
+          sum = sum + record.groundTime;
           break;
         case LapDoubleAttr.strydCadence:
-          sum = sum + 2 * record.db.strydCadence;
+          sum = sum + 2 * record.strydCadence;
           break;
         case LapDoubleAttr.verticalOscillation:
-          sum = sum + record.db.verticalOscillation;
+          sum = sum + record.verticalOscillation;
           break;
         case LapDoubleAttr.legSpringStiffness:
-          sum = sum + record.db.legSpringStiffness;
+          sum = sum + record.legSpringStiffness;
           break;
         case LapDoubleAttr.powerRatio:
           sum = sum +
-              ((record.db.power - record.db.formPower) / record.db.power * 100);
+              ((record.power - record.formPower) / record.power * 100);
           break;
         case LapDoubleAttr.strideRatio:
           sum = sum +
               (10000 /
                   6 *
-                  record.db.speed /
-                  record.db.strydCadence /
-                  record.db.verticalOscillation);
+                  record.speed /
+                  record.strydCadence /
+                  record.verticalOscillation);
           break;
         case LapDoubleAttr.ecor:
-          sum = sum + (record.db.power / record.db.speed / weight);
+          sum = sum + (record.power / record.speed / weight);
       }
 
       if (index++ % amount == amount - 1) {
         plotPoints.add(DoublePlotPoint(
-          domain: record.db.distance.round(),
+          domain: record.distance.round(),
           measure: sum / amount,
         ));
         sum = 0;
@@ -376,8 +376,8 @@ class RecordList<E> extends DelegatingList<E> {
     for (final PowerZone powerZone in powerZones.reversed) {
       final int numberInZone = _records
           .where((Event event) =>
-              (event.db.power >= powerZone.lowerLimit) &&
-              (event.db.power <= powerZone.upperLimit))
+              (event.power >= powerZone.lowerLimit) &&
+              (event.power <= powerZone.upperLimit))
           .length;
       distributions.add(BarZone(
         lower: counter,
@@ -400,8 +400,8 @@ class RecordList<E> extends DelegatingList<E> {
     for (final HeartRateZone heartRateZone in heartRateZones.reversed) {
       final int numberInZone = _records
           .where((Event event) =>
-              (event.db.heartRate >= heartRateZone.lowerLimit) &&
-              (event.db.heartRate <= heartRateZone.upperLimit))
+              (event.heartRate >= heartRateZone.lowerLimit) &&
+              (event.heartRate <= heartRateZone.upperLimit))
           .length;
       distributions.add(BarZone(
         lower: counter,
