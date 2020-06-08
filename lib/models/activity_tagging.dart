@@ -10,15 +10,18 @@ class ActivityTagging {
     @required Tag tag,
     bool system,
   }) {
-    db = DbActivityTagging()
+    _db = DbActivityTagging()
       ..activitiesId = activity.db.id
       ..tagsId = tag.id
       ..system = system ?? false;
   }
 
-  ActivityTagging.fromDb(this.db);
+  ActivityTagging.fromDb(this._db);
 
-  DbActivityTagging db;
+  DbActivityTagging _db;
+
+  int get activitiesId => _db.activitiesId;
+  int get tagsId => _db.tagsId;
 
   static Future<ActivityTagging> createBy({
     @required Activity activity,
@@ -39,7 +42,7 @@ class ActivityTagging {
     else {
       final ActivityTagging activityTagging = ActivityTagging(
           activity: activity, tag: tag, system: system ?? false);
-      await activityTagging.db.save();
+      await activityTagging._db.save();
       return activityTagging;
     }
   }
@@ -78,7 +81,7 @@ class ActivityTagging {
 
   @override
   String toString() =>
-      '< ActivityTagging | actvityId ${db.activitiesId} | tagId ${db.tagsId} >';
+      '< ActivityTagging | actvityId $activitiesId | tagId $tagsId >';
 
-  Future<BoolResult> delete() async => await db.delete();
+  Future<BoolResult> delete() async => await _db.delete();
 }
