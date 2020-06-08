@@ -56,7 +56,7 @@ class ActivityList<E> extends DelegatingList<E> {
     if (tagGroups != null && athlete.filters.isNotEmpty) {
       // get active filters for TagGroup
       for (final TagGroup tagGroup in tagGroups) {
-        tagIds = tagGroup.cachedTags.map((Tag tag) => tag.id).toList();
+        tagIds = tagGroup.cachedTags.map((Tag tag) => tag.db.id).toList();
         tagIds.removeWhere((int tagId) => !athlete.filters.contains(tagId));
 
         // If there are restrictions for this group:

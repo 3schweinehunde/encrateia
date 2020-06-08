@@ -23,10 +23,10 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
       for (final TagGroup tagGroup in tagGroups) {
         empty = true;
         for (final Tag tag in tagGroup.cachedTags) {
-          if (athlete.filters.contains(tag.id)) {
+          if (athlete.filters.contains(tag.db.id)) {
             if (empty == true) {
               widgets.add(const Text('('));
-              widgets.add(Text(' ${tagGroup.name}: '));
+              widgets.add(Text(' ${tagGroup.db.name}: '));
               empty = false;
             } else
               widgets.add(const Text('OR'));
@@ -38,15 +38,15 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(1))),
                 label: Text(
-                  tag.name,
+                  tag.db.name,
                   style: TextStyle(
                     color: MyColor.textColor(
                       selected: true,
-                      backgroundColor: Color(tag.color ?? 99999),
+                      backgroundColor: Color(tag.db.color ?? 99999),
                     ),
                   ),
                 ),
-                backgroundColor: Color(tag.color ?? 99999),
+                backgroundColor: Color(tag.db.color ?? 99999),
                 elevation: 3,
               ),
             );

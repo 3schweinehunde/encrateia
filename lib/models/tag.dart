@@ -1,69 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart' show DbTag;
+import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/models/activity_tagging.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
+
 import 'activity.dart';
 import 'athlete.dart';
 
-class Tag extends DbTag {
-  Tag();
-
-  Tag.minimal({
+class Tag extends ChangeNotifier {
+  Tag({
     @required TagGroup tagGroup,
-    String name = 'my Tag',
-    int color = 0xFFFFc107,
-    int sortOrder = 0,
-    bool system = false,
-  }) : super(
-          name: name,
-          color: color,
-          sortOrder: sortOrder,
-          tagGroupsId: tagGroup.id,
-          system: system,
-        );
+    String name,
+    int color,
+    int sortOrder,
+  }) {
+    db = DbTag()
+      ..tagGroupsId = tagGroup.db.id
+      ..sortOrder = sortOrder ?? 0
+      ..name = name ?? 'my Tag'
+      ..color = color ?? 0xFFFFc107;
+  }
+  Tag.fromDb(this.db);
 
-  Tag.by({
-    @required TagGroup tagGroup,
-    @required String name,
-    @required int color,
-    @required int sortOrder,
-    @required bool system,
-  }) : super(
-          name: name,
-          color: color,
-          sortOrder: sortOrder,
-          tagGroupsId: tagGroup.id,
-          system: system,
-        );
-
+  DbTag db;
   bool selected = false;
 
   @override
-  String toString() => '< Tag | $name >';
+  String toString() => '< Tag | ${db.name} >';
+
+  Future<BoolResult> delete() async => await db.delete();
 
   static Future<List<Tag>> all({@required TagGroup tagGroup}) async {
-    final List<Tag> tags = await tagGroup
+    final List<DbTag> dbTags = await tagGroup.db
         .getDbTags()
         .orderBy('sortOrder')
         .orderBy('name')
-        .toList() as List<Tag>;
+        .toList();
+    final List<Tag> tags =
+        dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
     return tags;
   }
 
   static Future<List<Tag>> allByActivity({@required Activity activity}) async {
-    final List<ActivityTagging> activityTaggings = await ActivityTagging()
+    final List<DbActivityTagging> dbActivityTaggings = await DbActivityTagging()
         .select()
         .activitiesId
         .equals(activity.db.id)
-        .toList() as List<ActivityTagging>;
-    if (activityTaggings.isNotEmpty) {
-      final List<Tag> tags = await Tag()
+        .toList();
+    if (dbActivityTaggings.isNotEmpty) {
+      final List<DbTag> dbTags = await DbTag()
           .select()
           .id
-          .inValues(activityTaggings
-              .map((ActivityTagging activityTagging) => activityTagging.tagsId)
-              .toList())
-          .toList() as List<Tag>;
+          .inValues(dbActivityTaggings.map(
+              (DbActivityTagging dbActivityTagging) =>
+                  dbActivityTagging.tagsId).toList())
+          .toList();
+      final List<Tag> tags =
+          dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
       return tags;
     } else {
       return <Tag>[];
@@ -83,7 +75,7 @@ class Tag extends DbTag {
     dbPowerTag = await DbTag()
         .select()
         .tagGroupsId
-        .equals(autoPowerTagGroup.id)
+        .equals(autoPowerTagGroup.db.id)
         .and
         .name
         .equals(name)
@@ -91,14 +83,14 @@ class Tag extends DbTag {
 
     if (dbPowerTag == null) {
       dbPowerTag = DbTag()
-        ..tagGroupsId = autoPowerTagGroup.id
+        ..tagGroupsId = autoPowerTagGroup.db.id
         ..color = color
         ..sortOrder = sortOrder
         ..name = name
         ..system = true;
       await dbPowerTag.save();
     }
-    return dbPowerTag as Tag;
+    return Tag.fromDb(dbPowerTag);
   }
 
   static Future<Tag> autoHeartRateTag({
@@ -107,29 +99,28 @@ class Tag extends DbTag {
     @required int sortOrder,
     @required int color,
   }) async {
-    Tag heartRateTag;
+    DbTag dbHeartRateTag;
 
     final TagGroup autoHeartRateTagGroup =
         await TagGroup.autoHeartRateTagGroup(athlete: athlete);
-    heartRateTag = await Tag()
+    dbHeartRateTag = await DbTag()
         .select()
         .tagGroupsId
-        .equals(autoHeartRateTagGroup.id)
+        .equals(autoHeartRateTagGroup.db.id)
         .and
         .name
         .equals(name)
-        .toSingle() as Tag;
+        .toSingle();
 
-    if (heartRateTag == null) {
-      heartRateTag = Tag.by(
-        tagGroup: autoHeartRateTagGroup,
-        color: color,
-        sortOrder: sortOrder,
-        name: name,
-        system: true,
-      );
-      await heartRateTag.save();
+    if (dbHeartRateTag == null) {
+      dbHeartRateTag = DbTag()
+        ..tagGroupsId = autoHeartRateTagGroup.db.id
+        ..color = color
+        ..sortOrder = sortOrder
+        ..name = name
+        ..system = true;
+      await dbHeartRateTag.save();
     }
-    return heartRateTag;
+    return Tag.fromDb(dbHeartRateTag);
   }
 }

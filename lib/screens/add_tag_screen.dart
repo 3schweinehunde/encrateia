@@ -34,8 +34,8 @@ class _AddTagScreenState extends State<AddTagScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 MaterialColorPicker(
-                    onColorChange: (Color color) => widget.tag.color = color.value,
-                    selectedColor: Color(widget.tag.color));
+                    onColorChange: (Color color) => widget.tag.db.color = color.value,
+                    selectedColor: Color(widget.tag.db.color));
               },
             ),
           ],
@@ -47,9 +47,9 @@ class _AddTagScreenState extends State<AddTagScreen> {
   Future<void> openColorPicker() async {
     _openDialog(
       MaterialColorPicker(
-        selectedColor: Color(widget.tag.color),
+        selectedColor: Color(widget.tag.db.color),
         onColorChange: (Color color) =>
-            setState(() => widget.tag.color = color.value),
+            setState(() => widget.tag.db.color = color.value),
         onBack: () {},
       ),
     );
@@ -67,15 +67,15 @@ class _AddTagScreenState extends State<AddTagScreen> {
         children: <Widget>[
           TextFormField(
             decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.tag.name,
-            onChanged: (String value) => widget.tag.name = value,
+            initialValue: widget.tag.db.name,
+            onChanged: (String value) => widget.tag.db.name = value,
           ),
           const SizedBox(height: 10),
           Row(children: <Widget>[
             const Text('Color'),
             const Spacer(),
             CircleAvatar(
-              backgroundColor: Color(widget.tag.color),
+              backgroundColor: Color(widget.tag.db.color),
               radius: 20.0,
             ),
             const Spacer(),
@@ -101,12 +101,12 @@ class _AddTagScreenState extends State<AddTagScreen> {
   }
 
   Future<void> saveTag(BuildContext context) async {
-    await widget.tag.save();
+    await widget.tag.db.save();
     Navigator.of(context).pop();
   }
 
   Future<void> deleteTag(BuildContext context) async {
-    await widget.tag.delete();
+    await widget.tag.db.delete();
     Navigator.of(context).pop();
   }
 }

@@ -88,15 +88,15 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(1))),
                     label: Text(
-                      tag.name,
+                      tag.db.name,
                       style: TextStyle(
                         color: MyColor.textColor(
                           selected: true,
-                          backgroundColor: Color(tag.color ?? 99999),
+                          backgroundColor: Color(tag.db.color ?? 99999),
                         ),
                       ),
                     ),
-                    backgroundColor: Color(tag.color ?? 99999),
+                    backgroundColor: Color(tag.db.color ?? 99999),
                     elevation: 3,
                   ),
               ],

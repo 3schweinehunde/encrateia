@@ -55,36 +55,36 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
               itemCount: tagGroups == null ? 0 : tagGroups.length,
               itemBuilder: (BuildContext context, int index) => Card(
                 child: ListTile(
-                  title: Text(tagGroups[index].name),
+                  title: Text(tagGroups[index].db.name),
                   subtitle: Wrap(
                     spacing: 10,
                     children: <Widget>[
                       for (Tag tag in tagGroups[index].cachedTags)
                         FilterChip(
                           label: Text(
-                            tag.name,
+                            tag.db.name,
                             style: TextStyle(
                               color: MyColor.textColor(
                                 selected:
-                                    widget.athlete.filters.contains(tag.id),
-                                backgroundColor: Color(tag.color ?? 99999),
+                                    widget.athlete.filters.contains(tag.db.id),
+                                backgroundColor: Color(tag.db.color ?? 99999),
                               ),
                             ),
                           ),
                           avatar: CircleAvatar(
-                            backgroundColor: Color(tag.color ?? 99999),
+                            backgroundColor: Color(tag.db.color ?? 99999),
                           ),
                           onSelected: (bool selected) {
                             setState(() {
                               if (selected)
-                                widget.athlete.filters.add(tag.id);
+                                widget.athlete.filters.add(tag.db.id);
                               else
                                 widget.athlete.filters.removeWhere(
-                                    (int tagId) => tagId == tag.id);
+                                    (int tagId) => tagId == tag.db.id);
                             });
                           },
-                          selected: widget.athlete.filters.contains(tag.id),
-                          selectedColor: Color(tag.color ?? 99999),
+                          selected: widget.athlete.filters.contains(tag.db.id),
+                          selectedColor: Color(tag.db.color ?? 99999),
                           backgroundColor: MyColor.white,
                           elevation: 3,
                           padding: const EdgeInsets.all(10),

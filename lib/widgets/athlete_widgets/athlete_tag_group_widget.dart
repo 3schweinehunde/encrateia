@@ -53,22 +53,22 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                 .sublist(offset, offset + rows)
                 .map((TagGroup tagGroup) {
               return DataRow(
-                key: ValueKey<int>(tagGroup.id),
+                key: ValueKey<int>(tagGroup.db.id),
                 cells: <DataCell>[
-                  DataCell(Text(tagGroup.name)),
+                  DataCell(Text(tagGroup.db.name)),
                   DataCell(CircleColor(
                     circleSize: 20,
                     elevation: 0,
-                    color: Color(tagGroup.color),
+                    color: Color(tagGroup.db.color),
                   )),
                   DataCell(
-                    tagGroup.system ? MyIcon.show : MyIcon.edit,
+                    tagGroup.db.system ? MyIcon.show : MyIcon.edit,
                     onTap: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) {
-                            if (tagGroup.system)
+                            if (tagGroup.db.system)
                               return ShowTagGroupScreen(tagGroup: tagGroup);
                             else
                               return AddTagGroupScreen(tagGroup: tagGroup);
@@ -93,7 +93,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                       context,
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) => AddTagGroupScreen(
-                          tagGroup: TagGroup.minimal(athlete: widget.athlete),
+                          tagGroup: TagGroup(athlete: widget.athlete),
                         ),
                       ),
                     );

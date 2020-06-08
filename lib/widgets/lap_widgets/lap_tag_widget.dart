@@ -49,24 +49,24 @@ class _LapTagWidgetState extends State<LapTagWidget> {
         itemCount: tagGroups.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups[index].name + '\n'),
+            title: Text(tagGroups[index].db.name + '\n'),
             subtitle: Wrap(
               spacing: 15,
               children: <Widget>[
                 for (Tag tag in tagGroups[index].cachedTags)
                   InputChip(
-                    isEnabled: tag.system != true,
+                    isEnabled: tag.db.system != true,
                     label: Text(
-                      tag.name,
+                      tag.db.name,
                       style: TextStyle(
                         color: MyColor.textColor(
                           selected: tag.selected,
-                          backgroundColor: Color(tag.color),
+                          backgroundColor: Color(tag.db.color),
                         ),
                       ),
                     ),
                     avatar: CircleAvatar(
-                      backgroundColor: Color(tag.color),
+                      backgroundColor: Color(tag.db.color),
                     ),
                     onSelected: (bool selected) {
                       setState(() {
@@ -79,7 +79,7 @@ class _LapTagWidgetState extends State<LapTagWidget> {
                       });
                     },
                     selected: tag.selected,
-                    selectedColor: Color(tag.color),
+                    selectedColor: Color(tag.db.color),
                     backgroundColor: MyColor.white,
                     elevation: 3,
                     padding: const EdgeInsets.all(10),

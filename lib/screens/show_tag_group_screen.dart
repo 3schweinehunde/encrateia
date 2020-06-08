@@ -37,7 +37,7 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
         children: <Widget>[
           TextFormField(
             decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.tagGroup.name,
+            initialValue: widget.tagGroup.db.name,
             readOnly: true,
           ),
           const SizedBox(height: 20),
@@ -45,7 +45,7 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
             const Text('Color'),
             const Spacer(),
             CircleAvatar(
-              backgroundColor: Color(widget.tagGroup.color),
+              backgroundColor: Color(widget.tagGroup.db.color),
               radius: 20.0,
             ),
             const Spacer(),
@@ -62,13 +62,13 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
             ],
             rows: tags.map((Tag tag) {
               return DataRow(
-                key: ValueKey<int>(tag.id),
+                key: ValueKey<int>(tag.db.id),
                 cells: <DataCell>[
-                  DataCell(Text(tag.name)),
+                  DataCell(Text(tag.db.name)),
                   DataCell(CircleColor(
                     circleSize: 20,
                     elevation: 0,
-                    color: Color(tag.color),
+                    color: Color(tag.db.color),
                   )),
                 ],
               );
