@@ -35,8 +35,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
                 Navigator.of(context).pop();
                 MaterialColorPicker(
                     onColorChange: (Color color) =>
-                        widget.powerZone.db.color = color.value,
-                    selectedColor: Color(widget.powerZone.db.color));
+                        widget.powerZone.color = color.value,
+                    selectedColor: Color(widget.powerZone.color));
               },
             ),
           ],
@@ -48,8 +48,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
   Future<void> openColorPicker() async {
     _openDialog(
       MaterialColorPicker(
-        selectedColor: Color(widget.powerZone.db.color),
-        onColorChange: (Color color) => setState(() => widget.powerZone.db.color = color.value),
+        selectedColor: Color(widget.powerZone.color),
+        onColorChange: (Color color) => setState(() => widget.powerZone.color = color.value),
         onBack: () {},
       ),
     );
@@ -58,13 +58,13 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController lowerLimitController =
-        TextEditingController(text: widget.powerZone.db.lowerLimit.toString());
+        TextEditingController(text: widget.powerZone.lowerLimit.toString());
     final TextEditingController upperLimitController =
-        TextEditingController(text: widget.powerZone.db.upperLimit.toString());
+        TextEditingController(text: widget.powerZone.upperLimit.toString());
     final TextEditingController lowerPercentageController = TextEditingController(
-        text: widget.powerZone.db.lowerPercentage.toString());
+        text: widget.powerZone.lowerPercentage.toString());
     final TextEditingController upperPercentageController = TextEditingController(
-        text: widget.powerZone.db.upperPercentage.toString());
+        text: widget.powerZone.upperPercentage.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -76,16 +76,16 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
         children: <Widget>[
           TextFormField(
             decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.powerZone.db.name,
-            onChanged: (String value) => widget.powerZone.db.name = value,
+            initialValue: widget.powerZone.name,
+            onChanged: (String value) => widget.powerZone.name = value,
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Lower Limit in W'),
             controller: lowerLimitController,
             keyboardType: TextInputType.number,
             onChanged: (String value) {
-              widget.powerZone.db.lowerLimit = int.parse(value);
-              widget.powerZone.db.lowerPercentage =
+              widget.powerZone.lowerLimit = int.parse(value);
+              widget.powerZone.lowerPercentage =
                   (int.parse(value) * 100 / widget.base).round();
               lowerPercentageController.text =
                   (int.parse(value) * 100 / widget.base).round().toString();
@@ -96,8 +96,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
             controller: upperLimitController,
             keyboardType: TextInputType.number,
             onChanged: (String value) {
-              widget.powerZone.db.upperLimit = int.parse(value);
-              widget.powerZone.db.upperPercentage =
+              widget.powerZone.upperLimit = int.parse(value);
+              widget.powerZone.upperPercentage =
                   (int.parse(value) * 100 / widget.base).round();
               upperPercentageController.text =
                   (int.parse(value) * 100 / widget.base).round().toString();
@@ -108,8 +108,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
             controller: lowerPercentageController,
             keyboardType: TextInputType.number,
             onChanged: (String value) {
-              widget.powerZone.db.lowerPercentage = int.parse(value);
-              widget.powerZone.db.lowerLimit =
+              widget.powerZone.lowerPercentage = int.parse(value);
+              widget.powerZone.lowerLimit =
                   (int.parse(value) * widget.base / 100).round();
               lowerLimitController.text =
                   (int.parse(value) * widget.base / 100).round().toString();
@@ -120,8 +120,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
             controller: upperPercentageController,
             keyboardType: TextInputType.number,
             onChanged: (String value) {
-              widget.powerZone.db.upperPercentage = int.parse(value);
-              widget.powerZone.db.upperLimit =
+              widget.powerZone.upperPercentage = int.parse(value);
+              widget.powerZone.upperLimit =
                   (int.parse(value) * widget.base / 100).round();
               upperLimitController.text =
                   (int.parse(value) * widget.base / 100).round().toString();
@@ -132,7 +132,7 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
             const Text('Color'),
             const Spacer(),
             CircleAvatar(
-              backgroundColor: Color(widget.powerZone.db.color),
+              backgroundColor: Color(widget.powerZone.color),
               radius: 20.0,
             ),
             const Spacer(),
@@ -158,12 +158,12 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
   }
 
   Future<void> savePowerZone(BuildContext context) async {
-    await widget.powerZone.db.save();
+    await widget.powerZone.save();
     Navigator.of(context).pop();
   }
 
   Future<void> deletePowerZone(BuildContext context) async {
-    await widget.powerZone.db.delete();
+    await widget.powerZone.delete();
     Navigator.of(context).pop();
   }
 }

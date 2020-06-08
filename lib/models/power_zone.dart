@@ -12,7 +12,7 @@ class PowerZone {
       int lowerLimit,
       int upperLimit,
       int color}) {
-    db = DbPowerZone()
+    _db = DbPowerZone()
       ..powerZoneSchemataId = powerZoneSchema.id
       ..name = name ?? 'My Zone'
       ..lowerLimit = lowerLimit ?? 70
@@ -22,17 +22,39 @@ class PowerZone {
       ..color = color ?? 0xFFFFc107;
 
     if (lowerPercentage != null)
-      db.lowerLimit = (lowerPercentage * powerZoneSchema.base / 100).round();
+      lowerLimit = (lowerPercentage * powerZoneSchema.base / 100).round();
     if (upperPercentage != null)
-      db.upperLimit = (upperPercentage * powerZoneSchema.base / 100).round();
+      upperLimit = (upperPercentage * powerZoneSchema.base / 100).round();
   }
 
-  PowerZone.fromDb(this.db);
+  PowerZone.fromDb(this._db);
 
-  DbPowerZone db;
+  DbPowerZone _db;
+
+  int get id => _db.id;
+  int get color => _db.color;
+  String get name => _db.name;
+  int get lowerLimit => _db.lowerLimit;
+  int get upperLimit => _db.upperLimit;
+  int get lowerPercentage => _db.lowerPercentage;
+  int get upperPercentage => _db.upperPercentage;
+  set color(int value) => _db.color = value;
+  set name(String value) => _db.name = value;
+  set lowerLimit(int value) => _db.lowerLimit = value;
+  set upperLimit(int value) => _db.upperLimit = value;
+  set lowerPercentage(int value) => _db.lowerPercentage = value;
+  set upperPercentage(int value) => _db.upperPercentage = value;
+  set powerZoneSchemataId(int value) => _db.powerZoneSchemataId = value;
+  set id(int value) => _db.id = value;
 
   @override
-  String toString() => '< PowerZone | ${db.name} | ${db.lowerLimit} >';
+  String toString() => '< PowerZone | $name | $lowerLimit >';
 
-  Future<BoolResult> delete() async => await db.delete();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
+
+  static Future<BoolCommitResult> upsertAll(List<PowerZone> powerZones) async {
+    return await DbPowerZone().upsertAll(
+        powerZones.map((PowerZone powerZone) => powerZone._db).toList());
+  }
 }

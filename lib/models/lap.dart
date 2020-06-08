@@ -311,12 +311,12 @@ class Lap {
 
   Future<void> autoTagger({@required Athlete athlete}) async {
     final PowerZone powerZone = await this.powerZone;
-    if (powerZone.db != null) {
+    if (powerZone.id != null) {
       final Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete,
-        sortOrder: powerZone.db.lowerLimit,
-        color: powerZone.db.color,
-        name: powerZone.db.name,
+        sortOrder: powerZone.lowerLimit,
+        color: powerZone.color,
+        name: powerZone.name,
       );
       await LapTagging.createBy(
         lap: this,

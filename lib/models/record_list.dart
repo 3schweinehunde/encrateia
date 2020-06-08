@@ -376,13 +376,13 @@ class RecordList<E> extends DelegatingList<E> {
     for (final PowerZone powerZone in powerZones.reversed) {
       final int numberInZone = _records
           .where((Event event) =>
-              (event.db.power >= powerZone.db.lowerLimit) &&
-              (event.db.power <= powerZone.db.upperLimit))
+              (event.db.power >= powerZone.lowerLimit) &&
+              (event.db.power <= powerZone.upperLimit))
           .length;
       distributions.add(BarZone(
         lower: counter,
         upper: counter + numberInZone,
-        color: powerZone.db.color,
+        color: powerZone.color,
       ));
       counter = counter + numberInZone;
     }

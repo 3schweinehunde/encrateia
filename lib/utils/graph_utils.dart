@@ -70,11 +70,11 @@ class GraphUtils {
       rangeAnnotationSegmentList = <RangeAnnotationSegment<int>>[
         for (PowerZone powerZone in powerZones)
           RangeAnnotationSegment<int>(
-            powerZone.db.lowerLimit,
-            powerZone.db.upperLimit,
+            powerZone.lowerLimit,
+            powerZone.upperLimit,
             RangeAnnotationAxisType.measure,
-            startLabel: powerZone.db.name,
-            color: convertedColor(dbColor: powerZone.db.color),
+            startLabel: powerZone.name,
+            color: convertedColor(dbColor: powerZone.color),
           )
       ];
     }

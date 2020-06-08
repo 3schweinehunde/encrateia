@@ -10,9 +10,9 @@ class BarZone {
     return <BarZone>[
       for (final PowerZone powerZone in powerZones)
         BarZone(
-          lower: powerZone.db.lowerLimit.toDouble(),
-          upper: powerZone.db.upperLimit.toDouble(),
-          color: powerZone.db.color,
+          lower: powerZone.lowerLimit.toDouble(),
+          upper: powerZone.upperLimit.toDouble(),
+          color: powerZone.color,
         )
     ];
   }

@@ -68,11 +68,11 @@ class MyLineChart extends LineChart {
     if (powerZones != null)
       return NumericExtents(
           powerZones
-                  .map((PowerZone powerZone) => powerZone.db.lowerLimit)
+                  .map((PowerZone powerZone) => powerZone.lowerLimit)
                   .reduce(min) -
               5.0,
           powerZones
-                  .map((PowerZone powerZone) => powerZone.db.upperLimit)
+                  .map((PowerZone powerZone) => powerZone.upperLimit)
                   .reduce(max) +
               5.0);
     else if (heartRateZones != null)

@@ -92,7 +92,7 @@ class MyBarChart extends StatelessWidget {
       return maximum.toDouble();
     else if (powerZones != null)
       return powerZones
-          .map((PowerZone powerZone) => powerZone.db.upperLimit.toDouble())
+          .map((PowerZone powerZone) => powerZone.upperLimit.toDouble())
           .reduce(math.max);
     else if (heartRateZones != null)
       return heartRateZones
@@ -111,7 +111,7 @@ class MyBarChart extends StatelessWidget {
       return minimum.toDouble();
     else if (powerZones != null)
       return powerZones
-          .map((PowerZone powerZone) => powerZone.db.lowerLimit.toDouble())
+          .map((PowerZone powerZone) => powerZone.lowerLimit.toDouble())
           .reduce(math.min);
     else if (heartRateZones != null)
       return heartRateZones

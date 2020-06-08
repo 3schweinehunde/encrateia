@@ -581,12 +581,12 @@ class Activity {
 
   Future<void> autoTagger({@required Athlete athlete}) async {
     final PowerZone powerZone = await this.powerZone;
-    if (powerZone.db != null) {
+    if (powerZone.id != null) {
       final Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete,
-        color: powerZone.db.color,
-        sortOrder: powerZone.db.lowerLimit,
-        name: powerZone.db.name,
+        color: powerZone.color,
+        sortOrder: powerZone.lowerLimit,
+        name: powerZone.name,
       );
       await ActivityTagging.createBy(
         activity: this,

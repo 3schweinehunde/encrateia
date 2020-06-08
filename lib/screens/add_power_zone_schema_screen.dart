@@ -7,7 +7,6 @@ import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:encrateia/model/model.dart';
 import 'add_power_zone_screen.dart';
 
 class AddPowerZoneSchemaScreen extends StatefulWidget {
@@ -98,16 +97,16 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             ],
             rows: powerZones.map((PowerZone powerZone) {
               return DataRow(
-                key: ValueKey<int>(powerZone.db.id),
+                key: ValueKey<int>(powerZone.id),
                 cells: <DataCell>[
-                  DataCell(Text(powerZone.db.name)),
-                  DataCell(Text(powerZone.db.lowerLimit.toString() +
+                  DataCell(Text(powerZone.name)),
+                  DataCell(Text(powerZone.lowerLimit.toString() +
                       ' - ' +
-                      powerZone.db.upperLimit.toString())),
+                      powerZone.upperLimit.toString())),
                   DataCell(CircleColor(
                     circleSize: 20,
                     elevation: 0,
-                    color: Color(powerZone.db.color),
+                    color: Color(powerZone.color),
                   )),
                   DataCell(
                     MyIcon.edit,
@@ -172,8 +171,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
 
   Future<void> savePowerZoneSchema(BuildContext context) async {
     await widget.powerZoneSchema.save();
-    await DbPowerZone()
-        .upsertAll(powerZones.map((PowerZone powerZone) => powerZone.db).toList());
+    await PowerZone.upsertAll(powerZones);
     Navigator.of(context).pop();
   }
 
@@ -191,10 +189,10 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     setState(() {
       widget.powerZoneSchema.base = base;
       for (final PowerZone powerZone in powerZones) {
-        powerZone.db.lowerLimit =
-            (powerZone.db.lowerPercentage * base / 100).round();
-        powerZone.db.upperLimit =
-            (powerZone.db.upperPercentage * base / 100).round();
+        powerZone.lowerLimit =
+            (powerZone.lowerPercentage * base / 100).round();
+        powerZone.upperLimit =
+            (powerZone.upperPercentage * base / 100).round();
       }
     });
     return null;
@@ -206,12 +204,11 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
       ..id = null;
     final int powerZoneSchemaId = await widget.powerZoneSchema.save();
     for (final PowerZone powerZone in powerZones) {
-      powerZone.db
+      powerZone
         ..powerZoneSchemataId = powerZoneSchemaId
         ..id = null;
     }
-    await DbPowerZone()
-        .upsertAll(powerZones.map((PowerZone powerZone) => powerZone.db).toList());
+    await PowerZone.upsertAll(powerZones);
     await getData();
     showDialog<BuildContext>(
       context: context,
