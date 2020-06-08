@@ -102,8 +102,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
 
-    final double avg = await lap.avgPower;
-    avgPowerString = avg.toStringOrDashes(1) + ' W';
+    avgPowerString = lap.avgPower.toStringOrDashes(1) + ' W';
 
     final int min = await lap.minPower;
     minPowerString = min.toString() + ' W';

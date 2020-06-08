@@ -137,16 +137,14 @@ class Event {
   static Future<List<Event>> byLap({Lap lap}) async {
     int counter = 1;
 
-    final List<DbEvent> dbEventList = await lap.db.getDbEvents().toList();
-    final List<Event> eventList =
-        dbEventList.map((DbEvent dbEvent) => Event.fromDb(dbEvent)).toList();
+    final List<Event> events = await lap.events;
 
-    for (final Event event in eventList) {
+    for (final Event event in events) {
       event.lap = lap;
       event.index = counter;
       counter = counter + 1;
     }
-    return eventList;
+    return events;
   }
 
   static Future<List<Event>> by({Activity activity}) async {

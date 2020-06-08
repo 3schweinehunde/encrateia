@@ -1,5 +1,5 @@
 import 'package:encrateia/model/model.dart'
-    show DbLap, DbActivity, DbPowerZone, DbHeartRateZone;
+    show DbLap, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
@@ -13,17 +13,18 @@ import 'package:encrateia/models/activity.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 import 'bar_zone.dart';
 
 class Lap {
   Lap() {
-    db = DbLap();
+    _db = DbLap();
   }
 
-  Lap.fromDb(this.db);
+  Lap.fromDb(this._db);
 
-  DbLap db;
+  DbLap _db;
   Activity activity;
   int index;
   List<Event> _records;
@@ -34,12 +35,57 @@ class Lap {
   List<BarZone> powerDistributions;
   List<BarZone> heartRateDistributions;
 
+  int get id => _db.id;
+  int get activitiesId => _db.activitiesId;
+  int get avgHeartRate => _db.avgHeartRate;
+  int get totalDistance => _db.totalDistance;
+  String get event => _db.event;
+  String get sport => _db.sport;
+  DateTime get startTime => _db.startTime;
+  String get subSport => _db.subSport;
+  String get eventType => _db.eventType;
+  int get eventGroup => _db.eventGroup;
+  int get totalElapsedTime => _db.totalElapsedTime;
+  int get totalTimerTime => _db.totalTimerTime;
+  double get avgStanceTimePercent => _db.avgStanceTimePercent;
+  double get avgStanceTime => _db.avgStanceTime;
+  String get lapTrigger => _db.lapTrigger;
+  double get totalFractionalCycles => _db.totalFractionalCycles;
+  double get startPositionLong => _db.startPositionLong;
+  double get startPositionLat => _db.startPositionLat;
+  double get endPositionLong => _db.endPositionLong;
+  double get endPositionLat => _db.endPositionLat;
+  int get intensity => _db.intensity;
+  double get avgSpeed => _db.avgSpeed;
+  double get maxSpeed => _db.maxSpeed;
+  int get totalCalories => _db.totalCalories;
+  int get totalAscent => _db.totalAscent;
+  int get totalDescent => _db.totalDescent;
+  double get avgRunningCadence => _db.avgRunningCadence;
+  int get totalStrides => _db.totalStrides;
+  DateTime get timeStamp => _db.timeStamp;
+  int get avgTemperature => _db.avgTemperature;
+  int get maxTemperature => _db.maxTemperature;
+  double get avgFractionalCadence => _db.avgFractionalCadence;
+  double get maxFractionalCadence => _db.maxFractionalCadence;
+  int get maxHeartRate => _db.maxHeartRate;
+  double get avgPower => _db.avgPower;
+  double get avgVerticalOscillation => _db.avgVerticalOscillation;
+  int get maxRunningCadence => _db.maxRunningCadence;
+  double get avgGroundTime => _db.avgGroundTime;
+  double get avgStrydCadence => _db.avgStrydCadence;
+  double get avgLegSpringStiffness => _db.avgLegSpringStiffness;
+  double get avgFormPower => _db.avgFormPower;
+
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
+
   static Lap fromLap({
     DataMessage dataMessage,
     Activity activity,
     Lap lap,
   }) {
-    lap.db
+    lap._db
       ..activitiesId = activity.db.id
       ..avgSpeed = dataMessage.get('avg_speed') as double
       ..maxSpeed = dataMessage.get('max_speed') as double
@@ -92,127 +138,73 @@ class Lap {
     return _records;
   }
 
-  Future<double> get avgPower async {
-    if (db.avgPower == null) {
-      db.avgPower = RecordList<Event>(await records).calculateAveragePower();
-      await db.save();
-    }
-    return db.avgPower;
-  }
-
   Future<double> get sdevPower async {
-    if (db.sdevPower == null) {
-      db.sdevPower = RecordList<Event>(await records).calculateSdevPower();
-      await db.save();
+    if (_db.sdevPower == null) {
+      _db.sdevPower = RecordList<Event>(await records).calculateSdevPower();
+      await save();
     }
-    return db.sdevPower;
+    return _db.sdevPower;
   }
 
   Future<int> get minPower async {
-    if (db.minPower == null) {
-      db.minPower = RecordList<Event>(await records).calculateMinPower();
-      await db.save();
+    if (_db.minPower == null) {
+      _db.minPower = RecordList<Event>(await records).calculateMinPower();
+      await save();
     }
-    return db.minPower;
+    return _db.minPower;
   }
 
   Future<int> get maxPower async {
-    if (db.maxPower == null) {
-      db.maxPower = RecordList<Event>(await records).calculateMaxPower();
-      await db.save();
+    if (_db.maxPower == null) {
+      _db.maxPower = RecordList<Event>(await records).calculateMaxPower();
+      await save();
     }
-    return db.maxPower;
-  }
-
-  Future<double> get avgGroundTime async {
-    if (db.avgGroundTime == null) {
-      db.avgGroundTime =
-          RecordList<Event>(await records).calculateAverageGroundTime();
-      await db.save();
-    }
-    return db.avgGroundTime;
+    return _db.maxPower;
   }
 
   Future<double> get sdevGroundTime async {
-    if (db.sdevGroundTime == null) {
-      db.sdevGroundTime =
+    if (_db.sdevGroundTime == null) {
+      _db.sdevGroundTime =
           RecordList<Event>(await records).calculateSdevGroundTime();
-      await db.save();
+      await save();
     }
-    return db.sdevGroundTime;
-  }
-
-  Future<double> get avgVerticalOscillation async {
-    if (db.avgVerticalOscillation == null ||
-        db.avgVerticalOscillation == 6553.5) {
-      db.avgVerticalOscillation = RecordList<Event>(await records)
-          .calculateAverageVerticalOscillation();
-      await db.save();
-    }
-    return db.avgVerticalOscillation;
+    return _db.sdevGroundTime;
   }
 
   Future<double> get sdevVerticalOscillation async {
-    if (db.sdevVerticalOscillation == null) {
-      db.sdevVerticalOscillation =
+    if (_db.sdevVerticalOscillation == null) {
+      _db.sdevVerticalOscillation =
           RecordList<Event>(await records).calculateSdevVerticalOscillation();
-      await db.save();
+      await save();
     }
-    return db.sdevVerticalOscillation;
-  }
-
-  Future<double> get avgStrydCadence async {
-    if (db.avgStrydCadence == null) {
-      db.avgStrydCadence =
-          RecordList<Event>(await records).calculateAverageStrydCadence();
-      await db.save();
-    }
-    return db.avgStrydCadence;
+    return _db.sdevVerticalOscillation;
   }
 
   Future<double> get sdevStrydCadence async {
-    if (db.sdevStrydCadence == null) {
-      db.sdevStrydCadence =
+    if (_db.sdevStrydCadence == null) {
+      _db.sdevStrydCadence =
           RecordList<Event>(await records).calculateSdevStrydCadence();
-      await db.save();
+      await save();
     }
-    return db.sdevStrydCadence;
-  }
-
-  Future<double> get avgLegSpringStiffness async {
-    if (db.avgLegSpringStiffness == null) {
-      db.avgLegSpringStiffness =
-          RecordList<Event>(await records).calculateAverageLegSpringStiffness();
-      await db.save();
-    }
-    return db.avgLegSpringStiffness;
+    return _db.sdevStrydCadence;
   }
 
   Future<double> get sdevLegSpringStiffness async {
-    if (db.sdevLegSpringStiffness == null) {
-      db.sdevLegSpringStiffness =
+    if (_db.sdevLegSpringStiffness == null) {
+      _db.sdevLegSpringStiffness =
           RecordList<Event>(await records).calculateSdevLegSpringStiffness();
-      await db.save();
+      await save();
     }
-    return db.sdevLegSpringStiffness;
-  }
-
-  Future<double> get avgFormPower async {
-    if (db.avgFormPower == null) {
-      db.avgFormPower =
-          RecordList<Event>(await records).calculateAverageFormPower();
-      await db.save();
-    }
-    return db.avgFormPower;
+    return _db.sdevLegSpringStiffness;
   }
 
   Future<double> get sdevFormPower async {
-    if (db.sdevFormPower == null) {
-      db.sdevFormPower =
+    if (_db.sdevFormPower == null) {
+      _db.sdevFormPower =
           RecordList<Event>(await records).calculateSdevFormPower();
-      await db.save();
+      await save();
     }
-    return db.sdevFormPower;
+    return _db.sdevFormPower;
   }
 
   static Future<List<Lap>> all({Activity activity}) async {
@@ -233,7 +225,7 @@ class Lap {
 
   Future<PowerZoneSchema> get powerZoneSchema async {
     if (_powerZoneSchema == null) {
-      final DbActivity dbActivity = await DbActivity().getById(db.activitiesId);
+      final DbActivity dbActivity = await DbActivity().getById(activitiesId);
 
       _powerZoneSchema = await PowerZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -245,7 +237,7 @@ class Lap {
 
   Future<HeartRateZoneSchema> get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
-      final DbActivity dbActivity = await DbActivity().getById(db.activitiesId);
+      final DbActivity dbActivity = await DbActivity().getById(activitiesId);
 
       _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -255,9 +247,9 @@ class Lap {
     return _heartRateZoneSchema;
   }
 
-  Future<void> averages() async {
+  Future<void> setAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(await records);
-    db
+    _db
       ..avgPower = recordList.calculateAveragePower()
       ..avgFormPower = recordList.calculateAverageFormPower()
       ..avgHeartRate = recordList.calculateAverageHeartRate()
@@ -269,7 +261,7 @@ class Lap {
       ..avgPowerRatio = recordList.calculateAverageStrideRatio()
       ..avgVerticalOscillation =
           recordList.calculateAverageVerticalOscillation();
-    await db.save();
+    await save();
   }
 
   Future<PowerZone> get powerZone async {
@@ -280,10 +272,10 @@ class Lap {
           .equals((await powerZoneSchema).id)
           .and
           .lowerLimit
-          .lessThanOrEquals(db.avgPower)
+          .lessThanOrEquals(avgPower)
           .and
           .upperLimit
-          .greaterThanOrEquals(db.avgPower)
+          .greaterThanOrEquals(avgPower)
           .toSingle();
       _powerZone = PowerZone.fromDb(dbPowerZone);
     }
@@ -298,10 +290,10 @@ class Lap {
           .equals((await heartRateZoneSchema).id)
           .and
           .lowerLimit
-          .lessThanOrEquals(db.avgHeartRate)
+          .lessThanOrEquals(avgHeartRate)
           .and
           .upperLimit
-          .greaterThanOrEquals(db.avgHeartRate)
+          .greaterThanOrEquals(avgHeartRate)
           .toSingle();
 
       _heartRateZone = HeartRateZone.fromDb(dbHeartRateZone);
@@ -361,5 +353,10 @@ class Lap {
         await RecordList<Event>(heartRateRecords)
             .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);
     return heartRateZoneCounts;
+  }
+
+  Future<List<Event>> get events async {
+    final List<DbEvent> dbEvents = await _db.getDbEvents().toList();
+    return dbEvents.map((DbEvent dbEvent) => Event.fromDb(dbEvent)).toList();
   }
 }

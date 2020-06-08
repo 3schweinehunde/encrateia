@@ -18,12 +18,12 @@ class GraphUtils {
         RangeAnnotationSegment<int>(
           laps
                   .sublist(0, index + 1)
-                  .map((Lap lap) => lap.db.totalDistance)
+                  .map((Lap lap) => lap.totalDistance)
                   .reduce((int a, int b) => a + b) -
-              laps[index].db.totalDistance,
+              laps[index].totalDistance,
           laps
               .sublist(0, index + 1)
-              .map((Lap lap) => lap.db.totalDistance)
+              .map((Lap lap) => lap.totalDistance)
               .reduce((int a, int b) => a + b),
           RangeAnnotationAxisType.domain,
           color: colorArray[index % 2],

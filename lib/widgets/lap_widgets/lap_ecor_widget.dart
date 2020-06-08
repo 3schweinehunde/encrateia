@@ -92,7 +92,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
     records = RecordList<Event>(await widget.lap.records);
     weight = await Weight.getBy(
       athletesId: widget.athlete.db.id,
-      date: widget.lap.db.startTime,
+      date: widget.lap.startTime,
     );
     weightString = weight.value.toStringOrDashes(2) + ' kg';
     setState(() {});

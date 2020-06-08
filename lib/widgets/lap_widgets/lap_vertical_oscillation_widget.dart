@@ -10,7 +10,7 @@ class LapVerticalOscillationWidget extends StatefulWidget {
   const LapVerticalOscillationWidget({this.lap});
 
   final Lap lap;
-  
+
   @override
   _LapVerticalOscillationWidgetState createState() =>
       _LapVerticalOscillationWidgetState();
@@ -90,8 +90,8 @@ class _LapVerticalOscillationWidgetState
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
 
-    final double avg = await lap.avgVerticalOscillation;
-    avgVerticalOscillationString = avg.toStringOrDashes(1) + ' cm';
+    avgVerticalOscillationString =
+        lap.avgVerticalOscillation.toStringOrDashes(1) + ' cm';
 
     final double sdev = await lap.sdevVerticalOscillation;
     setState(() {

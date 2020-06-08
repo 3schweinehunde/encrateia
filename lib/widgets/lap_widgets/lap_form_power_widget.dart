@@ -17,7 +17,6 @@ class LapFormPowerWidget extends StatefulWidget {
 
 class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgFormPowerString = 'Loading ...';
   String sdevFormPowerString = 'Loading ...';
 
   @override
@@ -52,7 +51,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgFormPowerString),
+                title: Text(widget.lap.avgFormPower.toStringOrDashes(1) + ' W'),
                 subtitle: const Text('average form power'),
               ),
               ListTile(
@@ -83,9 +82,6 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   Future<void> getData() async {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
-
-    final double avg = await lap.avgFormPower;
-    avgFormPowerString = avg.toStringOrDashes(1) + ' W';
 
     final double sdev = await lap.sdevFormPower;
     setState(() {

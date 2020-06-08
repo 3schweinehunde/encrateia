@@ -11,7 +11,7 @@ class LapTagging {
     bool system,
   }) {
     _db = DbLapTagging()
-      ..lapsId = lap.db.id
+      ..lapsId = lap.id
       ..tagsId = tag.id
       ..system = system ?? false;
   }
@@ -38,7 +38,7 @@ class LapTagging {
     final DbLapTagging dbLapTagging = await DbLapTagging()
         .select()
         .lapsId
-        .equals(lap.db.id)
+        .equals(lap.id)
         .and
         .tagsId
         .equals(tag.id)
@@ -64,7 +64,7 @@ class LapTagging {
     final DbLapTagging dbLapTagging = await DbLapTagging()
         .select()
         .lapsId
-        .equals(lap.db.id)
+        .equals(lap.id)
         .and
         .tagsId
         .equals(tag.id)
@@ -79,7 +79,7 @@ class LapTagging {
     final DbLapTagging dbLapTagging = await DbLapTagging()
         .select()
         .lapsId
-        .equals(lap.db.id)
+        .equals(lap.id)
         .and
         .tagsId
         .equals(tag.id)

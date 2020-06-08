@@ -10,7 +10,7 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
   const LapLegSpringStiffnessWidget({this.lap});
 
   final Lap lap;
-  
+
   @override
   _LapLegSpringStiffnessWidgetState createState() =>
       _LapLegSpringStiffnessWidgetState();
@@ -19,7 +19,6 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
 class _LapLegSpringStiffnessWidgetState
     extends State<LapLegSpringStiffnessWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgLegSpringStiffnessString = 'Loading ...';
   String sdevLegSpringStiffnessString = 'Loading ...';
 
   @override
@@ -39,8 +38,7 @@ class _LapLegSpringStiffnessWidgetState
     if (records.isNotEmpty) {
       final List<Event> legSpringStiffnessRecords = records
           .where((Event value) =>
-              value.legSpringStiffness != null &&
-              value.legSpringStiffness > 0)
+              value.legSpringStiffness != null && value.legSpringStiffness > 0)
           .toList();
 
       if (legSpringStiffnessRecords.isNotEmpty) {
@@ -58,7 +56,9 @@ class _LapLegSpringStiffnessWidgetState
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgLegSpringStiffnessString),
+                title: Text(
+                    widget.lap.avgLegSpringStiffness.toStringOrDashes(1) +
+                        ' ms'),
                 subtitle: const Text('average ground time'),
               ),
               ListTile(
@@ -89,10 +89,8 @@ class _LapLegSpringStiffnessWidgetState
   Future<void> getData() async {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
-    final double avg = await lap.avgLegSpringStiffness;
     final double sdev = await lap.sdevLegSpringStiffness;
     setState(() {
-      avgLegSpringStiffnessString = avg.toStringOrDashes(1) + ' ms';
       sdevLegSpringStiffnessString = sdev.toStringOrDashes(2) + ' ms';
     });
   }

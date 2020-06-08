@@ -13,47 +13,47 @@ class LapOverviewWidget extends StatelessWidget {
     return <Widget>[
       ListTile(
         title:
-            Text(lap.db.avgSpeed.toPace() + ' / ' + lap.db.maxSpeed.toPace()),
+            Text(lap.avgSpeed.toPace() + ' / ' + lap.maxSpeed.toPace()),
         subtitle: const Text('avg / max pace'),
       ),
       ListTile(
-        title: Text('${lap.db.avgHeartRate} / ${lap.db.maxHeartRate} bpm'),
+        title: Text('${lap.avgHeartRate} / ${lap.maxHeartRate} bpm'),
         subtitle: const Text('avg / max heart rate'),
       ),
       ListTile(
-        title: Text('${lap.db.avgPower.toStringAsFixed(1)} W'),
+        title: Text('${lap.avgPower.toStringAsFixed(1)} W'),
         subtitle: const Text('avg power'),
       ),
       ListTile(
         title: Text(
-            '${(lap.db.avgPower / lap.db.avgHeartRate).toStringAsFixed(2)} W/bpm'),
+            '${(lap.avgPower / lap.avgHeartRate).toStringAsFixed(2)} W/bpm'),
         subtitle: const Text('power / heart rate'),
       ),
       ListTile(
         title:
-            Text(DateFormat('dd MMM yyyy, h:mm:ss').format(lap.db.startTime)),
+            Text(DateFormat('dd MMM yyyy, h:mm:ss').format(lap.startTime)),
         subtitle: const Text('start time'),
       ),
       ListTile(
-        title: Text('${(lap.db.totalDistance / 1000).toStringAsFixed(2)} km'),
+        title: Text('${(lap.totalDistance / 1000).toStringAsFixed(2)} km'),
         subtitle: const Text('distance'),
       ),
       ListTile(
-        title: Text('${lap.db.totalCalories} kcal'),
+        title: Text('${lap.totalCalories} kcal'),
         subtitle: const Text('total calories'),
       ),
       ListTile(
-        title: Text('${lap.db.totalAscent} - ${lap.db.totalDescent}'
-            ' = ${lap.db.totalAscent - lap.db.totalDescent} m'),
+        title: Text('${lap.totalAscent} - ${lap.totalDescent}'
+            ' = ${lap.totalAscent - lap.totalDescent} m'),
         subtitle: const Text('total ascent - descent = total climb'),
       ),
       ListTile(
-        title: Text('${(lap.db.avgRunningCadence ?? 0 * 2).round()} / '
-            '${lap.db.maxRunningCadence ?? 0 * 2} spm'),
+        title: Text('${(lap.avgRunningCadence ?? 0 * 2).round()} / '
+            '${lap.maxRunningCadence ?? 0 * 2} spm'),
         subtitle: const Text('avg / max steps per minute'),
       ),
       ListTile(
-        title: Text(lap.db.totalStrides.toString()),
+        title: Text(lap.totalStrides.toString()),
         subtitle: const Text('total strides'),
       ),
     ];

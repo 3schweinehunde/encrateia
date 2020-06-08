@@ -204,7 +204,7 @@ class Activity {
     return cachedTags;
   }
 
-  Future<bool> recalculateAverages() async {
+  Future<bool> setAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(<Event>[]);
     recordList.addAll(await records);
     db
@@ -231,7 +231,7 @@ class Activity {
 
     final List<Lap> laps = await this.laps;
     for (final Lap lap in laps) {
-      await lap.averages();
+      await lap.setAverages();
     }
     await db.save();
     return true;
@@ -279,7 +279,7 @@ class Activity {
     }
 
     db.state = 'persisted';
-    await recalculateAverages();
+    await setAverages();
     await db.save();
     print('Activity data for »${db.name}« stored in database.');
     yield 100;
@@ -352,7 +352,7 @@ class Activity {
           final Event event = Event.fromRecord(
             dataMessage: dataMessage,
             activity: this,
-            lapsId: currentLap.db.id,
+            lapsId: currentLap.id,
           );
           eventsForCurrentLap.add(event);
           break;
@@ -361,7 +361,7 @@ class Activity {
           final Event event = Event.fromLap(
             dataMessage: dataMessage,
             activity: this,
-            lapsId: currentLap.db.id,
+            lapsId: currentLap.id,
           );
           eventsForCurrentLap.add(event);
 
@@ -370,7 +370,7 @@ class Activity {
             activity: this,
             lap: currentLap,
           );
-          await lap.db.save();
+          await lap.save();
           await Event.upsertAll(eventsForCurrentLap);
 
           await resetCurrentLap();
@@ -478,7 +478,7 @@ class Activity {
 
   Future<void> resetCurrentLap() async {
     currentLap = Lap();
-    await currentLap.db.save();
+    await currentLap.save();
     eventsForCurrentLap = <Event>[];
   }
 

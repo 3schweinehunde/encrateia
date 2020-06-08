@@ -136,7 +136,7 @@ class TagGroup {
     final List<TagGroup> tagGroups = await all(athlete: athlete);
 
     final List<DbLapTagging> dbLapTaggings =
-        await DbLapTagging().select().lapsId.equals(lap.db.id).toList();
+        await DbLapTagging().select().lapsId.equals(lap.id).toList();
 
     final Iterable<int> selectedTagIds =
         dbLapTaggings.map((DbLapTagging dbLapTagging) => dbLapTagging.tagsId);

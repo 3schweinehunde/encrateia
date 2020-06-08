@@ -17,7 +17,6 @@ class LapStrydCadenceWidget extends StatefulWidget {
 
 class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgStrydCadenceString = 'Loading ...';
   String sdevStrydCadenceString = 'Loading ...';
 
   @override
@@ -46,13 +45,15 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapStrydCadenceChart(records: RecordList<Event>(strydCadenceRecords)),
+              LapStrydCadenceChart(
+                  records: RecordList<Event>(strydCadenceRecords)),
               const Text('Only records where cadence > 0 s/min are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgStrydCadenceString),
+                title: Text(
+                    widget.lap.avgStrydCadence.toStringOrDashes(1) + ' spm'),
                 subtitle: const Text('average cadence'),
               ),
               ListTile(
@@ -83,9 +84,6 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
   Future<void> getData() async {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
-
-    final double avg = await lap.avgStrydCadence;
-    avgStrydCadenceString = avg.toStringOrDashes(1) + ' spm';
 
     final double sdev = await lap.sdevStrydCadence;
     setState(() {

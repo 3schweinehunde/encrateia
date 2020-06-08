@@ -37,7 +37,7 @@ class LapsListWidget extends StatelessWidget {
               ],
               rows: laps.map((Lap lap) {
                 return DataRow(
-                  key: ValueKey<int>(lap.db.id),
+                  key: ValueKey<int>(lap.id),
                   onSelectChanged: (bool selected) {
                     if (selected) {
                       Navigator.push(
@@ -54,14 +54,14 @@ class LapsListWidget extends StatelessWidget {
                   },
                   cells: <DataCell>[
                     DataCell(Text(lap.index.toString())),
-                    DataCell(Text(avgHeartRateString(lap.db.avgHeartRate))),
-                    DataCell(Text(lap.db.avgSpeed.toPace())),
-                    DataCell(Text(lap.db.avgPower.toStringOrDashes(1))),
+                    DataCell(Text(avgHeartRateString(lap.avgHeartRate))),
+                    DataCell(Text(lap.avgSpeed.toPace())),
+                    DataCell(Text(lap.avgPower.toStringOrDashes(1))),
                     DataCell(
-                      Text((lap.db.totalDistance / 1000).toStringAsFixed(2)),
+                      Text((lap.totalDistance / 1000).toStringAsFixed(2)),
                     ),
                     DataCell(
-                      Text((lap.db.totalAscent - lap.db.totalDescent)
+                      Text((lap.totalAscent - lap.totalDescent)
                           .toString()),
                     ),
                   ],

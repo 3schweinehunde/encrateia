@@ -13,78 +13,78 @@ class LapMetadataWidget extends StatelessWidget {
     return <Widget>[
       ListTile(
         title:
-            Text(DateFormat('dd MMM yyyy, h:mm:ss').format(lap.db.timeStamp)),
+            Text(DateFormat('dd MMM yyyy, h:mm:ss').format(lap.timeStamp)),
         subtitle: const Text('timestamp'),
       ),
       ListTile(
-        title: Text(lap.db.event),
+        title: Text(lap.event),
         subtitle: const Text('event'),
       ),
       ListTile(
-        title: Text(lap.db.sport + ' / ' + lap.db.subSport),
+        title: Text(lap.sport + ' / ' + lap.subSport),
         subtitle: const Text('sport / sub sport'),
       ),
       ListTile(
-        title: Text(lap.db.eventType + ' / ' + lap.db.eventGroup.toString()),
+        title: Text(lap.eventType + ' / ' + lap.eventGroup.toString()),
         subtitle: const Text('event type / group'),
       ),
       ListTile(
-        title: Text(lap.db.avgVerticalOscillation.toStringAsFixed(2)),
+        title: Text(lap.avgVerticalOscillation.toStringAsFixed(2)),
         subtitle: const Text('avg vertical oscillation'),
       ),
       ListTile(
-        title: Text(Duration(seconds: lap.db.totalElapsedTime).asString()),
+        title: Text(Duration(seconds: lap.totalElapsedTime).asString()),
         subtitle: const Text('total elapsed time'),
       ),
       ListTile(
-        title: Text(Duration(seconds: lap.db.totalTimerTime).asString()),
+        title: Text(Duration(seconds: lap.totalTimerTime).asString()),
         subtitle: const Text('total timer time'),
       ),
       ListTile(
         title: Text(
-            '${lap.db.avgStanceTime} ms / ${lap.db.avgStanceTimePercent} %'),
+            '${lap.avgStanceTime} ms / ${lap.avgStanceTimePercent} %'),
         subtitle: const Text('avg stance time / avg stance time percent'),
       ),
       ListTile(
-        title: Text(lap.db.lapTrigger),
+        title: Text(lap.lapTrigger),
         subtitle: const Text('lap trigger'),
       ),
       ListTile(
-        title: Text('${lap.db.avgTemperature}° / ${lap.db.maxTemperature}°'),
+        title: Text('${lap.avgTemperature}° / ${lap.maxTemperature}°'),
         subtitle: const Text('avg / max temperature'),
       ),
       ListTile(
-        title: Text(lap.db.avgFractionalCadence.toStringAsFixed(2) +
+        title: Text(lap.avgFractionalCadence.toStringAsFixed(2) +
             ' / ' +
-            lap.db.maxFractionalCadence.toStringAsFixed(2)),
+            lap.maxFractionalCadence.toStringAsFixed(2)),
         subtitle: const Text('avg / max fractional cadence'),
       ),
       ListTile(
-        title: Text(lap.db.totalFractionalCycles.toStringAsFixed(2)),
+        title: Text(lap.totalFractionalCycles.toStringAsFixed(2)),
         subtitle: const Text('total fractional cycles'),
       ),
       ListTile(
-        title: Text(lap.db.startPositionLong.semicirclesAsDegrees() +
+        title: Text(lap.startPositionLong.semicirclesAsDegrees() +
             ' E\n' +
-            lap.db.startPositionLat.semicirclesAsDegrees() +
+            lap.startPositionLat.semicirclesAsDegrees() +
             ' N'),
         subtitle: const Text('start position'),
       ),
       ListTile(
-        title: Text(lap.db.endPositionLong.semicirclesAsDegrees() +
+        title: Text(lap.endPositionLong.semicirclesAsDegrees() +
             ' E\n' +
-            lap.db.endPositionLat.semicirclesAsDegrees() +
+            lap.endPositionLat.semicirclesAsDegrees() +
             ' N'),
         subtitle: const Text('end position'),
       ),
       ListTile(
-        title: Text(lap.db.intensity.toString()),
+        title: Text(lap.intensity.toString()),
         subtitle: const Text('intensity'),
       ),
       ListTile(
-        title: Text((lap.db.avgSpeed * 3.6).toStringAsFixed(2) +
+        title: Text((lap.avgSpeed * 3.6).toStringAsFixed(2) +
             ' km/h / ' +
-            (lap.db.maxSpeed * 3.6).toStringAsFixed(2) +
+            (lap.maxSpeed * 3.6).toStringAsFixed(2) +
             ' km/h'),
         subtitle: const Text('avg / max speed'),
       ),

@@ -273,7 +273,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
     for (final Activity activity in activities) {
       index += 1;
-      await activity.recalculateAverages();
+      await activity.setAverages();
       flushbar.dismiss();
       percent = 100 * index ~/ activities.length;
       flushbar = Flushbar<Object>(
