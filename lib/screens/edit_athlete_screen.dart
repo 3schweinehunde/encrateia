@@ -2,11 +2,10 @@ import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
-import 'package:provider/provider.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'strava_get_user.dart';
 
-class EditAthleteScreen extends StatelessWidget {
+class EditAthleteScreen extends StatefulWidget {
   const EditAthleteScreen({
     Key key,
     this.athlete,
@@ -15,19 +14,18 @@ class EditAthleteScreen extends StatelessWidget {
   final Athlete athlete;
 
   @override
+  _EditAthleteScreenState createState() => _EditAthleteScreenState();
+}
+
+class _EditAthleteScreenState extends State<EditAthleteScreen> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.athlete,
         title: const Text('Create Athlete'),
       ),
-      body: ChangeNotifierProvider<Athlete>.value(
-        value: athlete,
-        child: Consumer<Athlete>(
-          builder: (BuildContext context, Athlete athlete, Widget _child) =>
-              editAthleteForm(athlete, context),
-        ),
-      ),
+      body: editAthleteForm(widget.athlete, context),
     );
   }
 
@@ -45,23 +43,15 @@ class EditAthleteScreen extends StatelessWidget {
                 ListTile(
                   leading: MyIcon.download,
                   title: const Text('Option 1: Strava Connection'),
-                  subtitle:
-                      const Text('Choose this option, if you want to download most '
-                          'of the activities from Strava'),
+                  subtitle: const Text(
+                      'Choose this option, if you want to download most '
+                      'of the activities from Strava'),
                 ),
                 ButtonBar(
                   children: <Widget>[
                     FlatButton(
                       child: const Text('Connect to Strava'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext context) =>
-                                StravaGetUser(athlete: athlete),
-                          ),
-                        );
-                      },
+                      onPressed: () => stravaGetUser(context),
                     )
                   ],
                 ),
@@ -75,8 +65,9 @@ class EditAthleteScreen extends StatelessWidget {
                 ListTile(
                   leading: MyIcon.upload,
                   title: const Text('Option 2: Standalone User'),
-                  subtitle: const Text('Choose this option, if you want to upload all'
-                      ' .fit-files manually'),
+                  subtitle:
+                      const Text('Choose this option, if you want to upload all'
+                          ' .fit-files manually'),
                 ),
                 ButtonBar(
                   children: <Widget>[
@@ -137,8 +128,8 @@ class EditAthleteScreen extends StatelessWidget {
           Card(
             child: ListTile(
               leading: MyIcon.website,
-              title:
-                  const Text('Step 2 of 2: Credentials for Strava Web Site scraping'),
+              title: const Text(
+                  'Step 2 of 2: Credentials for Strava Web Site scraping'),
             ),
           ),
           ListTile(
@@ -191,16 +182,28 @@ class EditAthleteScreen extends StatelessWidget {
   }
 
   Future<void> saveStravaUser(BuildContext context) async {
-    await athlete.db.save();
-    await athlete.storeCredentials();
+    await widget.athlete.db.save();
+    await widget.athlete.storeCredentials();
     Navigator.of(context).pop();
   }
 
   Future<void> saveStandaloneUser(BuildContext context) async {
-    athlete.db.firstName = athlete.firstName ?? athlete.db.firstName;
-    athlete.db.lastName = athlete.lastName ?? athlete.db.lastName;
-    await athlete.save();
-
+    widget.athlete.db.firstName =
+        widget.athlete.firstName ?? widget.athlete.db.firstName;
+    widget.athlete.db.lastName =
+        widget.athlete.lastName ?? widget.athlete.db.lastName;
+    await widget.athlete.save();
     Navigator.of(context).pop();
+  }
+
+  Future<void> stravaGetUser(BuildContext context) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute<BuildContext>(
+        builder: (BuildContext context) =>
+            StravaGetUser(athlete: widget.athlete),
+      ),
+    );
+    setState(() {});
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart' show DbAthlete;
 import 'package:path_provider/path_provider.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
@@ -10,7 +9,7 @@ import 'package:encrateia/models/weight.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'heart_rate_zone_schema.dart';
 
-class Athlete extends ChangeNotifier {
+class Athlete {
   Athlete();
   Athlete.fromDb(this.db);
 
@@ -19,7 +18,7 @@ class Athlete extends ChangeNotifier {
   String firstName;
   String lastName;
   DbAthlete db = DbAthlete();
-  List<int> filters = <int> [];
+  List<int> filters = <int>[];
 
   @override
   String toString() =>
@@ -36,7 +35,6 @@ class Athlete extends ChangeNotifier {
       ..state = 'fromStrava'
       ..downloadInterval = 21
       ..recordAggregationCount = 16;
-    notifyListeners();
   }
 
   Future<void> setupStandaloneAthlete() async {
@@ -47,7 +45,6 @@ class Athlete extends ChangeNotifier {
       ..downloadInterval = 21
       ..recordAggregationCount = 16;
     await db.save();
-    notifyListeners();
   }
 
   String get stateText {
@@ -67,14 +64,12 @@ class Athlete extends ChangeNotifier {
     const FlutterSecureStorage storage = FlutterSecureStorage();
     await storage.write(key: 'email', value: email);
     await storage.write(key: 'password', value: password);
-    notifyListeners();
   }
 
   Future<void> readCredentials() async {
     const FlutterSecureStorage storage = FlutterSecureStorage();
     email = await storage.read(key: 'email');
     password = await storage.read(key: 'password');
-    notifyListeners();
   }
 
   static Future<List<Athlete>> all() async {
@@ -105,13 +100,9 @@ class Athlete extends ChangeNotifier {
     }
     await db.getDbActivities().delete();
     await db.delete();
-    notifyListeners();
   }
 
-  Future<void> save() async {
-    await db.save();
-    notifyListeners();
-  }
+  Future<void> save() async => await db.save();
 
   Future<bool> checkForSchemas() async =>
       (await powerZoneSchemas).isNotEmpty &&

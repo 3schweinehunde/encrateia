@@ -4,7 +4,7 @@ import 'package:encrateia/model/model.dart' show DbPowerZoneSchema;
 import 'package:encrateia/models/athlete.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
-class PowerZoneSchema extends ChangeNotifier {
+class PowerZoneSchema {
   PowerZoneSchema({@required Athlete athlete}) {
     db = DbPowerZoneSchema()
       ..athletesId = athlete.db.id

@@ -3,7 +3,7 @@ import 'package:encrateia/model/model.dart' show DbHeartRateZone;
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
-class HeartRateZone extends ChangeNotifier {
+class HeartRateZone {
   HeartRateZone(
       {@required HeartRateZoneSchema heartRateZoneSchema,
       String name,

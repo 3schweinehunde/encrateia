@@ -3,7 +3,7 @@ import 'package:encrateia/model/model.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
-class Weight extends ChangeNotifier {
+class Weight {
   Weight({@required Athlete athlete}) {
     db = DbWeight()
       ..athletesId = athlete.db.id

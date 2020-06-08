@@ -8,7 +8,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
 import 'lap.dart';
 
-class TagGroup extends ChangeNotifier {
+class TagGroup {
   TagGroup({@required Athlete athlete}) {
     db = DbTagGroup()
       ..athletesId = athlete.db.id

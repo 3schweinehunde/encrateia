@@ -2,38 +2,38 @@ import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:strava_flutter/strava.dart';
-import 'package:provider/provider.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 
-class StravaGetUser extends StatelessWidget {
+class StravaGetUser extends StatefulWidget {
   const StravaGetUser({this.athlete});
 
-  String get title => 'Strava Login';
   final Athlete athlete;
 
   @override
+  _StravaGetUserState createState() => _StravaGetUserState();
+}
+
+class _StravaGetUserState extends State<StravaGetUser> {
+  String get title => 'Strava Login';
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Athlete>.value(
-      value: athlete,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Create Athlete'),
-          backgroundColor: MyColor.primary,
-        ),
-        body: Consumer<Athlete>(
-          builder: (BuildContext context, Athlete athlete, Widget _child) {
-            if (athlete.db.firstName == null)
-              loginToStrava();
-            if (athlete.db.state == 'fromStrava')
-              Navigator.of(context).pop();
-            return Container(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(athlete.stateText),
-              ),
-            );
-          },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Create Athlete'),
+        backgroundColor: MyColor.primary,
+      ),
+      body: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(widget.athlete.stateText),
         ),
       ),
     );
@@ -49,6 +49,15 @@ class StravaGetUser extends StatelessWidget {
         secret,
         prompt);
     final DetailedAthlete stravaAthlete = await strava.getLoggedInAthlete();
-    athlete.updateFromStravaAthlete(stravaAthlete);
+    widget.athlete.updateFromStravaAthlete(stravaAthlete);
+  }
+
+  Future<void> getData() async {
+    if (widget.athlete.db.firstName == null) {
+      await loginToStrava();
+      setState((){});
+    }
+    if (widget.athlete.db.state == 'fromStrava')
+      Navigator.of(context).pop();
   }
 }

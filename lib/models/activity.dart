@@ -27,7 +27,7 @@ import 'bar_zone.dart';
 import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';
 
-class Activity extends ChangeNotifier {
+class Activity {
   Activity();
   Activity.fromDb(this.db);
 
@@ -143,7 +143,6 @@ class Activity extends ChangeNotifier {
   Future<void> setState(String state) async {
     db.state = state;
     await db.save();
-    notifyListeners();
   }
 
   String distanceString() {
@@ -282,7 +281,6 @@ class Activity extends ChangeNotifier {
     db.state = 'persisted';
     await recalculateAverages();
     await db.save();
-    notifyListeners();
     print('Activity data for »${db.name}« stored in database.');
     yield 100;
   }

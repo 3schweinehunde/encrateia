@@ -4,7 +4,7 @@ import 'package:encrateia/model/model.dart' show DbHeartRateZoneSchema;
 import 'package:encrateia/models/athlete.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
-class HeartRateZoneSchema extends ChangeNotifier {
+class HeartRateZoneSchema {
   HeartRateZoneSchema({@required Athlete athlete}) {
     db = DbHeartRateZoneSchema()
       ..athletesId = athlete.db.id
