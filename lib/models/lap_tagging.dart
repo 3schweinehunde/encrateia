@@ -10,15 +10,18 @@ class LapTagging {
     @required Tag tag,
     bool system,
   }) {
-    db = DbLapTagging()
+    _db = DbLapTagging()
       ..lapsId = lap.db.id
       ..tagsId = tag.id
       ..system = system ?? false;
   }
 
-  LapTagging.fromDb(this.db);
+  LapTagging.fromDb(this._db);
 
-  DbLapTagging db;
+  DbLapTagging _db;
+
+  int get lapsId => _db.lapsId;
+  int get tagsId => _db.tagsId;
 
   static Future<LapTagging> createBy({
     @required Lap lap,
@@ -42,7 +45,7 @@ class LapTagging {
         tag: tag,
         system: system ?? false,
       );
-      await lapTagging.db.save();
+      await lapTagging.save();
       return lapTagging;
     }
   }
@@ -79,7 +82,8 @@ class LapTagging {
 
   @override
   String toString() =>
-      '< LapTagging | lapId ${db.lapsId} | tagId ${db.tagsId} >';
+      '< LapTagging | lapId $lapsId | tagId $tagsId >';
 
-  Future<BoolResult> delete() async => await db.delete();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int> save() async => await _db.save();
 }
