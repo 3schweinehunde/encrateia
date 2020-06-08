@@ -10,7 +10,7 @@ class Weight {
       ..value = 70
       ..date = DateTime.now();
   }
-  Weight.fromDb(this._db);
+  Weight._fromDb(this._db);
 
   DbWeight _db;
 
@@ -37,8 +37,8 @@ class Weight {
         .orderByDesc('date')
         .top(1)
         .toList();
-    return dbWeights.isNotEmpty ? Weight.fromDb(dbWeights.first) : null;
+    return dbWeights.isNotEmpty ? Weight._fromDb(dbWeights.first) : null;
   }
 
-  static Weight exDb(DbWeight db) => Weight.fromDb(db);
+  static Weight exDb(DbWeight db) => Weight._fromDb(db);
 }

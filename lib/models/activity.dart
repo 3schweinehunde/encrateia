@@ -29,7 +29,7 @@ import 'heart_rate_zone_schema.dart';
 
 class Activity {
   Activity();
-  Activity.fromDb(this.db);
+  Activity._fromDb(this.db);
 
   Activity.fromStrava({
     strava_activity.SummaryActivity summaryActivity,
@@ -543,7 +543,7 @@ class Activity {
           .upperLimit
           .greaterThanOrEquals(db.avgPower)
           .toSingle();
-      _powerZone = PowerZone.fromDb(dbPowerZone);
+      _powerZone = PowerZone.exDb(dbPowerZone);
     }
     return _powerZone;
   }
@@ -562,7 +562,7 @@ class Activity {
           .greaterThanOrEquals(db.avgHeartRate)
           .toSingle();
 
-      _heartRateZone = HeartRateZone.fromDb(dbHeartRateZone);
+      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone);
     }
     return _heartRateZone;
   }
@@ -624,4 +624,6 @@ class Activity {
             .heartRateZoneCounts(heartRateZoneSchema: heartRateZoneSchema);
     return heartRateZoneCounts;
   }
+
+  static Activity exDb(DbActivity db) => Activity._fromDb(db);
 }

@@ -22,7 +22,7 @@ class Lap {
     _db = DbLap();
   }
 
-  Lap.fromDb(this._db);
+  Lap._fromDb(this._db);
 
   DbLap _db;
   Activity activity;
@@ -212,7 +212,7 @@ class Lap {
 
     final List<DbLap> dbLapList = await activity.db.getDbLaps().toList();
     final List<Lap> lapList =
-        dbLapList.map((DbLap dbLap) => Lap.fromDb(dbLap)).toList();
+        dbLapList.map(Lap.exDb).toList();
 
     for (final Lap lap in lapList) {
       lap
@@ -277,7 +277,7 @@ class Lap {
           .upperLimit
           .greaterThanOrEquals(avgPower)
           .toSingle();
-      _powerZone = PowerZone.fromDb(dbPowerZone);
+      _powerZone = PowerZone.exDb(dbPowerZone);
     }
     return _powerZone;
   }
@@ -296,7 +296,7 @@ class Lap {
           .greaterThanOrEquals(avgHeartRate)
           .toSingle();
 
-      _heartRateZone = HeartRateZone.fromDb(dbHeartRateZone);
+      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone);
     }
     return _heartRateZone;
   }
@@ -357,6 +357,8 @@ class Lap {
 
   Future<List<Event>> get events async {
     final List<DbEvent> dbEvents = await _db.getDbEvents().toList();
-    return dbEvents.map((DbEvent dbEvent) => Event.fromDb(dbEvent)).toList();
+    return dbEvents.map(Event.exDb).toList();
   }
+
+  static Lap exDb(DbLap db) => Lap._fromDb(db);
 }

@@ -16,7 +16,7 @@ class LapTagging {
       ..system = system ?? false;
   }
 
-  LapTagging.fromDb(this._db);
+  LapTagging._fromDb(this._db);
 
   DbLapTagging _db;
 
@@ -45,7 +45,7 @@ class LapTagging {
         .toSingle();
 
     if (dbLapTagging != null)
-      return LapTagging.fromDb(dbLapTagging);
+      return LapTagging._fromDb(dbLapTagging);
     else {
       final LapTagging lapTagging = LapTagging(
         lap: lap,
@@ -69,7 +69,7 @@ class LapTagging {
         .tagsId
         .equals(tag.id)
         .toSingle();
-    return (dbLapTagging != null) ? LapTagging.fromDb(dbLapTagging) : null;
+    return (dbLapTagging != null) ? LapTagging._fromDb(dbLapTagging) : null;
   }
 
   static Future<void> deleteBy({
@@ -86,4 +86,6 @@ class LapTagging {
         .toSingle();
     await dbLapTagging.delete();
   }
+
+  static LapTagging exDb(DbLapTagging db) => LapTagging._fromDb(db);
 }

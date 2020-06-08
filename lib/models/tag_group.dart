@@ -17,7 +17,7 @@ class TagGroup {
       ..name = 'My Tag Group';
   }
 
-  TagGroup.fromDb(this._db);
+  TagGroup._fromDb(this._db);
 
   TagGroup.by(
       {@required Athlete athlete,
@@ -44,7 +44,7 @@ class TagGroup {
   Future<List<Tag>> get tags async {
     final List<DbTag> dbTags =
         await _db.getDbTags().orderBy('sortOrder').orderBy('name').toList();
-    return dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
+    return dbTags.map(Tag.exDb).toList();
   }
 
   @override
@@ -66,7 +66,7 @@ class TagGroup {
         .equals('Auto Power Zones')
         .toSingle();
     if (dbTagGroup != null)
-      return TagGroup.fromDb(dbTagGroup);
+      return TagGroup._fromDb(dbTagGroup);
     else {
       final TagGroup autoPowerTagGroup = TagGroup.by(
         name: 'Auto Power Zones',
@@ -93,7 +93,7 @@ class TagGroup {
         .equals('Auto Heart Rate Zones')
         .toSingle();
     if (dbTagGroup != null)
-      return TagGroup.fromDb(dbTagGroup);
+      return TagGroup._fromDb(dbTagGroup);
     else {
       final TagGroup autoHeartRateTagGroup = TagGroup.by(
         name: 'Auto Heart Rate Zones',
@@ -160,5 +160,5 @@ class TagGroup {
     await autoHeartRateTagGroup._db.getDbTags().delete();
   }
 
-  static TagGroup exDb(DbTagGroup db) => TagGroup.fromDb(db);
+  static TagGroup exDb(DbTagGroup db) => TagGroup._fromDb(db);
 }

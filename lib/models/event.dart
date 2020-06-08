@@ -44,7 +44,7 @@ class Event {
     }
   }
 
-  Event.fromDb(this._db);
+  Event._fromDb(this._db);
 
   Event.fromRecord({
     @required DataMessage dataMessage,
@@ -152,7 +152,7 @@ class Event {
 
     final List<DbEvent> dbEventList = await activity.db.getDbEvents().toList();
     final List<Event> eventList =
-        dbEventList.map((DbEvent dbEvent) => Event.fromDb(dbEvent)).toList();
+        dbEventList.map(Event.exDb).toList();
 
     for (final Event event in eventList) {
       event.activity = activity;
@@ -168,4 +168,6 @@ class Event {
         .map((Event event) => event._db)
         .toList());
   }
+
+  static Event exDb(DbEvent db) => Event._fromDb(db);
 }

@@ -27,7 +27,7 @@ class PowerZone {
       upperLimit = (upperPercentage * powerZoneSchema.base / 100).round();
   }
 
-  PowerZone.fromDb(this._db);
+  PowerZone._fromDb(this._db);
 
   DbPowerZone _db;
 
@@ -57,4 +57,6 @@ class PowerZone {
     return await DbPowerZone().upsertAll(
         powerZones.map((PowerZone powerZone) => powerZone._db).toList());
   }
+
+  static PowerZone exDb(DbPowerZone db) => PowerZone._fromDb(db);
 }

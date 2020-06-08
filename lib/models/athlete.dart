@@ -101,9 +101,7 @@ class Athlete {
   Future<List<Activity>> get activities async {
     final List<DbActivity> dbActivityList =
         await _db.getDbActivities().orderByDesc('stravaId').toList();
-    return dbActivityList
-        .map((DbActivity dbActivity) => Activity.fromDb(dbActivity))
-        .toList();
+    return dbActivityList.map(Activity.exDb).toList();
   }
 
   Future<List<Weight>> get weights async {

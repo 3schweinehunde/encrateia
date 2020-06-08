@@ -12,7 +12,7 @@ class PowerZoneSchema {
       ..name = 'My Schema'
       ..date = DateTime.now();
   }
-  PowerZoneSchema.fromDb(this._db);
+  PowerZoneSchema._fromDb(this._db);
 
   PowerZoneSchema.likeStryd({Athlete athlete}) {
     _db = DbPowerZoneSchema()
@@ -57,7 +57,7 @@ class PowerZoneSchema {
     final List<DbPowerZone> dbPowerZoneList =
         await _db.getDbPowerZones().orderBy('lowerLimit').toList();
     return dbPowerZoneList
-        .map((DbPowerZone dbPowerZone) => PowerZone.fromDb(dbPowerZone))
+        .map(PowerZone.exDb)
         .toList();
   }
 
@@ -211,10 +211,10 @@ class PowerZoneSchema {
         .top(1)
         .toList();
     if (dbPowerZoneSchemas.isNotEmpty)
-      return PowerZoneSchema.fromDb(dbPowerZoneSchemas.first);
+      return PowerZoneSchema._fromDb(dbPowerZoneSchemas.first);
     return null;
   }
 
   static PowerZoneSchema exDb(DbPowerZoneSchema db) =>
-      PowerZoneSchema.fromDb(db);
+      PowerZoneSchema._fromDb(db);
 }

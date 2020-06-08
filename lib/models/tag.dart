@@ -19,7 +19,7 @@ class Tag {
       ..name = name ?? 'my Tag'
       ..color = color ?? 0xFFFFc107;
   }
-  Tag.fromDb(this._db);
+  Tag._fromDb(this._db);
 
   DbTag _db;
   bool selected = false;
@@ -53,7 +53,7 @@ class Tag {
               .toList())
           .toList();
       final List<Tag> tags =
-          dbTags.map((DbTag dbTag) => Tag.fromDb(dbTag)).toList();
+          dbTags.map(Tag.exDb).toList();
       return tags;
     } else {
       return <Tag>[];
@@ -92,7 +92,7 @@ class Tag {
         ..system = true;
       await dbPowerTag.save();
     }
-    return Tag.fromDb(dbPowerTag);
+    return Tag._fromDb(dbPowerTag);
   }
 
   static Future<Tag> autoHeartRateTag({
@@ -123,6 +123,8 @@ class Tag {
         ..system = true;
       await dbHeartRateTag.save();
     }
-    return Tag.fromDb(dbHeartRateTag);
+    return Tag._fromDb(dbHeartRateTag);
   }
+
+  static Tag exDb(DbTag db) => Tag._fromDb(db);
 }

@@ -26,7 +26,7 @@ class HeartRateZone {
     if (upperPercentage != null)
       upperLimit = (upperPercentage * heartRateZoneSchema.base / 100).round();
   }
-  HeartRateZone.fromDb(this._db);
+  HeartRateZone._fromDb(this._db);
 
   DbHeartRateZone _db;
 
@@ -58,4 +58,6 @@ class HeartRateZone {
         .map((HeartRateZone heartRateZone) => heartRateZone._db)
         .toList());
   }
+
+  static HeartRateZone exDb(DbHeartRateZone db) => HeartRateZone._fromDb(db);
 }

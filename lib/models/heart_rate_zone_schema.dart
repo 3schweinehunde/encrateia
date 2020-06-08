@@ -13,7 +13,7 @@ class HeartRateZoneSchema {
       ..name = 'My Schema'
       ..date = DateTime.now();
   }
-  HeartRateZoneSchema.fromDb(this._db);
+  HeartRateZoneSchema._fromDb(this._db);
 
   HeartRateZoneSchema.likeGarmin({Athlete athlete}) {
     _db = DbHeartRateZoneSchema()
@@ -45,10 +45,8 @@ class HeartRateZoneSchema {
   Future<List<HeartRateZone>> get heartRateZones async {
     final List<DbHeartRateZone> dbHeartRateZoneList =
         await _db.getDbHeartRateZones().orderBy('lowerLimit').toList();
-    final List<HeartRateZone> heartRateZones = dbHeartRateZoneList
-        .map((DbHeartRateZone dbHeartRateZone) =>
-            HeartRateZone.fromDb(dbHeartRateZone))
-        .toList();
+    final List<HeartRateZone> heartRateZones =
+        dbHeartRateZoneList.map(HeartRateZone.exDb).toList();
     return heartRateZones;
   }
 
@@ -150,10 +148,10 @@ class HeartRateZoneSchema {
             .top(1)
             .toList();
     if (dbHeartRateZoneSchemas.isNotEmpty)
-      return HeartRateZoneSchema.fromDb(dbHeartRateZoneSchemas.first);
+      return HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first);
     return null;
   }
 
   static HeartRateZoneSchema exDb(DbHeartRateZoneSchema db) =>
-      HeartRateZoneSchema.fromDb(db);
+      HeartRateZoneSchema._fromDb(db);
 }

@@ -16,7 +16,7 @@ class ActivityTagging {
       ..system = system ?? false;
   }
 
-  ActivityTagging.fromDb(this._db);
+  ActivityTagging._fromDb(this._db);
 
   DbActivityTagging _db;
 
@@ -38,7 +38,7 @@ class ActivityTagging {
         .toSingle();
 
     if (dbActivityTagging != null)
-      return ActivityTagging.fromDb(dbActivityTagging);
+      return ActivityTagging._fromDb(dbActivityTagging);
     else {
       final ActivityTagging activityTagging = ActivityTagging(
           activity: activity, tag: tag, system: system ?? false);
@@ -60,7 +60,7 @@ class ActivityTagging {
         .equals(tag.id)
         .toSingle();
     if (dbActivityTagging != null)
-      return ActivityTagging.fromDb(dbActivityTagging);
+      return ActivityTagging._fromDb(dbActivityTagging);
     return null;
   }
 
@@ -84,4 +84,6 @@ class ActivityTagging {
       '< ActivityTagging | actvityId $activitiesId | tagId $tagsId >';
 
   Future<BoolResult> delete() async => await _db.delete();
+
+  static ActivityTagging exDb(DbActivityTagging db) => ActivityTagging._fromDb(db);
 }
