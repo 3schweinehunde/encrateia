@@ -140,7 +140,7 @@ class Lap {
 
   Future<double> get sdevPower async {
     if (_db.sdevPower == null) {
-      _db.sdevPower = RecordList<Event>(await records).calculateSdevPower();
+      _db.sdevPower = RecordList<Event>(await records).sdevPower();
       await save();
     }
     return _db.sdevPower;
@@ -148,7 +148,7 @@ class Lap {
 
   Future<int> get minPower async {
     if (_db.minPower == null) {
-      _db.minPower = RecordList<Event>(await records).calculateMinPower();
+      _db.minPower = RecordList<Event>(await records).minPower();
       await save();
     }
     return _db.minPower;
@@ -156,7 +156,7 @@ class Lap {
 
   Future<int> get maxPower async {
     if (_db.maxPower == null) {
-      _db.maxPower = RecordList<Event>(await records).calculateMaxPower();
+      _db.maxPower = RecordList<Event>(await records).maxPower();
       await save();
     }
     return _db.maxPower;
@@ -165,7 +165,7 @@ class Lap {
   Future<double> get sdevGroundTime async {
     if (_db.sdevGroundTime == null) {
       _db.sdevGroundTime =
-          RecordList<Event>(await records).calculateSdevGroundTime();
+          RecordList<Event>(await records).sdevGroundTime();
       await save();
     }
     return _db.sdevGroundTime;
@@ -174,7 +174,7 @@ class Lap {
   Future<double> get sdevVerticalOscillation async {
     if (_db.sdevVerticalOscillation == null) {
       _db.sdevVerticalOscillation =
-          RecordList<Event>(await records).calculateSdevVerticalOscillation();
+          RecordList<Event>(await records).sdevVerticalOscillation();
       await save();
     }
     return _db.sdevVerticalOscillation;
@@ -183,7 +183,7 @@ class Lap {
   Future<double> get sdevStrydCadence async {
     if (_db.sdevStrydCadence == null) {
       _db.sdevStrydCadence =
-          RecordList<Event>(await records).calculateSdevStrydCadence();
+          RecordList<Event>(await records).sdevStrydCadence();
       await save();
     }
     return _db.sdevStrydCadence;
@@ -192,7 +192,7 @@ class Lap {
   Future<double> get sdevLegSpringStiffness async {
     if (_db.sdevLegSpringStiffness == null) {
       _db.sdevLegSpringStiffness =
-          RecordList<Event>(await records).calculateSdevLegSpringStiffness();
+          RecordList<Event>(await records).sdevLegSpringStiffness();
       await save();
     }
     return _db.sdevLegSpringStiffness;
@@ -201,7 +201,7 @@ class Lap {
   Future<double> get sdevFormPower async {
     if (_db.sdevFormPower == null) {
       _db.sdevFormPower =
-          RecordList<Event>(await records).calculateSdevFormPower();
+          RecordList<Event>(await records).sdevFormPower();
       await save();
     }
     return _db.sdevFormPower;
@@ -234,17 +234,17 @@ class Lap {
   Future<void> setAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(await records);
     _db
-      ..avgPower = recordList.calculateAveragePower()
-      ..avgFormPower = recordList.calculateAverageFormPower()
-      ..avgHeartRate = recordList.calculateAverageHeartRate()
-      ..avgSpeed = recordList.calculateAverageSpeed()
-      ..avgGroundTime = recordList.calculateAverageGroundTime()
-      ..avgStrydCadence = recordList.calculateAverageStrydCadence()
-      ..avgLegSpringStiffness = recordList.calculateAverageLegSpringStiffness()
-      ..avgStrideRatio = recordList.calculateAverageStrideRatio()
-      ..avgPowerRatio = recordList.calculateAverageStrideRatio()
+      ..avgPower = recordList.averagePower()
+      ..avgFormPower = recordList.averageFormPower()
+      ..avgHeartRate = recordList.averageHeartRate()
+      ..avgSpeed = recordList.averageSpeed()
+      ..avgGroundTime = recordList.averageGroundTime()
+      ..avgStrydCadence = recordList.averageStrydCadence()
+      ..avgLegSpringStiffness = recordList.averageLegSpringStiffness()
+      ..avgStrideRatio = recordList.averageStrideRatio()
+      ..avgPowerRatio = recordList.averageStrideRatio()
       ..avgVerticalOscillation =
-          recordList.calculateAverageVerticalOscillation();
+          recordList.averageVerticalOscillation();
     await save();
   }
 
