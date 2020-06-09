@@ -204,7 +204,6 @@ class Lap {
       ..sdevPowerRatio = recordList.sdevPowerRatio()
       ..avgStrideRatio = recordList.avgStrideRatio()
       ..sdevStrideRatio = recordList.sdevStrideRatio();
-
     await save();
   }
 

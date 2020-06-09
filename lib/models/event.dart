@@ -19,7 +19,7 @@ class Event {
         ..save();
     } else if (dataMessage.values.any((Value value) =>
         value.fieldName == 'event_type' &&
-        <String> ['start', 'stop_all'].contains(value.value))) {
+        <String>['start', 'stop_all'].contains(value.value))) {
       _db = DbEvent()
         ..activitiesId = activity.id
         ..event = dataMessage.get('event') as String
@@ -29,7 +29,8 @@ class Event {
         ..timeStamp =
             dateTimeFromStrava(dataMessage.get('timestamp') as double);
     } else if (dataMessage.values.any((Value value) =>
-        value.fieldName == 'event_type' && <String> ['marker'].contains(value.value))) {
+        value.fieldName == 'event_type' &&
+        <String>['marker'].contains(value.value))) {
       _db = DbEvent()
         ..activitiesId = activity.id
         ..event = dataMessage.get('event')?.toString()
@@ -128,16 +129,8 @@ class Event {
     return records.toList();
   }
 
-  static Future<List<Event>> recordsByActivity(Activity activity) async {
-    final List<Event> events = await byActivity(activity);
-    final Iterable<Event> records =
-        events.where((Event event) => event.event == 'record');
-    return records.toList();
-  }
-
   static Future<List<Event>> byLap(Lap lap) async {
     int counter = 1;
-
     final List<Event> events = await lap.events;
 
     for (final Event event in events) {
@@ -148,24 +141,12 @@ class Event {
     return events;
   }
 
-  static Future<List<Event>> byActivity(Activity activity) async {
-    int counter = 1;
-
-    final List<Event> events = await activity.events;
-
-    for (final Event event in events) {
-      event.activity = activity;
-      event.index = counter;
-      counter = counter + 1;
-    }
-    return events;
-  }
-
-  static Future<BoolCommitResult> upsertAll(List<Event> events) async {
-    return await DbEvent().upsertAll(events
-        .where((Event event) => event.id != null)
+  static Future<void> upsertAll(List<Event> events) async {
+    final List<DbEvent> dbEvents = events
+        .where((Event event) => event._db != null)
         .map((Event event) => event._db)
-        .toList());
+        .toList();
+    await DbEvent().upsertAll(dbEvents);
   }
 
   static Event exDb(DbEvent dbEvent) => Event._fromDb(dbEvent);

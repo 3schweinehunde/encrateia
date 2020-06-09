@@ -54,7 +54,7 @@ class Activity {
   }
 
   DbActivity _db;
-  List<Event> _records;
+  List<Event> cachedRecords = <Event>[];
   List<Lap> cachedLaps = <Lap>[];
   List<Tag> cachedTags = <Tag>[];
   double glidingMeasureAttribute;
@@ -258,7 +258,13 @@ class Activity {
   String paceString() => avgSpeed.toPace() + '/km';
 
   Future<List<Event>> get records async {
-    return _records ??= await Event.recordsByActivity(this);
+    if (cachedRecords.isEmpty) {
+      final List<DbEvent> dbEventList = await _db.getDbEvents().toList();
+      final Iterable<DbEvent> dbRecordList = dbEventList
+          .where((DbEvent dbEvent) => dbEvent.event == 'record');
+      cachedRecords = dbRecordList.map(Event.exDb).toList();
+    }
+    return cachedRecords;
   }
 
   Future<List<Tag>> get tags async {
@@ -289,8 +295,7 @@ class Activity {
       ..sdevStrydCadence = recordList.sdevStrydCadence()
       ..avgLegSpringStiffness = recordList.avgLegSpringStiffness()
       ..sdevLegSpringStiffness = recordList.sdevLegSpringStiffness()
-      ..avgVerticalOscillation =
-          recordList.avgVerticalOscillation()
+      ..avgVerticalOscillation = recordList.avgVerticalOscillation()
       ..sdevVerticalOscillation = recordList.sdevVerticalOscillation()
       ..avgFormPower = recordList.avgFormPower()
       ..sdevFormPower = recordList.sdevFormPower()
@@ -350,7 +355,6 @@ class Activity {
 
     state = 'persisted';
     await setAverages();
-    await save();
     print('Activity data for »$name« stored in database.');
     yield 100;
   }
@@ -693,11 +697,6 @@ class Activity {
     return heartRateZoneCounts;
   }
 
-  Future<List<Event>> get events async {
-    final List<DbEvent> dbEventList = await _db.getDbEvents().toList();
-    return dbEventList.map(Event.exDb).toList();
-  }
-
   Future<List<Lap>> get laps async {
     if (cachedLaps.isEmpty) {
       int counter = 1;
@@ -716,7 +715,7 @@ class Activity {
   }
 
   Future<BoolResult> deleteEvents() async => await _db.getDbEvents().delete();
-  Future<BoolResult> deleteLaps() async  => await _db.getDbLaps().delete();
+  Future<BoolResult> deleteLaps() async => await _db.getDbLaps().delete();
 
   static Activity exDb(DbActivity db) => Activity._fromDb(db);
 }
