@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/utils/num_utils.dart';
 
 class LapHeartRateWidget extends StatefulWidget {
   const LapHeartRateWidget({this.lap});
@@ -58,22 +59,22 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(records.avgHeartRateString),
+                title: Text(widget.lap.avgHeartRate.toStringOrDashes(1)),
                 subtitle: const Text('average heart rate'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(records.minHeartRateString),
+                title: Text(widget.lap.minHeartRate.toString()),
                 subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: Text(records.maxHeartRateString),
+                title: Text(widget.lap.maxHeartRate.toString()),
                 subtitle: const Text('maximum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(records.sdevHeartRateString),
+                title: Text(widget.lap.sdevHeartRate.toStringAsFixed(2)),
                 subtitle: const Text('standard deviation heart rate'),
               ),
               ListTile(

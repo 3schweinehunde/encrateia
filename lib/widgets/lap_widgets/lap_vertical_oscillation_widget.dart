@@ -93,9 +93,9 @@ class _LapVerticalOscillationWidgetState
     avgVerticalOscillationString =
         lap.avgVerticalOscillation.toStringOrDashes(1) + ' cm';
 
-    final double sdev = await lap.sdevVerticalOscillation;
     setState(() {
-      sdevVerticalOscillationString = sdev.toStringOrDashes(2) + ' cm';
+      sdevVerticalOscillationString =
+          lap.sdevVerticalOscillation.toStringOrDashes(2) + ' cm';
     });
   }
 }

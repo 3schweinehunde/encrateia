@@ -2,7 +2,6 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/utils/list_utils.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:encrateia/models/plot_point.dart';
@@ -18,31 +17,9 @@ class RecordList<E> extends DelegatingList<E> {
 
   final List<Event> _records;
 
-  String get sdevHeartRateString => _records
-      .map((Event record) => record.heartRate)
-      .nonZeroInts()
-      .sdev()
-      .toStringAsFixed(2);
-
-  String get minHeartRateString => _records
-      .map((Event record) => record.heartRate)
-      .nonZeroInts()
-      .min()
-      .toString();
-
-  String get avgHeartRateString => _records
-      .map((Event record) => record.heartRate)
-      .nonZeroInts()
-      .mean()
-      .toStringOrDashes(1);
-
-  String get maxHeartRateString => _records
-      .map((Event record) => record.heartRate)
-      .nonZeroInts()
-      .max()
-      .toString();
-
-  double averagePower() {
+  // AVERAGES:
+  // Power
+  double avgPower() {
     final Iterable<int> powers = _records
         .where((Event record) =>
             record.power != null && record.power > 0 && record.power < 2000)
@@ -58,17 +35,18 @@ class RecordList<E> extends DelegatingList<E> {
 
   int minPower() {
     final List<int> powers =
-        _records.map((Event record) => record.power).nonZeroInts();
-    return powers.isNotEmpty ? powers.min() : 0;
+        _records.map((Event record) => record.power).nonZeros() as List<int>;
+    return powers.isNotEmpty ? powers.min() as int : 0;
   }
 
   int maxPower() {
     final List<int> powers =
-        _records.map((Event record) => record.power).nonZeroInts();
-    return powers.isNotEmpty ? powers.max() : 0;
+        _records.map((Event record) => record.power).nonZeros() as List<int>;
+    return powers.isNotEmpty ? powers.max() as int : 0;
   }
 
-  int averageHeartRate() {
+  // Heart Rate
+  int avgHeartRate() {
     final Iterable<int> heartRates = _records
         .where((Event record) =>
             record.heartRate != null &&
@@ -89,70 +67,93 @@ class RecordList<E> extends DelegatingList<E> {
 
   int minHeartRate() {
     final List<int> heartRates =
-        _records.map((Event record) => record.heartRate).nonZeroInts();
-    return heartRates.isNotEmpty ? heartRates.min() : 0;
+        _records.map((Event record) => record.heartRate).nonZeros() as List<int>;
+    return heartRates.isNotEmpty ? heartRates.min() as int : 0;
   }
 
   int maxHeartRate() {
     final List<int> heartRates =
-        _records.map((Event record) => record.heartRate).nonZeroInts();
-    return heartRates.isNotEmpty ? heartRates.max() : 0;
+        _records.map((Event record) => record.heartRate).nonZeros() as List<int>;
+    return heartRates.isNotEmpty ? heartRates.max() as int : 0;
   }
 
-  double averageSpeed() {
+  // Speed
+  double avgSpeed() {
     final List<double> speeds =
-        _records.map((Event record) => record.speed).nonZeroDoubles();
+        _records.map((Event record) => record.speed).nonZeros() as List<double>;
 
     return speeds.isNotEmpty ? speeds.mean() : -1;
   }
 
-  double averageGroundTime() {
+  double sdevSpeed() => _records
+      .where((Event record) => record.speed != null)
+      .map((Event record) => record.speed)
+      .sdev();
+
+  double minSpeed() {
+    final List<double> speeds =
+    _records.map((Event record) => record.speed).nonZeros() as List<double>;
+    return speeds.isNotEmpty ? speeds.min() as double : 0;
+  }
+
+  double maxSpeed() {
+    final List<double> speeds =
+    _records.map((Event record) => record.speed).nonZeros() as List<double>;
+    return speeds.isNotEmpty ? speeds.max() as double : 0;
+  }
+
+  // Ground Time
+  double avgGroundTime() {
     final List<double> groundTimes =
-        _records.map((Event record) => record.groundTime).nonZeroDoubles();
+        _records.map((Event record) => record.groundTime).nonZeros() as List<double>;
 
     return groundTimes.isNotEmpty ? groundTimes.mean() : -1;
   }
 
   double sdevGroundTime() =>
-      _records.map((Event record) => record.groundTime).nonZeroDoubles().sdev();
+      _records.map((Event record) => record.groundTime).nonZeros().sdev();
 
-  double averageStrydCadence() {
+  // Stryd Cadence
+  double avgStrydCadence() {
     final List<double> strydCadences = _records
         .map((Event record) => record.strydCadence ?? 0.0 * 2)
-        .nonZeroDoubles();
+        .nonZeros() as List<double>;
     return strydCadences.isNotEmpty ? strydCadences.mean() : -1;
   }
 
   double sdevStrydCadence() => _records
       .map((Event record) => record.strydCadence ?? 0.0 * 2)
-      .nonZeroDoubles()
+      .nonZeros()
       .sdev();
 
-  double averageLegSpringStiffness() {
+  // Leg Spring Stiffness
+  double avgLegSpringStiffness() {
     final List<double> legSpringStiffnesses = _records
         .map((Event record) => record.legSpringStiffness)
-        .nonZeroDoubles();
+        .nonZeros() as List<double>;
     return legSpringStiffnesses.isNotEmpty ? legSpringStiffnesses.mean() : -1;
   }
 
   double sdevLegSpringStiffness() => _records
       .map((Event record) => record.legSpringStiffness)
-      .nonZeroDoubles()
+      .nonZeros()
       .sdev();
 
-  double averageVerticalOscillation() {
+  // Vertical Oscillation
+  double avgVerticalOscillation() {
     final List<double> verticalOscillation = _records
         .map((Event record) => record.verticalOscillation)
-        .nonZeroDoubles();
+        .nonZeros() as List<double>;
     return verticalOscillation.isNotEmpty ? verticalOscillation.mean() : -1;
   }
 
   double sdevVerticalOscillation() => _records
       .map((Event record) => record.verticalOscillation)
-      .nonZeroDoubles()
+      .nonZeros()
       .sdev();
 
-  double averageFormPower() {
+  // Form Power
+  double avgFormPower() {
     final Iterable<int> formPowers = _records
         .where((Event record) =>
             record.formPower != null && record.formPower < 200)
@@ -166,7 +167,8 @@ class RecordList<E> extends DelegatingList<E> {
       .map((Event record) => record.formPower)
       .sdev();
 
-  double averagePowerRatio() {
+  // Power Ratio
+  double avgPowerRatio() {
     final Iterable<double> powerRatios = _records
         .where((Event record) =>
             record.power != null &&
@@ -189,7 +191,8 @@ class RecordList<E> extends DelegatingList<E> {
           (record.power - record.formPower) / record.power * 100)
       .sdev();
 
-  double averageStrideRatio() {
+  // Stride Ratio
+  double avgStrideRatio() {
     final Iterable<double> powerRatios = _records
         .where((Event record) =>
             record.speed != null &&
@@ -221,6 +224,7 @@ class RecordList<E> extends DelegatingList<E> {
           record.strydCadence /
           record.verticalOscillation)
       .sdev();
+  // END OF AVERAGES
 
   List<IntPlotPoint> toIntDataPoints({
     int amount,
@@ -233,13 +237,13 @@ class RecordList<E> extends DelegatingList<E> {
     for (final Event record in _records) {
       switch (attribute) {
         case LapIntAttr.power:
-          sum = sum + record.power;
+          sum += record.power;
           break;
         case LapIntAttr.formPower:
-          sum = sum + record.formPower;
+          sum += record.formPower;
           break;
         case LapIntAttr.heartRate:
-          sum = sum + record.heartRate;
+          sum += record.heartRate;
       }
 
       if (index++ % amount == amount - 1) {

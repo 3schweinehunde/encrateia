@@ -43,8 +43,8 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {
         final Activity activity = activities[index];
-        return Column(crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+            Widget>[
           ListTile(
             leading: sportsIcon(sport: activity.sport),
             title: Text(activity.name ?? 'Activity'),
@@ -55,7 +55,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                 const SizedBox(width: 20),
                 Text(activity.paceString() + '\n' + activity.heartRateString()),
                 const SizedBox(width: 20),
-                Text(activity.averagePowerString() + '\n'),
+                Text((activity.avgPower == null || activity.avgPower == -1)
+                    ? '-'
+                    : activity.avgPower.toStringAsFixed(1) + ' W' + '\n'),
               ],
             ),
             onTap: () async {

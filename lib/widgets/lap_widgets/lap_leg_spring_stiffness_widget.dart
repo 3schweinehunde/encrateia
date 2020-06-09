@@ -89,9 +89,9 @@ class _LapLegSpringStiffnessWidgetState
   Future<void> getData() async {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
-    final double sdev = await lap.sdevLegSpringStiffness;
     setState(() {
-      sdevLegSpringStiffnessString = sdev.toStringOrDashes(2) + ' ms';
+      sdevLegSpringStiffnessString =
+          lap.sdevLegSpringStiffness.toStringOrDashes(2) + ' ms';
     });
   }
 }

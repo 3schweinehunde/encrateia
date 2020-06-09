@@ -126,6 +126,10 @@ class Activity {
   double get avgGroundTime => _db.avgGroundTime;
   double get sdevGroundTime => _db.sdevGroundTime;
   double get sdevVerticalOscillation => _db.sdevVerticalOscillation;
+  double get sdevHeartRate => _db.sdevHeartRate;
+  int get minHeartRate => _db.minHeartRate;
+  double get sdevSpeed => _db.sdevSpeed;
+  double get minSpeed => _db.minSpeed;
 
   set name(String value) => _db.name = value;
   set state(String value) => _db.state = value;
@@ -225,12 +229,6 @@ class Activity {
         : avgHeartRate.toString() + ' bpm';
   }
 
-  String averagePowerString() {
-    return (avgPower == null || avgPower == -1)
-        ? '-'
-        : avgPower.toStringAsFixed(1) + ' W';
-  }
-
   String timeString() {
     return timeCreated == null
         ? '- - -'
@@ -271,25 +269,32 @@ class Activity {
   Future<bool> setAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(await records);
     _db
-      ..avgPower = recordList.averagePower()
+      ..avgPower = recordList.avgPower()
       ..sdevPower = recordList.sdevPower()
       ..minPower = recordList.minPower()
       ..maxPower = recordList.maxPower()
-      ..avgSpeed = recordList.averageSpeed()
-      ..avgGroundTime = recordList.averageGroundTime()
+      ..avgHeartRate = recordList.avgHeartRate()
+      ..sdevHeartRate = recordList.sdevHeartRate()
+      ..minHeartRate = recordList.minHeartRate()
+      ..maxHeartRate = recordList.maxHeartRate()
+      ..avgSpeed = recordList.avgSpeed()
+      ..sdevSpeed = recordList.sdevSpeed()
+      ..minSpeed = recordList.minSpeed()
+      ..maxSpeed = recordList.maxSpeed()
+      ..avgGroundTime = recordList.avgGroundTime()
       ..sdevGroundTime = recordList.sdevGroundTime()
-      ..avgVerticalOscillation =
-          recordList.averageVerticalOscillation()
-      ..sdevVerticalOscillation = recordList.sdevVerticalOscillation()
-      ..avgStrydCadence = recordList.averageStrydCadence()
+      ..avgStrydCadence = recordList.avgStrydCadence()
       ..sdevStrydCadence = recordList.sdevStrydCadence()
-      ..avgLegSpringStiffness = recordList.averageLegSpringStiffness()
+      ..avgLegSpringStiffness = recordList.avgLegSpringStiffness()
       ..sdevLegSpringStiffness = recordList.sdevLegSpringStiffness()
-      ..avgFormPower = recordList.averageFormPower()
+      ..avgVerticalOscillation =
+          recordList.avgVerticalOscillation()
+      ..sdevVerticalOscillation = recordList.sdevVerticalOscillation()
+      ..avgFormPower = recordList.avgFormPower()
       ..sdevFormPower = recordList.sdevFormPower()
-      ..avgPowerRatio = recordList.averagePowerRatio()
+      ..avgPowerRatio = recordList.avgPowerRatio()
       ..sdevPowerRatio = recordList.sdevPowerRatio()
-      ..avgStrideRatio = recordList.averageStrideRatio()
+      ..avgStrideRatio = recordList.avgStrideRatio()
       ..sdevStrideRatio = recordList.sdevStrideRatio();
 
     final List<Lap> laps = await this.laps;

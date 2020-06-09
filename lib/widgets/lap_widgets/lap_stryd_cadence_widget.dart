@@ -85,9 +85,9 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
 
-    final double sdev = await lap.sdevStrydCadence;
     setState(() {
-      sdevStrydCadenceString = sdev.toStringOrDashes(2) + ' spm';
+      sdevStrydCadenceString =
+          lap.sdevStrydCadence.toStringOrDashes(2) + ' spm';
     });
   }
 }

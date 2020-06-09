@@ -83,9 +83,8 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
 
-    final double sdev = await lap.sdevGroundTime;
     setState(() {
-      sdevGroundTimeString = sdev.toStringOrDashes(2) + ' ms';
+      sdevGroundTimeString = lap.sdevGroundTime.toStringOrDashes(2) + ' ms';
     });
   }
 }

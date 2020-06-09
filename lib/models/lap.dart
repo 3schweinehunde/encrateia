@@ -76,6 +76,18 @@ class Lap {
   double get avgStrydCadence => _db.avgStrydCadence;
   double get avgLegSpringStiffness => _db.avgLegSpringStiffness;
   double get avgFormPower => _db.avgFormPower;
+  double get sdevHeartRate => _db.sdevHeartRate;
+  int get minHeartRate => _db.minHeartRate;
+  double get sdevSpeed => _db.sdevSpeed;
+  double get minSpeed => _db.minSpeed;
+  double get sdevFormPower => _db.sdevFormPower;
+  double get sdevPower => _db.sdevPower;
+  int get minPower => _db.minPower;
+  int get maxPower => _db.maxPower;
+  double get sdevGroundTime => _db.sdevGroundTime;
+  double get sdevVerticalOscillation => _db.sdevVerticalOscillation;
+  double get sdevStrydCadence => _db.sdevStrydCadence;
+  double get sdevLegSpringStiffness => _db.sdevLegSpringStiffness;
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
@@ -138,75 +150,6 @@ class Lap {
     return _records;
   }
 
-  Future<double> get sdevPower async {
-    if (_db.sdevPower == null) {
-      _db.sdevPower = RecordList<Event>(await records).sdevPower();
-      await save();
-    }
-    return _db.sdevPower;
-  }
-
-  Future<int> get minPower async {
-    if (_db.minPower == null) {
-      _db.minPower = RecordList<Event>(await records).minPower();
-      await save();
-    }
-    return _db.minPower;
-  }
-
-  Future<int> get maxPower async {
-    if (_db.maxPower == null) {
-      _db.maxPower = RecordList<Event>(await records).maxPower();
-      await save();
-    }
-    return _db.maxPower;
-  }
-
-  Future<double> get sdevGroundTime async {
-    if (_db.sdevGroundTime == null) {
-      _db.sdevGroundTime =
-          RecordList<Event>(await records).sdevGroundTime();
-      await save();
-    }
-    return _db.sdevGroundTime;
-  }
-
-  Future<double> get sdevVerticalOscillation async {
-    if (_db.sdevVerticalOscillation == null) {
-      _db.sdevVerticalOscillation =
-          RecordList<Event>(await records).sdevVerticalOscillation();
-      await save();
-    }
-    return _db.sdevVerticalOscillation;
-  }
-
-  Future<double> get sdevStrydCadence async {
-    if (_db.sdevStrydCadence == null) {
-      _db.sdevStrydCadence =
-          RecordList<Event>(await records).sdevStrydCadence();
-      await save();
-    }
-    return _db.sdevStrydCadence;
-  }
-
-  Future<double> get sdevLegSpringStiffness async {
-    if (_db.sdevLegSpringStiffness == null) {
-      _db.sdevLegSpringStiffness =
-          RecordList<Event>(await records).sdevLegSpringStiffness();
-      await save();
-    }
-    return _db.sdevLegSpringStiffness;
-  }
-
-  Future<double> get sdevFormPower async {
-    if (_db.sdevFormPower == null) {
-      _db.sdevFormPower =
-          RecordList<Event>(await records).sdevFormPower();
-      await save();
-    }
-    return _db.sdevFormPower;
-  }
-
   Future<PowerZoneSchema> get powerZoneSchema async {
     if (_powerZoneSchema == null) {
       final DbActivity dbActivity = await DbActivity().getById(activitiesId);
@@ -234,17 +177,34 @@ class Lap {
   Future<void> setAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(await records);
     _db
-      ..avgPower = recordList.averagePower()
-      ..avgFormPower = recordList.averageFormPower()
-      ..avgHeartRate = recordList.averageHeartRate()
-      ..avgSpeed = recordList.averageSpeed()
-      ..avgGroundTime = recordList.averageGroundTime()
-      ..avgStrydCadence = recordList.averageStrydCadence()
-      ..avgLegSpringStiffness = recordList.averageLegSpringStiffness()
-      ..avgStrideRatio = recordList.averageStrideRatio()
-      ..avgPowerRatio = recordList.averageStrideRatio()
+      ..avgPower = recordList.avgPower()
+      ..sdevPower = recordList.sdevPower()
+      ..minPower = recordList.minPower()
+      ..maxPower = recordList.maxPower()
+      ..avgHeartRate = recordList.avgHeartRate()
+      ..sdevHeartRate = recordList.sdevHeartRate()
+      ..minHeartRate = recordList.minHeartRate()
+      ..maxHeartRate = recordList.maxHeartRate()
+      ..avgSpeed = recordList.avgSpeed()
+      ..sdevSpeed = recordList.sdevSpeed()
+      ..minSpeed = recordList.minSpeed()
+      ..maxSpeed = recordList.maxSpeed()
+      ..avgGroundTime = recordList.avgGroundTime()
+      ..sdevGroundTime = recordList.sdevGroundTime()
+      ..avgStrydCadence = recordList.avgStrydCadence()
+      ..sdevStrydCadence = recordList.sdevStrydCadence()
+      ..avgLegSpringStiffness = recordList.avgLegSpringStiffness()
+      ..sdevLegSpringStiffness = recordList.sdevLegSpringStiffness()
       ..avgVerticalOscillation =
-          recordList.averageVerticalOscillation();
+      recordList.avgVerticalOscillation()
+      ..sdevVerticalOscillation = recordList.sdevVerticalOscillation()
+      ..avgFormPower = recordList.avgFormPower()
+      ..sdevFormPower = recordList.sdevFormPower()
+      ..avgPowerRatio = recordList.avgPowerRatio()
+      ..sdevPowerRatio = recordList.sdevPowerRatio()
+      ..avgStrideRatio = recordList.avgStrideRatio()
+      ..sdevStrideRatio = recordList.sdevStrideRatio();
+
     await save();
   }
 

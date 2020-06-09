@@ -83,9 +83,8 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
 
-    final double sdev = await lap.sdevFormPower;
     setState(() {
-      sdevFormPowerString = sdev.toStringOrDashes(2) + ' W';
+      sdevFormPowerString = lap.sdevFormPower.toStringOrDashes(2) + ' W';
     });
   }
 }

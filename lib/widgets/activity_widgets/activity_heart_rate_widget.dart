@@ -64,7 +64,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(records.minHeartRateString),
+                title: Text(widget.activity.minHeartRate.toString()),
                 subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
@@ -74,7 +74,7 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(records.sdevHeartRateString),
+                title: Text(widget.activity.sdevHeartRate.toStringAsFixed(2)),
                 subtitle: const Text('standard deviation heart rate'),
               ),
               ListTile(

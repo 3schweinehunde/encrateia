@@ -103,15 +103,9 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
     records = RecordList<Event>(await lap.records);
 
     avgPowerString = lap.avgPower.toStringOrDashes(1) + ' W';
-
-    final int min = await lap.minPower;
-    minPowerString = min.toString() + ' W';
-
-    final int max = await lap.maxPower;
-    maxPowerString = max.toString() + ' W';
-
-    final double sdev = await lap.sdevPower;
-    sdevPowerString = sdev.toStringOrDashes(2) + ' W';
+    minPowerString = lap.minPower.toString() + ' W';
+    maxPowerString = lap.maxPower.toString() + ' W';
+    sdevPowerString = lap.sdevPower.toStringOrDashes(2) + ' W';
 
     powerZoneSchema = await lap.powerZoneSchema;
     if (powerZoneSchema != null)
