@@ -31,7 +31,7 @@ class PowerZone {
 
   DbPowerZone _db;
 
-  int get id => _db.id;
+  int get id => _db?.id;
   int get color => _db.color;
   String get name => _db.name;
   int get lowerLimit => _db.lowerLimit;

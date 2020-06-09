@@ -34,7 +34,7 @@ class TagGroup {
   DbTagGroup _db;
   List<Tag> cachedTags;
 
-  int get id => _db.id;
+  int get id => _db?.id;
   int get color => _db.color;
   String get name => _db.name;
   bool get system => _db.system;

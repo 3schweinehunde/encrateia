@@ -20,6 +20,7 @@ class LapTagging {
 
   DbLapTagging _db;
 
+  int get id => _db?.id;
   int get lapsId => _db.lapsId;
   int get tagsId => _db.tagsId;
 

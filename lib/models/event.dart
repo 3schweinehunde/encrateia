@@ -101,7 +101,7 @@ class Event {
   Lap lap;
   int index;
 
-  int get id => _db.id;
+  int get id => _db?.id;
   String get event => _db.event;
   int get power => _db.power;
   int get heartRate => _db.heartRate;
@@ -120,21 +120,21 @@ class Event {
   @override
   String toString() => '< Event | $event | $index >';
 
-  static Future<List<Event>> recordsByLap({Lap lap}) async {
-    final List<Event> events = await byLap(lap: lap);
+  static Future<List<Event>> recordsByLap(Lap lap) async {
+    final List<Event> events = await byLap(lap);
     final Iterable<Event> records =
         events.where((Event event) => event.event == 'record');
     return records.toList();
   }
 
-  static Future<List<Event>> recordsByActivity({Activity activity}) async {
-    final List<Event> events = await by(activity: activity);
+  static Future<List<Event>> recordsByActivity(Activity activity) async {
+    final List<Event> events = await byActivity(activity);
     final Iterable<Event> records =
         events.where((Event event) => event.event == 'record');
     return records.toList();
   }
 
-  static Future<List<Event>> byLap({Lap lap}) async {
+  static Future<List<Event>> byLap(Lap lap) async {
     int counter = 1;
 
     final List<Event> events = await lap.events;
@@ -147,7 +147,7 @@ class Event {
     return events;
   }
 
-  static Future<List<Event>> by({Activity activity}) async {
+  static Future<List<Event>> byActivity(Activity activity) async {
     int counter = 1;
 
     final List<Event> events = await activity.events;
@@ -167,5 +167,5 @@ class Event {
         .toList());
   }
 
-  static Event exDb(DbEvent db) => Event._fromDb(db);
+  static Event exDb(DbEvent dbEvent) => Event._fromDb(dbEvent);
 }

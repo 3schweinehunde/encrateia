@@ -14,7 +14,7 @@ class Weight {
 
   DbWeight _db;
 
-  int get id => _db.id;
+  int get id => _db?.id;
   DateTime get date => _db.date;
   double get value => _db.value;
   set date(DateTime value) => _db.date = value;

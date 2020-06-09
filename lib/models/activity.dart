@@ -53,7 +53,7 @@ class Activity {
 
   DbActivity _db;
   List<Event> _records;
-  List<Lap> cachedLaps;
+  List<Lap> cachedLaps = <Lap>[];
   List<Tag> cachedTags = <Tag>[];
   double glidingMeasureAttribute;
   double weight;
@@ -62,6 +62,7 @@ class Activity {
   HeartRateZone _heartRateZone;
   HeartRateZoneSchema _heartRateZoneSchema;
 
+  int get id => _db?.id;
   String get name => _db.name;
   DateTime get startTime => _db.startTime;
   int get movingTime => _db.movingTime;
@@ -125,7 +126,6 @@ class Activity {
   double get avgGroundTime => _db.avgGroundTime;
   double get sdevGroundTime => _db.sdevGroundTime;
   double get sdevVerticalOscillation => _db.sdevVerticalOscillation;
-  int get id => _db.id;
 
   set name(String value) => _db.name = value;
   set state(String value) => _db.state = value;
@@ -258,7 +258,7 @@ class Activity {
   String paceString() => avgSpeed.toPace() + '/km';
 
   Future<List<Event>> get records async {
-    return _records ??= await Event.recordsByActivity(activity: this);
+    return _records ??= await Event.recordsByActivity(this);
   }
 
   Future<List<Tag>> get tags async {

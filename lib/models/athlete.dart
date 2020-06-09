@@ -27,7 +27,7 @@ class Athlete {
   DbAthlete _db = DbAthlete();
   List<int> filters = <int>[];
 
-  int get id => _db.id;
+  int get id => _db?.id;
   String get firstName => _db.firstName;
   String get lastName => _db.lastName;
   int get stravaId => _db.stravaId;

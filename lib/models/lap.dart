@@ -35,7 +35,7 @@ class Lap {
   List<BarZone> powerDistributions;
   List<BarZone> heartRateDistributions;
 
-  int get id => _db.id;
+  int get id => _db?.id;
   int get activitiesId => _db.activitiesId;
   int get avgHeartRate => _db.avgHeartRate;
   int get totalDistance => _db.totalDistance;
@@ -134,7 +134,7 @@ class Lap {
   }
 
   Future<List<Event>> get records async {
-    _records ??= await Event.recordsByLap(lap: this);
+    _records ??= await Event.recordsByLap(this);
     return _records;
   }
 

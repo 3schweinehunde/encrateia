@@ -33,7 +33,7 @@ class HeartRateZoneSchema {
 
   DbHeartRateZoneSchema _db;
 
-  int get id => _db.id;
+  int get id => _db?.id;
   String get name => _db.name;
   DateTime get date => _db.date;
   int get base => _db.base;

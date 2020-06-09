@@ -20,6 +20,7 @@ class ActivityTagging {
 
   DbActivityTagging _db;
 
+  int get id => _db?.id;
   int get activitiesId => _db.activitiesId;
   int get tagsId => _db.tagsId;
 
