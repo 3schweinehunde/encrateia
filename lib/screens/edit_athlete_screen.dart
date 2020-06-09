@@ -1,5 +1,7 @@
+import 'package:encrateia/models/strava_fit_download.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -18,6 +20,8 @@ class EditAthleteScreen extends StatefulWidget {
 }
 
 class _EditAthleteScreenState extends State<EditAthleteScreen> {
+  Flushbar<Object> flushbar = Flushbar<Object>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -184,7 +188,20 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
   Future<void> saveStravaUser(BuildContext context) async {
     await widget.athlete.save();
     await widget.athlete.storeCredentials();
-    Navigator.of(context).pop();
+    flushbar = Flushbar<Object>(
+      icon: MyIcon.information,
+      message: 'checking credentials...',
+      duration: const Duration(seconds: 10),
+
+    )..show(context);
+    if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete))
+      Navigator.of(context).pop();
+    else
+      flushbar = Flushbar<Object>(
+        icon: MyIcon.error,
+        message: 'The credentials provided are invalid!',
+        duration: const Duration(seconds: 10),
+      )..show(context);
   }
 
   Future<void> saveStandaloneUser(BuildContext context) async {

@@ -30,6 +30,10 @@ class MyIcon {
 
   // E
   static final Icon edit = Icon(Icons.edit);
+  static final Icon error = Icon(
+    Icons.error_outline,
+    color: Colors.red,
+  );
   static final Icon event = Icon(Icons.event);
   // F
   static final Icon finished = Icon(Icons.check_box);

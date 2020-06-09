@@ -6,6 +6,7 @@ import 'package:html/dom.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:html/parser.dart' show parse;
+import 'package:flutter/material.dart';
 
 // ignore: avoid_classes_with_only_static_members
 abstract class StravaFitDownload {
@@ -18,7 +19,7 @@ abstract class StravaFitDownload {
         'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   };
 
-  static Future<int>  byId({String id, Athlete athlete}) async {
+  static Future<int> byId({String id, Athlete athlete}) async {
     final String exportUri = baseUri + 'activities/$id/export_original';
     final Directory appDocDir = await getApplicationDocumentsDirectory();
 
@@ -40,7 +41,7 @@ abstract class StravaFitDownload {
     }
   }
 
-  static Future<bool> logInIfNecessary({Dio dio, Athlete athlete}) async {
+  static Future<bool> logInIfNecessary({@required Dio dio, @required Athlete athlete}) async {
     Response<dynamic> dashboardResponse = await getDashboard(dio: dio);
     if (dashboardResponse.data.toString().contains('logged-in')) {
       print('Already logged in to Strava');
@@ -59,7 +60,7 @@ abstract class StravaFitDownload {
     }
   }
 
-  static Future<Response<dynamic>>  getDashboard({Dio dio}) async {
+  static Future<Response<dynamic>> getDashboard({Dio dio}) async {
     return await dio.get<dynamic>(
       dashboardUri,
       options: Options(headers: headers, validateStatus: (_) => true),
@@ -88,5 +89,14 @@ abstract class StravaFitDownload {
         csrfParam: csrfToken,
       },
     );
+  }
+
+  static Future<bool> credentialsAreValid({@required Athlete athlete}) async {
+    final Dio dio = Dio();
+    final CookieJar cookieJar = CookieJar();
+    dio.interceptors.add(CookieManager(cookieJar));
+    await login(dio: dio, athlete: athlete);
+    final Response<dynamic> dashboardResponse = await getDashboard(dio: dio);
+    return dashboardResponse.data.toString().contains('logged-in');
   }
 }
