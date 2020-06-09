@@ -141,12 +141,12 @@ class Event {
     return events;
   }
 
-  static Future<void> upsertAll(List<Event> events) async {
+  static Future<BoolCommitResult> upsertAll(List<Event> events) async {
     final List<DbEvent> dbEvents = events
         .where((Event event) => event._db != null)
         .map((Event event) => event._db)
         .toList();
-    await DbEvent().upsertAll(dbEvents);
+    return await DbEvent().upsertAll(dbEvents);
   }
 
   static Event exDb(DbEvent dbEvent) => Event._fromDb(dbEvent);

@@ -22,9 +22,9 @@ class PowerZone {
       ..color = color ?? 0xFFFFc107;
 
     if (lowerPercentage != null)
-      lowerLimit = (lowerPercentage * powerZoneSchema.base / 100).round();
+      _db.lowerLimit = (lowerPercentage * powerZoneSchema.base / 100).round();
     if (upperPercentage != null)
-      upperLimit = (upperPercentage * powerZoneSchema.base / 100).round();
+      _db.upperLimit = (upperPercentage * powerZoneSchema.base / 100).round();
   }
 
   PowerZone._fromDb(this._db);
