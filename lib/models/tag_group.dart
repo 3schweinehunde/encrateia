@@ -35,9 +35,10 @@ class TagGroup {
   List<Tag> cachedTags;
 
   int get id => _db?.id;
-  int get color => _db.color;
   String get name => _db.name;
   bool get system => _db.system;
+  int get color => _db.color;
+
   set color(int value) => _db.color = value;
   set name(String value) => _db.name = value;
 

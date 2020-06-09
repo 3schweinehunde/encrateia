@@ -29,18 +29,18 @@ class Athlete {
 
   int get id => _db?.id;
   String get firstName => _db.firstName;
-  String get lastName => _db.lastName;
-  int get stravaId => _db.stravaId;
-  String get state => _db.state;
-  int get recordAggregationCount => _db.recordAggregationCount;
-  int get downloadInterval => _db.downloadInterval;
-  String get photoPath => _db.photoPath;
-  String get stravaUsername => _db.stravaUsername;
   String get geoState => _db.geoState;
+  String get lastName => _db.lastName;
+  String get photoPath => _db.photoPath;
+  String get state => _db.state;
+  String get stravaUsername => _db.stravaUsername;
+  int get downloadInterval => _db.downloadInterval;
+  int get recordAggregationCount => _db.recordAggregationCount;
+  int get stravaId => _db.stravaId;
 
+  set downloadInterval(int value) => _db.downloadInterval = value;
   set firstName(String value) => _db.firstName = value;
   set lastName(String value) => _db.lastName = value;
-  set downloadInterval(int value) => _db.downloadInterval = value;
   set recordAggregationCount(int value) => _db.recordAggregationCount = value;
 
   @override

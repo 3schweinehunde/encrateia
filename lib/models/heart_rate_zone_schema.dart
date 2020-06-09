@@ -34,13 +34,14 @@ class HeartRateZoneSchema {
   DbHeartRateZoneSchema _db;
 
   int get id => _db?.id;
-  String get name => _db.name;
   DateTime get date => _db.date;
+  String get name => _db.name;
   int get base => _db.base;
-  set name(String value) => _db.name = value;
+
+  set id(int value) => _db.id = value;
   set base(int value) => _db.base = value;
   set date(DateTime value) => _db.date = value;
-  set id(int value) => _db.id = value;
+  set name(String value) => _db.name = value;
 
   Future<List<HeartRateZone>> get heartRateZones async {
     final List<DbHeartRateZone> dbHeartRateZoneList =

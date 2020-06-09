@@ -31,20 +31,21 @@ class HeartRateZone {
   DbHeartRateZone _db;
 
   int get id => _db?.id;
-  int get color => _db.color;
   String get name => _db.name;
+  int get color => _db.color;
   int get lowerLimit => _db.lowerLimit;
-  int get upperLimit => _db.upperLimit;
   int get lowerPercentage => _db.lowerPercentage;
+  int get upperLimit => _db.upperLimit;
   int get upperPercentage => _db.upperPercentage;
-  set color(int value) => _db.color = value;
-  set name(String value) => _db.name = value;
-  set lowerLimit(int value) => _db.lowerLimit = value;
-  set upperLimit(int value) => _db.upperLimit = value;
-  set lowerPercentage(int value) => _db.lowerPercentage = value;
-  set upperPercentage(int value) => _db.upperPercentage = value;
-  set heartRateZoneSchemataId(int value) => _db.heartRateZoneSchemataId = value;
+
   set id(int value) => _db.id = value;
+  set color(int value) => _db.color = value;
+  set heartRateZoneSchemataId(int value) => _db.heartRateZoneSchemataId = value;
+  set lowerLimit(int value) => _db.lowerLimit = value;
+  set lowerPercentage(int value) => _db.lowerPercentage = value;
+  set name(String value) => _db.name = value;
+  set upperLimit(int value) => _db.upperLimit = value;
+  set upperPercentage(int value) => _db.upperPercentage = value;
 
   @override
   String toString() => '< HeartRateZone | $name | $lowerLimit >';

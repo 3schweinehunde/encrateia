@@ -102,19 +102,20 @@ class Event {
   int index;
 
   int get id => _db?.id;
-  String get event => _db.event;
-  int get power => _db.power;
-  int get heartRate => _db.heartRate;
-  double get speed => _db.speed;
   DateTime get timeStamp => _db.timeStamp;
+  String get event => _db.event;
+  double get distance => _db.distance;
   double get groundTime => _db.groundTime;
-  double get strydCadence => _db.strydCadence;
   double get legSpringStiffness => _db.legSpringStiffness;
+  double get positionLat => _db.positionLat;
+  double get positionLong => _db.positionLong;
+  double get speed => _db.speed;
+  double get strydCadence => _db.strydCadence;
   double get verticalOscillation => _db.verticalOscillation;
   int get formPower => _db.formPower;
-  double get distance => _db.distance;
-  double get positionLong => _db.positionLong;
-  double get positionLat => _db.positionLat;
+  int get heartRate => _db.heartRate;
+  int get power => _db.power;
+
   set event(String value) => _db.event = value;
 
   @override
