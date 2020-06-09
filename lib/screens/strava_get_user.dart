@@ -49,7 +49,7 @@ class _StravaGetUserState extends State<StravaGetUser> {
         secret,
         prompt);
     final DetailedAthlete stravaAthlete = await strava.getLoggedInAthlete();
-    widget.athlete.updateFromStravaAthlete(stravaAthlete);
+    await widget.athlete.updateFromStravaAthlete(stravaAthlete);
   }
 
   Future<void> getData() async {

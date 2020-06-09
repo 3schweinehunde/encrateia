@@ -46,7 +46,7 @@ class Athlete {
   @override
   String toString() => '< Athlete | $firstName $lastName | $stravaId >';
 
-  void updateFromStravaAthlete(DetailedAthlete athlete) {
+  Future<void> updateFromStravaAthlete(DetailedAthlete athlete) async {
     _db
       ..firstName = athlete.firstname
       ..lastName = athlete.lastname
@@ -57,6 +57,7 @@ class Athlete {
       ..state = 'fromStrava'
       ..downloadInterval = 21
       ..recordAggregationCount = 16;
+    await save();
   }
 
   Future<void> setupStandaloneAthlete() async {
@@ -84,14 +85,14 @@ class Athlete {
 
   Future<void> storeCredentials() async {
     const FlutterSecureStorage storage = FlutterSecureStorage();
-    await storage.write(key: 'email', value: email);
-    await storage.write(key: 'password', value: password);
+    await storage.write(key: 'email-$stravaId', value: email);
+    await storage.write(key: 'password-$stravaId', value: password);
   }
 
   Future<void> readCredentials() async {
     const FlutterSecureStorage storage = FlutterSecureStorage();
-    email = await storage.read(key: 'email');
-    password = await storage.read(key: 'password');
+    email = await storage.read(key: 'email-$stravaId');
+    password = await storage.read(key: 'password-$stravaId');
   }
 
   static Future<List<Athlete>> all() async {
