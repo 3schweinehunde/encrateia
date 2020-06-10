@@ -16,7 +16,7 @@ class LapVerticalOscillationChart extends StatelessWidget {
     final List<Series<Event, int>> data = <Series<Event, int>>[
        Series<Event, int>(
         id: 'Vertical Oscillation',
-        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => Color.black,
         domainFn: (Event record, _) => record.distance.round() - offset,
         measureFn: (Event record, _) => record.verticalOscillation,
         data: records,
@@ -27,7 +27,9 @@ class LapVerticalOscillationChart extends StatelessWidget {
       height: 300,
       child: LineChart(
         data,
-        animate: false,
+        defaultRenderer: LineRendererConfig<num>(
+          includeArea: true,
+        ),
         primaryMeasureAxis: const NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
             zeroBound: false,

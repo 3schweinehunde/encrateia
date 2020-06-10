@@ -35,7 +35,7 @@ class ActivityEcorChart extends StatelessWidget {
         <Series<DoublePlotPoint, int>>[
       Series<DoublePlotPoint, int>(
         id: 'Ecor',
-        colorFn: (_, __) => MaterialPalette.gray.shade700,
+        colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
         measureFn: (DoublePlotPoint record, _) => record.measure,
         data: smoothedRecords,

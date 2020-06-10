@@ -18,6 +18,7 @@ class LapGroundTimeWidget extends StatefulWidget {
 class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   String sdevGroundTimeString = 'Loading ...';
+  String avgGroundTimeString = 'Loading ...';
 
   @override
   void initState() {
@@ -51,7 +52,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(widget.lap.avgGroundTime.toStringOrDashes(1) + ' ms'),
+                title: Text(avgGroundTimeString),
                 subtitle: const Text('average ground time'),
               ),
               ListTile(
@@ -82,7 +83,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   Future<void> getData() async {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
-
+    avgGroundTimeString = widget.lap.avgGroundTime.toStringOrDashes(1) + ' ms';
     setState(() {
       sdevGroundTimeString = lap.sdevGroundTime.toStringOrDashes(2) + ' ms';
     });

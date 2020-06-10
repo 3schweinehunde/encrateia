@@ -19,7 +19,7 @@ class LapEcorChart extends StatelessWidget {
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Ecor',
-        colorFn: (_, __) => MaterialPalette.gray.shade700,
+        colorFn: (_, __) => MaterialPalette.black,
         domainFn: (Event record, _) => record.distance.round() - offset,
         measureFn: (Event record, _) =>
             record.power / record.speed / weight,
@@ -31,6 +31,9 @@ class LapEcorChart extends StatelessWidget {
       height: 300,
       child: LineChart(
         data,
+        defaultRenderer: LineRendererConfig<num>(
+          includeArea: true,
+        ),
         primaryMeasureAxis: const NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
               zeroBound: false,

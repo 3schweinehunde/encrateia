@@ -5,10 +5,7 @@ import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
-import 'package:charts_common/common.dart' as common
-    show
-    ChartBehavior;
-
+import 'package:charts_common/common.dart' as common show ChartBehavior;
 
 class LapPowerChart extends StatelessWidget {
   const LapPowerChart({
@@ -26,7 +23,7 @@ class LapPowerChart extends StatelessWidget {
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Power',
-        colorFn: (_, __) => MaterialPalette.gray.shade700,
+        colorFn: (_, __) => Color.black,
         domainFn: (Event record, _) => record.distance.round() - offset,
         measureFn: (Event record, _) => record.power,
         data: records,
@@ -37,6 +34,9 @@ class LapPowerChart extends StatelessWidget {
       height: 300,
       child: LineChart(
         data,
+        defaultRenderer: LineRendererConfig<num>(
+          includeArea: true,
+        ),
         primaryMeasureAxis: NumericAxisSpec(
           viewport: MyLineChart.determineViewport(
             powerZones: powerZones,

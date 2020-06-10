@@ -31,7 +31,7 @@ class ActivityFormPowerChart extends StatelessWidget {
     final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
       Series<IntPlotPoint, int>(
         id: 'Form power',
-        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => Color.black,
         domainFn: (IntPlotPoint record, _) => record.domain,
         measureFn: (IntPlotPoint record, _) => record.measure,
         data: smoothedRecords,

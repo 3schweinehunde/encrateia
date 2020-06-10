@@ -26,7 +26,7 @@ class LapHeartRateChart extends StatelessWidget {
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Heart Rate',
-        colorFn: (_, __) => MaterialPalette.red.shadeDefault,
+        colorFn: (_, __) => MaterialPalette.black,
         domainFn: (Event record, _) => record.distance.round() - offset,
         measureFn: (Event record, _) => record.heartRate,
         data: records,
@@ -37,6 +37,9 @@ class LapHeartRateChart extends StatelessWidget {
       height: 300,
       child: LineChart(
         data,
+        defaultRenderer: LineRendererConfig<num>(
+          includeArea: true,
+        ),
         primaryMeasureAxis: NumericAxisSpec(
           viewport: MyLineChart.determineViewport(
             heartRateZones: heartRateZones,

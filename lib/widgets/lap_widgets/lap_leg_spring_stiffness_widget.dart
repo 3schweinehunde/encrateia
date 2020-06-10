@@ -20,6 +20,7 @@ class _LapLegSpringStiffnessWidgetState
     extends State<LapLegSpringStiffnessWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   String sdevLegSpringStiffnessString = 'Loading ...';
+  String avgLegSpringStiffnessString = 'Loading ...';
 
   @override
   void initState() {
@@ -50,15 +51,13 @@ class _LapLegSpringStiffnessWidgetState
               LapLegSpringStiffnessChart(
                 records: RecordList<Event>(legSpringStiffnessRecords),
               ),
-              const Text(
-                  'Only records where leg spring stiffness > 0 kN/m are shown.'),
+              const Text('Only records where leg spring stiffness > 0 kN/m '
+                  'are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(
-                    widget.lap.avgLegSpringStiffness.toStringOrDashes(1) +
-                        ' ms'),
+                title: Text(avgLegSpringStiffnessString),
                 subtitle: const Text('average ground time'),
               ),
               ListTile(
@@ -90,6 +89,8 @@ class _LapLegSpringStiffnessWidgetState
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
     setState(() {
+      avgLegSpringStiffnessString =
+          widget.lap.avgLegSpringStiffness.toStringOrDashes(1) + ' ms';
       sdevLegSpringStiffnessString =
           lap.sdevLegSpringStiffness.toStringOrDashes(2) + ' ms';
     });

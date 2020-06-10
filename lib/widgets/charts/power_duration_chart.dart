@@ -52,6 +52,9 @@ class PowerDurationChart extends StatelessWidget {
       padding: const EdgeInsets.all(2),
       child: LineChart(
         data,
+        defaultRenderer: LineRendererConfig<num>(
+          includeArea: true,
+        ),
         primaryMeasureAxis: const NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
               zeroBound: false,

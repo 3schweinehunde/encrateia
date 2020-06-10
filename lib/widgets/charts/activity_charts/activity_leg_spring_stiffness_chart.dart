@@ -32,7 +32,7 @@ class ActivityLegSpringStiffnessChart extends StatelessWidget {
         <Series<DoublePlotPoint, int>>[
       Series<DoublePlotPoint, int>(
         id: 'Leg spring stiffness',
-        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
         measureFn: (DoublePlotPoint record, _) => record.measure,
         data: smoothedRecords,

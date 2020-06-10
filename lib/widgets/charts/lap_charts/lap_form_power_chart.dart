@@ -16,7 +16,7 @@ class LapFormPowerChart extends StatelessWidget {
     final List<Series<Event, int>> data = <Series<Event, int>>[
        Series<Event, int>(
         id: 'Form Power',
-        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => Color.black,
         domainFn: (Event record, _) => record.distance.round() - offset,
         measureFn: (Event record, _) => record.formPower,
         data: records,
@@ -27,6 +27,9 @@ class LapFormPowerChart extends StatelessWidget {
       height: 300,
       child: LineChart(
         data,
+        defaultRenderer: LineRendererConfig<num>(
+          includeArea: true,
+        ),
         primaryMeasureAxis: const NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(
             zeroBound: false,

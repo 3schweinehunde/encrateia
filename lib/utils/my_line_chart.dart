@@ -5,10 +5,7 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:flutter/foundation.dart';
-import 'package:charts_common/common.dart' as common
-show
-    Series,
-    ChartBehavior;
+import 'package:charts_common/common.dart' as common show Series, ChartBehavior;
 
 class MyLineChart extends LineChart {
   MyLineChart({
@@ -23,6 +20,9 @@ class MyLineChart extends LineChart {
     NumericTickProviderSpec domainTickProviderSpec,
   }) : super(
           data,
+          defaultRenderer: LineRendererConfig<num>(
+            includeArea: true,
+          ),
           domainAxis: NumericAxisSpec(
             viewport: NumericExtents(0, maxDomain + 500),
             tickProviderSpec: domainTickProviderSpec,
@@ -69,24 +69,20 @@ class MyLineChart extends LineChart {
       return NumericExtents(
           powerZones
                   .map((PowerZone powerZone) => powerZone.lowerLimit)
-                  .reduce(min) -
-              5.0,
+                  .reduce(min) * 0.9,
           powerZones
                   .map((PowerZone powerZone) => powerZone.upperLimit)
-                  .reduce(max) +
-              5.0);
+                  .reduce(max) * 1.1);
     else if (heartRateZones != null)
       return NumericExtents(
           heartRateZones
-                  .map((HeartRateZone heartRateZone) =>
-                      heartRateZone.lowerLimit)
-                  .reduce(min) -
-              5.0,
+                  .map(
+                      (HeartRateZone heartRateZone) => heartRateZone.lowerLimit)
+                  .reduce(min) * 0.9,
           heartRateZones
-                  .map((HeartRateZone heartRateZone) =>
-                      heartRateZone.upperLimit)
-                  .reduce(max) +
-              5.0);
+                  .map(
+                      (HeartRateZone heartRateZone) => heartRateZone.upperLimit)
+                  .reduce(max) * 1.1);
     else
       return null;
   }

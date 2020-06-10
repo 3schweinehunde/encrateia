@@ -31,7 +31,7 @@ class ActivitySpeedPerHeartRateChart extends StatelessWidget {
     final List<Series<DoublePlotPoint, int>> data = <Series<DoublePlotPoint, int>>[
       Series<DoublePlotPoint, int>(
         id: 'Speed per Heart Rate',
-        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
         measureFn: (DoublePlotPoint record, _) => record.measure,
         data: smoothedRecords,

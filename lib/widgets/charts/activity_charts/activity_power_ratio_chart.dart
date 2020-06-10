@@ -32,7 +32,7 @@ class ActivityPowerRatioChart extends StatelessWidget {
         <Series<DoublePlotPoint, int>>[
       Series<DoublePlotPoint, int>(
         id: 'Power Ratio',
-        colorFn: (_, __) => MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
         measureFn: (DoublePlotPoint record, _) => record.measure,
         data: smoothedRecords,
