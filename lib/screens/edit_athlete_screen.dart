@@ -192,11 +192,11 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
       icon: MyIcon.information,
       message: 'checking credentials...',
       duration: const Duration(seconds: 10),
-
     )..show(context);
-    if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete))
+    if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete)) {
+      flushbar.dismiss();
       Navigator.of(context).pop();
-    else
+    } else
       flushbar = Flushbar<Object>(
         icon: MyIcon.error,
         message: 'The credentials provided are invalid!',

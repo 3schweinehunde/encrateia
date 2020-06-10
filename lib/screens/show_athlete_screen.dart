@@ -101,7 +101,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         color: MyColor.add,
         textColor: MyColor.textColor(backgroundColor: MyColor.add),
         icon: MyIcon.downloadLocal,
-        label: const Flexible(
+        label: const Expanded(
           child: Text('Import .fit from Folder'),
         ),
         onPressed: () => importLocal(),
@@ -157,7 +157,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         color: MyColor.settings,
         icon: MyIcon.settings,
         textColor: MyColor.textColor(backgroundColor: MyColor.add),
-        label: const Flexible(
+        label: const Expanded(
           child: Text('Recalculate Averages'),
         ),
         onPressed: () => recalculate(),
@@ -166,7 +166,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         color: MyColor.settings,
         textColor: MyColor.textColor(backgroundColor: MyColor.settings),
         icon: MyIcon.settings,
-        label: const Flexible(
+        label: const Expanded(
           child: Text('Redo Autotagging'),
         ),
         onPressed: () => redoAutoTagging(),
@@ -174,7 +174,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       RaisedButton.icon(
         color: MyColor.primary,
         icon: MyIcon.download,
-        label: const Flexible(
+        label: const Expanded(
           child: Text('Download Demo Data'),
         ),
         onPressed: () => downloadDemoData(),

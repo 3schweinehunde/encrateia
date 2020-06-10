@@ -319,7 +319,7 @@ class RecordList<E> extends DelegatingList<E> {
 
     final List<PowerZone> powerZones = await powerZoneSchema.powerZones;
 
-    for (final PowerZone powerZone in powerZones.reversed) {
+    for (final PowerZone powerZone in powerZones) {
       final int numberInZone = _records
           .where((Event event) =>
               (event.power >= powerZone.lowerLimit) &&
@@ -343,7 +343,7 @@ class RecordList<E> extends DelegatingList<E> {
     final List<HeartRateZone> heartRateZones =
         await heartRateZoneSchema.heartRateZones;
 
-    for (final HeartRateZone heartRateZone in heartRateZones.reversed) {
+    for (final HeartRateZone heartRateZone in heartRateZones) {
       final int numberInZone = _records
           .where((Event event) =>
               (event.heartRate >= heartRateZone.lowerLimit) &&
