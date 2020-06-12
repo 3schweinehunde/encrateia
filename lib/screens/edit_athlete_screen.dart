@@ -49,7 +49,7 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
                   title: const Text('Option 1: Strava Connection'),
                   subtitle: const Text(
                       'Choose this option, if you want to download most '
-                      'of the activities from Strava'),
+                          'of the activities from Strava'),
                 ),
                 ButtonBar(
                   children: <Widget>[
@@ -70,8 +70,8 @@ class _EditAthleteScreenState extends State<EditAthleteScreen> {
                   leading: MyIcon.upload,
                   title: const Text('Option 2: Standalone User'),
                   subtitle:
-                      const Text('Choose this option, if you want to upload all'
-                          ' .fit-files manually'),
+                  const Text('Choose this option, if you want to upload all'
+                      ' .fit-files manually'),
                 ),
                 ButtonBar(
                   children: <Widget>[

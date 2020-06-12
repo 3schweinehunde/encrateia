@@ -25,7 +25,6 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:path_provider/path_provider.dart';
-
 import 'edit_athlete_screen.dart';
 
 class ShowAthleteScreen extends StatefulWidget {

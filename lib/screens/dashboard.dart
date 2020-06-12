@@ -1,10 +1,10 @@
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/widgets/boarding_widget.dart';
-import 'edit_athlete_screen.dart';
+import 'package:encrateia/widgets/on_boarding_widget.dart';
 import 'show_athlete_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -31,7 +31,13 @@ class _DashboardState extends State<Dashboard> {
           backgroundColor: MyColor.primary,
           title: const Text('Welcome to Encrateia!'),
         ),
-        body: const BoardingWidget(),
+        body: Padding(
+          child: OnBoardingWidget(
+            initialStep: OnBoardingStep.introduction,
+            athlete: Athlete(),
+          ),
+          padding: const EdgeInsets.all(20),
+        ),
       );
     } else
       return Scaffold(
@@ -77,7 +83,10 @@ class _DashboardState extends State<Dashboard> {
     await Navigator.push(
       context,
       MaterialPageRoute<BuildContext>(
-        builder: (BuildContext context) => EditAthleteScreen(athlete: athlete),
+        builder: (BuildContext context) => OnBoardingWidget(
+          athlete: athlete,
+          initialStep: OnBoardingStep.createUser,
+        ),
       ),
     );
     getData();

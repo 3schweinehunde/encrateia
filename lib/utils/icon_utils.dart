@@ -1,4 +1,6 @@
+import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+// import 'package:encrateia/utils/my_color.dart';
 // import 'package:encrateia/utils/icon_utils.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -20,6 +22,7 @@ class MyIcon {
   static final Icon cadence = Icon(Icons.pets);
   static final Icon calories = Icon(Icons.battery_charging_full);
   static final Icon climb = ascent;
+  static final Icon create = Icon(Icons.star);
   static final Icon cycling = Icon(Icons.directions_bike);
   static final Icon cycles = Icon(Icons.repeat);
   // D
@@ -32,24 +35,30 @@ class MyIcon {
   static final Icon edit = Icon(Icons.edit);
   static final Icon error = Icon(
     Icons.error_outline,
-    color: Colors.red,
+    color: MyColor.grapeFruit,
   );
   static final Icon event = Icon(Icons.event);
   // F
   static final Icon finished = Icon(Icons.check_box);
-  static final Icon finishedWhite =
-      Icon(Icons.sentiment_very_satisfied, color: Colors.white);
+  static final Icon finishedWhite = Icon(
+    Icons.sentiment_very_satisfied,
+    color: MyColor.white,
+  );
   static final Icon formPower = Icon(Icons.ev_station);
   // G
   static final Icon groundTime = Icon(Icons.vertical_align_bottom);
   // H
   static final Icon heartRate = Icon(Icons.spa);
+  static final Icon hello = Icon(
+    Icons.tag_faces,
+    color: MyColor.primary,
+  );
   static final Icon help = Icon(Icons.help);
   // I
   static final Icon id = Icon(Icons.fingerprint);
   static final Icon information = Icon(
     Icons.info_outline,
-    color: Colors.blue,
+    color: MyColor.blueJeans,
   );
   static final Icon intensity = Icon(Icons.power);
   // L
@@ -82,8 +91,10 @@ class MyIcon {
   static final Icon stanceTime = cadence;
   static final Icon standardDeviation = Icon(Icons.unfold_more);
   static final Icon stravaDownload = Icon(Icons.cloud_download);
-  static final Icon stravaDownloadWhite =
-      Icon(Icons.cloud_download, color: Colors.white);
+  static final Icon stravaDownloadWhite = Icon(
+    Icons.cloud_download,
+    color: MyColor.white,
+  );
   static final Icon strideRatio = Icon(Icons.signal_cellular_null);
   static final Icon strides = Icon(Icons.directions_walk);
   // T
