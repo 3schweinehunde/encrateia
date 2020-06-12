@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'boarding_screen.dart';
 import 'edit_athlete_screen.dart';
-import 'indroduction_screen.dart';
 import 'show_athlete_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -25,29 +25,51 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    if (athletes.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: MyColor.primary,
+          title: const Text('Welcome to Encrateia!'),
+        ),
+        body: const BoardingScreen(),
+      );
+    } else
+      return Scaffold(
         appBar: AppBar(
           backgroundColor: MyColor.primary,
           title: const Text('Encrateia Dashboard'),
         ),
-        body: dashboardBody(),
-        floatingActionButton: floatingActionButton());
-  }
-
-  Future<void> getData() async {
-    athletes = await Athlete.all();
-    setState(() {});
-  }
-
-  Future<void> goToListActivitiesScreen({Athlete athlete}) async {
-    await athlete.readCredentials();
-    await Navigator.push(
-      context,
-      MaterialPageRoute<BuildContext>(
-        builder: (BuildContext context) => ShowAthleteScreen(athlete: athlete),
-      ),
-    );
-    getData();
+        body: ListView(
+          padding: const EdgeInsets.all(20),
+          children: <Widget>[
+            for (Athlete athlete in athletes)
+              Card(
+                child: ListTile(
+                  leading: athlete.photoPath != null
+                      ? Image.network(athlete.photoPath)
+                      : MyIcon.runningBig,
+                  title: Text('${athlete.firstName} ${athlete.lastName}'),
+                  onTap: () async {
+                    await athlete.readCredentials();
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) =>
+                            ShowAthleteScreen(athlete: athlete),
+                      ),
+                    );
+                    getData();
+                  },
+                ),
+              ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: MyColor.add,
+          label: const Text('Add Athlete'),
+          onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
+        ),
+      );
   }
 
   Future<void> goToEditAthleteScreen({Athlete athlete}) async {
@@ -59,69 +81,6 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
     getData();
-  }
-
-  Widget dashboardBody() {
-    if (athletes.isEmpty) {
-      return ListView(
-        padding: const EdgeInsets.all(20),
-        children: <Widget>[
-          Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: MyIcon.information,
-                  title: const Text('Welcome to Encrateia!'),
-                  subtitle: const Text(
-                    'Maybe you want to learn a bit about Encrateia.'
-                    'We have provided some introductory text for you.',
-                  ),
-                ),
-                ButtonBar(
-                  children: <Widget>[
-                    FlatButton(
-                      child: const Text('Introduction'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext context) =>
-                                IntroductionScreen(),
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-          addUserCard()
-        ],
-      );
-    } else {
-      return ListView(
-        padding: const EdgeInsets.all(20),
-        children: <Widget>[
-          for (Athlete athlete in athletes)
-            Card(
-              child: ListTile(
-                leading: photoOrImage(athlete: athlete),
-                title: Text('${athlete.firstName} ${athlete.lastName}'),
-                onTap: () => goToListActivitiesScreen(athlete: athlete),
-              ),
-            ),
-        ],
-      );
-    }
-  }
-
-  Widget photoOrImage({Athlete athlete}) {
-    if (athlete.photoPath != null)
-      return Image.network(athlete.photoPath);
-    else
-      return MyIcon.runningBig;
   }
 
   Widget addUserCard() {
@@ -150,14 +109,8 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget floatingActionButton() {
-    if (athletes.isNotEmpty) {
-      return FloatingActionButton.extended(
-        backgroundColor: MyColor.add,
-        label: const Text('Add Athlete'),
-        onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
-      );
-    } else
-      return null;
+  Future<void> getData() async {
+    athletes = await Athlete.all();
+    setState(() {});
   }
 }
