@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/icon_utils.dart';
-import 'boarding_screen.dart';
+import 'package:encrateia/widgets/boarding_widget.dart';
 import 'edit_athlete_screen.dart';
 import 'show_athlete_screen.dart';
 
@@ -31,7 +31,7 @@ class _DashboardState extends State<Dashboard> {
           backgroundColor: MyColor.primary,
           title: const Text('Welcome to Encrateia!'),
         ),
-        body: const BoardingScreen(),
+        body: const BoardingWidget(),
       );
     } else
       return Scaffold(
