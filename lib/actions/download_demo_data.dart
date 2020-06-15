@@ -28,7 +28,7 @@ Future<void> downloadDemoData({
 
     flushbar = Flushbar<Object>(
       message: 'Downloading Demo data ...',
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 5),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
 
@@ -39,9 +39,10 @@ Future<void> downloadDemoData({
       await activity.setState('downloaded');
     }
 
+    flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Downloading demo data finished',
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
       icon: MyIcon.finishedWhite,
     )..show(context);
 
@@ -65,6 +66,7 @@ Future<void> downloadDemoData({
       icon: MyIcon.finishedWhite,
     )..show(context);
   } else {
+    flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message:
           'Please set up Power Zone Schema and Heart Rate Zone Schema first!',

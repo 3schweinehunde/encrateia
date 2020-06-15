@@ -1,9 +1,8 @@
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/weight.dart';
+import 'package:encrateia/actions/setupDemoAthlete.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_finished_screen.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_strava_credentials_screen.dart';
 import 'package:encrateia/utils/my_color.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -21,13 +20,15 @@ class OnboardingCreateUserScreen extends StatefulWidget {
 class _OnboardingCreateUserScreenState
     extends State<OnboardingCreateUserScreen> {
   Athlete athlete = Athlete();
+  Flushbar<Object> flushbar;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () => Future<bool>(() => false),
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           backgroundColor: MyColor.primary,
           title: const Text('Creating an Athlete'),
         ),
@@ -41,20 +42,29 @@ class _OnboardingCreateUserScreenState
                   children: <Widget>[
                     ListTile(
                       leading: MyIcon.create,
-                      title: const Text('Option 1: Demo Athlete Setup'),
+                      title: const Text('Option 1: Demo Setup'),
                       subtitle: const Text(
-                          'Choose this option to create a demo user with demo setup.'
-                          'This is the quickest option to explore Encrateia.'),
+                        'Choose this option to create a demo user with demo setup.'
+                        'It will download and analyse 4 activities provided '
+                        'by the Encrateia team. '
+                        'This is the quickest option to explore Encrateia.',
+                      ),
                     ),
                     ButtonBar(
                       children: <Widget>[
                         FlatButton(
                           child: const Text('Create Demo User'),
                           onPressed: () async {
-                            await demoAthleteSetup();
-                            MaterialPageRoute<BuildContext>(
-                              builder: (BuildContext _) =>
-                                  const OnboardingFinishedScreen(),
+                            await setupDemoAthlete(
+                              context: context,
+                              flushbar: flushbar,
+                            );
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute<BuildContext>(
+                                builder: (BuildContext _) =>
+                                    const OnboardingFinishedScreen(),
+                              ),
                             );
                           },
                         )
@@ -79,7 +89,23 @@ class _OnboardingCreateUserScreenState
                       children: <Widget>[
                         FlatButton(
                           child: const Text('Connect to Strava'),
-                          onPressed: () => stravaGetUser(context),
+                          onPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute<BuildContext>(
+                                builder: (BuildContext context) =>
+                                    StravaGetUser(athlete: athlete),
+                              ),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<BuildContext>(
+                                builder: (BuildContext _) =>
+                                    OnBoardingStravaCredentialsScreen(
+                                        athlete: athlete),
+                              ),
+                            );
+                          },
                         )
                       ],
                     ),
@@ -103,10 +129,13 @@ class _OnboardingCreateUserScreenState
                           child: const Text('Create standalone User'),
                           onPressed: () {
                             athlete.setupStandaloneAthlete();
-                            MaterialPageRoute<BuildContext>(
-                              builder: (BuildContext _) =>
-                                  OnBoardingStravaCredentialsScreen(
-                                      athlete: athlete),
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<BuildContext>(
+                                builder: (BuildContext _) =>
+                                    OnBoardingStravaCredentialsScreen(
+                                        athlete: athlete),
+                              ),
                             );
                           },
                         )
@@ -118,43 +147,6 @@ class _OnboardingCreateUserScreenState
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Future<void> demoAthleteSetup() async {
-    final Athlete athlete = Athlete();
-    await athlete.setupStandaloneAthlete();
-
-    final PowerZoneSchema powerZoneSchema =
-        PowerZoneSchema.likeStryd(athlete: athlete);
-    await powerZoneSchema.save();
-    await powerZoneSchema.addStrydZones();
-
-    final HeartRateZoneSchema heartRateZoneSchema =
-        HeartRateZoneSchema.likeGarmin(athlete: athlete);
-    await heartRateZoneSchema.save();
-    await heartRateZoneSchema.addGarminZones();
-
-    final Weight weight = Weight(athlete: athlete);
-    weight.date = DateTime(2015);
-    await weight.save();
-
-
-  }
-
-  Future<void> stravaGetUser(BuildContext context) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute<BuildContext>(
-        builder: (BuildContext context) => StravaGetUser(athlete: athlete),
-      ),
-    );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<BuildContext>(
-        builder: (BuildContext _) =>
-            OnBoardingStravaCredentialsScreen(athlete: athlete),
       ),
     );
   }

@@ -23,8 +23,9 @@ Future<void> parseActivity({
     flushbar = Flushbar<Object>(
       titleText: LinearProgressIndicator(value: value / 100),
       message: '$value% of storing »${activity.name}«',
-      duration: const Duration(seconds: 20),
+      duration: const Duration(seconds: 10),
       animationDuration: const Duration(milliseconds: 1),
     )..show(context);
   }
+  flushbar.dismiss();
 }

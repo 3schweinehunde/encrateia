@@ -1,3 +1,4 @@
+import 'package:encrateia/screens/dashboard.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,31 +9,45 @@ class OnboardingFinishedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyColor.primary,
-        title: const Text('Athlete created'),
-      ),
-      body: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              leading: MyIcon.hello,
-              title: const Text('Congratulations!'),
-              subtitle: const Text(
-                'You have successfully setup the athlete.',
-              ),
-            ),
-            ButtonBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: MyColor.primary,
+          title: const Text('Athlete created'),
+          automaticallyImplyLeading: false,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                FlatButton(
-                  child: const Text('Finish'),
-                  onPressed: () => Navigator.of(context).pop(),
-                )
+                ListTile(
+                  leading: MyIcon.hello,
+                  title: const Text('Congratulations!'),
+                  subtitle: const Text(
+                    'You have successfully setup the athlete.',
+                  ),
+                ),
+                ButtonBar(
+                  children: <Widget>[
+                    FlatButton(
+                      child: const Text('Finish'),
+                      onPressed: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute<BuildContext>(
+                            builder: (BuildContext _) => const Dashboard(),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

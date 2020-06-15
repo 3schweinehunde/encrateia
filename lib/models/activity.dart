@@ -50,7 +50,7 @@ class Activity {
     _db = DbActivity()
       ..athletesId = athlete.id
       ..stravaId = DateTime.now().millisecondsSinceEpoch
-      ..name = 't.b.d.';
+      ..name = 'new activity';
   }
 
   DbActivity _db;
@@ -461,7 +461,7 @@ class Activity {
           final DateTime startTime =
               dateTimeFromStrava(dataMessage.get('start_time') as double);
 
-          if (name == 't.b.d.')
+          if (name == 'new activity')
             name =
                 'Activity on ' + DateFormat.yMMMMd('en_US').format(startTime);
           _db
