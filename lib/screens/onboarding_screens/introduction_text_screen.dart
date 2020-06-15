@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class IntroductionScreen extends StatelessWidget {
+class IntroductionTextScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

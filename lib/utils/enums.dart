@@ -24,13 +24,3 @@ enum ActivityAttr {
   avgStrideRatio,
   ecor,
 }
-
-enum OnBoardingStep {
-  introduction,
-  createUser,
-  credentials,
-  weight,
-  powerZones,
-  heartRateZones,
-  finished,
-}

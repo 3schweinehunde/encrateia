@@ -1,10 +1,10 @@
-import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/screens/onboarding_screens/onboarding_create_user.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/widgets/on_boarding_widget.dart';
+import 'onboarding_screens/onboarding_introduction_screen.dart';
 import 'show_athlete_screen.dart';
 
 class Dashboard extends StatefulWidget {
@@ -25,21 +25,9 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    if (athletes.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          backgroundColor: MyColor.primary,
-          title: const Text('Welcome to Encrateia!'),
-        ),
-        body: Padding(
-          child: OnBoardingWidget(
-            initialStep: OnBoardingStep.introduction,
-            athlete: Athlete(),
-          ),
-          padding: const EdgeInsets.all(20),
-        ),
-      );
-    } else
+    if (athletes.isEmpty)
+      return Container();
+    else
       return Scaffold(
         appBar: AppBar(
           backgroundColor: MyColor.primary,
@@ -73,53 +61,30 @@ class _DashboardState extends State<Dashboard> {
         floatingActionButton: FloatingActionButton.extended(
           backgroundColor: MyColor.add,
           label: const Text('Add Athlete'),
-          onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
+          onPressed: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute<BuildContext>(
+                builder: (BuildContext context) => const OnboardingCreateUserScreen(
+                ),
+              ),
+            );
+            getData();
+          },
         ),
       );
   }
 
-  Future<void> goToEditAthleteScreen({Athlete athlete}) async {
-    await athlete.readCredentials();
-    await Navigator.push(
-      context,
-      MaterialPageRoute<BuildContext>(
-        builder: (BuildContext context) => OnBoardingWidget(
-          athlete: athlete,
-          initialStep: OnBoardingStep.createUser,
-        ),
-      ),
-    );
-    getData();
-  }
-
-  Widget addUserCard() {
-    return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          ListTile(
-            leading: MyIcon.athlete,
-            title: const Text('Who are you?'),
-            subtitle: const Text(
-              'This app stores date associated to one athlete '
-              '(you) or many athletes (if you act as a trainer).',
-            ),
-          ),
-          ButtonBar(
-            children: <Widget>[
-              FlatButton(
-                child: const Text('Create a new Athlete'),
-                onPressed: () => goToEditAthleteScreen(athlete: Athlete()),
-              )
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
   Future<void> getData() async {
     athletes = await Athlete.all();
+    if(athletes.isEmpty)
+      Navigator.push(
+      context,
+      MaterialPageRoute<BuildContext>(
+        builder: (BuildContext context) =>
+            const OnboardingIntroductionScreen(),
+      ),
+    );
     setState(() {});
   }
 }
