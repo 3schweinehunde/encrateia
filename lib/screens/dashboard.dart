@@ -65,8 +65,8 @@ class _DashboardState extends State<Dashboard> {
             await Navigator.push(
               context,
               MaterialPageRoute<BuildContext>(
-                builder: (BuildContext context) => const OnboardingCreateUserScreen(
-                ),
+                builder: (BuildContext context) =>
+                    const OnboardingCreateUserScreen(),
               ),
             );
             getData();
@@ -77,14 +77,15 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> getData() async {
     athletes = await Athlete.all();
-    if(athletes.isEmpty)
-      Navigator.push(
-      context,
-      MaterialPageRoute<BuildContext>(
-        builder: (BuildContext context) =>
-            const OnboardingIntroductionScreen(),
-      ),
-    );
+    if (athletes.isEmpty) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute<BuildContext>(
+          builder: (BuildContext context) =>
+          const OnboardingIntroductionScreen(),
+        ),
+      );
+    }
     setState(() {});
   }
 }
