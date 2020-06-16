@@ -9,6 +9,8 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/screens/strava_get_user.dart';
 
+import 'onboarding_standalone_credentials_screen.dart';
+
 class OnboardingCreateUserScreen extends StatefulWidget {
   const OnboardingCreateUserScreen();
 
@@ -132,7 +134,7 @@ class _OnboardingCreateUserScreenState
                               context,
                               MaterialPageRoute<BuildContext>(
                                 builder: (BuildContext _) =>
-                                    OnBoardingStravaCredentialsScreen(
+                                    OnBoardingStandaloneCredentialsScreen(
                                         athlete: athlete),
                               ),
                             );

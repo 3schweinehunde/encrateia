@@ -131,6 +131,8 @@ Put one date and weight per line in the following format:
 2020-04-28,75.3
 
 Or you can simply enter your current weight using the New Weighting button. 
+Please also enter at least a rough estimate default weight for your former activities.
+You can change these later.
                 '''),
             ),
             Row(

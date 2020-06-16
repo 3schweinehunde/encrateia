@@ -4,6 +4,7 @@ import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'onboarding_power_zone_schema_screen.dart';
 
 class OnBoardingStandaloneCredentialsScreen extends StatefulWidget {
   const OnBoardingStandaloneCredentialsScreen({
@@ -27,7 +28,7 @@ class _OnBoardingStandaloneCredentialsScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.athlete,
-        title: const Text('Enter Name'),
+        title: const Text('Define Power Zone Schema'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -55,12 +56,19 @@ class _OnBoardingStandaloneCredentialsScreenState
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                MyButton.cancel(
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-                Container(width: 20.0),
                 MyButton.save(
-                  onPressed: () => saveStandaloneUser(context),
+                  onPressed: () async {
+                    await widget.athlete.save();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext _) =>
+                            OnBoardingPowerZoneSchemaScreen(
+                          athlete: widget.athlete,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -68,14 +76,5 @@ class _OnBoardingStandaloneCredentialsScreenState
         ],
       ),
     );
-  }
-
-  Future<void> saveStandaloneUser(BuildContext context) async {
-    widget.athlete.firstName =
-        widget.athlete.firstName ?? widget.athlete.firstName;
-    widget.athlete.lastName =
-        widget.athlete.lastName ?? widget.athlete.lastName;
-    await widget.athlete.save();
-    Navigator.of(context).pop();
   }
 }

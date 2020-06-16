@@ -14,7 +14,7 @@ class OnboardingFinishedScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: MyColor.primary,
-          title: const Text('Athlete created'),
+          title: const Text('Athlete setup successfully'),
           automaticallyImplyLeading: false,
         ),
         body: Padding(
