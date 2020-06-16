@@ -32,7 +32,7 @@ Future<void> autoTagging({
     for (final Activity activity in activities) {
       index += 1;
       await activity.autoTagger(athlete: athlete);
-      flushbar.dismiss();
+      await flushbar.dismiss();
       percent = 100 * index ~/ activities.length;
       flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: percent / 100),
@@ -42,7 +42,7 @@ Future<void> autoTagging({
       )..show(context);
     }
 
-    flushbar.dismiss();
+    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Autotaggings are now up to date.',
       duration: const Duration(seconds: 5),

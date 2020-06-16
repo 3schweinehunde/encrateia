@@ -10,7 +10,7 @@ Future<void> downloadActivity({
   @required Athlete athlete,
   @required Flushbar<Object> flushbar,
 }) async {
-  flushbar.dismiss();
+  await flushbar.dismiss();
   flushbar = Flushbar<Object>(
     message: 'Download .fit-File for »${activity.name}«',
     duration: const Duration(seconds: 10),
@@ -19,7 +19,7 @@ Future<void> downloadActivity({
 
   await activity.download(athlete: athlete);
 
-  flushbar.dismiss();
+  await flushbar.dismiss();
   flushbar = Flushbar<Object>(
     message: 'Download finished',
     duration: const Duration(seconds: 2),

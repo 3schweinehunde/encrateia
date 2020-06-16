@@ -15,7 +15,7 @@ Future<void> queryStrava({
     icon: MyIcon.stravaDownloadWhite,
   )..show(context);
   await Activity.queryStrava(athlete: athlete);
-  flushbar.dismiss();
+  await flushbar.dismiss();
   flushbar = Flushbar<Object>(
     message: 'Download finished',
     duration: const Duration(seconds: 1),

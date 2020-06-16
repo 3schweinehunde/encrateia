@@ -102,7 +102,7 @@ class _OnBoardingStravaCredentialsScreenState
       duration: const Duration(seconds: 10),
     )..show(context);
     if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete)) {
-      flushbar.dismiss();
+      await flushbar.dismiss();
       Navigator.of(context).pop();
     } else
       flushbar = Flushbar<Object>(

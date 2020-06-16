@@ -23,7 +23,7 @@ Future<void> analyseActivities({
   for (final Activity activity in activities) {
     index += 1;
     await activity.setAverages();
-    flushbar.dismiss();
+    await flushbar.dismiss();
     percent = 100 * index ~/ activities.length;
     flushbar = Flushbar<Object>(
       titleText: LinearProgressIndicator(value: percent / 100),
@@ -33,7 +33,7 @@ Future<void> analyseActivities({
     )..show(context);
   }
 
-  flushbar.dismiss();
+  await flushbar.dismiss();
   flushbar = Flushbar<Object>(
     message: 'Averages are now up to date.',
     duration: const Duration(seconds: 5),

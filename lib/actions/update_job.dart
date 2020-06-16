@@ -44,7 +44,7 @@ Future<void> updateJob({
       );
       await activity.autoTagger(athlete: athlete);
     }
-    flushbar.dismiss();
+    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'You are now up to date!',
       duration: const Duration(seconds: 5),

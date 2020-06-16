@@ -39,7 +39,7 @@ Future<void> downloadDemoData({
       await activity.setState('downloaded');
     }
 
-    flushbar.dismiss();
+    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Downloading demo data finished',
       duration: const Duration(seconds: 2),
@@ -59,14 +59,14 @@ Future<void> downloadDemoData({
       );
       await activity.autoTagger(athlete: athlete);
     }
-    flushbar.dismiss();
+    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Activities imported!',
       duration: const Duration(seconds: 5),
       icon: MyIcon.finishedWhite,
     )..show(context);
   } else {
-    flushbar.dismiss();
+    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message:
           'Please set up Power Zone Schema and Heart Rate Zone Schema first!',

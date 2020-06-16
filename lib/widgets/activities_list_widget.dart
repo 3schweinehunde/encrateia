@@ -81,7 +81,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
     await activity.download(athlete: widget.athlete);
 
-    flushbar.dismiss();
+    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Download finished',
       duration: const Duration(seconds: 1),
@@ -102,7 +102,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     final Stream<int> percentageStream =
         activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
-      flushbar.dismiss();
+      await flushbar.dismiss();
       flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: value / 100),
         message: '$value% of storing »${activity.name}«',

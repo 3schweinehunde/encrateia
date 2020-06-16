@@ -344,7 +344,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
     await widget.activity.autoTagger(athlete: widget.athlete);
 
-    flushbar.dismiss();
+    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Autotagging finished',
       duration: const Duration(seconds: 2),
@@ -367,7 +367,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
     await widget.activity.download(athlete: widget.athlete);
 
-    flushbar.dismiss();
+    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Download finished',
       duration: const Duration(seconds: 1),
@@ -388,7 +388,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
     final Stream<int> percentageStream =
         widget.activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
-      flushbar.dismiss();
+      await flushbar.dismiss();
       flushbar = Flushbar<Object>(
         titleText: LinearProgressIndicator(value: value / 100),
         message: '$value% of storing »${widget.activity.name}«',
