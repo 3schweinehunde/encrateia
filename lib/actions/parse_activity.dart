@@ -9,23 +9,30 @@ Future<void> parseActivity({
   @required Athlete athlete,
   @required Flushbar<Object> flushbar,
 }) async {
-  await flushbar.dismiss();
+  await flushbar?.dismiss();
   flushbar = Flushbar<Object>(
     message: '0% of storing »${activity.name}«',
-    duration: const Duration(seconds: 10),
-    animationDuration: const Duration(milliseconds: 1),
     titleText: const LinearProgressIndicator(value: 0),
+    animationDuration: const Duration(milliseconds: 0),
   )..show(context);
 
   final Stream<int> percentageStream = activity.parse(athlete: athlete);
   await for (final int value in percentageStream) {
-    await flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      titleText: LinearProgressIndicator(value: value / 100),
-      message: '$value% of storing »${activity.name}«',
-      duration: const Duration(seconds: 10),
-      animationDuration: const Duration(milliseconds: 1),
-    )..show(context);
+    if (value == -2)
+      await flushbar?.dismiss();
+    else if (value == -1) {
+      await flushbar?.dismiss();
+      flushbar = Flushbar<Object>(
+        message: 'Analysing »${activity.name}«',
+        animationDuration: const Duration(milliseconds: 0),
+      )..show(context);
+    } else {
+      await flushbar?.dismiss();
+      flushbar = Flushbar<Object>(
+        titleText: LinearProgressIndicator(value: value / 100),
+        message: '$value% of storing »${activity.name}«',
+        animationDuration: const Duration(milliseconds: 0),
+      )..show(context);
+    }
   }
-  await flushbar.dismiss();
 }

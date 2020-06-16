@@ -17,7 +17,7 @@ dependencies:
   dio: ^3.0.7
   dio_cookie_manager: ^1.0.0
   fit_parser: ^0.1.8
-  flushbar: 1.10.2
+  flushbar: 1.10.4
   flutter_launcher_icons: ^0.7.2
   flutter_markdown: ^0.4.1
   flutter_material_color_picker: ^1.0.5

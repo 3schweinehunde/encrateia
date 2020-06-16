@@ -28,7 +28,6 @@ class _OnboardingCreateUserScreenState
       onWillPop: () => Future<bool>(() => false),
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           backgroundColor: MyColor.primary,
           title: const Text('Creating an Athlete'),
         ),
@@ -59,7 +58,7 @@ class _OnboardingCreateUserScreenState
                               context: context,
                               flushbar: flushbar,
                             );
-                            await Navigator.push(
+                            await Navigator.pushReplacement(
                               context,
                               MaterialPageRoute<BuildContext>(
                                 builder: (BuildContext _) =>

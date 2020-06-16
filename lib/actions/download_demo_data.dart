@@ -26,10 +26,11 @@ Future<void> downloadDemoData({
       'upper_palatinate_winter_challenge_half_marathon.fit',
     ];
 
+    await flushbar?.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Downloading Demo data ...',
-      duration: const Duration(seconds: 5),
       icon: MyIcon.stravaDownloadWhite,
+      animationDuration: const Duration(milliseconds: 0),
     )..show(context);
 
     for (final String filename in fileNames) {
@@ -38,13 +39,6 @@ Future<void> downloadDemoData({
           appDocDir.path + '/' + activity.stravaId.toString() + '.fit');
       await activity.setState('downloaded');
     }
-
-    await flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Downloading demo data finished',
-      duration: const Duration(seconds: 2),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
 
     activities = await athlete.activities;
     final List<Activity> downloadedActivities = activities
@@ -57,21 +51,25 @@ Future<void> downloadDemoData({
         athlete: athlete,
         flushbar: flushbar,
       );
+      await flushbar?.dismiss();
+      flushbar = Flushbar<Object>(
+        message: 'Tagging »${activity.name}«',
+        animationDuration: const Duration(milliseconds: 0),
+      )..show(context);
       await activity.autoTagger(athlete: athlete);
     }
-    await flushbar.dismiss();
+    await flushbar?.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Activities imported!',
-      duration: const Duration(seconds: 5),
       icon: MyIcon.finishedWhite,
+      animationDuration: const Duration(milliseconds: 0),
     )..show(context);
   } else {
-    await flushbar.dismiss();
+    await flushbar?.dismiss();
     flushbar = Flushbar<Object>(
-      message:
-          'Please set up Power Zone Schema and Heart Rate Zone Schema first!',
-      duration: const Duration(seconds: 5),
-      icon: MyIcon.finishedWhite,
+      message: 'Please set up Power Zone Schema and Heart'
+          ' Rate Zone Schema first!',
+      animationDuration: const Duration(milliseconds: 0),
     )..show(context);
   }
 }

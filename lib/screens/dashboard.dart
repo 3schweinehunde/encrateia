@@ -32,8 +32,8 @@ class _DashboardState extends State<Dashboard> {
         onWillPop: () => Future<bool>(() => false),
         child: Scaffold(
           appBar: AppBar(
-            automaticallyImplyLeading: false,
             backgroundColor: MyColor.primary,
+            automaticallyImplyLeading: false,
             title: const Text('Encrateia Dashboard'),
           ),
           body: ListView(
@@ -82,7 +82,7 @@ class _DashboardState extends State<Dashboard> {
   Future<void> getData() async {
     athletes = await Athlete.all();
     if (athletes.isEmpty) {
-      await Navigator.push(
+      await Navigator.pushReplacement(
         context,
         MaterialPageRoute<BuildContext>(
           builder: (BuildContext context) =>

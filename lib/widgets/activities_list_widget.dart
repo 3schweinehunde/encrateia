@@ -81,10 +81,9 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
 
     await activity.download(athlete: widget.athlete);
 
-    await flushbar.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Download finished',
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 3),
       icon: MyIcon.finishedWhite,
     )..show(context);
 

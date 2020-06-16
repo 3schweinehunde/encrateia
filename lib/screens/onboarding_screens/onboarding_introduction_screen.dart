@@ -16,7 +16,6 @@ class OnboardingIntroductionScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: MyColor.primary,
           title: const Text('Welcome to Encrateia!'),
-          automaticallyImplyLeading: false,
         ),
         body: Padding(
           padding: const EdgeInsets.all(20),
@@ -47,7 +46,7 @@ class OnboardingIntroductionScreen extends StatelessWidget {
                     FlatButton(
                       child: const Text('Continue'),
                       onPressed: () async {
-                        await Navigator.push(
+                        await Navigator.pushReplacement(
                           context,
                           MaterialPageRoute<BuildContext>(
                             builder: (BuildContext _) =>

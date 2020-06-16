@@ -354,9 +354,9 @@ class Activity {
     }
 
     state = 'persisted';
+    yield -1;
     await setAverages();
-    print('Activity data for »$name« stored in database.');
-    yield 100;
+    yield -2;
   }
 
   Future<int> handleDataMessage({DataMessage dataMessage}) async {

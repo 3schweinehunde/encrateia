@@ -32,4 +32,5 @@ Future<void> setupDemoAthlete({
     athlete: athlete,
     flushbar: flushbar,
   );
+  await flushbar?.dismiss();
 }
