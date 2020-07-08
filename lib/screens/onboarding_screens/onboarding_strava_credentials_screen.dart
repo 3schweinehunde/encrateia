@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
+import 'onboarding_power_zone_schema_screen.dart';
+
 class OnBoardingStravaCredentialsScreen extends StatefulWidget {
   const OnBoardingStravaCredentialsScreen({
     Key key,
@@ -28,7 +30,7 @@ class _OnBoardingStravaCredentialsScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.athlete,
-        title: const Text('Create Athlete'),
+        title: const Text('Athlete Credentials'),
       ),
       body: editAthleteForm(widget.athlete, context),
     );
@@ -42,7 +44,7 @@ class _OnBoardingStravaCredentialsScreenState
           child: ListTile(
             leading: MyIcon.website,
             title: const Text(
-                'Step 2 of 2: Credentials for Strava Web Site scraping'),
+                'Credentials for .fit-Download from Strava Web Site'),
           ),
         ),
         ListTile(
@@ -103,7 +105,16 @@ class _OnBoardingStravaCredentialsScreenState
     )..show(context);
     if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete)) {
       await flushbar.dismiss();
-      Navigator.of(context).pop();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute<BuildContext>(
+          builder: (BuildContext _) =>
+              OnBoardingPowerZoneSchemaScreen(
+                athlete: widget.athlete,
+              ),
+        ),
+      );
+
     } else
       flushbar = Flushbar<Object>(
         icon: MyIcon.error,

@@ -98,7 +98,7 @@ class _OnboardingCreateUserScreenState
                                     StravaGetUser(athlete: athlete),
                               ),
                             );
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute<BuildContext>(
                                 builder: (BuildContext _) =>
@@ -130,7 +130,7 @@ class _OnboardingCreateUserScreenState
                           child: const Text('Create standalone User'),
                           onPressed: () {
                             athlete.setupStandaloneAthlete();
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute<BuildContext>(
                                 builder: (BuildContext _) =>

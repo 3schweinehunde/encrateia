@@ -28,17 +28,11 @@ class _OnBoardingStandaloneCredentialsScreenState
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.athlete,
-        title: const Text('Define Power Zone Schema'),
+        title: const Text('Enter the Athlete\'s Name'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: <Widget>[
-          Card(
-            child: ListTile(
-              leading: MyIcon.running,
-              title: const Text('Step 2 of 2: Enter Your Name'),
-            ),
-          ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'First name'),
             initialValue: widget.athlete.firstName,
