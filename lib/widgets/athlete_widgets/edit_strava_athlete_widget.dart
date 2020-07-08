@@ -91,9 +91,11 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
       message: 'checking credentials...',
       duration: const Duration(seconds: 10),
     )..show(context);
+
     if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete)) {
       final List<PowerZoneSchema> powerZoneSchemas =
           await widget.athlete.powerZoneSchemas;
+      await flushbar.dismiss();
       if (powerZoneSchemas.isEmpty)
         Navigator.pushReplacement(
           context,
@@ -104,12 +106,13 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
         );
       else
         Navigator.of(context).pop();
-    } else
-      await flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      icon: MyIcon.error,
-      message: 'The credentials provided are invalid!',
-      duration: const Duration(seconds: 10),
-    )..show(context);
+    } else {
+      flushbar = Flushbar<Object>(
+        icon: MyIcon.error,
+        message: 'The credentials provided are invalid!',
+        duration: const Duration(seconds: 5),
+      )
+        ..show(context);
+    }
   }
 }

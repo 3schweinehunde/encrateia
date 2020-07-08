@@ -41,7 +41,8 @@ abstract class StravaFitDownload {
     }
   }
 
-  static Future<bool> logInIfNecessary({@required Dio dio, @required Athlete athlete}) async {
+  static Future<bool> logInIfNecessary(
+      {@required Dio dio, @required Athlete athlete}) async {
     Response<dynamic> dashboardResponse = await getDashboard(dio: dio);
     if (dashboardResponse.data.toString().contains('logged-in')) {
       print('Already logged in to Strava');
