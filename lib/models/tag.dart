@@ -52,6 +52,7 @@ class Tag {
               .map((DbActivityTagging dbActivityTagging) =>
                   dbActivityTagging.tagsId)
               .toList())
+          .orderBy('tagGroupsId')
           .toList();
       final List<Tag> tags =
           dbTags.map(Tag.exDb).toList();
