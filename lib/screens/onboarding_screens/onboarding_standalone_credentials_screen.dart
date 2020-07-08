@@ -3,7 +3,6 @@ import 'package:encrateia/utils/my_color.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'onboarding_power_zone_schema_screen.dart';
 
 class OnBoardingStandaloneCredentialsScreen extends StatefulWidget {

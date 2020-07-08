@@ -2,7 +2,6 @@ import 'package:encrateia/screens/onboarding_screens/onboarding_finished_screen.
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_body_weight_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 

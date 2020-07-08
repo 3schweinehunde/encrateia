@@ -39,7 +39,7 @@ class ShowAthleteScreen extends StatefulWidget {
 }
 
 class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
-  Flushbar<Object> flushbar;
+  Flushbar<Object> flushbar = Flushbar<Object>();
   Visibility floatingActionButton;
   bool floatingActionButtonVisible;
 
