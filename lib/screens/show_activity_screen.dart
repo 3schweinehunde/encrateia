@@ -374,27 +374,43 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       icon: MyIcon.finishedWhite,
     )..show(context);
 
-    setState(() {});
+    await parse();
+    flushbar = Flushbar<Object>(
+      message: 'Analysis finished for »${widget.activity.name}«',
+      duration: const Duration(seconds: 2),
+      animationDuration: const Duration(milliseconds: 0),
+    )..show(context);
   }
 
   Future<void> parse() async {
     Flushbar<Object> flushbar = Flushbar<Object>(
       message: '0% of storing »${widget.activity.name}«',
       duration: const Duration(seconds: 10),
-      animationDuration: const Duration(milliseconds: 1),
+      animationDuration: const Duration(milliseconds: 0),
       titleText: const LinearProgressIndicator(value: 0),
     )..show(context);
 
     final Stream<int> percentageStream =
         widget.activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
-      await flushbar.dismiss();
-      flushbar = Flushbar<Object>(
-        titleText: LinearProgressIndicator(value: value / 100),
-        message: '$value% of storing »${widget.activity.name}«',
-        duration: const Duration(seconds: 3),
-        animationDuration: const Duration(milliseconds: 1),
-      )..show(context);
+      if (value == -2)
+        await flushbar?.dismiss();
+      else if (value == -1) {
+        await flushbar?.dismiss();
+        flushbar = Flushbar<Object>(
+          message: 'Analysing »${widget.activity.name}«',
+          duration: const Duration(seconds: 1),
+          animationDuration: const Duration(milliseconds: 0),
+        )..show(context);
+      } else {
+        await flushbar.dismiss();
+        flushbar = Flushbar<Object>(
+          titleText: LinearProgressIndicator(value: value / 100),
+          message: '$value% of storing »${widget.activity.name}«',
+          duration: const Duration(seconds: 3),
+          animationDuration: const Duration(milliseconds: 0),
+        )..show(context);
+      }
     }
     setState(() {});
   }
