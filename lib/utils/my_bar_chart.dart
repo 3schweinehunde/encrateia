@@ -31,7 +31,6 @@ class MyBarChart extends StatelessWidget {
         _barZones = toBarZones(
           powerZones: powerZones,
           heartRateZones: heartRateZones,
-
         ),
         _showPercentage = showPercentage;
 
@@ -55,21 +54,24 @@ class MyBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: _width,
-      height: _height,
-      child: CustomPaint(
-        painter: BarChartPainter(
-          width: _width,
-          height: _height,
-          value: _value,
-          maximum: _maximum,
-          minimum: _minimum,
-          barZones: _barZones,
-          showPercentage: _showPercentage,
+    if (_barZones.isEmpty && _value == null || _value <= 0)
+      return const Text('no data');
+    else
+      return SizedBox(
+        width: _width,
+        height: _height,
+        child: CustomPaint(
+          painter: BarChartPainter(
+            width: _width,
+            height: _height,
+            value: _value,
+            maximum: _maximum,
+            minimum: _minimum,
+            barZones: _barZones,
+            showPercentage: _showPercentage,
+          ),
         ),
-      ),
-    );
+      );
   }
 
   static List<BarZone> toBarZones({

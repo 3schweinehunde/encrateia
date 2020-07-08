@@ -68,7 +68,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                   value: widget.activity.avgPower,
                   powerZones: _powerZones,
                 ),
-                Text(widget.activity.avgPower.toStringAsFixed(1)),
+                Text((widget.activity.avgPower > 0) ? widget.activity.avgPower.toStringAsFixed(1) : ''),
                 MyBarChart(
                   width: 150,
                   height: 20,
@@ -86,7 +86,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                     value: lap.avgPower,
                     powerZones: _powerZones,
                   ),
-                  Text(lap.avgPower.toStringAsFixed(1)),
+                  Text((lap.avgPower > 0) ? lap.avgPower.toStringAsFixed(1) : ''),
                   MyBarChart(
                     width: 150,
                     height: 20,
