@@ -2,6 +2,7 @@ import 'package:encrateia/actions/analyse_activities.dart';
 import 'package:encrateia/actions/import_activities_locally.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_pace_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
@@ -76,6 +77,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         title: 'Power / Heart Rate',
         icon: MyIcon.power,
         nextWidget: AthletePowerPerHeartRateWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Pace',
+        icon: MyIcon.speed,
+        nextWidget: AthletePaceWidget(athlete: widget.athlete),
       ),
       navigationButton(
         color: MyColor.navigate,

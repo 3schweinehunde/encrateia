@@ -299,6 +299,9 @@ class RecordList<E> extends DelegatingList<E> {
           break;
         case LapDoubleAttr.ecor:
           sum = sum + (record.power / record.speed / weight);
+          break;
+        case LapDoubleAttr.pace:
+          sum = sum + (50 / 3 / record.speed);
       }
 
       if (index++ % amount == amount - 1) {

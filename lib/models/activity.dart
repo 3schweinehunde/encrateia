@@ -162,6 +162,8 @@ class Activity {
         return 100 * (avgPower - avgFormPower) / avgPower;
       case ActivityAttr.avgStrideRatio:
         return 10000 / 6 * avgSpeed / avgStrydCadence / avgVerticalOscillation;
+      case ActivityAttr.avgPace:
+        return 50 / 3 / avgSpeed;
     }
   }
 

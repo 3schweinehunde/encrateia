@@ -14,6 +14,7 @@ enum LapDoubleAttr {
   powerRatio,
   strideRatio,
   ecor,
+  pace,
 }
 
 enum ActivityAttr {
@@ -23,4 +24,5 @@ enum ActivityAttr {
   avgPowerRatio,
   avgStrideRatio,
   ecor,
+  avgPace,
 }
