@@ -62,40 +62,42 @@ class _AddTagScreenState extends State<AddTagScreen> {
         title: const Text('Add your Tag'),
         backgroundColor: MyColor.settings,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.tag.name,
-            onChanged: (String value) => widget.tag.name = value,
-          ),
-          const SizedBox(height: 10),
-          Row(children: <Widget>[
-            const Text('Color'),
-            const Spacer(),
-            CircleAvatar(
-              backgroundColor: Color(widget.tag.color),
-              radius: 20.0,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Name'),
+              initialValue: widget.tag.name,
+              onChanged: (String value) => widget.tag.name = value,
             ),
-            const Spacer(),
-            MyButton.detail(
-              onPressed: openColorPicker,
-              child: const Text('Edit'),
+            const SizedBox(height: 10),
+            Row(children: <Widget>[
+              const Text('Color'),
+              const Spacer(),
+              CircleAvatar(
+                backgroundColor: Color(widget.tag.color),
+                radius: 20.0,
+              ),
+              const Spacer(),
+              MyButton.detail(
+                onPressed: openColorPicker,
+                child: const Text('Edit'),
+              ),
+            ]),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                MyButton.delete(onPressed: () => deleteTag(context)),
+                const SizedBox(width: 5),
+                MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
+                const SizedBox(width: 5),
+                MyButton.save(onPressed: () => saveTag(context)),
+              ],
             ),
-          ]),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              MyButton.delete(onPressed: () => deleteTag(context)),
-              const SizedBox(width: 5),
-              MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-              const SizedBox(width: 5),
-              MyButton.save(onPressed: () => saveTag(context)),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

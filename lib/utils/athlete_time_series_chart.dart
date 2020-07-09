@@ -29,6 +29,22 @@ class AthleteTimeSeriesChart extends StatefulWidget {
 
 class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
   Activity selectedActivity;
+  List<Activity> displayedActivities;
+  int pagingOffset = 0;
+  final int xAxesDays = 60;
+  final int amountDisplayed = 40;
+  int numberOfActivities;
+
+  @override
+  void initState() {
+    numberOfActivities = widget.activities.length;
+    ActivityList<Activity>(widget.activities).enrichGlidingAverage(
+      activityAttr: widget.activityAttr,
+      fullDecay: 30,
+    );
+    setScope();
+    super.initState();
+  }
 
   void _onSelectionChanged(SelectionModel<DateTime> model) {
     final List<SeriesDatum<dynamic>> selectedDatum = model.selectedDatum;
@@ -40,23 +56,6 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
   @override
   Widget build(BuildContext context) {
-    const int xAxesDays = 60;
-
-    ActivityList<Activity>(widget.activities).enrichGlidingAverage(
-      activityAttr: widget.activityAttr,
-      fullDecay: 30,
-    );
-
-    List<Activity> recentActivities = widget.activities
-        .where((Activity activity) =>
-            DateTime.now().difference(activity.timeCreated).inDays <
-            xAxesDays)
-        .toList();
-    if (recentActivities.length < 40) {
-      final int amount = min(widget.activities.length, 40);
-      recentActivities = widget.activities.sublist(0, amount);
-    }
-
     final List<Series<Activity, DateTime>> data = <Series<Activity, DateTime>>[
       Series<Activity, DateTime>(
         id: widget.activityAttr.toString(),
@@ -64,14 +63,14 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
         domainFn: (Activity activity, _) => activity.timeCreated,
         measureFn: (Activity activity, _) =>
             activity.getAttribute(widget.activityAttr) as num,
-        data: recentActivities,
+        data: displayedActivities,
       ),
       Series<Activity, DateTime>(
         id: 'gliding_' + widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.timeCreated,
         measureFn: (Activity activity, _) => activity.glidingMeasureAttribute,
-        data: recentActivities,
+        data: displayedActivities,
       )..setAttribute(rendererIdKey, 'glidingAverageRenderer'),
     ];
 
@@ -121,6 +120,36 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
             ],
           ),
         ),
+        if (amountDisplayed < numberOfActivities)
+          Row(
+            children: <Widget>[
+              const Spacer(),
+              MyButton.save(
+                child: const Text('<<'),
+                onPressed:
+                    (pagingOffset + amountDisplayed >= numberOfActivities)
+                        ? null
+                        : () {
+                            pagingOffset =
+                                pagingOffset + (amountDisplayed / 2).round();
+                            setScope();
+                          },
+              ),
+              const Spacer(),
+              MyButton.save(
+                child: const Text('>>'),
+                onPressed: (pagingOffset == 0)
+                    ? null
+                    : () {
+                        pagingOffset =
+                            pagingOffset - (amountDisplayed / 2).round();
+                        if (pagingOffset < 0) pagingOffset = 0;
+                        setScope();
+                      },
+              ),
+              const Spacer(),
+            ],
+          ),
         if (selectedActivity != null)
           Container(
             height: 200,
@@ -155,21 +184,27 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                     title: Text(selectedActivity.distance.toString() + ' m'),
                     subtitle: const Text('Distance')),
                 ListTile(
-                    title:
-                        Text(selectedActivity.avgSpeed.toPace() + ' min/km'),
+                    title: Text(selectedActivity.avgSpeed.toPace() + ' min/km'),
                     subtitle: const Text('Average speed')),
                 ListTile(
                     title: Text(
                         selectedActivity.avgPower.toStringAsFixed(1) + ' W'),
                     subtitle: const Text('Average power')),
                 ListTile(
-                    title: Text(
-                        selectedActivity.avgHeartRate.toString() + ' bpm'),
+                    title:
+                        Text(selectedActivity.avgHeartRate.toString() + ' bpm'),
                     subtitle: const Text('Average heart rate')),
               ],
             ),
           ),
       ],
     );
+  }
+
+  void setScope() {
+    displayedActivities = widget.activities.sublist(
+        min(pagingOffset, numberOfActivities - amountDisplayed),
+        min(pagingOffset + amountDisplayed, numberOfActivities));
+    setState(() {});
   }
 }

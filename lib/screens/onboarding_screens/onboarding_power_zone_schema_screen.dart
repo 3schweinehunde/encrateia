@@ -28,30 +28,32 @@ class _OnBoardingPowerZoneSchemaScreenState
         backgroundColor: MyColor.athlete,
         title: const Text('Select a Power Zone Schema'),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-            MyButton.save(
-              child: const Text('Next step'),
-              onPressed: () async {
-                await widget.athlete.save();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<BuildContext>(
-                    builder: (BuildContext _) =>
-                        OnBoardingHeartRateZoneSchemaScreen(
-                      athlete: widget.athlete,
-                    ),
-                  ),
-                );
-              },
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
             ),
-            const SizedBox(width: 20),
-          ]),
-        ],
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+              MyButton.save(
+                child: const Text('Next step'),
+                onPressed: () async {
+                  await widget.athlete.save();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute<BuildContext>(
+                      builder: (BuildContext _) =>
+                          OnBoardingHeartRateZoneSchemaScreen(
+                        athlete: widget.athlete,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 20),
+            ]),
+          ],
+        ),
       ),
     );
   }

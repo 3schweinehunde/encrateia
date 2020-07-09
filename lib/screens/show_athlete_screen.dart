@@ -249,16 +249,18 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           icon: MyIcon.stravaDownload,
         ),
       ),
-      body: StaggeredGridView.count(
-        staggeredTiles: List<StaggeredTile>.filled(
-          tiles.length,
-          const StaggeredTile.fit(1),
+      body: SafeArea(
+        child: StaggeredGridView.count(
+          staggeredTiles: List<StaggeredTile>.filled(
+            tiles.length,
+            const StaggeredTile.fit(1),
+          ),
+          crossAxisSpacing: 10,
+          padding: const EdgeInsets.all(10),
+          crossAxisCount:
+              MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+          children: tiles,
         ),
-        crossAxisSpacing: 10,
-        padding: const EdgeInsets.all(10),
-        crossAxisCount:
-            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        children: tiles,
       ),
     );
   }

@@ -38,133 +38,135 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
         backgroundColor: MyColor.settings,
         title: const Text('Add Power Zone Schema'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        children: <Widget>[
-          Card(
-            margin: const EdgeInsets.all(40),
-            child: ListTile(
-              leading: MyIcon.warning,
-              title:
-                  const Text('Instructions to update your current base value'),
-              subtitle: const Text(
-                '1) Change the VALID FROM date to today to copy the power zone schema.\n'
-                '2) Edit the BASE VALUE to the new value.\n'
-                '3) Click SAVE to persist your changes.',
-              ),
-            ),
-          ),
-          DateTimeField(
-            decoration: const InputDecoration(labelText: 'Valid from'),
-            format: DateFormat('yyyy-MM-dd'),
-            initialValue: widget.powerZoneSchema.date,
-            onShowPicker: (BuildContext context, DateTime currentValue) {
-              return showDatePicker(
-                context: context,
-                firstDate: DateTime(1969),
-                initialDate: DateTime.now(),
-                lastDate: DateTime(2100),
-              );
-            },
-            onChanged: (DateTime value) => copyPowerZoneSchema(date: value),
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.powerZoneSchema.name,
-            onChanged: (String value) => widget.powerZoneSchema.name = value,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(
-              labelText: 'Base value in W',
-              helperText: 'e.g. Critical Power, Functional Threshold Power',
-            ),
-            initialValue: widget.powerZoneSchema.base.toString(),
-            keyboardType: TextInputType.number,
-            onChanged: (String value) =>
-                updatePowerZoneBase(base: int.parse(value)),
-          ),
-          const SizedBox(height: 10),
-          DataTable(
-            headingRowHeight: kMinInteractiveDimension * 0.80,
-            dataRowHeight: kMinInteractiveDimension * 0.75,
-            columnSpacing: 20,
-            horizontalMargin: 10,
-            columns: const <DataColumn>[
-              DataColumn(label: Text('Zone')),
-              DataColumn(label: Text('Limits (W)')),
-              DataColumn(label: Text('Color')),
-              DataColumn(label: Text('Edit')),
-            ],
-            rows: powerZones.map((PowerZone powerZone) {
-              return DataRow(
-                key: ValueKey<int>(powerZone.id),
-                cells: <DataCell>[
-                  DataCell(Text(powerZone.name)),
-                  DataCell(Text(powerZone.lowerLimit.toString() +
-                      ' - ' +
-                      powerZone.upperLimit.toString())),
-                  DataCell(CircleColor(
-                    circleSize: 20,
-                    elevation: 0,
-                    color: Color(powerZone.color),
-                  )),
-                  DataCell(
-                    MyIcon.edit,
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => AddPowerZoneScreen(
-                            powerZone: powerZone,
-                            base: widget.powerZoneSchema.base,
-                          ),
-                        ),
-                      );
-                      getData();
-                    },
-                  )
-                ],
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              MyButton.add(
-                child: const Text('Add power zone'),
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute<BuildContext>(
-                      builder: (BuildContext context) => AddPowerZoneScreen(
-                        powerZone:
-                            PowerZone(powerZoneSchema: widget.powerZoneSchema),
-                        base: widget.powerZoneSchema.base,
-                      ),
-                    ),
-                  );
-                  getData();
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              MyButton.delete(
-                onPressed: () => deletePowerZoneSchema(
-                  powerZoneSchema: widget.powerZoneSchema,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          children: <Widget>[
+            Card(
+              margin: const EdgeInsets.all(40),
+              child: ListTile(
+                leading: MyIcon.warning,
+                title:
+                    const Text('Instructions to update your current base value'),
+                subtitle: const Text(
+                  '1) Change the VALID FROM date to today to copy the power zone schema.\n'
+                  '2) Edit the BASE VALUE to the new value.\n'
+                  '3) Click SAVE to persist your changes.',
                 ),
               ),
-              const SizedBox(width: 5),
-              MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-              const SizedBox(width: 5),
-              MyButton.save(onPressed: () => savePowerZoneSchema(context)),
-            ],
-          ),
-        ],
+            ),
+            DateTimeField(
+              decoration: const InputDecoration(labelText: 'Valid from'),
+              format: DateFormat('yyyy-MM-dd'),
+              initialValue: widget.powerZoneSchema.date,
+              onShowPicker: (BuildContext context, DateTime currentValue) {
+                return showDatePicker(
+                  context: context,
+                  firstDate: DateTime(1969),
+                  initialDate: DateTime.now(),
+                  lastDate: DateTime(2100),
+                );
+              },
+              onChanged: (DateTime value) => copyPowerZoneSchema(date: value),
+            ),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Name'),
+              initialValue: widget.powerZoneSchema.name,
+              onChanged: (String value) => widget.powerZoneSchema.name = value,
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Base value in W',
+                helperText: 'e.g. Critical Power, Functional Threshold Power',
+              ),
+              initialValue: widget.powerZoneSchema.base.toString(),
+              keyboardType: TextInputType.number,
+              onChanged: (String value) =>
+                  updatePowerZoneBase(base: int.parse(value)),
+            ),
+            const SizedBox(height: 10),
+            DataTable(
+              headingRowHeight: kMinInteractiveDimension * 0.80,
+              dataRowHeight: kMinInteractiveDimension * 0.75,
+              columnSpacing: 20,
+              horizontalMargin: 10,
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Zone')),
+                DataColumn(label: Text('Limits (W)')),
+                DataColumn(label: Text('Color')),
+                DataColumn(label: Text('Edit')),
+              ],
+              rows: powerZones.map((PowerZone powerZone) {
+                return DataRow(
+                  key: ValueKey<int>(powerZone.id),
+                  cells: <DataCell>[
+                    DataCell(Text(powerZone.name)),
+                    DataCell(Text(powerZone.lowerLimit.toString() +
+                        ' - ' +
+                        powerZone.upperLimit.toString())),
+                    DataCell(CircleColor(
+                      circleSize: 20,
+                      elevation: 0,
+                      color: Color(powerZone.color),
+                    )),
+                    DataCell(
+                      MyIcon.edit,
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute<BuildContext>(
+                            builder: (BuildContext context) => AddPowerZoneScreen(
+                              powerZone: powerZone,
+                              base: widget.powerZoneSchema.base,
+                            ),
+                          ),
+                        );
+                        getData();
+                      },
+                    )
+                  ],
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                MyButton.add(
+                  child: const Text('Add power zone'),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) => AddPowerZoneScreen(
+                          powerZone:
+                              PowerZone(powerZoneSchema: widget.powerZoneSchema),
+                          base: widget.powerZoneSchema.base,
+                        ),
+                      ),
+                    );
+                    getData();
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                MyButton.delete(
+                  onPressed: () => deletePowerZoneSchema(
+                    powerZoneSchema: widget.powerZoneSchema,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
+                const SizedBox(width: 5),
+                MyButton.save(onPressed: () => savePowerZoneSchema(context)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -26,7 +26,7 @@ class ShowActivityDetailScreen extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      body: widget,
+      body: SafeArea(child: widget),
     );
   }
 }

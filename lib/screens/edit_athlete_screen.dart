@@ -15,13 +15,14 @@ class EditAthleteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyColor.athlete,
-        title: const Text('Athlete Credentials'),
-      ),
-      body: (athlete.state == 'standalone')
-          ? EditStandaloneAthleteWidget(athlete: athlete)
-          : EditStravaAthleteWidget(athlete: athlete),
-    );
+        appBar: AppBar(
+          backgroundColor: MyColor.athlete,
+          title: const Text('Athlete Credentials'),
+        ),
+        body: SafeArea(
+          child: (athlete.state == 'standalone')
+              ? EditStandaloneAthleteWidget(athlete: athlete)
+              : EditStravaAthleteWidget(athlete: athlete),
+        ));
   }
 }

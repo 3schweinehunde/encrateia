@@ -28,30 +28,32 @@ class _OnBoardingHeartRateZoneSchemaScreenState
         backgroundColor: MyColor.athlete,
         title: const Text('Select a Heart Rate Zone Schema'),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-            MyButton.save(
-              child: const Text('Next step'),
-              onPressed: () async {
-                await widget.athlete.save();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<BuildContext>(
-                    builder: (BuildContext _) =>
-                        OnBoardingBodyWeightScreen(
-                      athlete: widget.athlete,
-                    ),
-                  ),
-                );
-              },
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
             ),
-            const SizedBox(width: 20),
-          ]),
-        ],
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+              MyButton.save(
+                child: const Text('Next step'),
+                onPressed: () async {
+                  await widget.athlete.save();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute<BuildContext>(
+                      builder: (BuildContext _) =>
+                          OnBoardingBodyWeightScreen(
+                        athlete: widget.athlete,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 20),
+            ]),
+          ],
+        ),
       ),
     );
   }

@@ -71,88 +71,90 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
         title: const Text('Add your HeartRateZone'),
         backgroundColor: MyColor.settings,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.heartRateZone.name,
-            onChanged: (String value) => widget.heartRateZone.name = value,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Lower Limit in bpm'),
-            controller: lowerLimitController,
-            keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              widget.heartRateZone.lowerLimit = int.parse(value);
-              widget.heartRateZone.lowerPercentage =
-                  (int.parse(value) * 100 / widget.base).round();
-              lowerPercentageController.text =
-                  (int.parse(value) * 100 / widget.base).round().toString();
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Upper Limit in bpm'),
-            controller: upperLimitController,
-            keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              widget.heartRateZone.upperLimit = int.parse(value);
-              widget.heartRateZone.upperPercentage =
-                  (int.parse(value) * 100 / widget.base).round();
-              upperPercentageController.text =
-                  (int.parse(value) * 100 / widget.base).round().toString();
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Lower Percentage in %'),
-            controller: lowerPercentageController,
-            keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              widget.heartRateZone.lowerPercentage = int.parse(value);
-              widget.heartRateZone.lowerLimit =
-                  (int.parse(value) * widget.base / 100).round();
-              lowerLimitController.text =
-                  (int.parse(value) * widget.base / 100).round().toString();
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Upper Percentage in %'),
-            controller: upperPercentageController,
-            keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              widget.heartRateZone.upperPercentage = int.parse(value);
-              widget.heartRateZone.upperLimit =
-                  (int.parse(value) * widget.base / 100).round();
-              upperLimitController.text =
-                  (int.parse(value) * widget.base / 100).round().toString();
-            },
-          ),
-          const SizedBox(height: 10),
-          Row(children: <Widget>[
-            const Text('Color'),
-            const Spacer(),
-            CircleAvatar(
-              backgroundColor: Color(widget.heartRateZone.color),
-              radius: 20.0,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Name'),
+              initialValue: widget.heartRateZone.name,
+              onChanged: (String value) => widget.heartRateZone.name = value,
             ),
-            const Spacer(),
-            MyButton.detail(
-              onPressed: openColorPicker,
-              child: const Text('Edit'),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Lower Limit in bpm'),
+              controller: lowerLimitController,
+              keyboardType: TextInputType.number,
+              onChanged: (String value) {
+                widget.heartRateZone.lowerLimit = int.parse(value);
+                widget.heartRateZone.lowerPercentage =
+                    (int.parse(value) * 100 / widget.base).round();
+                lowerPercentageController.text =
+                    (int.parse(value) * 100 / widget.base).round().toString();
+              },
             ),
-          ]),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              MyButton.delete(onPressed: () => deleteHeartRateZone(context)),
-              const SizedBox(width: 5),
-              MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-              const SizedBox(width: 5),
-              MyButton.save(onPressed: () => saveHeartRateZone(context)),
-            ],
-          ),
-        ],
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Upper Limit in bpm'),
+              controller: upperLimitController,
+              keyboardType: TextInputType.number,
+              onChanged: (String value) {
+                widget.heartRateZone.upperLimit = int.parse(value);
+                widget.heartRateZone.upperPercentage =
+                    (int.parse(value) * 100 / widget.base).round();
+                upperPercentageController.text =
+                    (int.parse(value) * 100 / widget.base).round().toString();
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Lower Percentage in %'),
+              controller: lowerPercentageController,
+              keyboardType: TextInputType.number,
+              onChanged: (String value) {
+                widget.heartRateZone.lowerPercentage = int.parse(value);
+                widget.heartRateZone.lowerLimit =
+                    (int.parse(value) * widget.base / 100).round();
+                lowerLimitController.text =
+                    (int.parse(value) * widget.base / 100).round().toString();
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Upper Percentage in %'),
+              controller: upperPercentageController,
+              keyboardType: TextInputType.number,
+              onChanged: (String value) {
+                widget.heartRateZone.upperPercentage = int.parse(value);
+                widget.heartRateZone.upperLimit =
+                    (int.parse(value) * widget.base / 100).round();
+                upperLimitController.text =
+                    (int.parse(value) * widget.base / 100).round().toString();
+              },
+            ),
+            const SizedBox(height: 10),
+            Row(children: <Widget>[
+              const Text('Color'),
+              const Spacer(),
+              CircleAvatar(
+                backgroundColor: Color(widget.heartRateZone.color),
+                radius: 20.0,
+              ),
+              const Spacer(),
+              MyButton.detail(
+                onPressed: openColorPicker,
+                child: const Text('Edit'),
+              ),
+            ]),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                MyButton.delete(onPressed: () => deleteHeartRateZone(context)),
+                const SizedBox(width: 5),
+                MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
+                const SizedBox(width: 5),
+                MyButton.save(onPressed: () => saveHeartRateZone(context)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

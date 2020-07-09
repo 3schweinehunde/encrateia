@@ -11,9 +11,10 @@ class IntroductionTextScreen extends StatelessWidget {
         title: const Text('Introduction'),
         backgroundColor: MyColor.primary,
       ),
-      body: Markdown(
-        onTapLink: (String url) => launch(url),
-        data: '''
+      body: SafeArea(
+        child: Markdown(
+          onTapLink: (String url) => launch(url),
+          data: '''
 ## What is Encrateia?
 
 Encrateia is a mobile application that wants to help you analyse your activity 
@@ -82,6 +83,7 @@ it out and/or compile Encrateia yourself.
 If you have any questions regarding Encrateia, feel free to write us an 
 e-mail: <mailto:encrateia@informatom.com>.
 ''',
+        ),
       ),
     );
   }

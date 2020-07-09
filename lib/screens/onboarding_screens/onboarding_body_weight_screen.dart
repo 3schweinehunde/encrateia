@@ -28,28 +28,30 @@ class _OnBoardingBodyWeightScreenState
         backgroundColor: MyColor.athlete,
         title: const Text('Enter your weight'),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: AthleteBodyWeightWidget(athlete: widget.athlete),
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-            MyButton.save(
-              child: const Text('Next step'),
-              onPressed: () async {
-                await widget.athlete.save();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute<BuildContext>(
-                    builder: (BuildContext _) =>
-                        const OnboardingFinishedScreen(),
-                  ),
-                );
-              },
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: AthleteBodyWeightWidget(athlete: widget.athlete),
             ),
-            const SizedBox(width: 20),
-          ]),
-        ],
+            Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+              MyButton.save(
+                child: const Text('Next step'),
+                onPressed: () async {
+                  await widget.athlete.save();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute<BuildContext>(
+                      builder: (BuildContext _) =>
+                          const OnboardingFinishedScreen(),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(width: 20),
+            ]),
+          ],
+        ),
       ),
     );
   }

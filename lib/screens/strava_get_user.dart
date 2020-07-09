@@ -30,10 +30,12 @@ class _StravaGetUserState extends State<StravaGetUser> {
         title: const Text('Create Athlete'),
         backgroundColor: MyColor.primary,
       ),
-      body: Container(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text(widget.athlete.stateText),
+      body: SafeArea(
+        child: Container(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text(widget.athlete.stateText),
+          ),
         ),
       ),
     );

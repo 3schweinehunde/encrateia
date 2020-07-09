@@ -18,7 +18,9 @@ class OnBoardingStandaloneCredentialsScreen extends StatelessWidget {
         backgroundColor: MyColor.athlete,
         title: const Text('Enter the Athlete\'s Name'),
       ),
-      body: EditStandaloneAthleteWidget(athlete: athlete),
+      body: SafeArea(
+        child: EditStandaloneAthleteWidget(athlete: athlete),
+      ),
     );
   }
 }

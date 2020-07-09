@@ -74,103 +74,105 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
         backgroundColor: MyColor.settings,
         title: const Text('Add Tag Group'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.tagGroup.name,
-            onChanged: (String value) => widget.tagGroup.name = value,
-          ),
-          const SizedBox(height: 20),
-          Row(children: <Widget>[
-            const Text('Color'),
-            const Spacer(),
-            CircleAvatar(
-              backgroundColor: Color(widget.tagGroup.color),
-              radius: 20.0,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Name'),
+              initialValue: widget.tagGroup.name,
+              onChanged: (String value) => widget.tagGroup.name = value,
             ),
-            const Spacer(),
-            MyButton.detail(
-              onPressed: openColorPicker,
-              child: const Text('Edit'),
-            ),
-          ]),
-          const SizedBox(height: 20),
-          DataTable(
-            headingRowHeight: kMinInteractiveDimension * 0.80,
-            dataRowHeight: kMinInteractiveDimension * 0.75,
-            columnSpacing: 20,
-            horizontalMargin: 10,
-            columns: const <DataColumn>[
-              DataColumn(label: Text('Tag')),
-              DataColumn(label: Text('Color')),
-              DataColumn(label: Text('Edit')),
-            ],
-            rows: tags.map((Tag tag) {
-              return DataRow(
-                key: ValueKey<int>(tag.id),
-                cells: <DataCell>[
-                  DataCell(Text(tag.name)),
-                  DataCell(CircleColor(
-                    circleSize: 20,
-                    elevation: 0,
-                    color: Color(tag.color),
-                  )),
-                  DataCell(
-                    MyIcon.edit,
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => AddTagScreen(
-                            tag: tag,
+            const SizedBox(height: 20),
+            Row(children: <Widget>[
+              const Text('Color'),
+              const Spacer(),
+              CircleAvatar(
+                backgroundColor: Color(widget.tagGroup.color),
+                radius: 20.0,
+              ),
+              const Spacer(),
+              MyButton.detail(
+                onPressed: openColorPicker,
+                child: const Text('Edit'),
+              ),
+            ]),
+            const SizedBox(height: 20),
+            DataTable(
+              headingRowHeight: kMinInteractiveDimension * 0.80,
+              dataRowHeight: kMinInteractiveDimension * 0.75,
+              columnSpacing: 20,
+              horizontalMargin: 10,
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Tag')),
+                DataColumn(label: Text('Color')),
+                DataColumn(label: Text('Edit')),
+              ],
+              rows: tags.map((Tag tag) {
+                return DataRow(
+                  key: ValueKey<int>(tag.id),
+                  cells: <DataCell>[
+                    DataCell(Text(tag.name)),
+                    DataCell(CircleColor(
+                      circleSize: 20,
+                      elevation: 0,
+                      color: Color(tag.color),
+                    )),
+                    DataCell(
+                      MyIcon.edit,
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute<BuildContext>(
+                            builder: (BuildContext context) => AddTagScreen(
+                              tag: tag,
+                            ),
                           ),
+                        );
+                        getData();
+                      },
+                    )
+                  ],
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                MyButton.add(
+                  child: const Text('Add tag'),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) => AddTagScreen(
+                          tag: Tag(tagGroup: widget.tagGroup),
                         ),
-                      );
-                      getData();
-                    },
-                  )
-                ],
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              MyButton.add(
-                child: const Text('Add tag'),
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute<BuildContext>(
-                      builder: (BuildContext context) => AddTagScreen(
-                        tag: Tag(tagGroup: widget.tagGroup),
                       ),
-                    ),
-                  );
-                  getData();
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              MyButton.delete(
-                onPressed: () => deleteTagGroup(
-                  tagGroup: widget.tagGroup,
+                    );
+                    getData();
+                  },
                 ),
-              ),
-              const SizedBox(width: 5),
-              MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-              const SizedBox(width: 5),
-              MyButton.save(onPressed: () => saveTagGroup(context)),
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                MyButton.delete(
+                  onPressed: () => deleteTagGroup(
+                    tagGroup: widget.tagGroup,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
+                const SizedBox(width: 5),
+                MyButton.save(onPressed: () => saveTagGroup(context)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

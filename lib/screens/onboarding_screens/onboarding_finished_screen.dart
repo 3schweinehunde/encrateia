@@ -17,35 +17,37 @@ class OnboardingFinishedScreen extends StatelessWidget {
           title: const Text('Athlete setup successfully'),
           automaticallyImplyLeading: false,
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: MyIcon.hello,
-                  title: const Text('Congratulations!'),
-                  subtitle: const Text(
-                    'You have successfully setup the athlete.',
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Card(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ListTile(
+                    leading: MyIcon.hello,
+                    title: const Text('Congratulations!'),
+                    subtitle: const Text(
+                      'You have successfully setup the athlete.',
+                    ),
                   ),
-                ),
-                ButtonBar(
-                  children: <Widget>[
-                    FlatButton(
-                      child: const Text('Finish'),
-                      onPressed: () async {
-                        await Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext _) => const Dashboard(),
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                ),
-              ],
+                  ButtonBar(
+                    children: <Widget>[
+                      FlatButton(
+                        child: const Text('Finish'),
+                        onPressed: () async {
+                          await Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute<BuildContext>(
+                              builder: (BuildContext _) => const Dashboard(),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

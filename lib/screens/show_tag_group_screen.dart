@@ -32,57 +32,59 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
         backgroundColor: MyColor.settings,
         title: const Text('Show Tag Group'),
       ),
-      body: ListView(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.tagGroup.name,
-            readOnly: true,
-          ),
-          const SizedBox(height: 20),
-          Row(children: <Widget>[
-            const Text('Color'),
-            const Spacer(),
-            CircleAvatar(
-              backgroundColor: Color(widget.tagGroup.color),
-              radius: 20.0,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Name'),
+              initialValue: widget.tagGroup.name,
+              readOnly: true,
             ),
-            const Spacer(),
-          ]),
-          const SizedBox(height: 20),
-          DataTable(
-            headingRowHeight: kMinInteractiveDimension * 0.80,
-            dataRowHeight: kMinInteractiveDimension * 0.75,
-            columnSpacing: 20,
-            horizontalMargin: 10,
-            columns: const <DataColumn>[
-              DataColumn(label: Text('Tag')),
-              DataColumn(label: Text('Color')),
-            ],
-            rows: tags.map((Tag tag) {
-              return DataRow(
-                key: ValueKey<int>(tag.id),
-                cells: <DataCell>[
-                  DataCell(Text(tag.name)),
-                  DataCell(CircleColor(
-                    circleSize: 20,
-                    elevation: 0,
-                    color: Color(tag.color),
-                  )),
-                ],
-              );
-            }).toList(),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              const SizedBox(width: 5),
-              MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-            ],
-          ),
-        ],
+            const SizedBox(height: 20),
+            Row(children: <Widget>[
+              const Text('Color'),
+              const Spacer(),
+              CircleAvatar(
+                backgroundColor: Color(widget.tagGroup.color),
+                radius: 20.0,
+              ),
+              const Spacer(),
+            ]),
+            const SizedBox(height: 20),
+            DataTable(
+              headingRowHeight: kMinInteractiveDimension * 0.80,
+              dataRowHeight: kMinInteractiveDimension * 0.75,
+              columnSpacing: 20,
+              horizontalMargin: 10,
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Tag')),
+                DataColumn(label: Text('Color')),
+              ],
+              rows: tags.map((Tag tag) {
+                return DataRow(
+                  key: ValueKey<int>(tag.id),
+                  cells: <DataCell>[
+                    DataCell(Text(tag.name)),
+                    DataCell(CircleColor(
+                      circleSize: 20,
+                      elevation: 0,
+                      color: Color(tag.color),
+                    )),
+                  ],
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                const SizedBox(width: 5),
+                MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

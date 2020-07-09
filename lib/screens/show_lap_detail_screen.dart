@@ -41,25 +41,27 @@ class _ShowLapDetailScreenState extends State<ShowLapDetailScreen> {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      body: GestureDetector(
-        child: widget.nextWidget(lap: currentLap),
-        onHorizontalDragUpdate: (DragUpdateDetails details) {
-          dragAmount = dragAmount + details.primaryDelta;
-        },
-        onHorizontalDragEnd: (DragEndDetails details) {
-          if (dragAmount < -50) {
-            dragAmount = 0;
-            if (currentLap.index < widget.laps.length) {
-              setState(() => currentLap = widget.laps[currentLap.index - 1 + 1]);
+      body: SafeArea(
+        child: GestureDetector(
+          child: widget.nextWidget(lap: currentLap),
+          onHorizontalDragUpdate: (DragUpdateDetails details) {
+            dragAmount = dragAmount + details.primaryDelta;
+          },
+          onHorizontalDragEnd: (DragEndDetails details) {
+            if (dragAmount < -50) {
+              dragAmount = 0;
+              if (currentLap.index < widget.laps.length) {
+                setState(() => currentLap = widget.laps[currentLap.index - 1 + 1]);
+              }
+            } else if (dragAmount > 50) {
+              dragAmount = 0;
+              if (currentLap.index > 1) {
+                setState(
+                    () => currentLap = widget.laps[currentLap.index - 1 - 1]);
+              }
             }
-          } else if (dragAmount > 50) {
-            dragAmount = 0;
-            if (currentLap.index > 1) {
-              setState(
-                  () => currentLap = widget.laps[currentLap.index - 1 - 1]);
-            }
-          }
-        },
+          },
+        ),
       ),
     );
   }

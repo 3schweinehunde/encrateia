@@ -71,88 +71,90 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
         title: const Text('Add your PowerZone'),
         backgroundColor: MyColor.settings,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: <Widget>[
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Name'),
-            initialValue: widget.powerZone.name,
-            onChanged: (String value) => widget.powerZone.name = value,
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Lower Limit in W'),
-            controller: lowerLimitController,
-            keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              widget.powerZone.lowerLimit = int.parse(value);
-              widget.powerZone.lowerPercentage =
-                  (int.parse(value) * 100 / widget.base).round();
-              lowerPercentageController.text =
-                  (int.parse(value) * 100 / widget.base).round().toString();
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Upper Limit in W'),
-            controller: upperLimitController,
-            keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              widget.powerZone.upperLimit = int.parse(value);
-              widget.powerZone.upperPercentage =
-                  (int.parse(value) * 100 / widget.base).round();
-              upperPercentageController.text =
-                  (int.parse(value) * 100 / widget.base).round().toString();
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Lower Percentage in %'),
-            controller: lowerPercentageController,
-            keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              widget.powerZone.lowerPercentage = int.parse(value);
-              widget.powerZone.lowerLimit =
-                  (int.parse(value) * widget.base / 100).round();
-              lowerLimitController.text =
-                  (int.parse(value) * widget.base / 100).round().toString();
-            },
-          ),
-          TextFormField(
-            decoration: const InputDecoration(labelText: 'Upper Percentage in %'),
-            controller: upperPercentageController,
-            keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              widget.powerZone.upperPercentage = int.parse(value);
-              widget.powerZone.upperLimit =
-                  (int.parse(value) * widget.base / 100).round();
-              upperLimitController.text =
-                  (int.parse(value) * widget.base / 100).round().toString();
-            },
-          ),
-          const SizedBox(height: 10),
-          Row(children: <Widget>[
-            const Text('Color'),
-            const Spacer(),
-            CircleAvatar(
-              backgroundColor: Color(widget.powerZone.color),
-              radius: 20.0,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Name'),
+              initialValue: widget.powerZone.name,
+              onChanged: (String value) => widget.powerZone.name = value,
             ),
-            const Spacer(),
-            MyButton.detail(
-              onPressed: openColorPicker,
-              child: const Text('Edit'),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Lower Limit in W'),
+              controller: lowerLimitController,
+              keyboardType: TextInputType.number,
+              onChanged: (String value) {
+                widget.powerZone.lowerLimit = int.parse(value);
+                widget.powerZone.lowerPercentage =
+                    (int.parse(value) * 100 / widget.base).round();
+                lowerPercentageController.text =
+                    (int.parse(value) * 100 / widget.base).round().toString();
+              },
             ),
-          ]),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              MyButton.delete(onPressed: () => deletePowerZone(context)),
-              const SizedBox(width: 5),
-              MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
-              const SizedBox(width: 5),
-              MyButton.save(onPressed: () => savePowerZone(context)),
-            ],
-          ),
-        ],
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Upper Limit in W'),
+              controller: upperLimitController,
+              keyboardType: TextInputType.number,
+              onChanged: (String value) {
+                widget.powerZone.upperLimit = int.parse(value);
+                widget.powerZone.upperPercentage =
+                    (int.parse(value) * 100 / widget.base).round();
+                upperPercentageController.text =
+                    (int.parse(value) * 100 / widget.base).round().toString();
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Lower Percentage in %'),
+              controller: lowerPercentageController,
+              keyboardType: TextInputType.number,
+              onChanged: (String value) {
+                widget.powerZone.lowerPercentage = int.parse(value);
+                widget.powerZone.lowerLimit =
+                    (int.parse(value) * widget.base / 100).round();
+                lowerLimitController.text =
+                    (int.parse(value) * widget.base / 100).round().toString();
+              },
+            ),
+            TextFormField(
+              decoration: const InputDecoration(labelText: 'Upper Percentage in %'),
+              controller: upperPercentageController,
+              keyboardType: TextInputType.number,
+              onChanged: (String value) {
+                widget.powerZone.upperPercentage = int.parse(value);
+                widget.powerZone.upperLimit =
+                    (int.parse(value) * widget.base / 100).round();
+                upperLimitController.text =
+                    (int.parse(value) * widget.base / 100).round().toString();
+              },
+            ),
+            const SizedBox(height: 10),
+            Row(children: <Widget>[
+              const Text('Color'),
+              const Spacer(),
+              CircleAvatar(
+                backgroundColor: Color(widget.powerZone.color),
+                radius: 20.0,
+              ),
+              const Spacer(),
+              MyButton.detail(
+                onPressed: openColorPicker,
+                child: const Text('Edit'),
+              ),
+            ]),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                MyButton.delete(onPressed: () => deletePowerZone(context)),
+                const SizedBox(width: 5),
+                MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
+                const SizedBox(width: 5),
+                MyButton.save(onPressed: () => savePowerZone(context)),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

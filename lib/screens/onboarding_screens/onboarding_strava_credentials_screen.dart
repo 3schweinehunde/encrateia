@@ -18,7 +18,9 @@ class OnBoardingStravaCredentialsScreen extends StatelessWidget {
         backgroundColor: MyColor.athlete,
         title: const Text('Athlete Credentials'),
       ),
-      body: EditStravaAthleteWidget(athlete: athlete),
+      body: SafeArea(
+        child: EditStravaAthleteWidget(athlete: athlete),
+      ),
     );
   }
 }
