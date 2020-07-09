@@ -8,17 +8,17 @@ import 'package:encrateia/models/activity.dart';
 
 import 'athlete_filter_widget.dart';
 
-class AthletePaceWidget extends StatefulWidget {
-  const AthletePaceWidget({this.athlete});
+class AthleteHeartRateWidget extends StatefulWidget {
+  const AthleteHeartRateWidget({this.athlete});
 
   final Athlete athlete;
 
   @override
-  _AthletePaceWidgetState createState() =>
-      _AthletePaceWidgetState();
+  _AthleteHeartRateWidgetState createState() =>
+      _AthleteHeartRateWidgetState();
 }
 
-class _AthletePaceWidgetState extends State<AthletePaceWidget> {
+class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -32,21 +32,21 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
   @override
   Widget build(BuildContext context) {
     if (activities.isNotEmpty) {
-      final List<Activity> paceActivities = activities
+      final List<Activity> heartRateActivities = activities
           .where((Activity activity) =>
       activity.avgSpeed != null && activity.avgSpeed > 0)
           .toList();
 
-      if (paceActivities.isNotEmpty) {
+      if (heartRateActivities.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               AthleteTimeSeriesChart(
-                activities: paceActivities,
-                activityAttr: ActivityAttr.avgPace,
-                chartTitleText: 'Pace',
+                activities: heartRateActivities,
+                activityAttr: ActivityAttr.avgHeartRate,
+                chartTitleText: 'Heart Rate',
                 athlete: widget.athlete,
               ),
               AthleteFilterWidget(
@@ -59,7 +59,7 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
         );
       } else {
         return const Center(
-          child: Text('No pace data available.'),
+          child: Text('No heart rate data available.'),
         );
       }
     } else {

@@ -164,6 +164,8 @@ class Activity {
         return 10000 / 6 * avgSpeed / avgStrydCadence / avgVerticalOscillation;
       case ActivityAttr.avgPace:
         return 50 / 3 / avgSpeed;
+      case ActivityAttr.avgHeartRate:
+        return avgHeartRate.toDouble();
     }
   }
 
