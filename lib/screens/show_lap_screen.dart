@@ -5,6 +5,7 @@ import 'package:encrateia/widgets/lap_widgets/lap_ecor_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_metadata_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_overview_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_heart_rate_widget.dart';
+import 'package:encrateia/widgets/lap_widgets/lap_pace_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_power_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_power_duration_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_ground_time_widget.dart';
@@ -59,6 +60,13 @@ class ShowLapScreen extends StatelessWidget {
         icon: MyIcon.powerDuration,
         context: context,
         nextWidget: ({Lap lap}) => LapPowerDurationWidget(lap: lap),
+      ),
+      navigationButton(
+        title: 'Pace',
+        color: MyColor.navigate,
+        icon: MyIcon.speed,
+        context: context,
+        nextWidget: ({Lap lap}) => LapPaceWidget(lap: lap),
       ),
       navigationButton(
         title: 'Ecor',
