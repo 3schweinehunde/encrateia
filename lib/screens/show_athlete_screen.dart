@@ -180,7 +180,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         icon: MyIcon.settings,
         textColor: MyColor.textColor(backgroundColor: MyColor.add),
         label: const Expanded(
-          child: Text('Reanalyse Activity'),
+          child: Text('Reanalyse Activities'),
         ),
         onPressed: () => analyseActivities(
           context: context,

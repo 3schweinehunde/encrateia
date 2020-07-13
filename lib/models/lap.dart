@@ -63,6 +63,7 @@ class Lap {
   double get sdevGroundTime => _db.sdevGroundTime;
   double get sdevHeartRate => _db.sdevHeartRate;
   double get sdevLegSpringStiffness => _db.sdevLegSpringStiffness;
+  double get sdevPace => _db.sdevPace;
   double get sdevPower => _db.sdevPower;
   double get sdevSpeed => _db.sdevSpeed;
   double get sdevStrydCadence => _db.sdevStrydCadence;
@@ -187,6 +188,7 @@ class Lap {
       ..maxHeartRate = recordList.maxHeartRate()
       ..avgSpeed = recordList.avgSpeed()
       ..sdevSpeed = recordList.sdevSpeed()
+      ..sdevPace = recordList.sdevPace()
       ..minSpeed = recordList.minSpeed()
       ..maxSpeed = recordList.maxSpeed()
       ..avgGroundTime = recordList.avgGroundTime()

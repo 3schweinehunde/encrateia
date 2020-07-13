@@ -90,6 +90,11 @@ class RecordList<E> extends DelegatingList<E> {
       .map((Event record) => record.speed)
       .sdev();
 
+  double sdevPace() => _records
+      .where((Event record) => record.speed != null && record.speed > 1)
+      .map((Event record) => 50 / 3 / record.speed)
+      .sdev();
+
   double minSpeed() {
     final List<double> speeds =
     _records.map((Event record) => record.speed).nonZeros().cast<double>();

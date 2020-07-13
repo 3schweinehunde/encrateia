@@ -73,7 +73,7 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(widget.lap.sdevSpeed.toPace()),
+                title: Text(widget.lap.sdevPace.toStringAsFixed(2) + ' s'),
                 subtitle: const Text('standard deviation pace'),
               ),
               ListTile(

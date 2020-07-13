@@ -143,7 +143,8 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                     : () {
                         pagingOffset =
                             pagingOffset - (amountDisplayed / 2).round();
-                        if (pagingOffset < 0) pagingOffset = 0;
+                        if (pagingOffset < 0)
+                          pagingOffset = 0;
                         setScope();
                       },
               ),

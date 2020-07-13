@@ -98,6 +98,7 @@ class Activity {
   double get sdevGroundTime => _db.sdevGroundTime;
   double get sdevHeartRate => _db.sdevHeartRate;
   double get sdevLegSpringStiffness => _db.sdevLegSpringStiffness;
+  double get sdevPace => _db.sdevPace;
   double get sdevPower => _db.sdevPower;
   double get sdevPowerRatio => _db.sdevPowerRatio;
   double get sdevSpeed => _db.sdevSpeed;
@@ -291,6 +292,7 @@ class Activity {
       ..maxHeartRate = recordList.maxHeartRate()
       ..avgSpeed = recordList.avgSpeed()
       ..sdevSpeed = recordList.sdevSpeed()
+      ..sdevPace = recordList.sdevPace()
       ..minSpeed = recordList.minSpeed()
       ..maxSpeed = recordList.maxSpeed()
       ..avgGroundTime = recordList.avgGroundTime()
