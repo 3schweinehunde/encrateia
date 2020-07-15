@@ -18,6 +18,8 @@ class MyLineChart extends LineChart {
     String measureTitle,
     NumericTickProviderSpec measureTickProviderSpec,
     NumericTickProviderSpec domainTickProviderSpec,
+    double minimum,
+    double maximum
   }) : super(
           data,
           defaultRenderer: LineRendererConfig<num>(
@@ -32,6 +34,8 @@ class MyLineChart extends LineChart {
               viewport: determineViewport(
                 powerZones: powerZones,
                 heartRateZones: heartRateZones,
+                minimum: minimum,
+                maximum: maximum,
               )),
           animate: false,
           layoutConfig: GraphUtils.layoutConfig,
@@ -64,6 +68,8 @@ class MyLineChart extends LineChart {
   static NumericExtents determineViewport({
     List<PowerZone> powerZones,
     List<HeartRateZone> heartRateZones,
+    double minimum,
+    double maximum,
   }) {
     if (powerZones != null)
       return NumericExtents(
@@ -83,6 +89,8 @@ class MyLineChart extends LineChart {
                   .map(
                       (HeartRateZone heartRateZone) => heartRateZone.upperLimit)
                   .reduce(max) * 1.1);
+    else if (minimum != null)
+      return NumericExtents(minimum, maximum);
     else
       return null;
   }

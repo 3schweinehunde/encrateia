@@ -7,9 +7,13 @@ import 'package:charts_common/common.dart' as common show ChartBehavior;
 class LapPaceChart extends StatelessWidget {
   const LapPaceChart({
     this.records,
+    this.minimum,
+    this.maximum,
   });
 
   final RecordList<Event> records;
+  final double minimum;
+  final double maximum;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +36,13 @@ class LapPaceChart extends StatelessWidget {
         defaultRenderer: LineRendererConfig<num>(
           includeArea: true,
         ),
-        primaryMeasureAxis: const NumericAxisSpec(
-          tickProviderSpec: BasicNumericTickProviderSpec(
+        primaryMeasureAxis: NumericAxisSpec(
+          tickProviderSpec: const BasicNumericTickProviderSpec(
             zeroBound: false,
             dataIsInWholeNumbers: false,
             desiredTickCount: 5,
           ),
+            viewport: NumericExtents(minimum, maximum),
         ),
         animate: false,
         behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[

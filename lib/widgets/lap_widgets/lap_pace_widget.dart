@@ -52,6 +52,8 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
             children: <Widget>[
               LapPaceChart(
                 records: RecordList<Event>(paceRecords),
+                minimum: 50 / 3 / widget.lap.avgSpeed / 2,
+                maximum: 50 / 3 / widget.lap.avgSpeed * 1.5,
               ),
               const Text('Only records where speed > 0 m/s are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
