@@ -37,12 +37,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
   @override
   void initState() {
-    numberOfActivities = widget.activities.length;
-    ActivityList<Activity>(widget.activities).enrichGlidingAverage(
-      activityAttr: widget.activityAttr,
-      fullDecay: 30,
-    );
-    setScope();
+    getData();
     super.initState();
   }
 
@@ -52,6 +47,12 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
     if (selectedDatum.isNotEmpty) {
       setState(() => selectedActivity = selectedDatum[1].datum as Activity);
     }
+  }
+
+  @override
+  void didUpdateWidget(AthleteTimeSeriesChart oldWidget) {
+    getData();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -204,8 +205,17 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
   void setScope() {
     displayedActivities = widget.activities.sublist(
-        min(pagingOffset, numberOfActivities - amountDisplayed),
+        min(pagingOffset, max(numberOfActivities - amountDisplayed, 0)),
         min(pagingOffset + amountDisplayed, numberOfActivities));
     setState(() {});
+  }
+
+  void getData() {
+    numberOfActivities = widget.activities.length;
+    ActivityList<Activity>(widget.activities).enrichGlidingAverage(
+      activityAttr: widget.activityAttr,
+      fullDecay: 30,
+    );
+    setScope();
   }
 }
