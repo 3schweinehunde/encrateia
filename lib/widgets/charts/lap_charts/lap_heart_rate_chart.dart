@@ -12,7 +12,7 @@ import 'package:charts_common/common.dart' as common
 
 class LapHeartRateChart extends StatelessWidget {
   const LapHeartRateChart({
-    this.records,
+    @required this.records,
     this.heartRateZones,
   });
 

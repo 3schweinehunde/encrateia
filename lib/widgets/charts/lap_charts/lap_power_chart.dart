@@ -9,7 +9,7 @@ import 'package:charts_common/common.dart' as common show ChartBehavior;
 
 class LapPowerChart extends StatelessWidget {
   const LapPowerChart({
-    this.records,
+    @required this.records,
     this.powerZones,
   });
 

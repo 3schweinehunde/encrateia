@@ -52,6 +52,8 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
                 records: RecordList<Event>(formPowerRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
+                minimum: widget.activity.avgFormPower / 1.25,
+                maximum: widget.activity.avgFormPower * 1.25,
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '

@@ -5,7 +5,7 @@ import 'package:encrateia/models/event.dart';
 
 class LapEcorChart extends StatelessWidget {
   const LapEcorChart({
-    this.records,
+    @required this.records,
     @required this.weight,
   });
 

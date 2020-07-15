@@ -15,11 +15,15 @@ class ActivityGroundTimeChart extends StatelessWidget {
     this.records,
     @required this.activity,
     @required this.athlete,
+    @required this.minimum,
+    @required this.maximum,
   });
 
   final RecordList<Event> records;
   final Activity activity;
   final Athlete athlete;
+  final double minimum;
+  final double maximum;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +60,8 @@ class ActivityGroundTimeChart extends StatelessWidget {
                   desiredTickCount: 5),
               domainTickProviderSpec:
                   const BasicNumericTickProviderSpec(desiredTickCount: 6),
+              minimum: minimum,
+              maximum: maximum,
             ),
           );
         } else

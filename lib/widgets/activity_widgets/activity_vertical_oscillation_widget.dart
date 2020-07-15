@@ -50,6 +50,8 @@ class _ActivityVerticalOscillationWidgetState
                 records: RecordList<Event>(powerRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
+                minimum: widget.activity.avgVerticalOscillation / 1.25,
+                maximum: widget.activity.avgVerticalOscillation * 1.25,
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '

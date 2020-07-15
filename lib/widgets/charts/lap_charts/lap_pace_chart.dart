@@ -6,9 +6,9 @@ import 'package:charts_common/common.dart' as common show ChartBehavior;
 
 class LapPaceChart extends StatelessWidget {
   const LapPaceChart({
-    this.records,
-    this.minimum,
-    this.maximum,
+    @required this.records,
+    @required this.minimum,
+    @required this.maximum,
   });
 
   final RecordList<Event> records;

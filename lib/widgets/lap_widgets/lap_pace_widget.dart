@@ -1,5 +1,3 @@
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +17,6 @@ class LapPaceWidget extends StatefulWidget {
 
 class _LapPaceWidgetState extends State<LapPaceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgHeartRateString = 'Loading ...';
-  String sdevHeartRateString = 'Loading ...';
-  HeartRateZoneSchema heartRateZoneSchema;
-  List<HeartRateZone> heartRateZones;
 
   @override
   void initState() {

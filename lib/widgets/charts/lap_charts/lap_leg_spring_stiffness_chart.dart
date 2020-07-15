@@ -5,7 +5,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 
 class LapLegSpringStiffnessChart extends StatelessWidget {
-  const LapLegSpringStiffnessChart({this.records});
+  const LapLegSpringStiffnessChart({@required this.records});
 
   final RecordList<Event> records;
 

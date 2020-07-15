@@ -46,7 +46,11 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapGroundTimeChart(records: RecordList<Event>(groundTimeRecords)),
+              LapGroundTimeChart(
+                records: RecordList<Event>(groundTimeRecords),
+                minimum: widget.lap.avgGroundTime / 1.25,
+                maximum: widget.lap.avgGroundTime * 1.25,
+              ),
               const Text('Only records where ground time > 0 ms are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
               const Divider(),

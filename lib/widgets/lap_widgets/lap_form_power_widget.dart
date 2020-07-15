@@ -45,8 +45,13 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapFormPowerChart(records: RecordList<Event>(formPowerRecords)),
-              const Text('Only records where 0 W < form power < 200 W are shown.'),
+              LapFormPowerChart(
+                records: RecordList<Event>(formPowerRecords),
+                minimum: widget.lap.avgFormPower / 1.25,
+                maximum: widget.lap.avgFormPower * 1.25,
+              ),
+              const Text(
+                  'Only records where 0 W < form power < 200 W are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
               const Divider(),
               ListTile(

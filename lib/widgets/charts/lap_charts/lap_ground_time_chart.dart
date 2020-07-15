@@ -5,9 +5,15 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 
 class LapGroundTimeChart extends StatelessWidget {
-  const LapGroundTimeChart({this.records});
+  const LapGroundTimeChart({
+    @required this.records,
+    @required this.minimum,
+    @required this.maximum,
+  });
 
   final RecordList<Event> records;
+  final double minimum;
+  final double maximum;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +36,13 @@ class LapGroundTimeChart extends StatelessWidget {
         defaultRenderer: LineRendererConfig<num>(
           includeArea: true,
         ),
-        primaryMeasureAxis: const NumericAxisSpec(
-          tickProviderSpec: BasicNumericTickProviderSpec(
+        primaryMeasureAxis: NumericAxisSpec(
+          tickProviderSpec: const BasicNumericTickProviderSpec(
             zeroBound: false,
             dataIsInWholeNumbers: false,
             desiredTickCount: 5,
           ),
+          viewport: NumericExtents(minimum, maximum),
         ),
         behaviors: GraphUtils.axis(
           measureTitle: 'Ground Time (ms)',

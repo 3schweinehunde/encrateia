@@ -51,6 +51,8 @@ class _LapVerticalOscillationWidgetState
             children: <Widget>[
               LapVerticalOscillationChart(
                 records: RecordList<Event>(verticalOscillationRecords),
+                minimum: widget.lap.avgVerticalOscillation / 1.25,
+                maximum: widget.lap.avgVerticalOscillation * 1.25,
               ),
               const Text(
                   'Only records where vertical oscillation is present are shown.'),

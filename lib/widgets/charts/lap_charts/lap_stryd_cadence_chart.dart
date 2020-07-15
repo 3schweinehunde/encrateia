@@ -5,7 +5,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 
 class LapStrydCadenceChart extends StatelessWidget {
-  const LapStrydCadenceChart({this.records});
+  const LapStrydCadenceChart({@required this.records});
 
   final RecordList<Event> records;
 
