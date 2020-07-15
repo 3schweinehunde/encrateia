@@ -129,18 +129,20 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   }
 
   void showMyFlushbar() {
-    if (widget.athlete.email == null) {
-      flushbar = Flushbar<Object>(
-        message: 'Strava email not provided yet or not a Strava User!',
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.yellow[900],
-      )..show(context);
-    } else if (widget.athlete.password == null) {
-      flushbar = Flushbar<Object>(
-        message: 'Strava password not provided yet!',
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.red,
-      )..show(context);
+    if (widget.athlete.stravaId != null) {
+      if (widget.athlete.email == null) {
+        flushbar = Flushbar<Object>(
+          message: 'Strava email not provided yet!',
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.yellow[900],
+        )..show(context);
+      } else if (widget.athlete.password == null) {
+        flushbar = Flushbar<Object>(
+          message: 'Strava password not provided yet!',
+          duration: const Duration(seconds: 3),
+          backgroundColor: Colors.red,
+        )..show(context);
+      }
     }
   }
 }
