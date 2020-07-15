@@ -3,6 +3,8 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -29,8 +31,10 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   String minPowerString = 'Loading ...';
   String maxPowerString = 'Loading ...';
   String sdevPowerString = 'Loading ...';
+  String screenShotButtonText = 'Save Image to Storage';
   PowerZoneSchema powerZoneSchema;
   List<PowerZone> powerZones;
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -52,12 +56,27 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityPowerChart(
-                records: RecordList<Event>(powerRecords),
-                activity: widget.activity,
-                powerZones: powerZones,
-                athlete: widget.athlete,
+              RepaintBoundary(
+                key: widgetKey,
+                child: ActivityPowerChart(
+                  records: RecordList<Event>(powerRecords),
+                  activity: widget.activity,
+                  powerZones: powerZones,
+                  athlete: widget.athlete,
+                ),
               ),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W are shown.'),
