@@ -19,18 +19,25 @@ class ActivitiesFeedWidget extends StatefulWidget {
 class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   List<Activity> activities = <Activity>[];
   Flushbar<Object> flushbar;
+  bool disposed = false;
 
   @override
   void initState() {
-    getActivities();
+    getData();
     WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
   @override
   void didUpdateWidget(ActivitiesFeedWidget oldWidget) {
-    getActivities();
+    getData();
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    disposed = true;
   }
 
   @override
@@ -71,7 +78,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                     ),
                   ),
                 );
-                getActivities();
+                getData();
               }
             },
           ),
@@ -120,12 +127,15 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
     }
   }
 
-  Future<void> getActivities() async {
+  Future<void> getData() async {
     activities = await widget.athlete.activities;
+    setState(() {});
     for (final Activity activity in activities) {
       await activity.tags;
+      if(disposed)
+        break;
+      setState(() {});
     }
-    setState(() {});
   }
 
   void showMyFlushbar() {
