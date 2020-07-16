@@ -46,7 +46,10 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
               LapStrydCadenceChart(
-                  records: RecordList<Event>(strydCadenceRecords)),
+                records: RecordList<Event>(strydCadenceRecords),
+                minimum: widget.lap.avgStrydCadence * 2 / 1.25,
+                maximum: widget.lap.avgStrydCadence * 2 * 1.25,
+              ),
               const Text('Only records where cadence > 0 s/min are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
               const Divider(),

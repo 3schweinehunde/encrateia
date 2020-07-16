@@ -51,6 +51,8 @@ class _ActivityStrydCadenceWidgetState
                 records: RecordList<Event>(powerRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
+                minimum: widget.activity.avgStrydCadence * 2 / 1.25,
+                maximum: widget.activity.avgStrydCadence * 2 * 1.25,
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
