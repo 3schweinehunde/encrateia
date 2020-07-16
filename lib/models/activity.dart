@@ -139,6 +139,7 @@ class Activity {
   set maxHeartRate(int value) => _db.maxHeartRate = value;
   set name(String value) => _db.name = value;
   set state(String value) => _db.state = value;
+  set ftp(double value) => _db.ftp = value;
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();

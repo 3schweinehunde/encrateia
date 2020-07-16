@@ -40,7 +40,8 @@ class PowerDuration {
 
       if (power > (powerMap[duration] ?? 0)) {
         for (int durationIndex = duration; durationIndex > 0; durationIndex--) {
-          if (power <= (powerMap[durationIndex] ?? 0)) break;
+          if (power <= (powerMap[durationIndex] ?? 0))
+            break;
           powerMap[durationIndex] = power.toDouble();
         }
       }

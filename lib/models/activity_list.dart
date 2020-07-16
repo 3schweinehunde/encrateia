@@ -92,4 +92,30 @@ class ActivityList<E> extends DelegatingList<E> {
         .toList();
     return ActivityList<Activity>(activityList);
   }
+
+  Future<ActivityList<Activity>> filterByTagGroup({
+    @required TagGroup tagGroup,
+  }) async {
+    List<int> activityIds = <int>[];
+
+    final List<Tag> tags = await tagGroup.tags;
+    final List<int> tagIds = tags.map((Tag tag) => tag.id).toList();
+
+    if (tagIds.isNotEmpty) {
+      final List<DbActivityTagging> dbTaggings = await DbActivityTagging()
+          .select()
+          .tagsId
+          .inValues(tagIds)
+          .toList();
+      activityIds = dbTaggings
+          .map((DbActivityTagging dbActivityTagging) =>
+      dbActivityTagging.activitiesId)
+          .toList();
+    }
+
+    final List<Activity> activityList = _activities
+        .where((Activity activity) => activityIds.contains(activity.id))
+        .toList();
+    return ActivityList<Activity>(activityList);
+  }
 }

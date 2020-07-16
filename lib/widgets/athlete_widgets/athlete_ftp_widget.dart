@@ -54,7 +54,18 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                   athlete: widget.athlete,
                   tagGroups: tagGroups,
                   callBackFunction: getData,
-                )
+                ),
+                Row(
+                  children: <Widget>[
+                    const Spacer(),
+                    MyButton.activity(
+                      child: const Text('Calculate FTP'),
+                      onPressed: () => Ftp.calculate(
+                          athlete: widget.athlete, callback: setState),
+                    ),
+                    const SizedBox(width: 20),
+                  ],
+                ),
               ]),
         );
       } else {
@@ -67,7 +78,10 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
               const Spacer(),
               MyButton.activity(
                 child: const Text('Calculate FTP'),
-                onPressed: () => Ftp.calculate(athlete: widget.athlete),
+                onPressed: () => Ftp.calculate(
+                  athlete: widget.athlete,
+                  callback: setState,
+                ),
               ),
               const SizedBox(width: 20),
             ],

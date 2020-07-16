@@ -107,6 +107,30 @@ class TagGroup {
     }
   }
 
+  static Future<TagGroup> autoEffortTagGroup(
+      {@required Athlete athlete}) async {
+    final DbTagGroup dbTagGroup = await DbTagGroup()
+        .select()
+        .athletesId
+        .equals(athlete.id)
+        .and
+        .name
+        .equals('Effort')
+        .toSingle();
+    if (dbTagGroup != null)
+      return TagGroup._fromDb(dbTagGroup);
+    else {
+      final TagGroup autoEffortTagGroup = TagGroup.by(
+        name: 'Effort',
+        athlete: athlete,
+        system: false,
+        color: MyColor.brightGoldenYellow.value,
+      );
+      await autoEffortTagGroup._db.save();
+      return autoEffortTagGroup;
+    }
+  }
+
   static Future<List<TagGroup>> includingActivityTaggings({
     @required Athlete athlete,
     @required Activity activity,
