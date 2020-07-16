@@ -89,6 +89,8 @@ class Activity {
   double get avgStrideRatio => _db.avgStrideRatio;
   double get avgStrydCadence => _db.avgStrydCadence;
   double get avgVerticalOscillation => _db.avgVerticalOscillation;
+  double get cp => _db.cp;
+  double get ftp => _db.ftp;
   double get maxFractionalCadence => _db.maxFractionalCadence;
   double get maxSpeed => _db.maxSpeed;
   double get minSpeed => _db.minSpeed;

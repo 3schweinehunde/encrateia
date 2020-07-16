@@ -54,6 +54,8 @@ class Lap {
   double get avgStanceTimePercent => _db.avgStanceTimePercent;
   double get avgStrydCadence => _db.avgStrydCadence;
   double get avgVerticalOscillation => _db.avgVerticalOscillation;
+  double get cp => _db.cp;
+  double get ftp => _db.ftp;
   double get endPositionLat => _db.endPositionLat;
   double get endPositionLong => _db.endPositionLong;
   double get maxFractionalCadence => _db.maxFractionalCadence;

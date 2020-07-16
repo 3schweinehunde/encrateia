@@ -108,6 +108,8 @@ const SqfEntityTable tableActivity = SqfEntityTable(
     SqfEntityField('avgStrydCadence', DbType.real),
     SqfEntityField('sdevStrydCadence', DbType.real),
     SqfEntityField('sdevVerticalOscillation', DbType.real),
+    SqfEntityField('cp', DbType.real),
+    SqfEntityField('ftp', DbType.real),
 
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,
@@ -220,6 +222,8 @@ const SqfEntityTable tableLap = SqfEntityTable(
     SqfEntityField('sdevPowerRatio', DbType.real),
     SqfEntityField('avgStrideRatio', DbType.real),
     SqfEntityField('sdevStrideRatio', DbType.real),
+    SqfEntityField('cp', DbType.real),
+    SqfEntityField('ftp', DbType.real),
 
     SqfEntityFieldRelationship(
         parentTable: tableActivity,
