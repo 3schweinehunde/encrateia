@@ -45,6 +45,12 @@ class PowerDurationChart extends StatelessWidget {
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
+      ChartTitle(
+        'Power duration diagram created with Encrateia https://encreteia.informatom.com',
+        titleStyleSpec: const TextStyleSpec(fontSize: 10),
+        behaviorPosition: BehaviorPosition.top,
+        titleOutsideJustification: OutsideJustification.endDrawArea,
+      ),
     ];
 
     return Container(
