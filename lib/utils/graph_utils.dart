@@ -58,6 +58,12 @@ class GraphUtils {
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
+      ChartTitle(
+        '$measureTitle diagram created with Encrateia https://encreteia.informatom.com',
+        titleStyleSpec: const TextStyleSpec(fontSize: 10),
+        behaviorPosition: BehaviorPosition.top,
+        titleOutsideJustification: OutsideJustification.endDrawArea,
+      ),
     ];
   }
 

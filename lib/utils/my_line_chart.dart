@@ -8,19 +8,19 @@ import 'package:flutter/foundation.dart';
 import 'package:charts_common/common.dart' as common show Series, ChartBehavior;
 
 class MyLineChart extends LineChart {
-  MyLineChart({
-    @required List<common.Series<dynamic, dynamic>> data,
-    @required double maxDomain,
-    @required List<Lap> laps,
-    List<PowerZone> powerZones,
-    List<HeartRateZone> heartRateZones,
-    @required String domainTitle,
-    String measureTitle,
-    NumericTickProviderSpec measureTickProviderSpec,
-    NumericTickProviderSpec domainTickProviderSpec,
-    double minimum,
-    double maximum
-  }) : super(
+  MyLineChart(
+      {@required List<common.Series<dynamic, dynamic>> data,
+      @required double maxDomain,
+      @required List<Lap> laps,
+      List<PowerZone> powerZones,
+      List<HeartRateZone> heartRateZones,
+      @required String domainTitle,
+      String measureTitle,
+      NumericTickProviderSpec measureTickProviderSpec,
+      NumericTickProviderSpec domainTickProviderSpec,
+      double minimum,
+      double maximum})
+      : super(
           data,
           defaultRenderer: LineRendererConfig<num>(
             includeArea: true,
@@ -62,6 +62,12 @@ class MyLineChart extends LineChart {
               behaviorPosition: BehaviorPosition.bottom,
               titleOutsideJustification: OutsideJustification.end,
             ),
+            ChartTitle(
+              '$domainTitle Diagram created with Encrateia https://encreteia.informatom.com',
+              behaviorPosition: BehaviorPosition.top,
+              titleOutsideJustification: OutsideJustification.endDrawArea,
+              titleStyleSpec: const TextStyleSpec(fontSize: 10),
+            )
           ],
         );
 
@@ -75,20 +81,24 @@ class MyLineChart extends LineChart {
       return NumericExtents(
           powerZones
                   .map((PowerZone powerZone) => powerZone.lowerLimit)
-                  .reduce(min) * 0.9,
+                  .reduce(min) *
+              0.9,
           powerZones
                   .map((PowerZone powerZone) => powerZone.upperLimit)
-                  .reduce(max) * 1.1);
+                  .reduce(max) *
+              1.1);
     else if (heartRateZones != null)
       return NumericExtents(
           heartRateZones
                   .map(
                       (HeartRateZone heartRateZone) => heartRateZone.lowerLimit)
-                  .reduce(min) * 0.9,
+                  .reduce(min) *
+              0.9,
           heartRateZones
                   .map(
                       (HeartRateZone heartRateZone) => heartRateZone.upperLimit)
-                  .reduce(max) * 1.1);
+                  .reduce(max) *
+              1.1);
     else if (minimum != null)
       return NumericExtents(minimum, maximum);
     else

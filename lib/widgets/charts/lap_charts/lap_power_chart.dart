@@ -48,16 +48,13 @@ class LapPowerChart extends StatelessWidget {
         ),
         animate: false,
         behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
-          RangeAnnotation(
-            GraphUtils.powerZoneAnnotations(powerZones: powerZones),
-          ),
-          ChartTitle(
-            'Power (W)',
-            titleStyleSpec: const TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.bottom,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-        ],
+              RangeAnnotation(
+                GraphUtils.powerZoneAnnotations(powerZones: powerZones),
+              ),
+            ] +
+            GraphUtils.axis(
+              measureTitle: 'Power (W)',
+            ),
       ),
     );
   }

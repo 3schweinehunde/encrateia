@@ -118,6 +118,12 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                 behaviorPosition: BehaviorPosition.bottom,
                 titleOutsideJustification: OutsideJustification.end,
               ),
+              ChartTitle(
+                '${widget.chartTitleText} Diagram created with Encrateia https://encreteia.informatom.com',
+                behaviorPosition: BehaviorPosition.top,
+                titleOutsideJustification: OutsideJustification.endDrawArea,
+                titleStyleSpec: const TextStyleSpec(fontSize: 10),
+              )
             ],
           ),
         ),

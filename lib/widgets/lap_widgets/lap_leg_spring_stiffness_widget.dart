@@ -50,6 +50,8 @@ class _LapLegSpringStiffnessWidgetState
             children: <Widget>[
               LapLegSpringStiffnessChart(
                 records: RecordList<Event>(legSpringStiffnessRecords),
+                minimum: widget.lap.avgLegSpringStiffness / 1.25,
+                maximum: widget.lap.avgLegSpringStiffness * 1.25,
               ),
               const Text('Only records where leg spring stiffness > 0 kN/m '
                   'are shown.'),
@@ -58,12 +60,12 @@ class _LapLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgLegSpringStiffnessString),
-                subtitle: const Text('average ground time'),
+                subtitle: const Text('average leg spring stiffness'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: Text(sdevLegSpringStiffnessString),
-                subtitle: const Text('standard deviation ground time'),
+                subtitle: const Text('standard leg spring stiffness'),
               ),
               ListTile(
                 leading: MyIcon.amount,
@@ -90,9 +92,9 @@ class _LapLegSpringStiffnessWidgetState
     records = RecordList<Event>(await lap.records);
     setState(() {
       avgLegSpringStiffnessString =
-          widget.lap.avgLegSpringStiffness.toStringOrDashes(1) + ' ms';
+          widget.lap.avgLegSpringStiffness.toStringOrDashes(1) + ' cm';
       sdevLegSpringStiffnessString =
-          lap.sdevLegSpringStiffness.toStringOrDashes(2) + ' ms';
+          lap.sdevLegSpringStiffness.toStringOrDashes(2) + ' cm';
     });
   }
 }

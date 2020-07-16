@@ -1,5 +1,6 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/graph_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 
@@ -21,8 +22,7 @@ class LapEcorChart extends StatelessWidget {
         id: 'Ecor',
         colorFn: (_, __) => MaterialPalette.black,
         domainFn: (Event record, _) => record.distance.round() - offset,
-        measureFn: (Event record, _) =>
-            record.power / record.speed / weight,
+        measureFn: (Event record, _) => record.power / record.speed / weight,
         data: records,
       )
     ];
@@ -41,14 +41,9 @@ class LapEcorChart extends StatelessWidget {
               desiredTickCount: 6),
         ),
         animate: false,
-        behaviors: <ChartTitle>[
-          ChartTitle(
-            'Ecor (W s/kg m)',
-            titleStyleSpec: const TextStyleSpec(fontSize: 13),
-            behaviorPosition: BehaviorPosition.bottom,
-            titleOutsideJustification: OutsideJustification.end,
-          ),
-        ],
+        behaviors: GraphUtils.axis(
+          measureTitle: 'Ecor (W s/kg m)',
+        ),
       ),
     );
   }
