@@ -7,6 +7,7 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_pace_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
@@ -108,6 +109,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         title: 'Speed / Heart Rate',
         icon: MyIcon.speed,
         nextWidget: AthleteSpeedPerHeartRateWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Cadence',
+        icon: MyIcon.cadence,
+        nextWidget: AthleteStrydCadenceWidget(athlete: widget.athlete),
       ),
       RaisedButton.icon(
         color: MyColor.add,

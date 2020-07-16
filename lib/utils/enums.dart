@@ -26,4 +26,5 @@ enum ActivityAttr {
   ecor,
   avgPace,
   avgHeartRate,
+  avgStrydCadence,
 }
