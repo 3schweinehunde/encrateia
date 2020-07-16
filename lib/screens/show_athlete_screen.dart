@@ -2,6 +2,7 @@ import 'package:encrateia/actions/analyse_activities.dart';
 import 'package:encrateia/actions/import_activities_locally.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_ftp_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_pace_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
@@ -115,6 +116,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         title: 'Cadence',
         icon: MyIcon.cadence,
         nextWidget: AthleteStrydCadenceWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'FTP',
+        icon: MyIcon.ftp,
+        nextWidget: AthleteFtpWidget(athlete: widget.athlete),
       ),
       RaisedButton.icon(
         color: MyColor.add,

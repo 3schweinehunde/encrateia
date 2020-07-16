@@ -1,6 +1,7 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_bargraph_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_ftp_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_metadata_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_pace_widget.dart';
@@ -225,6 +226,16 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         icon: MyIcon.legSpringStiffness,
         context: context,
         nextWidget: ActivityLegSpringStiffnessWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
+      navigationButton(
+        title: 'FTP',
+        color: MyColor.navigate,
+        icon: MyIcon.ftp,
+        context: context,
+        nextWidget: ActivityFtpWidget(
           activity: widget.activity,
           athlete: widget.athlete,
         ),

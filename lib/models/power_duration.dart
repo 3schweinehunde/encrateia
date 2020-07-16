@@ -27,8 +27,7 @@ class PowerDuration {
           for (int durationIndex = newDuration;
               durationIndex > 0;
               durationIndex--) {
-            if (newPower <= (powerMap[durationIndex] ?? 0))
-              break;
+            if (newPower <= (powerMap[durationIndex] ?? 0)) break;
             powerMap[durationIndex] = newPower;
           }
         }
@@ -41,8 +40,7 @@ class PowerDuration {
 
       if (power > (powerMap[duration] ?? 0)) {
         for (int durationIndex = duration; durationIndex > 0; durationIndex--) {
-          if (power <= (powerMap[durationIndex] ?? 0))
-            break;
+          if (power <= (powerMap[durationIndex] ?? 0)) break;
           powerMap[durationIndex] = power.toDouble();
         }
       }
@@ -61,9 +59,15 @@ class PowerDuration {
       ));
     });
 
-    plotPoints
-        .sort((DoublePlotPoint a, DoublePlotPoint b) => a.domain.compareTo(b.domain));
+    plotPoints.sort(
+        (DoublePlotPoint a, DoublePlotPoint b) => a.domain.compareTo(b.domain));
     return plotPoints;
+  }
+
+  PowerDuration normalize() {
+    powerMap.forEach((int duration, double power) =>
+        powerMap[duration] = power * pow(3600 / duration, -0.07));
+    return this;
   }
 
   static int scaled({int seconds}) => (200 * log(seconds)).round();

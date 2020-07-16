@@ -45,6 +45,7 @@ class MyIcon {
     color: MyColor.white,
   );
   static final Icon formPower = Icon(Icons.ev_station);
+  static final Icon ftp = Icon(Icons.multiline_chart);
   // G
   static final Icon groundTime = Icon(Icons.vertical_align_bottom);
   // H
