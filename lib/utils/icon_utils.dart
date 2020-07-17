@@ -113,4 +113,5 @@ class MyIcon {
   static final Icon warning = Icon(Icons.warning);
   static final Icon website = Icon(Icons.web);
   static final Icon weight = Icon(Icons.restaurant_menu);
+  static final Icon work = Icon(Icons.landscape);
 }
