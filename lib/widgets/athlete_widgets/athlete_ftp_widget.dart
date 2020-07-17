@@ -47,7 +47,15 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                   chartTitleText: 'FTP (W)',
                   activityAttr: ActivityAttr.ftp,
                   athlete: widget.athlete,
+                  fullDecay: 90,
                 ),
+                const SizedBox(height:20),
+                const Center(
+                  child:
+                  Text('Tag activities with power data in any tag within '
+                      'the taggroup "Effort" to show up here.'),
+                ),
+                const SizedBox(height:20),
                 AthleteFilterWidget(
                   athlete: widget.athlete,
                   tagGroups: tagGroups,

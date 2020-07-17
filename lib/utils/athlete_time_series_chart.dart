@@ -16,12 +16,14 @@ class AthleteTimeSeriesChart extends StatefulWidget {
     @required this.activities,
     @required this.activityAttr,
     @required this.chartTitleText,
+    this.fullDecay,
   });
 
   final Athlete athlete;
   final List<Activity> activities;
   final ActivityAttr activityAttr;
   final String chartTitleText;
+  final int fullDecay;
 
   @override
   _AthleteTimeSeriesChartState createState() => _AthleteTimeSeriesChartState();
@@ -150,7 +152,8 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                     : () {
                         pagingOffset =
                             pagingOffset - (amountDisplayed / 2).round();
-                        if (pagingOffset < 0) pagingOffset = 0;
+                        if (pagingOffset < 0)
+                          pagingOffset = 0;
                         setScope();
                       },
               ),
@@ -227,7 +230,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
     numberOfActivities = widget.activities.length;
     ActivityList<Activity>(widget.activities).enrichGlidingAverage(
       activityAttr: widget.activityAttr,
-      fullDecay: 30,
+      fullDecay: widget.fullDecay ?? 30,
     );
     setScope();
   }
