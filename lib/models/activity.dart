@@ -172,6 +172,8 @@ class Activity {
         return avgHeartRate.toDouble();
       case ActivityAttr.avgStrydCadence:
         return avgStrydCadence * 2;
+      case ActivityAttr.ftp:
+        return ftp;
     }
   }
 

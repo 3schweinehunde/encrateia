@@ -27,7 +27,8 @@ class PowerDuration {
           for (int durationIndex = newDuration;
               durationIndex > 0;
               durationIndex--) {
-            if (newPower <= (powerMap[durationIndex] ?? 0)) break;
+            if (newPower <= (powerMap[durationIndex] ?? 0))
+              break;
             powerMap[durationIndex] = newPower;
           }
         }

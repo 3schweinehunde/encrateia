@@ -27,4 +27,5 @@ enum ActivityAttr {
   avgPace,
   avgHeartRate,
   avgStrydCadence,
+  ftp,
 }

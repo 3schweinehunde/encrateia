@@ -199,6 +199,11 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                         selectedActivity.avgPower.toStringAsFixed(1) + ' W'),
                     subtitle: const Text('Average power')),
                 ListTile(
+                    title: Text(
+                        selectedActivity.ftp.toStringAsFixed(1) + ' W'),
+                    subtitle: const Text('FTP')),
+
+                ListTile(
                     title:
                         Text(selectedActivity.avgHeartRate.toString() + ' bpm'),
                     subtitle: const Text('Average heart rate')),

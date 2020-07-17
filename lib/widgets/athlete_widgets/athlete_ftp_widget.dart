@@ -24,6 +24,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
+  List<Activity> backlog = <Activity>[];
 
   @override
   void initState() {
@@ -47,7 +48,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                 AthleteTimeSeriesChart(
                   activities: ftpActivities,
                   chartTitleText: 'FTP (W)',
-                  activityAttr: ActivityAttr.avgPower,
+                  activityAttr: ActivityAttr.ftp,
                   athlete: widget.athlete,
                 ),
                 AthleteFilterWidget(
@@ -58,11 +59,14 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                 Row(
                   children: <Widget>[
                     const Spacer(),
+                    Text(loadingStatus),
+                    const Spacer(),
                     MyButton.activity(
-                      child: const Text('Calculate FTP'),
-                      onPressed: () => Ftp.calculate(
-                          athlete: widget.athlete, callback: setState),
-                    ),
+                        child: const Text('Calculate missing FTP'),
+                        onPressed: () async {
+                          await Ftp.calculate(backlog: backlog);
+                          getData();
+                        }),
                     const SizedBox(width: 20),
                   ],
                 ),
@@ -70,41 +74,24 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
         );
       } else {
         return ListView(children: <Widget>[
-          const Center(
-            child: Text('\nNo ftp data available.'),
-          ),
+          const SizedBox(height: 20),
+          Center(child: Text(loadingStatus)),
           Row(
             children: <Widget>[
               const Spacer(),
               MyButton.activity(
-                child: const Text('Calculate FTP'),
-                onPressed: () => Ftp.calculate(
-                  athlete: widget.athlete,
-                  callback: setState,
-                ),
-              ),
+                  child: const Text('Calculate FTP'),
+                  onPressed: () async {
+                    Ftp.calculate(backlog: backlog);
+                    setState(() {});
+                  }),
               const SizedBox(width: 20),
             ],
           )
         ]);
       }
     } else {
-      return ListView(children: <Widget>[
-        const SizedBox(
-          height: 50,
-        ),
-        Center(
-          child: Text(loadingStatus),
-        ),
-        const SizedBox(
-          height: 50,
-        ),
-        AthleteFilterWidget(
-          athlete: widget.athlete,
-          tagGroups: tagGroups,
-          callBackFunction: getData,
-        )
-      ]);
+      return Center(child: Text(loadingStatus));
     }
   }
 
@@ -116,7 +103,17 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
       athlete: widget.athlete,
       tagGroups: tagGroups,
     );
-    loadingStatus = activities.length.toString() + ' activities found';
+    loadingStatus =
+        activities.length.toString() + ' activities found, deriving backlog...';
+    setState(() {});
+    checkForBacklog();
+  }
+
+  Future<void> checkForBacklog() async {
+    final Athlete athlete = widget.athlete;
+    backlog = await Ftp.deriveBacklog(athlete: athlete);
+    loadingStatus = activities.length.toString() +
+        ' activities found, ${backlog.length} need their ftp to be calculated.';
     setState(() {});
   }
 }
