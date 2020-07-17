@@ -24,7 +24,7 @@ class Ftp {
 
   static Future<void> calculate({List<Activity> backlog}) async {
     for (final Activity activity in backlog) {
-      print('calculating ftp ...');
+      print('calculating ftp for ${activity.name} ...');
       final List<Event> records = await activity.records;
       final List<Event> powerRecords = records
           .where((Event value) => value.power != null && value.power > 100)

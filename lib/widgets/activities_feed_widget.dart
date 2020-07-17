@@ -89,6 +89,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
               spacing: 10,
               runSpacing: 10,
               children: <Widget>[
+                const SizedBox(height: 20),
                 for (Tag tag in activity.cachedTags)
                   Chip(
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

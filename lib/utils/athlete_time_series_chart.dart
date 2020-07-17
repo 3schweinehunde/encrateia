@@ -150,8 +150,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                     : () {
                         pagingOffset =
                             pagingOffset - (amountDisplayed / 2).round();
-                        if (pagingOffset < 0)
-                          pagingOffset = 0;
+                        if (pagingOffset < 0) pagingOffset = 0;
                         setScope();
                       },
               ),
@@ -189,20 +188,23 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                   subtitle: const Text('Time created'),
                 ),
                 ListTile(
-                    title: Text(selectedActivity.distance.toString() + ' m'),
-                    subtitle: const Text('Distance')),
+                  title: Text(selectedActivity.distance.toString() + ' m'),
+                  subtitle: const Text('Distance'),
+                ),
                 ListTile(
-                    title: Text(selectedActivity.avgSpeed.toPace() + ' min/km'),
-                    subtitle: const Text('Average speed')),
+                  title: Text(selectedActivity.avgSpeed.toPace() + ' min/km'),
+                  subtitle: const Text('Average speed'),
+                ),
                 ListTile(
-                    title: Text(
-                        selectedActivity.avgPower.toStringAsFixed(1) + ' W'),
-                    subtitle: const Text('Average power')),
-                ListTile(
-                    title: Text(
-                        selectedActivity.ftp.toStringAsFixed(1) + ' W'),
-                    subtitle: const Text('FTP')),
-
+                  title:
+                      Text(selectedActivity.avgPower.toStringAsFixed(1) + ' W'),
+                  subtitle: const Text('Average power'),
+                ),
+                if (selectedActivity.ftp != null)
+                  ListTile(
+                    title: Text(selectedActivity.ftp.toStringAsFixed(1) + ' W'),
+                    subtitle: const Text('FTP'),
+                  ),
                 ListTile(
                     title:
                         Text(selectedActivity.avgHeartRate.toString() + ' bpm'),

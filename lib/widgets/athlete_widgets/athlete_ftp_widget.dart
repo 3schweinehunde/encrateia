@@ -24,6 +24,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
+  List<Activity> ftpActivities = <Activity>[];
   List<Activity> backlog = <Activity>[];
 
   @override
@@ -35,10 +36,6 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   @override
   Widget build(BuildContext context) {
     if (activities.isNotEmpty) {
-      final List<Activity> ftpActivities = activities
-          .where(
-              (Activity activity) => activity.ftp != null && activity.ftp > 0)
-          .toList();
       if (ftpActivities.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.orange,
@@ -103,8 +100,11 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
       athlete: widget.athlete,
       tagGroups: tagGroups,
     );
-    loadingStatus =
-        activities.length.toString() + ' activities found, deriving backlog...';
+    ftpActivities = activities
+        .where((Activity activity) => activity.ftp != null && activity.ftp > 0)
+        .toList();
+    loadingStatus = ftpActivities.length.toString() +
+        ' tagged in Effort Taggroup, deriving backlog...';
     setState(() {});
     checkForBacklog();
   }
@@ -112,8 +112,10 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   Future<void> checkForBacklog() async {
     final Athlete athlete = widget.athlete;
     backlog = await Ftp.deriveBacklog(athlete: athlete);
-    loadingStatus = activities.length.toString() +
-        ' activities found, ${backlog.length} need their ftp to be calculated.';
+    loadingStatus = ftpActivities.length.toString() +
+        ' tagged in Effort Taggroup, ' +
+        backlog.length.toString() +
+        ' need their ftp to be calculated.';
     setState(() {});
   }
 }
