@@ -1,5 +1,6 @@
-import 'package:encrateia/models/power_duration.dart';
+import 'package:encrateia/models/critical_power.dart';
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/plot_point.dart';
@@ -11,8 +12,8 @@ class WorkChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PowerDuration powerDuration = PowerDuration(records: records);
-    final PowerDuration workCurve = powerDuration.workify();
+    final CriticalPower criticalPower = CriticalPower(records: records);
+    final CriticalPower workCurve = criticalPower.workify();
 
     final List<Series<DoublePlotPoint, num>> data = <Series<DoublePlotPoint, num>>[
       Series<DoublePlotPoint, int>(
@@ -52,25 +53,44 @@ class WorkChart extends StatelessWidget {
       ),
     ];
 
-    return Container(
-      height: 300,
-      padding: const EdgeInsets.all(2),
-      child: LineChart(
-        data,
-        defaultRenderer: LineRendererConfig<num>(
-          includeArea: true,
+    return ListView(
+      children: <Widget>[
+        Container(
+          height: 300,
+          padding: const EdgeInsets.all(2),
+          child: LineChart(
+            data,
+            defaultRenderer: LineRendererConfig<num>(
+              includeArea: true,
+            ),
+            primaryMeasureAxis: const NumericAxisSpec(
+              tickProviderSpec: BasicNumericTickProviderSpec(
+                  zeroBound: false,
+                  dataIsInWholeNumbers: true,
+                  desiredTickCount: 10,
+                  desiredMinTickCount: 6),
+            ),
+            domainAxis: const NumericAxisSpec(tickProviderSpec: staticTicks),
+            animate: false,
+            behaviors: chartTitles,
+          ),
         ),
-        primaryMeasureAxis: const NumericAxisSpec(
-          tickProviderSpec: BasicNumericTickProviderSpec(
-              zeroBound: false,
-              dataIsInWholeNumbers: true,
-              desiredTickCount: 10,
-              desiredMinTickCount: 6),
+        ListTile(
+          leading: MyIcon.power,
+          title: Text(criticalPower.wPrime().toString()),
+          subtitle: const Text('W\' (J)'),
         ),
-        domainAxis: const NumericAxisSpec(tickProviderSpec: staticTicks),
-        animate: false,
-        behaviors: chartTitles,
-      ),
+        ListTile(
+          leading: MyIcon.power,
+          title: Text(criticalPower.pCrit().toString()),
+          subtitle: const Text('Critical Power (W)'),
+        ),
+        ListTile(
+          leading: MyIcon.power,
+          title: Text(criticalPower.rSquared().toString()),
+          subtitle: const Text('r²'),
+        ),
+      ],
     );
   }
 }
