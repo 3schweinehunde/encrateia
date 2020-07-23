@@ -232,6 +232,70 @@ const SqfEntityTable tableLap = SqfEntityTable(
   ],
 );
 
+const SqfEntityTable tableInterval = SqfEntityTable(
+    tableName: 'intervals',
+    primaryKeyName: 'id',
+    primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+    useSoftDeleting: false,
+    modelName: 'DbInterval',
+    fields: <SqfEntityField>[
+      SqfEntityField('timeStamp', DbType.datetime),
+      SqfEntityField('duration', DbType.integer),
+      SqfEntityField('avgPower', DbType.real),
+      SqfEntityField('minPower', DbType.real),
+      SqfEntityField('maxPower', DbType.real),
+      SqfEntityField('sdevPower', DbType.real),
+      SqfEntityField('avgSpeed', DbType.real),
+      SqfEntityField('minSpeed', DbType.real),
+      SqfEntityField('maxSpeed', DbType.real),
+      SqfEntityField('sdevSpeed', DbType.real),
+      SqfEntityField('distance', DbType.real),
+      SqfEntityField('avgHeartRate', DbType.integer),
+      SqfEntityField('minHeartRate', DbType.integer),
+      SqfEntityField('maxHeartRate', DbType.integer),
+      SqfEntityField('sdevHeartRate', DbType.integer),
+      SqfEntityField('avgCadence', DbType.real),
+      SqfEntityField('minCadence', DbType.real),
+      SqfEntityField('maxCadence', DbType.real),
+      SqfEntityField('sdevCadence', DbType.real),
+      SqfEntityField('avgStrydCadence', DbType.real),
+      SqfEntityField('minStrydCadence', DbType.real),
+      SqfEntityField('maxStrydCadence', DbType.real),
+      SqfEntityField('sdevStrydCadence', DbType.real),
+      SqfEntityField('avgGroundTime', DbType.real),
+      SqfEntityField('minGroundTime', DbType.real),
+      SqfEntityField('maxGroundTime', DbType.real),
+      SqfEntityField('sdevGroundTime', DbType.real),
+      SqfEntityField('avgVerticalOscillation', DbType.real),
+      SqfEntityField('minVerticalOscillation', DbType.real),
+      SqfEntityField('maxVerticalOscillation', DbType.real),
+      SqfEntityField('sdevVerticalOscillation', DbType.real),
+      SqfEntityField('avgFormPower', DbType.integer),
+      SqfEntityField('maxFormPower', DbType.integer),
+      SqfEntityField('minFormPower', DbType.integer),
+      SqfEntityField('sdevFormPower', DbType.integer),
+      SqfEntityField('avgLegSpringStiffness', DbType.real),
+      SqfEntityField('maxLegSpringStiffness', DbType.real),
+      SqfEntityField('minLegSpringStiffness', DbType.real),
+      SqfEntityField('sdevLegSpringStiffness', DbType.real),
+      SqfEntityField('totalAscent', DbType.integer),
+      SqfEntityField('totalDescent', DbType.integer),
+      SqfEntityField('cp', DbType.real),
+      SqfEntityField('ftp', DbType.real),
+
+      SqfEntityFieldRelationship(
+          fieldName: 'firstRecord',
+          parentTable: tableEvent,
+          deleteRule: DeleteRule.CASCADE,
+          defaultValue: 0),
+      SqfEntityFieldRelationship(
+          fieldName: 'lastRecord',
+          parentTable: tableEvent,
+          deleteRule: DeleteRule.CASCADE,
+          defaultValue: 0),
+    ],
+);
+
 const SqfEntityTable tableWeight = SqfEntityTable(
   tableName: 'weights',
   primaryKeyName: 'id',
@@ -395,6 +459,24 @@ const SqfEntityTable tableActivityTagging = SqfEntityTable(
   ],
 );
 
+const SqfEntityTable tableIntervalTagging = SqfEntityTable(
+  tableName: 'lapTaggings',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: false,
+  modelName: 'DbIntervalTagging',
+  fields: <SqfEntityField>[
+    SqfEntityField('system', DbType.bool),
+    SqfEntityFieldRelationship(
+        parentTable: tableTag,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+    SqfEntityFieldRelationship(
+        parentTable: tableInterval,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+  ],
+);
 
 @SqfEntityBuilder(encrateia)
 const SqfEntityModel encrateia = SqfEntityModel(
