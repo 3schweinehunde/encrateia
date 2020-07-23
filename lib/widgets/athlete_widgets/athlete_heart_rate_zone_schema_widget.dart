@@ -34,7 +34,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
       if (heartRateZoneSchemas.isNotEmpty) {
         rows =
             (heartRateZoneSchemas.length < 8) ? heartRateZoneSchemas.length : 8;
-        return ListView(
+        return Column(
           children: <Widget>[
             Center(
               child: Text(
@@ -131,7 +131,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
       } else {
         return Padding(
           padding: const EdgeInsets.all(25.0),
-          child: ListView(
+          child: Column(
             children: <Widget>[
               const Text('''
 No heart rate schema defined so far:

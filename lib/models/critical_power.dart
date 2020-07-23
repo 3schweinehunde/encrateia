@@ -4,7 +4,7 @@ import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/models/power_duration.dart';
 
 class CriticalPower extends PowerDuration {
-  CriticalPower({List<Event> records}) : super(records: records);
+  CriticalPower({List<Event> records}) {PowerDuration(records: records);}
 
   List<DoublePlotPoint> asWorkList() {
     final List<DoublePlotPoint> plotPoints = <DoublePlotPoint>[];
@@ -31,8 +31,8 @@ class CriticalPower extends PowerDuration {
   double pCrit() {
     final double xbar = this.xbar();
     final double ybar = this.ybar();
-    double numerator;
-    double denominator;
+    double numerator = 0;
+    double denominator = 0;
 
     powerMap.forEach((int duration, double power) =>
         numerator += (duration.toDouble() - xbar) * (power - ybar));
@@ -46,9 +46,9 @@ class CriticalPower extends PowerDuration {
   double rSquared() {
     final double xbar = this.xbar();
     final double ybar = this.ybar();
-    double numerator;
-    double denominatorOne;
-    double denominatorTwo;
+    double numerator = 0;
+    double denominatorOne = 0;
+    double denominatorTwo = 0;
     double counter = 0;
 
     powerMap.forEach((int duration, double power) {

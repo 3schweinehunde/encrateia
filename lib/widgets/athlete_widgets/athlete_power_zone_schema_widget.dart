@@ -33,7 +33,7 @@ class _AthletePowerZoneSchemaWidgetState
     if (powerZoneSchemas != null) {
       if (powerZoneSchemas.isNotEmpty) {
         rows = (powerZoneSchemas.length < 8) ? powerZoneSchemas.length : 8;
-        return ListView(
+        return Column(
           children: <Widget>[
             Center(
               child: Text(
@@ -133,7 +133,7 @@ class _AthletePowerZoneSchemaWidgetState
       } else {
         return Padding(
           padding: const EdgeInsets.all(25.0),
-          child: ListView(
+          child: Column(
             children: <Widget>[
               const Text('''
 No power schema defined so far:

@@ -31,8 +31,11 @@ class _OnBoardingPowerZoneSchemaScreenState
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Expanded(
-              child: AthletePowerZoneSchemaWidget(athlete: widget.athlete),
+            AthletePowerZoneSchemaWidget(athlete: widget.athlete),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Text('You might want to check the base value for the Power '
+                  'Zone Scheme before proceeding to the next step.'),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
               MyButton.save(
@@ -52,6 +55,7 @@ class _OnBoardingPowerZoneSchemaScreenState
               ),
               const SizedBox(width: 20),
             ]),
+            const Spacer(),
           ],
         ),
       ),

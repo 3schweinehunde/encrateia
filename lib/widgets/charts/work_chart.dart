@@ -29,7 +29,7 @@ class WorkChart extends StatelessWidget {
     StaticNumericTickProviderSpec(<TickSpec<int>>[
       TickSpec<int>(60, label: '1min'),
       TickSpec<int>(600, label: '10min'),
-      TickSpec<int>(1200, label: '20min'),
+      TickSpec<int>(3600, label: '60min'),
     ]);
 
     final List<ChartTitle> chartTitles = <ChartTitle>[
@@ -77,17 +77,17 @@ class WorkChart extends StatelessWidget {
         ),
         ListTile(
           leading: MyIcon.power,
-          title: Text(criticalPower.wPrime().toString()),
+          title: Text(criticalPower.wPrime().toStringAsFixed(2)),
           subtitle: const Text('W\' (J)'),
         ),
         ListTile(
           leading: MyIcon.power,
-          title: Text(criticalPower.pCrit().toString()),
+          title: Text(criticalPower.pCrit().toStringAsFixed(2)),
           subtitle: const Text('Critical Power (W)'),
         ),
         ListTile(
           leading: MyIcon.power,
-          title: Text(criticalPower.rSquared().toString()),
+          title: Text(criticalPower.rSquared().toStringAsPrecision(3)),
           subtitle: const Text('r²'),
         ),
       ],

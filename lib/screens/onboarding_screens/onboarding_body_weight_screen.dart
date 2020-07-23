@@ -31,9 +31,7 @@ class _OnBoardingBodyWeightScreenState
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Expanded(
-              child: AthleteBodyWeightWidget(athlete: widget.athlete),
-            ),
+            AthleteBodyWeightWidget(athlete: widget.athlete),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
               MyButton.save(
                 child: const Text('Next step'),
@@ -50,6 +48,7 @@ class _OnBoardingBodyWeightScreenState
               ),
               const SizedBox(width: 20),
             ]),
+            const Spacer(),
           ],
         ),
       ),

@@ -31,8 +31,11 @@ class _OnBoardingHeartRateZoneSchemaScreenState
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            Expanded(
-              child: AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
+            AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
+            const Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Text('You might want to check the base value for the Heart '
+                  'Rate Zone Scheme before proceeding to the next step.'),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
               MyButton.save(
@@ -42,8 +45,7 @@ class _OnBoardingHeartRateZoneSchemaScreenState
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute<BuildContext>(
-                      builder: (BuildContext _) =>
-                          OnBoardingBodyWeightScreen(
+                      builder: (BuildContext _) => OnBoardingBodyWeightScreen(
                         athlete: widget.athlete,
                       ),
                     ),
@@ -52,6 +54,7 @@ class _OnBoardingHeartRateZoneSchemaScreenState
               ),
               const SizedBox(width: 20),
             ]),
+            const Spacer(),
           ],
         ),
       ),

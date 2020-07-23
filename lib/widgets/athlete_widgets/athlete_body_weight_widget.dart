@@ -36,7 +36,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
     if (weights != null) {
       if (weights.isNotEmpty) {
         rows = (weights.length < 8) ? weights.length : 8;
-        return ListView(
+        return Column(
           children: <Widget>[
             DataTable(
               columns: const <DataColumn>[
@@ -117,7 +117,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
           ],
         );
       } else {
-        return ListView(
+        return Column(
           children: <Widget>[
             const Padding(
               padding: EdgeInsets.all(25.0),

@@ -25,9 +25,7 @@ class ActivityWorkWidget extends StatelessWidget {
               .toList();
 
           if (powerRecords.isNotEmpty) {
-            return SingleChildScrollView(
-              child: WorkChart(records: powerRecords),
-            );
+            return WorkChart(records: powerRecords);
           } else {
             return const Center(
               child: Text('No power data available.'),
