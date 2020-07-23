@@ -293,6 +293,14 @@ const SqfEntityTable tableInterval = SqfEntityTable(
           parentTable: tableEvent,
           deleteRule: DeleteRule.CASCADE,
           defaultValue: 0),
+      SqfEntityFieldRelationship(
+          parentTable: tableAthlete,
+          deleteRule: DeleteRule.CASCADE,
+          defaultValue: 0),
+      SqfEntityFieldRelationship(
+          parentTable: tableActivity,
+          deleteRule: DeleteRule.CASCADE,
+          defaultValue: 0),
     ],
 );
 

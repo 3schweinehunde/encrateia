@@ -386,6 +386,18 @@ class TableDbInterval extends SqfEntityTableBase {
           fieldName: 'lastRecord',
           defaultValue: 0,
           isNotNull: false),
+      SqfEntityFieldRelationshipBase(
+          TableDbAthlete.getInstance, DeleteRule.CASCADE,
+          relationType: RelationType.ONE_TO_MANY,
+          fieldName: 'athletesId',
+          defaultValue: 0,
+          isNotNull: false),
+      SqfEntityFieldRelationshipBase(
+          TableDbActivity.getInstance, DeleteRule.CASCADE,
+          relationType: RelationType.ONE_TO_MANY,
+          fieldName: 'activitiesId',
+          defaultValue: 0,
+          isNotNull: false),
     ];
     super.init();
   }
@@ -865,6 +877,23 @@ class DbAthlete {
   }
 
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervals', 'plField2'..]) or so on..
+  List<DbInterval> plDbIntervals;
+
+  /// get DbInterval(s) filtered by id=athletesId
+  DbIntervalFilterBuilder getDbIntervals(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
+    return DbInterval()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .athletesId
+        .equals(id)
+        .and;
+  }
+
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbWeights', 'plField2'..]) or so on..
   List<DbWeight> plDbWeights;
 
@@ -1036,6 +1065,9 @@ class DbAthlete {
       map['DbActivities'] = await getDbActivities().toMapList();
     }
     if (!forQuery) {
+      map['DbIntervals'] = await getDbIntervals().toMapList();
+    }
+    if (!forQuery) {
       map['DbWeights'] = await getDbWeights().toMapList();
     }
     if (!forQuery) {
@@ -1144,6 +1176,16 @@ class DbAthlete {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
+        if (/*!_loadedFields.contains('athletes.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('athletes.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
         if (/*!_loadedFields.contains('athletes.plDbWeights') && */ (preloadFields ==
                 null ||
             preloadFields.contains('plDbWeights'))) {
@@ -1230,6 +1272,16 @@ class DbAthlete {
           /*_loadedFields.add('athletes.plDbActivities'); */
           obj.plDbActivities = obj.plDbActivities ??
               await obj.getDbActivities().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('athletes.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('athletes.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -1374,6 +1426,17 @@ class DbAthlete {
     var result = BoolResult();
     {
       result = await DbActivity()
+          .select()
+          .athletesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbInterval()
           .select()
           .athletesId
           .equals(id)
@@ -1987,6 +2050,16 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     if (!resDbActivityBYathletesId.success) {
       return resDbActivityBYathletesId;
     }
+// Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
+    final intervalsByathletesIdidList = await toListPrimaryKey(false);
+    final resDbIntervalBYathletesId = await DbInterval()
+        .select()
+        .athletesId
+        .inValues(intervalsByathletesIdidList)
+        .delete(hardDelete);
+    if (!resDbIntervalBYathletesId.success) {
+      return resDbIntervalBYathletesId;
+    }
 // Delete sub records where in (DbWeight) according to DeleteRule.CASCADE
     final weightsByathletesIdidList = await toListPrimaryKey(false);
     final resDbWeightBYathletesId = await DbWeight()
@@ -2088,6 +2161,16 @@ class DbAthleteFilterBuilder extends SearchCriteria {
           /*_loadedFields.add('athletes.plDbActivities'); */
           obj.plDbActivities = obj.plDbActivities ??
               await obj.getDbActivities().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('athletes.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('athletes.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -2970,6 +3053,23 @@ class DbActivity {
   }
 
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervals', 'plField2'..]) or so on..
+  List<DbInterval> plDbIntervals;
+
+  /// get DbInterval(s) filtered by id=activitiesId
+  DbIntervalFilterBuilder getDbIntervals(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
+    return DbInterval()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .activitiesId
+        .equals(id)
+        .and;
+  }
+
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbActivityTaggings', 'plField2'..]) or so on..
   List<DbActivityTagging> plDbActivityTaggings;
 
@@ -3637,6 +3737,9 @@ class DbActivity {
       map['DbLaps'] = await getDbLaps().toMapList();
     }
     if (!forQuery) {
+      map['DbIntervals'] = await getDbIntervals().toMapList();
+    }
+    if (!forQuery) {
       map['DbActivityTaggings'] = await getDbActivityTaggings().toMapList();
     }
 // END COLLECTIONS (DbActivity)
@@ -3877,6 +3980,16 @@ class DbActivity {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
+        if (/*!_loadedFields.contains('activities.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('activities.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
         if (/*!_loadedFields.contains('activities.plDbActivityTaggings') && */ (preloadFields ==
                 null ||
             preloadFields.contains('plDbActivityTaggings'))) {
@@ -3957,6 +4070,16 @@ class DbActivity {
           /*_loadedFields.add('activities.plDbLaps'); */
           obj.plDbLaps = obj.plDbLaps ??
               await obj.getDbLaps().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('activities.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('activities.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -4165,6 +4288,17 @@ class DbActivity {
     {
       result =
           await DbLap().select().activitiesId.equals(id).and.delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbInterval()
+          .select()
+          .activitiesId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -5119,6 +5253,16 @@ class DbActivityFilterBuilder extends SearchCriteria {
     if (!resDbLapBYactivitiesId.success) {
       return resDbLapBYactivitiesId;
     }
+// Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
+    final intervalsByactivitiesIdidList = await toListPrimaryKey(false);
+    final resDbIntervalBYactivitiesId = await DbInterval()
+        .select()
+        .activitiesId
+        .inValues(intervalsByactivitiesIdidList)
+        .delete(hardDelete);
+    if (!resDbIntervalBYactivitiesId.success) {
+      return resDbIntervalBYactivitiesId;
+    }
 // Delete sub records where in (DbActivityTagging) according to DeleteRule.CASCADE
     final activityTaggingsByactivitiesIdidList = await toListPrimaryKey(false);
     final resDbActivityTaggingBYactivitiesId = await DbActivityTagging()
@@ -5199,6 +5343,16 @@ class DbActivityFilterBuilder extends SearchCriteria {
           /*_loadedFields.add('activities.plDbLaps'); */
           obj.plDbLaps = obj.plDbLaps ??
               await obj.getDbLaps().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('activities.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('activities.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -10759,7 +10913,9 @@ class DbInterval {
       this.cp,
       this.ftp,
       this.firstRecord,
-      this.lastRecord}) {
+      this.lastRecord,
+      this.athletesId,
+      this.activitiesId}) {
     _setDefaultValues();
   }
   DbInterval.withFields(
@@ -10807,7 +10963,9 @@ class DbInterval {
       this.cp,
       this.ftp,
       this.firstRecord,
-      this.lastRecord) {
+      this.lastRecord,
+      this.athletesId,
+      this.activitiesId) {
     _setDefaultValues();
   }
   DbInterval.withId(
@@ -10856,7 +11014,9 @@ class DbInterval {
       this.cp,
       this.ftp,
       this.firstRecord,
-      this.lastRecord) {
+      this.lastRecord,
+      this.athletesId,
+      this.activitiesId) {
     _setDefaultValues();
   }
   DbInterval.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -11008,12 +11168,22 @@ class DbInterval {
 
     lastRecord = int.tryParse(o['lastRecord'].toString());
 
+    athletesId = int.tryParse(o['athletesId'].toString());
+
+    activitiesId = int.tryParse(o['activitiesId'].toString());
+
     // RELATIONSHIPS FromMAP
     plDbEvent = o['dbEvent'] != null
         ? DbEvent.fromMap(o['dbEvent'] as Map<String, dynamic>)
         : null;
     plDbEventByLastRecord = o['dbEvent'] != null
         ? DbEvent.fromMap(o['dbEvent'] as Map<String, dynamic>)
+        : null;
+    plDbAthlete = o['dbAthlete'] != null
+        ? DbAthlete.fromMap(o['dbAthlete'] as Map<String, dynamic>)
+        : null;
+    plDbActivity = o['dbActivity'] != null
+        ? DbActivity.fromMap(o['dbActivity'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
@@ -11064,6 +11234,8 @@ class DbInterval {
   double ftp;
   int firstRecord;
   int lastRecord;
+  int athletesId;
+  int activitiesId;
 
   BoolResult saveResult;
   // end FIELDS (DbInterval)
@@ -11089,6 +11261,30 @@ class DbInterval {
   Future<DbEvent> getDbEventByLastRecord(
       {bool loadParents = false, List<String> loadedFields}) async {
     final _obj = await DbEvent().getById(lastRecord,
+        loadParents: loadParents, loadedFields: loadedFields);
+    return _obj;
+  }
+
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbAthlete', 'plField2'..]) or so on..
+  DbAthlete plDbAthlete;
+
+  /// get DbAthlete By AthletesId
+  Future<DbAthlete> getDbAthlete(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbAthlete().getById(athletesId,
+        loadParents: loadParents, loadedFields: loadedFields);
+    return _obj;
+  }
+
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbActivity', 'plField2'..]) or so on..
+  DbActivity plDbActivity;
+
+  /// get DbActivity By ActivitiesId
+  Future<DbActivity> getDbActivity(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbActivity().getById(activitiesId,
         loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
@@ -11290,6 +11486,14 @@ class DbInterval {
       map['lastRecord'] = forView ? plDbEvent.event : lastRecord;
     }
 
+    if (athletesId != null) {
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
+    }
+
+    if (activitiesId != null) {
+      map['activitiesId'] = forView ? plDbActivity.state : activitiesId;
+    }
+
     return map;
   }
 
@@ -11483,6 +11687,14 @@ class DbInterval {
       map['lastRecord'] = forView ? plDbEvent.event : lastRecord;
     }
 
+    if (athletesId != null) {
+      map['athletesId'] = forView ? plDbAthlete.state : athletesId;
+    }
+
+    if (activitiesId != null) {
+      map['activitiesId'] = forView ? plDbActivity.state : activitiesId;
+    }
+
     return map;
   }
 
@@ -11542,7 +11754,9 @@ class DbInterval {
       cp,
       ftp,
       firstRecord,
-      lastRecord
+      lastRecord,
+      athletesId,
+      activitiesId
     ];
   }
 
@@ -11593,7 +11807,9 @@ class DbInterval {
       cp,
       ftp,
       firstRecord,
-      lastRecord
+      lastRecord,
+      athletesId,
+      activitiesId
     ];
   }
 
@@ -11657,6 +11873,24 @@ class DbInterval {
               await obj.getDbEventByLastRecord(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
       } // END RELATIONSHIPS PRELOAD
 
       objList.add(obj);
@@ -11715,6 +11949,24 @@ class DbInterval {
               await obj.getDbEventByLastRecord(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
       } // END RELATIONSHIPS PRELOAD
 
     } else {
@@ -11750,7 +12002,7 @@ class DbInterval {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<DbInterval> dbintervals) async {
-    // final results = _mnDbInterval.saveAll('INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbintervals);
+    // final results = _mnDbInterval.saveAll('INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbintervals);
     // return results; removed in sqfentity_gen 1.3.0+6
     DbEncrateia().batchStart();
     for (final obj in dbintervals) {
@@ -11765,7 +12017,7 @@ class DbInterval {
   Future<int> upsert() async {
     try {
       if (await _mnDbInterval.rawInsert(
-              'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 timeStamp,
@@ -11812,7 +12064,9 @@ class DbInterval {
                 cp,
                 ftp,
                 firstRecord,
-                lastRecord
+                lastRecord,
+                athletesId,
+                activitiesId
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -11838,7 +12092,7 @@ class DbInterval {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbInterval> dbintervals) async {
     final results = await _mnDbInterval.rawInsertAll(
-        'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbintervals);
     return results;
   }
@@ -11876,6 +12130,8 @@ class DbInterval {
   void _setDefaultValues() {
     firstRecord = firstRecord ?? 0;
     lastRecord = lastRecord ?? 0;
+    athletesId = athletesId ?? 0;
+    activitiesId = activitiesId ?? 0;
   }
   // END METHODS
   // CUSTOM CODES
@@ -12519,6 +12775,17 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return _lastRecord = setField(_lastRecord, 'lastRecord', DbType.integer);
   }
 
+  DbIntervalField _athletesId;
+  DbIntervalField get athletesId {
+    return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
+  }
+
+  DbIntervalField _activitiesId;
+  DbIntervalField get activitiesId {
+    return _activitiesId =
+        setField(_activitiesId, 'activitiesId', DbType.integer);
+  }
+
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -12673,6 +12940,24 @@ class DbIntervalFilterBuilder extends SearchCriteria {
           /*_loadedFields.add('events.plDbEventByLastRecord');*/
           obj.plDbEventByLastRecord = obj.plDbEventByLastRecord ??
               await obj.getDbEventByLastRecord(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbAthlete'))) {
+          /*_loadedFields.add('athletes.plDbAthlete');*/
+          obj.plDbAthlete = obj.plDbAthlete ??
+              await obj.getDbAthlete(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('activities.plDbActivity') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbActivity'))) {
+          /*_loadedFields.add('activities.plDbActivity');*/
+          obj.plDbActivity = obj.plDbActivity ??
+              await obj.getDbActivity(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -13092,6 +13377,18 @@ class DbIntervalFields {
   static TableField get lastRecord {
     return _fLastRecord = _fLastRecord ??
         SqlSyntax.setField(_fLastRecord, 'lastRecord', DbType.integer);
+  }
+
+  static TableField _fAthletesId;
+  static TableField get athletesId {
+    return _fAthletesId = _fAthletesId ??
+        SqlSyntax.setField(_fAthletesId, 'athletesId', DbType.integer);
+  }
+
+  static TableField _fActivitiesId;
+  static TableField get activitiesId {
+    return _fActivitiesId = _fActivitiesId ??
+        SqlSyntax.setField(_fActivitiesId, 'activitiesId', DbType.integer);
   }
 }
 // endregion DbIntervalFields
