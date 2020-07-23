@@ -34,6 +34,7 @@ class _OnBoardingBodyWeightScreenState
           child: Column(
             children: <Widget>[
               AthleteBodyWeightWidget(athlete: widget.athlete),
+              const SizedBox(height: 20),
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
                 MyButton.save(
                   child: const Text('Next step'),
