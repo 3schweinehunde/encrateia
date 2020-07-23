@@ -8,7 +8,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_pace_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_speed_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_tag_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_work_widget.dart';
+// import 'package:encrateia/widgets/activity_widgets/activity_work_widget.dart';
 import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_path_widget.dart';

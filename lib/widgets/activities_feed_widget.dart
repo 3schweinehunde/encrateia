@@ -1,6 +1,8 @@
+import 'dart:math';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag.dart';
+import 'package:encrateia/models/tag_group.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -18,6 +20,7 @@ class ActivitiesFeedWidget extends StatefulWidget {
 
 class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   List<Activity> activities = <Activity>[];
+  List<TagGroup> tagGroups = <TagGroup>[];
   Flushbar<Object> flushbar;
   bool disposed = false;
 
@@ -85,18 +88,15 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
           Padding(
             padding: const EdgeInsets.only(left: 20),
             child: Wrap(
-              alignment: WrapAlignment.spaceEvenly,
               spacing: 10,
-              runSpacing: 10,
               children: <Widget>[
-                const SizedBox(height: 20),
                 for (Tag tag in activity.cachedTags)
                   Chip(
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    padding: const EdgeInsets.fromLTRB(4, -6, 4, -6),
-                    labelPadding: const EdgeInsets.fromLTRB(0, -6, 0, -6),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(1))),
+                    avatar: CircleAvatar(
+                        foregroundColor: MyColor.textColor(
+                            backgroundColor: Color(tagGroup(tag).color)),
+                        backgroundColor: Color(tagGroup(tag).color),
+                        child: Text(capitals(tag))),
                     label: Text(
                       tag.name,
                       style: TextStyle(
@@ -131,9 +131,10 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   Future<void> getData() async {
     activities = await widget.athlete.activities;
     setState(() {});
+    tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete);
     for (final Activity activity in activities) {
       await activity.tags;
-      if(disposed)
+      if (disposed)
         break;
       setState(() {});
     }
@@ -155,5 +156,14 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
         )..show(context);
       }
     }
+  }
+
+  TagGroup tagGroup(Tag tag) => tagGroups
+      .firstWhere((TagGroup tagGroup) => tagGroup.id == tag.tagGroupsId);
+
+  String capitals(Tag tag) {
+    final String capitals =
+        tagGroup(tag).name.split(' ').map((String word) => word[0]).join();
+    return capitals.substring(0, min(capitals.length, 2));
   }
 }

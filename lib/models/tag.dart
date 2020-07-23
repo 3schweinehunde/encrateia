@@ -25,6 +25,7 @@ class Tag {
   bool selected = false;
 
   int get id => _db?.id;
+  int get tagGroupsId => _db.tagGroupsId;
   String get name => _db.name;
   bool get system => _db.system;
   int get color => _db.color;

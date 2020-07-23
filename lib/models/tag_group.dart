@@ -175,6 +175,16 @@ class TagGroup {
     return tagGroups;
   }
 
+  static Future<List<TagGroup>> allByAthlete({Athlete athlete}) async
+  {
+    final List<DbTagGroup> dbTagGroups = await DbTagGroup()
+        .select()
+        .athletesId
+        .equals(athlete.id)
+        .toList();
+    return dbTagGroups.map(TagGroup.exDb).toList();
+  }
+
   static Future<void> deleteAllAutoTags({Athlete athlete}) async {
     final TagGroup autoPowerTagGroup =
         await TagGroup.autoPowerTagGroup(athlete: athlete);
