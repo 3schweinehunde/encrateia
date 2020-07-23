@@ -13,13 +13,17 @@ class OnBoardingStravaCredentialsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyColor.athlete,
-        title: const Text('Athlete Credentials'),
-      ),
-      body: SafeArea(
-        child: EditStravaAthleteWidget(athlete: athlete),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: MyColor.athlete,
+          title: const Text('Athlete Credentials'),
+        ),
+        body: SafeArea(
+          child: EditStravaAthleteWidget(athlete: athlete),
+        ),
       ),
     );
   }

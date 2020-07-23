@@ -22,34 +22,37 @@ class _OnBoardingBodyWeightScreenState
     extends State<OnBoardingBodyWeightScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: MyColor.athlete,
-        title: const Text('Enter your weight'),
-      ),
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            AthleteBodyWeightWidget(athlete: widget.athlete),
-            Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-              MyButton.save(
-                child: const Text('Next step'),
-                onPressed: () async {
-                  await widget.athlete.save();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute<BuildContext>(
-                      builder: (BuildContext _) =>
-                          const OnboardingFinishedScreen(),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(width: 20),
-            ]),
-            const Spacer(),
-          ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: MyColor.athlete,
+          title: const Text('Enter your weight'),
+        ),
+        body: SafeArea(
+          child: Column(
+            children: <Widget>[
+              AthleteBodyWeightWidget(athlete: widget.athlete),
+              Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
+                MyButton.save(
+                  child: const Text('Next step'),
+                  onPressed: () async {
+                    await widget.athlete.save();
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext _) =>
+                            const OnboardingFinishedScreen(),
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
+              const Spacer(),
+            ],
+          ),
         ),
       ),
     );

@@ -26,128 +26,125 @@ class _OnboardingCreateUserScreenState
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Future<bool>(() => false),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: MyColor.primary,
-          title: const Text('Creating an Athlete'),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: ListView(
-              children: <Widget>[
-                Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        leading: MyIcon.create,
-                        title: const Text('Option 1: Demo Setup'),
-                        subtitle: const Text(
-                          'Choose this option to create a demo user with demo setup.'
-                          'It will download and analyse 4 activities provided '
-                          'by the Encrateia team. '
-                          'This is the quickest option to explore Encrateia.',
-                        ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: MyColor.primary,
+        title: const Text('Creating an Athlete'),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: ListView(
+            children: <Widget>[
+              Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: MyIcon.create,
+                      title: const Text('Option 1: Demo Setup'),
+                      subtitle: const Text(
+                        'Choose this option to create a demo user with demo setup.'
+                        'It will download and analyse 4 activities provided '
+                        'by the Encrateia team. '
+                        'This is the quickest option to explore Encrateia.',
                       ),
-                      ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            child: const Text('Create Demo User'),
-                            onPressed: () async {
-                              await setupDemoAthlete(
-                                context: context,
-                                flushbar: flushbar,
-                              );
-                              await Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<BuildContext>(
-                                  builder: (BuildContext _) =>
-                                      const OnboardingFinishedScreen(),
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                    ),
+                    ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          child: const Text('Create Demo User'),
+                          onPressed: () async {
+                            await setupDemoAthlete(
+                              context: context,
+                              flushbar: flushbar,
+                            );
+                            await Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute<BuildContext>(
+                                builder: (BuildContext _) =>
+                                    const OnboardingFinishedScreen(),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-                Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        leading: MyIcon.download,
-                        title:
-                            const Text('Option 2: Athlete with Strava Account'),
-                        subtitle: const Text(
-                            'Choose this option, if you want to download activities '
-                            'from Strava'),
-                      ),
-                      ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            child: const Text('Connect to Strava'),
-                            onPressed: () async {
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute<BuildContext>(
-                                  builder: (BuildContext context) =>
-                                      StravaGetUser(athlete: athlete),
-                                ),
-                              );
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<BuildContext>(
-                                  builder: (BuildContext _) =>
-                                      OnBoardingStravaCredentialsScreen(
-                                          athlete: athlete),
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+              ),
+              Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: MyIcon.download,
+                      title:
+                          const Text('Option 2: Athlete with Strava Account'),
+                      subtitle: const Text(
+                          'Choose this option, if you want to download activities '
+                          'from Strava'),
+                    ),
+                    ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          child: const Text('Connect to Strava'),
+                          onPressed: () async {
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute<BuildContext>(
+                                builder: (BuildContext context) =>
+                                    StravaGetUser(athlete: athlete),
+                              ),
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute<BuildContext>(
+                                builder: (BuildContext _) =>
+                                    OnBoardingStravaCredentialsScreen(
+                                        athlete: athlete),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-                Card(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        leading: MyIcon.upload,
-                        title: const Text('Option 3: Standalone Athlete'),
-                        subtitle: const Text(
-                            'Choose this option, if you want to upload all'
-                            ' .fit-files manually'),
-                      ),
-                      ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            child: const Text('Create standalone User'),
-                            onPressed: () {
-                              athlete.setupStandaloneAthlete();
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute<BuildContext>(
-                                  builder: (BuildContext _) =>
-                                      OnBoardingStandaloneCredentialsScreen(
-                                          athlete: athlete),
-                                ),
-                              );
-                            },
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+              ),
+              Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: MyIcon.upload,
+                      title: const Text('Option 3: Standalone Athlete'),
+                      subtitle: const Text(
+                          'Choose this option, if you want to upload all'
+                          ' .fit-files manually'),
+                    ),
+                    ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          child: const Text('Create standalone User'),
+                          onPressed: () {
+                            athlete.setupStandaloneAthlete();
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute<BuildContext>(
+                                builder: (BuildContext _) =>
+                                    OnBoardingStandaloneCredentialsScreen(
+                                        athlete: athlete),
+                              ),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

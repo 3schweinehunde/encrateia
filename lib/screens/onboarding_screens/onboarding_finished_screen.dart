@@ -36,11 +36,12 @@ class OnboardingFinishedScreen extends StatelessWidget {
                       FlatButton(
                         child: const Text('Finish'),
                         onPressed: () async {
-                          await Navigator.pushReplacement(
+                          await Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute<BuildContext>(
                               builder: (BuildContext _) => const Dashboard(),
                             ),
+                            (_) => false,
                           );
                         },
                       )
