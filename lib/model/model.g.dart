@@ -169,7 +169,6 @@ class TableDbEvent extends SqfEntityTableBase {
   TableDbEvent() {
     // declare properties of EntityTable
     tableName = 'events';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -307,6 +306,92 @@ class TableDbLap extends SqfEntityTableBase {
   static SqfEntityTableBase _instance;
   static SqfEntityTableBase get getInstance {
     return _instance = _instance ?? TableDbLap();
+  }
+}
+
+// DbInterval TABLE
+class TableDbInterval extends SqfEntityTableBase {
+  TableDbInterval() {
+    // declare properties of EntityTable
+    tableName = 'intervals';
+    relationType = RelationType.ONE_TO_MANY;
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('timeStamp', DbType.datetime,
+          isNotNull: false, minValue: DateTime.parse('1900-01-01')),
+      SqfEntityFieldBase('duration', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('avgPower', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('minPower', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('maxPower', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('sdevPower', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgSpeed', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('minSpeed', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('maxSpeed', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('sdevSpeed', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('distance', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgHeartRate', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('minHeartRate', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('maxHeartRate', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('sdevHeartRate', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('avgCadence', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('minCadence', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('maxCadence', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('sdevCadence', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgStrydCadence', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('minStrydCadence', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('maxStrydCadence', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('sdevStrydCadence', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgGroundTime', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('minGroundTime', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('maxGroundTime', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('sdevGroundTime', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgVerticalOscillation', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('minVerticalOscillation', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('maxVerticalOscillation', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('sdevVerticalOscillation', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('avgFormPower', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('maxFormPower', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('minFormPower', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('sdevFormPower', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('avgLegSpringStiffness', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('maxLegSpringStiffness', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('minLegSpringStiffness', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('sdevLegSpringStiffness', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('totalAscent', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('totalDescent', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('cp', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('ftp', DbType.real, isNotNull: false),
+      SqfEntityFieldRelationshipBase(
+          TableDbEvent.getInstance, DeleteRule.CASCADE,
+          relationType: RelationType.ONE_TO_MANY,
+          fieldName: 'firstRecord',
+          defaultValue: 0,
+          isNotNull: false),
+      SqfEntityFieldRelationshipBase(
+          TableDbEvent.getInstance, DeleteRule.CASCADE,
+          relationType: RelationType.ONE_TO_MANY,
+          fieldName: 'lastRecord',
+          defaultValue: 0,
+          isNotNull: false),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbInterval();
   }
 }
 
@@ -598,6 +683,39 @@ class TableDbActivityTagging extends SqfEntityTableBase {
     return _instance = _instance ?? TableDbActivityTagging();
   }
 }
+
+// DbLapTagging TABLE
+class TableDbLapTagging extends SqfEntityTableBase {
+  TableDbLapTagging() {
+    // declare properties of EntityTable
+    tableName = 'lapTaggings';
+    relationType = RelationType.ONE_TO_MANY;
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('system', DbType.bool, isNotNull: false),
+      SqfEntityFieldRelationshipBase(TableDbTag.getInstance, DeleteRule.CASCADE,
+          relationType: RelationType.ONE_TO_MANY,
+          fieldName: 'tagsId',
+          defaultValue: 0,
+          isNotNull: false),
+      SqfEntityFieldRelationshipBase(TableDbLap.getInstance, DeleteRule.CASCADE,
+          relationType: RelationType.ONE_TO_MANY,
+          fieldName: 'lapsId',
+          defaultValue: 0,
+          isNotNull: false),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbLapTagging();
+  }
+}
 // END TABLES
 
 // BEGIN SEQUENCES
@@ -614,6 +732,7 @@ class DbEncrateia extends SqfEntityModelProvider {
       TableDbActivity.getInstance,
       TableDbEvent.getInstance,
       TableDbLap.getInstance,
+      TableDbInterval.getInstance,
       TableDbWeight.getInstance,
       TableDbHeartRateZoneSchema.getInstance,
       TableDbHeartRateZone.getInstance,
@@ -623,6 +742,7 @@ class DbEncrateia extends SqfEntityModelProvider {
       TableDbTagGroup.getInstance,
       TableDbLapTagging.getInstance,
       TableDbActivityTagging.getInstance,
+      TableDbLapTagging.getInstance,
     ];
 
     bundledDatabasePath = encrateia
@@ -5938,6 +6058,43 @@ class DbEvent {
   }
   // END RELATIONSHIPS (DbEvent)
 
+// COLLECTIONS & VIRTUALS (DbEvent)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervals', 'plField2'..]) or so on..
+  List<DbInterval> plDbIntervals;
+
+  /// get DbInterval(s) filtered by id=firstRecord
+  DbIntervalFilterBuilder getDbIntervals(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
+    return DbInterval()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .firstRecord
+        .equals(id)
+        .and;
+  }
+
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervalsBylastRecord', 'plField2'..]) or so on..
+  List<DbInterval> plDbIntervalsBylastRecord;
+
+  /// get DbInterval(s) filtered by id=lastRecord
+  DbIntervalFilterBuilder getDbIntervalsBylastRecord(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
+    return DbInterval()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .lastRecord
+        .equals(id)
+        .and;
+  }
+
+// END COLLECTIONS & VIRTUALS (DbEvent)
+
   static const bool _softDeleteActivated = false;
   DbEventManager __mnDbEvent;
 
@@ -6143,6 +6300,15 @@ class DbEvent {
       map['lapsId'] = forView ? plDbLap.event : lapsId;
     }
 
+// COLLECTIONS (DbEvent)
+    if (!forQuery) {
+      map['DbIntervals'] = await getDbIntervals().toMapList();
+    }
+    if (!forQuery) {
+      map['DbIntervals'] = await getDbIntervals().toMapList();
+    }
+// END COLLECTIONS (DbEvent)
+
     return map;
   }
 
@@ -6248,6 +6414,31 @@ class DbEvent {
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('events.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('events.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecord') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervalsBylastRecord'))) {
+          /*_loadedFields.add('events.plDbIntervalsBylastRecord'); */
+          obj.plDbIntervalsBylastRecord = obj.plDbIntervalsBylastRecord ??
+              await obj.getDbIntervalsBylastRecord().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
+
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
@@ -6305,6 +6496,31 @@ class DbEvent {
     if (data.length != 0) {
       obj = DbEvent.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('events.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('events.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecord') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervalsBylastRecord'))) {
+          /*_loadedFields.add('events.plDbIntervalsBylastRecord'); */
+          obj.plDbIntervalsBylastRecord = obj.plDbIntervalsBylastRecord ??
+              await obj.getDbIntervalsBylastRecord().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
@@ -6437,6 +6653,29 @@ class DbEvent {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete DbEvent invoked (id=$id)');
+    var result = BoolResult();
+    {
+      result = await DbInterval()
+          .select()
+          .firstRecord
+          .equals(id)
+          .and
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbInterval()
+          .select()
+          .lastRecord
+          .equals(id)
+          .and
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
     if (!_softDeleteActivated || hardDelete) {
       return _mnDbEvent
           .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
@@ -7054,6 +7293,26 @@ class DbEventFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+    // Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
+    final intervalsByfirstRecordidList = await toListPrimaryKey(false);
+    final resDbIntervalBYfirstRecord = await DbInterval()
+        .select()
+        .firstRecord
+        .inValues(intervalsByfirstRecordidList)
+        .delete(hardDelete);
+    if (!resDbIntervalBYfirstRecord.success) {
+      return resDbIntervalBYfirstRecord;
+    }
+// Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
+    final intervalsBylastRecordidList = await toListPrimaryKey(false);
+    final resDbIntervalBYlastRecord = await DbInterval()
+        .select()
+        .lastRecord
+        .inValues(intervalsBylastRecordidList)
+        .delete(hardDelete);
+    if (!resDbIntervalBYlastRecord.success) {
+      return resDbIntervalBYlastRecord;
+    }
 
     if (DbEvent._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbEvent.updateBatch(qparams, {'isDeleted': 1});
@@ -7104,6 +7363,31 @@ class DbEventFilterBuilder extends SearchCriteria {
     if (data.isNotEmpty) {
       obj = DbEvent.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('events.plDbIntervals') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervals'))) {
+          /*_loadedFields.add('events.plDbIntervals'); */
+          obj.plDbIntervals = obj.plDbIntervals ??
+              await obj.getDbIntervals().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecord') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervalsBylastRecord'))) {
+          /*_loadedFields.add('events.plDbIntervalsBylastRecord'); */
+          obj.plDbIntervalsBylastRecord = obj.plDbIntervalsBylastRecord ??
+              await obj.getDbIntervalsBylastRecord().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
@@ -7923,6 +8207,23 @@ class DbLap {
         .and;
   }
 
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbLapTaggingsBylapsId', 'plField2'..]) or so on..
+  List<DbLapTagging> plDbLapTaggingsBylapsId;
+
+  /// get DbLapTagging(s) filtered by id=lapsId
+  DbLapTaggingFilterBuilder getDbLapTaggingsBylapsId(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
+    return DbLapTagging()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .lapsId
+        .equals(id)
+        .and;
+  }
+
 // END COLLECTIONS & VIRTUALS (DbLap)
 
   static const bool _softDeleteActivated = false;
@@ -8437,6 +8738,9 @@ class DbLap {
     if (!forQuery) {
       map['DbLapTaggings'] = await getDbLapTaggings().toMapList();
     }
+    if (!forQuery) {
+      map['DbLapTaggings'] = await getDbLapTaggings().toMapList();
+    }
 // END COLLECTIONS (DbLap)
 
     return map;
@@ -8640,6 +8944,16 @@ class DbLap {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
+        if (/*!_loadedFields.contains('laps.plDbLapTaggingsBylapsId') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLapTaggingsBylapsId'))) {
+          /*_loadedFields.add('laps.plDbLapTaggingsBylapsId'); */
+          obj.plDbLapTaggingsBylapsId = obj.plDbLapTaggingsBylapsId ??
+              await obj.getDbLapTaggingsBylapsId().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
       } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
@@ -8710,6 +9024,16 @@ class DbLap {
           /*_loadedFields.add('laps.plDbLapTaggings'); */
           obj.plDbLapTaggings = obj.plDbLapTaggings ??
               await obj.getDbLapTaggings().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('laps.plDbLapTaggingsBylapsId') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLapTaggingsBylapsId'))) {
+          /*_loadedFields.add('laps.plDbLapTaggingsBylapsId'); */
+          obj.plDbLapTaggingsBylapsId = obj.plDbLapTaggingsBylapsId ??
+              await obj.getDbLapTaggingsBylapsId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -8878,6 +9202,17 @@ class DbLap {
     {
       result =
           await DbEvent().select().lapsId.equals(id).and.delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbLapTagging()
+          .select()
+          .lapsId
+          .equals(id)
+          .and
+          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -9746,6 +10081,16 @@ class DbLapFilterBuilder extends SearchCriteria {
     if (!resDbLapTaggingBYlapsId.success) {
       return resDbLapTaggingBYlapsId;
     }
+// Delete sub records where in (DbLapTagging) according to DeleteRule.CASCADE
+    final lapTaggingsBylapsIdidList = await toListPrimaryKey(false);
+    final resDbLapTaggingBYlapsId = await DbLapTagging()
+        .select()
+        .lapsId
+        .inValues(lapTaggingsBylapsIdidList)
+        .delete(hardDelete);
+    if (!resDbLapTaggingBYlapsId.success) {
+      return resDbLapTaggingBYlapsId;
+    }
 
     if (DbLap._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbLap.updateBatch(qparams, {'isDeleted': 1});
@@ -9816,6 +10161,16 @@ class DbLapFilterBuilder extends SearchCriteria {
           /*_loadedFields.add('laps.plDbLapTaggings'); */
           obj.plDbLapTaggings = obj.plDbLapTaggings ??
               await obj.getDbLapTaggings().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('laps.plDbLapTaggingsBylapsId') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLapTaggingsBylapsId'))) {
+          /*_loadedFields.add('laps.plDbLapTaggingsBylapsId'); */
+          obj.plDbLapTaggingsBylapsId = obj.plDbLapTaggingsBylapsId ??
+              await obj.getDbLapTaggingsBylapsId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -10356,6 +10711,2404 @@ class DbLapManager extends SqfEntityProvider {
 }
 
 //endregion DbLapManager
+// region DbInterval
+class DbInterval {
+  DbInterval(
+      {this.id,
+      this.timeStamp,
+      this.duration,
+      this.avgPower,
+      this.minPower,
+      this.maxPower,
+      this.sdevPower,
+      this.avgSpeed,
+      this.minSpeed,
+      this.maxSpeed,
+      this.sdevSpeed,
+      this.distance,
+      this.avgHeartRate,
+      this.minHeartRate,
+      this.maxHeartRate,
+      this.sdevHeartRate,
+      this.avgCadence,
+      this.minCadence,
+      this.maxCadence,
+      this.sdevCadence,
+      this.avgStrydCadence,
+      this.minStrydCadence,
+      this.maxStrydCadence,
+      this.sdevStrydCadence,
+      this.avgGroundTime,
+      this.minGroundTime,
+      this.maxGroundTime,
+      this.sdevGroundTime,
+      this.avgVerticalOscillation,
+      this.minVerticalOscillation,
+      this.maxVerticalOscillation,
+      this.sdevVerticalOscillation,
+      this.avgFormPower,
+      this.maxFormPower,
+      this.minFormPower,
+      this.sdevFormPower,
+      this.avgLegSpringStiffness,
+      this.maxLegSpringStiffness,
+      this.minLegSpringStiffness,
+      this.sdevLegSpringStiffness,
+      this.totalAscent,
+      this.totalDescent,
+      this.cp,
+      this.ftp,
+      this.firstRecord,
+      this.lastRecord}) {
+    _setDefaultValues();
+  }
+  DbInterval.withFields(
+      this.timeStamp,
+      this.duration,
+      this.avgPower,
+      this.minPower,
+      this.maxPower,
+      this.sdevPower,
+      this.avgSpeed,
+      this.minSpeed,
+      this.maxSpeed,
+      this.sdevSpeed,
+      this.distance,
+      this.avgHeartRate,
+      this.minHeartRate,
+      this.maxHeartRate,
+      this.sdevHeartRate,
+      this.avgCadence,
+      this.minCadence,
+      this.maxCadence,
+      this.sdevCadence,
+      this.avgStrydCadence,
+      this.minStrydCadence,
+      this.maxStrydCadence,
+      this.sdevStrydCadence,
+      this.avgGroundTime,
+      this.minGroundTime,
+      this.maxGroundTime,
+      this.sdevGroundTime,
+      this.avgVerticalOscillation,
+      this.minVerticalOscillation,
+      this.maxVerticalOscillation,
+      this.sdevVerticalOscillation,
+      this.avgFormPower,
+      this.maxFormPower,
+      this.minFormPower,
+      this.sdevFormPower,
+      this.avgLegSpringStiffness,
+      this.maxLegSpringStiffness,
+      this.minLegSpringStiffness,
+      this.sdevLegSpringStiffness,
+      this.totalAscent,
+      this.totalDescent,
+      this.cp,
+      this.ftp,
+      this.firstRecord,
+      this.lastRecord) {
+    _setDefaultValues();
+  }
+  DbInterval.withId(
+      this.id,
+      this.timeStamp,
+      this.duration,
+      this.avgPower,
+      this.minPower,
+      this.maxPower,
+      this.sdevPower,
+      this.avgSpeed,
+      this.minSpeed,
+      this.maxSpeed,
+      this.sdevSpeed,
+      this.distance,
+      this.avgHeartRate,
+      this.minHeartRate,
+      this.maxHeartRate,
+      this.sdevHeartRate,
+      this.avgCadence,
+      this.minCadence,
+      this.maxCadence,
+      this.sdevCadence,
+      this.avgStrydCadence,
+      this.minStrydCadence,
+      this.maxStrydCadence,
+      this.sdevStrydCadence,
+      this.avgGroundTime,
+      this.minGroundTime,
+      this.maxGroundTime,
+      this.sdevGroundTime,
+      this.avgVerticalOscillation,
+      this.minVerticalOscillation,
+      this.maxVerticalOscillation,
+      this.sdevVerticalOscillation,
+      this.avgFormPower,
+      this.maxFormPower,
+      this.minFormPower,
+      this.sdevFormPower,
+      this.avgLegSpringStiffness,
+      this.maxLegSpringStiffness,
+      this.minLegSpringStiffness,
+      this.sdevLegSpringStiffness,
+      this.totalAscent,
+      this.totalDescent,
+      this.cp,
+      this.ftp,
+      this.firstRecord,
+      this.lastRecord) {
+    _setDefaultValues();
+  }
+  DbInterval.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) {
+      _setDefaultValues();
+    }
+    id = int.tryParse(o['id'].toString());
+    if (o['timeStamp'] != null) {
+      timeStamp = int.tryParse(o['timeStamp'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['timeStamp'].toString()))
+          : DateTime.tryParse(o['timeStamp'].toString());
+    }
+    if (o['duration'] != null) {
+      duration = int.tryParse(o['duration'].toString());
+    }
+    if (o['avgPower'] != null) {
+      avgPower = double.tryParse(o['avgPower'].toString());
+    }
+    if (o['minPower'] != null) {
+      minPower = double.tryParse(o['minPower'].toString());
+    }
+    if (o['maxPower'] != null) {
+      maxPower = double.tryParse(o['maxPower'].toString());
+    }
+    if (o['sdevPower'] != null) {
+      sdevPower = double.tryParse(o['sdevPower'].toString());
+    }
+    if (o['avgSpeed'] != null) {
+      avgSpeed = double.tryParse(o['avgSpeed'].toString());
+    }
+    if (o['minSpeed'] != null) {
+      minSpeed = double.tryParse(o['minSpeed'].toString());
+    }
+    if (o['maxSpeed'] != null) {
+      maxSpeed = double.tryParse(o['maxSpeed'].toString());
+    }
+    if (o['sdevSpeed'] != null) {
+      sdevSpeed = double.tryParse(o['sdevSpeed'].toString());
+    }
+    if (o['distance'] != null) {
+      distance = double.tryParse(o['distance'].toString());
+    }
+    if (o['avgHeartRate'] != null) {
+      avgHeartRate = int.tryParse(o['avgHeartRate'].toString());
+    }
+    if (o['minHeartRate'] != null) {
+      minHeartRate = int.tryParse(o['minHeartRate'].toString());
+    }
+    if (o['maxHeartRate'] != null) {
+      maxHeartRate = int.tryParse(o['maxHeartRate'].toString());
+    }
+    if (o['sdevHeartRate'] != null) {
+      sdevHeartRate = int.tryParse(o['sdevHeartRate'].toString());
+    }
+    if (o['avgCadence'] != null) {
+      avgCadence = double.tryParse(o['avgCadence'].toString());
+    }
+    if (o['minCadence'] != null) {
+      minCadence = double.tryParse(o['minCadence'].toString());
+    }
+    if (o['maxCadence'] != null) {
+      maxCadence = double.tryParse(o['maxCadence'].toString());
+    }
+    if (o['sdevCadence'] != null) {
+      sdevCadence = double.tryParse(o['sdevCadence'].toString());
+    }
+    if (o['avgStrydCadence'] != null) {
+      avgStrydCadence = double.tryParse(o['avgStrydCadence'].toString());
+    }
+    if (o['minStrydCadence'] != null) {
+      minStrydCadence = double.tryParse(o['minStrydCadence'].toString());
+    }
+    if (o['maxStrydCadence'] != null) {
+      maxStrydCadence = double.tryParse(o['maxStrydCadence'].toString());
+    }
+    if (o['sdevStrydCadence'] != null) {
+      sdevStrydCadence = double.tryParse(o['sdevStrydCadence'].toString());
+    }
+    if (o['avgGroundTime'] != null) {
+      avgGroundTime = double.tryParse(o['avgGroundTime'].toString());
+    }
+    if (o['minGroundTime'] != null) {
+      minGroundTime = double.tryParse(o['minGroundTime'].toString());
+    }
+    if (o['maxGroundTime'] != null) {
+      maxGroundTime = double.tryParse(o['maxGroundTime'].toString());
+    }
+    if (o['sdevGroundTime'] != null) {
+      sdevGroundTime = double.tryParse(o['sdevGroundTime'].toString());
+    }
+    if (o['avgVerticalOscillation'] != null) {
+      avgVerticalOscillation =
+          double.tryParse(o['avgVerticalOscillation'].toString());
+    }
+    if (o['minVerticalOscillation'] != null) {
+      minVerticalOscillation =
+          double.tryParse(o['minVerticalOscillation'].toString());
+    }
+    if (o['maxVerticalOscillation'] != null) {
+      maxVerticalOscillation =
+          double.tryParse(o['maxVerticalOscillation'].toString());
+    }
+    if (o['sdevVerticalOscillation'] != null) {
+      sdevVerticalOscillation =
+          double.tryParse(o['sdevVerticalOscillation'].toString());
+    }
+    if (o['avgFormPower'] != null) {
+      avgFormPower = int.tryParse(o['avgFormPower'].toString());
+    }
+    if (o['maxFormPower'] != null) {
+      maxFormPower = int.tryParse(o['maxFormPower'].toString());
+    }
+    if (o['minFormPower'] != null) {
+      minFormPower = int.tryParse(o['minFormPower'].toString());
+    }
+    if (o['sdevFormPower'] != null) {
+      sdevFormPower = int.tryParse(o['sdevFormPower'].toString());
+    }
+    if (o['avgLegSpringStiffness'] != null) {
+      avgLegSpringStiffness =
+          double.tryParse(o['avgLegSpringStiffness'].toString());
+    }
+    if (o['maxLegSpringStiffness'] != null) {
+      maxLegSpringStiffness =
+          double.tryParse(o['maxLegSpringStiffness'].toString());
+    }
+    if (o['minLegSpringStiffness'] != null) {
+      minLegSpringStiffness =
+          double.tryParse(o['minLegSpringStiffness'].toString());
+    }
+    if (o['sdevLegSpringStiffness'] != null) {
+      sdevLegSpringStiffness =
+          double.tryParse(o['sdevLegSpringStiffness'].toString());
+    }
+    if (o['totalAscent'] != null) {
+      totalAscent = int.tryParse(o['totalAscent'].toString());
+    }
+    if (o['totalDescent'] != null) {
+      totalDescent = int.tryParse(o['totalDescent'].toString());
+    }
+    if (o['cp'] != null) {
+      cp = double.tryParse(o['cp'].toString());
+    }
+    if (o['ftp'] != null) {
+      ftp = double.tryParse(o['ftp'].toString());
+    }
+    firstRecord = int.tryParse(o['firstRecord'].toString());
+
+    lastRecord = int.tryParse(o['lastRecord'].toString());
+
+    // RELATIONSHIPS FromMAP
+    plDbEvent = o['dbEvent'] != null
+        ? DbEvent.fromMap(o['dbEvent'] as Map<String, dynamic>)
+        : null;
+    plDbEventByLastRecord = o['dbEvent'] != null
+        ? DbEvent.fromMap(o['dbEvent'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbInterval)
+  int id;
+  DateTime timeStamp;
+  int duration;
+  double avgPower;
+  double minPower;
+  double maxPower;
+  double sdevPower;
+  double avgSpeed;
+  double minSpeed;
+  double maxSpeed;
+  double sdevSpeed;
+  double distance;
+  int avgHeartRate;
+  int minHeartRate;
+  int maxHeartRate;
+  int sdevHeartRate;
+  double avgCadence;
+  double minCadence;
+  double maxCadence;
+  double sdevCadence;
+  double avgStrydCadence;
+  double minStrydCadence;
+  double maxStrydCadence;
+  double sdevStrydCadence;
+  double avgGroundTime;
+  double minGroundTime;
+  double maxGroundTime;
+  double sdevGroundTime;
+  double avgVerticalOscillation;
+  double minVerticalOscillation;
+  double maxVerticalOscillation;
+  double sdevVerticalOscillation;
+  int avgFormPower;
+  int maxFormPower;
+  int minFormPower;
+  int sdevFormPower;
+  double avgLegSpringStiffness;
+  double maxLegSpringStiffness;
+  double minLegSpringStiffness;
+  double sdevLegSpringStiffness;
+  int totalAscent;
+  int totalDescent;
+  double cp;
+  double ftp;
+  int firstRecord;
+  int lastRecord;
+
+  BoolResult saveResult;
+  // end FIELDS (DbInterval)
+
+// RELATIONSHIPS (DbInterval)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbEvent', 'plField2'..]) or so on..
+  DbEvent plDbEvent;
+
+  /// get DbEvent By FirstRecord
+  Future<DbEvent> getDbEvent(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbEvent().getById(firstRecord,
+        loadParents: loadParents, loadedFields: loadedFields);
+    return _obj;
+  }
+
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbEventByLastRecord', 'plField2'..]) or so on..
+  DbEvent plDbEventByLastRecord;
+
+  /// get DbEvent By LastRecord
+  Future<DbEvent> getDbEventByLastRecord(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbEvent().getById(lastRecord,
+        loadParents: loadParents, loadedFields: loadedFields);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbInterval)
+
+  static const bool _softDeleteActivated = false;
+  DbIntervalManager __mnDbInterval;
+
+  DbIntervalManager get _mnDbInterval {
+    return __mnDbInterval = __mnDbInterval ?? DbIntervalManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (timeStamp != null) {
+      map['timeStamp'] = forJson
+          ? timeStamp.toString()
+          : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
+    }
+
+    if (duration != null) {
+      map['duration'] = duration;
+    }
+
+    if (avgPower != null) {
+      map['avgPower'] = avgPower;
+    }
+
+    if (minPower != null) {
+      map['minPower'] = minPower;
+    }
+
+    if (maxPower != null) {
+      map['maxPower'] = maxPower;
+    }
+
+    if (sdevPower != null) {
+      map['sdevPower'] = sdevPower;
+    }
+
+    if (avgSpeed != null) {
+      map['avgSpeed'] = avgSpeed;
+    }
+
+    if (minSpeed != null) {
+      map['minSpeed'] = minSpeed;
+    }
+
+    if (maxSpeed != null) {
+      map['maxSpeed'] = maxSpeed;
+    }
+
+    if (sdevSpeed != null) {
+      map['sdevSpeed'] = sdevSpeed;
+    }
+
+    if (distance != null) {
+      map['distance'] = distance;
+    }
+
+    if (avgHeartRate != null) {
+      map['avgHeartRate'] = avgHeartRate;
+    }
+
+    if (minHeartRate != null) {
+      map['minHeartRate'] = minHeartRate;
+    }
+
+    if (maxHeartRate != null) {
+      map['maxHeartRate'] = maxHeartRate;
+    }
+
+    if (sdevHeartRate != null) {
+      map['sdevHeartRate'] = sdevHeartRate;
+    }
+
+    if (avgCadence != null) {
+      map['avgCadence'] = avgCadence;
+    }
+
+    if (minCadence != null) {
+      map['minCadence'] = minCadence;
+    }
+
+    if (maxCadence != null) {
+      map['maxCadence'] = maxCadence;
+    }
+
+    if (sdevCadence != null) {
+      map['sdevCadence'] = sdevCadence;
+    }
+
+    if (avgStrydCadence != null) {
+      map['avgStrydCadence'] = avgStrydCadence;
+    }
+
+    if (minStrydCadence != null) {
+      map['minStrydCadence'] = minStrydCadence;
+    }
+
+    if (maxStrydCadence != null) {
+      map['maxStrydCadence'] = maxStrydCadence;
+    }
+
+    if (sdevStrydCadence != null) {
+      map['sdevStrydCadence'] = sdevStrydCadence;
+    }
+
+    if (avgGroundTime != null) {
+      map['avgGroundTime'] = avgGroundTime;
+    }
+
+    if (minGroundTime != null) {
+      map['minGroundTime'] = minGroundTime;
+    }
+
+    if (maxGroundTime != null) {
+      map['maxGroundTime'] = maxGroundTime;
+    }
+
+    if (sdevGroundTime != null) {
+      map['sdevGroundTime'] = sdevGroundTime;
+    }
+
+    if (avgVerticalOscillation != null) {
+      map['avgVerticalOscillation'] = avgVerticalOscillation;
+    }
+
+    if (minVerticalOscillation != null) {
+      map['minVerticalOscillation'] = minVerticalOscillation;
+    }
+
+    if (maxVerticalOscillation != null) {
+      map['maxVerticalOscillation'] = maxVerticalOscillation;
+    }
+
+    if (sdevVerticalOscillation != null) {
+      map['sdevVerticalOscillation'] = sdevVerticalOscillation;
+    }
+
+    if (avgFormPower != null) {
+      map['avgFormPower'] = avgFormPower;
+    }
+
+    if (maxFormPower != null) {
+      map['maxFormPower'] = maxFormPower;
+    }
+
+    if (minFormPower != null) {
+      map['minFormPower'] = minFormPower;
+    }
+
+    if (sdevFormPower != null) {
+      map['sdevFormPower'] = sdevFormPower;
+    }
+
+    if (avgLegSpringStiffness != null) {
+      map['avgLegSpringStiffness'] = avgLegSpringStiffness;
+    }
+
+    if (maxLegSpringStiffness != null) {
+      map['maxLegSpringStiffness'] = maxLegSpringStiffness;
+    }
+
+    if (minLegSpringStiffness != null) {
+      map['minLegSpringStiffness'] = minLegSpringStiffness;
+    }
+
+    if (sdevLegSpringStiffness != null) {
+      map['sdevLegSpringStiffness'] = sdevLegSpringStiffness;
+    }
+
+    if (totalAscent != null) {
+      map['totalAscent'] = totalAscent;
+    }
+
+    if (totalDescent != null) {
+      map['totalDescent'] = totalDescent;
+    }
+
+    if (cp != null) {
+      map['cp'] = cp;
+    }
+
+    if (ftp != null) {
+      map['ftp'] = ftp;
+    }
+
+    if (firstRecord != null) {
+      map['firstRecord'] = forView ? plDbEvent.event : firstRecord;
+    }
+
+    if (lastRecord != null) {
+      map['lastRecord'] = forView ? plDbEvent.event : lastRecord;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (timeStamp != null) {
+      map['timeStamp'] = forJson
+          ? timeStamp.toString()
+          : forQuery ? timeStamp.millisecondsSinceEpoch : timeStamp;
+    }
+
+    if (duration != null) {
+      map['duration'] = duration;
+    }
+
+    if (avgPower != null) {
+      map['avgPower'] = avgPower;
+    }
+
+    if (minPower != null) {
+      map['minPower'] = minPower;
+    }
+
+    if (maxPower != null) {
+      map['maxPower'] = maxPower;
+    }
+
+    if (sdevPower != null) {
+      map['sdevPower'] = sdevPower;
+    }
+
+    if (avgSpeed != null) {
+      map['avgSpeed'] = avgSpeed;
+    }
+
+    if (minSpeed != null) {
+      map['minSpeed'] = minSpeed;
+    }
+
+    if (maxSpeed != null) {
+      map['maxSpeed'] = maxSpeed;
+    }
+
+    if (sdevSpeed != null) {
+      map['sdevSpeed'] = sdevSpeed;
+    }
+
+    if (distance != null) {
+      map['distance'] = distance;
+    }
+
+    if (avgHeartRate != null) {
+      map['avgHeartRate'] = avgHeartRate;
+    }
+
+    if (minHeartRate != null) {
+      map['minHeartRate'] = minHeartRate;
+    }
+
+    if (maxHeartRate != null) {
+      map['maxHeartRate'] = maxHeartRate;
+    }
+
+    if (sdevHeartRate != null) {
+      map['sdevHeartRate'] = sdevHeartRate;
+    }
+
+    if (avgCadence != null) {
+      map['avgCadence'] = avgCadence;
+    }
+
+    if (minCadence != null) {
+      map['minCadence'] = minCadence;
+    }
+
+    if (maxCadence != null) {
+      map['maxCadence'] = maxCadence;
+    }
+
+    if (sdevCadence != null) {
+      map['sdevCadence'] = sdevCadence;
+    }
+
+    if (avgStrydCadence != null) {
+      map['avgStrydCadence'] = avgStrydCadence;
+    }
+
+    if (minStrydCadence != null) {
+      map['minStrydCadence'] = minStrydCadence;
+    }
+
+    if (maxStrydCadence != null) {
+      map['maxStrydCadence'] = maxStrydCadence;
+    }
+
+    if (sdevStrydCadence != null) {
+      map['sdevStrydCadence'] = sdevStrydCadence;
+    }
+
+    if (avgGroundTime != null) {
+      map['avgGroundTime'] = avgGroundTime;
+    }
+
+    if (minGroundTime != null) {
+      map['minGroundTime'] = minGroundTime;
+    }
+
+    if (maxGroundTime != null) {
+      map['maxGroundTime'] = maxGroundTime;
+    }
+
+    if (sdevGroundTime != null) {
+      map['sdevGroundTime'] = sdevGroundTime;
+    }
+
+    if (avgVerticalOscillation != null) {
+      map['avgVerticalOscillation'] = avgVerticalOscillation;
+    }
+
+    if (minVerticalOscillation != null) {
+      map['minVerticalOscillation'] = minVerticalOscillation;
+    }
+
+    if (maxVerticalOscillation != null) {
+      map['maxVerticalOscillation'] = maxVerticalOscillation;
+    }
+
+    if (sdevVerticalOscillation != null) {
+      map['sdevVerticalOscillation'] = sdevVerticalOscillation;
+    }
+
+    if (avgFormPower != null) {
+      map['avgFormPower'] = avgFormPower;
+    }
+
+    if (maxFormPower != null) {
+      map['maxFormPower'] = maxFormPower;
+    }
+
+    if (minFormPower != null) {
+      map['minFormPower'] = minFormPower;
+    }
+
+    if (sdevFormPower != null) {
+      map['sdevFormPower'] = sdevFormPower;
+    }
+
+    if (avgLegSpringStiffness != null) {
+      map['avgLegSpringStiffness'] = avgLegSpringStiffness;
+    }
+
+    if (maxLegSpringStiffness != null) {
+      map['maxLegSpringStiffness'] = maxLegSpringStiffness;
+    }
+
+    if (minLegSpringStiffness != null) {
+      map['minLegSpringStiffness'] = minLegSpringStiffness;
+    }
+
+    if (sdevLegSpringStiffness != null) {
+      map['sdevLegSpringStiffness'] = sdevLegSpringStiffness;
+    }
+
+    if (totalAscent != null) {
+      map['totalAscent'] = totalAscent;
+    }
+
+    if (totalDescent != null) {
+      map['totalDescent'] = totalDescent;
+    }
+
+    if (cp != null) {
+      map['cp'] = cp;
+    }
+
+    if (ftp != null) {
+      map['ftp'] = ftp;
+    }
+
+    if (firstRecord != null) {
+      map['firstRecord'] = forView ? plDbEvent.event : firstRecord;
+    }
+
+    if (lastRecord != null) {
+      map['lastRecord'] = forView ? plDbEvent.event : lastRecord;
+    }
+
+    return map;
+  }
+
+  /// This method returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChildren(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [
+      timeStamp,
+      duration,
+      avgPower,
+      minPower,
+      maxPower,
+      sdevPower,
+      avgSpeed,
+      minSpeed,
+      maxSpeed,
+      sdevSpeed,
+      distance,
+      avgHeartRate,
+      minHeartRate,
+      maxHeartRate,
+      sdevHeartRate,
+      avgCadence,
+      minCadence,
+      maxCadence,
+      sdevCadence,
+      avgStrydCadence,
+      minStrydCadence,
+      maxStrydCadence,
+      sdevStrydCadence,
+      avgGroundTime,
+      minGroundTime,
+      maxGroundTime,
+      sdevGroundTime,
+      avgVerticalOscillation,
+      minVerticalOscillation,
+      maxVerticalOscillation,
+      sdevVerticalOscillation,
+      avgFormPower,
+      maxFormPower,
+      minFormPower,
+      sdevFormPower,
+      avgLegSpringStiffness,
+      maxLegSpringStiffness,
+      minLegSpringStiffness,
+      sdevLegSpringStiffness,
+      totalAscent,
+      totalDescent,
+      cp,
+      ftp,
+      firstRecord,
+      lastRecord
+    ];
+  }
+
+  List<dynamic> toArgsWithIds() {
+    return [
+      id,
+      timeStamp,
+      duration,
+      avgPower,
+      minPower,
+      maxPower,
+      sdevPower,
+      avgSpeed,
+      minSpeed,
+      maxSpeed,
+      sdevSpeed,
+      distance,
+      avgHeartRate,
+      minHeartRate,
+      maxHeartRate,
+      sdevHeartRate,
+      avgCadence,
+      minCadence,
+      maxCadence,
+      sdevCadence,
+      avgStrydCadence,
+      minStrydCadence,
+      maxStrydCadence,
+      sdevStrydCadence,
+      avgGroundTime,
+      minGroundTime,
+      maxGroundTime,
+      sdevGroundTime,
+      avgVerticalOscillation,
+      minVerticalOscillation,
+      maxVerticalOscillation,
+      sdevVerticalOscillation,
+      avgFormPower,
+      maxFormPower,
+      minFormPower,
+      sdevFormPower,
+      avgLegSpringStiffness,
+      maxLegSpringStiffness,
+      minLegSpringStiffness,
+      sdevLegSpringStiffness,
+      totalAscent,
+      totalDescent,
+      cp,
+      ftp,
+      firstRecord,
+      lastRecord
+    ];
+  }
+
+  static Future<List<DbInterval>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbInterval.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbInterval>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbInterval>[];
+    try {
+      objList = list
+          .map((dbinterval) =>
+              DbInterval.fromMap(dbinterval as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbInterval.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  static Future<List<DbInterval>> fromMapList(List<dynamic> data,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
+    final List<DbInterval> objList = <DbInterval>[];
+    loadedFields = loadedFields ?? [];
+    for (final map in data) {
+      final obj = DbInterval.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('events.plDbEvent') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbEvent'))) {
+          /*_loadedFields.add('events.plDbEvent');*/
+          obj.plDbEvent = obj.plDbEvent ??
+              await obj.getDbEvent(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('events.plDbEventByLastRecord') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbEventByLastRecord'))) {
+          /*_loadedFields.add('events.plDbEventByLastRecord');*/
+          obj.plDbEventByLastRecord = obj.plDbEventByLastRecord ??
+              await obj.getDbEventByLastRecord(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbInterval by ID if exist, otherwise returns null
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>returns DbInterval if exist, otherwise returns null
+  Future<DbInterval> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    if (id == null) {
+      return null;
+    }
+    DbInterval obj;
+    final data = await _mnDbInterval.getById([id]);
+    if (data.length != 0) {
+      obj = DbInterval.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('events.plDbEvent') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbEvent'))) {
+          /*_loadedFields.add('events.plDbEvent');*/
+          obj.plDbEvent = obj.plDbEvent ??
+              await obj.getDbEvent(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('events.plDbEventByLastRecord') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbEventByLastRecord'))) {
+          /*_loadedFields.add('events.plDbEventByLastRecord');*/
+          obj.plDbEventByLastRecord = obj.plDbEventByLastRecord ??
+              await obj.getDbEventByLastRecord(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbInterval) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbInterval.insert(this);
+    } else {
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbInterval.update(this);
+    }
+
+    return id;
+  }
+
+  /// saveAs DbInterval. Returns a new Primary Key value of DbInterval
+
+  /// <returns>Returns a new Primary Key value of DbInterval
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbInterval> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<dynamic>> saveAll(List<DbInterval> dbintervals) async {
+    // final results = _mnDbInterval.saveAll('INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbintervals);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dbintervals) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> upsert() async {
+    try {
+      if (await _mnDbInterval.rawInsert(
+              'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              [
+                id,
+                timeStamp,
+                duration,
+                avgPower,
+                minPower,
+                maxPower,
+                sdevPower,
+                avgSpeed,
+                minSpeed,
+                maxSpeed,
+                sdevSpeed,
+                distance,
+                avgHeartRate,
+                minHeartRate,
+                maxHeartRate,
+                sdevHeartRate,
+                avgCadence,
+                minCadence,
+                maxCadence,
+                sdevCadence,
+                avgStrydCadence,
+                minStrydCadence,
+                maxStrydCadence,
+                sdevStrydCadence,
+                avgGroundTime,
+                minGroundTime,
+                maxGroundTime,
+                sdevGroundTime,
+                avgVerticalOscillation,
+                minVerticalOscillation,
+                maxVerticalOscillation,
+                sdevVerticalOscillation,
+                avgFormPower,
+                maxFormPower,
+                minFormPower,
+                sdevFormPower,
+                avgLegSpringStiffness,
+                maxLegSpringStiffness,
+                minLegSpringStiffness,
+                sdevLegSpringStiffness,
+                totalAscent,
+                totalDescent,
+                cp,
+                ftp,
+                firstRecord,
+                lastRecord
+              ]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbInterval id=$id updated successfully');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbInterval id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbInterval Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbInterval>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbInterval> dbintervals) async {
+    final results = await _mnDbInterval.rawInsertAll(
+        'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        dbintervals);
+    return results;
+  }
+
+  /// Deletes DbInterval
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbInterval invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbInterval
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbInterval.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  DbIntervalFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbIntervalFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbIntervalFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbIntervalFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    firstRecord = firstRecord ?? 0;
+    lastRecord = lastRecord ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dbinterval
+
+// region DbIntervalField
+class DbIntervalField extends SearchCriteria {
+  DbIntervalField(this.dbintervalFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbIntervalFilterBuilder dbintervalFB;
+
+  DbIntervalField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbIntervalFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dbintervalFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervalFB.parameters, param, SqlSyntax.EQuals,
+            dbintervalFB._addedBlocks)
+        : setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.NotEQuals, dbintervalFB._addedBlocks);
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dbintervalFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbintervalFB._addedBlocks)
+        : setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbintervalFB._addedBlocks);
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder isNull() {
+    dbintervalFB._addedBlocks = setCriteria(
+        0,
+        dbintervalFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbintervalFB._addedBlocks);
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dbintervalFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dbintervalFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbintervalFB._addedBlocks);
+      _waitingNot = '';
+      dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+          dbintervalFB._addedBlocks.retVal;
+    }
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbintervalFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dbintervalFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbintervalFB._addedBlocks);
+      _waitingNot = '';
+      dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+          dbintervalFB._addedBlocks.retVal;
+      dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+          dbintervalFB._addedBlocks.retVal;
+    }
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dbintervalFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dbintervalFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbintervalFB._addedBlocks);
+      _waitingNot = '';
+      dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+          dbintervalFB._addedBlocks.retVal;
+    }
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dbintervalFB._addedBlocks = setCriteria(
+          pFirst,
+          dbintervalFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dbintervalFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dbintervalFB._addedBlocks = setCriteria(pFirst, dbintervalFB.parameters,
+            param, SqlSyntax.LessThan, dbintervalFB._addedBlocks);
+      } else {
+        dbintervalFB._addedBlocks = setCriteria(pFirst, dbintervalFB.parameters,
+            param, SqlSyntax.GreaterThanOrEquals, dbintervalFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dbintervalFB._addedBlocks = setCriteria(pLast, dbintervalFB.parameters,
+            param, SqlSyntax.GreaterThan, dbintervalFB._addedBlocks);
+      } else {
+        dbintervalFB._addedBlocks = setCriteria(pLast, dbintervalFB.parameters,
+            param, SqlSyntax.LessThanOrEquals, dbintervalFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dbintervalFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.GreaterThan, dbintervalFB._addedBlocks)
+        : setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbintervalFB._addedBlocks);
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dbintervalFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.LessThan, dbintervalFB._addedBlocks)
+        : setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbintervalFB._addedBlocks);
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dbintervalFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbintervalFB._addedBlocks)
+        : setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.LessThan, dbintervalFB._addedBlocks);
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dbintervalFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbintervalFB._addedBlocks)
+        : setCriteria(pValue, dbintervalFB.parameters, param,
+            SqlSyntax.GreaterThan, dbintervalFB._addedBlocks);
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+
+  DbIntervalFilterBuilder inValues(dynamic pValue) {
+    dbintervalFB._addedBlocks = setCriteria(
+        pValue,
+        dbintervalFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dbintervalFB._addedBlocks);
+    _waitingNot = '';
+    dbintervalFB._addedBlocks.needEndBlock[dbintervalFB._blockIndex] =
+        dbintervalFB._addedBlocks.retVal;
+    return dbintervalFB;
+  }
+}
+// endregion DbIntervalField
+
+// region DbIntervalFilterBuilder
+class DbIntervalFilterBuilder extends SearchCriteria {
+  DbIntervalFilterBuilder(DbInterval obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbInterval _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbIntervalFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbIntervalFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbIntervalFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) {
+      _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    }
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbIntervalFilterBuilder where(String whereCriteria,
+      {dynamic parameterValue}) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbIntervalFilterBuilder page(int page, int pagesize) {
+    if (page > 0) {
+      _page = page;
+    }
+    if (pagesize > 0) {
+      _pagesize = pagesize;
+    }
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbIntervalFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbIntervalFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbIntervalFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s != '') {
+            orderByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbIntervalFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s != '') {
+            orderByList.add(' $s desc ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbIntervalFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s != '') {
+            groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  DbIntervalField setField(
+      DbIntervalField field, String colName, DbType dbtype) {
+    return DbIntervalField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbIntervalField _id;
+  DbIntervalField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbIntervalField _timeStamp;
+  DbIntervalField get timeStamp {
+    return _timeStamp = setField(_timeStamp, 'timeStamp', DbType.datetime);
+  }
+
+  DbIntervalField _duration;
+  DbIntervalField get duration {
+    return _duration = setField(_duration, 'duration', DbType.integer);
+  }
+
+  DbIntervalField _avgPower;
+  DbIntervalField get avgPower {
+    return _avgPower = setField(_avgPower, 'avgPower', DbType.real);
+  }
+
+  DbIntervalField _minPower;
+  DbIntervalField get minPower {
+    return _minPower = setField(_minPower, 'minPower', DbType.real);
+  }
+
+  DbIntervalField _maxPower;
+  DbIntervalField get maxPower {
+    return _maxPower = setField(_maxPower, 'maxPower', DbType.real);
+  }
+
+  DbIntervalField _sdevPower;
+  DbIntervalField get sdevPower {
+    return _sdevPower = setField(_sdevPower, 'sdevPower', DbType.real);
+  }
+
+  DbIntervalField _avgSpeed;
+  DbIntervalField get avgSpeed {
+    return _avgSpeed = setField(_avgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  DbIntervalField _minSpeed;
+  DbIntervalField get minSpeed {
+    return _minSpeed = setField(_minSpeed, 'minSpeed', DbType.real);
+  }
+
+  DbIntervalField _maxSpeed;
+  DbIntervalField get maxSpeed {
+    return _maxSpeed = setField(_maxSpeed, 'maxSpeed', DbType.real);
+  }
+
+  DbIntervalField _sdevSpeed;
+  DbIntervalField get sdevSpeed {
+    return _sdevSpeed = setField(_sdevSpeed, 'sdevSpeed', DbType.real);
+  }
+
+  DbIntervalField _distance;
+  DbIntervalField get distance {
+    return _distance = setField(_distance, 'distance', DbType.real);
+  }
+
+  DbIntervalField _avgHeartRate;
+  DbIntervalField get avgHeartRate {
+    return _avgHeartRate =
+        setField(_avgHeartRate, 'avgHeartRate', DbType.integer);
+  }
+
+  DbIntervalField _minHeartRate;
+  DbIntervalField get minHeartRate {
+    return _minHeartRate =
+        setField(_minHeartRate, 'minHeartRate', DbType.integer);
+  }
+
+  DbIntervalField _maxHeartRate;
+  DbIntervalField get maxHeartRate {
+    return _maxHeartRate =
+        setField(_maxHeartRate, 'maxHeartRate', DbType.integer);
+  }
+
+  DbIntervalField _sdevHeartRate;
+  DbIntervalField get sdevHeartRate {
+    return _sdevHeartRate =
+        setField(_sdevHeartRate, 'sdevHeartRate', DbType.integer);
+  }
+
+  DbIntervalField _avgCadence;
+  DbIntervalField get avgCadence {
+    return _avgCadence = setField(_avgCadence, 'avgCadence', DbType.real);
+  }
+
+  DbIntervalField _minCadence;
+  DbIntervalField get minCadence {
+    return _minCadence = setField(_minCadence, 'minCadence', DbType.real);
+  }
+
+  DbIntervalField _maxCadence;
+  DbIntervalField get maxCadence {
+    return _maxCadence = setField(_maxCadence, 'maxCadence', DbType.real);
+  }
+
+  DbIntervalField _sdevCadence;
+  DbIntervalField get sdevCadence {
+    return _sdevCadence = setField(_sdevCadence, 'sdevCadence', DbType.real);
+  }
+
+  DbIntervalField _avgStrydCadence;
+  DbIntervalField get avgStrydCadence {
+    return _avgStrydCadence =
+        setField(_avgStrydCadence, 'avgStrydCadence', DbType.real);
+  }
+
+  DbIntervalField _minStrydCadence;
+  DbIntervalField get minStrydCadence {
+    return _minStrydCadence =
+        setField(_minStrydCadence, 'minStrydCadence', DbType.real);
+  }
+
+  DbIntervalField _maxStrydCadence;
+  DbIntervalField get maxStrydCadence {
+    return _maxStrydCadence =
+        setField(_maxStrydCadence, 'maxStrydCadence', DbType.real);
+  }
+
+  DbIntervalField _sdevStrydCadence;
+  DbIntervalField get sdevStrydCadence {
+    return _sdevStrydCadence =
+        setField(_sdevStrydCadence, 'sdevStrydCadence', DbType.real);
+  }
+
+  DbIntervalField _avgGroundTime;
+  DbIntervalField get avgGroundTime {
+    return _avgGroundTime =
+        setField(_avgGroundTime, 'avgGroundTime', DbType.real);
+  }
+
+  DbIntervalField _minGroundTime;
+  DbIntervalField get minGroundTime {
+    return _minGroundTime =
+        setField(_minGroundTime, 'minGroundTime', DbType.real);
+  }
+
+  DbIntervalField _maxGroundTime;
+  DbIntervalField get maxGroundTime {
+    return _maxGroundTime =
+        setField(_maxGroundTime, 'maxGroundTime', DbType.real);
+  }
+
+  DbIntervalField _sdevGroundTime;
+  DbIntervalField get sdevGroundTime {
+    return _sdevGroundTime =
+        setField(_sdevGroundTime, 'sdevGroundTime', DbType.real);
+  }
+
+  DbIntervalField _avgVerticalOscillation;
+  DbIntervalField get avgVerticalOscillation {
+    return _avgVerticalOscillation = setField(
+        _avgVerticalOscillation, 'avgVerticalOscillation', DbType.real);
+  }
+
+  DbIntervalField _minVerticalOscillation;
+  DbIntervalField get minVerticalOscillation {
+    return _minVerticalOscillation = setField(
+        _minVerticalOscillation, 'minVerticalOscillation', DbType.real);
+  }
+
+  DbIntervalField _maxVerticalOscillation;
+  DbIntervalField get maxVerticalOscillation {
+    return _maxVerticalOscillation = setField(
+        _maxVerticalOscillation, 'maxVerticalOscillation', DbType.real);
+  }
+
+  DbIntervalField _sdevVerticalOscillation;
+  DbIntervalField get sdevVerticalOscillation {
+    return _sdevVerticalOscillation = setField(
+        _sdevVerticalOscillation, 'sdevVerticalOscillation', DbType.real);
+  }
+
+  DbIntervalField _avgFormPower;
+  DbIntervalField get avgFormPower {
+    return _avgFormPower =
+        setField(_avgFormPower, 'avgFormPower', DbType.integer);
+  }
+
+  DbIntervalField _maxFormPower;
+  DbIntervalField get maxFormPower {
+    return _maxFormPower =
+        setField(_maxFormPower, 'maxFormPower', DbType.integer);
+  }
+
+  DbIntervalField _minFormPower;
+  DbIntervalField get minFormPower {
+    return _minFormPower =
+        setField(_minFormPower, 'minFormPower', DbType.integer);
+  }
+
+  DbIntervalField _sdevFormPower;
+  DbIntervalField get sdevFormPower {
+    return _sdevFormPower =
+        setField(_sdevFormPower, 'sdevFormPower', DbType.integer);
+  }
+
+  DbIntervalField _avgLegSpringStiffness;
+  DbIntervalField get avgLegSpringStiffness {
+    return _avgLegSpringStiffness =
+        setField(_avgLegSpringStiffness, 'avgLegSpringStiffness', DbType.real);
+  }
+
+  DbIntervalField _maxLegSpringStiffness;
+  DbIntervalField get maxLegSpringStiffness {
+    return _maxLegSpringStiffness =
+        setField(_maxLegSpringStiffness, 'maxLegSpringStiffness', DbType.real);
+  }
+
+  DbIntervalField _minLegSpringStiffness;
+  DbIntervalField get minLegSpringStiffness {
+    return _minLegSpringStiffness =
+        setField(_minLegSpringStiffness, 'minLegSpringStiffness', DbType.real);
+  }
+
+  DbIntervalField _sdevLegSpringStiffness;
+  DbIntervalField get sdevLegSpringStiffness {
+    return _sdevLegSpringStiffness = setField(
+        _sdevLegSpringStiffness, 'sdevLegSpringStiffness', DbType.real);
+  }
+
+  DbIntervalField _totalAscent;
+  DbIntervalField get totalAscent {
+    return _totalAscent = setField(_totalAscent, 'totalAscent', DbType.integer);
+  }
+
+  DbIntervalField _totalDescent;
+  DbIntervalField get totalDescent {
+    return _totalDescent =
+        setField(_totalDescent, 'totalDescent', DbType.integer);
+  }
+
+  DbIntervalField _cp;
+  DbIntervalField get cp {
+    return _cp = setField(_cp, 'cp', DbType.real);
+  }
+
+  DbIntervalField _ftp;
+  DbIntervalField get ftp {
+    return _ftp = setField(_ftp, 'ftp', DbType.real);
+  }
+
+  DbIntervalField _firstRecord;
+  DbIntervalField get firstRecord {
+    return _firstRecord = setField(_firstRecord, 'firstRecord', DbType.integer);
+  }
+
+  DbIntervalField _lastRecord;
+  DbIntervalField get lastRecord {
+    return _lastRecord = setField(_lastRecord, 'lastRecord', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+            case DbType.datetimeUtc:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbInterval._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbInterval> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+
+    if (DbInterval._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbInterval.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbInterval.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from intervals ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbInterval.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbInterval Obj if exist, otherwise returns null
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>List<DbInterval>
+  Future<DbInterval> toSingle(
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbInterval.toList(qparams);
+    final data = await objFuture;
+    DbInterval obj;
+    if (data.isNotEmpty) {
+      obj = DbInterval.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('events.plDbEvent') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbEvent'))) {
+          /*_loadedFields.add('events.plDbEvent');*/
+          obj.plDbEvent = obj.plDbEvent ??
+              await obj.getDbEvent(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('events.plDbEventByLastRecord') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbEventByLastRecord'))) {
+          /*_loadedFields.add('events.plDbEventByLastRecord');*/
+          obj.plDbEventByLastRecord = obj.plDbEventByLastRecord ??
+              await obj.getDbEventByLastRecord(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dbintervalCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dbintervalsFuture = await _obj._mnDbInterval.toList(qparams);
+    final int count = dbintervalsFuture[0]['CNT'] as int;
+    if (dbintervalCount != null) {
+      dbintervalCount(count);
+    }
+    return count;
+  }
+
+  /// This method returns List<DbInterval>.
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>List<DbInterval>
+  Future<List<DbInterval>> toList(
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    final data = await toMapList();
+    final List<DbInterval> dbintervalsData = await DbInterval.fromMapList(data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
+    return dbintervalsData;
+  }
+
+  /// This method returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChildren(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbInterval.toList(qparams);
+  }
+
+  /// This method returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) {
+      _buildParameters();
+    }
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbInterval.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject() async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbInterval.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbInterval.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbInterval.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbIntervalFilterBuilder
+
+// region DbIntervalFields
+class DbIntervalFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fTimeStamp;
+  static TableField get timeStamp {
+    return _fTimeStamp = _fTimeStamp ??
+        SqlSyntax.setField(_fTimeStamp, 'timeStamp', DbType.datetime);
+  }
+
+  static TableField _fDuration;
+  static TableField get duration {
+    return _fDuration = _fDuration ??
+        SqlSyntax.setField(_fDuration, 'duration', DbType.integer);
+  }
+
+  static TableField _fAvgPower;
+  static TableField get avgPower {
+    return _fAvgPower =
+        _fAvgPower ?? SqlSyntax.setField(_fAvgPower, 'avgPower', DbType.real);
+  }
+
+  static TableField _fMinPower;
+  static TableField get minPower {
+    return _fMinPower =
+        _fMinPower ?? SqlSyntax.setField(_fMinPower, 'minPower', DbType.real);
+  }
+
+  static TableField _fMaxPower;
+  static TableField get maxPower {
+    return _fMaxPower =
+        _fMaxPower ?? SqlSyntax.setField(_fMaxPower, 'maxPower', DbType.real);
+  }
+
+  static TableField _fSdevPower;
+  static TableField get sdevPower {
+    return _fSdevPower = _fSdevPower ??
+        SqlSyntax.setField(_fSdevPower, 'sdevPower', DbType.real);
+  }
+
+  static TableField _fAvgSpeed;
+  static TableField get avgSpeed {
+    return _fAvgSpeed =
+        _fAvgSpeed ?? SqlSyntax.setField(_fAvgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  static TableField _fMinSpeed;
+  static TableField get minSpeed {
+    return _fMinSpeed =
+        _fMinSpeed ?? SqlSyntax.setField(_fMinSpeed, 'minSpeed', DbType.real);
+  }
+
+  static TableField _fMaxSpeed;
+  static TableField get maxSpeed {
+    return _fMaxSpeed =
+        _fMaxSpeed ?? SqlSyntax.setField(_fMaxSpeed, 'maxSpeed', DbType.real);
+  }
+
+  static TableField _fSdevSpeed;
+  static TableField get sdevSpeed {
+    return _fSdevSpeed = _fSdevSpeed ??
+        SqlSyntax.setField(_fSdevSpeed, 'sdevSpeed', DbType.real);
+  }
+
+  static TableField _fDistance;
+  static TableField get distance {
+    return _fDistance =
+        _fDistance ?? SqlSyntax.setField(_fDistance, 'distance', DbType.real);
+  }
+
+  static TableField _fAvgHeartRate;
+  static TableField get avgHeartRate {
+    return _fAvgHeartRate = _fAvgHeartRate ??
+        SqlSyntax.setField(_fAvgHeartRate, 'avgHeartRate', DbType.integer);
+  }
+
+  static TableField _fMinHeartRate;
+  static TableField get minHeartRate {
+    return _fMinHeartRate = _fMinHeartRate ??
+        SqlSyntax.setField(_fMinHeartRate, 'minHeartRate', DbType.integer);
+  }
+
+  static TableField _fMaxHeartRate;
+  static TableField get maxHeartRate {
+    return _fMaxHeartRate = _fMaxHeartRate ??
+        SqlSyntax.setField(_fMaxHeartRate, 'maxHeartRate', DbType.integer);
+  }
+
+  static TableField _fSdevHeartRate;
+  static TableField get sdevHeartRate {
+    return _fSdevHeartRate = _fSdevHeartRate ??
+        SqlSyntax.setField(_fSdevHeartRate, 'sdevHeartRate', DbType.integer);
+  }
+
+  static TableField _fAvgCadence;
+  static TableField get avgCadence {
+    return _fAvgCadence = _fAvgCadence ??
+        SqlSyntax.setField(_fAvgCadence, 'avgCadence', DbType.real);
+  }
+
+  static TableField _fMinCadence;
+  static TableField get minCadence {
+    return _fMinCadence = _fMinCadence ??
+        SqlSyntax.setField(_fMinCadence, 'minCadence', DbType.real);
+  }
+
+  static TableField _fMaxCadence;
+  static TableField get maxCadence {
+    return _fMaxCadence = _fMaxCadence ??
+        SqlSyntax.setField(_fMaxCadence, 'maxCadence', DbType.real);
+  }
+
+  static TableField _fSdevCadence;
+  static TableField get sdevCadence {
+    return _fSdevCadence = _fSdevCadence ??
+        SqlSyntax.setField(_fSdevCadence, 'sdevCadence', DbType.real);
+  }
+
+  static TableField _fAvgStrydCadence;
+  static TableField get avgStrydCadence {
+    return _fAvgStrydCadence = _fAvgStrydCadence ??
+        SqlSyntax.setField(_fAvgStrydCadence, 'avgStrydCadence', DbType.real);
+  }
+
+  static TableField _fMinStrydCadence;
+  static TableField get minStrydCadence {
+    return _fMinStrydCadence = _fMinStrydCadence ??
+        SqlSyntax.setField(_fMinStrydCadence, 'minStrydCadence', DbType.real);
+  }
+
+  static TableField _fMaxStrydCadence;
+  static TableField get maxStrydCadence {
+    return _fMaxStrydCadence = _fMaxStrydCadence ??
+        SqlSyntax.setField(_fMaxStrydCadence, 'maxStrydCadence', DbType.real);
+  }
+
+  static TableField _fSdevStrydCadence;
+  static TableField get sdevStrydCadence {
+    return _fSdevStrydCadence = _fSdevStrydCadence ??
+        SqlSyntax.setField(_fSdevStrydCadence, 'sdevStrydCadence', DbType.real);
+  }
+
+  static TableField _fAvgGroundTime;
+  static TableField get avgGroundTime {
+    return _fAvgGroundTime = _fAvgGroundTime ??
+        SqlSyntax.setField(_fAvgGroundTime, 'avgGroundTime', DbType.real);
+  }
+
+  static TableField _fMinGroundTime;
+  static TableField get minGroundTime {
+    return _fMinGroundTime = _fMinGroundTime ??
+        SqlSyntax.setField(_fMinGroundTime, 'minGroundTime', DbType.real);
+  }
+
+  static TableField _fMaxGroundTime;
+  static TableField get maxGroundTime {
+    return _fMaxGroundTime = _fMaxGroundTime ??
+        SqlSyntax.setField(_fMaxGroundTime, 'maxGroundTime', DbType.real);
+  }
+
+  static TableField _fSdevGroundTime;
+  static TableField get sdevGroundTime {
+    return _fSdevGroundTime = _fSdevGroundTime ??
+        SqlSyntax.setField(_fSdevGroundTime, 'sdevGroundTime', DbType.real);
+  }
+
+  static TableField _fAvgVerticalOscillation;
+  static TableField get avgVerticalOscillation {
+    return _fAvgVerticalOscillation = _fAvgVerticalOscillation ??
+        SqlSyntax.setField(
+            _fAvgVerticalOscillation, 'avgVerticalOscillation', DbType.real);
+  }
+
+  static TableField _fMinVerticalOscillation;
+  static TableField get minVerticalOscillation {
+    return _fMinVerticalOscillation = _fMinVerticalOscillation ??
+        SqlSyntax.setField(
+            _fMinVerticalOscillation, 'minVerticalOscillation', DbType.real);
+  }
+
+  static TableField _fMaxVerticalOscillation;
+  static TableField get maxVerticalOscillation {
+    return _fMaxVerticalOscillation = _fMaxVerticalOscillation ??
+        SqlSyntax.setField(
+            _fMaxVerticalOscillation, 'maxVerticalOscillation', DbType.real);
+  }
+
+  static TableField _fSdevVerticalOscillation;
+  static TableField get sdevVerticalOscillation {
+    return _fSdevVerticalOscillation = _fSdevVerticalOscillation ??
+        SqlSyntax.setField(
+            _fSdevVerticalOscillation, 'sdevVerticalOscillation', DbType.real);
+  }
+
+  static TableField _fAvgFormPower;
+  static TableField get avgFormPower {
+    return _fAvgFormPower = _fAvgFormPower ??
+        SqlSyntax.setField(_fAvgFormPower, 'avgFormPower', DbType.integer);
+  }
+
+  static TableField _fMaxFormPower;
+  static TableField get maxFormPower {
+    return _fMaxFormPower = _fMaxFormPower ??
+        SqlSyntax.setField(_fMaxFormPower, 'maxFormPower', DbType.integer);
+  }
+
+  static TableField _fMinFormPower;
+  static TableField get minFormPower {
+    return _fMinFormPower = _fMinFormPower ??
+        SqlSyntax.setField(_fMinFormPower, 'minFormPower', DbType.integer);
+  }
+
+  static TableField _fSdevFormPower;
+  static TableField get sdevFormPower {
+    return _fSdevFormPower = _fSdevFormPower ??
+        SqlSyntax.setField(_fSdevFormPower, 'sdevFormPower', DbType.integer);
+  }
+
+  static TableField _fAvgLegSpringStiffness;
+  static TableField get avgLegSpringStiffness {
+    return _fAvgLegSpringStiffness = _fAvgLegSpringStiffness ??
+        SqlSyntax.setField(
+            _fAvgLegSpringStiffness, 'avgLegSpringStiffness', DbType.real);
+  }
+
+  static TableField _fMaxLegSpringStiffness;
+  static TableField get maxLegSpringStiffness {
+    return _fMaxLegSpringStiffness = _fMaxLegSpringStiffness ??
+        SqlSyntax.setField(
+            _fMaxLegSpringStiffness, 'maxLegSpringStiffness', DbType.real);
+  }
+
+  static TableField _fMinLegSpringStiffness;
+  static TableField get minLegSpringStiffness {
+    return _fMinLegSpringStiffness = _fMinLegSpringStiffness ??
+        SqlSyntax.setField(
+            _fMinLegSpringStiffness, 'minLegSpringStiffness', DbType.real);
+  }
+
+  static TableField _fSdevLegSpringStiffness;
+  static TableField get sdevLegSpringStiffness {
+    return _fSdevLegSpringStiffness = _fSdevLegSpringStiffness ??
+        SqlSyntax.setField(
+            _fSdevLegSpringStiffness, 'sdevLegSpringStiffness', DbType.real);
+  }
+
+  static TableField _fTotalAscent;
+  static TableField get totalAscent {
+    return _fTotalAscent = _fTotalAscent ??
+        SqlSyntax.setField(_fTotalAscent, 'totalAscent', DbType.integer);
+  }
+
+  static TableField _fTotalDescent;
+  static TableField get totalDescent {
+    return _fTotalDescent = _fTotalDescent ??
+        SqlSyntax.setField(_fTotalDescent, 'totalDescent', DbType.integer);
+  }
+
+  static TableField _fCp;
+  static TableField get cp {
+    return _fCp = _fCp ?? SqlSyntax.setField(_fCp, 'cp', DbType.real);
+  }
+
+  static TableField _fFtp;
+  static TableField get ftp {
+    return _fFtp = _fFtp ?? SqlSyntax.setField(_fFtp, 'ftp', DbType.real);
+  }
+
+  static TableField _fFirstRecord;
+  static TableField get firstRecord {
+    return _fFirstRecord = _fFirstRecord ??
+        SqlSyntax.setField(_fFirstRecord, 'firstRecord', DbType.integer);
+  }
+
+  static TableField _fLastRecord;
+  static TableField get lastRecord {
+    return _fLastRecord = _fLastRecord ??
+        SqlSyntax.setField(_fLastRecord, 'lastRecord', DbType.integer);
+  }
+}
+// endregion DbIntervalFields
+
+//region DbIntervalManager
+class DbIntervalManager extends SqfEntityProvider {
+  DbIntervalManager()
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
+  static final String _tableName = 'intervals';
+  static final List<String> _primaryKeyList = ['id'];
+  static final String _whereStr = 'id=?';
+}
+
+//endregion DbIntervalManager
 // region DbWeight
 class DbWeight {
   DbWeight({this.id, this.date, this.value, this.athletesId}) {
@@ -16478,6 +19231,23 @@ class DbTag {
         .and;
   }
 
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbLapTaggingsBytagsId', 'plField2'..]) or so on..
+  List<DbLapTagging> plDbLapTaggingsBytagsId;
+
+  /// get DbLapTagging(s) filtered by id=tagsId
+  DbLapTaggingFilterBuilder getDbLapTaggingsBytagsId(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
+    return DbLapTagging()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .tagsId
+        .equals(id)
+        .and;
+  }
+
 // END COLLECTIONS & VIRTUALS (DbTag)
 
   static const bool _softDeleteActivated = false;
@@ -16551,6 +19321,9 @@ class DbTag {
     }
     if (!forQuery) {
       map['DbActivityTaggings'] = await getDbActivityTaggings().toMapList();
+    }
+    if (!forQuery) {
+      map['DbLapTaggings'] = await getDbLapTaggings().toMapList();
     }
 // END COLLECTIONS (DbTag)
 
@@ -16634,6 +19407,16 @@ class DbTag {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
+        if (/*!_loadedFields.contains('tags.plDbLapTaggingsBytagsId') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLapTaggingsBytagsId'))) {
+          /*_loadedFields.add('tags.plDbLapTaggingsBytagsId'); */
+          obj.plDbLapTaggingsBytagsId = obj.plDbLapTaggingsBytagsId ??
+              await obj.getDbLapTaggingsBytagsId().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
       } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
@@ -16704,6 +19487,16 @@ class DbTag {
           /*_loadedFields.add('tags.plDbActivityTaggings'); */
           obj.plDbActivityTaggings = obj.plDbActivityTaggings ??
               await obj.getDbActivityTaggings().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('tags.plDbLapTaggingsBytagsId') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLapTaggingsBytagsId'))) {
+          /*_loadedFields.add('tags.plDbLapTaggingsBytagsId'); */
+          obj.plDbLapTaggingsBytagsId = obj.plDbLapTaggingsBytagsId ??
+              await obj.getDbLapTaggingsBytagsId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -16821,6 +19614,17 @@ class DbTag {
     }
     {
       result = await DbActivityTagging()
+          .select()
+          .tagsId
+          .equals(id)
+          .and
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
+    {
+      result = await DbLapTagging()
           .select()
           .tagsId
           .equals(id)
@@ -17376,6 +20180,16 @@ class DbTagFilterBuilder extends SearchCriteria {
     if (!resDbActivityTaggingBYtagsId.success) {
       return resDbActivityTaggingBYtagsId;
     }
+// Delete sub records where in (DbLapTagging) according to DeleteRule.CASCADE
+    final lapTaggingsBytagsIdidList = await toListPrimaryKey(false);
+    final resDbLapTaggingBYtagsId = await DbLapTagging()
+        .select()
+        .tagsId
+        .inValues(lapTaggingsBytagsIdidList)
+        .delete(hardDelete);
+    if (!resDbLapTaggingBYtagsId.success) {
+      return resDbLapTaggingBYtagsId;
+    }
 
     if (DbTag._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbTag.updateBatch(qparams, {'isDeleted': 1});
@@ -17446,6 +20260,16 @@ class DbTagFilterBuilder extends SearchCriteria {
           /*_loadedFields.add('tags.plDbActivityTaggings'); */
           obj.plDbActivityTaggings = obj.plDbActivityTaggings ??
               await obj.getDbActivityTaggings().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('tags.plDbLapTaggingsBytagsId') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbLapTaggingsBytagsId'))) {
+          /*_loadedFields.add('tags.plDbLapTaggingsBytagsId'); */
+          obj.plDbLapTaggingsBytagsId = obj.plDbLapTaggingsBytagsId ??
+              await obj.getDbLapTaggingsBytagsId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -21106,6 +23930,1132 @@ class DbActivityTaggingManager extends SqfEntityProvider {
 }
 
 //endregion DbActivityTaggingManager
+// region DbLapTagging
+class DbLapTagging {
+  DbLapTagging({this.id, this.system, this.tagsId, this.lapsId}) {
+    _setDefaultValues();
+  }
+  DbLapTagging.withFields(this.system, this.tagsId, this.lapsId) {
+    _setDefaultValues();
+  }
+  DbLapTagging.withId(this.id, this.system, this.tagsId, this.lapsId) {
+    _setDefaultValues();
+  }
+  DbLapTagging.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) {
+      _setDefaultValues();
+    }
+    id = int.tryParse(o['id'].toString());
+    if (o['system'] != null) {
+      system = o['system'] == 1 || o['system'] == true;
+    }
+    tagsId = int.tryParse(o['tagsId'].toString());
+
+    lapsId = int.tryParse(o['lapsId'].toString());
+
+    // RELATIONSHIPS FromMAP
+    plDbTag = o['dbTag'] != null
+        ? DbTag.fromMap(o['dbTag'] as Map<String, dynamic>)
+        : null;
+    plDbLap = o['dbLap'] != null
+        ? DbLap.fromMap(o['dbLap'] as Map<String, dynamic>)
+        : null;
+    // END RELATIONSHIPS FromMAP
+  }
+  // FIELDS (DbLapTagging)
+  int id;
+  bool system;
+  int tagsId;
+  int lapsId;
+
+  BoolResult saveResult;
+  // end FIELDS (DbLapTagging)
+
+// RELATIONSHIPS (DbLapTagging)
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbTag', 'plField2'..]) or so on..
+  DbTag plDbTag;
+
+  /// get DbTag By TagsId
+  Future<DbTag> getDbTag(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbTag()
+        .getById(tagsId, loadParents: loadParents, loadedFields: loadedFields);
+    return _obj;
+  }
+
+  /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbLap', 'plField2'..]) or so on..
+  DbLap plDbLap;
+
+  /// get DbLap By LapsId
+  Future<DbLap> getDbLap(
+      {bool loadParents = false, List<String> loadedFields}) async {
+    final _obj = await DbLap()
+        .getById(lapsId, loadParents: loadParents, loadedFields: loadedFields);
+    return _obj;
+  }
+  // END RELATIONSHIPS (DbLapTagging)
+
+  static const bool _softDeleteActivated = false;
+  DbLapTaggingManager __mnDbLapTagging;
+
+  DbLapTaggingManager get _mnDbLapTagging {
+    return __mnDbLapTagging = __mnDbLapTagging ?? DbLapTaggingManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (tagsId != null) {
+      map['tagsId'] = forView ? plDbTag.name : tagsId;
+    }
+
+    if (lapsId != null) {
+      map['lapsId'] = forView ? plDbLap.event : lapsId;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (system != null) {
+      map['system'] = forQuery ? (system ? 1 : 0) : system;
+    }
+
+    if (tagsId != null) {
+      map['tagsId'] = forView ? plDbTag.name : tagsId;
+    }
+
+    if (lapsId != null) {
+      map['lapsId'] = forView ? plDbLap.event : lapsId;
+    }
+
+    return map;
+  }
+
+  /// This method returns Json String
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method returns Json String
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChildren(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [system, tagsId, lapsId];
+  }
+
+  List<dynamic> toArgsWithIds() {
+    return [id, system, tagsId, lapsId];
+  }
+
+  static Future<List<DbLapTagging>> fromWebUrl(String url) async {
+    try {
+      final response = await http.get(url);
+      return await fromJson(response.body);
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbLapTagging.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  static Future<List<DbLapTagging>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbLapTagging>[];
+    try {
+      objList = list
+          .map((dblaptagging) =>
+              DbLapTagging.fromMap(dblaptagging as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print(
+          'SQFENTITY ERROR DbLapTagging.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  static Future<List<DbLapTagging>> fromMapList(List<dynamic> data,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
+    final List<DbLapTagging> objList = <DbLapTagging>[];
+    loadedFields = loadedFields ?? [];
+    for (final map in data) {
+      final obj = DbLapTagging.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+      // final List<String> _loadedFields = List<String>.from(loadedFields);
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('tags.plDbTag') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbTag'))) {
+          /*_loadedFields.add('tags.plDbTag');*/
+          obj.plDbTag = obj.plDbTag ??
+              await obj.getDbTag(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbLap'))) {
+          /*_loadedFields.add('laps.plDbLap');*/
+          obj.plDbLap = obj.plDbLap ??
+              await obj.getDbLap(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbLapTagging by ID if exist, otherwise returns null
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>returns DbLapTagging if exist, otherwise returns null
+  Future<DbLapTagging> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    if (id == null) {
+      return null;
+    }
+    DbLapTagging obj;
+    final data = await _mnDbLapTagging.getById([id]);
+    if (data.length != 0) {
+      obj = DbLapTagging.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('tags.plDbTag') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbTag'))) {
+          /*_loadedFields.add('tags.plDbTag');*/
+          obj.plDbTag = obj.plDbTag ??
+              await obj.getDbTag(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbLap'))) {
+          /*_loadedFields.add('laps.plDbLap');*/
+          obj.plDbLap = obj.plDbLap ??
+              await obj.getDbLap(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbLapTagging) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbLapTagging.insert(this);
+    } else {
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbLapTagging.update(this);
+    }
+
+    return id;
+  }
+
+  /// saveAs DbLapTagging. Returns a new Primary Key value of DbLapTagging
+
+  /// <returns>Returns a new Primary Key value of DbLapTagging
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbLapTagging> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  Future<List<dynamic>> saveAll(List<DbLapTagging> dblaptaggings) async {
+    // final results = _mnDbLapTagging.saveAll('INSERT OR REPLACE INTO lapTaggings (id,system, tagsId, lapsId)  VALUES (?,?,?,?)',dblaptaggings);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    DbEncrateia().batchStart();
+    for (final obj in dblaptaggings) {
+      await obj.save();
+    }
+    return DbEncrateia().batchCommit();
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> upsert() async {
+    try {
+      if (await _mnDbLapTagging.rawInsert(
+              'INSERT OR REPLACE INTO lapTaggings (id,system, tagsId, lapsId)  VALUES (?,?,?,?)',
+              [id, system, tagsId, lapsId]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true,
+            successMessage: 'DbLapTagging id=$id updated successfully');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbLapTagging id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbLapTagging Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbLapTagging>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbLapTagging> dblaptaggings) async {
+    final results = await _mnDbLapTagging.rawInsertAll(
+        'INSERT OR REPLACE INTO lapTaggings (id,system, tagsId, lapsId)  VALUES (?,?,?,?)',
+        dblaptaggings);
+    return results;
+  }
+
+  /// Deletes DbLapTagging
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbLapTagging invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbLapTagging
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbLapTagging.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  DbLapTaggingFilterBuilder select(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbLapTaggingFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbLapTaggingFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbLapTaggingFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {
+    tagsId = tagsId ?? 0;
+    lapsId = lapsId ?? 0;
+  }
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dblaptagging
+
+// region DbLapTaggingField
+class DbLapTaggingField extends SearchCriteria {
+  DbLapTaggingField(this.dblaptaggingFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbLapTaggingFilterBuilder dblaptaggingFB;
+
+  DbLapTaggingField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbLapTaggingFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.EQuals, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.NotEQuals, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder isNull() {
+    dblaptaggingFB._addedBlocks = setCriteria(
+        0,
+        dblaptaggingFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dblaptaggingFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dblaptaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblaptaggingFB._addedBlocks);
+      _waitingNot = '';
+      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+          dblaptaggingFB._addedBlocks.retVal;
+    }
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dblaptaggingFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dblaptaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblaptaggingFB._addedBlocks);
+      _waitingNot = '';
+      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+          dblaptaggingFB._addedBlocks.retVal;
+      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+          dblaptaggingFB._addedBlocks.retVal;
+    }
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dblaptaggingFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dblaptaggingFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblaptaggingFB._addedBlocks);
+      _waitingNot = '';
+      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+          dblaptaggingFB._addedBlocks.retVal;
+    }
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dblaptaggingFB._addedBlocks = setCriteria(
+          pFirst,
+          dblaptaggingFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblaptaggingFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dblaptaggingFB._addedBlocks = setCriteria(
+            pFirst,
+            dblaptaggingFB.parameters,
+            param,
+            SqlSyntax.LessThan,
+            dblaptaggingFB._addedBlocks);
+      } else {
+        dblaptaggingFB._addedBlocks = setCriteria(
+            pFirst,
+            dblaptaggingFB.parameters,
+            param,
+            SqlSyntax.GreaterThanOrEquals,
+            dblaptaggingFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dblaptaggingFB._addedBlocks = setCriteria(
+            pLast,
+            dblaptaggingFB.parameters,
+            param,
+            SqlSyntax.GreaterThan,
+            dblaptaggingFB._addedBlocks);
+      } else {
+        dblaptaggingFB._addedBlocks = setCriteria(
+            pLast,
+            dblaptaggingFB.parameters,
+            param,
+            SqlSyntax.LessThanOrEquals,
+            dblaptaggingFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.GreaterThan, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.LessThan, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.LessThan, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dblaptaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dblaptaggingFB._addedBlocks)
+        : setCriteria(pValue, dblaptaggingFB.parameters, param,
+            SqlSyntax.GreaterThan, dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+
+  DbLapTaggingFilterBuilder inValues(dynamic pValue) {
+    dblaptaggingFB._addedBlocks = setCriteria(
+        pValue,
+        dblaptaggingFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dblaptaggingFB._addedBlocks);
+    _waitingNot = '';
+    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
+        dblaptaggingFB._addedBlocks.retVal;
+    return dblaptaggingFB;
+  }
+}
+// endregion DbLapTaggingField
+
+// region DbLapTaggingFilterBuilder
+class DbLapTaggingFilterBuilder extends SearchCriteria {
+  DbLapTaggingFilterBuilder(DbLapTagging obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbLapTagging _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbLapTaggingFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbLapTaggingFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbLapTaggingFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) {
+      _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    }
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbLapTaggingFilterBuilder where(String whereCriteria,
+      {dynamic parameterValue}) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param =
+          DbParameter(columnName: parameterValue == null ? null : '');
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbLapTaggingFilterBuilder page(int page, int pagesize) {
+    if (page > 0) {
+      _page = page;
+    }
+    if (pagesize > 0) {
+      _pagesize = pagesize;
+    }
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbLapTaggingFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbLapTaggingFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbLapTaggingFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s != '') {
+            orderByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbLapTaggingFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s != '') {
+            orderByList.add(' $s desc ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbLapTaggingFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s != '') {
+            groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  DbLapTaggingField setField(
+      DbLapTaggingField field, String colName, DbType dbtype) {
+    return DbLapTaggingField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbLapTaggingField _id;
+  DbLapTaggingField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbLapTaggingField _system;
+  DbLapTaggingField get system {
+    return _system = setField(_system, 'system', DbType.bool);
+  }
+
+  DbLapTaggingField _tagsId;
+  DbLapTaggingField get tagsId {
+    return _tagsId = setField(_tagsId, 'tagsId', DbType.integer);
+  }
+
+  DbLapTaggingField _lapsId;
+  DbLapTaggingField get lapsId {
+    return _lapsId = setField(_lapsId, 'lapsId', DbType.integer);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List) {
+          param.value = param.value
+              .toString()
+              .replaceAll('[', '')
+              .replaceAll(']', '')
+              .toString();
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+            case DbType.datetimeUtc:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            whereArguments.add(param.value);
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbLapTagging._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',');
+  }
+
+  /// Deletes List<DbLapTagging> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+
+    if (DbLapTagging._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbLapTagging.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbLapTagging.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from lapTaggings ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbLapTagging.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbLapTagging Obj if exist, otherwise returns null
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>List<DbLapTagging>
+  Future<DbLapTagging> toSingle(
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbLapTagging.toList(qparams);
+    final data = await objFuture;
+    DbLapTagging obj;
+    if (data.isNotEmpty) {
+      obj = DbLapTagging.fromMap(data[0] as Map<String, dynamic>);
+      // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD
+      if (preload || loadParents) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('tags.plDbTag') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbTag'))) {
+          /*_loadedFields.add('tags.plDbTag');*/
+          obj.plDbTag = obj.plDbTag ??
+              await obj.getDbTag(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+                null ||
+            loadParents ||
+            preloadFields.contains('plDbLap'))) {
+          /*_loadedFields.add('laps.plDbLap');*/
+          obj.plDbLap = obj.plDbLap ??
+              await obj.getDbLap(
+                  loadParents: loadParents /*, loadedFields: _loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD
+
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method returns int.
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dblaptaggingCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dblaptaggingsFuture = await _obj._mnDbLapTagging.toList(qparams);
+    final int count = dblaptaggingsFuture[0]['CNT'] as int;
+    if (dblaptaggingCount != null) {
+      dblaptaggingCount(count);
+    }
+    return count;
+  }
+
+  /// This method returns List<DbLapTagging>.
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>List<DbLapTagging>
+  Future<List<DbLapTagging>> toList(
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    final data = await toMapList();
+    final List<DbLapTagging> dblaptaggingsData = await DbLapTagging.fromMapList(
+        data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
+    return dblaptaggingsData;
+  }
+
+  /// This method returns Json String
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method returns Json String.
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChildren(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method returns List<dynamic>.
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbLapTagging.toList(qparams);
+  }
+
+  /// This method returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) {
+      _buildParameters();
+    }
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbLapTagging.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject() async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbLapTagging.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbLapTagging.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbLapTagging.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbLapTaggingFilterBuilder
+
+// region DbLapTaggingFields
+class DbLapTaggingFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fSystem;
+  static TableField get system {
+    return _fSystem =
+        _fSystem ?? SqlSyntax.setField(_fSystem, 'system', DbType.bool);
+  }
+
+  static TableField _fTagsId;
+  static TableField get tagsId {
+    return _fTagsId =
+        _fTagsId ?? SqlSyntax.setField(_fTagsId, 'tagsId', DbType.integer);
+  }
+
+  static TableField _fLapsId;
+  static TableField get lapsId {
+    return _fLapsId =
+        _fLapsId ?? SqlSyntax.setField(_fLapsId, 'lapsId', DbType.integer);
+  }
+}
+// endregion DbLapTaggingFields
+
+//region DbLapTaggingManager
+class DbLapTaggingManager extends SqfEntityProvider {
+  DbLapTaggingManager()
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
+  static final String _tableName = 'lapTaggings';
+  static final List<String> _primaryKeyList = ['id'];
+  static final String _whereStr = 'id=?';
+}
+
+//endregion DbLapTaggingManager
 class DbEncrateiaSequenceManager extends SqfEntityProvider {
   DbEncrateiaSequenceManager() : super(DbEncrateia());
 }
