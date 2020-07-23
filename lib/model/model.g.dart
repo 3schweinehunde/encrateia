@@ -326,18 +326,19 @@ class TableDbInterval extends SqfEntityTableBase {
           isNotNull: false, minValue: DateTime.parse('1900-01-01')),
       SqfEntityFieldBase('duration', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('avgPower', DbType.real, isNotNull: false),
-      SqfEntityFieldBase('minPower', DbType.real, isNotNull: false),
-      SqfEntityFieldBase('maxPower', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('minPower', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('maxPower', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('sdevPower', DbType.real, isNotNull: false),
       SqfEntityFieldBase('avgSpeed', DbType.real, isNotNull: false),
       SqfEntityFieldBase('minSpeed', DbType.real, isNotNull: false),
       SqfEntityFieldBase('maxSpeed', DbType.real, isNotNull: false),
       SqfEntityFieldBase('sdevSpeed', DbType.real, isNotNull: false),
-      SqfEntityFieldBase('distance', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('sdevPace', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('distance', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('avgHeartRate', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('minHeartRate', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('maxHeartRate', DbType.integer, isNotNull: false),
-      SqfEntityFieldBase('sdevHeartRate', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('sdevHeartRate', DbType.real, isNotNull: false),
       SqfEntityFieldBase('avgCadence', DbType.real, isNotNull: false),
       SqfEntityFieldBase('minCadence', DbType.real, isNotNull: false),
       SqfEntityFieldBase('maxCadence', DbType.real, isNotNull: false),
@@ -358,10 +359,10 @@ class TableDbInterval extends SqfEntityTableBase {
           isNotNull: false),
       SqfEntityFieldBase('sdevVerticalOscillation', DbType.real,
           isNotNull: false),
-      SqfEntityFieldBase('avgFormPower', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('avgFormPower', DbType.real, isNotNull: false),
       SqfEntityFieldBase('maxFormPower', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('minFormPower', DbType.integer, isNotNull: false),
-      SqfEntityFieldBase('sdevFormPower', DbType.integer, isNotNull: false),
+      SqfEntityFieldBase('sdevFormPower', DbType.real, isNotNull: false),
       SqfEntityFieldBase('avgLegSpringStiffness', DbType.real,
           isNotNull: false),
       SqfEntityFieldBase('maxLegSpringStiffness', DbType.real,
@@ -377,13 +378,13 @@ class TableDbInterval extends SqfEntityTableBase {
       SqfEntityFieldRelationshipBase(
           TableDbEvent.getInstance, DeleteRule.CASCADE,
           relationType: RelationType.ONE_TO_MANY,
-          fieldName: 'firstRecord',
+          fieldName: 'firstRecordId',
           defaultValue: 0,
           isNotNull: false),
       SqfEntityFieldRelationshipBase(
           TableDbEvent.getInstance, DeleteRule.CASCADE,
           relationType: RelationType.ONE_TO_MANY,
-          fieldName: 'lastRecord',
+          fieldName: 'lastRecordId',
           defaultValue: 0,
           isNotNull: false),
       SqfEntityFieldRelationshipBase(
@@ -6217,7 +6218,7 @@ class DbEvent {
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervals', 'plField2'..]) or so on..
   List<DbInterval> plDbIntervals;
 
-  /// get DbInterval(s) filtered by id=firstRecord
+  /// get DbInterval(s) filtered by id=firstRecordId
   DbIntervalFilterBuilder getDbIntervals(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     if (id == null) {
@@ -6225,24 +6226,24 @@ class DbEvent {
     }
     return DbInterval()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .firstRecord
+        .firstRecordId
         .equals(id)
         .and;
   }
 
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervalsBylastRecord', 'plField2'..]) or so on..
-  List<DbInterval> plDbIntervalsBylastRecord;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervalsBylastRecordId', 'plField2'..]) or so on..
+  List<DbInterval> plDbIntervalsBylastRecordId;
 
-  /// get DbInterval(s) filtered by id=lastRecord
-  DbIntervalFilterBuilder getDbIntervalsBylastRecord(
+  /// get DbInterval(s) filtered by id=lastRecordId
+  DbIntervalFilterBuilder getDbIntervalsBylastRecordId(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     if (id == null) {
       return null;
     }
     return DbInterval()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .lastRecord
+        .lastRecordId
         .equals(id)
         .and;
   }
@@ -6581,12 +6582,12 @@ class DbEvent {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecord') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecordId') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plDbIntervalsBylastRecord'))) {
-          /*_loadedFields.add('events.plDbIntervalsBylastRecord'); */
-          obj.plDbIntervalsBylastRecord = obj.plDbIntervalsBylastRecord ??
-              await obj.getDbIntervalsBylastRecord().toList(
+            preloadFields.contains('plDbIntervalsBylastRecordId'))) {
+          /*_loadedFields.add('events.plDbIntervalsBylastRecordId'); */
+          obj.plDbIntervalsBylastRecordId = obj.plDbIntervalsBylastRecordId ??
+              await obj.getDbIntervalsBylastRecordId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -6664,12 +6665,12 @@ class DbEvent {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecord') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecordId') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plDbIntervalsBylastRecord'))) {
-          /*_loadedFields.add('events.plDbIntervalsBylastRecord'); */
-          obj.plDbIntervalsBylastRecord = obj.plDbIntervalsBylastRecord ??
-              await obj.getDbIntervalsBylastRecord().toList(
+            preloadFields.contains('plDbIntervalsBylastRecordId'))) {
+          /*_loadedFields.add('events.plDbIntervalsBylastRecordId'); */
+          obj.plDbIntervalsBylastRecordId = obj.plDbIntervalsBylastRecordId ??
+              await obj.getDbIntervalsBylastRecordId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -6811,7 +6812,7 @@ class DbEvent {
     {
       result = await DbInterval()
           .select()
-          .firstRecord
+          .firstRecordId
           .equals(id)
           .and
           .delete(hardDelete);
@@ -6822,7 +6823,7 @@ class DbEvent {
     {
       result = await DbInterval()
           .select()
-          .lastRecord
+          .lastRecordId
           .equals(id)
           .and
           .delete(hardDelete);
@@ -7448,24 +7449,24 @@ class DbEventFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
-    final intervalsByfirstRecordidList = await toListPrimaryKey(false);
-    final resDbIntervalBYfirstRecord = await DbInterval()
+    final intervalsByfirstRecordIdidList = await toListPrimaryKey(false);
+    final resDbIntervalBYfirstRecordId = await DbInterval()
         .select()
-        .firstRecord
-        .inValues(intervalsByfirstRecordidList)
+        .firstRecordId
+        .inValues(intervalsByfirstRecordIdidList)
         .delete(hardDelete);
-    if (!resDbIntervalBYfirstRecord.success) {
-      return resDbIntervalBYfirstRecord;
+    if (!resDbIntervalBYfirstRecordId.success) {
+      return resDbIntervalBYfirstRecordId;
     }
 // Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
-    final intervalsBylastRecordidList = await toListPrimaryKey(false);
-    final resDbIntervalBYlastRecord = await DbInterval()
+    final intervalsBylastRecordIdidList = await toListPrimaryKey(false);
+    final resDbIntervalBYlastRecordId = await DbInterval()
         .select()
-        .lastRecord
-        .inValues(intervalsBylastRecordidList)
+        .lastRecordId
+        .inValues(intervalsBylastRecordIdidList)
         .delete(hardDelete);
-    if (!resDbIntervalBYlastRecord.success) {
-      return resDbIntervalBYlastRecord;
+    if (!resDbIntervalBYlastRecordId.success) {
+      return resDbIntervalBYlastRecordId;
     }
 
     if (DbEvent._softDeleteActivated && !hardDelete) {
@@ -7531,12 +7532,12 @@ class DbEventFilterBuilder extends SearchCriteria {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecord') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('events.plDbIntervalsBylastRecordId') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plDbIntervalsBylastRecord'))) {
-          /*_loadedFields.add('events.plDbIntervalsBylastRecord'); */
-          obj.plDbIntervalsBylastRecord = obj.plDbIntervalsBylastRecord ??
-              await obj.getDbIntervalsBylastRecord().toList(
+            preloadFields.contains('plDbIntervalsBylastRecordId'))) {
+          /*_loadedFields.add('events.plDbIntervalsBylastRecordId'); */
+          obj.plDbIntervalsBylastRecordId = obj.plDbIntervalsBylastRecordId ??
+              await obj.getDbIntervalsBylastRecordId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -10879,6 +10880,7 @@ class DbInterval {
       this.minSpeed,
       this.maxSpeed,
       this.sdevSpeed,
+      this.sdevPace,
       this.distance,
       this.avgHeartRate,
       this.minHeartRate,
@@ -10912,8 +10914,8 @@ class DbInterval {
       this.totalDescent,
       this.cp,
       this.ftp,
-      this.firstRecord,
-      this.lastRecord,
+      this.firstRecordId,
+      this.lastRecordId,
       this.athletesId,
       this.activitiesId}) {
     _setDefaultValues();
@@ -10929,6 +10931,7 @@ class DbInterval {
       this.minSpeed,
       this.maxSpeed,
       this.sdevSpeed,
+      this.sdevPace,
       this.distance,
       this.avgHeartRate,
       this.minHeartRate,
@@ -10962,8 +10965,8 @@ class DbInterval {
       this.totalDescent,
       this.cp,
       this.ftp,
-      this.firstRecord,
-      this.lastRecord,
+      this.firstRecordId,
+      this.lastRecordId,
       this.athletesId,
       this.activitiesId) {
     _setDefaultValues();
@@ -10980,6 +10983,7 @@ class DbInterval {
       this.minSpeed,
       this.maxSpeed,
       this.sdevSpeed,
+      this.sdevPace,
       this.distance,
       this.avgHeartRate,
       this.minHeartRate,
@@ -11013,8 +11017,8 @@ class DbInterval {
       this.totalDescent,
       this.cp,
       this.ftp,
-      this.firstRecord,
-      this.lastRecord,
+      this.firstRecordId,
+      this.lastRecordId,
       this.athletesId,
       this.activitiesId) {
     _setDefaultValues();
@@ -11037,10 +11041,10 @@ class DbInterval {
       avgPower = double.tryParse(o['avgPower'].toString());
     }
     if (o['minPower'] != null) {
-      minPower = double.tryParse(o['minPower'].toString());
+      minPower = int.tryParse(o['minPower'].toString());
     }
     if (o['maxPower'] != null) {
-      maxPower = double.tryParse(o['maxPower'].toString());
+      maxPower = int.tryParse(o['maxPower'].toString());
     }
     if (o['sdevPower'] != null) {
       sdevPower = double.tryParse(o['sdevPower'].toString());
@@ -11057,8 +11061,11 @@ class DbInterval {
     if (o['sdevSpeed'] != null) {
       sdevSpeed = double.tryParse(o['sdevSpeed'].toString());
     }
+    if (o['sdevPace'] != null) {
+      sdevPace = double.tryParse(o['sdevPace'].toString());
+    }
     if (o['distance'] != null) {
-      distance = double.tryParse(o['distance'].toString());
+      distance = int.tryParse(o['distance'].toString());
     }
     if (o['avgHeartRate'] != null) {
       avgHeartRate = int.tryParse(o['avgHeartRate'].toString());
@@ -11070,7 +11077,7 @@ class DbInterval {
       maxHeartRate = int.tryParse(o['maxHeartRate'].toString());
     }
     if (o['sdevHeartRate'] != null) {
-      sdevHeartRate = int.tryParse(o['sdevHeartRate'].toString());
+      sdevHeartRate = double.tryParse(o['sdevHeartRate'].toString());
     }
     if (o['avgCadence'] != null) {
       avgCadence = double.tryParse(o['avgCadence'].toString());
@@ -11125,7 +11132,7 @@ class DbInterval {
           double.tryParse(o['sdevVerticalOscillation'].toString());
     }
     if (o['avgFormPower'] != null) {
-      avgFormPower = int.tryParse(o['avgFormPower'].toString());
+      avgFormPower = double.tryParse(o['avgFormPower'].toString());
     }
     if (o['maxFormPower'] != null) {
       maxFormPower = int.tryParse(o['maxFormPower'].toString());
@@ -11134,7 +11141,7 @@ class DbInterval {
       minFormPower = int.tryParse(o['minFormPower'].toString());
     }
     if (o['sdevFormPower'] != null) {
-      sdevFormPower = int.tryParse(o['sdevFormPower'].toString());
+      sdevFormPower = double.tryParse(o['sdevFormPower'].toString());
     }
     if (o['avgLegSpringStiffness'] != null) {
       avgLegSpringStiffness =
@@ -11164,9 +11171,9 @@ class DbInterval {
     if (o['ftp'] != null) {
       ftp = double.tryParse(o['ftp'].toString());
     }
-    firstRecord = int.tryParse(o['firstRecord'].toString());
+    firstRecordId = int.tryParse(o['firstRecordId'].toString());
 
-    lastRecord = int.tryParse(o['lastRecord'].toString());
+    lastRecordId = int.tryParse(o['lastRecordId'].toString());
 
     athletesId = int.tryParse(o['athletesId'].toString());
 
@@ -11176,7 +11183,7 @@ class DbInterval {
     plDbEvent = o['dbEvent'] != null
         ? DbEvent.fromMap(o['dbEvent'] as Map<String, dynamic>)
         : null;
-    plDbEventByLastRecord = o['dbEvent'] != null
+    plDbEventByLastRecordId = o['dbEvent'] != null
         ? DbEvent.fromMap(o['dbEvent'] as Map<String, dynamic>)
         : null;
     plDbAthlete = o['dbAthlete'] != null
@@ -11192,18 +11199,19 @@ class DbInterval {
   DateTime timeStamp;
   int duration;
   double avgPower;
-  double minPower;
-  double maxPower;
+  int minPower;
+  int maxPower;
   double sdevPower;
   double avgSpeed;
   double minSpeed;
   double maxSpeed;
   double sdevSpeed;
-  double distance;
+  double sdevPace;
+  int distance;
   int avgHeartRate;
   int minHeartRate;
   int maxHeartRate;
-  int sdevHeartRate;
+  double sdevHeartRate;
   double avgCadence;
   double minCadence;
   double maxCadence;
@@ -11220,10 +11228,10 @@ class DbInterval {
   double minVerticalOscillation;
   double maxVerticalOscillation;
   double sdevVerticalOscillation;
-  int avgFormPower;
+  double avgFormPower;
   int maxFormPower;
   int minFormPower;
-  int sdevFormPower;
+  double sdevFormPower;
   double avgLegSpringStiffness;
   double maxLegSpringStiffness;
   double minLegSpringStiffness;
@@ -11232,8 +11240,8 @@ class DbInterval {
   int totalDescent;
   double cp;
   double ftp;
-  int firstRecord;
-  int lastRecord;
+  int firstRecordId;
+  int lastRecordId;
   int athletesId;
   int activitiesId;
 
@@ -11245,22 +11253,22 @@ class DbInterval {
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbEvent', 'plField2'..]) or so on..
   DbEvent plDbEvent;
 
-  /// get DbEvent By FirstRecord
+  /// get DbEvent By FirstRecordId
   Future<DbEvent> getDbEvent(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await DbEvent().getById(firstRecord,
+    final _obj = await DbEvent().getById(firstRecordId,
         loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
 
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbEventByLastRecord', 'plField2'..]) or so on..
-  DbEvent plDbEventByLastRecord;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbEventByLastRecordId', 'plField2'..]) or so on..
+  DbEvent plDbEventByLastRecordId;
 
-  /// get DbEvent By LastRecord
-  Future<DbEvent> getDbEventByLastRecord(
+  /// get DbEvent By LastRecordId
+  Future<DbEvent> getDbEventByLastRecordId(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await DbEvent().getById(lastRecord,
+    final _obj = await DbEvent().getById(lastRecordId,
         loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
@@ -11346,6 +11354,10 @@ class DbInterval {
       map['sdevSpeed'] = sdevSpeed;
     }
 
+    if (sdevPace != null) {
+      map['sdevPace'] = sdevPace;
+    }
+
     if (distance != null) {
       map['distance'] = distance;
     }
@@ -11478,12 +11490,12 @@ class DbInterval {
       map['ftp'] = ftp;
     }
 
-    if (firstRecord != null) {
-      map['firstRecord'] = forView ? plDbEvent.event : firstRecord;
+    if (firstRecordId != null) {
+      map['firstRecordId'] = forView ? plDbEvent.event : firstRecordId;
     }
 
-    if (lastRecord != null) {
-      map['lastRecord'] = forView ? plDbEvent.event : lastRecord;
+    if (lastRecordId != null) {
+      map['lastRecordId'] = forView ? plDbEvent.event : lastRecordId;
     }
 
     if (athletesId != null) {
@@ -11547,6 +11559,10 @@ class DbInterval {
       map['sdevSpeed'] = sdevSpeed;
     }
 
+    if (sdevPace != null) {
+      map['sdevPace'] = sdevPace;
+    }
+
     if (distance != null) {
       map['distance'] = distance;
     }
@@ -11679,12 +11695,12 @@ class DbInterval {
       map['ftp'] = ftp;
     }
 
-    if (firstRecord != null) {
-      map['firstRecord'] = forView ? plDbEvent.event : firstRecord;
+    if (firstRecordId != null) {
+      map['firstRecordId'] = forView ? plDbEvent.event : firstRecordId;
     }
 
-    if (lastRecord != null) {
-      map['lastRecord'] = forView ? plDbEvent.event : lastRecord;
+    if (lastRecordId != null) {
+      map['lastRecordId'] = forView ? plDbEvent.event : lastRecordId;
     }
 
     if (athletesId != null) {
@@ -11720,6 +11736,7 @@ class DbInterval {
       minSpeed,
       maxSpeed,
       sdevSpeed,
+      sdevPace,
       distance,
       avgHeartRate,
       minHeartRate,
@@ -11753,8 +11770,8 @@ class DbInterval {
       totalDescent,
       cp,
       ftp,
-      firstRecord,
-      lastRecord,
+      firstRecordId,
+      lastRecordId,
       athletesId,
       activitiesId
     ];
@@ -11773,6 +11790,7 @@ class DbInterval {
       minSpeed,
       maxSpeed,
       sdevSpeed,
+      sdevPace,
       distance,
       avgHeartRate,
       minHeartRate,
@@ -11806,8 +11824,8 @@ class DbInterval {
       totalDescent,
       cp,
       ftp,
-      firstRecord,
-      lastRecord,
+      firstRecordId,
+      lastRecordId,
       athletesId,
       activitiesId
     ];
@@ -11864,13 +11882,13 @@ class DbInterval {
               await obj.getDbEvent(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
-        if (/*!_loadedFields.contains('events.plDbEventByLastRecord') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('events.plDbEventByLastRecordId') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plDbEventByLastRecord'))) {
-          /*_loadedFields.add('events.plDbEventByLastRecord');*/
-          obj.plDbEventByLastRecord = obj.plDbEventByLastRecord ??
-              await obj.getDbEventByLastRecord(
+            preloadFields.contains('plDbEventByLastRecordId'))) {
+          /*_loadedFields.add('events.plDbEventByLastRecordId');*/
+          obj.plDbEventByLastRecordId = obj.plDbEventByLastRecordId ??
+              await obj.getDbEventByLastRecordId(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
         if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
@@ -11940,13 +11958,13 @@ class DbInterval {
               await obj.getDbEvent(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
-        if (/*!_loadedFields.contains('events.plDbEventByLastRecord') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('events.plDbEventByLastRecordId') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plDbEventByLastRecord'))) {
-          /*_loadedFields.add('events.plDbEventByLastRecord');*/
-          obj.plDbEventByLastRecord = obj.plDbEventByLastRecord ??
-              await obj.getDbEventByLastRecord(
+            preloadFields.contains('plDbEventByLastRecordId'))) {
+          /*_loadedFields.add('events.plDbEventByLastRecordId');*/
+          obj.plDbEventByLastRecordId = obj.plDbEventByLastRecordId ??
+              await obj.getDbEventByLastRecordId(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
         if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
@@ -12002,7 +12020,7 @@ class DbInterval {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<DbInterval> dbintervals) async {
-    // final results = _mnDbInterval.saveAll('INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbintervals);
+    // final results = _mnDbInterval.saveAll('INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbintervals);
     // return results; removed in sqfentity_gen 1.3.0+6
     DbEncrateia().batchStart();
     for (final obj in dbintervals) {
@@ -12017,7 +12035,7 @@ class DbInterval {
   Future<int> upsert() async {
     try {
       if (await _mnDbInterval.rawInsert(
-              'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 timeStamp,
@@ -12030,6 +12048,7 @@ class DbInterval {
                 minSpeed,
                 maxSpeed,
                 sdevSpeed,
+                sdevPace,
                 distance,
                 avgHeartRate,
                 minHeartRate,
@@ -12063,8 +12082,8 @@ class DbInterval {
                 totalDescent,
                 cp,
                 ftp,
-                firstRecord,
-                lastRecord,
+                firstRecordId,
+                lastRecordId,
                 athletesId,
                 activitiesId
               ]) ==
@@ -12092,7 +12111,7 @@ class DbInterval {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbInterval> dbintervals) async {
     final results = await _mnDbInterval.rawInsertAll(
-        'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecord, lastRecord, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbintervals);
     return results;
   }
@@ -12128,8 +12147,8 @@ class DbInterval {
   }
 
   void _setDefaultValues() {
-    firstRecord = firstRecord ?? 0;
-    lastRecord = lastRecord ?? 0;
+    firstRecordId = firstRecordId ?? 0;
+    lastRecordId = lastRecordId ?? 0;
     athletesId = athletesId ?? 0;
     activitiesId = activitiesId ?? 0;
   }
@@ -12542,12 +12561,12 @@ class DbIntervalFilterBuilder extends SearchCriteria {
 
   DbIntervalField _minPower;
   DbIntervalField get minPower {
-    return _minPower = setField(_minPower, 'minPower', DbType.real);
+    return _minPower = setField(_minPower, 'minPower', DbType.integer);
   }
 
   DbIntervalField _maxPower;
   DbIntervalField get maxPower {
-    return _maxPower = setField(_maxPower, 'maxPower', DbType.real);
+    return _maxPower = setField(_maxPower, 'maxPower', DbType.integer);
   }
 
   DbIntervalField _sdevPower;
@@ -12575,9 +12594,14 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return _sdevSpeed = setField(_sdevSpeed, 'sdevSpeed', DbType.real);
   }
 
+  DbIntervalField _sdevPace;
+  DbIntervalField get sdevPace {
+    return _sdevPace = setField(_sdevPace, 'sdevPace', DbType.real);
+  }
+
   DbIntervalField _distance;
   DbIntervalField get distance {
-    return _distance = setField(_distance, 'distance', DbType.real);
+    return _distance = setField(_distance, 'distance', DbType.integer);
   }
 
   DbIntervalField _avgHeartRate;
@@ -12601,7 +12625,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
   DbIntervalField _sdevHeartRate;
   DbIntervalField get sdevHeartRate {
     return _sdevHeartRate =
-        setField(_sdevHeartRate, 'sdevHeartRate', DbType.integer);
+        setField(_sdevHeartRate, 'sdevHeartRate', DbType.real);
   }
 
   DbIntervalField _avgCadence;
@@ -12698,8 +12722,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
 
   DbIntervalField _avgFormPower;
   DbIntervalField get avgFormPower {
-    return _avgFormPower =
-        setField(_avgFormPower, 'avgFormPower', DbType.integer);
+    return _avgFormPower = setField(_avgFormPower, 'avgFormPower', DbType.real);
   }
 
   DbIntervalField _maxFormPower;
@@ -12717,7 +12740,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
   DbIntervalField _sdevFormPower;
   DbIntervalField get sdevFormPower {
     return _sdevFormPower =
-        setField(_sdevFormPower, 'sdevFormPower', DbType.integer);
+        setField(_sdevFormPower, 'sdevFormPower', DbType.real);
   }
 
   DbIntervalField _avgLegSpringStiffness;
@@ -12765,14 +12788,16 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return _ftp = setField(_ftp, 'ftp', DbType.real);
   }
 
-  DbIntervalField _firstRecord;
-  DbIntervalField get firstRecord {
-    return _firstRecord = setField(_firstRecord, 'firstRecord', DbType.integer);
+  DbIntervalField _firstRecordId;
+  DbIntervalField get firstRecordId {
+    return _firstRecordId =
+        setField(_firstRecordId, 'firstRecordId', DbType.integer);
   }
 
-  DbIntervalField _lastRecord;
-  DbIntervalField get lastRecord {
-    return _lastRecord = setField(_lastRecord, 'lastRecord', DbType.integer);
+  DbIntervalField _lastRecordId;
+  DbIntervalField get lastRecordId {
+    return _lastRecordId =
+        setField(_lastRecordId, 'lastRecordId', DbType.integer);
   }
 
   DbIntervalField _athletesId;
@@ -12933,13 +12958,13 @@ class DbIntervalFilterBuilder extends SearchCriteria {
               await obj.getDbEvent(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
-        if (/*!_loadedFields.contains('events.plDbEventByLastRecord') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('events.plDbEventByLastRecordId') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plDbEventByLastRecord'))) {
-          /*_loadedFields.add('events.plDbEventByLastRecord');*/
-          obj.plDbEventByLastRecord = obj.plDbEventByLastRecord ??
-              await obj.getDbEventByLastRecord(
+            preloadFields.contains('plDbEventByLastRecordId'))) {
+          /*_loadedFields.add('events.plDbEventByLastRecordId');*/
+          obj.plDbEventByLastRecordId = obj.plDbEventByLastRecordId ??
+              await obj.getDbEventByLastRecordId(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
         if (/*!_loadedFields.contains('athletes.plDbAthlete') && */ (preloadFields ==
@@ -13123,14 +13148,14 @@ class DbIntervalFields {
 
   static TableField _fMinPower;
   static TableField get minPower {
-    return _fMinPower =
-        _fMinPower ?? SqlSyntax.setField(_fMinPower, 'minPower', DbType.real);
+    return _fMinPower = _fMinPower ??
+        SqlSyntax.setField(_fMinPower, 'minPower', DbType.integer);
   }
 
   static TableField _fMaxPower;
   static TableField get maxPower {
-    return _fMaxPower =
-        _fMaxPower ?? SqlSyntax.setField(_fMaxPower, 'maxPower', DbType.real);
+    return _fMaxPower = _fMaxPower ??
+        SqlSyntax.setField(_fMaxPower, 'maxPower', DbType.integer);
   }
 
   static TableField _fSdevPower;
@@ -13163,10 +13188,16 @@ class DbIntervalFields {
         SqlSyntax.setField(_fSdevSpeed, 'sdevSpeed', DbType.real);
   }
 
+  static TableField _fSdevPace;
+  static TableField get sdevPace {
+    return _fSdevPace =
+        _fSdevPace ?? SqlSyntax.setField(_fSdevPace, 'sdevPace', DbType.real);
+  }
+
   static TableField _fDistance;
   static TableField get distance {
-    return _fDistance =
-        _fDistance ?? SqlSyntax.setField(_fDistance, 'distance', DbType.real);
+    return _fDistance = _fDistance ??
+        SqlSyntax.setField(_fDistance, 'distance', DbType.integer);
   }
 
   static TableField _fAvgHeartRate;
@@ -13190,7 +13221,7 @@ class DbIntervalFields {
   static TableField _fSdevHeartRate;
   static TableField get sdevHeartRate {
     return _fSdevHeartRate = _fSdevHeartRate ??
-        SqlSyntax.setField(_fSdevHeartRate, 'sdevHeartRate', DbType.integer);
+        SqlSyntax.setField(_fSdevHeartRate, 'sdevHeartRate', DbType.real);
   }
 
   static TableField _fAvgCadence;
@@ -13296,7 +13327,7 @@ class DbIntervalFields {
   static TableField _fAvgFormPower;
   static TableField get avgFormPower {
     return _fAvgFormPower = _fAvgFormPower ??
-        SqlSyntax.setField(_fAvgFormPower, 'avgFormPower', DbType.integer);
+        SqlSyntax.setField(_fAvgFormPower, 'avgFormPower', DbType.real);
   }
 
   static TableField _fMaxFormPower;
@@ -13314,7 +13345,7 @@ class DbIntervalFields {
   static TableField _fSdevFormPower;
   static TableField get sdevFormPower {
     return _fSdevFormPower = _fSdevFormPower ??
-        SqlSyntax.setField(_fSdevFormPower, 'sdevFormPower', DbType.integer);
+        SqlSyntax.setField(_fSdevFormPower, 'sdevFormPower', DbType.real);
   }
 
   static TableField _fAvgLegSpringStiffness;
@@ -13367,16 +13398,16 @@ class DbIntervalFields {
     return _fFtp = _fFtp ?? SqlSyntax.setField(_fFtp, 'ftp', DbType.real);
   }
 
-  static TableField _fFirstRecord;
-  static TableField get firstRecord {
-    return _fFirstRecord = _fFirstRecord ??
-        SqlSyntax.setField(_fFirstRecord, 'firstRecord', DbType.integer);
+  static TableField _fFirstRecordId;
+  static TableField get firstRecordId {
+    return _fFirstRecordId = _fFirstRecordId ??
+        SqlSyntax.setField(_fFirstRecordId, 'firstRecordId', DbType.integer);
   }
 
-  static TableField _fLastRecord;
-  static TableField get lastRecord {
-    return _fLastRecord = _fLastRecord ??
-        SqlSyntax.setField(_fLastRecord, 'lastRecord', DbType.integer);
+  static TableField _fLastRecordId;
+  static TableField get lastRecordId {
+    return _fLastRecordId = _fLastRecordId ??
+        SqlSyntax.setField(_fLastRecordId, 'lastRecordId', DbType.integer);
   }
 
   static TableField _fAthletesId;
