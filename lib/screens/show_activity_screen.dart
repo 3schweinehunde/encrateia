@@ -241,7 +241,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-      navigationButton(
+/*      navigationButton(
         title: 'Work / CP',
         color: MyColor.navigate,
         icon: MyIcon.work,
@@ -250,7 +250,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           activity: widget.activity,
           athlete: widget.athlete,
         ),
-      ),
+      ),*/
       navigationButton(
         title: 'Metadata',
         color: MyColor.settings,
