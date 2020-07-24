@@ -45,8 +45,8 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
 
     if (selectedDatum.isNotEmpty) {
       selectedPlotPoint = selectedDatum[0].datum as DoublePlotPoint;
-      selectedRecord = widget.records.firstWhere(
-          (Event record) => record.distance.round() == selectedPlotPoint.domain);
+      selectedRecord = widget.records.firstWhere((Event record) =>
+          record.distance.round() == selectedPlotPoint.domain);
       setState(() {});
     }
   }
@@ -56,7 +56,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
     final List<DoublePlotPoint> smoothedRecords =
         widget.records.toDoubleDataPoints(
       attribute: LapDoubleAttr.speed,
-      amount: widget.athlete.recordAggregationCount,
+      amount: 1,
     );
 
     final List<Series<DoublePlotPoint, int>> data =
@@ -110,7 +110,12 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
           ),
           if (selectedRecord != null)
             Container(
-              child: Text(selectedRecord.speed.toString()),
+              child: Text(selectedRecord.distance.toString() +
+                  ' m; ' +
+                  (selectedRecord.speed * 3.6).toStringAsPrecision(2) +
+                  ' km/h; ' +
+                  (selectedRecord.power ?? 0).toString() +
+                  ' W'),
             ),
           if (selectedRecord == null)
             Container(
