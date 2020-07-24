@@ -7,10 +7,10 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/utils/graph_utils.dart';
-import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:charts_common/common.dart' as common show ChartBehavior;
 
-class ActivityIntervalsChart extends StatelessWidget {
+class ActivityIntervalsChart extends StatefulWidget {
   const ActivityIntervalsChart({
     this.records,
     @required this.activity,
@@ -26,13 +26,41 @@ class ActivityIntervalsChart extends StatelessWidget {
   final double maximum;
 
   @override
+  _ActivityIntervalsChartState createState() => _ActivityIntervalsChartState();
+}
+
+class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
+  DoublePlotPoint selectedPlotPoint;
+  Event selectedRecord;
+  List<Lap> laps = <Lap>[];
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
+  void _onSelectionChanged(SelectionModel<num> model) {
+    final List<SeriesDatum<dynamic>> selectedDatum = model.selectedDatum;
+
+    if (selectedDatum.isNotEmpty) {
+      selectedPlotPoint = selectedDatum[0].datum as DoublePlotPoint;
+      selectedRecord = widget.records.firstWhere(
+          (Event record) => record.distance.round() == selectedPlotPoint.domain);
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
+    final List<DoublePlotPoint> smoothedRecords =
+        widget.records.toDoubleDataPoints(
       attribute: LapDoubleAttr.speed,
-      amount: athlete.recordAggregationCount,
+      amount: widget.athlete.recordAggregationCount,
     );
 
-    final List<Series<DoublePlotPoint, int>> data = <Series<DoublePlotPoint, int>>[
+    final List<Series<DoublePlotPoint, int>> data =
+        <Series<DoublePlotPoint, int>>[
       Series<DoublePlotPoint, int>(
         id: 'Speed',
         colorFn: (_, __) => Color.black,
@@ -42,31 +70,60 @@ class ActivityIntervalsChart extends StatelessWidget {
       )
     ];
 
-    return FutureBuilder<List<Lap>>(
-      future: activity.laps,
-      builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
-        if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
-          return Container(
+    if (laps.isNotEmpty)
+      return Column(
+        children: <Widget>[
+          Container(
             height: 300,
-            child: MyLineChart(
-              data: data,
-              maxDomain: records.last.distance,
-              laps: laps,
-              domainTitle: 'Speed (km/h)',
-              measureTickProviderSpec: const BasicNumericTickProviderSpec(
-                  zeroBound: false,
-                  dataIsInWholeNumbers: false,
-                  desiredTickCount: 5),
-              domainTickProviderSpec:
-              const BasicNumericTickProviderSpec(desiredTickCount: 6),
-              minimum: minimum,
-              maximum: maximum,
+            child: LineChart(
+              data,
+              defaultRenderer: LineRendererConfig<num>(
+                includeArea: true,
+              ),
+              domainAxis: NumericAxisSpec(
+                viewport: NumericExtents(0, widget.records.last.distance + 500),
+                tickProviderSpec:
+                    const BasicNumericTickProviderSpec(desiredTickCount: 6),
+              ),
+              primaryMeasureAxis: NumericAxisSpec(
+                  tickProviderSpec: const BasicNumericTickProviderSpec(
+                      zeroBound: false,
+                      dataIsInWholeNumbers: false,
+                      desiredTickCount: 5),
+                  viewport: NumericExtents(widget.minimum, widget.maximum)),
+              animate: false,
+              selectionModels: <SelectionModelConfig<num>>[
+                SelectionModelConfig<num>(
+                  type: SelectionModelType.info,
+                  changedListener: _onSelectionChanged,
+                )
+              ],
+              layoutConfig: GraphUtils.layoutConfig,
+              behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
+                    PanAndZoomBehavior(),
+                    RangeAnnotation(GraphUtils.rangeAnnotations(laps: laps)),
+                  ] +
+                  GraphUtils.axis(
+                    measureTitle: 'Speed (km/h)',
+                  ),
             ),
-          );
-        } else
-          return GraphUtils.loadingContainer;
-      },
-    );
+          ),
+          if (selectedRecord != null)
+            Container(
+              child: Text(selectedRecord.speed.toString()),
+            ),
+          if (selectedRecord == null)
+            Container(
+              child: const Text('Select a record to continue.'),
+            ),
+        ],
+      );
+    else
+      return GraphUtils.loadingContainer;
+  }
+
+  Future<void> getData() async {
+    laps = await widget.activity.laps;
+    setState(() {});
   }
 }
