@@ -84,7 +84,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       ),
       navigationButton(
         title: 'Intervals',
-        color: MyColor.lap,
+        color: MyColor.interval,
         backgroundColor: MyColor.interval,
         icon: MyIcon.laps,
         context: context,
@@ -156,7 +156,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       ),
       navigationButton(
         title: 'Speed',
-        color: MyColor.lap,
+        color: MyColor.navigate,
         backgroundColor: MyColor.navigate,
         icon: MyIcon.speed,
         context: context,
