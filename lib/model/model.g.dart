@@ -314,7 +314,6 @@ class TableDbInterval extends SqfEntityTableBase {
   TableDbInterval() {
     // declare properties of EntityTable
     tableName = 'intervals';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -697,11 +696,11 @@ class TableDbActivityTagging extends SqfEntityTableBase {
   }
 }
 
-// DbLapTagging TABLE
-class TableDbLapTagging extends SqfEntityTableBase {
-  TableDbLapTagging() {
+// DbIntervalTagging TABLE
+class TableDbIntervalTagging extends SqfEntityTableBase {
+  TableDbIntervalTagging() {
     // declare properties of EntityTable
-    tableName = 'lapTaggings';
+    tableName = 'intervalTaggings';
     relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
@@ -716,9 +715,10 @@ class TableDbLapTagging extends SqfEntityTableBase {
           fieldName: 'tagsId',
           defaultValue: 0,
           isNotNull: false),
-      SqfEntityFieldRelationshipBase(TableDbLap.getInstance, DeleteRule.CASCADE,
+      SqfEntityFieldRelationshipBase(
+          TableDbInterval.getInstance, DeleteRule.CASCADE,
           relationType: RelationType.ONE_TO_MANY,
-          fieldName: 'lapsId',
+          fieldName: 'intervalsId',
           defaultValue: 0,
           isNotNull: false),
     ];
@@ -726,7 +726,7 @@ class TableDbLapTagging extends SqfEntityTableBase {
   }
   static SqfEntityTableBase _instance;
   static SqfEntityTableBase get getInstance {
-    return _instance = _instance ?? TableDbLapTagging();
+    return _instance = _instance ?? TableDbIntervalTagging();
   }
 }
 // END TABLES
@@ -755,7 +755,7 @@ class DbEncrateia extends SqfEntityModelProvider {
       TableDbTagGroup.getInstance,
       TableDbLapTagging.getInstance,
       TableDbActivityTagging.getInstance,
-      TableDbLapTagging.getInstance,
+      TableDbIntervalTagging.getInstance,
     ];
 
     bundledDatabasePath = encrateia
@@ -8362,23 +8362,6 @@ class DbLap {
         .and;
   }
 
-  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbLapTaggingsBylapsId', 'plField2'..]) or so on..
-  List<DbLapTagging> plDbLapTaggingsBylapsId;
-
-  /// get DbLapTagging(s) filtered by id=lapsId
-  DbLapTaggingFilterBuilder getDbLapTaggingsBylapsId(
-      {List<String> columnsToSelect, bool getIsDeleted}) {
-    if (id == null) {
-      return null;
-    }
-    return DbLapTagging()
-        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
-        .lapsId
-        .equals(id)
-        .and;
-  }
-
 // END COLLECTIONS & VIRTUALS (DbLap)
 
   static const bool _softDeleteActivated = false;
@@ -8893,9 +8876,6 @@ class DbLap {
     if (!forQuery) {
       map['DbLapTaggings'] = await getDbLapTaggings().toMapList();
     }
-    if (!forQuery) {
-      map['DbLapTaggings'] = await getDbLapTaggings().toMapList();
-    }
 // END COLLECTIONS (DbLap)
 
     return map;
@@ -9099,16 +9079,6 @@ class DbLap {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('laps.plDbLapTaggingsBylapsId') && */ (preloadFields ==
-                null ||
-            preloadFields.contains('plDbLapTaggingsBylapsId'))) {
-          /*_loadedFields.add('laps.plDbLapTaggingsBylapsId'); */
-          obj.plDbLapTaggingsBylapsId = obj.plDbLapTaggingsBylapsId ??
-              await obj.getDbLapTaggingsBylapsId().toList(
-                  preload: preload,
-                  preloadFields: preloadFields,
-                  loadParents: false /*, loadedFields:_loadedFields*/);
-        }
       } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
@@ -9179,16 +9149,6 @@ class DbLap {
           /*_loadedFields.add('laps.plDbLapTaggings'); */
           obj.plDbLapTaggings = obj.plDbLapTaggings ??
               await obj.getDbLapTaggings().toList(
-                  preload: preload,
-                  preloadFields: preloadFields,
-                  loadParents: false /*, loadedFields:_loadedFields*/);
-        }
-        if (/*!_loadedFields.contains('laps.plDbLapTaggingsBylapsId') && */ (preloadFields ==
-                null ||
-            preloadFields.contains('plDbLapTaggingsBylapsId'))) {
-          /*_loadedFields.add('laps.plDbLapTaggingsBylapsId'); */
-          obj.plDbLapTaggingsBylapsId = obj.plDbLapTaggingsBylapsId ??
-              await obj.getDbLapTaggingsBylapsId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -9357,17 +9317,6 @@ class DbLap {
     {
       result =
           await DbEvent().select().lapsId.equals(id).and.delete(hardDelete);
-    }
-    if (!result.success) {
-      return result;
-    }
-    {
-      result = await DbLapTagging()
-          .select()
-          .lapsId
-          .equals(id)
-          .and
-          .delete(hardDelete);
     }
     if (!result.success) {
       return result;
@@ -10236,16 +10185,6 @@ class DbLapFilterBuilder extends SearchCriteria {
     if (!resDbLapTaggingBYlapsId.success) {
       return resDbLapTaggingBYlapsId;
     }
-// Delete sub records where in (DbLapTagging) according to DeleteRule.CASCADE
-    final lapTaggingsBylapsIdidList = await toListPrimaryKey(false);
-    final resDbLapTaggingBYlapsId = await DbLapTagging()
-        .select()
-        .lapsId
-        .inValues(lapTaggingsBylapsIdidList)
-        .delete(hardDelete);
-    if (!resDbLapTaggingBYlapsId.success) {
-      return resDbLapTaggingBYlapsId;
-    }
 
     if (DbLap._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbLap.updateBatch(qparams, {'isDeleted': 1});
@@ -10316,16 +10255,6 @@ class DbLapFilterBuilder extends SearchCriteria {
           /*_loadedFields.add('laps.plDbLapTaggings'); */
           obj.plDbLapTaggings = obj.plDbLapTaggings ??
               await obj.getDbLapTaggings().toList(
-                  preload: preload,
-                  preloadFields: preloadFields,
-                  loadParents: false /*, loadedFields:_loadedFields*/);
-        }
-        if (/*!_loadedFields.contains('laps.plDbLapTaggingsBylapsId') && */ (preloadFields ==
-                null ||
-            preloadFields.contains('plDbLapTaggingsBylapsId'))) {
-          /*_loadedFields.add('laps.plDbLapTaggingsBylapsId'); */
-          obj.plDbLapTaggingsBylapsId = obj.plDbLapTaggingsBylapsId ??
-              await obj.getDbLapTaggingsBylapsId().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -11298,6 +11227,26 @@ class DbInterval {
   }
   // END RELATIONSHIPS (DbInterval)
 
+// COLLECTIONS & VIRTUALS (DbInterval)
+  /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervalTaggings', 'plField2'..]) or so on..
+  List<DbIntervalTagging> plDbIntervalTaggings;
+
+  /// get DbIntervalTagging(s) filtered by id=intervalsId
+  DbIntervalTaggingFilterBuilder getDbIntervalTaggings(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    if (id == null) {
+      return null;
+    }
+    return DbIntervalTagging()
+        .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
+        .intervalsId
+        .equals(id)
+        .and;
+  }
+
+// END COLLECTIONS & VIRTUALS (DbInterval)
+
   static const bool _softDeleteActivated = false;
   DbIntervalManager __mnDbInterval;
 
@@ -11711,6 +11660,12 @@ class DbInterval {
       map['activitiesId'] = forView ? plDbActivity.state : activitiesId;
     }
 
+// COLLECTIONS (DbInterval)
+    if (!forQuery) {
+      map['DbIntervalTaggings'] = await getDbIntervalTaggings().toMapList();
+    }
+// END COLLECTIONS (DbInterval)
+
     return map;
   }
 
@@ -11870,6 +11825,21 @@ class DbInterval {
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('intervals.plDbIntervalTaggings') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervalTaggings'))) {
+          /*_loadedFields.add('intervals.plDbIntervalTaggings'); */
+          obj.plDbIntervalTaggings = obj.plDbIntervalTaggings ??
+              await obj.getDbIntervalTaggings().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
+
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
         loadedFields = loadedFields ?? [];
@@ -11945,6 +11915,21 @@ class DbInterval {
     if (data.length != 0) {
       obj = DbInterval.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('intervals.plDbIntervalTaggings') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervalTaggings'))) {
+          /*_loadedFields.add('intervals.plDbIntervalTaggings'); */
+          obj.plDbIntervalTaggings = obj.plDbIntervalTaggings ??
+              await obj.getDbIntervalTaggings().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
@@ -12121,6 +12106,18 @@ class DbInterval {
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     print('SQFENTITIY: delete DbInterval invoked (id=$id)');
+    var result = BoolResult();
+    {
+      result = await DbIntervalTagging()
+          .select()
+          .intervalsId
+          .equals(id)
+          .and
+          .delete(hardDelete);
+    }
+    if (!result.success) {
+      return result;
+    }
     if (!_softDeleteActivated || hardDelete) {
       return _mnDbInterval
           .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
@@ -12895,6 +12892,16 @@ class DbIntervalFilterBuilder extends SearchCriteria {
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
+    // Delete sub records where in (DbIntervalTagging) according to DeleteRule.CASCADE
+    final intervalTaggingsByintervalsIdidList = await toListPrimaryKey(false);
+    final resDbIntervalTaggingBYintervalsId = await DbIntervalTagging()
+        .select()
+        .intervalsId
+        .inValues(intervalTaggingsByintervalsIdidList)
+        .delete(hardDelete);
+    if (!resDbIntervalTaggingBYintervalsId.success) {
+      return resDbIntervalTaggingBYintervalsId;
+    }
 
     if (DbInterval._softDeleteActivated && !hardDelete) {
       r = await _obj._mnDbInterval.updateBatch(qparams, {'isDeleted': 1});
@@ -12945,6 +12952,21 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     if (data.isNotEmpty) {
       obj = DbInterval.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
+
+      // RELATIONSHIPS PRELOAD CHILD
+      if (preload) {
+        loadedFields = loadedFields ?? [];
+        if (/*!_loadedFields.contains('intervals.plDbIntervalTaggings') && */ (preloadFields ==
+                null ||
+            preloadFields.contains('plDbIntervalTaggings'))) {
+          /*_loadedFields.add('intervals.plDbIntervalTaggings'); */
+          obj.plDbIntervalTaggings = obj.plDbIntervalTaggings ??
+              await obj.getDbIntervalTaggings().toList(
+                  preload: preload,
+                  preloadFields: preloadFields,
+                  loadParents: false /*, loadedFields:_loadedFields*/);
+        }
+      } // END RELATIONSHIPS PRELOAD CHILD
 
       // RELATIONSHIPS PRELOAD
       if (preload || loadParents) {
@@ -19560,16 +19582,16 @@ class DbTag {
   }
 
   /// to load children of items to this field, use preload parameter. Ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbLapTaggingsBytagsId', 'plField2'..]) or so on..
-  List<DbLapTagging> plDbLapTaggingsBytagsId;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbIntervalTaggings', 'plField2'..]) or so on..
+  List<DbIntervalTagging> plDbIntervalTaggings;
 
-  /// get DbLapTagging(s) filtered by id=tagsId
-  DbLapTaggingFilterBuilder getDbLapTaggingsBytagsId(
+  /// get DbIntervalTagging(s) filtered by id=tagsId
+  DbIntervalTaggingFilterBuilder getDbIntervalTaggings(
       {List<String> columnsToSelect, bool getIsDeleted}) {
     if (id == null) {
       return null;
     }
-    return DbLapTagging()
+    return DbIntervalTagging()
         .select(columnsToSelect: columnsToSelect, getIsDeleted: getIsDeleted)
         .tagsId
         .equals(id)
@@ -19651,7 +19673,7 @@ class DbTag {
       map['DbActivityTaggings'] = await getDbActivityTaggings().toMapList();
     }
     if (!forQuery) {
-      map['DbLapTaggings'] = await getDbLapTaggings().toMapList();
+      map['DbIntervalTaggings'] = await getDbIntervalTaggings().toMapList();
     }
 // END COLLECTIONS (DbTag)
 
@@ -19735,12 +19757,12 @@ class DbTag {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('tags.plDbLapTaggingsBytagsId') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('tags.plDbIntervalTaggings') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plDbLapTaggingsBytagsId'))) {
-          /*_loadedFields.add('tags.plDbLapTaggingsBytagsId'); */
-          obj.plDbLapTaggingsBytagsId = obj.plDbLapTaggingsBytagsId ??
-              await obj.getDbLapTaggingsBytagsId().toList(
+            preloadFields.contains('plDbIntervalTaggings'))) {
+          /*_loadedFields.add('tags.plDbIntervalTaggings'); */
+          obj.plDbIntervalTaggings = obj.plDbIntervalTaggings ??
+              await obj.getDbIntervalTaggings().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -19819,12 +19841,12 @@ class DbTag {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('tags.plDbLapTaggingsBytagsId') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('tags.plDbIntervalTaggings') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plDbLapTaggingsBytagsId'))) {
-          /*_loadedFields.add('tags.plDbLapTaggingsBytagsId'); */
-          obj.plDbLapTaggingsBytagsId = obj.plDbLapTaggingsBytagsId ??
-              await obj.getDbLapTaggingsBytagsId().toList(
+            preloadFields.contains('plDbIntervalTaggings'))) {
+          /*_loadedFields.add('tags.plDbIntervalTaggings'); */
+          obj.plDbIntervalTaggings = obj.plDbIntervalTaggings ??
+              await obj.getDbIntervalTaggings().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -19952,7 +19974,7 @@ class DbTag {
       return result;
     }
     {
-      result = await DbLapTagging()
+      result = await DbIntervalTagging()
           .select()
           .tagsId
           .equals(id)
@@ -20508,15 +20530,15 @@ class DbTagFilterBuilder extends SearchCriteria {
     if (!resDbActivityTaggingBYtagsId.success) {
       return resDbActivityTaggingBYtagsId;
     }
-// Delete sub records where in (DbLapTagging) according to DeleteRule.CASCADE
-    final lapTaggingsBytagsIdidList = await toListPrimaryKey(false);
-    final resDbLapTaggingBYtagsId = await DbLapTagging()
+// Delete sub records where in (DbIntervalTagging) according to DeleteRule.CASCADE
+    final intervalTaggingsBytagsIdidList = await toListPrimaryKey(false);
+    final resDbIntervalTaggingBYtagsId = await DbIntervalTagging()
         .select()
         .tagsId
-        .inValues(lapTaggingsBytagsIdidList)
+        .inValues(intervalTaggingsBytagsIdidList)
         .delete(hardDelete);
-    if (!resDbLapTaggingBYtagsId.success) {
-      return resDbLapTaggingBYtagsId;
+    if (!resDbIntervalTaggingBYtagsId.success) {
+      return resDbIntervalTaggingBYtagsId;
     }
 
     if (DbTag._softDeleteActivated && !hardDelete) {
@@ -20592,12 +20614,12 @@ class DbTagFilterBuilder extends SearchCriteria {
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
         }
-        if (/*!_loadedFields.contains('tags.plDbLapTaggingsBytagsId') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('tags.plDbIntervalTaggings') && */ (preloadFields ==
                 null ||
-            preloadFields.contains('plDbLapTaggingsBytagsId'))) {
-          /*_loadedFields.add('tags.plDbLapTaggingsBytagsId'); */
-          obj.plDbLapTaggingsBytagsId = obj.plDbLapTaggingsBytagsId ??
-              await obj.getDbLapTaggingsBytagsId().toList(
+            preloadFields.contains('plDbIntervalTaggings'))) {
+          /*_loadedFields.add('tags.plDbIntervalTaggings'); */
+          obj.plDbIntervalTaggings = obj.plDbIntervalTaggings ??
+              await obj.getDbIntervalTaggings().toList(
                   preload: preload,
                   preloadFields: preloadFields,
                   loadParents: false /*, loadedFields:_loadedFields*/);
@@ -24258,18 +24280,20 @@ class DbActivityTaggingManager extends SqfEntityProvider {
 }
 
 //endregion DbActivityTaggingManager
-// region DbLapTagging
-class DbLapTagging {
-  DbLapTagging({this.id, this.system, this.tagsId, this.lapsId}) {
+// region DbIntervalTagging
+class DbIntervalTagging {
+  DbIntervalTagging({this.id, this.system, this.tagsId, this.intervalsId}) {
     _setDefaultValues();
   }
-  DbLapTagging.withFields(this.system, this.tagsId, this.lapsId) {
+  DbIntervalTagging.withFields(this.system, this.tagsId, this.intervalsId) {
     _setDefaultValues();
   }
-  DbLapTagging.withId(this.id, this.system, this.tagsId, this.lapsId) {
+  DbIntervalTagging.withId(
+      this.id, this.system, this.tagsId, this.intervalsId) {
     _setDefaultValues();
   }
-  DbLapTagging.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+  DbIntervalTagging.fromMap(Map<String, dynamic> o,
+      {bool setDefaultValues = true}) {
     if (setDefaultValues) {
       _setDefaultValues();
     }
@@ -24279,27 +24303,27 @@ class DbLapTagging {
     }
     tagsId = int.tryParse(o['tagsId'].toString());
 
-    lapsId = int.tryParse(o['lapsId'].toString());
+    intervalsId = int.tryParse(o['intervalsId'].toString());
 
     // RELATIONSHIPS FromMAP
     plDbTag = o['dbTag'] != null
         ? DbTag.fromMap(o['dbTag'] as Map<String, dynamic>)
         : null;
-    plDbLap = o['dbLap'] != null
-        ? DbLap.fromMap(o['dbLap'] as Map<String, dynamic>)
+    plDbInterval = o['dbInterval'] != null
+        ? DbInterval.fromMap(o['dbInterval'] as Map<String, dynamic>)
         : null;
     // END RELATIONSHIPS FromMAP
   }
-  // FIELDS (DbLapTagging)
+  // FIELDS (DbIntervalTagging)
   int id;
   bool system;
   int tagsId;
-  int lapsId;
+  int intervalsId;
 
   BoolResult saveResult;
-  // end FIELDS (DbLapTagging)
+  // end FIELDS (DbIntervalTagging)
 
-// RELATIONSHIPS (DbLapTagging)
+// RELATIONSHIPS (DbIntervalTagging)
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
   /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbTag', 'plField2'..]) or so on..
   DbTag plDbTag;
@@ -24313,23 +24337,24 @@ class DbLapTagging {
   }
 
   /// to load parent of items to this field, use preload parameter ex: toList(preload:true) or toSingle(preload:true) or getById(preload:true)
-  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbLap', 'plField2'..]) or so on..
-  DbLap plDbLap;
+  /// You can also specify this object into certain preload fields. Ex: toList(preload:true, preloadFields:['plDbInterval', 'plField2'..]) or so on..
+  DbInterval plDbInterval;
 
-  /// get DbLap By LapsId
-  Future<DbLap> getDbLap(
+  /// get DbInterval By IntervalsId
+  Future<DbInterval> getDbInterval(
       {bool loadParents = false, List<String> loadedFields}) async {
-    final _obj = await DbLap()
-        .getById(lapsId, loadParents: loadParents, loadedFields: loadedFields);
+    final _obj = await DbInterval().getById(intervalsId,
+        loadParents: loadParents, loadedFields: loadedFields);
     return _obj;
   }
-  // END RELATIONSHIPS (DbLapTagging)
+  // END RELATIONSHIPS (DbIntervalTagging)
 
   static const bool _softDeleteActivated = false;
-  DbLapTaggingManager __mnDbLapTagging;
+  DbIntervalTaggingManager __mnDbIntervalTagging;
 
-  DbLapTaggingManager get _mnDbLapTagging {
-    return __mnDbLapTagging = __mnDbLapTagging ?? DbLapTaggingManager();
+  DbIntervalTaggingManager get _mnDbIntervalTagging {
+    return __mnDbIntervalTagging =
+        __mnDbIntervalTagging ?? DbIntervalTaggingManager();
   }
 
   // METHODS
@@ -24347,8 +24372,8 @@ class DbLapTagging {
       map['tagsId'] = forView ? plDbTag.name : tagsId;
     }
 
-    if (lapsId != null) {
-      map['lapsId'] = forView ? plDbLap.event : lapsId;
+    if (intervalsId != null) {
+      map['intervalsId'] = forView ? plDbInterval.id : intervalsId;
     }
 
     return map;
@@ -24370,8 +24395,8 @@ class DbLapTagging {
       map['tagsId'] = forView ? plDbTag.name : tagsId;
     }
 
-    if (lapsId != null) {
-      map['lapsId'] = forView ? plDbLap.event : lapsId;
+    if (intervalsId != null) {
+      map['intervalsId'] = forView ? plDbInterval.id : intervalsId;
     }
 
     return map;
@@ -24388,49 +24413,49 @@ class DbLapTagging {
   }
 
   List<dynamic> toArgs() {
-    return [system, tagsId, lapsId];
+    return [system, tagsId, intervalsId];
   }
 
   List<dynamic> toArgsWithIds() {
-    return [id, system, tagsId, lapsId];
+    return [id, system, tagsId, intervalsId];
   }
 
-  static Future<List<DbLapTagging>> fromWebUrl(String url) async {
+  static Future<List<DbIntervalTagging>> fromWebUrl(String url) async {
     try {
       final response = await http.get(url);
       return await fromJson(response.body);
     } catch (e) {
       print(
-          'SQFENTITY ERROR DbLapTagging.fromWebUrl: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR DbIntervalTagging.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
   }
 
-  static Future<List<DbLapTagging>> fromJson(String jsonBody) async {
+  static Future<List<DbIntervalTagging>> fromJson(String jsonBody) async {
     final Iterable list = await json.decode(jsonBody) as Iterable;
-    var objList = <DbLapTagging>[];
+    var objList = <DbIntervalTagging>[];
     try {
       objList = list
-          .map((dblaptagging) =>
-              DbLapTagging.fromMap(dblaptagging as Map<String, dynamic>))
+          .map((dbintervaltagging) => DbIntervalTagging.fromMap(
+              dbintervaltagging as Map<String, dynamic>))
           .toList();
     } catch (e) {
       print(
-          'SQFENTITY ERROR DbLapTagging.fromJson: ErrorMessage: ${e.toString()}');
+          'SQFENTITY ERROR DbIntervalTagging.fromJson: ErrorMessage: ${e.toString()}');
     }
     return objList;
   }
 
-  static Future<List<DbLapTagging>> fromMapList(List<dynamic> data,
+  static Future<List<DbIntervalTagging>> fromMapList(List<dynamic> data,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields,
       bool setDefaultValues = true}) async {
-    final List<DbLapTagging> objList = <DbLapTagging>[];
+    final List<DbIntervalTagging> objList = <DbIntervalTagging>[];
     loadedFields = loadedFields ?? [];
     for (final map in data) {
-      final obj = DbLapTagging.fromMap(map as Map<String, dynamic>,
+      final obj = DbIntervalTagging.fromMap(map as Map<String, dynamic>,
           setDefaultValues: setDefaultValues);
       // final List<String> _loadedFields = List<String>.from(loadedFields);
 
@@ -24446,13 +24471,13 @@ class DbLapTagging {
               await obj.getDbTag(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
-        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('intervals.plDbInterval') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plDbLap'))) {
-          /*_loadedFields.add('laps.plDbLap');*/
-          obj.plDbLap = obj.plDbLap ??
-              await obj.getDbLap(
+            preloadFields.contains('plDbInterval'))) {
+          /*_loadedFields.add('intervals.plDbInterval');*/
+          obj.plDbInterval = obj.plDbInterval ??
+              await obj.getDbInterval(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -24462,7 +24487,7 @@ class DbLapTagging {
     return objList;
   }
 
-  /// returns DbLapTagging by ID if exist, otherwise returns null
+  /// returns DbIntervalTagging by ID if exist, otherwise returns null
   ///
   /// Primary Keys: int id
   ///
@@ -24477,8 +24502,8 @@ class DbLapTagging {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>returns DbLapTagging if exist, otherwise returns null
-  Future<DbLapTagging> getById(int id,
+  /// <returns>returns DbIntervalTagging if exist, otherwise returns null
+  Future<DbIntervalTagging> getById(int id,
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
@@ -24486,10 +24511,10 @@ class DbLapTagging {
     if (id == null) {
       return null;
     }
-    DbLapTagging obj;
-    final data = await _mnDbLapTagging.getById([id]);
+    DbIntervalTagging obj;
+    final data = await _mnDbIntervalTagging.getById([id]);
     if (data.length != 0) {
-      obj = DbLapTagging.fromMap(data[0] as Map<String, dynamic>);
+      obj = DbIntervalTagging.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD
@@ -24504,13 +24529,13 @@ class DbLapTagging {
               await obj.getDbTag(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
-        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('intervals.plDbInterval') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plDbLap'))) {
-          /*_loadedFields.add('laps.plDbLap');*/
-          obj.plDbLap = obj.plDbLap ??
-              await obj.getDbLap(
+            preloadFields.contains('plDbInterval'))) {
+          /*_loadedFields.add('intervals.plDbInterval');*/
+          obj.plDbInterval = obj.plDbInterval ??
+              await obj.getDbInterval(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -24521,37 +24546,38 @@ class DbLapTagging {
     return obj;
   }
 
-  /// Saves the (DbLapTagging) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+  /// Saves the (DbIntervalTagging) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
 
   /// <returns>Returns id
   Future<int> save() async {
     if (id == null || id == 0) {
-      id = await _mnDbLapTagging.insert(this);
+      id = await _mnDbIntervalTagging.insert(this);
     } else {
       // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
-      await _mnDbLapTagging.update(this);
+      await _mnDbIntervalTagging.update(this);
     }
 
     return id;
   }
 
-  /// saveAs DbLapTagging. Returns a new Primary Key value of DbLapTagging
+  /// saveAs DbIntervalTagging. Returns a new Primary Key value of DbIntervalTagging
 
-  /// <returns>Returns a new Primary Key value of DbLapTagging
+  /// <returns>Returns a new Primary Key value of DbIntervalTagging
   Future<int> saveAs() async {
     id = null;
 
     return save();
   }
 
-  /// saveAll method saves the sent List<DbLapTagging> as a bulk in one transaction
+  /// saveAll method saves the sent List<DbIntervalTagging> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbLapTagging> dblaptaggings) async {
-    // final results = _mnDbLapTagging.saveAll('INSERT OR REPLACE INTO lapTaggings (id,system, tagsId, lapsId)  VALUES (?,?,?,?)',dblaptaggings);
+  Future<List<dynamic>> saveAll(
+      List<DbIntervalTagging> dbintervaltaggings) async {
+    // final results = _mnDbIntervalTagging.saveAll('INSERT OR REPLACE INTO intervalTaggings (id,system, tagsId, intervalsId)  VALUES (?,?,?,?)',dbintervaltaggings);
     // return results; removed in sqfentity_gen 1.3.0+6
     DbEncrateia().batchStart();
-    for (final obj in dblaptaggings) {
+    for (final obj in dbintervaltaggings) {
       await obj.save();
     }
     return DbEncrateia().batchCommit();
@@ -24562,63 +24588,66 @@ class DbLapTagging {
   /// <returns>Returns id
   Future<int> upsert() async {
     try {
-      if (await _mnDbLapTagging.rawInsert(
-              'INSERT OR REPLACE INTO lapTaggings (id,system, tagsId, lapsId)  VALUES (?,?,?,?)',
-              [id, system, tagsId, lapsId]) ==
+      if (await _mnDbIntervalTagging.rawInsert(
+              'INSERT OR REPLACE INTO intervalTaggings (id,system, tagsId, intervalsId)  VALUES (?,?,?,?)',
+              [id, system, tagsId, intervalsId]) ==
           1) {
         saveResult = BoolResult(
             success: true,
-            successMessage: 'DbLapTagging id=$id updated successfully');
+            successMessage: 'DbIntervalTagging id=$id updated successfully');
       } else {
         saveResult = BoolResult(
-            success: false, errorMessage: 'DbLapTagging id=$id did not update');
+            success: false,
+            errorMessage: 'DbIntervalTagging id=$id did not update');
       }
       return id;
     } catch (e) {
       saveResult = BoolResult(
           success: false,
-          errorMessage: 'DbLapTagging Save failed. Error: ${e.toString()}');
+          errorMessage:
+              'DbIntervalTagging Save failed. Error: ${e.toString()}');
       return 0;
     }
   }
 
-  /// inserts or replaces the sent List<<DbLapTagging>> as a bulk in one transaction.
+  /// inserts or replaces the sent List<<DbIntervalTagging>> as a bulk in one transaction.
   ///
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   ///
   /// Returns a BoolCommitResult
-  Future<BoolCommitResult> upsertAll(List<DbLapTagging> dblaptaggings) async {
-    final results = await _mnDbLapTagging.rawInsertAll(
-        'INSERT OR REPLACE INTO lapTaggings (id,system, tagsId, lapsId)  VALUES (?,?,?,?)',
-        dblaptaggings);
+  Future<BoolCommitResult> upsertAll(
+      List<DbIntervalTagging> dbintervaltaggings) async {
+    final results = await _mnDbIntervalTagging.rawInsertAll(
+        'INSERT OR REPLACE INTO intervalTaggings (id,system, tagsId, intervalsId)  VALUES (?,?,?,?)',
+        dbintervaltaggings);
     return results;
   }
 
-  /// Deletes DbLapTagging
+  /// Deletes DbIntervalTagging
 
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
-    print('SQFENTITIY: delete DbLapTagging invoked (id=$id)');
+    print('SQFENTITIY: delete DbIntervalTagging invoked (id=$id)');
     if (!_softDeleteActivated || hardDelete) {
-      return _mnDbLapTagging
+      return _mnDbIntervalTagging
           .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
     } else {
-      return _mnDbLapTagging.updateBatch(
+      return _mnDbIntervalTagging.updateBatch(
           QueryParams(whereString: 'id=?', whereArguments: [id]),
           {'isDeleted': 1});
     }
   }
 
-  DbLapTaggingFilterBuilder select(
+  DbIntervalTaggingFilterBuilder select(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return DbLapTaggingFilterBuilder(this)
+    return DbIntervalTaggingFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect;
   }
 
-  DbLapTaggingFilterBuilder distinct(
+  DbIntervalTaggingFilterBuilder distinct(
       {List<String> columnsToSelect, bool getIsDeleted}) {
-    return DbLapTaggingFilterBuilder(this)
+    return DbIntervalTaggingFilterBuilder(this)
       .._getIsDeleted = getIsDeleted == true
       ..qparams.selectColumns = columnsToSelect
       ..qparams.distinct = true;
@@ -24626,7 +24655,7 @@ class DbLapTagging {
 
   void _setDefaultValues() {
     tagsId = tagsId ?? 0;
-    lapsId = lapsId ?? 0;
+    intervalsId = intervalsId ?? 0;
   }
   // END METHODS
   // CUSTOM CODES
@@ -24649,226 +24678,239 @@ class DbLapTagging {
      */
   // END CUSTOM CODES
 }
-// endregion dblaptagging
+// endregion dbintervaltagging
 
-// region DbLapTaggingField
-class DbLapTaggingField extends SearchCriteria {
-  DbLapTaggingField(this.dblaptaggingFB) {
+// region DbIntervalTaggingField
+class DbIntervalTaggingField extends SearchCriteria {
+  DbIntervalTaggingField(this.dbintervaltaggingFB) {
     param = DbParameter();
   }
   DbParameter param;
   String _waitingNot = '';
-  DbLapTaggingFilterBuilder dblaptaggingFB;
+  DbIntervalTaggingFilterBuilder dbintervaltaggingFB;
 
-  DbLapTaggingField get not {
+  DbIntervalTaggingField get not {
     _waitingNot = ' NOT ';
     return this;
   }
 
-  DbLapTaggingFilterBuilder equals(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder equals(dynamic pValue) {
     param.expression = '=';
-    dblaptaggingFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.EQuals, dblaptaggingFB._addedBlocks)
-        : setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.NotEQuals, dblaptaggingFB._addedBlocks);
+    dbintervaltaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.EQuals, dbintervaltaggingFB._addedBlocks)
+        : setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.NotEQuals, dbintervaltaggingFB._addedBlocks);
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder equalsOrNull(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder equalsOrNull(dynamic pValue) {
     param.expression = '=';
-    dblaptaggingFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.EQualsOrNull, dblaptaggingFB._addedBlocks)
-        : setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.NotEQualsOrNull, dblaptaggingFB._addedBlocks);
+    dbintervaltaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.EQualsOrNull, dbintervaltaggingFB._addedBlocks)
+        : setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dbintervaltaggingFB._addedBlocks);
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder isNull() {
-    dblaptaggingFB._addedBlocks = setCriteria(
+  DbIntervalTaggingFilterBuilder isNull() {
+    dbintervaltaggingFB._addedBlocks = setCriteria(
         0,
-        dblaptaggingFB.parameters,
+        dbintervaltaggingFB.parameters,
         param,
         SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-        dblaptaggingFB._addedBlocks);
+        dbintervaltaggingFB._addedBlocks);
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder contains(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder contains(dynamic pValue) {
     if (pValue != null) {
-      dblaptaggingFB._addedBlocks = setCriteria(
+      dbintervaltaggingFB._addedBlocks = setCriteria(
           '%${pValue.toString()}%',
-          dblaptaggingFB.parameters,
+          dbintervaltaggingFB.parameters,
           param,
           SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-          dblaptaggingFB._addedBlocks);
+          dbintervaltaggingFB._addedBlocks);
       _waitingNot = '';
-      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-          dblaptaggingFB._addedBlocks.retVal;
+      dbintervaltaggingFB
+              ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+          dbintervaltaggingFB._addedBlocks.retVal;
     }
-    return dblaptaggingFB;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder startsWith(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder startsWith(dynamic pValue) {
     if (pValue != null) {
-      dblaptaggingFB._addedBlocks = setCriteria(
+      dbintervaltaggingFB._addedBlocks = setCriteria(
           '${pValue.toString()}%',
-          dblaptaggingFB.parameters,
+          dbintervaltaggingFB.parameters,
           param,
           SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-          dblaptaggingFB._addedBlocks);
+          dbintervaltaggingFB._addedBlocks);
       _waitingNot = '';
-      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-          dblaptaggingFB._addedBlocks.retVal;
-      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-          dblaptaggingFB._addedBlocks.retVal;
+      dbintervaltaggingFB
+              ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+          dbintervaltaggingFB._addedBlocks.retVal;
+      dbintervaltaggingFB
+              ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+          dbintervaltaggingFB._addedBlocks.retVal;
     }
-    return dblaptaggingFB;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder endsWith(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder endsWith(dynamic pValue) {
     if (pValue != null) {
-      dblaptaggingFB._addedBlocks = setCriteria(
+      dbintervaltaggingFB._addedBlocks = setCriteria(
           '%${pValue.toString()}',
-          dblaptaggingFB.parameters,
+          dbintervaltaggingFB.parameters,
           param,
           SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-          dblaptaggingFB._addedBlocks);
+          dbintervaltaggingFB._addedBlocks);
       _waitingNot = '';
-      dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-          dblaptaggingFB._addedBlocks.retVal;
+      dbintervaltaggingFB
+              ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+          dbintervaltaggingFB._addedBlocks.retVal;
     }
-    return dblaptaggingFB;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder between(dynamic pFirst, dynamic pLast) {
+  DbIntervalTaggingFilterBuilder between(dynamic pFirst, dynamic pLast) {
     if (pFirst != null && pLast != null) {
-      dblaptaggingFB._addedBlocks = setCriteria(
+      dbintervaltaggingFB._addedBlocks = setCriteria(
           pFirst,
-          dblaptaggingFB.parameters,
+          dbintervaltaggingFB.parameters,
           param,
           SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-          dblaptaggingFB._addedBlocks,
+          dbintervaltaggingFB._addedBlocks,
           pLast);
     } else if (pFirst != null) {
       if (_waitingNot != '') {
-        dblaptaggingFB._addedBlocks = setCriteria(
+        dbintervaltaggingFB._addedBlocks = setCriteria(
             pFirst,
-            dblaptaggingFB.parameters,
+            dbintervaltaggingFB.parameters,
             param,
             SqlSyntax.LessThan,
-            dblaptaggingFB._addedBlocks);
+            dbintervaltaggingFB._addedBlocks);
       } else {
-        dblaptaggingFB._addedBlocks = setCriteria(
+        dbintervaltaggingFB._addedBlocks = setCriteria(
             pFirst,
-            dblaptaggingFB.parameters,
+            dbintervaltaggingFB.parameters,
             param,
             SqlSyntax.GreaterThanOrEquals,
-            dblaptaggingFB._addedBlocks);
+            dbintervaltaggingFB._addedBlocks);
       }
     } else if (pLast != null) {
       if (_waitingNot != '') {
-        dblaptaggingFB._addedBlocks = setCriteria(
+        dbintervaltaggingFB._addedBlocks = setCriteria(
             pLast,
-            dblaptaggingFB.parameters,
+            dbintervaltaggingFB.parameters,
             param,
             SqlSyntax.GreaterThan,
-            dblaptaggingFB._addedBlocks);
+            dbintervaltaggingFB._addedBlocks);
       } else {
-        dblaptaggingFB._addedBlocks = setCriteria(
+        dbintervaltaggingFB._addedBlocks = setCriteria(
             pLast,
-            dblaptaggingFB.parameters,
+            dbintervaltaggingFB.parameters,
             param,
             SqlSyntax.LessThanOrEquals,
-            dblaptaggingFB._addedBlocks);
+            dbintervaltaggingFB._addedBlocks);
       }
     }
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder greaterThan(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder greaterThan(dynamic pValue) {
     param.expression = '>';
-    dblaptaggingFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.GreaterThan, dblaptaggingFB._addedBlocks)
-        : setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.LessThanOrEquals, dblaptaggingFB._addedBlocks);
+    dbintervaltaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.GreaterThan, dbintervaltaggingFB._addedBlocks)
+        : setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbintervaltaggingFB._addedBlocks);
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder lessThan(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder lessThan(dynamic pValue) {
     param.expression = '<';
-    dblaptaggingFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.LessThan, dblaptaggingFB._addedBlocks)
-        : setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.GreaterThanOrEquals, dblaptaggingFB._addedBlocks);
+    dbintervaltaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.LessThan, dbintervaltaggingFB._addedBlocks)
+        : setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbintervaltaggingFB._addedBlocks);
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder greaterThanOrEquals(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder greaterThanOrEquals(dynamic pValue) {
     param.expression = '>=';
-    dblaptaggingFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.GreaterThanOrEquals, dblaptaggingFB._addedBlocks)
-        : setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.LessThan, dblaptaggingFB._addedBlocks);
+    dbintervaltaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dbintervaltaggingFB._addedBlocks)
+        : setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.LessThan, dbintervaltaggingFB._addedBlocks);
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder lessThanOrEquals(dynamic pValue) {
+  DbIntervalTaggingFilterBuilder lessThanOrEquals(dynamic pValue) {
     param.expression = '<=';
-    dblaptaggingFB._addedBlocks = _waitingNot == ''
-        ? setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.LessThanOrEquals, dblaptaggingFB._addedBlocks)
-        : setCriteria(pValue, dblaptaggingFB.parameters, param,
-            SqlSyntax.GreaterThan, dblaptaggingFB._addedBlocks);
+    dbintervaltaggingFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dbintervaltaggingFB._addedBlocks)
+        : setCriteria(pValue, dbintervaltaggingFB.parameters, param,
+            SqlSyntax.GreaterThan, dbintervaltaggingFB._addedBlocks);
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 
-  DbLapTaggingFilterBuilder inValues(dynamic pValue) {
-    dblaptaggingFB._addedBlocks = setCriteria(
+  DbIntervalTaggingFilterBuilder inValues(dynamic pValue) {
+    dbintervaltaggingFB._addedBlocks = setCriteria(
         pValue,
-        dblaptaggingFB.parameters,
+        dbintervaltaggingFB.parameters,
         param,
         SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
-        dblaptaggingFB._addedBlocks);
+        dbintervaltaggingFB._addedBlocks);
     _waitingNot = '';
-    dblaptaggingFB._addedBlocks.needEndBlock[dblaptaggingFB._blockIndex] =
-        dblaptaggingFB._addedBlocks.retVal;
-    return dblaptaggingFB;
+    dbintervaltaggingFB
+            ._addedBlocks.needEndBlock[dbintervaltaggingFB._blockIndex] =
+        dbintervaltaggingFB._addedBlocks.retVal;
+    return dbintervaltaggingFB;
   }
 }
-// endregion DbLapTaggingField
+// endregion DbIntervalTaggingField
 
-// region DbLapTaggingFilterBuilder
-class DbLapTaggingFilterBuilder extends SearchCriteria {
-  DbLapTaggingFilterBuilder(DbLapTagging obj) {
+// region DbIntervalTaggingFilterBuilder
+class DbIntervalTaggingFilterBuilder extends SearchCriteria {
+  DbIntervalTaggingFilterBuilder(DbIntervalTagging obj) {
     whereString = '';
     qparams = QueryParams();
     parameters = <DbParameter>[];
@@ -24885,13 +24927,13 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   int _blockIndex = 0;
   List<DbParameter> parameters;
   List<String> orderByList;
-  DbLapTagging _obj;
+  DbIntervalTagging _obj;
   QueryParams qparams;
   int _pagesize;
   int _page;
 
   /// put the sql keyword 'AND'
-  DbLapTaggingFilterBuilder get and {
+  DbIntervalTaggingFilterBuilder get and {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' AND ';
     }
@@ -24899,7 +24941,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   }
 
   /// put the sql keyword 'OR'
-  DbLapTaggingFilterBuilder get or {
+  DbIntervalTaggingFilterBuilder get or {
     if (parameters.isNotEmpty) {
       parameters[parameters.length - 1].wOperator = ' OR ';
     }
@@ -24907,7 +24949,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   }
 
   /// open parentheses
-  DbLapTaggingFilterBuilder get startBlock {
+  DbIntervalTaggingFilterBuilder get startBlock {
     _addedBlocks.waitingStartBlock.add(true);
     _addedBlocks.needEndBlock.add(false);
     _blockIndex++;
@@ -24918,7 +24960,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   }
 
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
-  DbLapTaggingFilterBuilder where(String whereCriteria,
+  DbIntervalTaggingFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
       final DbParameter param =
@@ -24933,7 +24975,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   /// page = page number,
   ///
   /// pagesize = row(s) per page
-  DbLapTaggingFilterBuilder page(int page, int pagesize) {
+  DbIntervalTaggingFilterBuilder page(int page, int pagesize) {
     if (page > 0) {
       _page = page;
     }
@@ -24944,7 +24986,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   }
 
   /// int count = LIMIT
-  DbLapTaggingFilterBuilder top(int count) {
+  DbIntervalTaggingFilterBuilder top(int count) {
     if (count > 0) {
       _pagesize = count;
     }
@@ -24952,7 +24994,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   }
 
   /// close parentheses
-  DbLapTaggingFilterBuilder get endBlock {
+  DbIntervalTaggingFilterBuilder get endBlock {
     if (_addedBlocks.needEndBlock[_blockIndex]) {
       parameters[parameters.length - 1].whereString += ' ) ';
     }
@@ -24967,7 +25009,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='name, date'
   ///
   /// Example 2: argFields = ['name', 'date']
-  DbLapTaggingFilterBuilder orderBy(dynamic argFields) {
+  DbIntervalTaggingFilterBuilder orderBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add(argFields);
@@ -24987,7 +25029,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  DbLapTaggingFilterBuilder orderByDesc(dynamic argFields) {
+  DbIntervalTaggingFilterBuilder orderByDesc(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         orderByList.add('$argFields desc ');
@@ -25007,7 +25049,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   /// Example 1: argFields='field1, field2'
   ///
   /// Example 2: argFields = ['field1', 'field2']
-  DbLapTaggingFilterBuilder groupBy(dynamic argFields) {
+  DbIntervalTaggingFilterBuilder groupBy(dynamic argFields) {
     if (argFields != null) {
       if (argFields is String) {
         groupByList.add(' $argFields ');
@@ -25022,33 +25064,33 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     return this;
   }
 
-  DbLapTaggingField setField(
-      DbLapTaggingField field, String colName, DbType dbtype) {
-    return DbLapTaggingField(this)
+  DbIntervalTaggingField setField(
+      DbIntervalTaggingField field, String colName, DbType dbtype) {
+    return DbIntervalTaggingField(this)
       ..param = DbParameter(
           dbType: dbtype,
           columnName: colName,
           wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
   }
 
-  DbLapTaggingField _id;
-  DbLapTaggingField get id {
+  DbIntervalTaggingField _id;
+  DbIntervalTaggingField get id {
     return _id = setField(_id, 'id', DbType.integer);
   }
 
-  DbLapTaggingField _system;
-  DbLapTaggingField get system {
+  DbIntervalTaggingField _system;
+  DbIntervalTaggingField get system {
     return _system = setField(_system, 'system', DbType.bool);
   }
 
-  DbLapTaggingField _tagsId;
-  DbLapTaggingField get tagsId {
+  DbIntervalTaggingField _tagsId;
+  DbIntervalTaggingField get tagsId {
     return _tagsId = setField(_tagsId, 'tagsId', DbType.integer);
   }
 
-  DbLapTaggingField _lapsId;
-  DbLapTaggingField get lapsId {
-    return _lapsId = setField(_lapsId, 'lapsId', DbType.integer);
+  DbIntervalTaggingField _intervalsId;
+  DbIntervalTaggingField get intervalsId {
+    return _intervalsId = setField(_intervalsId, 'intervalsId', DbType.integer);
   }
 
   bool _getIsDeleted;
@@ -25111,7 +25153,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
         whereString += param.whereString;
       }
     }
-    if (DbLapTagging._softDeleteActivated) {
+    if (DbIntervalTagging._softDeleteActivated) {
       if (whereString != '') {
         whereString =
             '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
@@ -25129,17 +25171,18 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
       ..orderBy = orderByList.join(',');
   }
 
-  /// Deletes List<DbLapTagging> bulk by query
+  /// Deletes List<DbIntervalTagging> bulk by query
   ///
   /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
   Future<BoolResult> delete([bool hardDelete = false]) async {
     _buildParameters();
     var r = BoolResult();
 
-    if (DbLapTagging._softDeleteActivated && !hardDelete) {
-      r = await _obj._mnDbLapTagging.updateBatch(qparams, {'isDeleted': 1});
+    if (DbIntervalTagging._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbIntervalTagging
+          .updateBatch(qparams, {'isDeleted': 1});
     } else {
-      r = await _obj._mnDbLapTagging.delete(qparams);
+      r = await _obj._mnDbIntervalTagging.delete(qparams);
     }
     return r;
   }
@@ -25153,12 +25196,12 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     _buildParameters();
     if (qparams.limit > 0 || qparams.offset > 0) {
       qparams.whereString =
-          'id IN (SELECT id from lapTaggings ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+          'id IN (SELECT id from intervalTaggings ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
     }
-    return _obj._mnDbLapTagging.updateBatch(qparams, values);
+    return _obj._mnDbIntervalTagging.updateBatch(qparams, values);
   }
 
-  /// This method always returns DbLapTagging Obj if exist, otherwise returns null
+  /// This method always returns DbIntervalTagging Obj if exist, otherwise returns null
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -25171,19 +25214,19 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<DbLapTagging>
-  Future<DbLapTagging> toSingle(
+  /// <returns>List<DbIntervalTagging>
+  Future<DbIntervalTagging> toSingle(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     _pagesize = 1;
     _buildParameters();
-    final objFuture = _obj._mnDbLapTagging.toList(qparams);
+    final objFuture = _obj._mnDbIntervalTagging.toList(qparams);
     final data = await objFuture;
-    DbLapTagging obj;
+    DbIntervalTagging obj;
     if (data.isNotEmpty) {
-      obj = DbLapTagging.fromMap(data[0] as Map<String, dynamic>);
+      obj = DbIntervalTagging.fromMap(data[0] as Map<String, dynamic>);
       // final List<String> _loadedFields = loadedFields ?? [];
 
       // RELATIONSHIPS PRELOAD
@@ -25198,13 +25241,13 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
               await obj.getDbTag(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
-        if (/*!_loadedFields.contains('laps.plDbLap') && */ (preloadFields ==
+        if (/*!_loadedFields.contains('intervals.plDbInterval') && */ (preloadFields ==
                 null ||
             loadParents ||
-            preloadFields.contains('plDbLap'))) {
-          /*_loadedFields.add('laps.plDbLap');*/
-          obj.plDbLap = obj.plDbLap ??
-              await obj.getDbLap(
+            preloadFields.contains('plDbInterval'))) {
+          /*_loadedFields.add('intervals.plDbInterval');*/
+          obj.plDbInterval = obj.plDbInterval ??
+              await obj.getDbInterval(
                   loadParents: loadParents /*, loadedFields: _loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD
@@ -25218,18 +25261,20 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   /// This method returns int.
   ///
   /// <returns>int
-  Future<int> toCount([VoidCallback Function(int c) dblaptaggingCount]) async {
+  Future<int> toCount(
+      [VoidCallback Function(int c) dbintervaltaggingCount]) async {
     _buildParameters();
     qparams.selectColumns = ['COUNT(1) AS CNT'];
-    final dblaptaggingsFuture = await _obj._mnDbLapTagging.toList(qparams);
-    final int count = dblaptaggingsFuture[0]['CNT'] as int;
-    if (dblaptaggingCount != null) {
-      dblaptaggingCount(count);
+    final dbintervaltaggingsFuture =
+        await _obj._mnDbIntervalTagging.toList(qparams);
+    final int count = dbintervaltaggingsFuture[0]['CNT'] as int;
+    if (dbintervaltaggingCount != null) {
+      dbintervaltaggingCount(count);
     }
     return count;
   }
 
-  /// This method returns List<DbLapTagging>.
+  /// This method returns List<DbIntervalTagging>.
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -25242,21 +25287,21 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   /// bool loadParents: if true, loads all parent objects until the object has no parent
 
   ///
-  /// <returns>List<DbLapTagging>
-  Future<List<DbLapTagging>> toList(
+  /// <returns>List<DbIntervalTagging>
+  Future<List<DbIntervalTagging>> toList(
       {bool preload = false,
       List<String> preloadFields,
       bool loadParents = false,
       List<String> loadedFields}) async {
     final data = await toMapList();
-    final List<DbLapTagging> dblaptaggingsData = await DbLapTagging.fromMapList(
-        data,
-        preload: preload,
-        preloadFields: preloadFields,
-        loadParents: loadParents,
-        loadedFields: loadedFields,
-        setDefaultValues: qparams.selectColumns == null);
-    return dblaptaggingsData;
+    final List<DbIntervalTagging> dbintervaltaggingsData =
+        await DbIntervalTagging.fromMapList(data,
+            preload: preload,
+            preloadFields: preloadFields,
+            loadParents: loadParents,
+            loadedFields: loadedFields,
+            setDefaultValues: qparams.selectColumns == null);
+    return dbintervaltaggingsData;
   }
 
   /// This method returns Json String
@@ -25284,7 +25329,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
-    return await _obj._mnDbLapTagging.toList(qparams);
+    return await _obj._mnDbIntervalTagging.toList(qparams);
   }
 
   /// This method returns Primary Key List<int>.
@@ -25295,7 +25340,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     }
     final List<int> idData = <int>[];
     qparams.selectColumns = ['id'];
-    final idFuture = await _obj._mnDbLapTagging.toList(qparams);
+    final idFuture = await _obj._mnDbIntervalTagging.toList(qparams);
 
     final int count = idFuture.length;
     for (int i = 0; i < count; i++) {
@@ -25310,7 +25355,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   Future<List<dynamic>> toListObject() async {
     _buildParameters();
 
-    final objectFuture = _obj._mnDbLapTagging.toList(qparams);
+    final objectFuture = _obj._mnDbIntervalTagging.toList(qparams);
 
     final List<dynamic> objectsData = <dynamic>[];
     final data = await objectFuture;
@@ -25323,12 +25368,12 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
 
   /// Returns List<String> for selected first column
   ///
-  /// Sample usage: await DbLapTagging.select(columnsToSelect: ['columnName']).toListString()
+  /// Sample usage: await DbIntervalTagging.select(columnsToSelect: ['columnName']).toListString()
   Future<List<String>> toListString(
       [VoidCallback Function(List<String> o) listString]) async {
     _buildParameters();
 
-    final objectFuture = _obj._mnDbLapTagging.toList(qparams);
+    final objectFuture = _obj._mnDbIntervalTagging.toList(qparams);
 
     final List<String> objectsData = <String>[];
     final data = await objectFuture;
@@ -25342,10 +25387,10 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     return objectsData;
   }
 }
-// endregion DbLapTaggingFilterBuilder
+// endregion DbIntervalTaggingFilterBuilder
 
-// region DbLapTaggingFields
-class DbLapTaggingFields {
+// region DbIntervalTaggingFields
+class DbIntervalTaggingFields {
   static TableField _fId;
   static TableField get id {
     return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
@@ -25363,27 +25408,27 @@ class DbLapTaggingFields {
         _fTagsId ?? SqlSyntax.setField(_fTagsId, 'tagsId', DbType.integer);
   }
 
-  static TableField _fLapsId;
-  static TableField get lapsId {
-    return _fLapsId =
-        _fLapsId ?? SqlSyntax.setField(_fLapsId, 'lapsId', DbType.integer);
+  static TableField _fIntervalsId;
+  static TableField get intervalsId {
+    return _fIntervalsId = _fIntervalsId ??
+        SqlSyntax.setField(_fIntervalsId, 'intervalsId', DbType.integer);
   }
 }
-// endregion DbLapTaggingFields
+// endregion DbIntervalTaggingFields
 
-//region DbLapTaggingManager
-class DbLapTaggingManager extends SqfEntityProvider {
-  DbLapTaggingManager()
+//region DbIntervalTaggingManager
+class DbIntervalTaggingManager extends SqfEntityProvider {
+  DbIntervalTaggingManager()
       : super(DbEncrateia(),
             tableName: _tableName,
             primaryKeyList: _primaryKeyList,
             whereStr: _whereStr);
-  static final String _tableName = 'lapTaggings';
+  static final String _tableName = 'intervalTaggings';
   static final List<String> _primaryKeyList = ['id'];
   static final String _whereStr = 'id=?';
 }
 
-//endregion DbLapTaggingManager
+//endregion DbIntervalTaggingManager
 class DbEncrateiaSequenceManager extends SqfEntityProvider {
   DbEncrateiaSequenceManager() : super(DbEncrateia());
 }

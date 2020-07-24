@@ -15,6 +15,7 @@ enum LapDoubleAttr {
   strideRatio,
   ecor,
   pace,
+  speed,
 }
 
 enum ActivityAttr {

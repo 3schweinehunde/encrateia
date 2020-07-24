@@ -63,6 +63,7 @@ class MyColor {
   static Color activity = aquaAccent;
   static Color lap = grassAccent;
   static Color tag = lavender;
+  static Color interval = pinkRose;
 
   static Color textColor({
     @required Color backgroundColor,

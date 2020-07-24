@@ -469,7 +469,7 @@ const SqfEntityTable tableActivityTagging = SqfEntityTable(
 );
 
 const SqfEntityTable tableIntervalTagging = SqfEntityTable(
-  tableName: 'lapTaggings',
+  tableName: 'intervalTaggings',
   primaryKeyName: 'id',
   primaryKeyType: PrimaryKeyType.integer_auto_incremental,
   useSoftDeleting: false,
