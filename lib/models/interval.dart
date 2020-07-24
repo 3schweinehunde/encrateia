@@ -66,6 +66,9 @@ class Interval {
   int get totalAscent => _db.totalAscent;
   int get totalDescent => _db.totalDescent;
 
+  set firstRecordId(int value) => _db.firstRecordId = value;
+  set lastRecordId(int value) => _db.lastRecordId = value;
+
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
 

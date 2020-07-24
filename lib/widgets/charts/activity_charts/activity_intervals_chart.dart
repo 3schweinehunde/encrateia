@@ -1,11 +1,13 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:charts_common/common.dart' as common show ChartBehavior;
@@ -33,6 +35,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
   DoublePlotPoint selectedPlotPoint;
   Event selectedRecord;
   List<Lap> laps = <Lap>[];
+  encrateia.Interval interval = encrateia.Interval();
 
   @override
   void initState() {
@@ -56,7 +59,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
     final List<DoublePlotPoint> smoothedRecords =
         widget.records.toDoubleDataPoints(
       attribute: LapDoubleAttr.speed,
-      amount: 1,
+      amount: widget.athlete.recordAggregationCount,
     );
 
     final List<Series<DoublePlotPoint, int>> data =
@@ -103,19 +106,59 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                     PanAndZoomBehavior(),
                     RangeAnnotation(GraphUtils.rangeAnnotations(laps: laps)),
                   ] +
-                  GraphUtils.axis(
-                    measureTitle: 'Speed (km/h)',
-                  ),
+                  GraphUtils.axis(measureTitle: 'Speed (km/h)'),
             ),
           ),
           if (selectedRecord != null)
-            Container(
-              child: Text(selectedRecord.distance.toString() +
-                  ' m; ' +
-                  (selectedRecord.speed * 3.6).toStringAsPrecision(2) +
-                  ' km/h; ' +
-                  (selectedRecord.power ?? 0).toString() +
-                  ' W'),
+            Column(
+              children: <Widget>[
+                Text('Current selection: ' +
+                    selectedRecord.distance.round().toString() +
+                    ' m; ' +
+                    (selectedRecord.speed * 3.6).toStringAsPrecision(2) +
+                    ' km/h; ' +
+                    (selectedRecord.power ?? 0).toString() +
+                    ' W'),
+                Row(
+                  children: <Widget>[
+                    const Spacer(),
+                    MyButton.activity(
+                        child: const Text('Select as start'),
+                        onPressed: () {
+                          interval.firstRecordId = selectedRecord.id;
+                          setState(() {});
+                        }),
+                    const Spacer(),
+                    if (interval.firstRecordId == 0)
+                      const Text('No start record selected'),
+                    if (interval.firstRecordId > 0)
+                      Text('Selected: ' +
+                          interval.firstRecordId.round().toString() +
+                          ' (id)'),
+                    const Spacer(),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    const Spacer(),
+                    MyButton.activity(
+                      child: const Text('Select as end'),
+                      onPressed: () {
+                        interval.lastRecordId = selectedRecord.id;
+                        setState(() {});
+                      },
+                    ),
+                    const Spacer(),
+                    if (interval.lastRecordId == 0)
+                      const Text('No end record selected'),
+                    if (interval.lastRecordId > 0)
+                      Text('Selected: ' +
+                          interval.lastRecordId.round().toString() +
+                          ' (id)'),
+                    const Spacer(),
+                  ],
+                ),
+              ],
             ),
           if (selectedRecord == null)
             Container(
