@@ -109,6 +109,19 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                 behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
                       PanAndZoomBehavior(),
                       RangeAnnotation(GraphUtils.rangeAnnotations(laps: laps)),
+                      if (interval.firstDistance > 0 &&
+                          interval.lastDistance > 0)
+                        RangeAnnotation(
+                          <RangeAnnotationSegment<int>>[
+                            RangeAnnotationSegment<int>(
+                              interval.firstDistance.round(),
+                              interval.lastDistance.round(),
+                              RangeAnnotationAxisType.domain,
+                              color: const Color(r: 255, g: 200, b: 200),
+                              endLabel: 'Interval',
+                            )
+                          ],
+                        ),
                     ] +
                     GraphUtils.axis(measureTitle: 'Speed (km/h)'),
               ),
