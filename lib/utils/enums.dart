@@ -30,3 +30,8 @@ enum ActivityAttr {
   avgStrydCadence,
   ftp,
 }
+
+enum IntervalBoundary {
+  left,
+  right,
+}

@@ -14,6 +14,8 @@ class Interval {
   DbInterval _db;
   Activity activity;
   List<Event> _records = <Event>[];
+  double firstDistance = 0;
+  double lastDistance = 0;
 
   int get id => _db?.id;
   DateTime get timeStamp => _db.timeStamp;
