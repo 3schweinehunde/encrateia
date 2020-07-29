@@ -21,8 +21,6 @@ class ActivityIntervalsWidget extends StatefulWidget {
 
 class _ActivityIntervalsWidgetState extends State<ActivityIntervalsWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgSpeedString = 'Loading ...';
-  String sdevSpeedString = 'Loading ...';
 
   @override
   void initState() {
@@ -60,7 +58,6 @@ class _ActivityIntervalsWidgetState extends State<ActivityIntervalsWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgSpeedString = (activity.avgSpeed * 3.6).toStringAsFixed(2) + 'km/h';
     setState(() {});
   }
 }

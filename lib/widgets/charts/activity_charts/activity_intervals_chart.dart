@@ -287,6 +287,24 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                   ),
                 ],
               ),
+            if (interval.firstDistance > 0 && interval.lastDistance > 0)
+              Row(
+                children: <Widget>[
+                  const Spacer(),
+                  MyButton.save(
+                    child: const Text('Save interval'),
+                    onPressed: () async {
+                      await interval.calculateAndSave(
+                          records: RecordList<Event>(widget.records
+                              .where((Event record) =>
+                                  record.id <= interval.firstRecordId &&
+                                  record.id <= interval.lastRecordId)
+                              .toList()));
+                    },
+                  ),
+                  const SizedBox(width: 20),
+                ],
+              ),
             if (selectedRecord == null)
               Container(
                 child: const Text('Select a record to continue.'),

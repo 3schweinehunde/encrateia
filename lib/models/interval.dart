@@ -117,5 +117,9 @@ class Interval {
     return _records;
   }
 
+  Future<void> calculateAndSave({RecordList<Event> records}) async {
+
+  }
+
   static Interval exDb(DbInterval db) => Interval._fromDb(db);
 }
