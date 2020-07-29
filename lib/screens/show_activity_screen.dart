@@ -10,7 +10,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.d
 import 'package:encrateia/widgets/activity_widgets/activity_speed_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_tag_widget.dart';
 import 'package:encrateia/widgets/intervals_list_widget.dart';
-// import 'package:encrateia/widgets/activity_widgets/activity_work_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_work_widget.dart';
 import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_path_widget.dart';
@@ -26,6 +26,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_stride_ratio_widget.
 import 'package:encrateia/widgets/activity_widgets/activity_vertical_oscillation_widget.dart';
 import 'package:encrateia/screens/show_activity_detail_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter/widgets.dart';
@@ -82,17 +83,18 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-      navigationButton(
-        title: 'Intervals',
-        color: MyColor.interval,
-        backgroundColor: MyColor.interval,
-        icon: MyIcon.laps,
-        context: context,
-        nextWidget: IntervalsListWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (kDebugMode)
+        navigationButton(
+          title: 'Intervals',
+          color: MyColor.interval,
+          backgroundColor: MyColor.interval,
+          icon: MyIcon.laps,
+          context: context,
+          nextWidget: IntervalsListWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
       navigationButton(
         title: 'Path',
         color: MyColor.navigate,
@@ -265,16 +267,17 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-/*      navigationButton(
-        title: 'Work / CP',
-        color: MyColor.navigate,
-        icon: MyIcon.work,
-        context: context,
-        nextWidget: ActivityWorkWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (kDebugMode)
+        navigationButton(
+          title: 'Work / CP',
+          color: MyColor.navigate,
+          icon: MyIcon.work,
+          context: context,
+          nextWidget: ActivityWorkWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),*/
       navigationButton(
         title: 'Metadata',
         color: MyColor.settings,
@@ -358,7 +361,9 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           crossAxisSpacing: 10,
           padding: const EdgeInsets.all(10),
           crossAxisCount:
-              MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 2
+                  : 4,
           children: tiles,
         ),
       ),
