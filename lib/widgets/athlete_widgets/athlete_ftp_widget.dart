@@ -69,7 +69,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                     MyButton.activity(
                         child: const Text('Calculate missing FTP'),
                         onPressed: () async {
-                          await Ftp.calculate(backlog: backlog);
+                          await Ftp.catchUp(backlog: backlog);
                           getData();
                         }),
                     const SizedBox(width: 20),
@@ -87,7 +87,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
               MyButton.activity(
                   child: const Text('Calculate FTP'),
                   onPressed: () async {
-                    Ftp.calculate(backlog: backlog);
+                    Ftp.catchUp(backlog: backlog);
                     setState(() {});
                   }),
               const SizedBox(width: 20),

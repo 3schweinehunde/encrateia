@@ -22,19 +22,23 @@ class Ftp {
     return backlog;
   }
 
-  static Future<void> calculate({List<Activity> backlog}) async {
+  static Future<void> catchUp({List<Activity> backlog}) async {
     for (final Activity activity in backlog) {
       print('calculating ftp for ${activity.name} ...');
       final List<Event> records = await activity.records;
       final List<Event> powerRecords = records
           .where((Event value) => value.power != null && value.power > 100)
           .toList();
-      final PowerDuration powerDuration = PowerDuration(records: powerRecords);
-      final PowerDuration ftpCurve = powerDuration.normalize();
-      final double ftp = ftpCurve.powerMap.values.toList().reduce(max);
-      activity.ftp = ftp;
+      activity.ftp = calculate(records: powerRecords);
       activity.save();
       print('ftp calculated');
     }
+  }
+
+  static double calculate({List<Event> records}) {
+    final PowerDuration powerDuration = PowerDuration(records: records);
+    final PowerDuration ftpCurve = powerDuration.normalize();
+    final double ftp = ftpCurve.powerMap.values.toList().reduce(max);
+    return ftp;
   }
 }

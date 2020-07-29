@@ -1,6 +1,7 @@
 import 'package:encrateia/model/model.dart' show DbEvent, DbInterval;
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/ftp.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
@@ -58,7 +59,7 @@ class Interval {
   int get lastRecordId => _db.lastRecordId;
   int get avgHeartRate => _db.avgHeartRate;
   int get distance => _db.distance;
-  int get duration => _db.duration;
+  Duration get duration => Duration(seconds: _db.duration ?? 0);
   int get maxFormPower => _db.maxFormPower;
   int get maxHeartRate => _db.maxHeartRate;
   int get maxPower => _db.maxPower;
@@ -70,6 +71,11 @@ class Interval {
 
   set firstRecordId(int value) => _db.firstRecordId = value;
   set lastRecordId(int value) => _db.lastRecordId = value;
+  set athletesId(int value) => _db.athletesId = value;
+  set activitiesId(int value) => _db.activitiesId = value;
+  set distance(int value) => _db.distance = value;
+  set duration(Duration value) => _db.duration = value.inSeconds;
+  set ftp(double value) => _db.ftp = value;
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
@@ -92,16 +98,33 @@ class Interval {
       ..maxSpeed = recordList.maxSpeed()
       ..avgGroundTime = recordList.avgGroundTime()
       ..sdevGroundTime = recordList.sdevGroundTime()
+      ..minGroundTime = recordList.minGroundTime()
+      ..maxGroundTime = recordList.maxGroundTime()
       ..avgStrydCadence = recordList.avgStrydCadence()
       ..sdevStrydCadence = recordList.sdevStrydCadence()
+      ..minStrydCadence = recordList.minStrydCadence()
+      ..maxStrydCadence = recordList.maxStrydCadence()
+      ..avgCadence = recordList.avgStrydCadence()
+      ..sdevCadence = recordList.sdevStrydCadence()
+      ..minCadence = recordList.minCadence()
+      ..maxCadence = recordList.maxCadence()
       ..avgLegSpringStiffness = recordList.avgLegSpringStiffness()
       ..sdevLegSpringStiffness = recordList.sdevLegSpringStiffness()
+      ..minLegSpringStiffness = recordList.minLegSpringStiffness()
+      ..maxLegSpringStiffness = recordList.maxLegSpringStiffness()
       ..avgVerticalOscillation = recordList.avgVerticalOscillation()
       ..sdevVerticalOscillation = recordList.sdevVerticalOscillation()
+      ..minVerticalOscillation = recordList.minVerticalOscillation()
+      ..maxVerticalOscillation = recordList.maxVerticalOscillation()
       ..avgFormPower = recordList.avgFormPower()
-      ..sdevFormPower = recordList.sdevFormPower();
+      ..sdevFormPower = recordList.sdevFormPower()
+      ..minFormPower = recordList.minFormPower()
+      ..maxFormPower = recordList.maxFormPower();
     await save();
   }
+
+  // totalAscent => _db.totalAscent;
+  // totalDescent => _db.totalDescent;
 
   Future<List<Event>> get records async {
     final List<DbEvent> dbEvents = await DbEvent()
@@ -118,7 +141,10 @@ class Interval {
   }
 
   Future<void> calculateAndSave({RecordList<Event> records}) async {
-
+    distance = (records.last.distance - records.first.distance).round();
+    duration = records.last.timeStamp.difference(records.first.timeStamp);
+    ftp = Ftp.calculate(records: records);
+    await setAverages();
   }
 
   static Interval exDb(DbInterval db) => Interval._fromDb(db);

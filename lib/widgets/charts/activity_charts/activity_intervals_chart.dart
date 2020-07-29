@@ -318,6 +318,8 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
 
   Future<void> getData() async {
     laps = await widget.activity.laps;
+    interval.athletesId = widget.athlete.id;
+    interval.activitiesId = widget.activity.id;
     setState(() {});
   }
 

@@ -111,6 +111,7 @@ class Event {
   double get positionLat => _db.positionLat;
   double get positionLong => _db.positionLong;
   double get speed => _db.speed;
+  double get cadence => _db.cadence;
   double get strydCadence => _db.strydCadence;
   double get verticalOscillation => _db.verticalOscillation;
   int get formPower => _db.formPower;
