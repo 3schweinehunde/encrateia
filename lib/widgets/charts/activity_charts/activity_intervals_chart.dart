@@ -303,6 +303,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                       interval = encrateia.Interval();
                       interval.athletesId = widget.athlete.id;
                       interval.activitiesId = widget.activity.id;
+                      widget.activity.cachedIntervals = <encrateia.Interval>[];
                       setState(() {});
                     },
                   ),
@@ -318,13 +319,6 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
       );
     else
       return GraphUtils.loadingContainer;
-  }
-
-  Future<void> getData() async {
-    laps = await widget.activity.laps;
-    interval.athletesId = widget.athlete.id;
-    interval.activitiesId = widget.activity.id;
-    setState(() {});
   }
 
   void moveInterval({int amount, IntervalBoundary boundary}) {
@@ -369,6 +363,13 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
           }
       }
     }
+    setState(() {});
+  }
+
+  Future<void> getData() async {
+    interval.athletesId = widget.athlete.id;
+    interval.activitiesId = widget.activity.id;
+    laps = await widget.activity.laps;
     setState(() {});
   }
 }

@@ -2,7 +2,6 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_bargraph_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_ftp_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_intervals_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_speed_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_metadata_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart';
@@ -10,6 +9,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_pace_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_speed_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_tag_widget.dart';
+import 'package:encrateia/widgets/intervals_list_widget.dart';
 // import 'package:encrateia/widgets/activity_widgets/activity_work_widget.dart';
 import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_heart_rate_widget.dart';
@@ -88,7 +88,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         backgroundColor: MyColor.interval,
         icon: MyIcon.laps,
         context: context,
-        nextWidget: ActivityIntervalsWidget(
+        nextWidget: IntervalsListWidget(
           activity: widget.activity,
           athlete: widget.athlete,
         ),

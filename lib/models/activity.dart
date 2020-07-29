@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:encrateia/model/model.dart'
-    show DbActivity, DbEvent, DbHeartRateZone, DbLap, DbPowerZone;
+    show DbActivity, DbEvent, DbHeartRateZone, DbInterval, DbLap, DbPowerZone;
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/utils/enums.dart';
@@ -22,12 +22,14 @@ import 'bar_zone.dart';
 import 'event.dart';
 import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';
+import 'interval.dart' as encrateia;
 import 'lap.dart';
 import 'power_zone.dart';
 import 'power_zone_schema.dart';
 import 'record_list.dart';
 import 'strava_fit_download.dart';
 import 'tag.dart';
+
 
 class Activity {
   Activity();
@@ -56,6 +58,7 @@ class Activity {
   DbActivity _db;
   List<Event> cachedRecords = <Event>[];
   List<Lap> cachedLaps = <Lap>[];
+  List<encrateia.Interval> cachedIntervals = <encrateia.Interval>[];
   List<Tag> cachedTags = <Tag>[];
   double glidingMeasureAttribute;
   double weight;
@@ -725,6 +728,23 @@ class Activity {
       }
     }
     return cachedLaps;
+  }
+
+  Future<List<encrateia.Interval>> get intervals async {
+    if (cachedIntervals.isEmpty) {
+      int counter = 1;
+
+      final List<DbInterval> dbIntervalList = await _db.getDbIntervals().toList();
+      cachedIntervals = dbIntervalList.map(encrateia.Interval.exDb).toList();
+
+      for (final encrateia.Interval interval in cachedIntervals) {
+        interval
+          ..activity = this
+          ..index = counter;
+        counter = counter + 1;
+      }
+    }
+    return cachedIntervals;
   }
 
   Future<BoolResult> deleteEvents() async => await _db.getDbEvents().delete();
