@@ -80,7 +80,7 @@ class Interval {
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
 
-  Future<void> setAverages() async {
+  Future<void> setValues() async {
     final RecordList<Event> recordList = RecordList<Event>(await records);
     _db
       ..avgPower = recordList.avgPower()
@@ -119,12 +119,11 @@ class Interval {
       ..avgFormPower = recordList.avgFormPower()
       ..sdevFormPower = recordList.sdevFormPower()
       ..minFormPower = recordList.minFormPower()
-      ..maxFormPower = recordList.maxFormPower();
+      ..maxFormPower = recordList.maxFormPower()
+      ..totalAscent = recordList.totalAscent().round()
+      ..totalDescent = recordList.totalDescent().round();
     await save();
   }
-
-  // totalAscent => _db.totalAscent;
-  // totalDescent => _db.totalDescent;
 
   Future<List<Event>> get records async {
     final List<DbEvent> dbEvents = await DbEvent()
@@ -144,7 +143,7 @@ class Interval {
     distance = (records.last.distance - records.first.distance).round();
     duration = records.last.timeStamp.difference(records.first.timeStamp);
     ftp = Ftp.calculate(records: records);
-    await setAverages();
+    await setValues();
   }
 
   static Interval exDb(DbInterval db) => Interval._fromDb(db);

@@ -316,11 +316,34 @@ class RecordList<E> extends DelegatingList<E> {
       .sdev();
 
   // Ascend and descend
-  double totalAscend() {
-    final List<double> verticalOscillation = _records
-        .map((Event record) => record.verticalOscillation)
+  double totalAscent() {
+    double lastAltitude = 0;
+    double sumOfAscents = 0;
+    final List<double> altitudes = _records
+        .map((Event record) => record.altitude)
         .nonZeros().cast<double>();
-    return verticalOscillation.isNotEmpty ? verticalOscillation.mean() : -1;
+
+    for(final double altitude in altitudes) {
+      if (lastAltitude != 0 && altitude > lastAltitude)
+        sumOfAscents += altitude - lastAltitude;
+      lastAltitude = altitude;
+    }
+    return sumOfAscents;
+  }
+
+  double totalDescent() {
+    double lastAltitude = 0;
+    double sumOfDescents = 0;
+    final List<double> altitudes = _records
+        .map((Event record) => record.altitude)
+        .nonZeros().cast<double>();
+
+    for(final double altitude in altitudes) {
+      if (lastAltitude != 0 && altitude < lastAltitude)
+        sumOfDescents += lastAltitude - altitude;
+      lastAltitude = altitude;
+    }
+    return sumOfDescents;
   }
 
   // END OF AVERAGES

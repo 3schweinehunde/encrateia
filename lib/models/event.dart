@@ -114,6 +114,7 @@ class Event {
   double get cadence => _db.cadence;
   double get strydCadence => _db.strydCadence;
   double get verticalOscillation => _db.verticalOscillation;
+  double get altitude => _db.altitude;
   int get formPower => _db.formPower;
   int get heartRate => _db.heartRate;
   int get power => _db.power;
