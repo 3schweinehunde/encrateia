@@ -34,7 +34,7 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> heartRateActivities = activities
           .where((Activity activity) =>
-      activity.avgSpeed != null && activity.avgSpeed > 0)
+      activity.avgHeartRate != null && activity.avgHeartRate > 20)
           .toList();
 
       if (heartRateActivities.isNotEmpty) {
