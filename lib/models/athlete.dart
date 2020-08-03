@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/models/strava_token.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/model/model.dart'
     show
@@ -34,14 +35,22 @@ class Athlete {
   String get photoPath => _db.photoPath;
   String get state => _db.state;
   String get stravaUsername => _db.stravaUsername;
+  String get stravaAccessToken => _db.stravaAccessToken;
+  String get stravaScope => _db.stravaScope;
+  String get stravaRefreshToken => _db.stravaRefreshToken;
   int get downloadInterval => _db.downloadInterval;
   int get recordAggregationCount => _db.recordAggregationCount;
+  int get stravaExpire => _db.stravaExpire;
   int get stravaId => _db.stravaId;
 
   set downloadInterval(int value) => _db.downloadInterval = value;
   set firstName(String value) => _db.firstName = value;
   set lastName(String value) => _db.lastName = value;
   set recordAggregationCount(int value) => _db.recordAggregationCount = value;
+  set stravaAccessToken(String value) => _db.stravaAccessToken = value;
+  set stravaScope(String value) => _db.stravaScope = value;
+  set stravaRefreshToken(String value) => _db.stravaRefreshToken = value;
+  set stravaExpire(int value) => _db.stravaExpire = value;
 
   @override
   String toString() => '< Athlete | $firstName $lastName | $stravaId >';
@@ -94,6 +103,12 @@ class Athlete {
     email = await storage.read(key: 'email-$stravaId');
     password = await storage.read(key: 'password-$stravaId');
   }
+
+  Future<void> loadStravaToken() async =>
+      await StravaToken.loadTokenData(athlete: this);
+
+  Future<void> persistStravaToken() async =>
+      await StravaToken.persistTokenData(athlete: this);
 
   static Future<List<Athlete>> all() async {
     final List<DbAthlete> dbAthleteList = await DbAthlete().select().toList();

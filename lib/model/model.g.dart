@@ -43,6 +43,10 @@ class TableDbAthlete extends SqfEntityTableBase {
       SqfEntityFieldBase('downloadInterval', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('recordAggregationCount', DbType.integer,
           isNotNull: false),
+      SqfEntityFieldBase('stravaAccessToken', DbType.text, isNotNull: false),
+      SqfEntityFieldBase('stravaScope', DbType.text, isNotNull: false),
+      SqfEntityFieldBase('stravaRefreshToken', DbType.text, isNotNull: false),
+      SqfEntityFieldBase('stravaExpire', DbType.integer, isNotNull: false),
     ];
     super.init();
   }
@@ -782,7 +786,11 @@ class DbAthlete {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount}) {
+      this.recordAggregationCount,
+      this.stravaAccessToken,
+      this.stravaScope,
+      this.stravaRefreshToken,
+      this.stravaExpire}) {
     _setDefaultValues();
   }
   DbAthlete.withFields(
@@ -794,7 +802,11 @@ class DbAthlete {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount) {
+      this.recordAggregationCount,
+      this.stravaAccessToken,
+      this.stravaScope,
+      this.stravaRefreshToken,
+      this.stravaExpire) {
     _setDefaultValues();
   }
   DbAthlete.withId(
@@ -807,7 +819,11 @@ class DbAthlete {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount) {
+      this.recordAggregationCount,
+      this.stravaAccessToken,
+      this.stravaScope,
+      this.stravaRefreshToken,
+      this.stravaExpire) {
     _setDefaultValues();
   }
   DbAthlete.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -843,6 +859,18 @@ class DbAthlete {
       recordAggregationCount =
           int.tryParse(o['recordAggregationCount'].toString());
     }
+    if (o['stravaAccessToken'] != null) {
+      stravaAccessToken = o['stravaAccessToken'] as String;
+    }
+    if (o['stravaScope'] != null) {
+      stravaScope = o['stravaScope'] as String;
+    }
+    if (o['stravaRefreshToken'] != null) {
+      stravaRefreshToken = o['stravaRefreshToken'] as String;
+    }
+    if (o['stravaExpire'] != null) {
+      stravaExpire = int.tryParse(o['stravaExpire'].toString());
+    }
   }
   // FIELDS (DbAthlete)
   int id;
@@ -855,6 +883,10 @@ class DbAthlete {
   String geoState;
   int downloadInterval;
   int recordAggregationCount;
+  String stravaAccessToken;
+  String stravaScope;
+  String stravaRefreshToken;
+  int stravaExpire;
 
   BoolResult saveResult;
   // end FIELDS (DbAthlete)
@@ -1014,6 +1046,22 @@ class DbAthlete {
       map['recordAggregationCount'] = recordAggregationCount;
     }
 
+    if (stravaAccessToken != null) {
+      map['stravaAccessToken'] = stravaAccessToken;
+    }
+
+    if (stravaScope != null) {
+      map['stravaScope'] = stravaScope;
+    }
+
+    if (stravaRefreshToken != null) {
+      map['stravaRefreshToken'] = stravaRefreshToken;
+    }
+
+    if (stravaExpire != null) {
+      map['stravaExpire'] = stravaExpire;
+    }
+
     return map;
   }
 
@@ -1061,6 +1109,22 @@ class DbAthlete {
       map['recordAggregationCount'] = recordAggregationCount;
     }
 
+    if (stravaAccessToken != null) {
+      map['stravaAccessToken'] = stravaAccessToken;
+    }
+
+    if (stravaScope != null) {
+      map['stravaScope'] = stravaScope;
+    }
+
+    if (stravaRefreshToken != null) {
+      map['stravaRefreshToken'] = stravaRefreshToken;
+    }
+
+    if (stravaExpire != null) {
+      map['stravaExpire'] = stravaExpire;
+    }
+
 // COLLECTIONS (DbAthlete)
     if (!forQuery) {
       map['DbActivities'] = await getDbActivities().toMapList();
@@ -1106,7 +1170,11 @@ class DbAthlete {
       stravaId,
       geoState,
       downloadInterval,
-      recordAggregationCount
+      recordAggregationCount,
+      stravaAccessToken,
+      stravaScope,
+      stravaRefreshToken,
+      stravaExpire
     ];
   }
 
@@ -1121,7 +1189,11 @@ class DbAthlete {
       stravaId,
       geoState,
       downloadInterval,
-      recordAggregationCount
+      recordAggregationCount,
+      stravaAccessToken,
+      stravaScope,
+      stravaRefreshToken,
+      stravaExpire
     ];
   }
 
@@ -1362,7 +1434,7 @@ class DbAthlete {
   ///
   /// Returns a <List<BoolResult>>
   Future<List<dynamic>> saveAll(List<DbAthlete> dbathletes) async {
-    // final results = _mnDbAthlete.saveAll('INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',dbathletes);
+    // final results = _mnDbAthlete.saveAll('INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, stravaAccessToken, stravaScope, stravaRefreshToken, stravaExpire)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbathletes);
     // return results; removed in sqfentity_gen 1.3.0+6
     DbEncrateia().batchStart();
     for (final obj in dbathletes) {
@@ -1377,7 +1449,7 @@ class DbAthlete {
   Future<int> upsert() async {
     try {
       if (await _mnDbAthlete.rawInsert(
-              'INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, stravaAccessToken, stravaScope, stravaRefreshToken, stravaExpire)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -1388,7 +1460,11 @@ class DbAthlete {
                 stravaId,
                 geoState,
                 downloadInterval,
-                recordAggregationCount
+                recordAggregationCount,
+                stravaAccessToken,
+                stravaScope,
+                stravaRefreshToken,
+                stravaExpire
               ]) ==
           1) {
         saveResult = BoolResult(
@@ -1414,7 +1490,7 @@ class DbAthlete {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
-        'INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, stravaAccessToken, stravaScope, stravaRefreshToken, stravaExpire)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -1957,6 +2033,29 @@ class DbAthleteFilterBuilder extends SearchCriteria {
         _recordAggregationCount, 'recordAggregationCount', DbType.integer);
   }
 
+  DbAthleteField _stravaAccessToken;
+  DbAthleteField get stravaAccessToken {
+    return _stravaAccessToken =
+        setField(_stravaAccessToken, 'stravaAccessToken', DbType.text);
+  }
+
+  DbAthleteField _stravaScope;
+  DbAthleteField get stravaScope {
+    return _stravaScope = setField(_stravaScope, 'stravaScope', DbType.text);
+  }
+
+  DbAthleteField _stravaRefreshToken;
+  DbAthleteField get stravaRefreshToken {
+    return _stravaRefreshToken =
+        setField(_stravaRefreshToken, 'stravaRefreshToken', DbType.text);
+  }
+
+  DbAthleteField _stravaExpire;
+  DbAthleteField get stravaExpire {
+    return _stravaExpire =
+        setField(_stravaExpire, 'stravaExpire', DbType.integer);
+  }
+
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -2413,6 +2512,32 @@ class DbAthleteFields {
     return _fRecordAggregationCount = _fRecordAggregationCount ??
         SqlSyntax.setField(
             _fRecordAggregationCount, 'recordAggregationCount', DbType.integer);
+  }
+
+  static TableField _fStravaAccessToken;
+  static TableField get stravaAccessToken {
+    return _fStravaAccessToken = _fStravaAccessToken ??
+        SqlSyntax.setField(
+            _fStravaAccessToken, 'stravaAccessToken', DbType.text);
+  }
+
+  static TableField _fStravaScope;
+  static TableField get stravaScope {
+    return _fStravaScope = _fStravaScope ??
+        SqlSyntax.setField(_fStravaScope, 'stravaScope', DbType.text);
+  }
+
+  static TableField _fStravaRefreshToken;
+  static TableField get stravaRefreshToken {
+    return _fStravaRefreshToken = _fStravaRefreshToken ??
+        SqlSyntax.setField(
+            _fStravaRefreshToken, 'stravaRefreshToken', DbType.text);
+  }
+
+  static TableField _fStravaExpire;
+  static TableField get stravaExpire {
+    return _fStravaExpire = _fStravaExpire ??
+        SqlSyntax.setField(_fStravaExpire, 'stravaExpire', DbType.integer);
   }
 }
 // endregion DbAthleteFields

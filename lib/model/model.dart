@@ -25,6 +25,10 @@ const SqfEntityTable tableAthlete = SqfEntityTable(
     SqfEntityField('geoState', DbType.text),
     SqfEntityField('downloadInterval', DbType.integer),
     SqfEntityField('recordAggregationCount', DbType.integer),
+    SqfEntityField('stravaAccessToken', DbType.text),
+    SqfEntityField('stravaScope', DbType.text),
+    SqfEntityField('stravaRefreshToken', DbType.text),
+    SqfEntityField('stravaExpire', DbType.integer),
   ],
 );
 
