@@ -102,7 +102,7 @@ class Athlete {
 
   Future<List<Activity>> get activities async {
     final List<DbActivity> dbActivityList =
-        await _db.getDbActivities().orderByDesc('stravaId').toList();
+        await _db.getDbActivities().orderByDesc('timeCreated').toList();
     return dbActivityList.map(Activity.exDb).toList();
   }
 
