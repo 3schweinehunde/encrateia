@@ -16,6 +16,7 @@ enum LapDoubleAttr {
   ecor,
   pace,
   speed,
+  altitude,
 }
 
 enum ActivityAttr {

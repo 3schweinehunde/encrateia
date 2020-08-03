@@ -6,6 +6,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_speed_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_metadata_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_pace_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_altitude_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_speed_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_tag_widget.dart';
@@ -278,6 +279,16 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
+      navigationButton(
+        title: 'Altitude',
+        color: MyColor.navigate,
+        icon: MyIcon.altitude,
+        context: context,
+        nextWidget: ActivityAltitudeWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
+      ),
       navigationButton(
         title: 'Metadata',
         color: MyColor.settings,

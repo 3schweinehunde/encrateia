@@ -8,6 +8,7 @@ class MyIcon {
   // A
   static final Icon activities = Icon(Icons.view_list);
   static final Icon amount = Icon(Icons.playlist_add);
+  static final Icon altitude = Icon(Icons.landscape);
   static final Icon analyze = Icon(Icons.multiline_chart);
   static final Icon ascent = Icon(Icons.trending_up);
   static final Icon athlete = Icon(

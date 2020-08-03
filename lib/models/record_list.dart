@@ -427,6 +427,9 @@ class RecordList<E> extends DelegatingList<E> {
           break;
         case LapDoubleAttr.speed:
           sum = sum + record.speed * 3.6;
+          break;
+        case LapDoubleAttr.altitude:
+          sum = sum + record.altitude;
       }
 
       if (index++ % amount == amount - 1) {
