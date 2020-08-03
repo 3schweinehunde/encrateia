@@ -7,6 +7,7 @@ import 'package:encrateia/widgets/lap_widgets/lap_overview_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_heart_rate_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_pace_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_power_widget.dart';
+import 'package:encrateia/widgets/lap_widgets/lap_altitude_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_power_duration_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_ground_time_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_leg_spring_stiffness_widget.dart';
@@ -112,6 +113,13 @@ class ShowLapScreen extends StatelessWidget {
         icon: MyIcon.verticalOscillation,
         context: context,
         nextWidget: ({Lap lap}) => LapVerticalOscillationWidget(lap: lap),
+      ),
+      navigationButton(
+        title: 'Altitude',
+        color: MyColor.navigate,
+        icon: MyIcon.altitude,
+        context: context,
+        nextWidget: ({Lap lap}) => LapAltitudeWidget(lap: lap),
       ),
       navigationButton(
         title: 'Metadata',
