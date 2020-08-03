@@ -200,7 +200,7 @@ class Activity {
         final Activity activity = Activity.fromLocalDirectory(athlete: athlete);
         // ignore: avoid_slow_async_io
         final bool isFile = await FileSystemEntity.isFile(entity.path);
-        if (isFile == true && entity.path.endsWith('.fit')) {
+        if (isFile == true && entity.path.toLowerCase().endsWith('.fit')) {
           final File sourceFile = File(entity.path);
           await sourceFile.copy(
               appDocDir.path + '/' + activity.stravaId.toString() + '.fit');
