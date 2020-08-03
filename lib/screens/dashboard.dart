@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:package_info/package_info.dart';
 import 'onboarding_screens/onboarding_introduction_screen.dart';
 import 'show_athlete_screen.dart';
 
@@ -16,6 +17,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<Athlete> athletes = <Athlete>[];
+  String version;
 
   @override
   void initState() {
@@ -58,6 +60,12 @@ class _DashboardState extends State<Dashboard> {
                     },
                   ),
                 ),
+              const SizedBox(height: 20),
+              if (version != null)
+                Text(
+                  'Encrateia version $version',
+                  style: const TextStyle(fontSize: 12),
+                ),
             ],
           ),
         ),
@@ -91,5 +99,7 @@ class _DashboardState extends State<Dashboard> {
       );
     } else
       setState(() {});
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    version = packageInfo.version;
   }
 }

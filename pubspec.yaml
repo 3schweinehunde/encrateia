@@ -1,7 +1,7 @@
 name: encrateia
 description: Activity tracker data analysis for Android and iOS
 
-version: 0.4.2
+version: 0.4.3
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
@@ -30,6 +30,7 @@ dependencies:
   strava_flutter: ^1.2.1+54
   url_launcher: ^5.5.0
   uuid: 2.0.4
+  package_info: ^0.4.0+16
 
 dev_dependencies:
   flutter_test:
