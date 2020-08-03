@@ -99,9 +99,10 @@ class _DashboardState extends State<Dashboard> {
               const OnboardingIntroductionScreen(),
         ),
       );
-    } else
+    } else {
+      final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      version = packageInfo.version;
       setState(() {});
-    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    version = packageInfo.version;
+    }
   }
 }
