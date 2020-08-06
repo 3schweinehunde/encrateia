@@ -50,7 +50,7 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
                 records: RecordList<Event>(groundTimeRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
-                minimum: widget.activity.avgGroundTime / 1.25,
+                minimum: widget.activity.avgGroundTime / 1.5,
                 maximum: widget.activity.avgGroundTime * 1.25,
               ),
               Text('${widget.athlete.recordAggregationCount} records are '

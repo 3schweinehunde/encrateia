@@ -46,8 +46,8 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
             children: <Widget>[
               LapPaceChart(
                 records: RecordList<Event>(paceRecords),
-                minimum: 50 / 3 / widget.lap.avgSpeed / 2,
-                maximum: 50 / 3 / widget.lap.avgSpeed * 1.5,
+                minimum: 50 / 3 / widget.lap.avgSpeed - 3 * widget.lap.sdevPace,
+                maximum: 50 / 3 / widget.lap.avgSpeed + 3 * widget.lap.sdevPace,
               ),
               const Text('Only records where speed > 0 m/s are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
@@ -69,7 +69,7 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(widget.lap.sdevPace.toStringAsFixed(2) + ' s'),
+                title: Text((widget.lap.sdevPace * 60).toStringAsFixed(2) + ' s/km'),
                 subtitle: const Text('standard deviation pace'),
               ),
               ListTile(

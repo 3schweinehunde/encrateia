@@ -90,7 +90,7 @@ class _ActivityPaceWidgetState extends State<ActivityPaceWidget> {
     records = RecordList<Event>(await activity.records);
     avgPaceString =
         activity.avgSpeed != null ? activity.avgSpeed.toPace() : '- - -';
-    sdevPaceString = activity.sdevPace.toStringAsFixed(2) + ' s';
+    sdevPaceString = (activity.sdevPace * 60).toStringAsFixed(2) + ' s/km';
     setState(() {});
   }
 }
