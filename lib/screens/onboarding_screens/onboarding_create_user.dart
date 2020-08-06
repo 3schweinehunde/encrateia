@@ -40,10 +40,10 @@ class _OnboardingCreateUserScreenState
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ListTile(
+                    const ListTile(
                       leading: MyIcon.create,
-                      title: const Text('Option 1: Demo Setup'),
-                      subtitle: const Text(
+                      title: Text('Option 1: Demo Setup'),
+                      subtitle: Text(
                         'Choose this option to create a demo user with demo setup.'
                         'It will download and analyse 4 activities provided '
                         'by the Encrateia team. '
@@ -77,11 +77,11 @@ class _OnboardingCreateUserScreenState
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ListTile(
+                    const ListTile(
                       leading: MyIcon.download,
                       title:
-                          const Text('Option 2: Athlete with Strava Account'),
-                      subtitle: const Text(
+                          Text('Option 2: Athlete with Strava Account'),
+                      subtitle: Text(
                           'Choose this option, if you want to download activities '
                           'from Strava'),
                     ),
@@ -116,10 +116,10 @@ class _OnboardingCreateUserScreenState
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    ListTile(
+                    const ListTile(
                       leading: MyIcon.upload,
-                      title: const Text('Option 3: Standalone Athlete'),
-                      subtitle: const Text(
+                      title: Text('Option 3: Standalone Athlete'),
+                      subtitle: Text(
                           'Choose this option, if you want to upload all'
                           ' .fit-files manually'),
                     ),

@@ -46,9 +46,8 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        color: Colors.black,
-      ),
+      separatorBuilder: (BuildContext context, int index) =>
+          const Divider(color: Colors.black),
       padding: const EdgeInsets.only(top: 10),
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {

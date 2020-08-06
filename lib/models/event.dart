@@ -61,7 +61,8 @@ class Event {
       ..positionLong = dataMessage.get('position_long') as double
       ..distance = dataMessage.get('distance') as double
       ..altitude = dataMessage.get('altitude') as double
-      ..speed = dataMessage.get('speed') as double
+      ..speed = dataMessage.get('speed') as double ??
+          dataMessage.get('enhanced_speed') as double
       ..heartRate = (dataMessage.get('heart_rate') as double)?.round()
       ..cadence = dataMessage.get('cadence') as double
       ..fractionalCadence = dataMessage.get('fractional_cadence') as double

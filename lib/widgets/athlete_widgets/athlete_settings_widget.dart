@@ -86,10 +86,10 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
             ],
           ),
         ),
-        ListTile(
+        const ListTile(
             leading: MyIcon.weight,
-            title: const Text('Last known weight'),
-            subtitle: const Text('no data available'))
+            title: Text('Last known weight'),
+            subtitle: Text('no data available'))
       ],
     );
   }
@@ -139,11 +139,11 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
       return ListTile(
           leading: MyIcon.stravaDownload,
           title: const Text('Strava ID / Username / Location'),
-          subtitle: Text(athlete.stravaId.toString() +
+          subtitle: Text(athlete.stravaId.toString() ?? '' +
               ' / ' +
-              athlete.stravaUsername +
+              athlete.stravaUsername ?? '' +
               ' / ' +
-              athlete.geoState));
+              athlete.geoState ?? ''));
     else
       return Container(width: 0, height: 0);
   }

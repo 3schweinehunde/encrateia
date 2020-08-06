@@ -28,10 +28,10 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: <Widget>[
-        Card(
+        const Card(
           child: ListTile(
             leading: MyIcon.website,
-            title: const Text(
+            title: Text(
                 'Credentials for .fit-Download from Strava Web Site'),
           ),
         ),

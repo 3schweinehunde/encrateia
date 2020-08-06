@@ -43,13 +43,13 @@ class _AddHeartRateZoneSchemaScreenState
         child: ListView(
           padding: const EdgeInsets.only(left: 20, right: 20),
           children: <Widget>[
-            Card(
-              margin: const EdgeInsets.all(40),
+            const Card(
+              margin: EdgeInsets.all(40),
               child: ListTile(
                 leading: MyIcon.warning,
                 title:
-                    const Text('Instructions to update your current base value'),
-                subtitle: const Text(
+                    Text('Instructions to update your current base value'),
+                subtitle: Text(
                   '1) Change the VALID FROM date to today to copy the heart rate zone schema.\n'
                   '2) Edit the BASE VALUE to the new value.\n'
                   '3) Click SAVE to persist your changes.',

@@ -28,10 +28,10 @@ class _EditStandaloneAthleteWidgetState
     return ListView(
       padding: const EdgeInsets.all(20),
       children: <Widget>[
-        Card(
+        const Card(
           child: ListTile(
             leading: MyIcon.running,
-            title: const Text('Enter Your Name'),
+            title: Text('Enter Your Name'),
           ),
         ),
         TextFormField(

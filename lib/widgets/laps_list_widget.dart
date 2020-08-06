@@ -62,7 +62,7 @@ class LapsListWidget extends StatelessWidget {
                         Text((lap.totalDistance / 1000).toStringAsFixed(2)),
                       ),
                       DataCell(
-                        Text((lap.totalAscent - lap.totalDescent)
+                        Text((lap.totalAscent ?? 0 - (lap.totalDescent ?? 0))
                             .toString()),
                       ),
                     ],

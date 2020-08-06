@@ -24,7 +24,7 @@ class BarChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final TextStyle textStyle = TextStyle(
+    const TextStyle textStyle = TextStyle(
       color: Colors.black,
       fontSize: 12,
     );
