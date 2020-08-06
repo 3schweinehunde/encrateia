@@ -12,6 +12,7 @@ import 'package:encrateia/widgets/lap_widgets/lap_power_duration_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_ground_time_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_form_power_widget.dart';
+import 'package:encrateia/widgets/lap_widgets/lap_speed_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_tag_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_vertical_oscillation_widget.dart';
@@ -68,6 +69,13 @@ class ShowLapScreen extends StatelessWidget {
         icon: MyIcon.speed,
         context: context,
         nextWidget: ({Lap lap}) => LapPaceWidget(lap: lap),
+      ),
+      navigationButton(
+        title: 'Speed',
+        color: MyColor.navigate,
+        icon: MyIcon.speed,
+        context: context,
+        nextWidget: ({Lap lap}) => LapSpeedWidget(lap: lap),
       ),
       navigationButton(
         title: 'Ecor',

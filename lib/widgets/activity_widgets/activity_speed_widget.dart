@@ -47,8 +47,8 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
                 records: RecordList<Event>(paceRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
-                minimum: widget.activity.avgSpeed * 3.6 / 2,
-                maximum: widget.activity.avgSpeed * 3.6 * 2,
+                minimum: (widget.activity.avgSpeed - 3 * widget.activity.sdevSpeed) * 3.6,
+                maximum: (widget.activity.avgSpeed + 3 * widget.activity.sdevSpeed) * 3.6,
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
