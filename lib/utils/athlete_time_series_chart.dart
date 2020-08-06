@@ -79,8 +79,11 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
     return Column(
       children: <Widget>[
-        Container(
-          height: 300,
+        AspectRatio(
+          aspectRatio:
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 1
+                  : 2,
           child: TimeSeriesChart(
             data,
             animate: true,

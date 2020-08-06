@@ -30,12 +30,14 @@ class LapPowerChart extends StatelessWidget {
       )
     ];
 
-    return Container(
-      height: 300,
+    return AspectRatio(
+      aspectRatio:
+          MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 2,
       child: LineChart(
         data,
         defaultRenderer: LineRendererConfig<num>(
           includeArea: true,
+          strokeWidthPx: 1,
         ),
         primaryMeasureAxis: NumericAxisSpec(
           viewport: MyLineChart.determineViewport(

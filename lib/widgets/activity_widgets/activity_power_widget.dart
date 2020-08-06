@@ -6,6 +6,7 @@ import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/num_utils.dart';
@@ -65,7 +66,8 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                   athlete: widget.athlete,
                 ),
               ),
-              Row(children: <Widget>[
+              if (kDebugMode)
+                Row(children: <Widget>[
                 const Spacer(),
                 MyButton.save(
                   child: Text(screenShotButtonText),

@@ -29,7 +29,7 @@ class ActivityAltitudeChart extends StatelessWidget {
     );
 
     final List<Series<DoublePlotPoint, int>> data =
-    <Series<DoublePlotPoint, int>>[
+        <Series<DoublePlotPoint, int>>[
       Series<DoublePlotPoint, int>(
         id: 'Altitude',
         colorFn: (_, __) => Color.black,
@@ -44,8 +44,11 @@ class ActivityAltitudeChart extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
           final List<Lap> laps = snapshot.data;
-          return Container(
-            height: 300,
+          return AspectRatio(
+            aspectRatio:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 1
+                    : 2,
             child: MyLineChart(
               data: data,
               maxDomain: records.last.distance,
@@ -56,7 +59,7 @@ class ActivityAltitudeChart extends StatelessWidget {
                   dataIsInWholeNumbers: true,
                   desiredTickCount: 5),
               domainTickProviderSpec:
-              const BasicNumericTickProviderSpec(desiredTickCount: 6),
+                  const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
         } else

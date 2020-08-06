@@ -47,8 +47,11 @@ class ActivityPowerChart extends StatelessWidget {
         if (snapshot.hasData) {
           final List<Lap> laps = snapshot.data;
 
-          return Container(
-            height: 300,
+          return AspectRatio(
+            aspectRatio:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 1
+                    : 2,
             child: MyLineChart(
               data: data,
               maxDomain: records.last.distance,
@@ -56,8 +59,7 @@ class ActivityPowerChart extends StatelessWidget {
               powerZones: powerZones,
               domainTitle: 'Power (W)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(
-                  zeroBound: false,
-                  desiredTickCount: 6),
+                  zeroBound: false, desiredTickCount: 6),
               domainTickProviderSpec:
                   const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),

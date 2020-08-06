@@ -15,7 +15,8 @@ class WorkChart extends StatelessWidget {
     final CriticalPower criticalPower = CriticalPower(records: records);
     final CriticalPower workCurve = criticalPower.workify();
 
-    final List<Series<DoublePlotPoint, num>> data = <Series<DoublePlotPoint, num>>[
+    final List<Series<DoublePlotPoint, num>> data =
+        <Series<DoublePlotPoint, num>>[
       Series<DoublePlotPoint, int>(
         id: 'Work',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
@@ -26,7 +27,7 @@ class WorkChart extends StatelessWidget {
     ];
 
     const StaticNumericTickProviderSpec staticTicks =
-    StaticNumericTickProviderSpec(<TickSpec<int>>[
+        StaticNumericTickProviderSpec(<TickSpec<int>>[
       TickSpec<int>(60, label: '1min'),
       TickSpec<int>(600, label: '10min'),
       TickSpec<int>(3600, label: '60min'),
@@ -55,13 +56,16 @@ class WorkChart extends StatelessWidget {
 
     return ListView(
       children: <Widget>[
-        Container(
-          height: 300,
-          padding: const EdgeInsets.all(2),
+        AspectRatio(
+          aspectRatio:
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 1
+                  : 2,
           child: LineChart(
             data,
             defaultRenderer: LineRendererConfig<num>(
               includeArea: true,
+              strokeWidthPx: 1,
             ),
             primaryMeasureAxis: const NumericAxisSpec(
               tickProviderSpec: BasicNumericTickProviderSpec(

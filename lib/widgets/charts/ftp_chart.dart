@@ -14,7 +14,8 @@ class FtpChart extends StatelessWidget {
     final PowerDuration powerDuration = PowerDuration(records: records);
     final PowerDuration ftpCurve = powerDuration.normalize();
 
-    final List<Series<DoublePlotPoint, num>> data = <Series<DoublePlotPoint, num>>[
+    final List<Series<DoublePlotPoint, num>> data =
+        <Series<DoublePlotPoint, num>>[
       Series<DoublePlotPoint, int>(
         id: 'Power Duration',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
@@ -25,7 +26,7 @@ class FtpChart extends StatelessWidget {
     ];
 
     final StaticNumericTickProviderSpec staticTicks =
-    StaticNumericTickProviderSpec(<TickSpec<int>>[
+        StaticNumericTickProviderSpec(<TickSpec<int>>[
       TickSpec<int>(PowerDuration.scaled(seconds: 1), label: '1s'),
       TickSpec<int>(PowerDuration.scaled(seconds: 10), label: '10s'),
       TickSpec<int>(PowerDuration.scaled(seconds: 60), label: '1min'),
@@ -54,13 +55,14 @@ class FtpChart extends StatelessWidget {
       ),
     ];
 
-    return Container(
-      height: 300,
-      padding: const EdgeInsets.all(2),
+    return AspectRatio(
+      aspectRatio:
+          MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 2,
       child: LineChart(
         data,
         defaultRenderer: LineRendererConfig<num>(
           includeArea: true,
+          strokeWidthPx: 1,
         ),
         primaryMeasureAxis: const NumericAxisSpec(
           tickProviderSpec: BasicNumericTickProviderSpec(

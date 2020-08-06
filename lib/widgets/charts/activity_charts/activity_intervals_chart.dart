@@ -79,8 +79,11 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
       return SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Container(
-              height: 300,
+            AspectRatio(
+              aspectRatio:
+                  MediaQuery.of(context).orientation == Orientation.portrait
+                      ? 1
+                      : 2,
               child: LineChart(
                 data,
                 defaultRenderer: LineRendererConfig<num>(

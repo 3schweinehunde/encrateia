@@ -29,12 +29,14 @@ class LapPaceChart extends StatelessWidget {
       )
     ];
 
-    return Container(
-      height: 300,
+    return AspectRatio(
+      aspectRatio:
+          MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 2,
       child: LineChart(
         data,
         defaultRenderer: LineRendererConfig<num>(
           includeArea: true,
+          strokeWidthPx: 1,
         ),
         primaryMeasureAxis: NumericAxisSpec(
           tickProviderSpec: const BasicNumericTickProviderSpec(
@@ -42,7 +44,7 @@ class LapPaceChart extends StatelessWidget {
             dataIsInWholeNumbers: false,
             desiredTickCount: 5,
           ),
-            viewport: NumericExtents(minimum, maximum),
+          viewport: NumericExtents(minimum, maximum),
         ),
         animate: false,
         behaviors: GraphUtils.axis(

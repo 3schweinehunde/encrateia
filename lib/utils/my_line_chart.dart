@@ -4,6 +4,7 @@ import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/utils/graph_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:charts_common/common.dart' as common show Series, ChartBehavior;
 
@@ -24,6 +25,7 @@ class MyLineChart extends LineChart {
           data,
           defaultRenderer: LineRendererConfig<num>(
             includeArea: true,
+            strokeWidthPx: 1,
           ),
           domainAxis: NumericAxisSpec(
             viewport: NumericExtents(0, maxDomain + 500),
