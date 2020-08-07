@@ -139,9 +139,9 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
       return ListTile(
           leading: MyIcon.stravaDownload,
           title: const Text('Strava ID / Username / Location'),
-          subtitle: Text(athlete.stravaId.toString() ?? '' +
+          subtitle: Text((athlete.stravaId.toString() ?? '') +
               ' / ' +
-              athlete.stravaUsername ?? '' +
+              (athlete.stravaUsername ?? '') +
               ' / ' +
               athlete.geoState ?? ''));
     else

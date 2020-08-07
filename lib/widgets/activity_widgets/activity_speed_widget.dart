@@ -22,6 +22,9 @@ class ActivitySpeedWidget extends StatefulWidget {
 class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   String avgSpeedString = 'Loading ...';
+  String avgSpeedByMeasurementsString = 'Loading ...';
+  String avgSpeedByTimeString = 'Loading ...';
+  String avgSpeedByDistanceString = 'Loading ...';
   String sdevSpeedString = 'Loading ...';
 
   @override
@@ -47,8 +50,12 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
                 records: RecordList<Event>(paceRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
-                minimum: (widget.activity.avgSpeed - 3 * widget.activity.sdevSpeed) * 3.6,
-                maximum: (widget.activity.avgSpeed + 3 * widget.activity.sdevSpeed) * 3.6,
+                minimum:
+                    (widget.activity.avgSpeed - 3 * widget.activity.sdevSpeed) *
+                        3.6,
+                maximum:
+                    (widget.activity.avgSpeed + 3 * widget.activity.sdevSpeed) *
+                        3.6,
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
@@ -57,7 +64,22 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgSpeedString),
-                subtitle: const Text('average speed'),
+                subtitle: const Text('average speed from .fit-file'),
+              ),
+              ListTile(
+                leading: MyIcon.average,
+                title: Text(avgSpeedByMeasurementsString),
+                subtitle: const Text('average speed by measurements'),
+              ),
+              ListTile(
+                leading: MyIcon.average,
+                title: Text(avgSpeedByTimeString),
+                subtitle: const Text('average speed by time'),
+              ),
+              ListTile(
+                leading: MyIcon.average,
+                title: Text(avgSpeedByDistanceString),
+                subtitle: const Text('average speed by distance'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
@@ -87,8 +109,18 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgSpeedString =
-    activity.avgSpeed != null ? (activity.avgSpeed * 3.6).toStringAsFixed(2) + 'km/h' : '- - -';
+    avgSpeedString = activity.avgSpeed != null
+        ? (activity.avgSpeed * 3.6).toStringAsFixed(2) + 'km/h'
+        : '- - -';
+    avgSpeedByMeasurementsString = activity.avgSpeedByMeasurements != null
+        ? (activity.avgSpeedByMeasurements * 3.6).toStringAsFixed(2) + 'km/h'
+        : '- - -';
+    avgSpeedByTimeString = activity.avgSpeedByTime != null
+        ? (activity.avgSpeedByTime * 3.6).toStringAsFixed(2) + 'km/h'
+        : '- - -';
+    avgSpeedByDistanceString = activity.avgSpeedByDistance != null
+        ? (activity.avgSpeedByDistance * 3.6).toStringAsFixed(2) + 'km/h'
+        : '- - -';
     sdevSpeedString = (activity.sdevSpeed * 3.6).toStringAsFixed(2) + ' km/h';
     setState(() {});
   }

@@ -2,6 +2,7 @@ import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/utils/list_utils.dart';
+import 'package:encrateia/utils/map_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:encrateia/models/plot_point.dart';
@@ -78,11 +79,25 @@ class RecordList<E> extends DelegatingList<E> {
   }
 
   // Speed
-  double avgSpeed() {
+  double avgSpeedByMeasurements() {
     final List<double> speeds =
         _records.map((Event record) => record.speed).nonZeros().cast<double>();
 
     return speeds.isNotEmpty ? speeds.mean() : -1;
+  }
+
+  double avgSpeedByTime() {
+    final Map<DateTime, double> speedMap = <DateTime, double>{
+      for (final Event record in _records) record.timeStamp: record.speed
+    };
+    return speedMap.meanByTime();
+  }
+
+  double avgSpeedByDistance() {
+    final Map<DateTime, double> speedMap = <DateTime, double>{
+      for (final Event record in _records) record.timeStamp: record.speed,
+    };
+    return speedMap.meanByTime();
   }
 
   double sdevSpeed() => _records
@@ -97,20 +112,22 @@ class RecordList<E> extends DelegatingList<E> {
 
   double minSpeed() {
     final List<double> speeds =
-    _records.map((Event record) => record.speed).nonZeros().cast<double>();
+        _records.map((Event record) => record.speed).nonZeros().cast<double>();
     return speeds.isNotEmpty ? speeds.min() as double : 0;
   }
 
   double maxSpeed() {
     final List<double> speeds =
-    _records.map((Event record) => record.speed).nonZeros().cast<double>();
+        _records.map((Event record) => record.speed).nonZeros().cast<double>();
     return speeds.isNotEmpty ? speeds.max() as double : 0;
   }
 
   // Ground Time
   double avgGroundTime() {
-    final List<double> groundTimes =
-        _records.map((Event record) => record.groundTime).nonZeros().cast<double>();
+    final List<double> groundTimes = _records
+        .map((Event record) => record.groundTime)
+        .nonZeros()
+        .cast<double>();
 
     return groundTimes.isNotEmpty ? groundTimes.mean() : -1;
   }
@@ -119,14 +136,18 @@ class RecordList<E> extends DelegatingList<E> {
       _records.map((Event record) => record.groundTime).nonZeros().sdev();
 
   double minGroundTime() {
-    final List<double> groundTimes =
-    _records.map((Event record) => record.groundTime).nonZeros().cast<double>();
+    final List<double> groundTimes = _records
+        .map((Event record) => record.groundTime)
+        .nonZeros()
+        .cast<double>();
     return groundTimes.isNotEmpty ? groundTimes.min() as double : 0;
   }
 
   double maxGroundTime() {
-    final List<double> groundTimes =
-    _records.map((Event record) => record.groundTime).nonZeros().cast<double>();
+    final List<double> groundTimes = _records
+        .map((Event record) => record.groundTime)
+        .nonZeros()
+        .cast<double>();
     return groundTimes.isNotEmpty ? groundTimes.max() as double : 0;
   }
 
@@ -134,7 +155,8 @@ class RecordList<E> extends DelegatingList<E> {
   double avgStrydCadence() {
     final List<double> strydCadences = _records
         .map((Event record) => record.strydCadence ?? 0.0 * 2)
-        .nonZeros().cast<double>();
+        .nonZeros()
+        .cast<double>();
     return strydCadences.isNotEmpty ? strydCadences.mean() : -1;
   }
 
@@ -144,14 +166,18 @@ class RecordList<E> extends DelegatingList<E> {
       .sdev();
 
   double minStrydCadence() {
-    final List<double> strydCadences =
-    _records.map((Event record) => record.strydCadence).nonZeros().cast<double>();
+    final List<double> strydCadences = _records
+        .map((Event record) => record.strydCadence)
+        .nonZeros()
+        .cast<double>();
     return strydCadences.isNotEmpty ? strydCadences.min() as double : 0;
   }
 
   double maxStrydCadence() {
-    final List<double> strydCadences =
-    _records.map((Event record) => record.strydCadence).nonZeros().cast<double>();
+    final List<double> strydCadences = _records
+        .map((Event record) => record.strydCadence)
+        .nonZeros()
+        .cast<double>();
     return strydCadences.isNotEmpty ? strydCadences.max() as double : 0;
   }
 
@@ -159,7 +185,8 @@ class RecordList<E> extends DelegatingList<E> {
   double avgCadence() {
     final List<double> cadences = _records
         .map((Event record) => record.cadence ?? 0.0 * 2)
-        .nonZeros().cast<double>();
+        .nonZeros()
+        .cast<double>();
     return cadences.isNotEmpty ? cadences.mean() : -1;
   }
 
@@ -169,14 +196,18 @@ class RecordList<E> extends DelegatingList<E> {
       .sdev();
 
   double minCadence() {
-    final List<double> cadences =
-    _records.map((Event record) => record.cadence).nonZeros().cast<double>();
+    final List<double> cadences = _records
+        .map((Event record) => record.cadence)
+        .nonZeros()
+        .cast<double>();
     return cadences.isNotEmpty ? cadences.min() as double : 0;
   }
 
   double maxCadence() {
-    final List<double> cadences =
-    _records.map((Event record) => record.cadence).nonZeros().cast<double>();
+    final List<double> cadences = _records
+        .map((Event record) => record.cadence)
+        .nonZeros()
+        .cast<double>();
     return cadences.isNotEmpty ? cadences.max() as double : 0;
   }
 
@@ -184,7 +215,8 @@ class RecordList<E> extends DelegatingList<E> {
   double avgLegSpringStiffness() {
     final List<double> legSpringStiffnesses = _records
         .map((Event record) => record.legSpringStiffness)
-        .nonZeros().cast<double>();
+        .nonZeros()
+        .cast<double>();
     return legSpringStiffnesses.isNotEmpty ? legSpringStiffnesses.mean() : -1;
   }
 
@@ -194,22 +226,31 @@ class RecordList<E> extends DelegatingList<E> {
       .sdev();
 
   double minLegSpringStiffness() {
-    final List<double> legSpringStiffnesses =
-    _records.map((Event record) => record.legSpringStiffness).nonZeros().cast<double>();
-    return legSpringStiffnesses.isNotEmpty ? legSpringStiffnesses.min() as double : 0;
+    final List<double> legSpringStiffnesses = _records
+        .map((Event record) => record.legSpringStiffness)
+        .nonZeros()
+        .cast<double>();
+    return legSpringStiffnesses.isNotEmpty
+        ? legSpringStiffnesses.min() as double
+        : 0;
   }
 
   double maxLegSpringStiffness() {
-    final List<double> legSpringStiffnesses =
-    _records.map((Event record) => record.legSpringStiffness).nonZeros().cast<double>();
-    return legSpringStiffnesses.isNotEmpty ? legSpringStiffnesses.max() as double : 0;
+    final List<double> legSpringStiffnesses = _records
+        .map((Event record) => record.legSpringStiffness)
+        .nonZeros()
+        .cast<double>();
+    return legSpringStiffnesses.isNotEmpty
+        ? legSpringStiffnesses.max() as double
+        : 0;
   }
 
   // Vertical Oscillation
   double avgVerticalOscillation() {
     final List<double> verticalOscillation = _records
         .map((Event record) => record.verticalOscillation)
-        .nonZeros().cast<double>();
+        .nonZeros()
+        .cast<double>();
     return verticalOscillation.isNotEmpty ? verticalOscillation.mean() : -1;
   }
 
@@ -219,15 +260,23 @@ class RecordList<E> extends DelegatingList<E> {
       .sdev();
 
   double minVerticalOscillation() {
-    final List<double> verticalOscillations =
-    _records.map((Event record) => record.verticalOscillation).nonZeros().cast<double>();
-    return verticalOscillations.isNotEmpty ? verticalOscillations.min() as double : 0;
+    final List<double> verticalOscillations = _records
+        .map((Event record) => record.verticalOscillation)
+        .nonZeros()
+        .cast<double>();
+    return verticalOscillations.isNotEmpty
+        ? verticalOscillations.min() as double
+        : 0;
   }
 
   double maxVerticalOscillation() {
-    final List<double> verticalOscillations =
-    _records.map((Event record) => record.verticalOscillation).nonZeros().cast<double>();
-    return verticalOscillations.isNotEmpty ? verticalOscillations.max() as double : 0;
+    final List<double> verticalOscillations = _records
+        .map((Event record) => record.verticalOscillation)
+        .nonZeros()
+        .cast<double>();
+    return verticalOscillations.isNotEmpty
+        ? verticalOscillations.max() as double
+        : 0;
   }
 
   // Form Power
@@ -247,13 +296,13 @@ class RecordList<E> extends DelegatingList<E> {
 
   int minFormPower() {
     final List<int> formPowers =
-    _records.map((Event record) => record.formPower).nonZeros().cast<int>();
+        _records.map((Event record) => record.formPower).nonZeros().cast<int>();
     return formPowers.isNotEmpty ? formPowers.min() as int : 0;
   }
 
   int maxFormPower() {
     final List<int> formPowers =
-    _records.map((Event record) => record.formPower).nonZeros().cast<int>();
+        _records.map((Event record) => record.formPower).nonZeros().cast<int>();
     return formPowers.isNotEmpty ? formPowers.max() as int : 0;
   }
 
@@ -321,9 +370,10 @@ class RecordList<E> extends DelegatingList<E> {
     double sumOfAscents = 0;
     final List<double> altitudes = _records
         .map((Event record) => record.altitude)
-        .nonZeros().cast<double>();
+        .nonZeros()
+        .cast<double>();
 
-    for(final double altitude in altitudes) {
+    for (final double altitude in altitudes) {
       if (lastAltitude != 0 && altitude > lastAltitude)
         sumOfAscents += altitude - lastAltitude;
       lastAltitude = altitude;
@@ -336,9 +386,10 @@ class RecordList<E> extends DelegatingList<E> {
     double sumOfDescents = 0;
     final List<double> altitudes = _records
         .map((Event record) => record.altitude)
-        .nonZeros().cast<double>();
+        .nonZeros()
+        .cast<double>();
 
-    for(final double altitude in altitudes) {
+    for (final double altitude in altitudes) {
       if (lastAltitude != 0 && altitude < lastAltitude)
         sumOfDescents += lastAltitude - altitude;
       lastAltitude = altitude;

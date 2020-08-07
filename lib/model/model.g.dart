@@ -341,6 +341,10 @@ class TableDbInterval extends SqfEntityTableBase {
       SqfEntityFieldBase('maxPower', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('sdevPower', DbType.real, isNotNull: false),
       SqfEntityFieldBase('avgSpeed', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByMeasurements', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByTime', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByDistance', DbType.real, isNotNull: false),
       SqfEntityFieldBase('minSpeed', DbType.real, isNotNull: false),
       SqfEntityFieldBase('maxSpeed', DbType.real, isNotNull: false),
       SqfEntityFieldBase('sdevSpeed', DbType.real, isNotNull: false),
@@ -11368,6 +11372,9 @@ class DbInterval {
       this.maxPower,
       this.sdevPower,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.minSpeed,
       this.maxSpeed,
       this.sdevSpeed,
@@ -11419,6 +11426,9 @@ class DbInterval {
       this.maxPower,
       this.sdevPower,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.minSpeed,
       this.maxSpeed,
       this.sdevSpeed,
@@ -11471,6 +11481,9 @@ class DbInterval {
       this.maxPower,
       this.sdevPower,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.minSpeed,
       this.maxSpeed,
       this.sdevSpeed,
@@ -11542,6 +11555,16 @@ class DbInterval {
     }
     if (o['avgSpeed'] != null) {
       avgSpeed = double.tryParse(o['avgSpeed'].toString());
+    }
+    if (o['avgSpeedByMeasurements'] != null) {
+      avgSpeedByMeasurements =
+          double.tryParse(o['avgSpeedByMeasurements'].toString());
+    }
+    if (o['avgSpeedByTime'] != null) {
+      avgSpeedByTime = double.tryParse(o['avgSpeedByTime'].toString());
+    }
+    if (o['avgSpeedByDistance'] != null) {
+      avgSpeedByDistance = double.tryParse(o['avgSpeedByDistance'].toString());
     }
     if (o['minSpeed'] != null) {
       minSpeed = double.tryParse(o['minSpeed'].toString());
@@ -11694,6 +11717,9 @@ class DbInterval {
   int maxPower;
   double sdevPower;
   double avgSpeed;
+  double avgSpeedByMeasurements;
+  double avgSpeedByTime;
+  double avgSpeedByDistance;
   double minSpeed;
   double maxSpeed;
   double sdevSpeed;
@@ -11851,6 +11877,18 @@ class DbInterval {
 
     if (avgSpeed != null) {
       map['avgSpeed'] = avgSpeed;
+    }
+
+    if (avgSpeedByMeasurements != null) {
+      map['avgSpeedByMeasurements'] = avgSpeedByMeasurements;
+    }
+
+    if (avgSpeedByTime != null) {
+      map['avgSpeedByTime'] = avgSpeedByTime;
+    }
+
+    if (avgSpeedByDistance != null) {
+      map['avgSpeedByDistance'] = avgSpeedByDistance;
     }
 
     if (minSpeed != null) {
@@ -12058,6 +12096,18 @@ class DbInterval {
       map['avgSpeed'] = avgSpeed;
     }
 
+    if (avgSpeedByMeasurements != null) {
+      map['avgSpeedByMeasurements'] = avgSpeedByMeasurements;
+    }
+
+    if (avgSpeedByTime != null) {
+      map['avgSpeedByTime'] = avgSpeedByTime;
+    }
+
+    if (avgSpeedByDistance != null) {
+      map['avgSpeedByDistance'] = avgSpeedByDistance;
+    }
+
     if (minSpeed != null) {
       map['minSpeed'] = minSpeed;
     }
@@ -12250,6 +12300,9 @@ class DbInterval {
       maxPower,
       sdevPower,
       avgSpeed,
+      avgSpeedByMeasurements,
+      avgSpeedByTime,
+      avgSpeedByDistance,
       minSpeed,
       maxSpeed,
       sdevSpeed,
@@ -12304,6 +12357,9 @@ class DbInterval {
       maxPower,
       sdevPower,
       avgSpeed,
+      avgSpeedByMeasurements,
+      avgSpeedByTime,
+      avgSpeedByDistance,
       minSpeed,
       maxSpeed,
       sdevSpeed,
@@ -12572,7 +12628,7 @@ class DbInterval {
   ///
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(List<DbInterval> dbintervals) async {
-    // final results = _mnDbInterval.saveAll('INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbintervals);
+    // final results = _mnDbInterval.saveAll('INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbintervals);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbEncrateia().batchStart();
     for (final obj in dbintervals) {
@@ -12595,7 +12651,7 @@ class DbInterval {
   Future<int> upsert() async {
     try {
       if (await _mnDbInterval.rawInsert(
-              'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 timeStamp,
@@ -12605,6 +12661,9 @@ class DbInterval {
                 maxPower,
                 sdevPower,
                 avgSpeed,
+                avgSpeedByMeasurements,
+                avgSpeedByTime,
+                avgSpeedByDistance,
                 minSpeed,
                 maxSpeed,
                 sdevSpeed,
@@ -12671,7 +12730,7 @@ class DbInterval {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbInterval> dbintervals) async {
     final results = await _mnDbInterval.rawInsertAll(
-        'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbintervals);
     return results;
   }
@@ -13170,6 +13229,24 @@ class DbIntervalFilterBuilder extends SearchCriteria {
   DbIntervalField _avgSpeed;
   DbIntervalField get avgSpeed {
     return _avgSpeed = setField(_avgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  DbIntervalField _avgSpeedByMeasurements;
+  DbIntervalField get avgSpeedByMeasurements {
+    return _avgSpeedByMeasurements = setField(
+        _avgSpeedByMeasurements, 'avgSpeedByMeasurements', DbType.real);
+  }
+
+  DbIntervalField _avgSpeedByTime;
+  DbIntervalField get avgSpeedByTime {
+    return _avgSpeedByTime =
+        setField(_avgSpeedByTime, 'avgSpeedByTime', DbType.real);
+  }
+
+  DbIntervalField _avgSpeedByDistance;
+  DbIntervalField get avgSpeedByDistance {
+    return _avgSpeedByDistance =
+        setField(_avgSpeedByDistance, 'avgSpeedByDistance', DbType.real);
   }
 
   DbIntervalField _minSpeed;
@@ -13815,6 +13892,26 @@ class DbIntervalFields {
   static TableField get avgSpeed {
     return _fAvgSpeed =
         _fAvgSpeed ?? SqlSyntax.setField(_fAvgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByMeasurements;
+  static TableField get avgSpeedByMeasurements {
+    return _fAvgSpeedByMeasurements = _fAvgSpeedByMeasurements ??
+        SqlSyntax.setField(
+            _fAvgSpeedByMeasurements, 'avgSpeedByMeasurements', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByTime;
+  static TableField get avgSpeedByTime {
+    return _fAvgSpeedByTime = _fAvgSpeedByTime ??
+        SqlSyntax.setField(_fAvgSpeedByTime, 'avgSpeedByTime', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByDistance;
+  static TableField get avgSpeedByDistance {
+    return _fAvgSpeedByDistance = _fAvgSpeedByDistance ??
+        SqlSyntax.setField(
+            _fAvgSpeedByDistance, 'avgSpeedByDistance', DbType.real);
   }
 
   static TableField _fMinSpeed;

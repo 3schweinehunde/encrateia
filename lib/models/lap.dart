@@ -50,6 +50,9 @@ class Lap {
   double get avgPower => _db.avgPower;
   double get avgRunningCadence => _db.avgRunningCadence;
   double get avgSpeed => _db.avgSpeed;
+  double get avgSpeedByMeasurements => _db.avgSpeedByMeasurements;
+  double get avgSpeedByTime => _db.avgSpeedByTime;
+  double get avgSpeedByDistance => _db.avgSpeedByDistance;
   double get avgStanceTime => _db.avgStanceTime;
   double get avgStanceTimePercent => _db.avgStanceTimePercent;
   double get avgStrydCadence => _db.avgStrydCadence;
@@ -188,7 +191,9 @@ class Lap {
       ..sdevHeartRate = recordList.sdevHeartRate()
       ..minHeartRate = recordList.minHeartRate()
       ..maxHeartRate = recordList.maxHeartRate()
-      ..avgSpeed = recordList.avgSpeed()
+      ..avgSpeedByMeasurements = recordList.avgSpeedByMeasurements()
+      ..avgSpeedByTime = recordList.avgSpeedByTime()
+      ..avgSpeedByDistance = recordList.avgSpeedByDistance()
       ..sdevSpeed = recordList.sdevSpeed()
       ..sdevPace = recordList.sdevPace()
       ..minSpeed = recordList.minSpeed()
