@@ -93,7 +93,7 @@ class Interval {
       ..minHeartRate = recordList.minHeartRate()
       ..maxHeartRate = recordList.maxHeartRate()
       ..avgSpeedByMeasurements = recordList.avgSpeedByMeasurements()
-      ..avgSpeedByTime = recordList.avgSpeedBySpeed()
+      ..avgSpeedBySpeed = recordList.avgSpeedBySpeed()
       ..avgSpeedByDistance = recordList.avgSpeedByDistance()
       ..sdevSpeed = recordList.sdevSpeed()
       ..sdevPace = recordList.sdevPace()

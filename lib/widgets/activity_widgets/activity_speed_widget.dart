@@ -23,7 +23,7 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   String avgSpeedString = 'Loading ...';
   String avgSpeedByMeasurementsString = 'Loading ...';
-  String avgSpeedByTimeString = 'Loading ...';
+  String avgSpeedBySpeedString = 'Loading ...';
   String avgSpeedByDistanceString = 'Loading ...';
   String sdevSpeedString = 'Loading ...';
 
@@ -64,22 +64,22 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgSpeedString),
-                subtitle: const Text('average speed from .fit-file'),
+                subtitle: const Text('average speed (from .fit-file)'),
               ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgSpeedByMeasurementsString),
-                subtitle: const Text('average speed by measurements'),
+                subtitle: const Text('average speed (average over measurements)'),
               ),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgSpeedByTimeString),
-                subtitle: const Text('average speed by time'),
+                title: Text(avgSpeedBySpeedString),
+                subtitle: const Text('average speed (using speed data points)'),
               ),
               ListTile(
                 leading: MyIcon.average,
                 title: Text(avgSpeedByDistanceString),
-                subtitle: const Text('average speed by distance'),
+                subtitle: const Text('average speed (using distance data points)'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
@@ -115,8 +115,8 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
     avgSpeedByMeasurementsString = activity.avgSpeedByMeasurements != null
         ? (activity.avgSpeedByMeasurements * 3.6).toStringAsFixed(2) + 'km/h'
         : '- - -';
-    avgSpeedByTimeString = activity.avgSpeedByTime != null
-        ? (activity.avgSpeedByTime * 3.6).toStringAsFixed(2) + 'km/h'
+    avgSpeedBySpeedString = activity.avgSpeedBySpeed != null
+        ? (activity.avgSpeedBySpeed * 3.6).toStringAsFixed(2) + 'km/h'
         : '- - -';
     avgSpeedByDistanceString = activity.avgSpeedByDistance != null
         ? (activity.avgSpeedByDistance * 3.6).toStringAsFixed(2) + 'km/h'

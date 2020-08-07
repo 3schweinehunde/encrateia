@@ -90,14 +90,14 @@ class RecordList<E> extends DelegatingList<E> {
     final Map<DateTime, double> speedMap = <DateTime, double>{
       for (final Event record in _records) record.timeStamp: record.speed
     };
-    return speedMap.meanBySpeed();
+    return speedMap.meanUsingSpeed();
   }
 
   double avgSpeedByDistance() {
     final Map<DateTime, double> speedMap = <DateTime, double>{
       for (final Event record in _records) record.timeStamp: record.distance,
     };
-    return speedMap.meanByDistance();
+    return speedMap.meanUsingDistance();
   }
 
   double sdevSpeed() => _records
