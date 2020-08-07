@@ -95,6 +95,10 @@ class TableDbActivity extends SqfEntityTableBase {
       SqfEntityFieldBase('totalStrides', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('totalCalories', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('avgSpeed', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByMeasurements', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByTime', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByDistance', DbType.real, isNotNull: false),
       SqfEntityFieldBase('sdevSpeed', DbType.real, isNotNull: false),
       SqfEntityFieldBase('sdevPace', DbType.real, isNotNull: false),
       SqfEntityFieldBase('minSpeed', DbType.real, isNotNull: false),
@@ -257,6 +261,10 @@ class TableDbLap extends SqfEntityTableBase {
       SqfEntityFieldBase('totalStrides', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('totalCalories', DbType.integer, isNotNull: false),
       SqfEntityFieldBase('avgSpeed', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByMeasurements', DbType.real,
+          isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByTime', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('avgSpeedByDistance', DbType.real, isNotNull: false),
       SqfEntityFieldBase('sdevSpeed', DbType.real, isNotNull: false),
       SqfEntityFieldBase('sdevPace', DbType.real, isNotNull: false),
       SqfEntityFieldBase('minSpeed', DbType.real, isNotNull: false),
@@ -416,7 +424,6 @@ class TableDbWeight extends SqfEntityTableBase {
   TableDbWeight() {
     // declare properties of EntityTable
     tableName = 'weights';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -478,7 +485,6 @@ class TableDbHeartRateZone extends SqfEntityTableBase {
   TableDbHeartRateZone() {
     // declare properties of EntityTable
     tableName = 'heartRateZone';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -543,7 +549,6 @@ class TableDbPowerZone extends SqfEntityTableBase {
   TableDbPowerZone() {
     // declare properties of EntityTable
     tableName = 'powerZone';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -638,7 +643,6 @@ class TableDbLapTagging extends SqfEntityTableBase {
   TableDbLapTagging() {
     // declare properties of EntityTable
     tableName = 'lapTaggings';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -671,7 +675,6 @@ class TableDbActivityTagging extends SqfEntityTableBase {
   TableDbActivityTagging() {
     // declare properties of EntityTable
     tableName = 'activityTaggings';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -705,7 +708,6 @@ class TableDbIntervalTagging extends SqfEntityTableBase {
   TableDbIntervalTagging() {
     // declare properties of EntityTable
     tableName = 'intervalTaggings';
-    relationType = RelationType.ONE_TO_MANY;
     primaryKeyName = 'id';
     primaryKeyType = PrimaryKeyType.integer_auto_incremental;
     useSoftDeleting = false;
@@ -1150,12 +1152,12 @@ class DbAthlete {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbAthlete]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbAthlete]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -1197,15 +1199,20 @@ class DbAthlete {
     ];
   }
 
-  static Future<List<DbAthlete>> fromWebUrl(String url) async {
+  static Future<List<DbAthlete>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbAthlete.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbAthlete>> fromJson(String jsonBody) async {
@@ -1433,14 +1440,22 @@ class DbAthlete {
   /// saveAll method saves the sent List<DbAthlete> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbAthlete> dbathletes) async {
+  static Future<List<dynamic>> saveAll(List<DbAthlete> dbathletes) async {
     // final results = _mnDbAthlete.saveAll('INSERT OR REPLACE INTO athletes (id,state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, stravaAccessToken, stravaScope, stravaRefreshToken, stravaExpire)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbathletes);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbathletes) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbathletes.length; i++) {
+      if (dbathletes[i].id == null) {
+        dbathletes[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -1871,8 +1886,9 @@ class DbAthleteFilterBuilder extends SearchCriteria {
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
   DbAthleteFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -1923,7 +1939,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -1943,7 +1959,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -1963,8 +1979,28 @@ class DbAthleteFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbAthleteFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -2070,17 +2106,23 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -2106,7 +2148,13 @@ class DbAthleteFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -2131,7 +2179,8 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbAthlete> bulk by query
@@ -2141,62 +2190,62 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbActivity) according to DeleteRule.CASCADE
-    final activitiesByathletesIdidList = await toListPrimaryKey(false);
+    final idListDbActivityBYathletesId = toListPrimaryKeySQL(false);
     final resDbActivityBYathletesId = await DbActivity()
         .select()
-        .athletesId
-        .inValues(activitiesByathletesIdidList)
+        .where('athletesId IN (${idListDbActivityBYathletesId['sql']})',
+            parameterValue: idListDbActivityBYathletesId['args'])
         .delete(hardDelete);
     if (!resDbActivityBYathletesId.success) {
       return resDbActivityBYathletesId;
     }
 // Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
-    final intervalsByathletesIdidList = await toListPrimaryKey(false);
+    final idListDbIntervalBYathletesId = toListPrimaryKeySQL(false);
     final resDbIntervalBYathletesId = await DbInterval()
         .select()
-        .athletesId
-        .inValues(intervalsByathletesIdidList)
+        .where('athletesId IN (${idListDbIntervalBYathletesId['sql']})',
+            parameterValue: idListDbIntervalBYathletesId['args'])
         .delete(hardDelete);
     if (!resDbIntervalBYathletesId.success) {
       return resDbIntervalBYathletesId;
     }
 // Delete sub records where in (DbWeight) according to DeleteRule.CASCADE
-    final weightsByathletesIdidList = await toListPrimaryKey(false);
+    final idListDbWeightBYathletesId = toListPrimaryKeySQL(false);
     final resDbWeightBYathletesId = await DbWeight()
         .select()
-        .athletesId
-        .inValues(weightsByathletesIdidList)
+        .where('athletesId IN (${idListDbWeightBYathletesId['sql']})',
+            parameterValue: idListDbWeightBYathletesId['args'])
         .delete(hardDelete);
     if (!resDbWeightBYathletesId.success) {
       return resDbWeightBYathletesId;
     }
 // Delete sub records where in (DbHeartRateZoneSchema) according to DeleteRule.CASCADE
-    final heartRateZoneSchemataByathletesIdidList =
-        await toListPrimaryKey(false);
+    final idListDbHeartRateZoneSchemaBYathletesId = toListPrimaryKeySQL(false);
     final resDbHeartRateZoneSchemaBYathletesId = await DbHeartRateZoneSchema()
         .select()
-        .athletesId
-        .inValues(heartRateZoneSchemataByathletesIdidList)
+        .where(
+            'athletesId IN (${idListDbHeartRateZoneSchemaBYathletesId['sql']})',
+            parameterValue: idListDbHeartRateZoneSchemaBYathletesId['args'])
         .delete(hardDelete);
     if (!resDbHeartRateZoneSchemaBYathletesId.success) {
       return resDbHeartRateZoneSchemaBYathletesId;
     }
 // Delete sub records where in (DbPowerZoneSchema) according to DeleteRule.CASCADE
-    final powerZoneSchemataByathletesIdidList = await toListPrimaryKey(false);
+    final idListDbPowerZoneSchemaBYathletesId = toListPrimaryKeySQL(false);
     final resDbPowerZoneSchemaBYathletesId = await DbPowerZoneSchema()
         .select()
-        .athletesId
-        .inValues(powerZoneSchemataByathletesIdidList)
+        .where('athletesId IN (${idListDbPowerZoneSchemaBYathletesId['sql']})',
+            parameterValue: idListDbPowerZoneSchemaBYathletesId['args'])
         .delete(hardDelete);
     if (!resDbPowerZoneSchemaBYathletesId.success) {
       return resDbPowerZoneSchemaBYathletesId;
     }
 // Delete sub records where in (DbTagGroup) according to DeleteRule.CASCADE
-    final tagGroupsByathletesIdidList = await toListPrimaryKey(false);
+    final idListDbTagGroupBYathletesId = toListPrimaryKeySQL(false);
     final resDbTagGroupBYathletesId = await DbTagGroup()
         .select()
-        .athletesId
-        .inValues(tagGroupsByathletesIdidList)
+        .where('athletesId IN (${idListDbTagGroupBYathletesId['sql']})',
+            parameterValue: idListDbTagGroupBYathletesId['args'])
         .delete(hardDelete);
     if (!resDbTagGroupBYathletesId.success) {
       return resDbTagGroupBYathletesId;
@@ -2323,7 +2372,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbAthlete]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbathleteCount]) async {
@@ -2337,7 +2386,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbAthlete>.
+  /// This method returns List<DbAthlete> [DbAthlete]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -2366,7 +2415,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return dbathletesData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbAthlete]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -2376,7 +2425,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbAthlete]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -2386,12 +2435,27 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbAthlete]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbAthlete.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbAthlete]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM athletes WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -2411,7 +2475,7 @@ class DbAthleteFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbAthlete]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -2582,6 +2646,9 @@ class DbActivity {
       this.totalStrides,
       this.totalCalories,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.sdevSpeed,
       this.sdevPace,
       this.minSpeed,
@@ -2660,6 +2727,9 @@ class DbActivity {
       this.totalStrides,
       this.totalCalories,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.sdevSpeed,
       this.sdevPace,
       this.minSpeed,
@@ -2739,6 +2809,9 @@ class DbActivity {
       this.totalStrides,
       this.totalCalories,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.sdevSpeed,
       this.sdevPace,
       this.minSpeed,
@@ -2875,6 +2948,16 @@ class DbActivity {
     }
     if (o['avgSpeed'] != null) {
       avgSpeed = double.tryParse(o['avgSpeed'].toString());
+    }
+    if (o['avgSpeedByMeasurements'] != null) {
+      avgSpeedByMeasurements =
+          double.tryParse(o['avgSpeedByMeasurements'].toString());
+    }
+    if (o['avgSpeedByTime'] != null) {
+      avgSpeedByTime = double.tryParse(o['avgSpeedByTime'].toString());
+    }
+    if (o['avgSpeedByDistance'] != null) {
+      avgSpeedByDistance = double.tryParse(o['avgSpeedByDistance'].toString());
     }
     if (o['sdevSpeed'] != null) {
       sdevSpeed = double.tryParse(o['sdevSpeed'].toString());
@@ -3073,6 +3156,9 @@ class DbActivity {
   int totalStrides;
   int totalCalories;
   double avgSpeed;
+  double avgSpeedByMeasurements;
+  double avgSpeedByTime;
+  double avgSpeedByDistance;
   double sdevSpeed;
   double sdevPace;
   double minSpeed;
@@ -3324,6 +3410,18 @@ class DbActivity {
 
     if (avgSpeed != null) {
       map['avgSpeed'] = avgSpeed;
+    }
+
+    if (avgSpeedByMeasurements != null) {
+      map['avgSpeedByMeasurements'] = avgSpeedByMeasurements;
+    }
+
+    if (avgSpeedByTime != null) {
+      map['avgSpeedByTime'] = avgSpeedByTime;
+    }
+
+    if (avgSpeedByDistance != null) {
+      map['avgSpeedByDistance'] = avgSpeedByDistance;
     }
 
     if (sdevSpeed != null) {
@@ -3645,6 +3743,18 @@ class DbActivity {
       map['avgSpeed'] = avgSpeed;
     }
 
+    if (avgSpeedByMeasurements != null) {
+      map['avgSpeedByMeasurements'] = avgSpeedByMeasurements;
+    }
+
+    if (avgSpeedByTime != null) {
+      map['avgSpeedByTime'] = avgSpeedByTime;
+    }
+
+    if (avgSpeedByDistance != null) {
+      map['avgSpeedByDistance'] = avgSpeedByDistance;
+    }
+
     if (sdevSpeed != null) {
       map['sdevSpeed'] = sdevSpeed;
     }
@@ -3873,12 +3983,12 @@ class DbActivity {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbActivity]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbActivity]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -3908,6 +4018,9 @@ class DbActivity {
       totalStrides,
       totalCalories,
       avgSpeed,
+      avgSpeedByMeasurements,
+      avgSpeedByTime,
+      avgSpeedByDistance,
       sdevSpeed,
       sdevPace,
       minSpeed,
@@ -3989,6 +4102,9 @@ class DbActivity {
       totalStrides,
       totalCalories,
       avgSpeed,
+      avgSpeedByMeasurements,
+      avgSpeedByTime,
+      avgSpeedByDistance,
       sdevSpeed,
       sdevPace,
       minSpeed,
@@ -4044,15 +4160,20 @@ class DbActivity {
     ];
   }
 
-  static Future<List<DbActivity>> fromWebUrl(String url) async {
+  static Future<List<DbActivity>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbActivity.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbActivity>> fromJson(String jsonBody) async {
@@ -4268,14 +4389,22 @@ class DbActivity {
   /// saveAll method saves the sent List<DbActivity> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbActivity> dbactivities) async {
-    // final results = _mnDbActivity.saveAll('INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbactivities);
+  static Future<List<dynamic>> saveAll(List<DbActivity> dbactivities) async {
+    // final results = _mnDbActivity.saveAll('INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbactivities);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbactivities) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbactivities.length; i++) {
+      if (dbactivities[i].id == null) {
+        dbactivities[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -4284,7 +4413,7 @@ class DbActivity {
   Future<int> upsert() async {
     try {
       if (await _mnDbActivity.rawInsert(
-              'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -4310,6 +4439,9 @@ class DbActivity {
                 totalStrides,
                 totalCalories,
                 avgSpeed,
+                avgSpeedByMeasurements,
+                avgSpeedByTime,
+                avgSpeedByDistance,
                 sdevSpeed,
                 sdevPace,
                 minSpeed,
@@ -4389,7 +4521,7 @@ class DbActivity {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -4746,8 +4878,9 @@ class DbActivityFilterBuilder extends SearchCriteria {
   DbActivityFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -4798,7 +4931,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -4818,7 +4951,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -4838,8 +4971,28 @@ class DbActivityFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbActivityFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -4981,6 +5134,24 @@ class DbActivityFilterBuilder extends SearchCriteria {
   DbActivityField _avgSpeed;
   DbActivityField get avgSpeed {
     return _avgSpeed = setField(_avgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  DbActivityField _avgSpeedByMeasurements;
+  DbActivityField get avgSpeedByMeasurements {
+    return _avgSpeedByMeasurements = setField(
+        _avgSpeedByMeasurements, 'avgSpeedByMeasurements', DbType.real);
+  }
+
+  DbActivityField _avgSpeedByTime;
+  DbActivityField get avgSpeedByTime {
+    return _avgSpeedByTime =
+        setField(_avgSpeedByTime, 'avgSpeedByTime', DbType.real);
+  }
+
+  DbActivityField _avgSpeedByDistance;
+  DbActivityField get avgSpeedByDistance {
+    return _avgSpeedByDistance =
+        setField(_avgSpeedByDistance, 'avgSpeedByDistance', DbType.real);
   }
 
   DbActivityField _sdevSpeed;
@@ -5289,17 +5460,23 @@ class DbActivityFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -5325,7 +5502,13 @@ class DbActivityFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -5350,7 +5533,8 @@ class DbActivityFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbActivity> bulk by query
@@ -5360,41 +5544,42 @@ class DbActivityFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbEvent) according to DeleteRule.CASCADE
-    final eventsByactivitiesIdidList = await toListPrimaryKey(false);
+    final idListDbEventBYactivitiesId = toListPrimaryKeySQL(false);
     final resDbEventBYactivitiesId = await DbEvent()
         .select()
-        .activitiesId
-        .inValues(eventsByactivitiesIdidList)
+        .where('activitiesId IN (${idListDbEventBYactivitiesId['sql']})',
+            parameterValue: idListDbEventBYactivitiesId['args'])
         .delete(hardDelete);
     if (!resDbEventBYactivitiesId.success) {
       return resDbEventBYactivitiesId;
     }
 // Delete sub records where in (DbLap) according to DeleteRule.CASCADE
-    final lapsByactivitiesIdidList = await toListPrimaryKey(false);
+    final idListDbLapBYactivitiesId = toListPrimaryKeySQL(false);
     final resDbLapBYactivitiesId = await DbLap()
         .select()
-        .activitiesId
-        .inValues(lapsByactivitiesIdidList)
+        .where('activitiesId IN (${idListDbLapBYactivitiesId['sql']})',
+            parameterValue: idListDbLapBYactivitiesId['args'])
         .delete(hardDelete);
     if (!resDbLapBYactivitiesId.success) {
       return resDbLapBYactivitiesId;
     }
 // Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
-    final intervalsByactivitiesIdidList = await toListPrimaryKey(false);
+    final idListDbIntervalBYactivitiesId = toListPrimaryKeySQL(false);
     final resDbIntervalBYactivitiesId = await DbInterval()
         .select()
-        .activitiesId
-        .inValues(intervalsByactivitiesIdidList)
+        .where('activitiesId IN (${idListDbIntervalBYactivitiesId['sql']})',
+            parameterValue: idListDbIntervalBYactivitiesId['args'])
         .delete(hardDelete);
     if (!resDbIntervalBYactivitiesId.success) {
       return resDbIntervalBYactivitiesId;
     }
 // Delete sub records where in (DbActivityTagging) according to DeleteRule.CASCADE
-    final activityTaggingsByactivitiesIdidList = await toListPrimaryKey(false);
+    final idListDbActivityTaggingBYactivitiesId = toListPrimaryKeySQL(false);
     final resDbActivityTaggingBYactivitiesId = await DbActivityTagging()
         .select()
-        .activitiesId
-        .inValues(activityTaggingsByactivitiesIdidList)
+        .where(
+            'activitiesId IN (${idListDbActivityTaggingBYactivitiesId['sql']})',
+            parameterValue: idListDbActivityTaggingBYactivitiesId['args'])
         .delete(hardDelete);
     if (!resDbActivityTaggingBYactivitiesId.success) {
       return resDbActivityTaggingBYactivitiesId;
@@ -5515,7 +5700,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbActivity]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbactivityCount]) async {
@@ -5529,7 +5714,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbActivity>.
+  /// This method returns List<DbActivity> [DbActivity]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -5558,7 +5743,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return dbactivitiesData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbActivity]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -5568,7 +5753,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbActivity]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -5578,12 +5763,27 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbActivity]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbActivity.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbActivity]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM activities WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -5603,7 +5803,7 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbActivity]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -5784,6 +5984,26 @@ class DbActivityFields {
   static TableField get avgSpeed {
     return _fAvgSpeed =
         _fAvgSpeed ?? SqlSyntax.setField(_fAvgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByMeasurements;
+  static TableField get avgSpeedByMeasurements {
+    return _fAvgSpeedByMeasurements = _fAvgSpeedByMeasurements ??
+        SqlSyntax.setField(
+            _fAvgSpeedByMeasurements, 'avgSpeedByMeasurements', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByTime;
+  static TableField get avgSpeedByTime {
+    return _fAvgSpeedByTime = _fAvgSpeedByTime ??
+        SqlSyntax.setField(_fAvgSpeedByTime, 'avgSpeedByTime', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByDistance;
+  static TableField get avgSpeedByDistance {
+    return _fAvgSpeedByDistance = _fAvgSpeedByDistance ??
+        SqlSyntax.setField(
+            _fAvgSpeedByDistance, 'avgSpeedByDistance', DbType.real);
   }
 
   static TableField _fSdevSpeed;
@@ -6592,12 +6812,12 @@ class DbEvent {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbEvent]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbEvent]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -6657,15 +6877,20 @@ class DbEvent {
     ];
   }
 
-  static Future<List<DbEvent>> fromWebUrl(String url) async {
+  static Future<List<DbEvent>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbEvent.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbEvent>> fromJson(String jsonBody) async {
@@ -6857,14 +7082,22 @@ class DbEvent {
   /// saveAll method saves the sent List<DbEvent> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbEvent> dbevents) async {
+  static Future<List<dynamic>> saveAll(List<DbEvent> dbevents) async {
     // final results = _mnDbEvent.saveAll('INSERT OR REPLACE INTO events (id,event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbevents);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbevents) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbevents.length; i++) {
+      if (dbevents[i].id == null) {
+        dbevents[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -7261,8 +7494,9 @@ class DbEventFilterBuilder extends SearchCriteria {
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
   DbEventFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -7313,7 +7547,7 @@ class DbEventFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -7333,7 +7567,7 @@ class DbEventFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -7353,8 +7587,28 @@ class DbEventFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbEventFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -7503,17 +7757,23 @@ class DbEventFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -7539,7 +7799,13 @@ class DbEventFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -7564,7 +7830,8 @@ class DbEventFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbEvent> bulk by query
@@ -7574,21 +7841,21 @@ class DbEventFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
-    final intervalsByfirstRecordIdidList = await toListPrimaryKey(false);
+    final idListDbIntervalBYfirstRecordId = toListPrimaryKeySQL(false);
     final resDbIntervalBYfirstRecordId = await DbInterval()
         .select()
-        .firstRecordId
-        .inValues(intervalsByfirstRecordIdidList)
+        .where('firstRecordId IN (${idListDbIntervalBYfirstRecordId['sql']})',
+            parameterValue: idListDbIntervalBYfirstRecordId['args'])
         .delete(hardDelete);
     if (!resDbIntervalBYfirstRecordId.success) {
       return resDbIntervalBYfirstRecordId;
     }
 // Delete sub records where in (DbInterval) according to DeleteRule.CASCADE
-    final intervalsBylastRecordIdidList = await toListPrimaryKey(false);
+    final idListDbIntervalBYlastRecordId = toListPrimaryKeySQL(false);
     final resDbIntervalBYlastRecordId = await DbInterval()
         .select()
-        .lastRecordId
-        .inValues(intervalsBylastRecordIdidList)
+        .where('lastRecordId IN (${idListDbIntervalBYlastRecordId['sql']})',
+            parameterValue: idListDbIntervalBYlastRecordId['args'])
         .delete(hardDelete);
     if (!resDbIntervalBYlastRecordId.success) {
       return resDbIntervalBYlastRecordId;
@@ -7698,7 +7965,7 @@ class DbEventFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbEvent]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbeventCount]) async {
@@ -7712,7 +7979,7 @@ class DbEventFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbEvent>.
+  /// This method returns List<DbEvent> [DbEvent]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -7741,7 +8008,7 @@ class DbEventFilterBuilder extends SearchCriteria {
     return dbeventsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbEvent]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -7751,7 +8018,7 @@ class DbEventFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbEvent]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -7761,12 +8028,27 @@ class DbEventFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbEvent]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbEvent.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbEvent]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM events WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -7786,7 +8068,7 @@ class DbEventFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbEvent]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -8007,6 +8289,9 @@ class DbLap {
       this.totalStrides,
       this.totalCalories,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.sdevSpeed,
       this.sdevPace,
       this.minSpeed,
@@ -8069,6 +8354,9 @@ class DbLap {
       this.totalStrides,
       this.totalCalories,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.sdevSpeed,
       this.sdevPace,
       this.minSpeed,
@@ -8132,6 +8420,9 @@ class DbLap {
       this.totalStrides,
       this.totalCalories,
       this.avgSpeed,
+      this.avgSpeedByMeasurements,
+      this.avgSpeedByTime,
+      this.avgSpeedByDistance,
       this.sdevSpeed,
       this.sdevPace,
       this.minSpeed,
@@ -8246,6 +8537,16 @@ class DbLap {
     }
     if (o['avgSpeed'] != null) {
       avgSpeed = double.tryParse(o['avgSpeed'].toString());
+    }
+    if (o['avgSpeedByMeasurements'] != null) {
+      avgSpeedByMeasurements =
+          double.tryParse(o['avgSpeedByMeasurements'].toString());
+    }
+    if (o['avgSpeedByTime'] != null) {
+      avgSpeedByTime = double.tryParse(o['avgSpeedByTime'].toString());
+    }
+    if (o['avgSpeedByDistance'] != null) {
+      avgSpeedByDistance = double.tryParse(o['avgSpeedByDistance'].toString());
     }
     if (o['sdevSpeed'] != null) {
       sdevSpeed = double.tryParse(o['sdevSpeed'].toString());
@@ -8396,6 +8697,9 @@ class DbLap {
   int totalStrides;
   int totalCalories;
   double avgSpeed;
+  double avgSpeedByMeasurements;
+  double avgSpeedByTime;
+  double avgSpeedByDistance;
   double sdevSpeed;
   double sdevPace;
   double minSpeed;
@@ -8589,6 +8893,18 @@ class DbLap {
 
     if (avgSpeed != null) {
       map['avgSpeed'] = avgSpeed;
+    }
+
+    if (avgSpeedByMeasurements != null) {
+      map['avgSpeedByMeasurements'] = avgSpeedByMeasurements;
+    }
+
+    if (avgSpeedByTime != null) {
+      map['avgSpeedByTime'] = avgSpeedByTime;
+    }
+
+    if (avgSpeedByDistance != null) {
+      map['avgSpeedByDistance'] = avgSpeedByDistance;
     }
 
     if (sdevSpeed != null) {
@@ -8842,6 +9158,18 @@ class DbLap {
       map['avgSpeed'] = avgSpeed;
     }
 
+    if (avgSpeedByMeasurements != null) {
+      map['avgSpeedByMeasurements'] = avgSpeedByMeasurements;
+    }
+
+    if (avgSpeedByTime != null) {
+      map['avgSpeedByTime'] = avgSpeedByTime;
+    }
+
+    if (avgSpeedByDistance != null) {
+      map['avgSpeedByDistance'] = avgSpeedByDistance;
+    }
+
     if (sdevSpeed != null) {
       map['sdevSpeed'] = sdevSpeed;
     }
@@ -9006,12 +9334,12 @@ class DbLap {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbLap]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbLap]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -9039,6 +9367,9 @@ class DbLap {
       totalStrides,
       totalCalories,
       avgSpeed,
+      avgSpeedByMeasurements,
+      avgSpeedByTime,
+      avgSpeedByDistance,
       sdevSpeed,
       sdevPace,
       minSpeed,
@@ -9104,6 +9435,9 @@ class DbLap {
       totalStrides,
       totalCalories,
       avgSpeed,
+      avgSpeedByMeasurements,
+      avgSpeedByTime,
+      avgSpeedByDistance,
       sdevSpeed,
       sdevPace,
       minSpeed,
@@ -9145,14 +9479,19 @@ class DbLap {
     ];
   }
 
-  static Future<List<DbLap>> fromWebUrl(String url) async {
+  static Future<List<DbLap>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print('SQFENTITY ERROR DbLap.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbLap>> fromJson(String jsonBody) async {
@@ -9326,14 +9665,22 @@ class DbLap {
   /// saveAll method saves the sent List<DbLap> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbLap> dblaps) async {
-    // final results = _mnDbLap.saveAll('INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, cp, ftp, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dblaps);
+  static Future<List<dynamic>> saveAll(List<DbLap> dblaps) async {
+    // final results = _mnDbLap.saveAll('INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, cp, ftp, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dblaps);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dblaps) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dblaps.length; i++) {
+      if (dblaps[i].id == null) {
+        dblaps[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -9342,7 +9689,7 @@ class DbLap {
   Future<int> upsert() async {
     try {
       if (await _mnDbLap.rawInsert(
-              'INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, cp, ftp, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, cp, ftp, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 timeStamp,
@@ -9366,6 +9713,9 @@ class DbLap {
                 totalStrides,
                 totalCalories,
                 avgSpeed,
+                avgSpeedByMeasurements,
+                avgSpeedByTime,
+                avgSpeedByDistance,
                 sdevSpeed,
                 sdevPace,
                 minSpeed,
@@ -9428,7 +9778,7 @@ class DbLap {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbLap> dblaps) async {
     final results = await _mnDbLap.rawInsertAll(
-        'INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, cp, ftp, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO laps (id,timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedByTime, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, cp, ftp, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dblaps);
     return results;
   }
@@ -9760,8 +10110,9 @@ class DbLapFilterBuilder extends SearchCriteria {
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
   DbLapFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -9812,7 +10163,7 @@ class DbLapFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -9832,7 +10183,7 @@ class DbLapFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -9852,8 +10203,28 @@ class DbLapFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbLapFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -9990,6 +10361,24 @@ class DbLapFilterBuilder extends SearchCriteria {
   DbLapField _avgSpeed;
   DbLapField get avgSpeed {
     return _avgSpeed = setField(_avgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  DbLapField _avgSpeedByMeasurements;
+  DbLapField get avgSpeedByMeasurements {
+    return _avgSpeedByMeasurements = setField(
+        _avgSpeedByMeasurements, 'avgSpeedByMeasurements', DbType.real);
+  }
+
+  DbLapField _avgSpeedByTime;
+  DbLapField get avgSpeedByTime {
+    return _avgSpeedByTime =
+        setField(_avgSpeedByTime, 'avgSpeedByTime', DbType.real);
+  }
+
+  DbLapField _avgSpeedByDistance;
+  DbLapField get avgSpeedByDistance {
+    return _avgSpeedByDistance =
+        setField(_avgSpeedByDistance, 'avgSpeedByDistance', DbType.real);
   }
 
   DbLapField _sdevSpeed;
@@ -10220,17 +10609,23 @@ class DbLapFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -10256,7 +10651,13 @@ class DbLapFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -10281,7 +10682,8 @@ class DbLapFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbLap> bulk by query
@@ -10291,21 +10693,21 @@ class DbLapFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbEvent) according to DeleteRule.CASCADE
-    final eventsBylapsIdidList = await toListPrimaryKey(false);
+    final idListDbEventBYlapsId = toListPrimaryKeySQL(false);
     final resDbEventBYlapsId = await DbEvent()
         .select()
-        .lapsId
-        .inValues(eventsBylapsIdidList)
+        .where('lapsId IN (${idListDbEventBYlapsId['sql']})',
+            parameterValue: idListDbEventBYlapsId['args'])
         .delete(hardDelete);
     if (!resDbEventBYlapsId.success) {
       return resDbEventBYlapsId;
     }
 // Delete sub records where in (DbLapTagging) according to DeleteRule.CASCADE
-    final lapTaggingsBylapsIdidList = await toListPrimaryKey(false);
+    final idListDbLapTaggingBYlapsId = toListPrimaryKeySQL(false);
     final resDbLapTaggingBYlapsId = await DbLapTagging()
         .select()
-        .lapsId
-        .inValues(lapTaggingsBylapsIdidList)
+        .where('lapsId IN (${idListDbLapTaggingBYlapsId['sql']})',
+            parameterValue: idListDbLapTaggingBYlapsId['args'])
         .delete(hardDelete);
     if (!resDbLapTaggingBYlapsId.success) {
       return resDbLapTaggingBYlapsId;
@@ -10406,7 +10808,7 @@ class DbLapFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbLap]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dblapCount]) async {
@@ -10420,7 +10822,7 @@ class DbLapFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbLap>.
+  /// This method returns List<DbLap> [DbLap]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -10449,7 +10851,7 @@ class DbLapFilterBuilder extends SearchCriteria {
     return dblapsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbLap]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -10459,7 +10861,7 @@ class DbLapFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbLap]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -10469,12 +10871,27 @@ class DbLapFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbLap]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbLap.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbLap]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM laps WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -10494,7 +10911,7 @@ class DbLapFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbLap]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -10669,6 +11086,26 @@ class DbLapFields {
   static TableField get avgSpeed {
     return _fAvgSpeed =
         _fAvgSpeed ?? SqlSyntax.setField(_fAvgSpeed, 'avgSpeed', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByMeasurements;
+  static TableField get avgSpeedByMeasurements {
+    return _fAvgSpeedByMeasurements = _fAvgSpeedByMeasurements ??
+        SqlSyntax.setField(
+            _fAvgSpeedByMeasurements, 'avgSpeedByMeasurements', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByTime;
+  static TableField get avgSpeedByTime {
+    return _fAvgSpeedByTime = _fAvgSpeedByTime ??
+        SqlSyntax.setField(_fAvgSpeedByTime, 'avgSpeedByTime', DbType.real);
+  }
+
+  static TableField _fAvgSpeedByDistance;
+  static TableField get avgSpeedByDistance {
+    return _fAvgSpeedByDistance = _fAvgSpeedByDistance ??
+        SqlSyntax.setField(
+            _fAvgSpeedByDistance, 'avgSpeedByDistance', DbType.real);
   }
 
   static TableField _fSdevSpeed;
@@ -11794,12 +12231,12 @@ class DbInterval {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbInterval]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbInterval]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -11911,15 +12348,20 @@ class DbInterval {
     ];
   }
 
-  static Future<List<DbInterval>> fromWebUrl(String url) async {
+  static Future<List<DbInterval>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbInterval.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbInterval>> fromJson(String jsonBody) async {
@@ -12129,14 +12571,22 @@ class DbInterval {
   /// saveAll method saves the sent List<DbInterval> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbInterval> dbintervals) async {
+  static Future<List<dynamic>> saveAll(List<DbInterval> dbintervals) async {
     // final results = _mnDbInterval.saveAll('INSERT OR REPLACE INTO intervals (id,timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbintervals);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbintervals) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbintervals.length; i++) {
+      if (dbintervals[i].id == null) {
+        dbintervals[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -12551,8 +13001,9 @@ class DbIntervalFilterBuilder extends SearchCriteria {
   DbIntervalFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -12603,7 +13054,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -12623,7 +13074,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -12643,8 +13094,28 @@ class DbIntervalFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbIntervalFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -12947,17 +13418,23 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -12983,7 +13460,13 @@ class DbIntervalFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -13008,7 +13491,8 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbInterval> bulk by query
@@ -13018,11 +13502,12 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbIntervalTagging) according to DeleteRule.CASCADE
-    final intervalTaggingsByintervalsIdidList = await toListPrimaryKey(false);
+    final idListDbIntervalTaggingBYintervalsId = toListPrimaryKeySQL(false);
     final resDbIntervalTaggingBYintervalsId = await DbIntervalTagging()
         .select()
-        .intervalsId
-        .inValues(intervalTaggingsByintervalsIdidList)
+        .where(
+            'intervalsId IN (${idListDbIntervalTaggingBYintervalsId['sql']})',
+            parameterValue: idListDbIntervalTaggingBYintervalsId['args'])
         .delete(hardDelete);
     if (!resDbIntervalTaggingBYintervalsId.success) {
       return resDbIntervalTaggingBYintervalsId;
@@ -13140,7 +13625,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbInterval]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbintervalCount]) async {
@@ -13154,7 +13639,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbInterval>.
+  /// This method returns List<DbInterval> [DbInterval]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -13183,7 +13668,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return dbintervalsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbInterval]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -13193,7 +13678,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbInterval]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -13203,12 +13688,27 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbInterval]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbInterval.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbInterval]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM intervals WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -13228,7 +13728,7 @@ class DbIntervalFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbInterval]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -13700,12 +14200,12 @@ class DbWeight {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbWeight]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbWeight]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -13718,15 +14218,20 @@ class DbWeight {
     return [id, date, value, athletesId];
   }
 
-  static Future<List<DbWeight>> fromWebUrl(String url) async {
+  static Future<List<DbWeight>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbWeight.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbWeight>> fromJson(String jsonBody) async {
@@ -13850,14 +14355,22 @@ class DbWeight {
   /// saveAll method saves the sent List<DbWeight> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbWeight> dbweights) async {
+  static Future<List<dynamic>> saveAll(List<DbWeight> dbweights) async {
     // final results = _mnDbWeight.saveAll('INSERT OR REPLACE INTO weights (id,date, value, athletesId)  VALUES (?,?,?,?)',dbweights);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbweights) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbweights.length; i++) {
+      if (dbweights[i].id == null) {
+        dbweights[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -14206,8 +14719,9 @@ class DbWeightFilterBuilder extends SearchCriteria {
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
   DbWeightFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -14258,7 +14772,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -14278,7 +14792,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -14298,8 +14812,28 @@ class DbWeightFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbWeightFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -14349,17 +14883,23 @@ class DbWeightFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -14385,7 +14925,13 @@ class DbWeightFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -14410,7 +14956,8 @@ class DbWeightFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbWeight> bulk by query
@@ -14490,7 +15037,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbWeight]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbweightCount]) async {
@@ -14504,7 +15051,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbWeight>.
+  /// This method returns List<DbWeight> [DbWeight]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -14533,7 +15080,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return dbweightsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbWeight]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -14543,7 +15090,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbWeight]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -14553,12 +15100,27 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbWeight]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbWeight.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbWeight]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM weights WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -14578,7 +15140,7 @@ class DbWeightFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbWeight]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -14816,12 +15378,12 @@ class DbHeartRateZoneSchema {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbHeartRateZoneSchema]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbHeartRateZoneSchema]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -14834,15 +15396,20 @@ class DbHeartRateZoneSchema {
     return [id, date, name, base, athletesId];
   }
 
-  static Future<List<DbHeartRateZoneSchema>> fromWebUrl(String url) async {
+  static Future<List<DbHeartRateZoneSchema>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbHeartRateZoneSchema.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbHeartRateZoneSchema>> fromJson(String jsonBody) async {
@@ -14998,15 +15565,23 @@ class DbHeartRateZoneSchema {
   /// saveAll method saves the sent List<DbHeartRateZoneSchema> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(
+  static Future<List<dynamic>> saveAll(
       List<DbHeartRateZoneSchema> dbheartratezoneschemas) async {
     // final results = _mnDbHeartRateZoneSchema.saveAll('INSERT OR REPLACE INTO heartRateZoneSchemata (id,date, name, base, athletesId)  VALUES (?,?,?,?,?)',dbheartratezoneschemas);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbheartratezoneschemas) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbheartratezoneschemas.length; i++) {
+      if (dbheartratezoneschemas[i].id == null) {
+        dbheartratezoneschemas[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -15405,8 +15980,9 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
   DbHeartRateZoneSchemaFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -15457,7 +16033,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -15477,7 +16053,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -15497,8 +16073,28 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbHeartRateZoneSchemaFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -15554,17 +16150,23 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -15590,7 +16192,13 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -15615,7 +16223,8 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbHeartRateZoneSchema> bulk by query
@@ -15625,12 +16234,14 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbHeartRateZone) according to DeleteRule.CASCADE
-    final heartRateZoneByheartRateZoneSchemataIdidList =
-        await toListPrimaryKey(false);
+    final idListDbHeartRateZoneBYheartRateZoneSchemataId =
+        toListPrimaryKeySQL(false);
     final resDbHeartRateZoneBYheartRateZoneSchemataId = await DbHeartRateZone()
         .select()
-        .heartRateZoneSchemataId
-        .inValues(heartRateZoneByheartRateZoneSchemataIdidList)
+        .where(
+            'heartRateZoneSchemataId IN (${idListDbHeartRateZoneBYheartRateZoneSchemataId['sql']})',
+            parameterValue:
+                idListDbHeartRateZoneBYheartRateZoneSchemataId['args'])
         .delete(hardDelete);
     if (!resDbHeartRateZoneBYheartRateZoneSchemataId.success) {
       return resDbHeartRateZoneBYheartRateZoneSchemataId;
@@ -15722,7 +16333,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbHeartRateZoneSchema]
   ///
   /// <returns>int
   Future<int> toCount(
@@ -15738,7 +16349,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbHeartRateZoneSchema>.
+  /// This method returns List<DbHeartRateZoneSchema> [DbHeartRateZoneSchema]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -15768,7 +16379,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return dbheartratezoneschemasData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbHeartRateZoneSchema]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -15778,7 +16389,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbHeartRateZoneSchema]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -15788,12 +16399,28 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbHeartRateZoneSchema]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbHeartRateZoneSchema.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbHeartRateZoneSchema]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] =
+        'SELECT `id` FROM heartRateZoneSchemata WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -15813,7 +16440,7 @@ class DbHeartRateZoneSchemaFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbHeartRateZoneSchema]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -16079,12 +16706,12 @@ class DbHeartRateZone {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbHeartRateZone]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbHeartRateZone]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -16114,15 +16741,20 @@ class DbHeartRateZone {
     ];
   }
 
-  static Future<List<DbHeartRateZone>> fromWebUrl(String url) async {
+  static Future<List<DbHeartRateZone>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbHeartRateZone.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbHeartRateZone>> fromJson(String jsonBody) async {
@@ -16248,14 +16880,23 @@ class DbHeartRateZone {
   /// saveAll method saves the sent List<DbHeartRateZone> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbHeartRateZone> dbheartratezones) async {
+  static Future<List<dynamic>> saveAll(
+      List<DbHeartRateZone> dbheartratezones) async {
     // final results = _mnDbHeartRateZone.saveAll('INSERT OR REPLACE INTO heartRateZone (id,name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',dbheartratezones);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbheartratezones) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbheartratezones.length; i++) {
+      if (dbheartratezones[i].id == null) {
+        dbheartratezones[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -16636,8 +17277,9 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
   DbHeartRateZoneFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -16688,7 +17330,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -16708,7 +17350,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -16728,8 +17370,28 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbHeartRateZoneFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -16803,17 +17465,23 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -16839,7 +17507,13 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -16864,7 +17538,8 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbHeartRateZone> bulk by query
@@ -16944,7 +17619,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbHeartRateZone]
   ///
   /// <returns>int
   Future<int> toCount(
@@ -16960,7 +17635,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbHeartRateZone>.
+  /// This method returns List<DbHeartRateZone> [DbHeartRateZone]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -16990,7 +17665,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return dbheartratezonesData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbHeartRateZone]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -17000,7 +17675,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbHeartRateZone]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -17010,12 +17685,28 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbHeartRateZone]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbHeartRateZone.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbHeartRateZone]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] =
+        'SELECT `id` FROM heartRateZone WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -17035,7 +17726,7 @@ class DbHeartRateZoneFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbHeartRateZone]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -17300,12 +17991,12 @@ class DbPowerZoneSchema {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbPowerZoneSchema]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbPowerZoneSchema]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -17318,15 +18009,20 @@ class DbPowerZoneSchema {
     return [id, date, name, base, athletesId];
   }
 
-  static Future<List<DbPowerZoneSchema>> fromWebUrl(String url) async {
+  static Future<List<DbPowerZoneSchema>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbPowerZoneSchema.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbPowerZoneSchema>> fromJson(String jsonBody) async {
@@ -17482,15 +18178,23 @@ class DbPowerZoneSchema {
   /// saveAll method saves the sent List<DbPowerZoneSchema> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(
+  static Future<List<dynamic>> saveAll(
       List<DbPowerZoneSchema> dbpowerzoneschemas) async {
     // final results = _mnDbPowerZoneSchema.saveAll('INSERT OR REPLACE INTO powerZoneSchemata (id,date, name, base, athletesId)  VALUES (?,?,?,?,?)',dbpowerzoneschemas);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbpowerzoneschemas) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbpowerzoneschemas.length; i++) {
+      if (dbpowerzoneschemas[i].id == null) {
+        dbpowerzoneschemas[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -17884,8 +18588,9 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
   DbPowerZoneSchemaFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -17936,7 +18641,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -17956,7 +18661,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -17976,8 +18681,28 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbPowerZoneSchemaFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -18033,17 +18758,23 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -18069,7 +18800,13 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -18094,7 +18831,8 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbPowerZoneSchema> bulk by query
@@ -18104,11 +18842,12 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbPowerZone) according to DeleteRule.CASCADE
-    final powerZoneBypowerZoneSchemataIdidList = await toListPrimaryKey(false);
+    final idListDbPowerZoneBYpowerZoneSchemataId = toListPrimaryKeySQL(false);
     final resDbPowerZoneBYpowerZoneSchemataId = await DbPowerZone()
         .select()
-        .powerZoneSchemataId
-        .inValues(powerZoneBypowerZoneSchemataIdidList)
+        .where(
+            'powerZoneSchemataId IN (${idListDbPowerZoneBYpowerZoneSchemataId['sql']})',
+            parameterValue: idListDbPowerZoneBYpowerZoneSchemataId['args'])
         .delete(hardDelete);
     if (!resDbPowerZoneBYpowerZoneSchemataId.success) {
       return resDbPowerZoneBYpowerZoneSchemataId;
@@ -18200,7 +18939,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbPowerZoneSchema]
   ///
   /// <returns>int
   Future<int> toCount(
@@ -18216,7 +18955,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbPowerZoneSchema>.
+  /// This method returns List<DbPowerZoneSchema> [DbPowerZoneSchema]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -18246,7 +18985,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return dbpowerzoneschemasData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbPowerZoneSchema]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -18256,7 +18995,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbPowerZoneSchema]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -18266,12 +19005,28 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbPowerZoneSchema]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbPowerZoneSchema.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbPowerZoneSchema]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] =
+        'SELECT `id` FROM powerZoneSchemata WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -18291,7 +19046,7 @@ class DbPowerZoneSchemaFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbPowerZoneSchema]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -18548,12 +19303,12 @@ class DbPowerZone {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbPowerZone]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbPowerZone]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -18583,15 +19338,20 @@ class DbPowerZone {
     ];
   }
 
-  static Future<List<DbPowerZone>> fromWebUrl(String url) async {
+  static Future<List<DbPowerZone>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbPowerZone.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbPowerZone>> fromJson(String jsonBody) async {
@@ -18717,14 +19477,22 @@ class DbPowerZone {
   /// saveAll method saves the sent List<DbPowerZone> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbPowerZone> dbpowerzones) async {
+  static Future<List<dynamic>> saveAll(List<DbPowerZone> dbpowerzones) async {
     // final results = _mnDbPowerZone.saveAll('INSERT OR REPLACE INTO powerZone (id,name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',dbpowerzones);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbpowerzones) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbpowerzones.length; i++) {
+      if (dbpowerzones[i].id == null) {
+        dbpowerzones[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -19099,8 +19867,9 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
   DbPowerZoneFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -19151,7 +19920,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -19171,7 +19940,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -19191,8 +19960,28 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbPowerZoneFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -19266,17 +20055,23 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -19302,7 +20097,13 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -19327,7 +20128,8 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbPowerZone> bulk by query
@@ -19407,7 +20209,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbPowerZone]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbpowerzoneCount]) async {
@@ -19421,7 +20223,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbPowerZone>.
+  /// This method returns List<DbPowerZone> [DbPowerZone]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -19451,7 +20253,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return dbpowerzonesData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbPowerZone]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -19461,7 +20263,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbPowerZone]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -19471,12 +20273,27 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbPowerZone]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbPowerZone.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbPowerZone]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM powerZone WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -19496,7 +20313,7 @@ class DbPowerZoneFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbPowerZone]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -19805,12 +20622,12 @@ class DbTag {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbTag]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbTag]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -19823,14 +20640,19 @@ class DbTag {
     return [id, name, color, sortOrder, system, tagGroupsId];
   }
 
-  static Future<List<DbTag>> fromWebUrl(String url) async {
+  static Future<List<DbTag>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print('SQFENTITY ERROR DbTag.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbTag>> fromJson(String jsonBody) async {
@@ -20024,14 +20846,22 @@ class DbTag {
   /// saveAll method saves the sent List<DbTag> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbTag> dbtags) async {
+  static Future<List<dynamic>> saveAll(List<DbTag> dbtags) async {
     // final results = _mnDbTag.saveAll('INSERT OR REPLACE INTO tags (id,name, color, sortOrder, system, tagGroupsId)  VALUES (?,?,?,?,?,?)',dbtags);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbtags) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbtags.length; i++) {
+      if (dbtags[i].id == null) {
+        dbtags[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -20412,8 +21242,9 @@ class DbTagFilterBuilder extends SearchCriteria {
   /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
   DbTagFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -20464,7 +21295,7 @@ class DbTagFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -20484,7 +21315,7 @@ class DbTagFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -20504,8 +21335,28 @@ class DbTagFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbTagFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -20565,17 +21416,23 @@ class DbTagFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -20601,7 +21458,13 @@ class DbTagFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -20626,7 +21489,8 @@ class DbTagFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbTag> bulk by query
@@ -20636,31 +21500,31 @@ class DbTagFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbLapTagging) according to DeleteRule.CASCADE
-    final lapTaggingsBytagsIdidList = await toListPrimaryKey(false);
+    final idListDbLapTaggingBYtagsId = toListPrimaryKeySQL(false);
     final resDbLapTaggingBYtagsId = await DbLapTagging()
         .select()
-        .tagsId
-        .inValues(lapTaggingsBytagsIdidList)
+        .where('tagsId IN (${idListDbLapTaggingBYtagsId['sql']})',
+            parameterValue: idListDbLapTaggingBYtagsId['args'])
         .delete(hardDelete);
     if (!resDbLapTaggingBYtagsId.success) {
       return resDbLapTaggingBYtagsId;
     }
 // Delete sub records where in (DbActivityTagging) according to DeleteRule.CASCADE
-    final activityTaggingsBytagsIdidList = await toListPrimaryKey(false);
+    final idListDbActivityTaggingBYtagsId = toListPrimaryKeySQL(false);
     final resDbActivityTaggingBYtagsId = await DbActivityTagging()
         .select()
-        .tagsId
-        .inValues(activityTaggingsBytagsIdidList)
+        .where('tagsId IN (${idListDbActivityTaggingBYtagsId['sql']})',
+            parameterValue: idListDbActivityTaggingBYtagsId['args'])
         .delete(hardDelete);
     if (!resDbActivityTaggingBYtagsId.success) {
       return resDbActivityTaggingBYtagsId;
     }
 // Delete sub records where in (DbIntervalTagging) according to DeleteRule.CASCADE
-    final intervalTaggingsBytagsIdidList = await toListPrimaryKey(false);
+    final idListDbIntervalTaggingBYtagsId = toListPrimaryKeySQL(false);
     final resDbIntervalTaggingBYtagsId = await DbIntervalTagging()
         .select()
-        .tagsId
-        .inValues(intervalTaggingsBytagsIdidList)
+        .where('tagsId IN (${idListDbIntervalTaggingBYtagsId['sql']})',
+            parameterValue: idListDbIntervalTaggingBYtagsId['args'])
         .delete(hardDelete);
     if (!resDbIntervalTaggingBYtagsId.success) {
       return resDbIntervalTaggingBYtagsId;
@@ -20771,7 +21635,7 @@ class DbTagFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbTag]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbtagCount]) async {
@@ -20785,7 +21649,7 @@ class DbTagFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbTag>.
+  /// This method returns List<DbTag> [DbTag]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -20814,7 +21678,7 @@ class DbTagFilterBuilder extends SearchCriteria {
     return dbtagsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbTag]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -20824,7 +21688,7 @@ class DbTagFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbTag]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -20834,12 +21698,27 @@ class DbTagFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbTag]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbTag.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbTag]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM tags WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -20859,7 +21738,7 @@ class DbTagFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbTag]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -21094,12 +21973,12 @@ class DbTagGroup {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbTagGroup]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbTagGroup]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -21112,15 +21991,20 @@ class DbTagGroup {
     return [id, name, color, system, athletesId];
   }
 
-  static Future<List<DbTagGroup>> fromWebUrl(String url) async {
+  static Future<List<DbTagGroup>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbTagGroup.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbTagGroup>> fromJson(String jsonBody) async {
@@ -21276,14 +22160,22 @@ class DbTagGroup {
   /// saveAll method saves the sent List<DbTagGroup> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbTagGroup> dbtaggroups) async {
+  static Future<List<dynamic>> saveAll(List<DbTagGroup> dbtaggroups) async {
     // final results = _mnDbTagGroup.saveAll('INSERT OR REPLACE INTO tagGroups (id,name, color, system, athletesId)  VALUES (?,?,?,?,?)',dbtaggroups);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbtaggroups) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbtaggroups.length; i++) {
+      if (dbtaggroups[i].id == null) {
+        dbtaggroups[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -21641,8 +22533,9 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
   DbTagGroupFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -21693,7 +22586,7 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -21713,7 +22606,7 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -21733,8 +22626,28 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbTagGroupFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -21790,17 +22703,23 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -21826,7 +22745,13 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -21851,7 +22776,8 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbTagGroup> bulk by query
@@ -21861,11 +22787,11 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     _buildParameters();
     var r = BoolResult();
     // Delete sub records where in (DbTag) according to DeleteRule.CASCADE
-    final tagsBytagGroupsIdidList = await toListPrimaryKey(false);
+    final idListDbTagBYtagGroupsId = toListPrimaryKeySQL(false);
     final resDbTagBYtagGroupsId = await DbTag()
         .select()
-        .tagGroupsId
-        .inValues(tagsBytagGroupsIdidList)
+        .where('tagGroupsId IN (${idListDbTagBYtagGroupsId['sql']})',
+            parameterValue: idListDbTagBYtagGroupsId['args'])
         .delete(hardDelete);
     if (!resDbTagBYtagGroupsId.success) {
       return resDbTagBYtagGroupsId;
@@ -21956,7 +22882,7 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbTagGroup]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dbtaggroupCount]) async {
@@ -21970,7 +22896,7 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbTagGroup>.
+  /// This method returns List<DbTagGroup> [DbTagGroup]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -21999,7 +22925,7 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     return dbtaggroupsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbTagGroup]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -22009,7 +22935,7 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbTagGroup]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -22019,12 +22945,27 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbTagGroup]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbTagGroup.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbTagGroup]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM tagGroups WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -22044,7 +22985,7 @@ class DbTagGroupFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbTagGroup]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -22248,12 +23189,12 @@ class DbLapTagging {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbLapTagging]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbLapTagging]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -22266,15 +23207,20 @@ class DbLapTagging {
     return [id, system, tagsId, lapsId];
   }
 
-  static Future<List<DbLapTagging>> fromWebUrl(String url) async {
+  static Future<List<DbLapTagging>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbLapTagging.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbLapTagging>> fromJson(String jsonBody) async {
@@ -22418,14 +23364,22 @@ class DbLapTagging {
   /// saveAll method saves the sent List<DbLapTagging> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(List<DbLapTagging> dblaptaggings) async {
+  static Future<List<dynamic>> saveAll(List<DbLapTagging> dblaptaggings) async {
     // final results = _mnDbLapTagging.saveAll('INSERT OR REPLACE INTO lapTaggings (id,system, tagsId, lapsId)  VALUES (?,?,?,?)',dblaptaggings);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dblaptaggings) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dblaptaggings.length; i++) {
+      if (dblaptaggings[i].id == null) {
+        dblaptaggings[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -22792,8 +23746,9 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
   DbLapTaggingFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -22844,7 +23799,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -22864,7 +23819,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -22884,8 +23839,28 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbLapTaggingFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -22936,17 +23911,23 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -22972,7 +23953,13 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -22997,7 +23984,8 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbLapTagging> bulk by query
@@ -23086,7 +24074,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbLapTagging]
   ///
   /// <returns>int
   Future<int> toCount([VoidCallback Function(int c) dblaptaggingCount]) async {
@@ -23100,7 +24088,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbLapTagging>.
+  /// This method returns List<DbLapTagging> [DbLapTagging]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -23130,7 +24118,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     return dblaptaggingsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbLapTagging]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -23140,7 +24128,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbLapTagging]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -23150,12 +24138,28 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbLapTagging]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbLapTagging.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbLapTagging]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] =
+        'SELECT `id` FROM lapTaggings WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -23175,7 +24179,7 @@ class DbLapTaggingFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbLapTagging]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -23377,12 +24381,12 @@ class DbActivityTagging {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbActivityTagging]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbActivityTagging]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -23395,15 +24399,20 @@ class DbActivityTagging {
     return [id, system, tagsId, activitiesId];
   }
 
-  static Future<List<DbActivityTagging>> fromWebUrl(String url) async {
+  static Future<List<DbActivityTagging>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbActivityTagging.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbActivityTagging>> fromJson(String jsonBody) async {
@@ -23547,15 +24556,23 @@ class DbActivityTagging {
   /// saveAll method saves the sent List<DbActivityTagging> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(
+  static Future<List<dynamic>> saveAll(
       List<DbActivityTagging> dbactivitytaggings) async {
     // final results = _mnDbActivityTagging.saveAll('INSERT OR REPLACE INTO activityTaggings (id,system, tagsId, activitiesId)  VALUES (?,?,?,?)',dbactivitytaggings);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbactivitytaggings) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbactivitytaggings.length; i++) {
+      if (dbactivitytaggings[i].id == null) {
+        dbactivitytaggings[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -23938,8 +24955,9 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
   DbActivityTaggingFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -23990,7 +25008,7 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -24010,7 +25028,7 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -24030,8 +25048,28 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbActivityTaggingFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -24083,17 +25121,23 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -24119,7 +25163,13 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -24144,7 +25194,8 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbActivityTagging> bulk by query
@@ -24234,7 +25285,7 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbActivityTagging]
   ///
   /// <returns>int
   Future<int> toCount(
@@ -24250,7 +25301,7 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbActivityTagging>.
+  /// This method returns List<DbActivityTagging> [DbActivityTagging]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -24280,7 +25331,7 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
     return dbactivitytaggingsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbActivityTagging]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -24290,7 +25341,7 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbActivityTagging]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -24300,12 +25351,28 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbActivityTagging]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbActivityTagging.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbActivityTagging]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] =
+        'SELECT `id` FROM activityTaggings WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -24325,7 +25392,7 @@ class DbActivityTaggingFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbActivityTagging]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
@@ -24527,12 +25594,12 @@ class DbIntervalTagging {
     return map;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbIntervalTagging]
   String toJson() {
     return json.encode(toMap(forJson: true));
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbIntervalTagging]
   Future<String> toJsonWithChilds() async {
     return json.encode(await toMapWithChildren(false, true));
   }
@@ -24545,15 +25612,20 @@ class DbIntervalTagging {
     return [id, system, tagsId, intervalsId];
   }
 
-  static Future<List<DbIntervalTagging>> fromWebUrl(String url) async {
+  static Future<List<DbIntervalTagging>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
     try {
-      final response = await http.get(url);
+      final response = await http.get(url, headers: headers);
       return await fromJson(response.body);
     } catch (e) {
       print(
           'SQFENTITY ERROR DbIntervalTagging.fromWebUrl: ErrorMessage: ${e.toString()}');
       return null;
     }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
   }
 
   static Future<List<DbIntervalTagging>> fromJson(String jsonBody) async {
@@ -24697,15 +25769,23 @@ class DbIntervalTagging {
   /// saveAll method saves the sent List<DbIntervalTagging> as a bulk in one transaction
   ///
   /// Returns a <List<BoolResult>>
-  Future<List<dynamic>> saveAll(
+  static Future<List<dynamic>> saveAll(
       List<DbIntervalTagging> dbintervaltaggings) async {
     // final results = _mnDbIntervalTagging.saveAll('INSERT OR REPLACE INTO intervalTaggings (id,system, tagsId, intervalsId)  VALUES (?,?,?,?)',dbintervaltaggings);
     // return results; removed in sqfentity_gen 1.3.0+6
-    DbEncrateia().batchStart();
+    await DbEncrateia().batchStart();
     for (final obj in dbintervaltaggings) {
       await obj.save();
     }
-    return DbEncrateia().batchCommit();
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dbintervaltaggings.length; i++) {
+      if (dbintervaltaggings[i].id == null) {
+        dbintervaltaggings[i].id = result[i] as int;
+      }
+    }
+
+    return result;
   }
 
   /// Updates if the record exists, otherwise adds a new row
@@ -25088,8 +26168,9 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
   DbIntervalTaggingFilterBuilder where(String whereCriteria,
       {dynamic parameterValue}) {
     if (whereCriteria != null && whereCriteria != '') {
-      final DbParameter param =
-          DbParameter(columnName: parameterValue == null ? null : '');
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
       _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
           '($whereCriteria)', _addedBlocks);
       _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
@@ -25140,7 +26221,7 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
         orderByList.add(argFields);
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s ');
           }
         }
@@ -25160,7 +26241,7 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
         orderByList.add('$argFields desc ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             orderByList.add(' $s desc ');
           }
         }
@@ -25180,8 +26261,28 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
         groupByList.add(' $argFields ');
       } else {
         for (String s in argFields as List<String>) {
-          if (s != null && s != '') {
+          if (s != null && s.isNotEmpty) {
             groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbIntervalTaggingFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
           }
         }
       }
@@ -25232,17 +26333,23 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
     }
     for (DbParameter param in parameters) {
       if (param.columnName != null) {
-        if (param.value is List) {
-          param.value = param.value
-              .toString()
-              .replaceAll('[', '')
-              .replaceAll(']', '')
-              .toString();
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
           whereString += param.whereString
               .replaceAll('{field}', param.columnName)
               .replaceAll('?', param.value.toString());
           param.value = null;
         } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
           whereString +=
               param.whereString.replaceAll('{field}', param.columnName);
         }
@@ -25268,7 +26375,13 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
             default:
           }
           if (param.value != null) {
-            whereArguments.add(param.value);
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
           }
           if (param.value2 != null) {
             whereArguments.add(param.value2);
@@ -25293,7 +26406,8 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
     qparams
       ..whereArguments = whereArguments
       ..groupBy = groupByList.join(',')
-      ..orderBy = orderByList.join(',');
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
   }
 
   /// Deletes List<DbIntervalTagging> bulk by query
@@ -25383,7 +26497,7 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
     return obj;
   }
 
-  /// This method returns int.
+  /// This method returns int. [DbIntervalTagging]
   ///
   /// <returns>int
   Future<int> toCount(
@@ -25399,7 +26513,7 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
     return count;
   }
 
-  /// This method returns List<DbIntervalTagging>.
+  /// This method returns List<DbIntervalTagging> [DbIntervalTagging]
   ///
   /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
   ///
@@ -25429,7 +26543,7 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
     return dbintervaltaggingsData;
   }
 
-  /// This method returns Json String
+  /// This method returns Json String [DbIntervalTagging]
   Future<String> toJson() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -25439,7 +26553,7 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns Json String.
+  /// This method returns Json String. [DbIntervalTagging]
   Future<String> toJsonWithChilds() async {
     final list = <dynamic>[];
     final data = await toList();
@@ -25449,12 +26563,28 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
     return json.encode(list);
   }
 
-  /// This method returns List<dynamic>.
+  /// This method returns List<dynamic>. [DbIntervalTagging]
   ///
   /// <returns>List<dynamic>
   Future<List<dynamic>> toMapList() async {
     _buildParameters();
     return await _obj._mnDbIntervalTagging.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbIntervalTagging]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] =
+        'SELECT `id` FROM intervalTaggings WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
   }
 
   /// This method returns Primary Key List<int>.
@@ -25474,7 +26604,7 @@ class DbIntervalTaggingFilterBuilder extends SearchCriteria {
     return idData;
   }
 
-  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbIntervalTagging]
   ///
   /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
   Future<List<dynamic>> toListObject() async {
