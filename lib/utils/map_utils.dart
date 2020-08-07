@@ -41,12 +41,16 @@ extension StatisticFunctions on Map<DateTime, double> {
     double sumOfWeights = 0;
 
     DateTime lastTimeStamp;
+    double lastDistance;
 
     forEach((DateTime timeStamp, double distance) {
       final int timeEvolved = lastTimeStamp != null
           ? timeStamp.difference(lastTimeStamp).inSeconds
           : 0;
-      sumOfValues += distance;
+      final double distanceEvolved = lastDistance != null
+          ? lastDistance - distance
+          : 0;
+      sumOfValues += distanceEvolved;
       sumOfWeights += timeEvolved;
       lastTimeStamp = timeStamp;
     });
