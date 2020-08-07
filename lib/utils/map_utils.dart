@@ -17,7 +17,7 @@ extension StatisticFunctions on Map<DateTime, double> {
     return sumOfValues / sumOfWeights;
   }
 
-  double meanByDistance() {
+  double meanByDistanceAlt() {
     double sumOfValues = 0;
     double sumOfWeights = 0;
 
@@ -35,4 +35,41 @@ extension StatisticFunctions on Map<DateTime, double> {
 
     return sumOfValues / sumOfWeights;
   }
+
+  double meanByDistance() {
+    double sumOfValues = 0;
+    double sumOfWeights = 0;
+
+    DateTime lastTimeStamp;
+
+    forEach((DateTime timeStamp, double distance) {
+      final int timeEvolved = lastTimeStamp != null
+          ? timeStamp.difference(lastTimeStamp).inSeconds
+          : 0;
+      sumOfValues += distance;
+      sumOfWeights += timeEvolved;
+      lastTimeStamp = timeStamp;
+    });
+
+    return sumOfValues / sumOfWeights;
+  }
+
+  double meanBySpeed() {
+    double sumOfValues = 0;
+    double sumOfWeights = 0;
+
+    DateTime lastTimeStamp;
+
+    forEach((DateTime timeStamp, double speed) {
+      final int timeEvolved = lastTimeStamp != null
+          ? timeStamp.difference(lastTimeStamp).inSeconds
+          : 0;
+      sumOfValues += speed * timeEvolved;
+      sumOfWeights += timeEvolved;
+      lastTimeStamp = timeStamp;
+    });
+
+    return sumOfValues / sumOfWeights;
+  }
+
 }

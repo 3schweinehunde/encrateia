@@ -86,18 +86,18 @@ class RecordList<E> extends DelegatingList<E> {
     return speeds.isNotEmpty ? speeds.mean() : -1;
   }
 
-  double avgSpeedByTime() {
+  double avgSpeedBySpeed() {
     final Map<DateTime, double> speedMap = <DateTime, double>{
       for (final Event record in _records) record.timeStamp: record.speed
     };
-    return speedMap.meanByTime();
+    return speedMap.meanBySpeed();
   }
 
   double avgSpeedByDistance() {
     final Map<DateTime, double> speedMap = <DateTime, double>{
-      for (final Event record in _records) record.timeStamp: record.speed,
+      for (final Event record in _records) record.timeStamp: record.distance,
     };
-    return speedMap.meanByTime();
+    return speedMap.meanByDistance();
   }
 
   double sdevSpeed() => _records

@@ -192,7 +192,7 @@ class Lap {
       ..minHeartRate = recordList.minHeartRate()
       ..maxHeartRate = recordList.maxHeartRate()
       ..avgSpeedByMeasurements = recordList.avgSpeedByMeasurements()
-      ..avgSpeedByTime = recordList.avgSpeedByTime()
+      ..avgSpeedByTime = recordList.avgSpeedBySpeed()
       ..avgSpeedByDistance = recordList.avgSpeedByDistance()
       ..sdevSpeed = recordList.sdevSpeed()
       ..sdevPace = recordList.sdevPace()
