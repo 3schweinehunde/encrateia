@@ -69,7 +69,7 @@ extension StatisticFunctions on Map<DateTime, double> {
       final int timeEvolved = lastTimeStamp != null
           ? timeStamp.difference(lastTimeStamp).inSeconds
           : 0;
-      sumOfValues += speed * timeEvolved;
+      sumOfValues += (speed ?? 0) * timeEvolved;
       sumOfWeights += timeEvolved;
       lastTimeStamp = timeStamp;
     });

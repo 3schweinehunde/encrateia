@@ -25,7 +25,6 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView(
       children: <Widget>[
         ListTile(
@@ -137,13 +136,14 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
   Widget stravaTile({Athlete athlete}) {
     if (athlete.id != null)
       return ListTile(
-          leading: MyIcon.stravaDownload,
-          title: const Text('Strava ID / Username / Location'),
-          subtitle: Text((athlete.stravaId.toString() ?? '') +
-              ' / ' +
-              (athlete.stravaUsername ?? '') +
-              ' / ' +
-              athlete.geoState ?? ''));
+        leading: MyIcon.stravaDownload,
+        title: const Text('Strava ID / Username / Location'),
+        subtitle: Text((athlete.stravaId.toString() ?? '') +
+            ' / ' +
+            (athlete.stravaUsername ?? '') +
+            ' / ' +
+            (athlete.geoState ?? '')),
+      );
     else
       return Container(width: 0, height: 0);
   }

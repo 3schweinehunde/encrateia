@@ -26,6 +26,8 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   String avgSpeedBySpeedString = 'Loading ...';
   String avgSpeedByDistanceString = 'Loading ...';
   String sdevSpeedString = 'Loading ...';
+  String minSpeedString = 'Loading ...';
+  String maxSpeedString = 'Loading ...';
 
   @override
   void initState() {
@@ -87,6 +89,16 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
                 subtitle: const Text('standard deviation speed'),
               ),
               ListTile(
+                leading: MyIcon.minimum,
+                title: Text(minSpeedString),
+                subtitle: const Text('minimum speed'),
+              ),
+              ListTile(
+                leading: MyIcon.maximum,
+                title: Text(maxSpeedString),
+                subtitle: const Text('maximum speed'),
+              ),
+              ListTile(
                 leading: MyIcon.amount,
                 title: Text(paceRecords.length.toString()),
                 subtitle: const Text('number of measurements'),
@@ -122,6 +134,12 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
         ? (activity.avgSpeedByDistance * 3.6).toStringAsFixed(2) + 'km/h'
         : '- - -';
     sdevSpeedString = (activity.sdevSpeed * 3.6).toStringAsFixed(2) + ' km/h';
+    minSpeedString = activity.minSpeed != null
+        ? (activity.minSpeed * 3.6).toStringAsFixed(2) + 'km/h'
+        : '- - -';
+    maxSpeedString = activity.maxSpeed != null
+        ? (activity.maxSpeed * 3.6).toStringAsFixed(2) + 'km/h'
+        : '- - -';
     setState(() {});
   }
 }
