@@ -42,7 +42,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
       ListTile(
         title: Text(widget.activity.avgSpeed.toPace() +
             ' / ' +
-            widget.activity.maxSpeed.toPace()),
+            widget.activity.maxSpeed?.toPace()),
         subtitle: const Text('avg / max pace'),
       ),
       ListTile(

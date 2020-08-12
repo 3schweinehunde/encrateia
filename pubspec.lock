@@ -270,10 +270,10 @@ packages:
   fit_parser:
     dependency: "direct main"
     description:
-      path: "../fit_parser"
-      relative: true
-    source: path
-    version: "0.1.8"
+      name: fit_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.9"
   fixnum:
     dependency: transitive
     description:
