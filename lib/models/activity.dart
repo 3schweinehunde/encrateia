@@ -237,14 +237,6 @@ class Activity {
     await save();
   }
 
-  String heartRateString() {
-    return (avgHeartRate == null || avgHeartRate == 255)
-        ? '- - -'
-        : avgHeartRate.toString() + ' bpm';
-  }
-
-  String paceString() => avgSpeed.toPace() + '/km';
-
   Future<List<Event>> get records async {
     if (cachedRecords.isEmpty) {
       final List<DbEvent> dbEventList = await _db.getDbEvents().toList();

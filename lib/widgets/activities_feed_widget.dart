@@ -3,7 +3,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/PQ.dart';
+import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
@@ -54,72 +54,89 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {
         final Activity activity = activities[index];
-        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-            Widget>[
-          ListTile(
-            leading: sportsIcon(sport: activity.sport),
-            title: Text(activity.name ?? 'Activity'),
-            subtitle: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Column(children: <Widget>[
-                  PQ(
-                    dateTime: activity.timeCreated,
-                    format: DateTimeFormat.longDate,
-                  ),
-                  PQ(distance: activity.totalDistance),
-                ]),
-                const SizedBox(width: 20),
-                Text(activity.paceString() + '\n' + activity.heartRateString()),
-                const SizedBox(width: 20),
-                Text((activity.avgPower == null || activity.avgPower == -1)
-                    ? '-'
-                    : activity.avgPower.toStringAsFixed(1) + ' W' + '\n'),
-              ],
-            ),
-            onTap: () async {
-              if (activity.state == 'persisted') {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute<BuildContext>(
-                    builder: (BuildContext context) => ShowActivityScreen(
-                      activity: activity,
-                      athlete: widget.athlete,
-                    ),
-                  ),
-                );
-                getData();
-              }
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: Wrap(
-              spacing: 10,
-              children: <Widget>[
-                for (Tag tag in activity.cachedTags)
-                  Chip(
-                    avatar: CircleAvatar(
-                        foregroundColor: MyColor.textColor(
-                            backgroundColor: Color(tagGroup(tag).color)),
-                        backgroundColor: Color(tagGroup(tag).color),
-                        child: Text(capitals(tag))),
-                    label: Text(
-                      tag.name,
-                      style: TextStyle(
-                        color: MyColor.textColor(
-                          selected: true,
-                          backgroundColor: Color(tag.color ?? 99999),
+        return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ListTile(
+                leading: sportsIcon(sport: activity.sport),
+                title: Text(activity.name ?? 'Activity'),
+                subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Column(children: <Widget>[
+                      PQText(
+                        pq: PQ.dateTime,
+                        value: activity.timeCreated,
+                        format: DateTimeFormat.longDate,
+                      ),
+                      PQText(
+                        pq: PQ.distance,
+                        value: activity.totalDistance,
+                      ),
+                    ]),
+                    const SizedBox(width: 20),
+                    Column(children: <Widget>[
+                      PQText(pq: PQ.pace, value: activity.avgSpeed),
+                      PQText(
+                        pq: PQ.heartRate,
+                        value: activity.avgHeartRate,
+                      ),
+                    ]),
+                    const SizedBox(width: 20),
+                    Column(
+                      children: <Widget>[
+                        PQText(
+                          pq: PQ.power,
+                          value: activity.avgPower,
+                        ),
+                        const Text('')
+                      ],
+                    )
+                  ],
+                ),
+                onTap: () async {
+                  if (activity.state == 'persisted') {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) => ShowActivityScreen(
+                          activity: activity,
+                          athlete: widget.athlete,
                         ),
                       ),
-                    ),
-                    backgroundColor: Color(tag.color ?? 99999),
-                    elevation: 3,
-                  ),
-              ],
-            ),
-          )
-        ]);
+                    );
+                    getData();
+                  }
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Wrap(
+                  spacing: 10,
+                  children: <Widget>[
+                    for (Tag tag in activity.cachedTags)
+                      Chip(
+                        avatar: CircleAvatar(
+                            foregroundColor: MyColor.textColor(
+                                backgroundColor: Color(tagGroup(tag).color)),
+                            backgroundColor: Color(tagGroup(tag).color),
+                            child: Text(capitals(tag))),
+                        label: Text(
+                          tag.name,
+                          style: TextStyle(
+                            color: MyColor.textColor(
+                              selected: true,
+                              backgroundColor: Color(tag.color ?? 99999),
+                            ),
+                          ),
+                        ),
+                        backgroundColor: Color(tag.color ?? 99999),
+                        elevation: 3,
+                      ),
+                  ],
+                ),
+              )
+            ]);
       },
     );
   }

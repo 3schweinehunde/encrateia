@@ -44,3 +44,11 @@ enum DateTimeFormat {
   shortDateTime,
   longDateTime,
 }
+
+enum PQ {
+  dateTime,
+  distance,
+  power,
+  pace,
+  heartRate,
+}
