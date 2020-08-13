@@ -1,6 +1,10 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
+// to get something as close as possible to the current method name, use:
+// StackTrace.current.toString()
 
 class Log {
   Log({
@@ -13,6 +17,8 @@ class Log {
       ..method = method
       ..message = message
       ..dateTime = DateTime.now();
+
+    log(message, name: method);
   }
   Log._fromDb(this._db);
 
