@@ -237,40 +237,10 @@ class Activity {
     await save();
   }
 
-  String distanceString() {
-    return totalDistance == null
-        ? '- - -'
-        : (totalDistance / 1000).toStringAsFixed(2) + ' km';
-  }
-
   String heartRateString() {
     return (avgHeartRate == null || avgHeartRate == 255)
         ? '- - -'
         : avgHeartRate.toString() + ' bpm';
-  }
-
-  String timeString() {
-    return timeCreated == null
-        ? '- - -'
-        : DateFormat('H:mm').format(timeCreated);
-  }
-
-  String dateString() {
-    return timeCreated == null
-        ? '- - -'
-        : DateFormat('d MMM yy').format(timeCreated);
-  }
-
-  String longDateTimeString() {
-    return timeCreated == null
-        ? '- - -'
-        : DateFormat('E d MMM yy, H:mm').format(timeCreated);
-  }
-
-  String shortDateString() {
-    return timeCreated == null
-        ? '- - -'
-        : DateFormat('d.M.').format(timeCreated);
   }
 
   String paceString() => avgSpeed.toPace() + '/km';

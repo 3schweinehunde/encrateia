@@ -1,5 +1,7 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/utils/PQ.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -39,7 +41,10 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           dense: true,
           leading: sportsIcon(sport: activity.sport),
           title: Text(activity.name ?? 'Activity'),
-          subtitle: Text(activity.longDateTimeString()),
+          subtitle: PQ(
+            dateTime: activity.timeCreated,
+            format: DateTimeFormat.longDateTime,
+          ),
           onTap: () {
             if (activity.state == 'persisted')
               Navigator.push(
@@ -124,16 +129,13 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           message: 'Strava email not provided yet!',
           duration: const Duration(seconds: 3),
           backgroundColor: Colors.yellow[900],
-        )
-          ..show(context);
-      } else
-      if (widget.athlete.password == null) {
+        )..show(context);
+      } else if (widget.athlete.password == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava password not provided yet!',
           duration: const Duration(seconds: 3),
           backgroundColor: Colors.red,
-        )
-          ..show(context);
+        )..show(context);
       }
     }
   }

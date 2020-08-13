@@ -36,3 +36,11 @@ enum IntervalBoundary {
   left,
   right,
 }
+
+enum DateTimeFormat {
+  shortDate,
+  shortTime,
+  longDate,
+  shortDateTime,
+  longDateTime,
+}

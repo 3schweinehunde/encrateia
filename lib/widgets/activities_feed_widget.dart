@@ -3,6 +3,8 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/tag_group.dart';
+import 'package:encrateia/utils/PQ.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -60,7 +62,13 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
             subtitle: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                Text(activity.dateString() + '\n' + activity.distanceString()),
+                Column(children: <Widget>[
+                  PQ(
+                    dateTime: activity.timeCreated,
+                    format: DateTimeFormat.longDate,
+                  ),
+                  PQ(distance: activity.totalDistance),
+                ]),
                 const SizedBox(width: 20),
                 Text(activity.paceString() + '\n' + activity.heartRateString()),
                 const SizedBox(width: 20),
