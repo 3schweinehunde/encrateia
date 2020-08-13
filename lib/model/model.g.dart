@@ -739,6 +739,32 @@ class TableDbIntervalTagging extends SqfEntityTableBase {
     return _instance = _instance ?? TableDbIntervalTagging();
   }
 }
+
+// DbLog TABLE
+class TableDbLog extends SqfEntityTableBase {
+  TableDbLog() {
+    // declare properties of EntityTable
+    tableName = 'logs';
+    primaryKeyName = 'id';
+    primaryKeyType = PrimaryKeyType.integer_auto_incremental;
+    useSoftDeleting = false;
+    // when useSoftDeleting is true, creates a field named 'isDeleted' on the table, and set to '1' this field when item deleted (does not hard delete)
+
+    // declare fields
+    fields = [
+      SqfEntityFieldBase('dateTime', DbType.datetime,
+          isNotNull: false, minValue: DateTime.parse('1900-01-01')),
+      SqfEntityFieldBase('message', DbType.text, isNotNull: false),
+      SqfEntityFieldBase('method', DbType.text, isNotNull: false),
+      SqfEntityFieldBase('comment', DbType.text, isNotNull: false),
+    ];
+    super.init();
+  }
+  static SqfEntityTableBase _instance;
+  static SqfEntityTableBase get getInstance {
+    return _instance = _instance ?? TableDbLog();
+  }
+}
 // END TABLES
 
 // BEGIN SEQUENCES
@@ -766,6 +792,7 @@ class DbEncrateia extends SqfEntityModelProvider {
       TableDbLapTagging.getInstance,
       TableDbActivityTagging.getInstance,
       TableDbIntervalTagging.getInstance,
+      TableDbLog.getInstance,
     ];
 
     bundledDatabasePath = encrateia
@@ -26781,6 +26808,1092 @@ class DbIntervalTaggingManager extends SqfEntityProvider {
 }
 
 //endregion DbIntervalTaggingManager
+// region DbLog
+class DbLog {
+  DbLog({this.id, this.dateTime, this.message, this.method, this.comment}) {
+    _setDefaultValues();
+  }
+  DbLog.withFields(this.dateTime, this.message, this.method, this.comment) {
+    _setDefaultValues();
+  }
+  DbLog.withId(
+      this.id, this.dateTime, this.message, this.method, this.comment) {
+    _setDefaultValues();
+  }
+  DbLog.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
+    if (setDefaultValues) {
+      _setDefaultValues();
+    }
+    id = int.tryParse(o['id'].toString());
+    if (o['dateTime'] != null) {
+      dateTime = int.tryParse(o['dateTime'].toString()) != null
+          ? DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(o['dateTime'].toString()))
+          : DateTime.tryParse(o['dateTime'].toString());
+    }
+    if (o['message'] != null) {
+      message = o['message'] as String;
+    }
+    if (o['method'] != null) {
+      method = o['method'] as String;
+    }
+    if (o['comment'] != null) {
+      comment = o['comment'] as String;
+    }
+  }
+  // FIELDS (DbLog)
+  int id;
+  DateTime dateTime;
+  String message;
+  String method;
+  String comment;
+
+  BoolResult saveResult;
+  // end FIELDS (DbLog)
+
+  static const bool _softDeleteActivated = false;
+  DbLogManager __mnDbLog;
+
+  DbLogManager get _mnDbLog {
+    return __mnDbLog = __mnDbLog ?? DbLogManager();
+  }
+
+  // METHODS
+  Map<String, dynamic> toMap(
+      {bool forQuery = false, bool forJson = false, bool forView = false}) {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (dateTime != null) {
+      map['dateTime'] = forJson
+          ? dateTime.toString()
+          : forQuery ? dateTime.millisecondsSinceEpoch : dateTime;
+    }
+
+    if (message != null) {
+      map['message'] = message;
+    }
+
+    if (method != null) {
+      map['method'] = method;
+    }
+
+    if (comment != null) {
+      map['comment'] = comment;
+    }
+
+    return map;
+  }
+
+  Future<Map<String, dynamic>> toMapWithChildren(
+      [bool forQuery = false,
+      bool forJson = false,
+      bool forView = false]) async {
+    final map = <String, dynamic>{};
+    if (id != null) {
+      map['id'] = id;
+    }
+    if (dateTime != null) {
+      map['dateTime'] = forJson
+          ? dateTime.toString()
+          : forQuery ? dateTime.millisecondsSinceEpoch : dateTime;
+    }
+
+    if (message != null) {
+      map['message'] = message;
+    }
+
+    if (method != null) {
+      map['method'] = method;
+    }
+
+    if (comment != null) {
+      map['comment'] = comment;
+    }
+
+    return map;
+  }
+
+  /// This method returns Json String [DbLog]
+  String toJson() {
+    return json.encode(toMap(forJson: true));
+  }
+
+  /// This method returns Json String [DbLog]
+  Future<String> toJsonWithChilds() async {
+    return json.encode(await toMapWithChildren(false, true));
+  }
+
+  List<dynamic> toArgs() {
+    return [dateTime, message, method, comment];
+  }
+
+  List<dynamic> toArgsWithIds() {
+    return [id, dateTime, message, method, comment];
+  }
+
+  static Future<List<DbLog>> fromWebUrl(String url,
+      {Map<String, String> headers}) async {
+    try {
+      final response = await http.get(url, headers: headers);
+      return await fromJson(response.body);
+    } catch (e) {
+      print('SQFENTITY ERROR DbLog.fromWebUrl: ErrorMessage: ${e.toString()}');
+      return null;
+    }
+  }
+
+  Future<http.Response> postUrl(String url, {Map<String, String> headers}) {
+    return http.post(url, headers: headers, body: toJson());
+  }
+
+  static Future<List<DbLog>> fromJson(String jsonBody) async {
+    final Iterable list = await json.decode(jsonBody) as Iterable;
+    var objList = <DbLog>[];
+    try {
+      objList = list
+          .map((dblog) => DbLog.fromMap(dblog as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print('SQFENTITY ERROR DbLog.fromJson: ErrorMessage: ${e.toString()}');
+    }
+    return objList;
+  }
+
+  static Future<List<DbLog>> fromMapList(List<dynamic> data,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields,
+      bool setDefaultValues = true}) async {
+    final List<DbLog> objList = <DbLog>[];
+    loadedFields = loadedFields ?? [];
+    for (final map in data) {
+      final obj = DbLog.fromMap(map as Map<String, dynamic>,
+          setDefaultValues: setDefaultValues);
+
+      objList.add(obj);
+    }
+    return objList;
+  }
+
+  /// returns DbLog by ID if exist, otherwise returns null
+  ///
+  /// Primary Keys: int id
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: getById(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: getById(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>returns DbLog if exist, otherwise returns null
+  Future<DbLog> getById(int id,
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    if (id == null) {
+      return null;
+    }
+    DbLog obj;
+    final data = await _mnDbLog.getById([id]);
+    if (data.length != 0) {
+      obj = DbLog.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// Saves the (DbLog) object. If the id field is null, saves as a new record and returns new id, if id is not null then updates record
+
+  /// <returns>Returns id
+  Future<int> save() async {
+    if (id == null || id == 0) {
+      id = await _mnDbLog.insert(this);
+    } else {
+      // id= await _upsert(); // removed in sqfentity_gen 1.3.0+6
+      await _mnDbLog.update(this);
+    }
+
+    return id;
+  }
+
+  /// saveAs DbLog. Returns a new Primary Key value of DbLog
+
+  /// <returns>Returns a new Primary Key value of DbLog
+  Future<int> saveAs() async {
+    id = null;
+
+    return save();
+  }
+
+  /// saveAll method saves the sent List<DbLog> as a bulk in one transaction
+  ///
+  /// Returns a <List<BoolResult>>
+  static Future<List<dynamic>> saveAll(List<DbLog> dblogs) async {
+    // final results = _mnDbLog.saveAll('INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment)  VALUES (?,?,?,?,?)',dblogs);
+    // return results; removed in sqfentity_gen 1.3.0+6
+    await DbEncrateia().batchStart();
+    for (final obj in dblogs) {
+      await obj.save();
+    }
+    //    return DbEncrateia().batchCommit();
+    final result = await DbEncrateia().batchCommit();
+    for (int i = 0; i < dblogs.length; i++) {
+      if (dblogs[i].id == null) {
+        dblogs[i].id = result[i] as int;
+      }
+    }
+
+    return result;
+  }
+
+  /// Updates if the record exists, otherwise adds a new row
+
+  /// <returns>Returns id
+  Future<int> upsert() async {
+    try {
+      if (await _mnDbLog.rawInsert(
+              'INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment)  VALUES (?,?,?,?,?)',
+              [id, dateTime, message, method, comment]) ==
+          1) {
+        saveResult = BoolResult(
+            success: true, successMessage: 'DbLog id=$id updated successfully');
+      } else {
+        saveResult = BoolResult(
+            success: false, errorMessage: 'DbLog id=$id did not update');
+      }
+      return id;
+    } catch (e) {
+      saveResult = BoolResult(
+          success: false,
+          errorMessage: 'DbLog Save failed. Error: ${e.toString()}');
+      return 0;
+    }
+  }
+
+  /// inserts or replaces the sent List<<DbLog>> as a bulk in one transaction.
+  ///
+  /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
+  ///
+  /// Returns a BoolCommitResult
+  Future<BoolCommitResult> upsertAll(List<DbLog> dblogs) async {
+    final results = await _mnDbLog.rawInsertAll(
+        'INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment)  VALUES (?,?,?,?,?)',
+        dblogs);
+    return results;
+  }
+
+  /// Deletes DbLog
+
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    print('SQFENTITIY: delete DbLog invoked (id=$id)');
+    if (!_softDeleteActivated || hardDelete) {
+      return _mnDbLog
+          .delete(QueryParams(whereString: 'id=?', whereArguments: [id]));
+    } else {
+      return _mnDbLog.updateBatch(
+          QueryParams(whereString: 'id=?', whereArguments: [id]),
+          {'isDeleted': 1});
+    }
+  }
+
+  DbLogFilterBuilder select({List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbLogFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect;
+  }
+
+  DbLogFilterBuilder distinct(
+      {List<String> columnsToSelect, bool getIsDeleted}) {
+    return DbLogFilterBuilder(this)
+      .._getIsDeleted = getIsDeleted == true
+      ..qparams.selectColumns = columnsToSelect
+      ..qparams.distinct = true;
+  }
+
+  void _setDefaultValues() {}
+  // END METHODS
+  // CUSTOM CODES
+  /*
+      you must define customCode property of your SqfEntityTable constant for ex:
+      const tablePerson = SqfEntityTable(
+      tableName: 'person',
+      primaryKeyName: 'id',
+      primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+      fields: [
+        SqfEntityField('firstName', DbType.text),
+        SqfEntityField('lastName', DbType.text),
+      ],
+      customCode: '''
+       String fullName()
+       { 
+         return '$firstName $lastName';
+       }
+      ''');
+     */
+  // END CUSTOM CODES
+}
+// endregion dblog
+
+// region DbLogField
+class DbLogField extends SearchCriteria {
+  DbLogField(this.dblogFB) {
+    param = DbParameter();
+  }
+  DbParameter param;
+  String _waitingNot = '';
+  DbLogFilterBuilder dblogFB;
+
+  DbLogField get not {
+    _waitingNot = ' NOT ';
+    return this;
+  }
+
+  DbLogFilterBuilder equals(dynamic pValue) {
+    param.expression = '=';
+    dblogFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblogFB.parameters, param, SqlSyntax.EQuals,
+            dblogFB._addedBlocks)
+        : setCriteria(pValue, dblogFB.parameters, param, SqlSyntax.NotEQuals,
+            dblogFB._addedBlocks);
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder equalsOrNull(dynamic pValue) {
+    param.expression = '=';
+    dblogFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblogFB.parameters, param, SqlSyntax.EQualsOrNull,
+            dblogFB._addedBlocks)
+        : setCriteria(pValue, dblogFB.parameters, param,
+            SqlSyntax.NotEQualsOrNull, dblogFB._addedBlocks);
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder isNull() {
+    dblogFB._addedBlocks = setCriteria(
+        0,
+        dblogFB.parameters,
+        param,
+        SqlSyntax.IsNULL.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dblogFB._addedBlocks);
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder contains(dynamic pValue) {
+    if (pValue != null) {
+      dblogFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}%',
+          dblogFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblogFB._addedBlocks);
+      _waitingNot = '';
+      dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+          dblogFB._addedBlocks.retVal;
+    }
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder startsWith(dynamic pValue) {
+    if (pValue != null) {
+      dblogFB._addedBlocks = setCriteria(
+          '${pValue.toString()}%',
+          dblogFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblogFB._addedBlocks);
+      _waitingNot = '';
+      dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+          dblogFB._addedBlocks.retVal;
+      dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+          dblogFB._addedBlocks.retVal;
+    }
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder endsWith(dynamic pValue) {
+    if (pValue != null) {
+      dblogFB._addedBlocks = setCriteria(
+          '%${pValue.toString()}',
+          dblogFB.parameters,
+          param,
+          SqlSyntax.Contains.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblogFB._addedBlocks);
+      _waitingNot = '';
+      dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+          dblogFB._addedBlocks.retVal;
+    }
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder between(dynamic pFirst, dynamic pLast) {
+    if (pFirst != null && pLast != null) {
+      dblogFB._addedBlocks = setCriteria(
+          pFirst,
+          dblogFB.parameters,
+          param,
+          SqlSyntax.Between.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+          dblogFB._addedBlocks,
+          pLast);
+    } else if (pFirst != null) {
+      if (_waitingNot != '') {
+        dblogFB._addedBlocks = setCriteria(pFirst, dblogFB.parameters, param,
+            SqlSyntax.LessThan, dblogFB._addedBlocks);
+      } else {
+        dblogFB._addedBlocks = setCriteria(pFirst, dblogFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dblogFB._addedBlocks);
+      }
+    } else if (pLast != null) {
+      if (_waitingNot != '') {
+        dblogFB._addedBlocks = setCriteria(pLast, dblogFB.parameters, param,
+            SqlSyntax.GreaterThan, dblogFB._addedBlocks);
+      } else {
+        dblogFB._addedBlocks = setCriteria(pLast, dblogFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dblogFB._addedBlocks);
+      }
+    }
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder greaterThan(dynamic pValue) {
+    param.expression = '>';
+    dblogFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblogFB.parameters, param, SqlSyntax.GreaterThan,
+            dblogFB._addedBlocks)
+        : setCriteria(pValue, dblogFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dblogFB._addedBlocks);
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder lessThan(dynamic pValue) {
+    param.expression = '<';
+    dblogFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblogFB.parameters, param, SqlSyntax.LessThan,
+            dblogFB._addedBlocks)
+        : setCriteria(pValue, dblogFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dblogFB._addedBlocks);
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder greaterThanOrEquals(dynamic pValue) {
+    param.expression = '>=';
+    dblogFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblogFB.parameters, param,
+            SqlSyntax.GreaterThanOrEquals, dblogFB._addedBlocks)
+        : setCriteria(pValue, dblogFB.parameters, param, SqlSyntax.LessThan,
+            dblogFB._addedBlocks);
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder lessThanOrEquals(dynamic pValue) {
+    param.expression = '<=';
+    dblogFB._addedBlocks = _waitingNot == ''
+        ? setCriteria(pValue, dblogFB.parameters, param,
+            SqlSyntax.LessThanOrEquals, dblogFB._addedBlocks)
+        : setCriteria(pValue, dblogFB.parameters, param, SqlSyntax.GreaterThan,
+            dblogFB._addedBlocks);
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+
+  DbLogFilterBuilder inValues(dynamic pValue) {
+    dblogFB._addedBlocks = setCriteria(
+        pValue,
+        dblogFB.parameters,
+        param,
+        SqlSyntax.IN.replaceAll(SqlSyntax.notKeyword, _waitingNot),
+        dblogFB._addedBlocks);
+    _waitingNot = '';
+    dblogFB._addedBlocks.needEndBlock[dblogFB._blockIndex] =
+        dblogFB._addedBlocks.retVal;
+    return dblogFB;
+  }
+}
+// endregion DbLogField
+
+// region DbLogFilterBuilder
+class DbLogFilterBuilder extends SearchCriteria {
+  DbLogFilterBuilder(DbLog obj) {
+    whereString = '';
+    qparams = QueryParams();
+    parameters = <DbParameter>[];
+    orderByList = <String>[];
+    groupByList = <String>[];
+    _addedBlocks = AddedBlocks(<bool>[], <bool>[]);
+    _addedBlocks.needEndBlock.add(false);
+    _addedBlocks.waitingStartBlock.add(false);
+    _pagesize = 0;
+    _page = 0;
+    _obj = obj;
+  }
+  AddedBlocks _addedBlocks;
+  int _blockIndex = 0;
+  List<DbParameter> parameters;
+  List<String> orderByList;
+  DbLog _obj;
+  QueryParams qparams;
+  int _pagesize;
+  int _page;
+
+  /// put the sql keyword 'AND'
+  DbLogFilterBuilder get and {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' AND ';
+    }
+    return this;
+  }
+
+  /// put the sql keyword 'OR'
+  DbLogFilterBuilder get or {
+    if (parameters.isNotEmpty) {
+      parameters[parameters.length - 1].wOperator = ' OR ';
+    }
+    return this;
+  }
+
+  /// open parentheses
+  DbLogFilterBuilder get startBlock {
+    _addedBlocks.waitingStartBlock.add(true);
+    _addedBlocks.needEndBlock.add(false);
+    _blockIndex++;
+    if (_blockIndex > 1) {
+      _addedBlocks.needEndBlock[_blockIndex - 1] = true;
+    }
+    return this;
+  }
+
+  /// String whereCriteria, write raw query without 'where' keyword. Like this: 'field1 like 'test%' and field2 = 3'
+  DbLogFilterBuilder where(String whereCriteria, {dynamic parameterValue}) {
+    if (whereCriteria != null && whereCriteria != '') {
+      final DbParameter param = DbParameter(
+          columnName: parameterValue == null ? null : '',
+          hasParameter: parameterValue != null);
+      _addedBlocks = setCriteria(parameterValue ?? 0, parameters, param,
+          '($whereCriteria)', _addedBlocks);
+      _addedBlocks.needEndBlock[_blockIndex] = _addedBlocks.retVal;
+    }
+    return this;
+  }
+
+  /// page = page number,
+  ///
+  /// pagesize = row(s) per page
+  DbLogFilterBuilder page(int page, int pagesize) {
+    if (page > 0) {
+      _page = page;
+    }
+    if (pagesize > 0) {
+      _pagesize = pagesize;
+    }
+    return this;
+  }
+
+  /// int count = LIMIT
+  DbLogFilterBuilder top(int count) {
+    if (count > 0) {
+      _pagesize = count;
+    }
+    return this;
+  }
+
+  /// close parentheses
+  DbLogFilterBuilder get endBlock {
+    if (_addedBlocks.needEndBlock[_blockIndex]) {
+      parameters[parameters.length - 1].whereString += ' ) ';
+    }
+    _addedBlocks.needEndBlock.removeAt(_blockIndex);
+    _addedBlocks.waitingStartBlock.removeAt(_blockIndex);
+    _blockIndex--;
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbLogFilterBuilder orderBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            orderByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbLogFilterBuilder orderByDesc(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        orderByList.add('$argFields desc ');
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            orderByList.add(' $s desc ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='field1, field2'
+  ///
+  /// Example 2: argFields = ['field1', 'field2']
+  DbLogFilterBuilder groupBy(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        groupByList.add(' $argFields ');
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            groupByList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  /// argFields might be String or List<String>.
+  ///
+  /// Example 1: argFields='name, date'
+  ///
+  /// Example 2: argFields = ['name', 'date']
+  DbLogFilterBuilder having(dynamic argFields) {
+    if (argFields != null) {
+      if (argFields is String) {
+        havingList.add(argFields);
+      } else {
+        for (String s in argFields as List<String>) {
+          if (s != null && s.isNotEmpty) {
+            havingList.add(' $s ');
+          }
+        }
+      }
+    }
+    return this;
+  }
+
+  DbLogField setField(DbLogField field, String colName, DbType dbtype) {
+    return DbLogField(this)
+      ..param = DbParameter(
+          dbType: dbtype,
+          columnName: colName,
+          wStartBlock: _addedBlocks.waitingStartBlock[_blockIndex]);
+  }
+
+  DbLogField _id;
+  DbLogField get id {
+    return _id = setField(_id, 'id', DbType.integer);
+  }
+
+  DbLogField _dateTime;
+  DbLogField get dateTime {
+    return _dateTime = setField(_dateTime, 'dateTime', DbType.datetime);
+  }
+
+  DbLogField _message;
+  DbLogField get message {
+    return _message = setField(_message, 'message', DbType.text);
+  }
+
+  DbLogField _method;
+  DbLogField get method {
+    return _method = setField(_method, 'method', DbType.text);
+  }
+
+  DbLogField _comment;
+  DbLogField get comment {
+    return _comment = setField(_comment, 'comment', DbType.text);
+  }
+
+  bool _getIsDeleted;
+
+  void _buildParameters() {
+    if (_page > 0 && _pagesize > 0) {
+      qparams
+        ..limit = _pagesize
+        ..offset = (_page - 1) * _pagesize;
+    } else {
+      qparams
+        ..limit = _pagesize
+        ..offset = _page;
+    }
+    for (DbParameter param in parameters) {
+      if (param.columnName != null) {
+        if (param.value is List && !param.hasParameter) {
+          param.value = param.dbType == DbType.text
+              ? '\'${param.value.join('\',\'')}\''
+              : param.value.join(',');
+          whereString += param.whereString
+              .replaceAll('{field}', param.columnName)
+              .replaceAll('?', param.value.toString());
+          param.value = null;
+        } else {
+          if (param.value is Map<String, dynamic> &&
+              param.value['sql'] != null) {
+            param
+              ..whereString = param.whereString
+                  .replaceAll('?', param.value['sql'].toString())
+              ..dbType = DbType.integer
+              ..value = param.value['args'];
+          }
+          whereString +=
+              param.whereString.replaceAll('{field}', param.columnName);
+        }
+        if (!param.whereString.contains('?')) {
+        } else {
+          switch (param.dbType) {
+            case DbType.bool:
+              param.value =
+                  param.value == null ? null : param.value == true ? 1 : 0;
+              param.value2 =
+                  param.value2 == null ? null : param.value2 == true ? 1 : 0;
+              break;
+            case DbType.date:
+            case DbType.datetime:
+            case DbType.datetimeUtc:
+              param.value = param.value == null
+                  ? null
+                  : (param.value as DateTime).millisecondsSinceEpoch;
+              param.value2 = param.value2 == null
+                  ? null
+                  : (param.value2 as DateTime).millisecondsSinceEpoch;
+              break;
+            default:
+          }
+          if (param.value != null) {
+            if (param.value is List) {
+              for (var p in param.value) {
+                whereArguments.add(p);
+              }
+            } else {
+              whereArguments.add(param.value);
+            }
+          }
+          if (param.value2 != null) {
+            whereArguments.add(param.value2);
+          }
+        }
+      } else {
+        whereString += param.whereString;
+      }
+    }
+    if (DbLog._softDeleteActivated) {
+      if (whereString != '') {
+        whereString =
+            '${!_getIsDeleted ? 'ifnull(isDeleted,0)=0 AND' : ''} ($whereString)';
+      } else if (!_getIsDeleted) {
+        whereString = 'ifnull(isDeleted,0)=0';
+      }
+    }
+
+    if (whereString != '') {
+      qparams.whereString = whereString;
+    }
+    qparams
+      ..whereArguments = whereArguments
+      ..groupBy = groupByList.join(',')
+      ..orderBy = orderByList.join(',')
+      ..having = havingList.join(',');
+  }
+
+  /// Deletes List<DbLog> bulk by query
+  ///
+  /// <returns>BoolResult res.success=Deleted, not res.success=Can not deleted
+  Future<BoolResult> delete([bool hardDelete = false]) async {
+    _buildParameters();
+    var r = BoolResult();
+
+    if (DbLog._softDeleteActivated && !hardDelete) {
+      r = await _obj._mnDbLog.updateBatch(qparams, {'isDeleted': 1});
+    } else {
+      r = await _obj._mnDbLog.delete(qparams);
+    }
+    return r;
+  }
+
+  /// using:
+  ///
+  /// update({'fieldName': Value})
+  ///
+  /// fieldName must be String. Value is dynamic, it can be any of the (int, bool, String.. )
+  Future<BoolResult> update(Map<String, dynamic> values) {
+    _buildParameters();
+    if (qparams.limit > 0 || qparams.offset > 0) {
+      qparams.whereString =
+          'id IN (SELECT id from logs ${qparams.whereString.isNotEmpty ? 'WHERE ${qparams.whereString}' : ''}${qparams.limit > 0 ? ' LIMIT ${qparams.limit}' : ''}${qparams.offset > 0 ? ' OFFSET ${qparams.offset}' : ''})';
+    }
+    return _obj._mnDbLog.updateBatch(qparams, values);
+  }
+
+  /// This method always returns DbLog Obj if exist, otherwise returns null
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: toSingle(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toSingle(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>List<DbLog>
+  Future<DbLog> toSingle(
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    _pagesize = 1;
+    _buildParameters();
+    final objFuture = _obj._mnDbLog.toList(qparams);
+    final data = await objFuture;
+    DbLog obj;
+    if (data.isNotEmpty) {
+      obj = DbLog.fromMap(data[0] as Map<String, dynamic>);
+    } else {
+      obj = null;
+    }
+    return obj;
+  }
+
+  /// This method returns int. [DbLog]
+  ///
+  /// <returns>int
+  Future<int> toCount([VoidCallback Function(int c) dblogCount]) async {
+    _buildParameters();
+    qparams.selectColumns = ['COUNT(1) AS CNT'];
+    final dblogsFuture = await _obj._mnDbLog.toList(qparams);
+    final int count = dblogsFuture[0]['CNT'] as int;
+    if (dblogCount != null) {
+      dblogCount(count);
+    }
+    return count;
+  }
+
+  /// This method returns List<DbLog> [DbLog]
+  ///
+  /// bool preload: if true, loads all related child objects (Set preload to true if you want to load all fields related to child or parent)
+  ///
+  /// ex: toList(preload:true) -> Loads all related objects
+  ///
+  /// List<String> preloadFields: specify the fields you want to preload (preload parameter's value should also be "true")
+  ///
+  /// ex: toList(preload:true, preloadFields:['plField1','plField2'... etc])  -> Loads only certain fields what you specified
+  ///
+  /// bool loadParents: if true, loads all parent objects until the object has no parent
+
+  ///
+  /// <returns>List<DbLog>
+  Future<List<DbLog>> toList(
+      {bool preload = false,
+      List<String> preloadFields,
+      bool loadParents = false,
+      List<String> loadedFields}) async {
+    final data = await toMapList();
+    final List<DbLog> dblogsData = await DbLog.fromMapList(data,
+        preload: preload,
+        preloadFields: preloadFields,
+        loadParents: loadParents,
+        loadedFields: loadedFields,
+        setDefaultValues: qparams.selectColumns == null);
+    return dblogsData;
+  }
+
+  /// This method returns Json String [DbLog]
+  Future<String> toJson() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(o.toMap(forJson: true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method returns Json String. [DbLog]
+  Future<String> toJsonWithChilds() async {
+    final list = <dynamic>[];
+    final data = await toList();
+    for (var o in data) {
+      list.add(await o.toMapWithChildren(false, true));
+    }
+    return json.encode(list);
+  }
+
+  /// This method returns List<dynamic>. [DbLog]
+  ///
+  /// <returns>List<dynamic>
+  Future<List<dynamic>> toMapList() async {
+    _buildParameters();
+    return await _obj._mnDbLog.toList(qparams);
+  }
+
+  /// This method returns Primary Key List SQL and Parameters retVal = Map<String,dynamic>. [DbLog]
+  ///
+  /// retVal['sql'] = SQL statement string, retVal['args'] = whereArguments List<dynamic>;
+  ///
+  /// <returns>List<String>
+  Map<String, dynamic> toListPrimaryKeySQL([bool buildParameters = true]) {
+    final Map<String, dynamic> _retVal = <String, dynamic>{};
+    if (buildParameters) {
+      _buildParameters();
+    }
+    _retVal['sql'] = 'SELECT `id` FROM logs WHERE ${qparams.whereString}';
+    _retVal['args'] = qparams.whereArguments;
+    return _retVal;
+  }
+
+  /// This method returns Primary Key List<int>.
+  /// <returns>List<int>
+  Future<List<int>> toListPrimaryKey([bool buildParameters = true]) async {
+    if (buildParameters) {
+      _buildParameters();
+    }
+    final List<int> idData = <int>[];
+    qparams.selectColumns = ['id'];
+    final idFuture = await _obj._mnDbLog.toList(qparams);
+
+    final int count = idFuture.length;
+    for (int i = 0; i < count; i++) {
+      idData.add(idFuture[i]['id'] as int);
+    }
+    return idData;
+  }
+
+  /// Returns List<dynamic> for selected columns. Use this method for 'groupBy' with min,max,avg..  [DbLog]
+  ///
+  /// Sample usage: (see EXAMPLE 4.2 at https://github.com/hhtokpinar/sqfEntity#group-by)
+  Future<List<dynamic>> toListObject() async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbLog.toList(qparams);
+
+    final List<dynamic> objectsData = <dynamic>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i]);
+    }
+    return objectsData;
+  }
+
+  /// Returns List<String> for selected first column
+  ///
+  /// Sample usage: await DbLog.select(columnsToSelect: ['columnName']).toListString()
+  Future<List<String>> toListString(
+      [VoidCallback Function(List<String> o) listString]) async {
+    _buildParameters();
+
+    final objectFuture = _obj._mnDbLog.toList(qparams);
+
+    final List<String> objectsData = <String>[];
+    final data = await objectFuture;
+    final int count = data.length;
+    for (int i = 0; i < count; i++) {
+      objectsData.add(data[i][qparams.selectColumns[0]].toString());
+    }
+    if (listString != null) {
+      listString(objectsData);
+    }
+    return objectsData;
+  }
+}
+// endregion DbLogFilterBuilder
+
+// region DbLogFields
+class DbLogFields {
+  static TableField _fId;
+  static TableField get id {
+    return _fId = _fId ?? SqlSyntax.setField(_fId, 'id', DbType.integer);
+  }
+
+  static TableField _fDateTime;
+  static TableField get dateTime {
+    return _fDateTime = _fDateTime ??
+        SqlSyntax.setField(_fDateTime, 'dateTime', DbType.datetime);
+  }
+
+  static TableField _fMessage;
+  static TableField get message {
+    return _fMessage =
+        _fMessage ?? SqlSyntax.setField(_fMessage, 'message', DbType.text);
+  }
+
+  static TableField _fMethod;
+  static TableField get method {
+    return _fMethod =
+        _fMethod ?? SqlSyntax.setField(_fMethod, 'method', DbType.text);
+  }
+
+  static TableField _fComment;
+  static TableField get comment {
+    return _fComment =
+        _fComment ?? SqlSyntax.setField(_fComment, 'comment', DbType.text);
+  }
+}
+// endregion DbLogFields
+
+//region DbLogManager
+class DbLogManager extends SqfEntityProvider {
+  DbLogManager()
+      : super(DbEncrateia(),
+            tableName: _tableName,
+            primaryKeyList: _primaryKeyList,
+            whereStr: _whereStr);
+  static final String _tableName = 'logs';
+  static final List<String> _primaryKeyList = ['id'];
+  static final String _whereStr = 'id=?';
+}
+
+//endregion DbLogManager
 class DbEncrateiaSequenceManager extends SqfEntityProvider {
   DbEncrateiaSequenceManager() : super(DbEncrateia());
 }

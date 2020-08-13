@@ -500,6 +500,20 @@ const SqfEntityTable tableIntervalTagging = SqfEntityTable(
   ],
 );
 
+const SqfEntityTable tableLog = SqfEntityTable(
+  tableName: 'logs',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: false,
+  modelName: 'DbLog',
+  fields: <SqfEntityField>[
+    SqfEntityField('dateTime', DbType.datetime),
+    SqfEntityField('message', DbType.text),
+    SqfEntityField('method', DbType.text),
+    SqfEntityField('comment', DbType.text),
+  ],
+);
+
 @SqfEntityBuilder(encrateia)
 const SqfEntityModel encrateia = SqfEntityModel(
   modelName: 'DbEncrateia', // optional
@@ -520,6 +534,7 @@ const SqfEntityModel encrateia = SqfEntityModel(
     tableLapTagging,
     tableActivityTagging,
     tableIntervalTagging,
+    tableLog,
   ],
   sequences: <SqfEntitySequence>[],
   bundledDatabasePath: null,
