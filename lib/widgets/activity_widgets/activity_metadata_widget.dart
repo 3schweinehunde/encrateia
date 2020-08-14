@@ -1,8 +1,8 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:intl/intl.dart';
 import 'package:encrateia/models/activity.dart';
 
 class ActivityMetadataWidget extends StatelessWidget {
@@ -18,103 +18,139 @@ class ActivityMetadataWidget extends StatelessWidget {
     return <Widget>[
       ListTile(title: Text(activity.name)),
       ListTile(
-        title: Text(
-            DateFormat('dd MMM yyyy, h:mm:ss').format(activity.timeStamp)),
+        title: PQText(
+          value: activity.timeStamp,
+          pq: PQ.dateTime,
+          format: DateTimeFormat.longDateTime,
+        ),
         subtitle: const Text('timestamp'),
       ),
       ListTile(
-        title: Text(activity.event),
+        title: PQText(value: activity.event, pq: PQ.text),
         subtitle: const Text('last event'),
       ),
-      if (activity.totalStrides != null)
-        ListTile(
-          title: Text(activity.totalStrides.toString()),
-          subtitle: const Text('total strides'),
-        ),
-      if (activity.maxRunningCadence != null)
-        ListTile(
-          title: Text('${activity.avgRunningCadence.round()} /'
-              ' ${activity.maxRunningCadence}'),
-          subtitle: const Text('avg / max running cadence'),
-        ),
       ListTile(
-        title: Text(
-            '${activity.avgTemperature}° / ${activity.maxTemperature}°'),
+        title: PQText(value: activity.totalStrides, pq: PQ.text),
+        subtitle: const Text('total strides'),
+      ),
+      ListTile(
+        title: Row(children: <Widget>[
+          PQText(value: activity.avgRunningCadence, pq: PQ.cadence),
+          const Text(' / '),
+          PQText(value: activity.maxRunningCadence, pq: PQ.cadence),
+        ]),
+        subtitle: const Text('avg / max running cadence'),
+      ),
+      ListTile(
+        title: Row(children: <Widget>[
+          PQText(value: activity.avgTemperature, pq: PQ.temperature),
+          const Text(' / '),
+          PQText(value: activity.maxTemperature, pq: PQ.temperature),
+        ]),
         subtitle: const Text('avg / max temperature'),
       ),
       ListTile(
-        title: Text(activity.avgVerticalOscillation.toStringAsFixed(2)),
+        title: PQText(
+          value: activity.avgVerticalOscillation,
+          pq: PQ.verticalOscillation,
+        ),
         subtitle: const Text('avg vertical oscillation'),
       ),
       ListTile(
-        title: Text(activity.totalFractionalCycles.toStringAsFixed(2)),
+        title: PQText(value: activity.totalFractionalCycles, pq: PQ.cycles),
         subtitle: const Text('total fractional cycles'),
       ),
       ListTile(
-        title: Text(Duration(seconds: activity.totalElapsedTime).asString()),
+        title: PQText(value: activity.totalElapsedTime, pq: PQ.duration),
         subtitle: const Text('total elapsed time'),
       ),
       ListTile(
-        title: Text(Duration(seconds: activity.totalTimerTime).asString()),
+        title: PQText(value: activity.totalTimerTime, pq: PQ.duration),
         subtitle: const Text('total timer time'),
       ),
       ListTile(
-        title: Text('${activity.stravaId} / ${activity.serialNumber}'),
+        title: Row(children: <Widget>[
+          PQText(value: activity.stravaId, pq: PQ.integer),
+          const Text(' / '),
+          PQText(value: activity.serialNumber, pq: PQ.integer),
+        ]),
         subtitle: const Text('Strava / Garmin id'),
       ),
       ListTile(
-        title: Text(activity.type +
-            ' / ' +
-            activity.sport +
-            ' / ' +
-            activity.subSport),
+        title: Row(children: <Widget>[
+          PQText(value: activity.type, pq: PQ.text),
+          const Text(' / '),
+          PQText(value: activity.sport, pq: PQ.text),
+          const Text(' / '),
+          PQText(value: activity.subSport, pq: PQ.text),
+        ]),
         subtitle: const Text('activity type / sport / sub sport'),
       ),
       ListTile(
-        title: Text(activity.eventType + ' / ' + activity.trigger),
+        title: Row(children: <Widget>[
+          PQText(value: activity.eventType, pq: PQ.text),
+          const Text(' / '),
+          PQText(value: activity.trigger, pq: PQ.text),
+        ]),
         subtitle: const Text('event type / trigger'),
       ),
       ListTile(
-        title: Text('${activity.numLaps} / ${activity.numSessions}'),
+        title: Row(children: <Widget>[
+          PQText(value: activity.numLaps, pq: PQ.integer),
+          const Text(' / '),
+          PQText(value: activity.numSessions, pq: PQ.integer),
+        ]),
         subtitle: const Text('number of laps / sessions'),
       ),
       ListTile(
-        title: Text(activity.avgFractionalCadence.toStringAsFixed(2) +
-            ' / ' +
-            activity.maxFractionalCadence.toStringAsFixed(2)),
+        title: Row(children: <Widget>[
+          PQText(
+            value: activity.avgFractionalCadence,
+            pq: PQ.fractionalCadence,
+          ),
+          const Text(' / '),
+          PQText(
+            value: activity.maxFractionalCadence,
+            pq: PQ.fractionalCadence,
+          ),
+        ]),
         subtitle: const Text('avg / max fractional cadence'),
       ),
       ListTile(
-        title: Text(
-            '${activity.avgStanceTime} ms / ${activity.avgStanceTimePercent} %'),
+        title: Row(children: <Widget>[
+          PQText(value: activity.avgStanceTime, pq: PQ.stanceTime),
+          const Text(' / '),
+          PQText(value: activity.avgStanceTimePercent, pq: PQ.percentage),
+        ]),
         subtitle: const Text('avg stance time / avg stance time percent'),
       ),
       ListTile(
-        title: Text(activity.startPositionLong.semicirclesAsDegrees() +
-            ' E\n' +
-            activity.startPositionLat.semicirclesAsDegrees() +
-            ' N'),
+        title: Column(children: <Widget>[
+          PQText(value: activity.startPositionLong, pq: PQ.longitude),
+          PQText(value: activity.startPositionLat, pq: PQ.latitude),
+        ]),
         subtitle: const Text('start position'),
       ),
       ListTile(
-        title: Text(activity.necLong.semicirclesAsDegrees() +
-            ' E\n' +
-            activity.necLat.semicirclesAsDegrees() +
-            ' N'),
+        title: Column(children: <Widget>[
+          PQText(value: activity.necLong, pq: PQ.longitude),
+          PQText(value: activity.necLat, pq: PQ.latitude),
+        ]),
         subtitle: const Text('north east corner'),
       ),
       ListTile(
-        title: Text(activity.swcLong.semicirclesAsDegrees() +
-            ' E\n' +
-            activity.swcLat.semicirclesAsDegrees() +
-            ' N'),
+        title: Column(children: <Widget>[
+          PQText(value: activity.swcLong, pq: PQ.longitude),
+          PQText(value: activity.swcLat, pq: PQ.latitude),
+        ]),
         subtitle: const Text('south west corner'),
       ),
       ListTile(
-        title: Text((activity.avgSpeed * 3.6).toStringAsFixed(2) +
-            ' km/h / ' +
-            (activity.maxSpeed * 3.6).toStringAsFixed(2) +
-            ' km/h'),
+        title: Row(children: <Widget>[
+          PQText(value: activity.avgSpeed, pq: PQ.speed),
+          const Text(' / '),
+          PQText(value: activity.maxSpeed, pq: PQ.speed),
+        ]),
         subtitle: const Text('avg / max speed'),
       ),
     ];

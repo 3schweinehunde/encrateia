@@ -53,6 +53,28 @@ class PQText extends StatelessWidget {
         return Text(Duration(seconds: value as int).asString());
       case PQ.trainingEffect:
         return Text((value as int).toString());
+      case PQ.text:
+        return Text(value as String);
+      case PQ.temperature:
+        return Text((value as int).toString() + '°C');
+      case PQ.verticalOscillation:
+        return Text((value as double).toStringAsFixed(2) + ' cm');
+      case PQ.cycles:
+        return Text((value as double).toString() + ' cycles');
+      case PQ.integer:
+        return Text((value as int).toString());
+      case PQ.fractionalCadence:
+        return Text((value as double).toStringAsFixed(2));
+      case PQ.percentage:
+        return Text((value as double).toStringAsFixed(2) + ' %');
+      case PQ.stanceTime:
+        return Text((value as double).toStringAsFixed(2) + ' ms');
+      case PQ.longitude:
+        return Text((value as double).semicirclesAsDegrees() + ' E');
+      case PQ.latitude:
+        return Text((value as double).semicirclesAsDegrees() + ' N');
+      case PQ.speed:
+        return Text(((value as double) * 3.6).toStringAsFixed(2) + ' km/h / ');
     }
     return const Text('This is an error!'); // just to silence the dart analyzer
   }
@@ -82,22 +104,13 @@ class PQText extends StatelessWidget {
 
   bool get validValue {
     switch (pq) {
-      case PQ.trainingEffect:
-      case PQ.cadence:
-      case PQ.calories:
-      case PQ.dateTime:
-      case PQ.distance:
-      case PQ.duration:
-      case PQ.ecor:
-      case PQ.elevation:
-      case PQ.powerPerHeartRate:
-        return value != null;
       case PQ.power:
       case PQ.pace:
         return value != null && value != -1;
       case PQ.heartRate:
         return value != null && value != 255;
+      default:
+        return value != null;
     }
-    return false;  // just to silence the dart analyzer
   }
 }
