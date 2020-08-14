@@ -10,14 +10,12 @@ class PQText extends StatelessWidget {
     this.value,
     this.unit,
     this.format,
-    this.naList,
   });
 
   final dynamic value;
   final String unit;
   final DateTimeFormat format;
   final PQ pq;
-  final List<num> naList;
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +75,6 @@ class PQText extends StatelessWidget {
         return Text(((value as double) * 3.6).toStringAsFixed(2) + ' km/h / ');
     }
     return const Text('This is an error!'); // just to silence the dart analyzer
-  }
-
-  String get paddedUnit {
-    if (unit != null)
-      return ' ' + unit;
-    else
-      return '';
   }
 
   String get formatString {
