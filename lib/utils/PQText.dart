@@ -8,12 +8,10 @@ class PQText extends StatelessWidget {
   const PQText({
     @required this.pq,
     this.value,
-    this.unit,
     this.format,
   });
 
   final dynamic value;
-  final String unit;
   final DateTimeFormat format;
   final PQ pq;
 
