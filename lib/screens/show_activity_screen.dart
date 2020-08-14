@@ -107,56 +107,62 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-      navigationButton(
-        title: 'Heart Rate',
-        color: MyColor.navigate,
-        icon: MyIcon.heartRate,
-        context: context,
-        nextWidget: ActivityHeartRateWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgHeartRate != null)
+        navigationButton(
+          title: 'Heart Rate',
+          color: MyColor.navigate,
+          icon: MyIcon.heartRate,
+          context: context,
+          nextWidget: ActivityHeartRateWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Power',
-        color: MyColor.navigate,
-        icon: MyIcon.power,
-        context: context,
-        nextWidget: ActivityPowerWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgPower != null)
+        navigationButton(
+          title: 'Power',
+          color: MyColor.navigate,
+          icon: MyIcon.power,
+          context: context,
+          nextWidget: ActivityPowerWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Power Duration',
-        color: MyColor.navigate,
-        icon: MyIcon.powerDuration,
-        context: context,
-        nextWidget: ActivityPowerDurationWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgPower != null)
+        navigationButton(
+          title: 'Power Duration',
+          color: MyColor.navigate,
+          icon: MyIcon.powerDuration,
+          context: context,
+          nextWidget: ActivityPowerDurationWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Power / Heart Rate',
-        color: MyColor.navigate,
-        icon: MyIcon.power,
-        context: context,
-        nextWidget: ActivityPowerPerHeartRateWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgPower != null &&
+          widget.activity.avgHeartRate != null)
+        navigationButton(
+          title: 'Power / Heart Rate',
+          color: MyColor.navigate,
+          icon: MyIcon.power,
+          context: context,
+          nextWidget: ActivityPowerPerHeartRateWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Pace',
-        color: MyColor.navigate,
-        icon: MyIcon.speed,
-        context: context,
-        nextWidget: ActivityPaceWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgPace != null)
+        navigationButton(
+          title: 'Pace',
+          color: MyColor.navigate,
+          icon: MyIcon.speed,
+          context: context,
+          nextWidget: ActivityPaceWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
       navigationButton(
         title: 'Speed',
         color: MyColor.navigate,

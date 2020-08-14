@@ -153,8 +153,20 @@ class Activity {
       return null;
   }
 
-  double get avgPace => 50 / 3 / avgSpeed;
-  double get avgSpeedPerHeartRate => 100 * (avgSpeed / avgHeartRate);
+  double get avgPace {
+    if (avgSpeed != null && avgSpeed != 0)
+      return 50 / 3 / avgSpeed;
+    else
+      return null;
+  }
+
+  double get avgSpeedPerHeartRate {
+    if (avgSpeed != null && avgHeartRate != null && avgHeartRate != 0)
+      return 100 * (avgSpeed / avgHeartRate);
+    else
+      return null;
+  }
+
   double get avgPowerPerHeartRate {
     if (avgPower != null &&
         avgPower != -1 &&
@@ -172,7 +184,12 @@ class Activity {
       return null;
   }
 
-  double get avgDoubleStrydCadence => avgStrydCadence * 2;
+  double get avgDoubleStrydCadence {
+    if (avgStrydCadence != null)
+      return avgStrydCadence * 2;
+    else
+      return null;
+  }
 
   set maxHeartRate(int value) => _db.maxHeartRate = value;
   set name(String value) => _db.name = value;
