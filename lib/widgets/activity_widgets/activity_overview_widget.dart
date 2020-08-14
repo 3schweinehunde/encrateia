@@ -1,10 +1,9 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/weight.dart';
+import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:intl/intl.dart';
 import 'package:encrateia/models/activity.dart';
 
 class ActivityOverviewWidget extends StatefulWidget {
@@ -30,74 +29,81 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
   List<Widget> get tiles {
     return <ListTile>[
       ListTile(
-        title: Text(
-            '${(widget.activity.distance / 1000).toStringAsFixed(2)} km'),
+        title: PQText(
+          value: widget.activity.distance,
+          pq: PQ.distance,
+        ),
         subtitle: const Text('distance'),
       ),
       ListTile(
-        title: Text(
-            Duration(seconds: widget.activity.movingTime ?? 0).asString()),
+        title: PQText(value: widget.activity.movingTime, pq: PQ.duration),
         subtitle: const Text('moving time'),
       ),
       ListTile(
-        title: Text(widget.activity.avgSpeed.toPace() +
-            ' / ' +
-            widget.activity.maxSpeed?.toPace()),
+        title: Row(children: <Widget>[
+          PQText(value: widget.activity.avgSpeed, pq: PQ.pace),
+          const Text(' / '),
+          PQText(value: widget.activity.maxSpeed, pq: PQ.pace),
+        ]),
         subtitle: const Text('avg / max pace'),
       ),
       ListTile(
-        title: Text((widget.activity.weight != null)
-            ? (widget.activity.getAttribute(ActivityAttr.ecor) as double)
-                    .toStringAsFixed(3) +
-                ' kJ / kg / km'
-            : 'not available'),
+        title: PQText(value: widget.activity.ecor, pq: PQ.ecor),
         subtitle: const Text('ecor'),
       ),
       ListTile(
-        title: Text('${widget.activity.avgHeartRate} / '
-            '${widget.activity.maxHeartRate} bpm'),
+        title: Row(children: <Widget>[
+          PQText(value: widget.activity.avgHeartRate, pq: PQ.heartRate),
+          const Text(' / '),
+          PQText(value: widget.activity.maxHeartRate, pq: PQ.heartRate),
+        ]),
         subtitle: const Text('avg / max heart rate'),
       ),
       ListTile(
-        title: Text('${widget.activity.avgPower.toStringAsFixed(1)} W'),
+        title: PQText(value: widget.activity.avgPower, pq: PQ.power),
         subtitle: const Text('avg power'),
       ),
       ListTile(
-        title: (widget.activity.avgPower != -1)
-            ? Text(
-                (widget.activity.avgPower / widget.activity.avgHeartRate)
-                        .toStringAsFixed(2) +
-                    ' W/bpm')
-            : const Text('No power data available'),
+        title: PQText(
+            value: widget.activity.avgPowerPerHeartRate,
+            pq: PQ.powerPerHeartRate),
         subtitle: const Text('power / heart rate'),
       ),
       ListTile(
-        title: Text('${widget.activity.totalCalories} kcal'),
+        title: PQText(value: widget.activity.totalCalories, pq: PQ.calories),
         subtitle: const Text('total calories'),
       ),
       ListTile(
-        title: Text(DateFormat('dd MMM yyyy, h:mm:ss')
-            .format(widget.activity.timeCreated)),
+        title: PQText(
+          value: widget.activity.timeCreated,
+          pq: PQ.dateTime,
+          format: DateTimeFormat.longDateTime,
+        ),
         subtitle: const Text('time created'),
       ),
       ListTile(
-        title: Text('${widget.activity.totalAscent ?? 0} - '
-                '${widget.activity.totalDescent ?? 0}'
-                ' = ' +
-            ((widget.activity.totalAscent ?? 0) -
-                    (widget.activity.totalDescent ?? 0))
-                .toString() +
-            ' m'),
+        title: Row(children: <Widget>[
+          PQText(value: widget.activity.totalAscent, pq: PQ.elevation),
+          const Text(' - '),
+          PQText(value: widget.activity.totalDescent, pq: PQ.elevation),
+          const Text(' = '),
+          PQText(value: widget.activity.elevationDifference, pq: PQ.elevation),
+        ]),
         subtitle: const Text('total ascent - descent = total climb'),
       ),
       ListTile(
-        title:
-            Text('${(widget.activity.avgRunningCadence ?? 0 * 2).round()} / '
-                '${widget.activity.maxRunningCadence ?? 0 * 2} spm'),
+        title: Row(children: <Widget>[
+          PQText(value: widget.activity.avgRunningCadence, pq: PQ.cadence),
+          const Text(' / '),
+          PQText(value: widget.activity.maxRunningCadence, pq: PQ.cadence),
+        ]),
         subtitle: const Text('avg / max steps per minute'),
       ),
       ListTile(
-        title: Text(widget.activity.totalTrainingEffect.toString()),
+        title: PQText(
+          value: widget.activity.totalTrainingEffect,
+          pq: PQ.trainingEffect,
+        ),
         subtitle: const Text('total training effect'),
       ),
     ];

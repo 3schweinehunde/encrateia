@@ -44,7 +44,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           subtitle: PQText(
             pq: PQ.dateTime,
             value: activity.timeCreated,
-            format: DateTimeFormat.longDateTime,
+            format: DateTimeFormat.longDate,
           ),
           onTap: () {
             if (activity.state == 'persisted')

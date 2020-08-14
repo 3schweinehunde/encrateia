@@ -28,7 +28,7 @@ enum ActivityAttr {
   ecor,
   avgPace,
   avgHeartRate,
-  avgStrydCadence,
+  avgDoubleStrydCadence,
   ftp,
 }
 
@@ -51,4 +51,11 @@ enum PQ {
   power,
   pace,
   heartRate,
+  ecor,
+  powerPerHeartRate,
+  calories,
+  elevation,
+  cadence,
+  duration,
+  trainingEffect,
 }

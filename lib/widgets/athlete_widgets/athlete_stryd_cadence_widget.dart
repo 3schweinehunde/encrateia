@@ -45,7 +45,7 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
             children: <Widget>[
               AthleteTimeSeriesChart(
                 activities: paceActivities,
-                activityAttr: ActivityAttr.avgStrydCadence,
+                activityAttr: ActivityAttr.avgDoubleStrydCadence,
                 chartTitleText: 'Cadence',
                 athlete: widget.athlete,
               ),

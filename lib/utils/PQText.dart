@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:encrateia/utils/date_time_utils.dart';
 import 'enums.dart';
 
 @immutable
@@ -20,8 +21,6 @@ class PQText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formatString;
-
     if (!validValue)
       return const Text('n.a.');
 
@@ -29,7 +28,7 @@ class PQText extends StatelessWidget {
       case PQ.dateTime:
         return Text(DateFormat(formatString).format(value as DateTime));
       case PQ.distance:
-        return Text(((value as double) / 1000).toStringAsFixed(2) + ' km');
+        return Text(((value as int) / 1000).toStringAsFixed(2) + ' km');
       case PQ.power:
         return Text((value as double).toStringAsFixed(1) + ' W');
       case PQ.pace:
@@ -40,6 +39,20 @@ class PQText extends StatelessWidget {
         return Text('$minutes:$seconds /km');
       case PQ.heartRate:
         return Text('$value bpm');
+      case PQ.ecor:
+        return Text((value as double).toStringAsFixed(3) + ' kJ / kg / km');
+      case PQ.powerPerHeartRate:
+        return Text((value as double).toStringAsFixed(2) + ' W/bpm');
+      case PQ.calories:
+        return Text((value as int).toString() + ' kcal');
+      case PQ.elevation:
+        return Text((value as int).toString() + ' m');
+      case PQ.cadence:
+        return Text(((value as double) * 2).round().toString() + ' spm');
+      case PQ.duration:
+        return Text(Duration(seconds: value as int).asString());
+      case PQ.trainingEffect:
+        return Text((value as int).toString());
     }
     return const Text('This is an error!'); // just to silence the dart analyzer
   }
@@ -60,7 +73,7 @@ class PQText extends StatelessWidget {
       case DateTimeFormat.shortTime:
         return 'H:mm';
       case DateTimeFormat.shortDateTime:
-        return 'd.MM H:mm';
+        return 'E d.M H:mm';
       case DateTimeFormat.longDateTime:
         return 'E d MMM yy, H:mm:ss';
     }
@@ -69,8 +82,15 @@ class PQText extends StatelessWidget {
 
   bool get validValue {
     switch (pq) {
-      case PQ.distance:
+      case PQ.trainingEffect:
+      case PQ.cadence:
+      case PQ.calories:
       case PQ.dateTime:
+      case PQ.distance:
+      case PQ.duration:
+      case PQ.ecor:
+      case PQ.elevation:
+      case PQ.powerPerHeartRate:
         return value != null;
       case PQ.power:
       case PQ.pace:

@@ -67,7 +67,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                       PQText(
                         pq: PQ.dateTime,
                         value: activity.timeCreated,
-                        format: DateTimeFormat.longDate,
+                        format: DateTimeFormat.shortDateTime,
                       ),
                       PQText(
                         pq: PQ.distance,
@@ -95,18 +95,16 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                   ],
                 ),
                 onTap: () async {
-                  if (activity.state == 'persisted') {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute<BuildContext>(
-                        builder: (BuildContext context) => ShowActivityScreen(
-                          activity: activity,
-                          athlete: widget.athlete,
-                        ),
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute<BuildContext>(
+                      builder: (BuildContext context) => ShowActivityScreen(
+                        activity: activity,
+                        athlete: widget.athlete,
                       ),
-                    );
-                    getData();
-                  }
+                    ),
+                  );
+                  getData();
                 },
               ),
               Padding(

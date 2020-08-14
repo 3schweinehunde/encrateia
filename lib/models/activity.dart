@@ -30,7 +30,6 @@ import 'record_list.dart';
 import 'strava_fit_download.dart';
 import 'tag.dart';
 
-
 class Activity {
   Activity();
   Activity._fromDb(this._db);
@@ -142,6 +141,39 @@ class Activity {
   int get totalTimerTime => _db.totalTimerTime;
   int get totalTrainingEffect => _db.totalTrainingEffect;
 
+  // calculated from other attributes:
+  double get ecor {
+    if (avgPower != null &&
+        avgSpeed != null &&
+        avgSpeed > 0 &&
+        weight != null &&
+        weight > 0)
+      return avgPower / avgSpeed / weight;
+    else
+      return null;
+  }
+
+  double get avgPace => 50 / 3 / avgSpeed;
+  double get avgSpeedPerHeartRate => 100 * (avgSpeed / avgHeartRate);
+  double get avgPowerPerHeartRate {
+    if (avgPower != null &&
+        avgPower != -1 &&
+        avgHeartRate != null &&
+        avgHeartRate != null)
+      return avgPower / avgHeartRate;
+    else
+      return null;
+  }
+
+  int get elevationDifference {
+    if (totalAscent != null && totalDescent != null)
+      return totalAscent - totalDescent;
+    else
+      return null;
+  }
+
+  double get avgDoubleStrydCadence => avgStrydCadence * 2;
+
   set maxHeartRate(int value) => _db.maxHeartRate = value;
   set name(String value) => _db.name = value;
   set state(String value) => _db.state = value;
@@ -163,21 +195,21 @@ class Activity {
       case ActivityAttr.avgPower:
         return avgPower;
       case ActivityAttr.ecor:
-        return avgPower / avgSpeed / weight;
+        return ecor;
       case ActivityAttr.avgPowerPerHeartRate:
-        return avgPower / avgHeartRate;
+        return avgPowerPerHeartRate;
       case ActivityAttr.avgSpeedPerHeartRate:
-        return 100 * (avgSpeed / avgHeartRate);
+        return avgSpeedPerHeartRate;
       case ActivityAttr.avgPowerRatio:
-        return 100 * (avgPower - avgFormPower) / avgPower;
+        return avgPowerRatio;
       case ActivityAttr.avgStrideRatio:
-        return 10000 / 6 * avgSpeed / avgStrydCadence / avgVerticalOscillation;
+        return avgStrideRatio;
       case ActivityAttr.avgPace:
-        return 50 / 3 / avgSpeed;
+        return avgPace;
       case ActivityAttr.avgHeartRate:
-        return avgHeartRate.toDouble();
-      case ActivityAttr.avgStrydCadence:
-        return avgStrydCadence * 2;
+        return avgHeartRate;
+      case ActivityAttr.avgDoubleStrydCadence:
+        return avgDoubleStrydCadence;
       case ActivityAttr.ftp:
         return ftp;
     }
@@ -240,8 +272,8 @@ class Activity {
   Future<List<Event>> get records async {
     if (cachedRecords.isEmpty) {
       final List<DbEvent> dbEventList = await _db.getDbEvents().toList();
-      final Iterable<DbEvent> dbRecordList = dbEventList
-          .where((DbEvent dbEvent) => dbEvent.event == 'record');
+      final Iterable<DbEvent> dbRecordList =
+          dbEventList.where((DbEvent dbEvent) => dbEvent.event == 'record');
       cachedRecords = dbRecordList.map(Event.exDb).toList();
     }
     return cachedRecords;
@@ -701,7 +733,8 @@ class Activity {
     if (cachedIntervals.isEmpty) {
       int counter = 1;
 
-      final List<DbInterval> dbIntervalList = await _db.getDbIntervals().toList();
+      final List<DbInterval> dbIntervalList =
+          await _db.getDbIntervals().toList();
       cachedIntervals = dbIntervalList.map(encrateia.Interval.exDb).toList();
 
       for (final encrateia.Interval interval in cachedIntervals) {
