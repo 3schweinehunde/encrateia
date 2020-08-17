@@ -59,12 +59,12 @@ class _ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
         );
       } else {
         return const Center(
-          child: Text('No leg spring stiffness data available.'),
+          child: Text('No altitude data available.'),
         );
       }
     } else {
       return const Center(
-        child: Text('Loading'),
+        child: Text('Loading / no records found'),
       );
     }
   }

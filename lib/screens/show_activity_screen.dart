@@ -73,17 +73,18 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-      navigationButton(
-        title: 'Laps List',
-        color: MyColor.lap,
-        backgroundColor: MyColor.lap,
-        icon: MyIcon.laps,
-        context: context,
-        nextWidget: LapsListWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.cachedLaps.isNotEmpty)
+        navigationButton(
+          title: 'Laps List',
+          color: MyColor.lap,
+          backgroundColor: MyColor.lap,
+          icon: MyIcon.laps,
+          context: context,
+          nextWidget: LapsListWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
       if (kDebugMode)
         navigationButton(
           title: 'Intervals',
@@ -163,118 +164,129 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      navigationButton(
-        title: 'Speed',
-        color: MyColor.navigate,
-        backgroundColor: MyColor.navigate,
-        icon: MyIcon.speed,
-        context: context,
-        nextWidget: ActivitySpeedWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgSpeed != null)
+        navigationButton(
+          title: 'Speed',
+          color: MyColor.navigate,
+          backgroundColor: MyColor.navigate,
+          icon: MyIcon.speed,
+          context: context,
+          nextWidget: ActivitySpeedWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Ecor',
-        color: MyColor.navigate,
-        icon: MyIcon.power,
-        context: context,
-        nextWidget: ActivityEcorWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.ecor != null)
+        navigationButton(
+          title: 'Ecor',
+          color: MyColor.navigate,
+          icon: MyIcon.power,
+          context: context,
+          nextWidget: ActivityEcorWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Speed / Heart Rate',
-        color: MyColor.navigate,
-        icon: MyIcon.speed,
-        context: context,
-        nextWidget: ActivitySpeedPerHeartRateWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgSpeed != null)
+        navigationButton(
+          title: 'Speed / Heart Rate',
+          color: MyColor.navigate,
+          icon: MyIcon.speed,
+          context: context,
+          nextWidget: ActivitySpeedPerHeartRateWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Ground Time',
-        color: MyColor.navigate,
-        icon: MyIcon.groundTime,
-        context: context,
-        nextWidget: ActivityGroundTimeWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgGroundTime != null)
+        navigationButton(
+          title: 'Ground Time',
+          color: MyColor.navigate,
+          icon: MyIcon.groundTime,
+          context: context,
+          nextWidget: ActivityGroundTimeWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Form Power',
-        color: MyColor.navigate,
-        icon: MyIcon.formPower,
-        context: context,
-        nextWidget: ActivityFormPowerWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgFormPower != null)
+        navigationButton(
+          title: 'Form Power',
+          color: MyColor.navigate,
+          icon: MyIcon.formPower,
+          context: context,
+          nextWidget: ActivityFormPowerWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Power Ratio',
-        color: MyColor.navigate,
-        icon: MyIcon.formPower,
-        context: context,
-        nextWidget: ActivityPowerRatioWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgPowerRatio != null)
+        navigationButton(
+          title: 'Power Ratio',
+          color: MyColor.navigate,
+          icon: MyIcon.formPower,
+          context: context,
+          nextWidget: ActivityPowerRatioWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Vertical Oscillation',
-        color: MyColor.navigate,
-        icon: MyIcon.verticalOscillation,
-        context: context,
-        nextWidget: ActivityVerticalOscillationWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgVerticalOscillation != null)
+        navigationButton(
+          title: 'Vertical Oscillation',
+          color: MyColor.navigate,
+          icon: MyIcon.verticalOscillation,
+          context: context,
+          nextWidget: ActivityVerticalOscillationWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Stride Ratio',
-        color: MyColor.navigate,
-        icon: MyIcon.strideRatio,
-        context: context,
-        nextWidget: ActivityStrideRatioWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgStrideRatio != null)
+        navigationButton(
+          title: 'Stride Ratio',
+          color: MyColor.navigate,
+          icon: MyIcon.strideRatio,
+          context: context,
+          nextWidget: ActivityStrideRatioWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Cadence',
-        color: MyColor.navigate,
-        icon: MyIcon.cadence,
-        context: context,
-        nextWidget: ActivityStrydCadenceWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgDoubleStrydCadence != null)
+        navigationButton(
+          title: 'Cadence',
+          color: MyColor.navigate,
+          icon: MyIcon.cadence,
+          context: context,
+          nextWidget: ActivityStrydCadenceWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'Leg Spring Stiffness',
-        color: MyColor.navigate,
-        icon: MyIcon.legSpringStiffness,
-        context: context,
-        nextWidget: ActivityLegSpringStiffnessWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgLegSpringStiffness != null)
+        navigationButton(
+          title: 'Leg Spring Stiffness',
+          color: MyColor.navigate,
+          icon: MyIcon.legSpringStiffness,
+          context: context,
+          nextWidget: ActivityLegSpringStiffnessWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      navigationButton(
-        title: 'FTP',
-        color: MyColor.navigate,
-        icon: MyIcon.ftp,
-        context: context,
-        nextWidget: ActivityFtpWidget(
-          activity: widget.activity,
-          athlete: widget.athlete,
+      if (widget.activity.avgPower != null)
+        navigationButton(
+          title: 'FTP',
+          color: MyColor.navigate,
+          icon: MyIcon.ftp,
+          context: context,
+          nextWidget: ActivityFtpWidget(
+            activity: widget.activity,
+            athlete: widget.athlete,
+          ),
         ),
-      ),
-      if (kDebugMode)
+      if (kDebugMode && widget.activity.avgPower != null)
         navigationButton(
           title: 'Work / CP',
           color: MyColor.navigate,
@@ -357,6 +369,12 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           onPressed: () => delete(),
         ),
     ];
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
   }
 
   @override
@@ -493,6 +511,11 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         )..show(context);
       }
     }
+    setState(() {});
+  }
+
+  Future<void> getData() async {
+    await widget.activity.laps;
     setState(() {});
   }
 }

@@ -49,7 +49,7 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
       }
     } else {
       return const Center(
-        child: Text('Loading'),
+        child: Text('Loading / no records found'),
       );
     }
   }

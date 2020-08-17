@@ -1,10 +1,11 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_speed_per_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivitySpeedPerHeartRateWidget extends StatefulWidget {
@@ -59,7 +60,7 @@ class _ActivitySpeedPerHeartRateWidgetState
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgSpeedPerHeartRateString),
+                title: PQText(value: widget.activity.avgSpeedPerHeartRate, pq: PQ.speedPerHeartRate, ),
                 subtitle: const Text('average speed per heart rate'),
               ),
             ],
@@ -80,9 +81,6 @@ class _ActivitySpeedPerHeartRateWidgetState
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-
-    final double avg = 1000 * activity.avgSpeed / activity.avgHeartRate;
-    avgSpeedPerHeartRateString = avg.toStringOrDashes(1) + ' m/h / bpm';
     setState(() {});
   }
 }

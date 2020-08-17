@@ -71,8 +71,10 @@ class PQText extends StatelessWidget {
         return Text((value as double).semicirclesAsDegrees() + ' N');
       case PQ.speed:
         return Text(((value as double) * 3.6).toStringAsFixed(2) + ' km/h / ');
+      case PQ.speedPerHeartRate:
+        return Text((value as double).toStringAsFixed(1) + ' m/h / bpm');
     }
-    return const Text('This is an error!'); // just to silence the dart analyzer
+    return const Text('the pq Parameter was not provided.'); // just to silence the dart analyzer
   }
 
   String get formatString {
