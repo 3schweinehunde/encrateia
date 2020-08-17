@@ -30,14 +30,14 @@ class ActivityMetadataWidget extends StatelessWidget {
         subtitle: const Text('last event'),
       ),
       ListTile(
-        title: PQText(value: activity.totalStrides, pq: PQ.text),
+        title: PQText(value: activity.totalStrides, pq: PQ.integer),
         subtitle: const Text('total strides'),
       ),
       ListTile(
         title: Row(children: <Widget>[
           PQText(value: activity.avgRunningCadence, pq: PQ.cadence),
           const Text(' / '),
-          PQText(value: activity.maxRunningCadence, pq: PQ.cadence),
+          PQText(value: activity.maxRunningCadence.toDouble(), pq: PQ.cadence),
         ]),
         subtitle: const Text('avg / max running cadence'),
       ),

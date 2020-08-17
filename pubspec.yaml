@@ -16,7 +16,7 @@ dependencies:
   datetime_picker_formfield: ^1.0.0
   dio: ^3.0.7
   dio_cookie_manager: ^1.0.0
-  fit_parser: ^0.1.9
+  fit_parser: ^0.2.0
   # fit_parser:
   #   path: '../fit_parser'
   flushbar: 1.10.4

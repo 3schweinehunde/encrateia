@@ -70,7 +70,7 @@ class PQText extends StatelessWidget {
       case PQ.latitude:
         return Text((value as double).semicirclesAsDegrees() + ' N');
       case PQ.speed:
-        return Text(((value as double) * 3.6).toStringAsFixed(2) + ' km/h / ');
+        return Text(((value as double) * 3.6).toStringAsFixed(2) + ' km/h');
       case PQ.speedPerHeartRate:
         return Text((value as double).toStringAsFixed(1) + ' m/h / bpm');
     }
