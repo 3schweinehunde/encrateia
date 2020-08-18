@@ -26,7 +26,7 @@ class PQText extends StatelessWidget {
       case PQ.distance:
         return Text(((value as int) / 1000).toStringAsFixed(2) + ' km');
       case PQ.power:
-        return Text((value as double).toStringAsPrecision(3) + ' W');
+        return Text((value as num).toStringAsPrecision(3) + ' W');
       case PQ.pace:
         final double totalSeconds = 1000 / (value as double);
         final int minutes = (totalSeconds / 60).floor();

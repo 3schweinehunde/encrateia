@@ -1,10 +1,11 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_power_per_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
 class ActivityPowerPerHeartRateWidget extends StatefulWidget {
@@ -24,7 +25,7 @@ class ActivityPowerPerHeartRateWidget extends StatefulWidget {
 class _ActivityPowerPerHeartRateWidgetState
     extends State<ActivityPowerPerHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgPowerPerHeartRateString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -60,7 +61,10 @@ class _ActivityPowerPerHeartRateWidgetState
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgPowerPerHeartRateString),
+                title: PQText(
+                  value: widget.activity.avgPowerPerHeartRate,
+                  pq: PQ.powerPerHeartRate,
+                ),
                 subtitle: const Text('average power per heart rate'),
               ),
             ],
@@ -72,8 +76,8 @@ class _ActivityPowerPerHeartRateWidgetState
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -81,8 +85,6 @@ class _ActivityPowerPerHeartRateWidgetState
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    final double avg = activity.avgPower / activity.avgHeartRate;
-    avgPowerPerHeartRateString = avg.toStringOrDashes(2) + ' W / bpm';
-    setState(() {});
+    setState(() => loading = false);
   }
 }

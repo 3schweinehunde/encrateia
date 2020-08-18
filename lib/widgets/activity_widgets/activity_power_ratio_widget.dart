@@ -1,9 +1,10 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_power_ratio_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -23,8 +24,7 @@ class ActivityPowerRatioWidget extends StatefulWidget {
 
 class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgPowerRatioString = 'Loading ...';
-  String sdevPowerRatioString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -62,17 +62,17 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.formPower,
-                title: Text(avgPowerRatioString),
+                title: PQText(value: widget.activity.avgPowerRatio, pq: PQ.percentage,),
                 subtitle: const Text('average power ratio'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevPowerRatioString),
+                title: PQText(value: widget.activity.sdevPowerRatio, pq: PQ.percentage,),
                 subtitle: const Text('standard deviation power ratio '),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(powerRecords.length.toString()),
+                title: PQText(value: powerRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -84,8 +84,8 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -93,9 +93,6 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgPowerRatioString = activity.avgPowerRatio.toStringOrDashes(1) + ' %';
-    sdevPowerRatioString =
-        activity.sdevPowerRatio.toStringOrDashes(2) + ' %';
-    setState(() {});
+    setState(() => loading = false);
   }
 }
