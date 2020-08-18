@@ -67,9 +67,9 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.totalAscent, pq: PQ.elevation),
+          PQText(value: widget.lap.totalAscent, pq: PQ.integer),
           const Text(' - '),
-          PQText(value: widget.lap.totalDescent, pq: PQ.elevation),
+          PQText(value: widget.lap.totalDescent, pq: PQ.integer),
           const Text(' = '),
           PQText(value: widget.lap.elevationDifference, pq: PQ.elevation),
         ]),

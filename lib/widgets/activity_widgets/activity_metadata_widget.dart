@@ -69,21 +69,22 @@ class ActivityMetadataWidget extends StatelessWidget {
         subtitle: const Text('total timer time'),
       ),
       ListTile(
-        title: Row(children: <Widget>[
-          PQText(value: activity.stravaId, pq: PQ.integer),
-          const Text(' / '),
-          PQText(value: activity.serialNumber, pq: PQ.integer),
-        ]),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: activity.stravaId, pq: PQ.integer),
+              PQText(value: activity.serialNumber, pq: PQ.integer),
+            ]),
         subtitle: const Text('Strava / Garmin id'),
       ),
       ListTile(
-        title: Row(children: <Widget>[
-          PQText(value: activity.type, pq: PQ.text),
-          const Text(' / '),
-          PQText(value: activity.sport, pq: PQ.text),
-          const Text(' / '),
-          PQText(value: activity.subSport, pq: PQ.text),
-        ]),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: activity.type, pq: PQ.text),
+              PQText(value: activity.sport, pq: PQ.text),
+              PQText(value: activity.subSport, pq: PQ.text),
+            ]),
         subtitle: const Text('activity type / sport / sub sport'),
       ),
       ListTile(
@@ -125,32 +126,39 @@ class ActivityMetadataWidget extends StatelessWidget {
         subtitle: const Text('avg stance time / avg stance time percent'),
       ),
       ListTile(
-        title: Column(children: <Widget>[
-          PQText(value: activity.startPositionLong, pq: PQ.longitude),
-          PQText(value: activity.startPositionLat, pq: PQ.latitude),
-        ]),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: activity.startPositionLong, pq: PQ.longitude),
+              PQText(value: activity.startPositionLat, pq: PQ.latitude),
+            ]),
         subtitle: const Text('start position'),
       ),
       ListTile(
-        title: Column(children: <Widget>[
-          PQText(value: activity.necLong, pq: PQ.longitude),
-          PQText(value: activity.necLat, pq: PQ.latitude),
-        ]),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: activity.necLong, pq: PQ.longitude),
+              PQText(value: activity.necLat, pq: PQ.latitude),
+            ]),
         subtitle: const Text('north east corner'),
       ),
       ListTile(
-        title: Column(children: <Widget>[
-          PQText(value: activity.swcLong, pq: PQ.longitude),
-          PQText(value: activity.swcLat, pq: PQ.latitude),
-        ]),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: activity.swcLong, pq: PQ.longitude),
+              PQText(value: activity.swcLat, pq: PQ.latitude),
+            ]),
         subtitle: const Text('south west corner'),
       ),
       ListTile(
-        title: Row(children: <Widget>[
-          PQText(value: activity.avgSpeed, pq: PQ.speed),
-          const Text(' / '),
-          PQText(value: activity.maxSpeed, pq: PQ.speed),
-        ]),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: activity.avgSpeed, pq: PQ.speed),
+              PQText(value: activity.maxSpeed, pq: PQ.speed),
+            ]),
         subtitle: const Text('avg / max speed'),
       ),
     ];

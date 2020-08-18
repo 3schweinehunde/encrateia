@@ -83,9 +83,9 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.activity.totalAscent, pq: PQ.elevation),
+          PQText(value: widget.activity.totalAscent, pq: PQ.integer),
           const Text(' - '),
-          PQText(value: widget.activity.totalDescent, pq: PQ.elevation),
+          PQText(value: widget.activity.totalDescent, pq: PQ.integer),
           const Text(' = '),
           PQText(value: widget.activity.elevationDifference, pq: PQ.elevation),
         ]),

@@ -1,5 +1,6 @@
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:encrateia/models/lap.dart';
@@ -12,80 +13,109 @@ class LapMetadataWidget extends StatelessWidget {
   List<Widget> get tiles {
     return <Widget>[
       ListTile(
-        title:
-            Text(DateFormat('dd MMM yyyy, h:mm:ss').format(lap.timeStamp)),
+        title: PQText(value: lap.timeStamp, pq: PQ.dateTime),
         subtitle: const Text('timestamp'),
       ),
       ListTile(
-        title: Text(lap.event),
+        title: PQText(value: lap.event, pq: PQ.text),
         subtitle: const Text('event'),
       ),
       ListTile(
-        title: Text(lap.sport + ' / ' + lap.subSport),
+        title: Row(children: <Widget>[
+          PQText(value: lap.sport, pq: PQ.text),
+          const Text(' / '),
+          PQText(value: lap.subSport, pq: PQ.text),
+        ]),
         subtitle: const Text('sport / sub sport'),
       ),
       ListTile(
-        title: Text(lap.eventType + ' / ' + lap.eventGroup.toString()),
+        title: Row(children: <Widget>[
+          PQText(value: lap.eventType, pq: PQ.text),
+          const Text(' / '),
+          PQText(value: lap.eventGroup, pq: PQ.integer),
+        ]),
         subtitle: const Text('event type / group'),
       ),
       ListTile(
-        title: Text(lap.avgVerticalOscillation.toStringAsFixed(2)),
+        title: PQText(
+            value: lap.avgVerticalOscillation, pq: PQ.verticalOscillation),
         subtitle: const Text('avg vertical oscillation'),
       ),
       ListTile(
-        title: Text(Duration(seconds: lap.totalElapsedTime).asString()),
+        title: PQText(value: lap.totalElapsedTime, pq: PQ.duration),
         subtitle: const Text('total elapsed time'),
       ),
       ListTile(
-        title: Text(Duration(seconds: lap.totalTimerTime).asString()),
+        title: PQText(value: lap.totalTimerTime, pq: PQ.duration),
         subtitle: const Text('total timer time'),
       ),
       ListTile(
-        title: Text(
-            '${lap.avgStanceTime} ms / ${lap.avgStanceTimePercent} %'),
+        title: Row(children: <Widget>[
+          PQText(value: lap.avgStanceTime, pq: PQ.stanceTime),
+          const Text(' / '),
+          PQText(value: lap.avgStanceTimePercent, pq: PQ.percentage),
+        ]),
         subtitle: const Text('avg stance time / avg stance time percent'),
       ),
       ListTile(
-        title: Text(lap.lapTrigger),
+        title: PQText(value: lap.lapTrigger, pq: PQ.text),
         subtitle: const Text('lap trigger'),
       ),
       ListTile(
-        title: Text('${lap.avgTemperature}° / ${lap.maxTemperature}°'),
+        title: Row(children: <Widget>[
+          PQText(value: lap.avgTemperature, pq: PQ.temperature),
+          const Text(' / '),
+          PQText(value: lap.maxTemperature, pq: PQ.temperature),
+        ]),
         subtitle: const Text('avg / max temperature'),
       ),
       ListTile(
-        title: Text(lap.avgFractionalCadence.toStringAsFixed(2) +
-            ' / ' +
-            lap.maxFractionalCadence.toStringAsFixed(2)),
+        title: Row(children: <Widget>[
+          PQText(
+            value: lap.avgFractionalCadence,
+            pq: PQ.fractionalCadence,
+          ),
+          const Text(' / '),
+          PQText(
+            value: lap.maxFractionalCadence,
+            pq: PQ.fractionalCadence,
+          ),
+        ]),
         subtitle: const Text('avg / max fractional cadence'),
       ),
       ListTile(
-        title: Text(lap.totalFractionalCycles.toStringAsFixed(2)),
+        title: PQText(value: lap.totalFractionalCycles, pq: PQ.cycles),
         subtitle: const Text('total fractional cycles'),
       ),
       ListTile(
-        title: Text(lap.startPositionLong.semicirclesAsDegrees() +
-            ' E\n' +
-            lap.startPositionLat.semicirclesAsDegrees() +
-            ' N'),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: lap.startPositionLong, pq: PQ.longitude),
+              PQText(value: lap.startPositionLat, pq: PQ.latitude),
+            ]),
         subtitle: const Text('start position'),
       ),
       ListTile(
-        title: Text(lap.endPositionLong.semicirclesAsDegrees() +
-            ' E\n' +
-            lap.endPositionLat.semicirclesAsDegrees() +
-            ' N'),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: lap.endPositionLong, pq: PQ.longitude),
+              PQText(value: lap.endPositionLat, pq: PQ.latitude),
+            ]),
         subtitle: const Text('end position'),
       ),
       ListTile(
-        title: Text(lap.intensity.toString()),
+        title: PQText(value: lap.intensity, pq: PQ.integer),
         subtitle: const Text('intensity'),
       ),
       ListTile(
-        title: Text((lap.avgSpeed * 3.6).toStringAsFixed(2) +
-            ' km/h / ' +
-            (lap.maxSpeed * 3.6).toStringAsFixed(2) +
-            ' km/h'),
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: lap.avgSpeed, pq: PQ.speed),
+              PQText(value: lap.maxSpeed, pq: PQ.speed),
+            ]),
         subtitle: const Text('avg / max speed'),
       ),
     ];

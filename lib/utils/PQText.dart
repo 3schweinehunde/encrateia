@@ -100,6 +100,10 @@ class PQText extends StatelessWidget {
         return value != null && value != -1;
       case PQ.heartRate:
         return value != null && value != 255;
+      case PQ.stanceTime:
+        return value != null && value != 6553.50;
+      case PQ.percentage:
+        return value != null && value != 655.35;
       default:
         return value != null;
     }
