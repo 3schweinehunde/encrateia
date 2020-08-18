@@ -42,86 +42,97 @@ class ShowLapScreen extends StatelessWidget {
         context: context,
         nextWidget: ({Lap lap}) => LapOverviewWidget(lap: lap),
       ),
-      navigationButton(
-        title: 'Heart Rate',
-        color: MyColor.navigate,
-        icon: MyIcon.heartRate,
-        context: context,
-        nextWidget: ({Lap lap}) => LapHeartRateWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Power',
-        color: MyColor.navigate,
-        icon: MyIcon.power,
-        context: context,
-        nextWidget: ({Lap lap}) => LapPowerWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Power Duration',
-        color: MyColor.navigate,
-        icon: MyIcon.powerDuration,
-        context: context,
-        nextWidget: ({Lap lap}) => LapPowerDurationWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Pace',
-        color: MyColor.navigate,
-        icon: MyIcon.speed,
-        context: context,
-        nextWidget: ({Lap lap}) => LapPaceWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Speed',
-        color: MyColor.navigate,
-        icon: MyIcon.speed,
-        context: context,
-        nextWidget: ({Lap lap}) => LapSpeedWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Ecor',
-        color: MyColor.navigate,
-        icon: MyIcon.power,
-        context: context,
-        nextWidget: ({Lap lap}) => LapEcorWidget(
-          lap: lap,
-          athlete: athlete,
+      if (lap.avgHeartRate != null)
+        navigationButton(
+          title: 'Heart Rate',
+          color: MyColor.navigate,
+          icon: MyIcon.heartRate,
+          context: context,
+          nextWidget: ({Lap lap}) => LapHeartRateWidget(lap: lap),
         ),
-      ),
-      navigationButton(
-        title: 'Ground Time',
-        color: MyColor.navigate,
-        icon: MyIcon.groundTime,
-        context: context,
-        nextWidget: ({Lap lap}) => LapGroundTimeWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Leg Spring Stiffness',
-        color: MyColor.navigate,
-        icon: MyIcon.legSpringStiffness,
-        context: context,
-        nextWidget: ({Lap lap}) => LapLegSpringStiffnessWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Form Power',
-        color: MyColor.navigate,
-        icon: MyIcon.formPower,
-        context: context,
-        nextWidget: ({Lap lap}) => LapFormPowerWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Cadence',
-        color: MyColor.navigate,
-        icon: MyIcon.cadence,
-        context: context,
-        nextWidget: ({Lap lap}) => LapStrydCadenceWidget(lap: lap),
-      ),
-      navigationButton(
-        title: 'Vertical Oscillation',
-        color: MyColor.navigate,
-        icon: MyIcon.verticalOscillation,
-        context: context,
-        nextWidget: ({Lap lap}) => LapVerticalOscillationWidget(lap: lap),
-      ),
+      if (lap.avgPower != null)
+        navigationButton(
+          title: 'Power',
+          color: MyColor.navigate,
+          icon: MyIcon.power,
+          context: context,
+          nextWidget: ({Lap lap}) => LapPowerWidget(lap: lap),
+        ),
+      if (lap.avgPower != null)
+        navigationButton(
+          title: 'Power Duration',
+          color: MyColor.navigate,
+          icon: MyIcon.powerDuration,
+          context: context,
+          nextWidget: ({Lap lap}) => LapPowerDurationWidget(lap: lap),
+        ),
+      if (lap.avgSpeed != null)
+        navigationButton(
+          title: 'Pace',
+          color: MyColor.navigate,
+          icon: MyIcon.speed,
+          context: context,
+          nextWidget: ({Lap lap}) => LapPaceWidget(lap: lap),
+        ),
+      if (lap.avgSpeed != null)
+        navigationButton(
+          title: 'Speed',
+          color: MyColor.navigate,
+          icon: MyIcon.speed,
+          context: context,
+          nextWidget: ({Lap lap}) => LapSpeedWidget(lap: lap),
+        ),
+      if (lap.avgSpeed != null && lap.avgPower != null)
+        navigationButton(
+          title: 'Ecor',
+          color: MyColor.navigate,
+          icon: MyIcon.power,
+          context: context,
+          nextWidget: ({Lap lap}) => LapEcorWidget(
+            lap: lap,
+            athlete: athlete,
+          ),
+        ),
+      if (lap.avgGroundTime != null)
+        navigationButton(
+          title: 'Ground Time',
+          color: MyColor.navigate,
+          icon: MyIcon.groundTime,
+          context: context,
+          nextWidget: ({Lap lap}) => LapGroundTimeWidget(lap: lap),
+        ),
+      if (lap.avgLegSpringStiffness != null)
+        navigationButton(
+          title: 'Leg Spring Stiffness',
+          color: MyColor.navigate,
+          icon: MyIcon.legSpringStiffness,
+          context: context,
+          nextWidget: ({Lap lap}) => LapLegSpringStiffnessWidget(lap: lap),
+        ),
+      if (lap.avgFormPower != null)
+        navigationButton(
+          title: 'Form Power',
+          color: MyColor.navigate,
+          icon: MyIcon.formPower,
+          context: context,
+          nextWidget: ({Lap lap}) => LapFormPowerWidget(lap: lap),
+        ),
+      if (lap.avgStrydCadence != null)
+        navigationButton(
+          title: 'Cadence',
+          color: MyColor.navigate,
+          icon: MyIcon.cadence,
+          context: context,
+          nextWidget: ({Lap lap}) => LapStrydCadenceWidget(lap: lap),
+        ),
+      if (lap.avgVerticalOscillation != null)
+        navigationButton(
+          title: 'Vertical Oscillation',
+          color: MyColor.navigate,
+          icon: MyIcon.verticalOscillation,
+          context: context,
+          nextWidget: ({Lap lap}) => LapVerticalOscillationWidget(lap: lap),
+        ),
       navigationButton(
         title: 'Altitude',
         color: MyColor.navigate,
@@ -168,7 +179,9 @@ class ShowLapScreen extends StatelessWidget {
           crossAxisSpacing: 10,
           padding: const EdgeInsets.all(10),
           crossAxisCount:
-              MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 2
+                  : 4,
           children: tiles(context: context),
         ),
       ),
