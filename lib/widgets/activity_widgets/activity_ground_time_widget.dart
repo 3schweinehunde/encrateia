@@ -1,9 +1,10 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_ground_time_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -23,8 +24,7 @@ class ActivityGroundTimeWidget extends StatefulWidget {
 
 class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgGroundTimeString = 'Loading ...';
-  String sdevGroundTimeString = 'Loading ...';
+bool loading = true;
 
   @override
   void initState() {
@@ -59,17 +59,17 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgGroundTimeString),
+                title: PQText(value: widget.activity.avgGroundTime, pq: PQ.groundTime),
                 subtitle: const Text('average ground time'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevGroundTimeString),
+                title:  PQText(value: widget.activity.sdevGroundTime, pq: PQ.groundTime),
                 subtitle: const Text('standard deviation ground time'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(groundTimeRecords.length.toString()),
+                title: PQText(value: groundTimeRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -81,8 +81,8 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -90,11 +90,6 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgGroundTimeString = activity.avgGroundTime != null
-        ? activity.avgGroundTime.toStringOrDashes(1) + ' ms'
-        : '- - -';
-    sdevGroundTimeString =
-        activity.sdevGroundTime.toStringOrDashes(2) + ' ms';
-    setState(() {});
+    setState(() => loading = false);
   }
 }

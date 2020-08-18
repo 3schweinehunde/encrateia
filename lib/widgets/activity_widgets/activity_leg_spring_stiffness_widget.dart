@@ -1,9 +1,10 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_leg_spring_stiffness_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -24,8 +25,7 @@ class ActivityLegSpringStiffnessWidget extends StatefulWidget {
 class _ActivityLegSpringStiffnessWidgetState
     extends State<ActivityLegSpringStiffnessWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgLegSpringStiffnessString = 'Loading ...';
-  String sdevLegSpringStiffnessString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -38,8 +38,7 @@ class _ActivityLegSpringStiffnessWidgetState
     if (records.isNotEmpty) {
       final List<Event> legSpringStiffnessRecords = records
           .where((Event value) =>
-              value.legSpringStiffness != null &&
-              value.legSpringStiffness > 0)
+              value.legSpringStiffness != null && value.legSpringStiffness > 0)
           .toList();
 
       if (legSpringStiffnessRecords.isNotEmpty) {
@@ -59,17 +58,23 @@ class _ActivityLegSpringStiffnessWidgetState
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgLegSpringStiffnessString),
+                title: PQText(
+                  value: widget.activity.avgLegSpringStiffness,
+                  pq: PQ.legSpringStiffness,
+                ),
                 subtitle: const Text('average leg spring stiffness'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevLegSpringStiffnessString),
+                title: PQText(
+                  value: widget.activity.sdevLegSpringStiffness,
+                  pq: PQ.legSpringStiffness,
+                ),
                 subtitle: const Text('standard deviation leg spring stiffness'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: PQText(value: records.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -81,8 +86,8 @@ class _ActivityLegSpringStiffnessWidgetState
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'no data available'),
       );
     }
   }
@@ -90,11 +95,6 @@ class _ActivityLegSpringStiffnessWidgetState
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgLegSpringStiffnessString =
-        activity.avgLegSpringStiffness.toStringOrDashes(1) + ' ms';
-
-    sdevLegSpringStiffnessString =
-        activity.sdevLegSpringStiffness.toStringOrDashes(2) + ' ms';
-    setState(() {});
+    setState(() => loading = false);
   }
 }

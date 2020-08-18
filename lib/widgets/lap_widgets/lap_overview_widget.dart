@@ -79,7 +79,7 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
         title: Row(children: <Widget>[
           PQText(value: widget.lap.avgRunningCadence, pq: PQ.cadence),
           const Text(' / '),
-          PQText(value: widget.lap.maxRunningCadence.toDouble(), pq: PQ.cadence),
+          PQText(value: widget.lap.maxRunningCadence, pq: PQ.cadence),
         ]),
         subtitle: const Text('avg / max steps per minute'),
       ),

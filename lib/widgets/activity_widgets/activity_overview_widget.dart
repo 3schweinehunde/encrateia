@@ -95,7 +95,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
         title: Row(children: <Widget>[
           PQText(value: widget.activity.avgRunningCadence, pq: PQ.cadence),
           const Text(' / '),
-          PQText(value: widget.activity.maxRunningCadence.toDouble(), pq: PQ.cadence),
+          PQText(value: widget.activity.maxRunningCadence, pq: PQ.cadence),
         ]),
         subtitle: const Text('avg / max steps per minute'),
       ),

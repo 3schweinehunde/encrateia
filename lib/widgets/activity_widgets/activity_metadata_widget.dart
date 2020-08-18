@@ -37,7 +37,7 @@ class ActivityMetadataWidget extends StatelessWidget {
         title: Row(children: <Widget>[
           PQText(value: activity.avgRunningCadence, pq: PQ.cadence),
           const Text(' / '),
-          PQText(value: activity.maxRunningCadence.toDouble(), pq: PQ.cadence),
+          PQText(value: activity.maxRunningCadence, pq: PQ.cadence),
         ]),
         subtitle: const Text('avg / max running cadence'),
       ),

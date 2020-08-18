@@ -71,4 +71,6 @@ enum PQ {
   speed,
   speedPerHeartRate,
   weight,
+  groundTime,
+  legSpringStiffness,
 }
