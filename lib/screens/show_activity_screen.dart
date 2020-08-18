@@ -1,4 +1,5 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_bargraph_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_ftp_widget.dart';
@@ -50,6 +51,7 @@ class ShowActivityScreen extends StatefulWidget {
 
 class _ShowActivityScreenState extends State<ShowActivityScreen> {
   Flushbar<Object> flushbar = Flushbar<Object>();
+  Weight weight;
 
   List<Widget> get tiles {
     return <Widget>[
@@ -516,6 +518,11 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
   Future<void> getData() async {
     await widget.activity.laps;
+    weight = await Weight.getBy(
+      athletesId: widget.athlete.id,
+      date: widget.activity.timeCreated,
+    );
+    widget.activity.weight = weight.value;
     setState(() {});
   }
 }

@@ -1,11 +1,11 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/weight.dart';
+import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_ecor_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -25,7 +25,7 @@ class ActivityEcorWidget extends StatefulWidget {
 class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   Weight weight;
-  String weightString = 'Loading ...';
+  bool loading;
 
   @override
   void initState() {
@@ -62,22 +62,17 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.power,
-                title: Text((widget.activity.weight != null)
-                    ? (widget.activity.getAttribute(ActivityAttr.ecor)
-                                as double)
-                            .toStringAsFixed(3) +
-                        ' kJ / kg / km'
-                    : 'not available'),
+                title: PQText(value: widget.activity.ecor, pq: PQ.ecor),
                 subtitle: const Text('ecor (Energy cost of running)'),
               ),
               ListTile(
                 leading: MyIcon.weight,
-                title: Text(weightString),
+                title: PQText(value: widget.activity.weight, pq: PQ.weight),
                 subtitle: const Text('weight'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(ecorRecords.length.toString()),
+                title: PQText(value: ecorRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -89,8 +84,8 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -102,7 +97,6 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
       date: widget.activity.timeCreated,
     );
     widget.activity.weight = weight.value;
-    weightString = weight.value.toStringOrDashes(2) + ' kg';
-    setState(() {});
+    setState(() => loading = false);
   }
 }

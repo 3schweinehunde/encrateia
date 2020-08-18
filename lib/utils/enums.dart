@@ -70,4 +70,5 @@ enum PQ {
   latitude,
   speed,
   speedPerHeartRate,
+  weight,
 }

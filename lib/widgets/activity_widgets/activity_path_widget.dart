@@ -20,6 +20,7 @@ class ActivityPathWidget extends StatefulWidget {
 
 class _ActivityPathWidgetState extends State<ActivityPathWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
+  bool loading = true;
 
   @override
   void initState() {
@@ -48,14 +49,14 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading / no records found'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'no records found'),
       );
     }
   }
 
   Future<void> getData() async {
     records = RecordList<Event>(await widget.activity.records);
-    setState(() {});
+    setState(() => loading = false);
   }
 }

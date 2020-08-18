@@ -1,5 +1,7 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -21,6 +23,7 @@ class ActivityAltitudeWidget extends StatefulWidget {
 
 class _ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
+  bool loading = true;
 
   @override
   void initState() {
@@ -51,7 +54,7 @@ class _ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(records.length.toString()),
+                title: PQText(value: records.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -63,8 +66,8 @@ class _ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading / no records found'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'no records found'),
       );
     }
   }
@@ -72,6 +75,6 @@ class _ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    setState(() {});
+    setState(() => loading = false);
   }
 }

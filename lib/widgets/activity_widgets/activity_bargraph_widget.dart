@@ -31,6 +31,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
   List<Lap> _laps = <Lap>[];
   List<BarZone> _heartRateDistributions = <BarZone>[];
   List<BarZone> _powerDistributions = <BarZone>[];
+  bool loading = true;
 
   @override
   void initState() {
@@ -68,7 +69,9 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                   value: widget.activity.avgPower,
                   powerZones: _powerZones,
                 ),
-                Text((widget.activity.avgPower > 0) ? widget.activity.avgPower.toStringAsFixed(1) : ''),
+                Text((widget.activity.avgPower > 0)
+                    ? widget.activity.avgPower.toStringAsFixed(1)
+                    : ''),
                 MyBarChart(
                   width: 150,
                   height: 20,
@@ -86,7 +89,9 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                     value: lap.avgPower,
                     powerZones: _powerZones,
                   ),
-                  Text((lap.avgPower > 0) ? lap.avgPower.toStringAsFixed(1) : ''),
+                  Text((lap.avgPower > 0)
+                      ? lap.avgPower.toStringAsFixed(1)
+                      : ''),
                   MyBarChart(
                     width: 150,
                     height: 20,
@@ -166,7 +171,9 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
         ),
       );
     } else {
-      return const Center(child: Text('Loading'));
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
+      );
     }
   }
 
@@ -188,6 +195,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
     _heartRateZoneSchema = await activity.heartRateZoneSchema;
     if (_heartRateZoneSchema != null)
       _heartRateZones = await _heartRateZoneSchema.heartRateZones;
-    setState(() {});
+
+    setState(() => loading = false);
   }
 }
