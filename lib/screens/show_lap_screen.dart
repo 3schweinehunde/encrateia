@@ -40,7 +40,7 @@ class ShowLapScreen extends StatelessWidget {
         color: MyColor.settings,
         icon: MyIcon.metaData,
         context: context,
-        nextWidget: ({Lap lap}) => LapOverviewWidget(lap: lap),
+        nextWidget: ({Lap lap}) => LapOverviewWidget(lap: lap, athlete: athlete ),
       ),
       if (lap.avgHeartRate != null)
         navigationButton(

@@ -34,6 +34,7 @@ class Lap {
   HeartRateZoneSchema _heartRateZoneSchema;
   List<BarZone> powerDistributions;
   List<BarZone> heartRateDistributions;
+  double weight;
 
   int get id => _db?.id;
   DateTime get startTime => _db.startTime;
@@ -94,6 +95,56 @@ class Lap {
   int get totalElapsedTime => _db.totalElapsedTime;
   int get totalStrides => _db.totalStrides;
   int get totalTimerTime => _db.totalTimerTime;
+
+  // calculated from other attributes:
+  double get ecor {
+    if (avgPower != null &&
+        avgSpeed != null &&
+        avgSpeed > 0 &&
+        weight != null &&
+        weight > 0)
+      return avgPower / avgSpeed / weight;
+    else
+      return null;
+  }
+
+  double get avgPace {
+    if (avgSpeed != null && avgSpeed != 0)
+      return 50 / 3 / avgSpeed;
+    else
+      return null;
+  }
+
+  double get avgSpeedPerHeartRate {
+    if (avgSpeed != null && avgHeartRate != null && avgHeartRate != 0)
+      return 100 * (avgSpeed / avgHeartRate);
+    else
+      return null;
+  }
+
+  double get avgPowerPerHeartRate {
+    if (avgPower != null &&
+        avgPower != -1 &&
+        avgHeartRate != null &&
+        avgHeartRate != null)
+      return avgPower / avgHeartRate;
+    else
+      return null;
+  }
+
+  int get elevationDifference {
+    if (totalAscent != null && totalDescent != null)
+      return totalAscent - totalDescent;
+    else
+      return null;
+  }
+
+  double get avgDoubleStrydCadence {
+    if (avgStrydCadence != null)
+      return avgStrydCadence * 2;
+    else
+      return null;
+  }
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
