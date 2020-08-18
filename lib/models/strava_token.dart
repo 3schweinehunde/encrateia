@@ -27,4 +27,19 @@ class StravaToken {
       ..expiresAt = athlete.stravaExpire
       ..refreshToken = athlete.stravaRefreshToken;
   }
+
+  static Future<void> deleteTokenData({Athlete athlete}) async {
+    athlete
+      ..stravaAccessToken = null
+      ..stravaExpire = null
+      ..stravaScope = null
+      ..stravaRefreshToken = null;
+    await athlete.save();
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('strava_accessToken', null);
+    await prefs.setInt('strava_expire', null);
+    await prefs.setString('strava_scope', null);
+    await prefs.setString('strava_refreshToken', null);
+  }
 }

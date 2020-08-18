@@ -1,5 +1,6 @@
 import 'package:encrateia/actions/analyse_activities.dart';
 import 'package:encrateia/actions/import_activities_locally.dart';
+import 'package:encrateia/models/strava_token.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_ftp_widget.dart';
@@ -227,6 +228,18 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           flushbar: flushbar,
         ),
       ),
+      if (widget.athlete.stravaId != null)
+        RaisedButton.icon(
+            color: MyColor.settings,
+            textColor: MyColor.textColor(backgroundColor: MyColor.settings),
+            icon: MyIcon.settings,
+            label: const Expanded(
+              child: Text('Delete Strava Token'),
+            ),
+            onPressed: () async {
+              await StravaToken.deleteTokenData(athlete: widget.athlete);
+              setState(() {});
+            }),
     ];
   }
 
@@ -272,7 +285,9 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           crossAxisSpacing: 10,
           padding: const EdgeInsets.all(10),
           crossAxisCount:
-              MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 2
+                  : 4,
           children: tiles,
         ),
       ),
