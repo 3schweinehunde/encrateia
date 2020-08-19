@@ -143,11 +143,9 @@ class Activity {
 
   // calculated from other attributes:
   double get ecor {
-    if (avgPower != null &&
-        avgSpeed != null &&
-        avgSpeed > 0 &&
-        weight != null &&
-        weight > 0)
+    if (powerAvailable &&
+        speedAvailable && weightAvailable
+        )
       return avgPower / avgSpeed / weight;
     else
       return null;
@@ -161,35 +159,41 @@ class Activity {
   }
 
   double get avgSpeedPerHeartRate {
-    if (avgSpeed != null && avgHeartRate != null && avgHeartRate != 0)
+    if (avgSpeed != null && heartRateAvailable)
       return 60 * avgSpeed / avgHeartRate;
     else
       return null;
   }
 
   double get avgPowerPerHeartRate {
-    if (avgPower != null &&
-        avgPower != -1 &&
-        avgHeartRate != null &&
-        avgHeartRate != null)
+    if (powerAvailable && heartRateAvailable)
       return avgPower / avgHeartRate;
     else
       return null;
   }
 
-  int get elevationDifference {
-    if (totalAscent != null && totalDescent != null)
-      return totalAscent - totalDescent;
-    else
-      return null;
-  }
+  int get elevationDifference =>
+      ascentAvailable ? totalAscent - totalDescent : null;
 
-  double get avgDoubleStrydCadence {
-    if (avgStrydCadence != null)
-      return avgStrydCadence * 2;
-    else
-      return null;
-  }
+  double get avgDoubleStrydCadence =>
+      cadenceAvailable ? avgStrydCadence * 2 : null;
+
+  // easier check for data availability
+  bool get powerAvailable => !<num>[null, -1].contains(avgPower);
+  bool get powerRatioAvailable => !<num>[null, -1].contains(avgPowerRatio);
+  bool get heartRateAvailable => !<num>[null, -1].contains(avgHeartRate);
+  bool get ascentAvailable => totalAscent != null && totalDescent != null;
+  bool get cadenceAvailable => !<num>[null, -1].contains(avgStrydCadence);
+  bool get speedAvailable => !<num>[null, 0, -1].contains(avgSpeed);
+  bool get weightAvailable => !<num>[null, 0].contains(weight);
+  bool get paceAvailable => !<num>[null, -1].contains(avgPace);
+  bool get ecorAvailable => !<num>[null, -1].contains(ecor);
+  bool get groundTimeAvailable => !<num>[null, -1].contains(avgGroundTime);
+  bool get formPowerAvailable => !<num>[null, -1].contains(avgFormPower);
+  bool get verticalOscillationAvailable => !<num>[null, -1].contains(avgVerticalOscillation);
+  bool get strideRatioAvailable => !<num>[null, -1].contains(avgStrideRatio);
+  bool get strideCadenceAvailable => !<num>[null, -1].contains(avgDoubleStrydCadence);
+  bool get legSpringStiffnessAvailable => !<num>[null, -1].contains(avgLegSpringStiffness);
 
   set maxHeartRate(int value) => _db.maxHeartRate = value;
   set name(String value) => _db.name = value;

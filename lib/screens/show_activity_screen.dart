@@ -110,7 +110,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-      if (widget.activity.avgHeartRate != null)
+      if (widget.activity.heartRateAvailable)
         navigationButton(
           title: 'Heart Rate',
           color: MyColor.navigate,
@@ -121,7 +121,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgPower != null)
+      if (widget.activity.powerAvailable)
         navigationButton(
           title: 'Power',
           color: MyColor.navigate,
@@ -132,7 +132,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgPower != null)
+      if (widget.activity.powerAvailable)
         navigationButton(
           title: 'Power Duration',
           color: MyColor.navigate,
@@ -143,8 +143,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgPower != null &&
-          widget.activity.avgHeartRate != null)
+      if (widget.activity.powerAvailable && widget.activity.heartRateAvailable)
         navigationButton(
           title: 'Power / Heart Rate',
           color: MyColor.navigate,
@@ -155,7 +154,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgPace != null)
+      if (widget.activity.paceAvailable)
         navigationButton(
           title: 'Pace',
           color: MyColor.navigate,
@@ -166,7 +165,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgSpeed != null)
+      if (widget.activity.speedAvailable)
         navigationButton(
           title: 'Speed',
           color: MyColor.navigate,
@@ -178,7 +177,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.ecor != null)
+      if (widget.activity.ecorAvailable)
         navigationButton(
           title: 'Ecor',
           color: MyColor.navigate,
@@ -189,7 +188,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgSpeed != null)
+      if (widget.activity.speedAvailable)
         navigationButton(
           title: 'Speed / Heart Rate',
           color: MyColor.navigate,
@@ -200,7 +199,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgGroundTime != null)
+      if (widget.activity.groundTimeAvailable)
         navigationButton(
           title: 'Ground Time',
           color: MyColor.navigate,
@@ -211,7 +210,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgFormPower != null)
+      if (widget.activity.formPowerAvailable)
         navigationButton(
           title: 'Form Power',
           color: MyColor.navigate,
@@ -222,7 +221,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgPowerRatio != null)
+      if (widget.activity.powerRatioAvailable)
         navigationButton(
           title: 'Power Ratio',
           color: MyColor.navigate,
@@ -233,7 +232,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgVerticalOscillation != null)
+      if (widget.activity.verticalOscillationAvailable)
         navigationButton(
           title: 'Vertical Oscillation',
           color: MyColor.navigate,
@@ -244,7 +243,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgStrideRatio != null)
+      if (widget.activity.strideRatioAvailable)
         navigationButton(
           title: 'Stride Ratio',
           color: MyColor.navigate,
@@ -255,7 +254,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgDoubleStrydCadence != null)
+      if (widget.activity.strideCadenceAvailable)
         navigationButton(
           title: 'Cadence',
           color: MyColor.navigate,
@@ -266,7 +265,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgLegSpringStiffness != null)
+      if (widget.activity.legSpringStiffnessAvailable)
         navigationButton(
           title: 'Leg Spring Stiffness',
           color: MyColor.navigate,
@@ -277,7 +276,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity.avgPower != null)
+      if (widget.activity.powerAvailable)
         navigationButton(
           title: 'FTP',
           color: MyColor.navigate,
@@ -288,7 +287,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (kDebugMode && widget.activity.avgPower != null)
+      if (kDebugMode && widget.activity.powerAvailable)
         navigationButton(
           title: 'Work / CP',
           color: MyColor.navigate,
