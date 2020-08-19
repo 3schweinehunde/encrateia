@@ -162,7 +162,7 @@ class Activity {
 
   double get avgSpeedPerHeartRate {
     if (avgSpeed != null && avgHeartRate != null && avgHeartRate != 0)
-      return 100 * (avgSpeed / avgHeartRate);
+      return 60 * avgSpeed / avgHeartRate;
     else
       return null;
   }

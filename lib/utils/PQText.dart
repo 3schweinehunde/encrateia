@@ -36,7 +36,7 @@ class PQText extends StatelessWidget {
       case PQ.heartRate:
         return Text((value as num).toStringAsPrecision(3) +' bpm');
       case PQ.ecor:
-        return Text((value as num).toStringAsFixed(3) + ' kJ / kg / km');
+        return Text((value as num).toStringAsFixed(3) + ' kJ/kg/km');
       case PQ.powerPerHeartRate:
         return Text((value as num).toStringAsFixed(2) + ' W/bpm');
       case PQ.calories:
@@ -73,7 +73,7 @@ class PQText extends StatelessWidget {
       case PQ.speed:
         return Text(((value as num) * 3.6).toStringAsFixed(2) + ' km/h');
       case PQ.speedPerHeartRate:
-        return Text((value as num).toStringAsFixed(1) + ' m/h / bpm');
+        return Text((value as num).toStringAsPrecision(3) + ' m/beat');
       case PQ.weight:
         return Text((value as num).toStringAsFixed(1) + ' kg');
       case PQ.legSpringStiffness:

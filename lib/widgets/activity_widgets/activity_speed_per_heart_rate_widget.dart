@@ -25,7 +25,7 @@ class ActivitySpeedPerHeartRateWidget extends StatefulWidget {
 class _ActivitySpeedPerHeartRateWidgetState
     extends State<ActivitySpeedPerHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgSpeedPerHeartRateString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -60,7 +60,10 @@ class _ActivitySpeedPerHeartRateWidgetState
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.activity.avgSpeedPerHeartRate, pq: PQ.speedPerHeartRate, ),
+                title: PQText(
+                  value: widget.activity.avgSpeedPerHeartRate,
+                  pq: PQ.speedPerHeartRate,
+                ),
                 subtitle: const Text('average speed per heart rate'),
               ),
             ],
@@ -72,8 +75,8 @@ class _ActivitySpeedPerHeartRateWidgetState
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -81,6 +84,6 @@ class _ActivitySpeedPerHeartRateWidgetState
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    setState(() {});
+    setState(() => loading = false);
   }
 }

@@ -445,7 +445,7 @@ class RecordList<E> extends DelegatingList<E> {
           sum = sum + (record.power / record.heartRate);
           break;
         case LapDoubleAttr.speedPerHeartRate:
-          sum = sum + 100 * (record.speed / record.heartRate);
+          sum = sum + 60 * (record.speed / record.heartRate);
           break;
         case LapDoubleAttr.groundTime:
           sum = sum + record.groundTime;
