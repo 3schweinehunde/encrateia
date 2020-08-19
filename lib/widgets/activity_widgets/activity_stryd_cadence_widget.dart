@@ -1,9 +1,10 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_stryd_cadence_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -24,8 +25,7 @@ class ActivityStrydCadenceWidget extends StatefulWidget {
 class _ActivityStrydCadenceWidgetState
     extends State<ActivityStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgStrydCadenceString = 'Loading ...';
-  String sdevStrydCadenceString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -60,12 +60,18 @@ class _ActivityStrydCadenceWidgetState
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgStrydCadenceString),
+                title: PQText(
+                  value: widget.activity.avgStrydCadence,
+                  pq: PQ.cadence,
+                ),
                 subtitle: const Text('average cadence'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevStrydCadenceString),
+                title: PQText(
+                  value: widget.activity.sdevStrydCadence,
+                  pq: PQ.cadence,
+                ),
                 subtitle: const Text('standard deviation cadence'),
               ),
               ListTile(
@@ -91,10 +97,6 @@ class _ActivityStrydCadenceWidgetState
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgStrydCadenceString =
-        activity.avgStrydCadence.toStringOrDashes(1) + ' spm';
-    sdevStrydCadenceString =
-        activity.sdevStrydCadence.toStringOrDashes(2) + ' spm';
-    setState(() {});
+    setState(() => loading = false);
   }
 }

@@ -154,14 +154,14 @@ class RecordList<E> extends DelegatingList<E> {
   // Stryd Cadence
   double avgStrydCadence() {
     final List<double> strydCadences = _records
-        .map((Event record) => record.strydCadence ?? 0.0 * 2)
+        .map((Event record) => record.strydCadence ?? 0.0)
         .nonZeros()
         .cast<double>();
     return strydCadences.isNotEmpty ? strydCadences.mean() : -1;
   }
 
   double sdevStrydCadence() => _records
-      .map((Event record) => record.strydCadence ?? 0.0 * 2)
+      .map((Event record) => record.strydCadence ?? 0.0)
       .nonZeros()
       .sdev();
 

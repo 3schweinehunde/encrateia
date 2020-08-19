@@ -63,6 +63,7 @@ enum PQ {
   verticalOscillation,
   cycles,
   integer,
+  double,
   fractionalCadence,
   stanceTime,
   percentage,

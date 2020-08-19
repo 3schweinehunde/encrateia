@@ -1,5 +1,7 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -21,13 +23,7 @@ class ActivitySpeedWidget extends StatefulWidget {
 
 class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgSpeedString = 'Loading ...';
-  String avgSpeedByMeasurementsString = 'Loading ...';
-  String avgSpeedBySpeedString = 'Loading ...';
-  String avgSpeedByDistanceString = 'Loading ...';
-  String sdevSpeedString = 'Loading ...';
-  String minSpeedString = 'Loading ...';
-  String maxSpeedString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -65,42 +61,52 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgSpeedString),
-                subtitle: const Text('average speed (from .fit-file)'),
+                title: PQText(value: widget.activity.avgSpeed, pq: PQ.speed),
+                subtitle: const Text('average speed (as in .fit-file)'),
               ),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgSpeedByMeasurementsString),
-                subtitle: const Text('average speed (average over measurements)'),
+                title: PQText(
+                  value: widget.activity.avgSpeedByMeasurements,
+                  pq: PQ.speed,
+                ),
+                subtitle: const Text('mean speed'),
               ),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgSpeedBySpeedString),
-                subtitle: const Text('average speed (using speed data points)'),
+                title: PQText(
+                  value: widget.activity.avgSpeedBySpeed,
+                  pq: PQ.speed,
+                ),
+                subtitle: const Text('mean speed (time weighted)'),
               ),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgSpeedByDistanceString),
-                subtitle: const Text('average speed (using distance data points)'),
+                title: PQText(
+                  value: widget.activity.avgSpeedByDistance,
+                  pq: PQ.speed,
+                ),
+                subtitle:
+                    const Text('average speed (calculated)'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevSpeedString),
+                title: PQText(value: widget.activity.sdevSpeed, pq: PQ.speed),
                 subtitle: const Text('standard deviation speed'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(minSpeedString),
+                title: PQText(value: widget.activity.minSpeed, pq: PQ.speed),
                 subtitle: const Text('minimum speed'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: Text(maxSpeedString),
+                title: PQText(value: widget.activity.maxSpeed, pq: PQ.speed),
                 subtitle: const Text('maximum speed'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(paceRecords.length.toString()),
+                title: PQText(value: paceRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -112,8 +118,8 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -121,25 +127,6 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity;
     records = RecordList<Event>(await activity.records);
-    avgSpeedString = activity.avgSpeed != null
-        ? (activity.avgSpeed * 3.6).toStringAsFixed(2) + 'km/h'
-        : '- - -';
-    avgSpeedByMeasurementsString = activity.avgSpeedByMeasurements != null
-        ? (activity.avgSpeedByMeasurements * 3.6).toStringAsFixed(2) + 'km/h'
-        : '- - -';
-    avgSpeedBySpeedString = activity.avgSpeedBySpeed != null
-        ? (activity.avgSpeedBySpeed * 3.6).toStringAsFixed(2) + 'km/h'
-        : '- - -';
-    avgSpeedByDistanceString = activity.avgSpeedByDistance != null
-        ? (activity.avgSpeedByDistance * 3.6).toStringAsFixed(2) + 'km/h'
-        : '- - -';
-    sdevSpeedString = (activity.sdevSpeed * 3.6).toStringAsFixed(2) + ' km/h';
-    minSpeedString = activity.minSpeed != null
-        ? (activity.minSpeed * 3.6).toStringAsFixed(2) + 'km/h'
-        : '- - -';
-    maxSpeedString = activity.maxSpeed != null
-        ? (activity.maxSpeed * 3.6).toStringAsFixed(2) + 'km/h'
-        : '- - -';
-    setState(() {});
+    setState(() => loading = false);
   }
 }

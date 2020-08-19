@@ -44,7 +44,7 @@ class PQText extends StatelessWidget {
       case PQ.elevation:
         return Text((value as num).toString() + ' m');
       case PQ.cadence:
-        return Text(((value as num) * 2).round().toString() + ' spm');
+        return Text(((value as num) * 2).toStringAsPrecision(3) + ' spm');
       case PQ.duration:
         return Text(Duration(seconds: value as int).asString());
       case PQ.trainingEffect:
@@ -78,6 +78,8 @@ class PQText extends StatelessWidget {
         return Text((value as num).toStringAsFixed(1) + ' kg');
       case PQ.legSpringStiffness:
         return Text((value as num).toStringAsPrecision(3) + ' kN/m');
+      case PQ.double:
+        return Text((value as double).toStringAsPrecision(3));
     }
     return const Text('the pq Parameter was not provided.'); // just to silence the dart analyzer
   }
