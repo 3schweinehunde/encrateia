@@ -42,7 +42,7 @@ class ShowLapScreen extends StatelessWidget {
         context: context,
         nextWidget: ({Lap lap}) => LapOverviewWidget(lap: lap, athlete: athlete ),
       ),
-      if (lap.avgHeartRate != null)
+      if (lap.heartRateAvailable)
         navigationButton(
           title: 'Heart Rate',
           color: MyColor.navigate,
@@ -50,7 +50,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapHeartRateWidget(lap: lap),
         ),
-      if (lap.avgPower != null)
+      if (lap.powerAvailable)
         navigationButton(
           title: 'Power',
           color: MyColor.navigate,
@@ -58,7 +58,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapPowerWidget(lap: lap),
         ),
-      if (lap.avgPower != null)
+      if (lap.powerAvailable)
         navigationButton(
           title: 'Power Duration',
           color: MyColor.navigate,
@@ -66,7 +66,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapPowerDurationWidget(lap: lap),
         ),
-      if (lap.avgSpeed != null)
+      if (lap.paceAvailable)
         navigationButton(
           title: 'Pace',
           color: MyColor.navigate,
@@ -74,7 +74,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapPaceWidget(lap: lap),
         ),
-      if (lap.avgSpeed != null)
+      if (lap.speedAvailable)
         navigationButton(
           title: 'Speed',
           color: MyColor.navigate,
@@ -82,7 +82,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapSpeedWidget(lap: lap),
         ),
-      if (lap.avgSpeed != null && lap.avgPower != null)
+      if (lap.speedAvailable && lap.powerAvailable)
         navigationButton(
           title: 'Ecor',
           color: MyColor.navigate,
@@ -93,7 +93,7 @@ class ShowLapScreen extends StatelessWidget {
             athlete: athlete,
           ),
         ),
-      if (lap.avgGroundTime != null)
+      if (lap.groundTimeAvailable)
         navigationButton(
           title: 'Ground Time',
           color: MyColor.navigate,
@@ -101,7 +101,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapGroundTimeWidget(lap: lap),
         ),
-      if (lap.avgLegSpringStiffness != null)
+      if (lap.groundTimeAvailable)
         navigationButton(
           title: 'Leg Spring Stiffness',
           color: MyColor.navigate,
@@ -109,7 +109,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapLegSpringStiffnessWidget(lap: lap),
         ),
-      if (lap.avgFormPower != null)
+      if (lap.formPowerAvailable)
         navigationButton(
           title: 'Form Power',
           color: MyColor.navigate,
@@ -117,7 +117,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapFormPowerWidget(lap: lap),
         ),
-      if (lap.avgStrydCadence != null)
+      if (lap.cadenceAvailable)
         navigationButton(
           title: 'Cadence',
           color: MyColor.navigate,
@@ -125,7 +125,7 @@ class ShowLapScreen extends StatelessWidget {
           context: context,
           nextWidget: ({Lap lap}) => LapStrydCadenceWidget(lap: lap),
         ),
-      if (lap.avgVerticalOscillation != null)
+      if (lap.verticalOscillationAvailable)
         navigationButton(
           title: 'Vertical Oscillation',
           color: MyColor.navigate,

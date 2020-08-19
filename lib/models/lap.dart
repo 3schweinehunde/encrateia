@@ -146,6 +146,21 @@ class Lap {
       return null;
   }
 
+  // easier check for data availability
+  bool get powerAvailable => !<num>[null, -1].contains(avgPower);
+  bool get heartRateAvailable => !<num>[null, -1].contains(avgHeartRate);
+  bool get ascentAvailable => totalAscent != null && totalDescent != null;
+  bool get cadenceAvailable => !<num>[null, -1].contains(avgStrydCadence);
+  bool get speedAvailable => !<num>[null, 0, -1].contains(avgSpeed);
+  bool get weightAvailable => !<num>[null, 0].contains(weight);
+  bool get paceAvailable => !<num>[null, -1].contains(avgPace);
+  bool get ecorAvailable => !<num>[null, -1].contains(ecor);
+  bool get groundTimeAvailable => !<num>[null, -1].contains(avgGroundTime);
+  bool get formPowerAvailable => !<num>[null, -1].contains(avgFormPower);
+  bool get verticalOscillationAvailable => !<num>[null, -1].contains(avgVerticalOscillation);
+  bool get strideCadenceAvailable => !<num>[null, -1].contains(avgDoubleStrydCadence);
+  bool get legSpringStiffnessAvailable => !<num>[null, -1].contains(avgLegSpringStiffness);
+
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
 
