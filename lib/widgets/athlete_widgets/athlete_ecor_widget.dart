@@ -95,7 +95,6 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
       athlete: widget.athlete,
       tagGroups: tagGroups,
     );
-    loadingStatus = activities.length.toString() + ' activities found';
 
     for (final Activity activity in activities) {
       final Weight weight = await Weight.getBy(
@@ -104,6 +103,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
       );
       activity.weight = weight?.value;
     }
-    setState(() {});
+    setState(() =>
+        loadingStatus = activities.length.toString() + ' activities found');
   }
 }

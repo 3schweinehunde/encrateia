@@ -14,8 +14,7 @@ class AthleteHeartRateWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthleteHeartRateWidgetState createState() =>
-      _AthleteHeartRateWidgetState();
+  _AthleteHeartRateWidgetState createState() => _AthleteHeartRateWidgetState();
 }
 
 class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
@@ -34,7 +33,7 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> heartRateActivities = activities
           .where((Activity activity) =>
-      activity.avgHeartRate != null && activity.avgHeartRate > 20)
+              activity.avgHeartRate != null && activity.avgHeartRate > 20)
           .toList();
 
       if (heartRateActivities.isNotEmpty) {
@@ -90,7 +89,8 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
       athlete: widget.athlete,
       tagGroups: tagGroups,
     );
-    loadingStatus = activities.length.toString() + ' activities found';
-    setState(() {});
+
+    setState(() =>
+        loadingStatus = activities.length.toString() + ' activities found');
   }
 }

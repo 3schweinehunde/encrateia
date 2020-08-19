@@ -14,8 +14,7 @@ class AthletePaceWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthletePaceWidgetState createState() =>
-      _AthletePaceWidgetState();
+  _AthletePaceWidgetState createState() => _AthletePaceWidgetState();
 }
 
 class _AthletePaceWidgetState extends State<AthletePaceWidget> {
@@ -34,7 +33,7 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> paceActivities = activities
           .where((Activity activity) =>
-      activity.avgSpeed != null && activity.avgSpeed > 0)
+              activity.avgSpeed != null && activity.avgSpeed > 0)
           .toList();
 
       if (paceActivities.isNotEmpty) {
@@ -90,7 +89,8 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
       athlete: widget.athlete,
       tagGroups: tagGroups,
     );
-    loadingStatus = activities.length.toString() + ' activities found';
-    setState(() {});
+
+    setState(() =>
+        loadingStatus = activities.length.toString() + ' activities found');
   }
 }

@@ -20,6 +20,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
   List<TagGroup> tagGroups;
   int offset = 0;
   int rows;
+  bool loading = true;
 
   @override
   void initState() {
@@ -125,14 +126,14 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
         ],
       );
     } else {
-      return const Center(
-        child: Text('loading'),
+      return Center(
+        child: Text(loading? 'Loading' : 'No data found'),
       );
     }
   }
 
   Future<void> getData() async {
     tagGroups = await widget.athlete.tagGroups;
-    setState(() {});
+    setState(() => loading = false);
   }
 }

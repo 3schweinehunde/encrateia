@@ -4,7 +4,6 @@ import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_ground_time_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 

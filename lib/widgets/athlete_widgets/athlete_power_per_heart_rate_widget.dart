@@ -95,7 +95,8 @@ class _AthletePowerPerHeartRateWidgetState
       athlete: widget.athlete,
       tagGroups: tagGroups,
     );
-    loadingStatus = activities.length.toString() + ' activities found';
-    setState(() {});
+
+    setState(() =>
+        loadingStatus = activities.length.toString() + ' activities found');
   }
 }

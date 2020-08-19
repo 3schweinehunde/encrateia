@@ -34,7 +34,7 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> paceActivities = activities
           .where((Activity activity) =>
-      activity.avgStrydCadence != null && activity.avgStrydCadence > 0)
+              activity.avgStrydCadence != null && activity.avgStrydCadence > 0)
           .toList();
 
       if (paceActivities.isNotEmpty) {
@@ -90,7 +90,8 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
       athlete: widget.athlete,
       tagGroups: tagGroups,
     );
-    loadingStatus = activities.length.toString() + ' activities found';
-    setState(() {});
+
+    setState(() =>
+        loadingStatus = activities.length.toString() + ' activities found');
   }
 }

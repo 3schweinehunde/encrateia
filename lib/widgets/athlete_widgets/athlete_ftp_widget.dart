@@ -49,13 +49,13 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                   athlete: widget.athlete,
                   fullDecay: 90,
                 ),
-                const SizedBox(height:20),
+                const SizedBox(height: 20),
                 const Center(
                   child:
-                  Text('Tag activities with power data in any tag within '
-                      'the taggroup "Effort" to show up here.'),
+                      Text('Tag activities with power data in any tag within '
+                          'the taggroup "Effort" to show up here.'),
                 ),
-                const SizedBox(height:20),
+                const SizedBox(height: 20),
                 AthleteFilterWidget(
                   athlete: widget.athlete,
                   tagGroups: tagGroups,
@@ -120,10 +120,10 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   Future<void> checkForBacklog() async {
     final Athlete athlete = widget.athlete;
     backlog = await Ftp.deriveBacklog(athlete: athlete);
-    loadingStatus = ftpActivities.length.toString() +
+
+    setState(() => loadingStatus = ftpActivities.length.toString() +
         ' tagged in Effort Taggroup, ' +
         backlog.length.toString() +
-        ' need their ftp to be calculated.';
-    setState(() {});
+        ' need their ftp to be calculated.');
   }
 }
