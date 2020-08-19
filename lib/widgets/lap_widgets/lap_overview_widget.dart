@@ -30,9 +30,9 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
     return <Widget>[
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.avgSpeed, pq: PQ.pace),
+          PQText(value: widget.lap.avgSpeed, pq: PQ.paceFromSpeed),
           const Text(' / '),
-          PQText(value: widget.lap.maxSpeed, pq: PQ.pace),
+          PQText(value: widget.lap.maxSpeed, pq: PQ.paceFromSpeed),
         ]),
         subtitle: const Text('avg / max pace'),
       ),
@@ -107,8 +107,6 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
       athletesId: widget.athlete.id,
       date: widget.lap.timeStamp,
     );
-    setState(() {
-      widget.lap.weight = weight?.value;
-    });
+    setState(() => widget.lap.weight = weight?.value);
   }
 }

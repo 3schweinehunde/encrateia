@@ -1,5 +1,7 @@
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_speed_chart.dart';
@@ -16,6 +18,7 @@ class LapSpeedWidget extends StatefulWidget {
 
 class _LapSpeedWidgetState extends State<LapSpeedWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
+  bool loading = true;
 
   @override
   void initState() {
@@ -52,31 +55,27 @@ class _LapSpeedWidgetState extends State<LapSpeedWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(
-                    (widget.lap.avgSpeed * 3.6).toStringAsFixed(2) + ' km/h'),
+                title: PQText(value: widget.lap.avgSpeed, pq: PQ.speed),
                 subtitle: const Text('average pace'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(
-                    (widget.lap.minSpeed * 3.6).toStringAsFixed(2) + ' km/h'),
+                title: PQText(value: widget.lap.minSpeed, pq: PQ.speed),
                 subtitle: const Text('minimum pace'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: Text(
-                    (widget.lap.maxSpeed * 3.6).toStringAsFixed(2) + ' km/h'),
+                title: PQText(value: widget.lap.maxSpeed, pq: PQ.speed),
                 subtitle: const Text('maximum pace'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(
-                    (widget.lap.sdevSpeed * 3.6).toStringAsFixed(2) + ' km/h'),
+                title: PQText(value: widget.lap.sdevSpeed, pq: PQ.speed),
                 subtitle: const Text('standard deviation pace'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(paceRecords.length.toString()),
+                title: PQText(value: paceRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -88,15 +87,14 @@ class _LapSpeedWidgetState extends State<LapSpeedWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
-    setState(() {});
+    records = RecordList<Event>(await widget.lap.records);
+    setState(() => loading = false);
   }
 }

@@ -1,7 +1,8 @@
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/models/event.dart';
@@ -17,7 +18,7 @@ class LapStrydCadenceWidget extends StatefulWidget {
 
 class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String sdevStrydCadenceString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -55,18 +56,24 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(
-                    widget.lap.avgStrydCadence.toStringOrDashes(1) + ' spm'),
+                title: PQText(
+                  value: widget.lap.avgStrydCadence,
+                  pq: PQ.cadence,
+                ),
                 subtitle: const Text('average cadence'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevStrydCadenceString),
+                title: PQText(
+                  value: widget.lap.sdevStrydCadence,
+                  pq: PQ.cadence,
+                ),
                 subtitle: const Text('standard deviation cadence'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(strydCadenceRecords.length.toString()),
+                title:
+                    PQText(value: strydCadenceRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -78,19 +85,14 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
-
-    setState(() {
-      sdevStrydCadenceString =
-          lap.sdevStrydCadence.toStringOrDashes(2) + ' spm';
-    });
+    records = RecordList<Event>(await widget.lap.records);
+    setState(() => loading = false);
   }
 }

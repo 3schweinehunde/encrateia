@@ -15,6 +15,7 @@ class LapPowerDurationWidget extends StatefulWidget {
 
 class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   List<Event> records = <Event>[];
+  bool loading = true;
 
   @override
   void initState() {
@@ -50,14 +51,14 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
 
   Future<void> getData() async {
     records = RecordList<Event>(await widget.lap.records);
-    setState(() {});
+    setState(() => loading = false);
   }
 }

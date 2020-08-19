@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_altitude_chart.dart';
@@ -17,6 +19,7 @@ class LapAltitudeWidget extends StatefulWidget {
 
 class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
+  bool loading = true;
 
   @override
   void initState() {
@@ -59,7 +62,7 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(altitudeRecords.length.toString()),
+                title: PQText(value: altitudeRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -71,8 +74,8 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -81,6 +84,6 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
 
-    setState(() {});
+    setState(() => loading = false);
   }
 }

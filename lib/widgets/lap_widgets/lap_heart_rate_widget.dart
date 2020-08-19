@@ -2,6 +2,8 @@ import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
@@ -19,8 +21,7 @@ class LapHeartRateWidget extends StatefulWidget {
 
 class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgHeartRateString = 'Loading ...';
-  String sdevHeartRateString = 'Loading ...';
+  bool loading = true;
   HeartRateZoneSchema heartRateZoneSchema;
   List<HeartRateZone> heartRateZones;
 
@@ -59,27 +60,27 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(widget.lap.avgHeartRate.toStringOrDashes(1)),
+                title: PQText(value: widget.lap.avgHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('average heart rate'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(widget.lap.minHeartRate.toString()),
+                title: PQText(value: widget.lap.minHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: Text(widget.lap.maxHeartRate.toString()),
+                title: PQText(value: widget.lap.maxHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('maximum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(widget.lap.sdevHeartRate.toStringAsFixed(2)),
+                title: PQText(value: widget.lap.sdevHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('standard deviation heart rate'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(heartRateRecords.length.toString()),
+                title: PQText(value: heartRateRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -91,21 +92,19 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
-
-    heartRateZoneSchema = await lap.heartRateZoneSchema;
+    records = RecordList<Event>(await widget.lap.records);
+    heartRateZoneSchema = await widget.lap.heartRateZoneSchema;
     if (heartRateZoneSchema != null)
       heartRateZones = await heartRateZoneSchema.heartRateZones;
     else
       heartRateZones = <HeartRateZone>[];
-    setState(() {});
+    setState(() => loading = false);
   }
 }

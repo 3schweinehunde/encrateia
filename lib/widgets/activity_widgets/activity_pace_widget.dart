@@ -60,15 +60,12 @@ class _ActivityPaceWidgetState extends State<ActivityPaceWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.activity.avgSpeed, pq: PQ.pace),
+                title: PQText(value: widget.activity.avgPace, pq: PQ.pace),
                 subtitle: const Text('average pace'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(
-                  value: 50 / 3 / widget.activity.sdevPace,
-                  pq: PQ.pace,
-                ),
+                title: PQText(value: widget.activity.sdevPace, pq: PQ.pace),
                 subtitle: const Text('standard deviation pace'),
               ),
               ListTile(

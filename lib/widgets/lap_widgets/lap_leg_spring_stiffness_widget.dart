@@ -1,4 +1,6 @@
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/num_utils.dart';
@@ -19,8 +21,7 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
 class _LapLegSpringStiffnessWidgetState
     extends State<LapLegSpringStiffnessWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String sdevLegSpringStiffnessString = 'Loading ...';
-  String avgLegSpringStiffnessString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -59,17 +60,26 @@ class _LapLegSpringStiffnessWidgetState
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgLegSpringStiffnessString),
+                title: PQText(
+                  value: widget.lap.avgLegSpringStiffness,
+                  pq: PQ.legSpringStiffness,
+                ),
                 subtitle: const Text('average leg spring stiffness'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevLegSpringStiffnessString),
+                title: PQText(
+                  value: widget.lap.sdevLegSpringStiffness,
+                  pq: PQ.legSpringStiffness,
+                ),
                 subtitle: const Text('standard leg spring stiffness'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(legSpringStiffnessRecords.length.toString()),
+                title: PQText(
+                  value: legSpringStiffnessRecords.length,
+                  pq: PQ.integer,
+                ),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -81,20 +91,14 @@ class _LapLegSpringStiffnessWidgetState
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
-    setState(() {
-      avgLegSpringStiffnessString =
-          widget.lap.avgLegSpringStiffness.toStringOrDashes(1) + ' cm';
-      sdevLegSpringStiffnessString =
-          lap.sdevLegSpringStiffness.toStringOrDashes(2) + ' cm';
-    });
+    records = RecordList<Event>(await widget.lap.records);
+    setState(() => loading = false);
   }
 }

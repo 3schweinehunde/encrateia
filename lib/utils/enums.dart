@@ -49,6 +49,7 @@ enum PQ {
   dateTime,
   distance,
   power,
+  paceFromSpeed,
   pace,
   heartRate,
   ecor,

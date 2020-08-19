@@ -2,11 +2,12 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_ecor_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/num_utils.dart';
 
 class LapEcorWidget extends StatefulWidget {
   const LapEcorWidget({
@@ -24,7 +25,7 @@ class LapEcorWidget extends StatefulWidget {
 class _LapEcorWidgetState extends State<LapEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   Weight weight;
-  String weightString;
+  bool loading = true;
 
   @override
   void initState() {
@@ -65,12 +66,12 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.weight,
-                title: Text(weightString),
+                title: PQText(value: widget.lap.weight, pq: PQ.weight),
                 subtitle: const Text('weight'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(powerRecords.length.toString()),
+                title: PQText(value: powerRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -82,8 +83,8 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -94,7 +95,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
       athletesId: widget.athlete.id,
       date: widget.lap.startTime,
     );
-    weightString = weight.value.toStringOrDashes(2) + ' kg';
-    setState(() {});
+    widget.lap.weight = weight?.value;
+    setState(() => loading = false);
   }
 }

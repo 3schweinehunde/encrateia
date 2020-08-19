@@ -76,7 +76,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                     ]),
                     const SizedBox(width: 20),
                     Column(children: <Widget>[
-                      PQText(pq: PQ.pace, value: activity.avgSpeed),
+                      PQText(pq: PQ.paceFromSpeed, value: activity.avgSpeed),
                       PQText(
                         pq: PQ.heartRate,
                         value: activity.avgHeartRate,

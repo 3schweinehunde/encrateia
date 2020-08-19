@@ -1,4 +1,6 @@
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/num_utils.dart';
@@ -17,7 +19,7 @@ class LapFormPowerWidget extends StatefulWidget {
 
 class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String sdevFormPowerString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -47,7 +49,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
             children: <Widget>[
               LapFormPowerChart(
                 records: RecordList<Event>(formPowerRecords),
-                minimum: widget.lap.avgFormPower / 1.25,
+                minimum: widget.lap.avgFormPower / 1.1,
                 maximum: widget.lap.avgFormPower * 1.25,
               ),
               const Text(
@@ -56,17 +58,17 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(widget.lap.avgFormPower.toStringOrDashes(1) + ' W'),
+                title: PQText(value: widget.lap.avgFormPower, pq: PQ.power),
                 subtitle: const Text('average form power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevFormPowerString),
+                title: PQText(value: widget.lap.sdevFormPower, pq: PQ.power),
                 subtitle: const Text('standard deviation form power'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(formPowerRecords.length.toString()),
+                title: PQText(value: formPowerRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -78,8 +80,8 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -87,9 +89,6 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   Future<void> getData() async {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
-
-    setState(() {
-      sdevFormPowerString = lap.sdevFormPower.toStringOrDashes(2) + ' W';
-    });
+    setState(() => loading = false);
   }
 }

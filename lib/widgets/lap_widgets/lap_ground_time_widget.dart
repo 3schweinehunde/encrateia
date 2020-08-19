@@ -1,4 +1,6 @@
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
@@ -17,8 +19,7 @@ class LapGroundTimeWidget extends StatefulWidget {
 
 class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String sdevGroundTimeString = 'Loading ...';
-  String avgGroundTimeString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -56,17 +57,23 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgGroundTimeString),
+                title: PQText(
+                  value: widget.lap.avgGroundTime,
+                  pq: PQ.groundTime,
+                ),
                 subtitle: const Text('average ground time'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevGroundTimeString),
+                title: PQText(
+                  value: widget.lap.sdevGroundTime,
+                  pq: PQ.groundTime,
+                ),
                 subtitle: const Text('standard deviation ground time'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(groundTimeRecords.length.toString()),
+                title: PQText(value: groundTimeRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -78,8 +85,8 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
@@ -87,9 +94,6 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   Future<void> getData() async {
     final Lap lap = widget.lap;
     records = RecordList<Event>(await lap.records);
-    avgGroundTimeString = widget.lap.avgGroundTime.toStringOrDashes(1) + ' ms';
-    setState(() {
-      sdevGroundTimeString = lap.sdevGroundTime.toStringOrDashes(2) + ' ms';
-    });
+    setState(() => loading = false);
   }
 }

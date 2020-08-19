@@ -41,9 +41,9 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.activity.avgSpeed, pq: PQ.pace),
+          PQText(value: widget.activity.avgSpeed, pq: PQ.paceFromSpeed),
           const Text(' / '),
-          PQText(value: widget.activity.maxSpeed, pq: PQ.pace),
+          PQText(value: widget.activity.maxSpeed, pq: PQ.paceFromSpeed),
         ]),
         subtitle: const Text('avg / max pace'),
       ),

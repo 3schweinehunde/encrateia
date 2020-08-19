@@ -17,8 +17,7 @@ class PQText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!validValue)
-      return const Text('n.a.');
+    if (!validValue) return const Text('n.a.');
 
     switch (pq) {
       case PQ.dateTime:
@@ -27,14 +26,20 @@ class PQText extends StatelessWidget {
         return Text(((value as int) / 1000).toStringAsFixed(2) + ' km');
       case PQ.power:
         return Text((value as num).toStringAsPrecision(3) + ' W');
-      case PQ.pace:
+      case PQ.paceFromSpeed:
         final double totalSeconds = 1000 / (value as double);
         final int minutes = (totalSeconds / 60).floor();
         final String seconds =
             (totalSeconds - minutes * 60).round().toString().padLeft(2, '0');
         return Text('$minutes:$seconds /km');
+      case PQ.pace:
+        final double minutes = value as double;
+        final int fullMinutes = minutes.floor();
+        final String seconds =
+            ((minutes - fullMinutes) * 60).round().toString().padLeft(2, '0');
+        return Text('$fullMinutes:$seconds /km');
       case PQ.heartRate:
-        return Text((value as num).toStringAsPrecision(3) +' bpm');
+        return Text((value as num).toStringAsPrecision(3) + ' bpm');
       case PQ.ecor:
         return Text((value as num).toStringAsFixed(3) + ' kJ/kg/km');
       case PQ.powerPerHeartRate:
@@ -81,7 +86,8 @@ class PQText extends StatelessWidget {
       case PQ.double:
         return Text((value as double).toStringAsPrecision(3));
     }
-    return const Text('the pq Parameter was not provided.'); // just to silence the dart analyzer
+    return const Text(
+        'the pq Parameter was not provided.'); // just to silence the dart analyzer
   }
 
   String get formatString {
@@ -103,7 +109,7 @@ class PQText extends StatelessWidget {
   bool get validValue {
     switch (pq) {
       case PQ.power:
-      case PQ.pace:
+      case PQ.paceFromSpeed:
         return value != null && value != -1;
       case PQ.heartRate:
         return value != null && value != 255;

@@ -1,10 +1,11 @@
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_power_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 
@@ -19,10 +20,7 @@ class LapPowerWidget extends StatefulWidget {
 
 class _LapPowerWidgetState extends State<LapPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgPowerString = 'Loading ...';
-  String minPowerString = 'Loading ...';
-  String maxPowerString = 'Loading ...';
-  String sdevPowerString = 'Loading ...';
+bool loading = true;
   PowerZoneSchema powerZoneSchema;
   List<PowerZone> powerZones;
 
@@ -60,27 +58,27 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgPowerString),
+                title: PQText(value: widget.lap.avgPower, pq: PQ.power),
                 subtitle: const Text('average power'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: Text(minPowerString),
+                title: PQText(value: widget.lap.minPower, pq: PQ.power),
                 subtitle: const Text('minimum power'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: Text(maxPowerString),
+                title: PQText(value: widget.lap.maxPower, pq: PQ.power),
                 subtitle: const Text('maximum power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevPowerString),
+                title: PQText(value: widget.lap.sdevPower, pq: PQ.power),
                 subtitle: const Text('standard deviation power'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(powerRecords.length.toString()),
+                title: PQText(value: powerRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -92,26 +90,19 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
-
-    avgPowerString = lap.avgPower.toStringOrDashes(1) + ' W';
-    minPowerString = lap.minPower.toString() + ' W';
-    maxPowerString = lap.maxPower.toString() + ' W';
-    sdevPowerString = lap.sdevPower.toStringOrDashes(2) + ' W';
-
-    powerZoneSchema = await lap.powerZoneSchema;
+    records = RecordList<Event>(await widget.lap.records);
+    powerZoneSchema = await widget.lap.powerZoneSchema;
     if (powerZoneSchema != null)
       powerZones = await powerZoneSchema.powerZones;
     else
       powerZones = <PowerZone>[];
-    setState(() {});
+    setState(() => loading = false);
   }
 }

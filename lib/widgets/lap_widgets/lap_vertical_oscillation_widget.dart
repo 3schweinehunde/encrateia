@@ -1,7 +1,8 @@
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/utils/num_utils.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/models/event.dart';
@@ -19,8 +20,7 @@ class LapVerticalOscillationWidget extends StatefulWidget {
 class _LapVerticalOscillationWidgetState
     extends State<LapVerticalOscillationWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  String avgVerticalOscillationString = 'Loading ...';
-  String sdevVerticalOscillationString = 'Loading ...';
+  bool loading = true;
 
   @override
   void initState() {
@@ -60,17 +60,26 @@ class _LapVerticalOscillationWidgetState
               const Divider(),
               ListTile(
                 leading: MyIcon.average,
-                title: Text(avgVerticalOscillationString),
+                title: PQText(
+                  value: widget.lap.avgVerticalOscillation,
+                  pq: PQ.verticalOscillation,
+                ),
                 subtitle: const Text('average vertical oscillation'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: Text(sdevVerticalOscillationString),
+                title: PQText(
+                  value: widget.lap.sdevVerticalOscillation,
+                  pq: PQ.verticalOscillation,
+                ),
                 subtitle: const Text('standard deviation vertical oscillation'),
               ),
               ListTile(
                 leading: MyIcon.amount,
-                title: Text(verticalOscillationRecords.length.toString()),
+                title: PQText(
+                  value: verticalOscillationRecords.length,
+                  pq: PQ.integer,
+                ),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -82,22 +91,14 @@ class _LapVerticalOscillationWidgetState
         );
       }
     } else {
-      return const Center(
-        child: Text('Loading'),
+      return Center(
+        child: Text(loading ? 'Loading' : 'No data available'),
       );
     }
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
-
-    avgVerticalOscillationString =
-        lap.avgVerticalOscillation.toStringOrDashes(1) + ' cm';
-
-    setState(() {
-      sdevVerticalOscillationString =
-          lap.sdevVerticalOscillation.toStringOrDashes(2) + ' cm';
-    });
+    records = RecordList<Event>(await widget.lap.records);
+    setState(() => loading = false);
   }
 }
