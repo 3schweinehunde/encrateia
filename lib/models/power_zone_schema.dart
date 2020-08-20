@@ -18,7 +18,7 @@ class PowerZoneSchema {
     _db = DbPowerZoneSchema()
       ..athletesId = athlete.id
       ..name = 'CP based'
-      ..date = DateTime(1970, 01, 01)
+      ..date = DateTime.now()
       ..base = 250;
   }
 
@@ -27,7 +27,7 @@ class PowerZoneSchema {
     _db = DbPowerZoneSchema()
       ..athletesId = athlete.id
       ..name = 'FTP based'
-      ..date = DateTime(1970, 01, 01)
+      ..date = DateTime.now()
       ..base = 250;
   }
 
@@ -35,7 +35,7 @@ class PowerZoneSchema {
     _db = DbPowerZoneSchema()
       ..athletesId = athlete.id
       ..name = 'FTP based'
-      ..date = DateTime(1970, 01, 01)
+      ..date = DateTime.now()
       ..base = 250;
   }
 

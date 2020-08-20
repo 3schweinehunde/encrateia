@@ -11,7 +11,10 @@ import 'package:csv/csv.dart';
 import 'package:intl/intl.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
-  const AthleteBodyWeightWidget({this.athlete, this.callBackFunction});
+  const AthleteBodyWeightWidget({
+    this.athlete,
+    this.callBackFunction,
+  });
 
   final Athlete athlete;
   final Function callBackFunction;
@@ -177,7 +180,7 @@ You can change these later.
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     weights = await athlete.weights;
-    if(widget.callBackFunction != null)
+    if (widget.callBackFunction != null)
       await widget.callBackFunction();
     setState(() {});
   }

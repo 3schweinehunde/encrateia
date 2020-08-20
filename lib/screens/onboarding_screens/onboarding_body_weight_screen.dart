@@ -42,7 +42,10 @@ class _OnBoardingBodyWeightScreenState
         body: SafeArea(
           child: Column(
             children: <Widget>[
-              AthleteBodyWeightWidget(athlete: widget.athlete, callBackFunction: getData),
+              AthleteBodyWeightWidget(
+                athlete: widget.athlete,
+                callBackFunction: getData,
+              ),
               const SizedBox(height: 20),
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
                 MyButton.save(

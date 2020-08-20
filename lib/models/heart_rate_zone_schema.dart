@@ -19,7 +19,7 @@ class HeartRateZoneSchema {
     _db = DbHeartRateZoneSchema()
       ..athletesId = athlete.id
       ..name = 'max HR based'
-      ..date = DateTime(1970, 01, 01)
+      ..date = DateTime.now()
       ..base = 180;
   }
 
@@ -27,7 +27,7 @@ class HeartRateZoneSchema {
     _db = DbHeartRateZoneSchema()
       ..athletesId = athlete.id
       ..name = 'threshold heart rate based'
-      ..date = DateTime(1970, 01, 01)
+      ..date = DateTime.now()
       ..base = 165;
   }
 

@@ -7,10 +7,14 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:intl/intl.dart';
 
 class AthletePowerZoneSchemaWidget extends StatefulWidget {
-  const AthletePowerZoneSchemaWidget({this.athlete});
+  const AthletePowerZoneSchemaWidget({
+    this.athlete,
+    this.callBackFunction,
+  });
 
   final Athlete athlete;
-  
+  final Function callBackFunction;
+
   @override
   _AthletePowerZoneSchemaWidgetState createState() =>
       _AthletePowerZoneSchemaWidgetState();
@@ -61,8 +65,8 @@ class _AthletePowerZoneSchemaWidgetState
                 return DataRow(
                   key: ValueKey<int>(powerZoneSchema.id),
                   cells: <DataCell>[
-                    DataCell(Text(DateFormat('d MMM yyyy')
-                        .format(powerZoneSchema.date))),
+                    DataCell(Text(
+                        DateFormat('d MMM yyyy').format(powerZoneSchema.date))),
                     DataCell(Text(powerZoneSchema.name)),
                     DataCell(Text(powerZoneSchema.base.toString())),
                     DataCell(
@@ -71,7 +75,8 @@ class _AthletePowerZoneSchemaWidgetState
                         await Navigator.push(
                           context,
                           MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext context) => AddPowerZoneSchemaScreen(
+                            builder: (BuildContext context) =>
+                                AddPowerZoneSchemaScreen(
                               powerZoneSchema: powerZoneSchema,
                             ),
                           ),
@@ -93,7 +98,8 @@ class _AthletePowerZoneSchemaWidgetState
                       await Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => AddPowerZoneSchemaScreen(
+                          builder: (BuildContext context) =>
+                              AddPowerZoneSchemaScreen(
                             powerZoneSchema:
                                 PowerZoneSchema(athlete: widget.athlete),
                           ),
@@ -151,7 +157,8 @@ You could also create a schema from scratch.
                   await Navigator.push(
                     context,
                     MaterialPageRoute<BuildContext>(
-                      builder: (BuildContext context) => AddPowerZoneSchemaScreen(
+                      builder: (BuildContext context) =>
+                          AddPowerZoneSchemaScreen(
                         powerZoneSchema:
                             PowerZoneSchema(athlete: widget.athlete),
                       ),
@@ -173,12 +180,15 @@ You could also create a schema from scratch.
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     powerZoneSchemas = await athlete.powerZoneSchemas;
+    if (widget.callBackFunction != null)
+      await widget.callBackFunction();
     setState(() {});
   }
 
   Future<void> likeStryd() async {
     final Athlete athlete = widget.athlete;
-    final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeStryd(athlete: athlete);
+    final PowerZoneSchema powerZoneSchema =
+        PowerZoneSchema.likeStryd(athlete: athlete);
     await powerZoneSchema.save();
     await powerZoneSchema.addStrydZones();
     await getData();
@@ -186,7 +196,8 @@ You could also create a schema from scratch.
 
   Future<void> likeJimVance() async {
     final Athlete athlete = widget.athlete;
-    final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeJimVance(athlete: athlete);
+    final PowerZoneSchema powerZoneSchema =
+        PowerZoneSchema.likeJimVance(athlete: athlete);
     await powerZoneSchema.save();
     await powerZoneSchema.addJimVanceZones();
     await getData();
@@ -194,7 +205,8 @@ You could also create a schema from scratch.
 
   Future<void> likeStefanDillinger() async {
     final Athlete athlete = widget.athlete;
-    final PowerZoneSchema powerZoneSchema = PowerZoneSchema.likeStefanDillinger(athlete: athlete);
+    final PowerZoneSchema powerZoneSchema =
+        PowerZoneSchema.likeStefanDillinger(athlete: athlete);
     await powerZoneSchema.save();
     await powerZoneSchema.addStefanDillingerZones();
     await getData();
