@@ -57,9 +57,7 @@ class PowerZoneSchema {
   Future<List<PowerZone>> get powerZones async {
     final List<DbPowerZone> dbPowerZoneList =
         await _db.getDbPowerZones().orderBy('lowerLimit').toList();
-    return dbPowerZoneList
-        .map(PowerZone.exDb)
-        .toList();
+    return dbPowerZoneList.map(PowerZone.exDb).toList();
   }
 
   Future<void> addStrydZones() async {
@@ -201,7 +199,9 @@ class PowerZoneSchema {
   String toString() => '< PowerZoneSchema | $name | $date >';
 
   static Future<PowerZoneSchema> getBy({int athletesId, DateTime date}) async {
-    final List<DbPowerZoneSchema> dbPowerZoneSchemas = await DbPowerZoneSchema()
+    List<DbPowerZoneSchema> dbPowerZoneSchemas;
+
+    dbPowerZoneSchemas = await DbPowerZoneSchema()
         .select()
         .athletesId
         .equals(athletesId)
@@ -213,7 +213,17 @@ class PowerZoneSchema {
         .toList();
     if (dbPowerZoneSchemas.isNotEmpty)
       return PowerZoneSchema._fromDb(dbPowerZoneSchemas.first);
-    return null;
+    else
+      dbPowerZoneSchemas = await DbPowerZoneSchema()
+          .select()
+          .athletesId
+          .equals(athletesId)
+          .orderBy('date')
+          .top(1)
+          .toList();
+    return (dbPowerZoneSchemas.isNotEmpty)
+        ? PowerZoneSchema._fromDb(dbPowerZoneSchemas.first)
+        : null;
   }
 
   static PowerZoneSchema exDb(DbPowerZoneSchema db) =>

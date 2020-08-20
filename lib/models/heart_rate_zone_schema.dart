@@ -137,7 +137,8 @@ class HeartRateZoneSchema {
     int athletesId,
     DateTime date,
   }) async {
-    final List<DbHeartRateZoneSchema> dbHeartRateZoneSchemas =
+    List<DbHeartRateZoneSchema> dbHeartRateZoneSchemas;
+    dbHeartRateZoneSchemas =
         await DbHeartRateZoneSchema()
             .select()
             .athletesId
@@ -150,7 +151,17 @@ class HeartRateZoneSchema {
             .toList();
     if (dbHeartRateZoneSchemas.isNotEmpty)
       return HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first);
-    return null;
+    else
+      dbHeartRateZoneSchemas = await DbHeartRateZoneSchema()
+          .select()
+          .athletesId
+          .equals(athletesId)
+          .orderBy('date')
+          .top(1)
+          .toList();
+    return (dbHeartRateZoneSchemas.isNotEmpty)
+        ? HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first)
+        : null;
   }
 
   static HeartRateZoneSchema exDb(DbHeartRateZoneSchema db) =>
