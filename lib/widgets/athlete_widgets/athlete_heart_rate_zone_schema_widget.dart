@@ -7,9 +7,13 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:intl/intl.dart';
 
 class AthleteHeartRateZoneSchemaWidget extends StatefulWidget {
-  const AthleteHeartRateZoneSchemaWidget({this.athlete});
+  const AthleteHeartRateZoneSchemaWidget({
+    this.athlete,
+    this.callBackFunction,
+  });
 
   final Athlete athlete;
+  final Function callBackFunction;
 
   @override
   _AthleteHeartRateZoneSchemaWidgetState createState() =>
@@ -72,7 +76,8 @@ class _AthleteHeartRateZoneSchemaWidgetState
                         await Navigator.push(
                           context,
                           MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
+                            builder: (BuildContext context) =>
+                                AddHeartRateZoneSchemaScreen(
                               heartRateZoneSchema: heartRateZoneSchema,
                             ),
                           ),
@@ -94,7 +99,8 @@ class _AthleteHeartRateZoneSchemaWidgetState
                       await Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
+                          builder: (BuildContext context) =>
+                              AddHeartRateZoneSchemaScreen(
                             heartRateZoneSchema:
                                 HeartRateZoneSchema(athlete: widget.athlete),
                           ),
@@ -149,7 +155,8 @@ You could also create a schema from scratch.
                   await Navigator.push(
                     context,
                     MaterialPageRoute<BuildContext>(
-                      builder: (BuildContext context) => AddHeartRateZoneSchemaScreen(
+                      builder: (BuildContext context) =>
+                          AddHeartRateZoneSchemaScreen(
                         heartRateZoneSchema:
                             HeartRateZoneSchema(athlete: widget.athlete),
                       ),
@@ -171,12 +178,15 @@ You could also create a schema from scratch.
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     heartRateZoneSchemas = await athlete.heartRateZoneSchemas;
+    if (widget.callBackFunction != null)
+      await widget.callBackFunction();
     setState(() {});
   }
 
   Future<void> likeGarmin() async {
     final Athlete athlete = widget.athlete;
-    final HeartRateZoneSchema heartRateZoneSchema = HeartRateZoneSchema.likeGarmin(athlete: athlete);
+    final HeartRateZoneSchema heartRateZoneSchema =
+        HeartRateZoneSchema.likeGarmin(athlete: athlete);
     await heartRateZoneSchema.save();
     await heartRateZoneSchema.addGarminZones();
     await getData();

@@ -1,3 +1,4 @@
+import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_body_weight_screen.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
@@ -20,6 +21,14 @@ class OnBoardingHeartRateZoneSchemaScreen extends StatefulWidget {
 
 class _OnBoardingHeartRateZoneSchemaScreenState
     extends State<OnBoardingHeartRateZoneSchemaScreen> {
+  bool heartRateZoneSchemaHasBeenEntered = false;
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -33,7 +42,10 @@ class _OnBoardingHeartRateZoneSchemaScreenState
         body: SafeArea(
           child: Column(
             children: <Widget>[
-              AthleteHeartRateZoneSchemaWidget(athlete: widget.athlete),
+              AthleteHeartRateZoneSchemaWidget(
+                athlete: widget.athlete,
+                callBackFunction: getData,
+              ),
               const Padding(
                 padding: EdgeInsets.only(left: 20, right: 20),
                 child:
@@ -43,23 +55,33 @@ class _OnBoardingHeartRateZoneSchemaScreenState
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
                 MyButton.save(
                   child: const Text('Next step'),
-                  onPressed: () async {
-                    await widget.athlete.save();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute<BuildContext>(
-                        builder: (BuildContext _) => OnBoardingBodyWeightScreen(
-                          athlete: widget.athlete,
-                        ),
-                      ),
-                    );
-                  },
+                  onPressed:
+                      heartRateZoneSchemaHasBeenEntered ? nextButton : null,
                 ),
                 const SizedBox(width: 20),
               ]),
               const Spacer(),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> getData() async {
+    final List<HeartRateZoneSchema> heartRateZoneSchemas =
+        await widget.athlete.heartRateZoneSchemas;
+    setState(() =>
+        heartRateZoneSchemaHasBeenEntered = heartRateZoneSchemas.isNotEmpty);
+  }
+
+  Future<void> nextButton() async {
+    await widget.athlete.save();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute<BuildContext>(
+        builder: (BuildContext _) => OnBoardingBodyWeightScreen(
+          athlete: widget.athlete,
         ),
       ),
     );
