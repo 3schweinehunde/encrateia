@@ -96,7 +96,7 @@ class _AddHeartRateZoneSchemaScreenState
               horizontalMargin: 10,
               columns: const <DataColumn>[
                 DataColumn(label: Text('Zone')),
-                DataColumn(label: Text('Limits (W)')),
+                DataColumn(label: Text('Limits (bpm)')),
                 DataColumn(label: Text('Color')),
                 DataColumn(label: Text('Edit')),
               ],
