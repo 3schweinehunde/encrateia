@@ -23,7 +23,7 @@ class AthleteFilterWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-      const SizedBox(height: 40),
+      const SizedBox(height: 20),
       AthleteCurrentFilterWidget(
         athlete: athlete,
         tagGroups: tagGroups,
@@ -48,6 +48,7 @@ class AthleteFilterWidget extends StatelessWidget {
           const SizedBox(width: 20),
         ],
       ),
+          const SizedBox(height: 20),
     ]);
   }
 }

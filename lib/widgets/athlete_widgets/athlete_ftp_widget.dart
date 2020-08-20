@@ -55,16 +55,14 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                       Text('Tag activities with power data in any tag within '
                           'the taggroup "Effort" to show up here.'),
                 ),
-                const SizedBox(height: 20),
                 AthleteFilterWidget(
                   athlete: widget.athlete,
                   tagGroups: tagGroups,
                   callBackFunction: getData,
                 ),
+                Text(loadingStatus),
                 Row(
                   children: <Widget>[
-                    const Spacer(),
-                    Text(loadingStatus),
                     const Spacer(),
                     MyButton.activity(
                         child: const Text('Calculate missing FTP'),
