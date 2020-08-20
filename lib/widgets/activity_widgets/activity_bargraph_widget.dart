@@ -10,7 +10,6 @@ import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_bar_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 
 class ActivityBarGraphWidget extends StatefulWidget {
   const ActivityBarGraphWidget({
@@ -153,7 +152,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 const Text('Activity'),
                 MyBarChart(
                   height: 20,
-                  value: widget.activity.avgSpeed.toPaceDouble(),
+                  value: widget.activity.avgPace,
                   maximum: 700,
                 ),
                 PQText(value: widget.activity.avgSpeed, pq: PQ.paceFromSpeed),
@@ -163,7 +162,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                   Text('Lap ' + lap.index.toString()),
                   MyBarChart(
                     height: 20,
-                    value: lap.avgSpeed.toPaceDouble(),
+                    value: lap.avgPace,
                     maximum: 700,
                   ),
                   PQText(value: lap.avgSpeed, pq: PQ.paceFromSpeed),

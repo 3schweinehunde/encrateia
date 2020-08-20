@@ -7,8 +7,7 @@ import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:intl/intl.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
+import 'PQText.dart';
 
 class AthleteTimeSeriesChart extends StatefulWidget {
   const AthleteTimeSeriesChart({
@@ -192,31 +191,41 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                   ),
                 ),
                 ListTile(
-                  title: Text(DateFormat('dd MMM yyyy, h:mm:ss')
-                      .format(selectedActivity.timeCreated)),
+                  title: PQText(
+                    value: selectedActivity.timeCreated,
+                    pq: PQ.dateTime,
+                    format: DateTimeFormat.longDateTime,
+                  ),
                   subtitle: const Text('Time created'),
                 ),
                 ListTile(
-                  title: Text(selectedActivity.distance.toString() + ' m'),
+                  title: PQText(
+                    value: selectedActivity.distance,
+                    pq: PQ.distance,
+                  ),
                   subtitle: const Text('Distance'),
                 ),
                 ListTile(
-                  title: Text(selectedActivity.avgSpeed.toPace() + ' min/km'),
+                  title: PQText(
+                    value: selectedActivity.avgSpeed,
+                    pq: PQ.paceFromSpeed,
+                  ),
                   subtitle: const Text('Average speed'),
                 ),
                 ListTile(
-                  title:
-                      Text(selectedActivity.avgPower.toStringAsFixed(1) + ' W'),
+                  title: PQText(value: selectedActivity.avgPower, pq: PQ.power),
                   subtitle: const Text('Average power'),
                 ),
                 if (selectedActivity.ftp != null)
                   ListTile(
-                    title: Text(selectedActivity.ftp.toStringAsFixed(1) + ' W'),
+                    title: PQText(value: selectedActivity.ftp, pq: PQ.power),
                     subtitle: const Text('FTP'),
                   ),
                 ListTile(
-                    title:
-                        Text(selectedActivity.avgHeartRate.toString() + ' bpm'),
+                    title: PQText(
+                      value: selectedActivity.avgHeartRate,
+                      pq: PQ.heartRate,
+                    ),
                     subtitle: const Text('Average heart rate')),
               ],
             ),
