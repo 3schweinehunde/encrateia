@@ -9,19 +9,20 @@ import 'package:flutter/foundation.dart';
 import 'package:charts_common/common.dart' as common show Series, ChartBehavior;
 
 class MyLineChart extends LineChart {
-  MyLineChart(
-      {@required List<common.Series<dynamic, dynamic>> data,
-      @required double maxDomain,
-      @required List<Lap> laps,
-      List<PowerZone> powerZones,
-      List<HeartRateZone> heartRateZones,
-      @required String domainTitle,
-      String measureTitle,
-      NumericTickProviderSpec measureTickProviderSpec,
-      NumericTickProviderSpec domainTickProviderSpec,
-      double minimum,
-      double maximum})
-      : super(
+  MyLineChart({
+    @required List<common.Series<dynamic, dynamic>> data,
+    @required double maxDomain,
+    @required List<Lap> laps,
+    List<PowerZone> powerZones,
+    List<HeartRateZone> heartRateZones,
+    @required String domainTitle,
+    String measureTitle,
+    NumericTickProviderSpec measureTickProviderSpec,
+    NumericTickProviderSpec domainTickProviderSpec,
+    double minimum,
+    double maximum,
+    bool flipVerticalAxis,
+  }) : super(
           data,
           defaultRenderer: LineRendererConfig<num>(
             includeArea: true,
@@ -40,6 +41,7 @@ class MyLineChart extends LineChart {
                 maximum: maximum,
               )),
           animate: false,
+          flipVerticalAxis: flipVerticalAxis ?? false,
           layoutConfig: GraphUtils.layoutConfig,
           behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
             PanAndZoomBehavior(),

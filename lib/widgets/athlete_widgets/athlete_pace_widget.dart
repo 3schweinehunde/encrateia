@@ -47,6 +47,7 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
                 activityAttr: ActivityAttr.avgPace,
                 chartTitleText: 'Pace',
                 athlete: widget.athlete,
+                flipVerticalAxis: true,
               ),
               AthleteFilterWidget(
                 athlete: widget.athlete,

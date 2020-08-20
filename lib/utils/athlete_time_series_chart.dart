@@ -17,6 +17,7 @@ class AthleteTimeSeriesChart extends StatefulWidget {
     @required this.activityAttr,
     @required this.chartTitleText,
     this.fullDecay,
+    this.flipVerticalAxis,
   });
 
   final Athlete athlete;
@@ -24,6 +25,7 @@ class AthleteTimeSeriesChart extends StatefulWidget {
   final ActivityAttr activityAttr;
   final String chartTitleText;
   final int fullDecay;
+  final bool flipVerticalAxis;
 
   @override
   _AthleteTimeSeriesChartState createState() => _AthleteTimeSeriesChartState();
@@ -87,6 +89,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
           child: TimeSeriesChart(
             data,
             animate: true,
+            flipVerticalAxis: widget.flipVerticalAxis ?? false,
             selectionModels: <SelectionModelConfig<DateTime>>[
               SelectionModelConfig<DateTime>(
                 type: SelectionModelType.info,
