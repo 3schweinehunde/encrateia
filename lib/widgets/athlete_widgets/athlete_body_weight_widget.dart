@@ -11,9 +11,10 @@ import 'package:csv/csv.dart';
 import 'package:intl/intl.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
-  const AthleteBodyWeightWidget({this.athlete});
+  const AthleteBodyWeightWidget({this.athlete, this.callBackFunction});
 
   final Athlete athlete;
+  final Function callBackFunction;
 
   @override
   _AthleteBodyWeightWidgetState createState() =>
@@ -58,7 +59,8 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => AddWeightScreen(weight: weight),
+                          builder: (BuildContext context) =>
+                              AddWeightScreen(weight: weight),
                         ),
                       );
                       getData();
@@ -175,6 +177,8 @@ You can change these later.
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     weights = await athlete.weights;
+    if(widget.callBackFunction != null)
+      await widget.callBackFunction();
     setState(() {});
   }
 
