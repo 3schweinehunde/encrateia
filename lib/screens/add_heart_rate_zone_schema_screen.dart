@@ -60,6 +60,7 @@ class _AddHeartRateZoneSchemaScreenState
               decoration: const InputDecoration(
                 labelText: 'Valid from',
               ),
+              resetIcon: null,
               format: DateFormat('yyyy-MM-dd'),
               initialValue: widget.heartRateZoneSchema.date,
               onShowPicker: (BuildContext context, DateTime currentValue) {

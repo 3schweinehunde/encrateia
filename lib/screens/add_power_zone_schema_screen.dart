@@ -59,6 +59,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
               decoration: const InputDecoration(labelText: 'Valid from'),
               format: DateFormat('yyyy-MM-dd'),
               initialValue: widget.powerZoneSchema.date,
+              resetIcon: null,
               onShowPicker: (BuildContext context, DateTime currentValue) {
                 return showDatePicker(
                   context: context,
