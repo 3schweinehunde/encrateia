@@ -1,7 +1,7 @@
 name: encrateia
 description: Activity tracker data analysis for Android and iOS
 
-version: 0.4.6
+version: 0.4.7
 
 environment:
   sdk: ">=2.6.0 <3.0.0"

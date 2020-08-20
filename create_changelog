@@ -1,0 +1,3 @@
+#!/bin/bash
+
+LANGUAGE=en_US.UTF-8 git log --graph --pretty=format:'%h - %d %s (%cd)' --abbrev-commit --date=format:'%Y-%m-%d %H:%M' >> changelog.txt
