@@ -19,17 +19,13 @@ extension DurationFormatters on Duration {
 
 extension DegreeFormatters on double {
   String semicirclesAsDegrees() {
-    if (this != null) {
-      final double fractionalDegrees = this * (180 / pow(2, 31));
-      final int degrees = fractionalDegrees.floor();
-      final int minutes = ((fractionalDegrees - degrees) * 60).floor();
-      final double seconds =
-          (((fractionalDegrees - degrees) * 60) - minutes) * 60;
+    final double fractionalDegrees = this * (180 / pow(2, 31));
+    final int degrees = fractionalDegrees.floor();
+    final int minutes = ((fractionalDegrees - degrees) * 60).floor();
+    final double seconds =
+        (((fractionalDegrees - degrees) * 60) - minutes) * 60;
 
-      return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}"';
-    } else {
-      return '- - - ';
-    }
+    return '$degrees° $minutes\' ${seconds.toStringAsFixed(2)}"';
   }
 
   String toPace() {

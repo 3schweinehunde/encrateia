@@ -5,6 +5,8 @@ import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/bar_zone.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_bar_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -154,7 +156,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                   value: widget.activity.avgSpeed.toPaceDouble(),
                   maximum: 700,
                 ),
-                Text(widget.activity.avgSpeed.toPace()),
+                PQText(value: widget.activity.avgSpeed, pq: PQ.paceFromSpeed),
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[
@@ -164,7 +166,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                     value: lap.avgSpeed.toPaceDouble(),
                     maximum: 700,
                   ),
-                  Text(lap.avgSpeed.toPace()),
+                  PQText(value: lap.avgSpeed, pq: PQ.paceFromSpeed),
                 ]),
             ]),
           ]),
