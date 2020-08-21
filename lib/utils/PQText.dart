@@ -109,11 +109,16 @@ class PQText extends StatelessWidget {
 
   bool get validValue {
     switch (pq) {
-      case PQ.power:
+      case PQ.cadence:
+      case PQ.groundTime:
+      case PQ.legSpringStiffness:
       case PQ.paceFromSpeed:
+      case PQ.power:
+      case PQ.speed:
+      case PQ.verticalOscillation:
         return value != null && value != -1;
       case PQ.heartRate:
-        return value != null && value != 255;
+        return value != null && value != 255 && value != -1;
       case PQ.stanceTime:
         return value != null && value != 6553.50;
       case PQ.percentage:

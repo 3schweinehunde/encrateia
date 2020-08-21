@@ -332,7 +332,7 @@ class RecordList<E> extends DelegatingList<E> {
 
   // Stride Ratio
   double avgStrideRatio() {
-    final Iterable<double> powerRatios = _records
+    final Iterable<double> strydRatios = _records
         .where((Event record) =>
             record.speed != null &&
             record.strydCadence != null &&
@@ -346,7 +346,7 @@ class RecordList<E> extends DelegatingList<E> {
             record.strydCadence /
             record.verticalOscillation);
 
-    return powerRatios.isNotEmpty ? powerRatios.mean() : -1;
+    return strydRatios.isNotEmpty ? strydRatios.mean() : -1;
   }
 
   double sdevStrideRatio() => _records
