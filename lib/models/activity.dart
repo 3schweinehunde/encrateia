@@ -228,7 +228,7 @@ class Activity {
       case ActivityAttr.avgPace:
         return avgPace;
       case ActivityAttr.avgHeartRate:
-        return avgHeartRate;
+        return avgHeartRate.toDouble();
       case ActivityAttr.avgDoubleStrydCadence:
         return avgDoubleStrydCadence;
       case ActivityAttr.ftp:
