@@ -55,7 +55,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                 DataColumn(label: Text('Date')),
                 DataColumn(label: Text('Name')),
                 DataColumn(
-                  label: Text('Base (W)'),
+                  label: Text('Base (bpm)'),
                   numeric: true,
                 ),
                 DataColumn(label: Text('Edit')),
