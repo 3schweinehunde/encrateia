@@ -50,6 +50,7 @@ class LapPaceChart extends StatelessWidget {
         behaviors: GraphUtils.axis(
           measureTitle: 'Pace (min/km)',
         ),
+        flipVerticalAxis: true,
       ),
     );
   }

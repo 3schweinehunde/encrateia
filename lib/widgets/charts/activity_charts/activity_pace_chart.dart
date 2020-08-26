@@ -66,6 +66,7 @@ class ActivityPaceChart extends StatelessWidget {
                   const BasicNumericTickProviderSpec(desiredTickCount: 6),
               minimum: minimum,
               maximum: maximum,
+              flipVerticalAxis: true,
             ),
           );
         } else
