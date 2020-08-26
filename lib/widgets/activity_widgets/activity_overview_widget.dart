@@ -1,5 +1,4 @@
 import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -122,12 +121,8 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
   }
 
   Future<void> getData() async {
-    final Weight weight = await Weight.getBy(
-      athletesId: widget.athlete.id,
-      date: widget.activity.timeCreated,
-    );
-    setState(() {
-      widget.activity.weight = weight?.value;
-    });
+    await widget.activity.weight;
+    await widget.activity.ecor;
+    setState(() {});
   }
 }

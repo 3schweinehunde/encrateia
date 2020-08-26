@@ -25,7 +25,7 @@ class ActivityEcorWidget extends StatefulWidget {
 class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   Weight weight;
-  bool loading;
+  bool loading = true;
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
                 records: RecordList<Event>(ecorRecords),
                 activity: widget.activity,
                 athlete: widget.athlete,
-                weight: weight.value,
+                weight: widget.activity.cachedWeight,
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
@@ -62,12 +62,12 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
               const Divider(),
               ListTile(
                 leading: MyIcon.power,
-                title: PQText(value: widget.activity.ecor, pq: PQ.ecor),
+                title: PQText(value: widget.activity.cachedEcor, pq: PQ.ecor),
                 subtitle: const Text('ecor (Energy cost of running)'),
               ),
               ListTile(
                 leading: MyIcon.weight,
-                title: PQText(value: widget.activity.weight, pq: PQ.weight),
+                title: PQText(value: widget.activity.cachedWeight, pq: PQ.weight),
                 subtitle: const Text('weight'),
               ),
               ListTile(
@@ -92,11 +92,8 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
 
   Future<void> getData() async {
     records = RecordList<Event>(await widget.activity.records);
-    weight = await Weight.getBy(
-      athletesId: widget.athlete.id,
-      date: widget.activity.timeCreated,
-    );
-    widget.activity.weight = weight.value;
+    await widget.activity.weight;
+    await widget.activity.ecor;
     setState(() => loading = false);
   }
 }

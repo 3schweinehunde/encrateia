@@ -1,6 +1,5 @@
 import 'package:encrateia/models/activity_list.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/athlete_time_series_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
@@ -97,11 +96,8 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
     );
 
     for (final Activity activity in activities) {
-      final Weight weight = await Weight.getBy(
-        athletesId: activity.athletesId,
-        date: activity.timeCreated,
-      );
-      activity.weight = weight?.value;
+      await activity.weight;
+      await activity.ecor;
     }
     setState(() =>
         loadingStatus = activities.length.toString() + ' activities found');

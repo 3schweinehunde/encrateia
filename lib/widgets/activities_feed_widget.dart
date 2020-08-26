@@ -67,7 +67,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                       PQText(
                         pq: PQ.dateTime,
                         value: activity.timeCreated,
-                        format: DateTimeFormat.shortDateTime,
+                        format: DateTimeFormat.shortDate,
                       ),
                       PQText(
                         pq: PQ.distance,
@@ -89,7 +89,10 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                           pq: PQ.power,
                           value: activity.avgPower,
                         ),
-                        const Text('')
+                        PQText(
+                          pq: PQ.ecor,
+                          value: activity.cachedEcor,
+                        ),
                       ],
                     )
                   ],
@@ -156,6 +159,8 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
     tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete);
     for (final Activity activity in activities) {
       await activity.tags;
+      await activity.weight;
+      await activity.ecor;
       if (disposed)
         break;
       setState(() {});
