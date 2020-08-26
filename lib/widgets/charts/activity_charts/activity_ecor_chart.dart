@@ -57,7 +57,7 @@ class ActivityEcorChart extends StatelessWidget {
               data: data,
               maxDomain: records.last.distance,
               laps: laps,
-              domainTitle: 'Ecor (W s/kg m)',
+              domainTitle: 'Ecor (kJ/kg/km)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(
                   zeroBound: false,
                   dataIsInWholeNumbers: false,

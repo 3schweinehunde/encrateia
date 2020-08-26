@@ -44,7 +44,7 @@ class LapEcorChart extends StatelessWidget {
         ),
         animate: false,
         behaviors: GraphUtils.axis(
-          measureTitle: 'Ecor (W s/kg m)',
+          measureTitle: 'Ecor (kJ/kg/km)',
         ),
       ),
     );
