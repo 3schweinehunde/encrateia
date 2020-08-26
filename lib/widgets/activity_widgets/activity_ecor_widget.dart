@@ -92,7 +92,6 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
 
   Future<void> getData() async {
     records = RecordList<Event>(await widget.activity.records);
-    await widget.activity.weight;
     await widget.activity.ecor;
     setState(() => loading = false);
   }

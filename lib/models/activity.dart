@@ -211,7 +211,7 @@ class Activity {
       case ActivityAttr.avgPower:
         return avgPower;
       case ActivityAttr.ecor:
-        return ecor;
+        return cachedEcor;
       case ActivityAttr.avgPowerPerHeartRate:
         return avgPowerPerHeartRate;
       case ActivityAttr.avgSpeedPerHeartRate:

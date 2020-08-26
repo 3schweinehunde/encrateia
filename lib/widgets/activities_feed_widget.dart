@@ -159,7 +159,6 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
     tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete);
     for (final Activity activity in activities) {
       await activity.tags;
-      await activity.weight;
       await activity.ecor;
       if (disposed)
         break;

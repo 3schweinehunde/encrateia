@@ -70,7 +70,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
             children: <Widget>[
               AthleteTimeSeriesChart(
                 activities: ecorActivities,
-                chartTitleText: 'Ecor (kJ / kg / km)',
+                chartTitleText: 'Ecor (kJ/kg/km)',
                 activityAttr: ActivityAttr.ecor,
                 athlete: widget.athlete,
               ),
@@ -96,7 +96,6 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
     );
 
     for (final Activity activity in activities) {
-      await activity.weight;
       await activity.ecor;
     }
     setState(() =>
