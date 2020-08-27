@@ -45,10 +45,6 @@ class LapMetadataWidget extends StatelessWidget {
         subtitle: const Text('total elapsed time'),
       ),
       ListTile(
-        title: PQText(value: lap.totalTimerTime, pq: PQ.duration),
-        subtitle: const Text('total timer time'),
-      ),
-      ListTile(
         title: Row(children: <Widget>[
           PQText(value: lap.avgStanceTime, pq: PQ.stanceTime),
           const Text(' / '),

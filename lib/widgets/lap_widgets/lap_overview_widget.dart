@@ -58,6 +58,10 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
         subtitle: const Text('start time'),
       ),
       ListTile(
+        title: PQText(value: widget.lap.totalTimerTime, pq: PQ.duration),
+        subtitle: const Text('total timer time'),
+      ),
+      ListTile(
         title: PQText(value: widget.lap.totalDistance, pq: PQ.distance),
         subtitle: const Text('distance'),
       ),
