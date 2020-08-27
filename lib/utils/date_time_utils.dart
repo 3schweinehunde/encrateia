@@ -15,6 +15,14 @@ extension DurationFormatters on Duration {
         inSeconds.remainder(60).toString() +
         's';
   }
+
+  String asShortString() {
+    return
+        inMinutes.remainder(60).toString() +
+        'min ' +
+        inSeconds.remainder(60).toString() +
+        's';
+  }
 }
 
 extension DegreeFormatters on double {

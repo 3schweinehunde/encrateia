@@ -40,11 +40,12 @@ class _LapsListWidgetState extends State<LapsListWidget> {
             onSelectAll: (_) {},
             columns: const <DataColumn>[
               DataColumn(label: Text('Lap'), numeric: true),
-              DataColumn(label: Text('HR\nbpm'), numeric: true),
-              DataColumn(label: Text('Pace\nmin:s'), numeric: true),
-              DataColumn(label: Text('Power\nWatt'), numeric: true),
-              DataColumn(label: Text('Dist.\nkm'), numeric: true),
-              DataColumn(label: Text('Ascent\nm'), numeric: true),
+              DataColumn(label: Text('HR'), numeric: true),
+              DataColumn(label: Text('Pace'), numeric: true),
+              DataColumn(label: Text('Power'), numeric: true),
+              DataColumn(label: Text('Dist.'), numeric: true),
+              DataColumn(label: Text('Ascent'), numeric: true),
+              DataColumn(label: Text('Total Timer Time'), numeric: true),
             ],
             rows: laps.map((Lap lap) {
               return DataRow(
@@ -75,6 +76,7 @@ class _LapsListWidgetState extends State<LapsListWidget> {
                       pq: PQ.elevation,
                     ),
                   ),
+                  DataCell(PQText(value: lap.totalTimerTime, pq: PQ.shortDuration)),
                 ],
               );
             }).toList(),

@@ -53,6 +53,8 @@ class PQText extends StatelessWidget {
         return Text(((value as num) * 2).toStringAsPrecision(3) + ' spm');
       case PQ.duration:
         return Text(Duration(seconds: value as int).asString());
+      case PQ.shortDuration:
+        return Text(Duration(seconds: value as int).asShortString());
       case PQ.trainingEffect:
         return Text((value as num).toString());
       case PQ.text:
