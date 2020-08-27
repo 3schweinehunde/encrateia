@@ -50,8 +50,8 @@ class _LapLegSpringStiffnessWidgetState
             children: <Widget>[
               LapLegSpringStiffnessChart(
                 records: RecordList<Event>(legSpringStiffnessRecords),
-                minimum: widget.lap.avgLegSpringStiffness / 1.25,
-                maximum: widget.lap.avgLegSpringStiffness * 1.25,
+                minimum: widget.lap.avgLegSpringStiffness / 1.20,
+                maximum: widget.lap.avgLegSpringStiffness * 1.20,
               ),
               const Text('Only records where leg spring stiffness > 0 kN/m '
                   'are shown.'),
