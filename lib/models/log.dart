@@ -10,12 +10,14 @@ class Log {
   Log({
     @required String message,
     @required String method,
+    @required String stackTrace,
     String comment,
   }) {
     _db = DbLog()
       ..comment = comment
       ..method = method
       ..message = message
+      ..stackTrace = stackTrace
       ..dateTime = DateTime.now();
 
     log(message, name: method);
@@ -28,6 +30,7 @@ class Log {
   String get comment => _db.comment;
   String get message => _db.message;
   String get method => _db.method;
+  String get stackTrace => _db.stackTrace;
   int get id => _db?.id;
 
   @override

@@ -757,6 +757,7 @@ class TableDbLog extends SqfEntityTableBase {
       SqfEntityFieldBase('message', DbType.text, isNotNull: false),
       SqfEntityFieldBase('method', DbType.text, isNotNull: false),
       SqfEntityFieldBase('comment', DbType.text, isNotNull: false),
+      SqfEntityFieldBase('stackTrace', DbType.text, isNotNull: false),
     ];
     super.init();
   }
@@ -26810,14 +26811,21 @@ class DbIntervalTaggingManager extends SqfEntityProvider {
 //endregion DbIntervalTaggingManager
 // region DbLog
 class DbLog {
-  DbLog({this.id, this.dateTime, this.message, this.method, this.comment}) {
+  DbLog(
+      {this.id,
+      this.dateTime,
+      this.message,
+      this.method,
+      this.comment,
+      this.stackTrace}) {
     _setDefaultValues();
   }
-  DbLog.withFields(this.dateTime, this.message, this.method, this.comment) {
+  DbLog.withFields(
+      this.dateTime, this.message, this.method, this.comment, this.stackTrace) {
     _setDefaultValues();
   }
-  DbLog.withId(
-      this.id, this.dateTime, this.message, this.method, this.comment) {
+  DbLog.withId(this.id, this.dateTime, this.message, this.method, this.comment,
+      this.stackTrace) {
     _setDefaultValues();
   }
   DbLog.fromMap(Map<String, dynamic> o, {bool setDefaultValues = true}) {
@@ -26840,6 +26848,9 @@ class DbLog {
     if (o['comment'] != null) {
       comment = o['comment'] as String;
     }
+    if (o['stackTrace'] != null) {
+      stackTrace = o['stackTrace'] as String;
+    }
   }
   // FIELDS (DbLog)
   int id;
@@ -26847,6 +26858,7 @@ class DbLog {
   String message;
   String method;
   String comment;
+  String stackTrace;
 
   BoolResult saveResult;
   // end FIELDS (DbLog)
@@ -26883,6 +26895,10 @@ class DbLog {
       map['comment'] = comment;
     }
 
+    if (stackTrace != null) {
+      map['stackTrace'] = stackTrace;
+    }
+
     return map;
   }
 
@@ -26912,6 +26928,10 @@ class DbLog {
       map['comment'] = comment;
     }
 
+    if (stackTrace != null) {
+      map['stackTrace'] = stackTrace;
+    }
+
     return map;
   }
 
@@ -26926,11 +26946,11 @@ class DbLog {
   }
 
   List<dynamic> toArgs() {
-    return [dateTime, message, method, comment];
+    return [dateTime, message, method, comment, stackTrace];
   }
 
   List<dynamic> toArgsWithIds() {
-    return [id, dateTime, message, method, comment];
+    return [id, dateTime, message, method, comment, stackTrace];
   }
 
   static Future<List<DbLog>> fromWebUrl(String url,
@@ -27039,7 +27059,7 @@ class DbLog {
   ///
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(List<DbLog> dblogs) async {
-    // final results = _mnDbLog.saveAll('INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment)  VALUES (?,?,?,?,?)',dblogs);
+    // final results = _mnDbLog.saveAll('INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment, stackTrace)  VALUES (?,?,?,?,?,?)',dblogs);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbEncrateia().batchStart();
     for (final obj in dblogs) {
@@ -27062,8 +27082,8 @@ class DbLog {
   Future<int> upsert() async {
     try {
       if (await _mnDbLog.rawInsert(
-              'INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment)  VALUES (?,?,?,?,?)',
-              [id, dateTime, message, method, comment]) ==
+              'INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment, stackTrace)  VALUES (?,?,?,?,?,?)',
+              [id, dateTime, message, method, comment, stackTrace]) ==
           1) {
         saveResult = BoolResult(
             success: true, successMessage: 'DbLog id=$id updated successfully');
@@ -27087,7 +27107,7 @@ class DbLog {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbLog> dblogs) async {
     final results = await _mnDbLog.rawInsertAll(
-        'INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment)  VALUES (?,?,?,?,?)',
+        'INSERT OR REPLACE INTO logs (id,dateTime, message, method, comment, stackTrace)  VALUES (?,?,?,?,?,?)',
         dblogs);
     return results;
   }
@@ -27553,6 +27573,11 @@ class DbLogFilterBuilder extends SearchCriteria {
     return _comment = setField(_comment, 'comment', DbType.text);
   }
 
+  DbLogField _stackTrace;
+  DbLogField get stackTrace {
+    return _stackTrace = setField(_stackTrace, 'stackTrace', DbType.text);
+  }
+
   bool _getIsDeleted;
 
   void _buildParameters() {
@@ -27877,6 +27902,12 @@ class DbLogFields {
   static TableField get comment {
     return _fComment =
         _fComment ?? SqlSyntax.setField(_fComment, 'comment', DbType.text);
+  }
+
+  static TableField _fStackTrace;
+  static TableField get stackTrace {
+    return _fStackTrace = _fStackTrace ??
+        SqlSyntax.setField(_fStackTrace, 'stackTrace', DbType.text);
   }
 }
 // endregion DbLogFields

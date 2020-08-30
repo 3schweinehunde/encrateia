@@ -511,6 +511,7 @@ const SqfEntityTable tableLog = SqfEntityTable(
     SqfEntityField('message', DbType.text),
     SqfEntityField('method', DbType.text),
     SqfEntityField('comment', DbType.text),
+    SqfEntityField('stackTrace', DbType.text),
   ],
 );
 
