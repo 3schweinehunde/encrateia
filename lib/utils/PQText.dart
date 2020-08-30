@@ -105,6 +105,8 @@ class PQText extends StatelessWidget {
         return 'E d.M H:mm';
       case DateTimeFormat.longDateTime:
         return 'E d MMM yy, H:mm:ss';
+      case DateTimeFormat.compact:
+        return 'dd.MM.yyyy\nH:mm:ss';
     }
     return 'E d MMM yy, H:mm:ss';
   }

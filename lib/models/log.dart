@@ -36,6 +36,12 @@ class Log {
   @override
   String toString() => '< Log | $dateTime | $message >';
 
+  static Future<List<Log>> all() async {
+    final List<DbLog> dbLogList =
+        await DbLog().select().orderByDesc('dateTime').toList();
+    return dbLogList.map(Log.exDb).toList();
+  }
+
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
 

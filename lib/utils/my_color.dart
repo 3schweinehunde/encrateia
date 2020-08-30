@@ -58,6 +58,7 @@ class MyColor {
   static Color cancel = warning;
   static Color delete = danger;
   static Color navigate = brightGoldenYellow;
+  static Color log = aquaAccent;
 
   static Color athlete = sunFlowerAccent;
   static Color activity = aquaAccent;

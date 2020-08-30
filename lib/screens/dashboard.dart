@@ -1,4 +1,7 @@
+import 'package:encrateia/models/log.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_create_user.dart';
+import 'package:encrateia/screens/show_log_screen.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -17,6 +20,7 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<Athlete> athletes = <Athlete>[];
+  List<Log> logs = <Log>[];
   String version;
 
   @override
@@ -68,6 +72,19 @@ class _DashboardState extends State<Dashboard> {
                   'Encrateia version $version',
                   style: const TextStyle(fontSize: 12),
                 ),
+              if (logs.isNotEmpty)
+                MyButton.log(
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) =>
+                            ShowLogScreen(logs: logs),
+                      ),
+                    );
+                    await getData();
+                  },
+                )
             ],
           ),
         ),
@@ -91,6 +108,7 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> getData() async {
     athletes = await Athlete.all();
+    logs = await Log.all();
     if (athletes.isEmpty) {
       await Navigator.pushReplacement(
         context,

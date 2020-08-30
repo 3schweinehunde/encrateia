@@ -50,6 +50,14 @@ class MyButton extends RaisedButton {
           onPressed: onPressed,
         );
 
+  MyButton.log({Widget child, VoidCallback onPressed})
+      : super(
+    color: MyColor.log,
+    textColor: Colors.white,
+    child: child ?? const Text('Log Entries'),
+    onPressed: onPressed,
+  );
+
   MyButton.activity({Widget child, VoidCallback onPressed})
       : super(
     color: MyColor.activity,

@@ -43,6 +43,7 @@ enum DateTimeFormat {
   longDate,
   shortDateTime,
   longDateTime,
+  compact,
 }
 
 enum PQ {
