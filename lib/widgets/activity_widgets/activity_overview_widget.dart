@@ -47,7 +47,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
         subtitle: const Text('avg / max pace'),
       ),
       ListTile(
-        title: PQText(value: widget.activity.ecor, pq: PQ.ecor),
+        title: PQText(value: widget.activity.cachedEcor, pq: PQ.ecor),
         subtitle: const Text('ecor'),
       ),
       ListTile(
