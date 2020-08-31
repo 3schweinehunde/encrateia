@@ -37,28 +37,48 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   Widget build(BuildContext context) {
     return ListView(children: <Widget>[
       for (Activity activity in activities)
-        ListTile(
-          dense: true,
-          leading: sportsIcon(sport: activity.sport),
-          title: Text(activity.name ?? 'Activity'),
-          subtitle: PQText(
-            pq: PQ.dateTime,
-            value: activity.timeCreated,
-            format: DateTimeFormat.longDate,
-          ),
-          onTap: () {
-            if (activity.state == 'persisted')
-              Navigator.push(
-                context,
-                MaterialPageRoute<BuildContext>(
-                  builder: (BuildContext context) => ShowActivityScreen(
-                    activity: activity,
-                    athlete: widget.athlete,
+        if (activity.nonParsable == true)
+          ListTile(
+            dense: true,
+            leading: sportsIcon(sport: activity.sport),
+            title: Text(activity.name ?? 'Activity'),
+            subtitle: const Text('Activity cannot be parsed. 🙇'),
+            onTap: () {
+              if (activity.state == 'persisted')
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<BuildContext>(
+                    builder: (BuildContext context) => ShowActivityScreen(
+                      activity: activity,
+                      athlete: widget.athlete,
+                    ),
                   ),
-                ),
-              );
-          },
-        )
+                );
+            },
+          )
+        else
+          ListTile(
+            dense: true,
+            leading: sportsIcon(sport: activity.sport),
+            title: Text(activity.name ?? 'Activity'),
+            subtitle: PQText(
+              pq: PQ.dateTime,
+              value: activity.timeCreated,
+              format: DateTimeFormat.longDate,
+            ),
+            onTap: () {
+              if (activity.state == 'persisted')
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<BuildContext>(
+                    builder: (BuildContext context) => ShowActivityScreen(
+                      activity: activity,
+                      athlete: widget.athlete,
+                    ),
+                  ),
+                );
+            },
+          )
     ]);
   }
 

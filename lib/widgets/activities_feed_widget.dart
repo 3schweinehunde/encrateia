@@ -54,7 +54,29 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {
         final Activity activity = activities[index];
-        return Column(
+        if (activity.nonParsable == true)
+          return
+                ListTile(
+                  leading: sportsIcon(sport: activity.sport),
+                  title: Text(activity.name ?? 'Activity'),
+                  subtitle: const Text('Activity cannot be parsed. 🙇'),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) => ShowActivityScreen(
+                          activity: activity,
+                          athlete: widget.athlete,
+                        ),
+                      ),
+                    );
+                    getData();
+                  },
+                )
+
+              ;
+        else
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ListTile(
