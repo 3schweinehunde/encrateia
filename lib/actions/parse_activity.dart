@@ -48,9 +48,11 @@ Future<void> parseActivity({
       comment: '/lib/actions/parse_activity.25',
     );
     await log.save();
+    await flushbar?.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Error, see log on home screen for details',
       animationDuration: const Duration(milliseconds: 0),
+      duration: const Duration(seconds: 2),
     )..show(context);
   }
 }

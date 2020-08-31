@@ -42,8 +42,20 @@ class Log {
     return dbLogList.map(Log.exDb).toList();
   }
 
+  static Future<List<Log>> one() async {
+    final List<DbLog> dbLogList = await DbLog().select().top(1).toList();
+    return dbLogList.map(Log.exDb).toList();
+  }
+
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
+
+  static Future<void> deleteAll() async {
+    final List<Log> logs = await all();
+    for (final Log log in logs) {
+      await log.delete();
+    }
+  }
 
   static Log exDb(DbLog db) => Log._fromDb(db);
 }

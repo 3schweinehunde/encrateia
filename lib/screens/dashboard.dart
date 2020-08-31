@@ -79,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
                       context,
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) =>
-                            LogListScreen(logs: logs),
+                            const LogListScreen(),
                       ),
                     );
                     await getData();
@@ -108,7 +108,7 @@ class _DashboardState extends State<Dashboard> {
 
   Future<void> getData() async {
     athletes = await Athlete.all();
-    logs = await Log.all();
+    logs = await Log.one();
     if (athletes.isEmpty) {
       await Navigator.pushReplacement(
         context,
