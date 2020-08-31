@@ -68,10 +68,13 @@ class Activity {
   HeartRateZone _heartRateZone;
   HeartRateZoneSchema _heartRateZoneSchema;
 
+  // Getter
   int get id => _db?.id;
+
   DateTime get startTime => _db.startTime;
   DateTime get timeCreated => _db.timeCreated;
   DateTime get timeStamp => _db.timeStamp;
+
   String get event => _db.event;
   String get eventType => _db.eventType;
   String get name => _db.name;
@@ -80,6 +83,11 @@ class Activity {
   String get subSport => _db.subSport;
   String get trigger => _db.trigger;
   String get type => _db.type;
+
+  bool get excluded => _db.excluded;
+  bool get manual => _db.manual;
+  bool get nonParsable => _db.nonParsable;
+
   double get avgFormPower => _db.avgFormPower;
   double get avgFractionalCadence => _db.avgFractionalCadence;
   double get avgGroundTime => _db.avgGroundTime;
@@ -88,9 +96,9 @@ class Activity {
   double get avgPowerRatio => _db.avgPowerRatio;
   double get avgRunningCadence => _db.avgRunningCadence;
   double get avgSpeed => _db.avgSpeed;
+  double get avgSpeedByDistance => _db.avgSpeedByDistance;
   double get avgSpeedByMeasurements => _db.avgSpeedByMeasurements;
   double get avgSpeedBySpeed => _db.avgSpeedBySpeed;
-  double get avgSpeedByDistance => _db.avgSpeedByDistance;
   double get avgStanceTime => _db.avgStanceTime;
   double get avgStanceTimePercent => _db.avgStanceTimePercent;
   double get avgStrideRatio => _db.avgStrideRatio;
@@ -119,9 +127,6 @@ class Activity {
   double get swcLat => _db.swcLat;
   double get swcLong => _db.swcLong;
   double get totalFractionalCycles => _db.totalFractionalCycles;
-  bool get nonParsable => _db.nonParsable;
-  bool get manual => _db.manual;
-  bool get excluded => _db.excluded;
 
   int get athletesId => _db.athletesId;
   int get avgHeartRate => _db.avgHeartRate;
@@ -194,10 +199,15 @@ class Activity {
   bool get legSpringStiffnessAvailable =>
       !<num>[null, -1].contains(avgLegSpringStiffness);
 
+  // Setter
+
+  set excluded(bool value) => _db.excluded = value;
+  set ftp(double value) => _db.ftp = value;
+  set manual(bool value) => _db.manual = value;
   set maxHeartRate(int value) => _db.maxHeartRate = value;
   set name(String value) => _db.name = value;
+  set nonParsable(bool value) => _db.nonParsable = value;
   set state(String value) => _db.state = value;
-  set ftp(double value) => _db.ftp = value;
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
@@ -208,7 +218,6 @@ class Activity {
 
   @override
   String toString() => '< Activity | $name | $startTime >';
-  Duration movingDuration() => Duration(seconds: movingTime ?? 0);
 
   dynamic getAttribute(ActivityAttr activityAttr) {
     switch (activityAttr) {

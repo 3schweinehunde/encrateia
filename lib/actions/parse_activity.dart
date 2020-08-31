@@ -40,7 +40,6 @@ Future<void> parseActivity({
       }
     }
   } catch (exception) {
-    print(exception);
     final Log log = Log(
       message: exception.runtimeType.toString(),
       method: 'parseActivity',
@@ -48,6 +47,8 @@ Future<void> parseActivity({
       comment: '/lib/actions/parse_activity.25',
     );
     await log.save();
+    activity.nonParsable = true;
+    await activity.save();
     await flushbar?.dismiss();
     flushbar = Flushbar<Object>(
       message: 'Error, see log on home screen for details',

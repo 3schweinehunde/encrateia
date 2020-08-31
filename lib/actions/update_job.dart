@@ -33,8 +33,11 @@ Future<void> updateJob({
       );
     }
 
-    final Iterable<Activity> downloadedActivities =
-        activities.where((Activity activity) => activity.state == 'downloaded');
+    final Iterable<Activity> downloadedActivities = activities.where(
+        (Activity activity) =>
+            activity.state == 'downloaded' &&
+            activity.manual != true &&
+            activity.excluded != true);
     for (final Activity activity in downloadedActivities) {
       await parseActivity(
         context: context,

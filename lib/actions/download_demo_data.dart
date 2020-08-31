@@ -42,7 +42,11 @@ Future<void> downloadDemoData({
 
     activities = await athlete.activities;
     final List<Activity> downloadedActivities = activities
-        .where((Activity activity) => activity.state == 'downloaded')
+        .where((Activity activity) =>
+            activity.state == 'downloaded' &&
+            activity.nonParsable != true &&
+            activity.manual != true &&
+            activity.excluded != true)
         .toList();
     for (final Activity activity in downloadedActivities) {
       await parseActivity(
