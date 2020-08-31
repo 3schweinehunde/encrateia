@@ -117,6 +117,9 @@ const SqfEntityTable tableActivity = SqfEntityTable(
     SqfEntityField('sdevVerticalOscillation', DbType.real),
     SqfEntityField('cp', DbType.real),
     SqfEntityField('ftp', DbType.real),
+    SqfEntityField('nonParsable', DbType.bool),
+    SqfEntityField('excluded', DbType.bool),
+    SqfEntityField('manual', DbType.bool),
 
     SqfEntityFieldRelationship(
         parentTable: tableAthlete,

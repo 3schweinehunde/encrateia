@@ -157,6 +157,9 @@ class TableDbActivity extends SqfEntityTableBase {
           isNotNull: false),
       SqfEntityFieldBase('cp', DbType.real, isNotNull: false),
       SqfEntityFieldBase('ftp', DbType.real, isNotNull: false),
+      SqfEntityFieldBase('nonParsable', DbType.bool, isNotNull: false),
+      SqfEntityFieldBase('excluded', DbType.bool, isNotNull: false),
+      SqfEntityFieldBase('manual', DbType.bool, isNotNull: false),
       SqfEntityFieldRelationshipBase(
           TableDbAthlete.getInstance, DeleteRule.CASCADE,
           relationType: RelationType.ONE_TO_MANY,
@@ -2732,6 +2735,9 @@ class DbActivity {
       this.sdevVerticalOscillation,
       this.cp,
       this.ftp,
+      this.nonParsable,
+      this.excluded,
+      this.manual,
       this.athletesId}) {
     _setDefaultValues();
   }
@@ -2813,6 +2819,9 @@ class DbActivity {
       this.sdevVerticalOscillation,
       this.cp,
       this.ftp,
+      this.nonParsable,
+      this.excluded,
+      this.manual,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -2895,6 +2904,9 @@ class DbActivity {
       this.sdevVerticalOscillation,
       this.cp,
       this.ftp,
+      this.nonParsable,
+      this.excluded,
+      this.manual,
       this.athletesId) {
     _setDefaultValues();
   }
@@ -3155,6 +3167,15 @@ class DbActivity {
     if (o['ftp'] != null) {
       ftp = double.tryParse(o['ftp'].toString());
     }
+    if (o['nonParsable'] != null) {
+      nonParsable = o['nonParsable'] == 1 || o['nonParsable'] == true;
+    }
+    if (o['excluded'] != null) {
+      excluded = o['excluded'] == 1 || o['excluded'] == true;
+    }
+    if (o['manual'] != null) {
+      manual = o['manual'] == 1 || o['manual'] == true;
+    }
     athletesId = int.tryParse(o['athletesId'].toString());
 
     // RELATIONSHIPS FromMAP
@@ -3242,6 +3263,9 @@ class DbActivity {
   double sdevVerticalOscillation;
   double cp;
   double ftp;
+  bool nonParsable;
+  bool excluded;
+  bool manual;
   int athletesId;
 
   BoolResult saveResult;
@@ -3662,6 +3686,18 @@ class DbActivity {
       map['ftp'] = ftp;
     }
 
+    if (nonParsable != null) {
+      map['nonParsable'] = forQuery ? (nonParsable ? 1 : 0) : nonParsable;
+    }
+
+    if (excluded != null) {
+      map['excluded'] = forQuery ? (excluded ? 1 : 0) : excluded;
+    }
+
+    if (manual != null) {
+      map['manual'] = forQuery ? (manual ? 1 : 0) : manual;
+    }
+
     if (athletesId != null) {
       map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
@@ -3993,6 +4029,18 @@ class DbActivity {
       map['ftp'] = ftp;
     }
 
+    if (nonParsable != null) {
+      map['nonParsable'] = forQuery ? (nonParsable ? 1 : 0) : nonParsable;
+    }
+
+    if (excluded != null) {
+      map['excluded'] = forQuery ? (excluded ? 1 : 0) : excluded;
+    }
+
+    if (manual != null) {
+      map['manual'] = forQuery ? (manual ? 1 : 0) : manual;
+    }
+
     if (athletesId != null) {
       map['athletesId'] = forView ? plDbAthlete.state : athletesId;
     }
@@ -4104,6 +4152,9 @@ class DbActivity {
       sdevVerticalOscillation,
       cp,
       ftp,
+      nonParsable,
+      excluded,
+      manual,
       athletesId
     ];
   }
@@ -4188,6 +4239,9 @@ class DbActivity {
       sdevVerticalOscillation,
       cp,
       ftp,
+      nonParsable,
+      excluded,
+      manual,
       athletesId
     ];
   }
@@ -4422,7 +4476,7 @@ class DbActivity {
   ///
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(List<DbActivity> dbactivities) async {
-    // final results = _mnDbActivity.saveAll('INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbactivities);
+    // final results = _mnDbActivity.saveAll('INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, nonParsable, excluded, manual, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',dbactivities);
     // return results; removed in sqfentity_gen 1.3.0+6
     await DbEncrateia().batchStart();
     for (final obj in dbactivities) {
@@ -4445,7 +4499,7 @@ class DbActivity {
   Future<int> upsert() async {
     try {
       if (await _mnDbActivity.rawInsert(
-              'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+              'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, nonParsable, excluded, manual, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
               [
                 id,
                 state,
@@ -4527,6 +4581,9 @@ class DbActivity {
                 sdevVerticalOscillation,
                 cp,
                 ftp,
+                nonParsable,
+                excluded,
+                manual,
                 athletesId
               ]) ==
           1) {
@@ -4553,7 +4610,7 @@ class DbActivity {
   /// Returns a BoolCommitResult
   Future<BoolCommitResult> upsertAll(List<DbActivity> dbactivities) async {
     final results = await _mnDbActivity.rawInsertAll(
-        'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO activities (id,state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, nonParsable, excluded, manual, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
         dbactivities);
     return results;
   }
@@ -5473,6 +5530,21 @@ class DbActivityFilterBuilder extends SearchCriteria {
     return _ftp = setField(_ftp, 'ftp', DbType.real);
   }
 
+  DbActivityField _nonParsable;
+  DbActivityField get nonParsable {
+    return _nonParsable = setField(_nonParsable, 'nonParsable', DbType.bool);
+  }
+
+  DbActivityField _excluded;
+  DbActivityField get excluded {
+    return _excluded = setField(_excluded, 'excluded', DbType.bool);
+  }
+
+  DbActivityField _manual;
+  DbActivityField get manual {
+    return _manual = setField(_manual, 'manual', DbType.bool);
+  }
+
   DbActivityField _athletesId;
   DbActivityField get athletesId {
     return _athletesId = setField(_athletesId, 'athletesId', DbType.integer);
@@ -6352,6 +6424,24 @@ class DbActivityFields {
   static TableField _fFtp;
   static TableField get ftp {
     return _fFtp = _fFtp ?? SqlSyntax.setField(_fFtp, 'ftp', DbType.real);
+  }
+
+  static TableField _fNonParsable;
+  static TableField get nonParsable {
+    return _fNonParsable = _fNonParsable ??
+        SqlSyntax.setField(_fNonParsable, 'nonParsable', DbType.bool);
+  }
+
+  static TableField _fExcluded;
+  static TableField get excluded {
+    return _fExcluded =
+        _fExcluded ?? SqlSyntax.setField(_fExcluded, 'excluded', DbType.bool);
+  }
+
+  static TableField _fManual;
+  static TableField get manual {
+    return _fManual =
+        _fManual ?? SqlSyntax.setField(_fManual, 'manual', DbType.bool);
   }
 
   static TableField _fAthletesId;

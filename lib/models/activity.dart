@@ -119,6 +119,10 @@ class Activity {
   double get swcLat => _db.swcLat;
   double get swcLong => _db.swcLong;
   double get totalFractionalCycles => _db.totalFractionalCycles;
+  bool get nonParsable => _db.nonParsable;
+  bool get manual => _db.manual;
+  bool get excluded => _db.excluded;
+
   int get athletesId => _db.athletesId;
   int get avgHeartRate => _db.avgHeartRate;
   int get avgTemperature => _db.avgTemperature;
