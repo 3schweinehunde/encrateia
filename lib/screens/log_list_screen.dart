@@ -1,11 +1,12 @@
 import 'package:encrateia/models/log.dart';
+import 'package:encrateia/screens/show_log_detail_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 
-class ShowLogScreen extends StatefulWidget {
-  const ShowLogScreen({
+class LogListScreen extends StatefulWidget {
+  const LogListScreen({
     Key key,
     @required this.logs,
   }) : super(key: key);
@@ -13,10 +14,10 @@ class ShowLogScreen extends StatefulWidget {
   final List<Log> logs;
 
   @override
-  _ShowLogScreenState createState() => _ShowLogScreenState();
+  _LogListScreenState createState() => _LogListScreenState();
 }
 
-class _ShowLogScreenState extends State<ShowLogScreen> {
+class _LogListScreenState extends State<LogListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +40,13 @@ class _ShowLogScreenState extends State<ShowLogScreen> {
               key: ValueKey<int>(log.id),
               onSelectChanged: (bool selected) {
                 if (selected) {
-                  //
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<BuildContext>(
+                      builder: (BuildContext context) =>
+                          ShowLogDetailScreen(log: log),
+                    ),
+                  );
                 }
               },
               cells: <DataCell>[

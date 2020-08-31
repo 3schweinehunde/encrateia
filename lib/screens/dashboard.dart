@@ -1,6 +1,6 @@
 import 'package:encrateia/models/log.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_create_user.dart';
-import 'package:encrateia/screens/show_log_screen.dart';
+import 'package:encrateia/screens/log_list_screen.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
                       context,
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) =>
-                            ShowLogScreen(logs: logs),
+                            LogListScreen(logs: logs),
                       ),
                     );
                     await getData();
