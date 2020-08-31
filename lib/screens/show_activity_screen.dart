@@ -358,6 +358,25 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           ),
           onPressed: () => parse(),
         ),
+      if(widget.activity.excluded == true)
+        RaisedButton.icon(
+          color: MyColor.include,
+          icon: MyIcon.filter,
+          textColor: MyColor.textColor(backgroundColor: MyColor.include),
+          label: const Expanded(
+            child: Text('Include in Analysis'),
+          ),
+          onPressed: () => include(),
+        )
+      else RaisedButton.icon(
+        color: MyColor.exclude,
+        icon: MyIcon.filter,
+        textColor: MyColor.textColor(backgroundColor: MyColor.exclude),
+        label: const Expanded(
+          child: Text('Exclude from Analysis'),
+        ),
+        onPressed: () => exclude(),
+      ),
       if (<String>['new', 'downloaded', 'persisted']
           .contains(widget.activity.state))
         RaisedButton.icon(
@@ -450,6 +469,18 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       duration: const Duration(seconds: 2),
       icon: MyIcon.finishedWhite,
     )..show(context);
+    setState(() {});
+  }
+
+  Future<void> exclude() async {
+    widget.activity.excluded = true;
+    await widget.activity.save();
+    setState(() {});
+  }
+
+  Future<void> include() async {
+    widget.activity.excluded = false;
+    await widget.activity.save();
     setState(() {});
   }
 
