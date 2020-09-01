@@ -25,6 +25,8 @@ class PQText extends StatelessWidget {
         return Text(DateFormat(formatString).format(value as DateTime));
       case PQ.distance:
         return Text(((value as int) / 1000).toStringAsFixed(2) + ' km');
+      case PQ.distanceInMeters:
+        return Text((value as double).toStringAsFixed(2) + ' m');
       case PQ.power:
         return Text((value as num).toStringAsPrecision(3) + ' W');
       case PQ.paceFromSpeed:

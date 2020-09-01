@@ -52,6 +52,7 @@ enum PQ {
   cycles,
   dateTime,
   distance,
+  distanceInMeters,
   double,
   duration,
   ecor,

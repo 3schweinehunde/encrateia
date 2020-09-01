@@ -27,7 +27,7 @@ class ShowLogDetailScreen extends StatelessWidget {
               pq: PQ.dateTime,
               format: DateTimeFormat.longDateTime,
             ),
-            subtitle: const Text('date time'),
+            subtitle: const Text('Point in Time'),
           ),
           ListTile(
             title: Text(log.message),

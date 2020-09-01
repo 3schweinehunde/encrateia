@@ -9,6 +9,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart
 import 'package:encrateia/widgets/activity_widgets/activity_pace_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_altitude_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/activity_record_list_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_speed_per_heart_rate_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_tag_widget.dart';
 import 'package:encrateia/widgets/intervals_list_widget.dart';
@@ -358,7 +359,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           ),
           onPressed: () => parse(),
         ),
-      if(widget.activity.excluded == true)
+      if (widget.activity.excluded == true)
         RaisedButton.icon(
           color: MyColor.include,
           icon: MyIcon.filter,
@@ -368,14 +369,25 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           ),
           onPressed: () => include(),
         )
-      else RaisedButton.icon(
-        color: MyColor.exclude,
-        icon: MyIcon.filter,
-        textColor: MyColor.textColor(backgroundColor: MyColor.exclude),
-        label: const Expanded(
-          child: Text('Exclude from Analysis'),
+      else
+        RaisedButton.icon(
+          color: MyColor.exclude,
+          icon: MyIcon.filter,
+          textColor: MyColor.textColor(backgroundColor: MyColor.exclude),
+          label: const Expanded(
+            child: Text('Exclude from Analysis'),
+          ),
+          onPressed: () => exclude(),
         ),
-        onPressed: () => exclude(),
+      navigationButton(
+        title: 'Data Points',
+        color: MyColor.navigate,
+        icon: MyIcon.metaData,
+        context: context,
+        nextWidget: ActivityRecordListWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
+        ),
       ),
       if (<String>['new', 'downloaded', 'persisted']
           .contains(widget.activity.state))
