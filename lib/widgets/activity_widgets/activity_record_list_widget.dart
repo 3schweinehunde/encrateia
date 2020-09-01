@@ -1,6 +1,7 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/screens/show_event_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -66,17 +67,18 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
                   )),
                   DataCell(
                       PQText(value: record.distance, pq: PQ.distanceInMeters)),
-                  DataCell(MyIcon.show, onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute<BuildContext>(
-                        builder: (BuildContext context) =>
-                            // ShowEventScreen(record: record)
-                            null,
-                      ),
-                    );
-                    getData();
-                  })
+                  DataCell(
+                    MyIcon.show,
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute<BuildContext>(
+                            builder: (BuildContext context) =>
+                                ShowEventScreen(record: record)),
+                      );
+                      getData();
+                    },
+                  )
                 ],
               );
             }).toList(),
@@ -102,10 +104,10 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
                 onPressed: (offset == 0)
                     ? null
                     : () => setState(() {
-                  offset > 800
-                      ? offset = offset - 100 * rows
-                      : offset = 0;
-                }),
+                          offset > 800
+                              ? offset = offset - 100 * rows
+                              : offset = 0;
+                        }),
               ),
               const SizedBox(width: 20),
               MyButton.navigate(
@@ -155,10 +157,10 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
                 onPressed: (offset + rows == records.length)
                     ? null
                     : () => setState(() {
-                  offset + 100 * rows < records.length - rows
-                      ? offset = offset + 100 * rows
-                      : offset = records.length - rows;
-                }),
+                          offset + 100 * rows < records.length - rows
+                              ? offset = offset + 100 * rows
+                              : offset = records.length - rows;
+                        }),
               ),
               const SizedBox(width: 20),
               MyButton.navigate(
@@ -184,24 +186,3 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
     setState(() {});
   }
 }
-
-// event', DbType.text),
-// eventType', DbType.text),
-// eventGroup', DbType.integer),
-// timerTrigger', DbType.text),
-// timeStamp', DbType.datetime),
-// positionLat', DbType.real),
-// positionLong', DbType.real),
-// distance', DbType.real),
-// altitude', DbType.real),
-// speed', DbType.real),
-// heartRate', DbType.integer),
-// cadence', DbType.real),
-// fractionalCadence', DbType.real),
-// power', DbType.integer),
-// strydCadence', DbType.real),
-// groundTime', DbType.real),
-// verticalOscillation', DbType.real),
-// formPower', DbType.integer),
-// legSpringStiffness', DbType.real),
-// data', DbType.real),

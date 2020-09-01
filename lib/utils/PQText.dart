@@ -75,7 +75,7 @@ class PQText extends StatelessWidget {
         return Text((value as num).toStringAsFixed(2) + ' %');
       case PQ.stanceTime:
       case PQ.groundTime:
-        return Text((value as num).toStringAsPrecision(3) + ' ms');
+        return Text((value as num).toStringAsPrecision(4) + ' ms');
       case PQ.longitude:
         return Text((value as double).semicirclesAsDegrees() + ' E');
       case PQ.latitude:
