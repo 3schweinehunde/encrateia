@@ -41,6 +41,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           ListTile(
             dense: true,
             leading: sportsIcon(sport: activity.sport),
+            trailing: MyIcon.excluded,
             title: Text(activity.name ?? 'Activity'),
             subtitle: const Text('Activity cannot be parsed. 🙇'),
             onTap: () {
@@ -61,6 +62,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             dense: true,
             leading: sportsIcon(sport: activity.sport),
             title: Text(activity.name ?? 'Activity'),
+            trailing: activity.excluded == true ? MyIcon.excluded : const Text(''),
             subtitle: PQText(
               pq: PQ.dateTime,
               value: activity.timeCreated,

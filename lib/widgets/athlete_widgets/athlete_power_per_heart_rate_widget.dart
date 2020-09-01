@@ -89,10 +89,10 @@ class _AthletePowerPerHeartRateWidgetState
 
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
-    final List<Activity> unfilteredActivities = await athlete.activities;
-    tagGroups = await widget.athlete.tagGroups;
+    final List<Activity> unfilteredActivities = await athlete.validActivities;
+    tagGroups = await athlete.tagGroups;
     activities = await ActivityList<Activity>(unfilteredActivities).applyFilter(
-      athlete: widget.athlete,
+      athlete: athlete,
       tagGroups: tagGroups,
     );
 

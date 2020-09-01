@@ -55,11 +55,69 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       itemBuilder: (BuildContext context, int index) {
         final Activity activity = activities[index];
         if (activity.nonParsable == true)
-          return
+          return ListTile(
+            leading: sportsIcon(sport: activity.sport),
+            title: Text(activity.name ?? 'Activity'),
+            trailing: MyIcon.excluded,
+            subtitle: const Text('Activity cannot be parsed. 🙇'),
+            onTap: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute<BuildContext>(
+                  builder: (BuildContext context) => ShowActivityScreen(
+                    activity: activity,
+                    athlete: widget.athlete,
+                  ),
+                ),
+              );
+              getData();
+            },
+          );
+        else
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
                 ListTile(
                   leading: sportsIcon(sport: activity.sport),
                   title: Text(activity.name ?? 'Activity'),
-                  subtitle: const Text('Activity cannot be parsed. 🙇'),
+                  trailing: activity.excluded == true ? MyIcon.excluded : const Text(''),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Column(children: <Widget>[
+                        PQText(
+                          pq: PQ.dateTime,
+                          value: activity.timeCreated,
+                          format: DateTimeFormat.shortDate,
+                        ),
+                        PQText(
+                          pq: PQ.distance,
+                          value: activity.totalDistance,
+                        ),
+                      ]),
+                      const SizedBox(width: 20),
+                      Column(children: <Widget>[
+                        PQText(pq: PQ.paceFromSpeed, value: activity.avgSpeed),
+                        PQText(
+                          pq: PQ.heartRate,
+                          value: activity.avgHeartRate,
+                        ),
+                      ]),
+                      const SizedBox(width: 20),
+                      Column(
+                        children: <Widget>[
+                          PQText(
+                            pq: PQ.power,
+                            value: activity.avgPower,
+                          ),
+                          PQText(
+                            pq: PQ.ecor,
+                            value: activity.cachedEcor,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                   onTap: () async {
                     await Navigator.push(
                       context,
@@ -72,94 +130,35 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                     );
                     getData();
                   },
-                )
-
-              ;
-        else
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ListTile(
-                leading: sportsIcon(sport: activity.sport),
-                title: Text(activity.name ?? 'Activity'),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Column(children: <Widget>[
-                      PQText(
-                        pq: PQ.dateTime,
-                        value: activity.timeCreated,
-                        format: DateTimeFormat.shortDate,
-                      ),
-                      PQText(
-                        pq: PQ.distance,
-                        value: activity.totalDistance,
-                      ),
-                    ]),
-                    const SizedBox(width: 20),
-                    Column(children: <Widget>[
-                      PQText(pq: PQ.paceFromSpeed, value: activity.avgSpeed),
-                      PQText(
-                        pq: PQ.heartRate,
-                        value: activity.avgHeartRate,
-                      ),
-                    ]),
-                    const SizedBox(width: 20),
-                    Column(
-                      children: <Widget>[
-                        PQText(
-                          pq: PQ.power,
-                          value: activity.avgPower,
-                        ),
-                        PQText(
-                          pq: PQ.ecor,
-                          value: activity.cachedEcor,
-                        ),
-                      ],
-                    )
-                  ],
                 ),
-                onTap: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute<BuildContext>(
-                      builder: (BuildContext context) => ShowActivityScreen(
-                        activity: activity,
-                        athlete: widget.athlete,
-                      ),
-                    ),
-                  );
-                  getData();
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: Wrap(
-                  spacing: 10,
-                  children: <Widget>[
-                    for (Tag tag in activity.cachedTags)
-                      Chip(
-                        avatar: CircleAvatar(
-                            foregroundColor: MyColor.textColor(
-                                backgroundColor: Color(tagGroup(tag).color)),
-                            backgroundColor: Color(tagGroup(tag).color),
-                            child: Text(capitals(tag))),
-                        label: Text(
-                          tag.name,
-                          style: TextStyle(
-                            color: MyColor.textColor(
-                              selected: true,
-                              backgroundColor: Color(tag.color ?? 99999),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Wrap(
+                    spacing: 10,
+                    children: <Widget>[
+                      for (Tag tag in activity.cachedTags)
+                        Chip(
+                          avatar: CircleAvatar(
+                              foregroundColor: MyColor.textColor(
+                                  backgroundColor: Color(tagGroup(tag).color)),
+                              backgroundColor: Color(tagGroup(tag).color),
+                              child: Text(capitals(tag))),
+                          label: Text(
+                            tag.name,
+                            style: TextStyle(
+                              color: MyColor.textColor(
+                                selected: true,
+                                backgroundColor: Color(tag.color ?? 99999),
+                              ),
                             ),
                           ),
+                          backgroundColor: Color(tag.color ?? 99999),
+                          elevation: 3,
                         ),
-                        backgroundColor: Color(tag.color ?? 99999),
-                        elevation: 3,
-                      ),
-                  ],
-                ),
-              )
-            ]);
+                    ],
+                  ),
+                )
+              ]);
       },
     );
   }

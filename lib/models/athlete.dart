@@ -121,6 +121,19 @@ class Athlete {
     return dbActivityList.map(Activity.exDb).toList();
   }
 
+  Future<List<Activity>> get validActivities async {
+    final List<DbActivity> dbActivityList = await _db
+        .getDbActivities()
+        .excluded
+        .equalsOrNull(false)
+        .and
+        .nonParsable
+        .equalsOrNull(false)
+        .orderByDesc('timeCreated')
+        .toList();
+    return dbActivityList.map(Activity.exDb).toList();
+  }
+
   Future<List<Weight>> get weights async {
     final List<DbWeight> dbWeightList =
         await _db.getDbWeights().orderByDesc('date').toList();

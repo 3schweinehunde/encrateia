@@ -40,6 +40,7 @@ class MyIcon {
   );
   static const Icon event = Icon(Icons.event);
   // F
+  static const Icon excluded = Icon(Icons.block);
   static const Icon filter = Icon(Icons.sync_disabled);
   static const Icon finished = Icon(Icons.check_box);
   static final Icon finishedWhite = Icon(
