@@ -126,6 +126,25 @@ class Event {
   int get power => _db.power;
 
   set event(String value) => _db.event = value;
+  set eventType(String value) => _db.eventType = value;
+  set eventGroup(int value) => _db.eventGroup = value;
+  set timerTrigger(String value) => _db.timerTrigger = value;
+  set timeStamp(DateTime value) => _db.timeStamp = value;
+  set positionLat(double value) => _db.positionLat = value;
+  set positionLong(double value) => _db.positionLong = value;
+  set distance(double value) => _db.distance = value;
+  set altitude(double value) => _db.altitude = value;
+  set speed(double value) => _db.speed = value;
+  set heartRate(int value) => _db.heartRate = value;
+  set cadence(double value) => _db.cadence = value;
+  set fractionalCadence(double value) => _db.fractionalCadence = value;
+  set power(int value) => _db.power = value;
+  set strydCadence(double value) => _db.strydCadence = value;
+  set groundTime(double value) => _db.groundTime = value;
+  set verticalOscillation(double value) => _db.verticalOscillation = value;
+  set formPower(int value) => _db.formPower = value;
+  set legSpringStiffness(double value) => _db.legSpringStiffness = value;
+  set data(double value) => _db.data = value;
 
   @override
   String toString() => '< Event | $event | $index >';
@@ -158,4 +177,5 @@ class Event {
   }
 
   static Event exDb(DbEvent dbEvent) => Event._fromDb(dbEvent);
+  Future<int> save() async => await _db.save();
 }

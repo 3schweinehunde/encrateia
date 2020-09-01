@@ -21,6 +21,13 @@ class MyButton extends RaisedButton {
           onPressed: onPressed,
         );
 
+  MyButton.edit({Widget child, VoidCallback onPressed})
+      : super(
+    color: MyColor.edit,
+    child: child ?? const Text('Edit'),
+    onPressed: onPressed,
+  );
+
   MyButton.save({Widget child, VoidCallback onPressed})
       : super(
           color: MyColor.save,

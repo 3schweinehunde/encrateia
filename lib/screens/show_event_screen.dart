@@ -1,9 +1,12 @@
+import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import 'edit_event_screen.dart';
 
 class ShowEventScreen extends StatelessWidget {
   const ShowEventScreen({
@@ -13,7 +16,7 @@ class ShowEventScreen extends StatelessWidget {
 
   final Event record;
 
-  List<Widget> get tiles {
+  List<Widget> tiles({@required BuildContext context}) {
     return <Widget>[
       ListTile(
         title: Text(record.event),
@@ -151,6 +154,14 @@ class ShowEventScreen extends StatelessWidget {
         ),
         subtitle: const Text('Data'),
       ),
+      MyButton.edit(onPressed: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute<BuildContext>(
+              builder: (BuildContext context) =>
+                  EditEventScreen(record: record)),
+        );
+      })
     ];
   }
 
@@ -164,11 +175,11 @@ class ShowEventScreen extends StatelessWidget {
       body: SafeArea(
           child: StaggeredGridView.count(
         staggeredTiles: List<StaggeredTile>.filled(
-            tiles.length, const StaggeredTile.fit(1)),
+            tiles(context: context).length, const StaggeredTile.fit(1)),
         mainAxisSpacing: 4,
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        children: tiles,
+        children: tiles(context: context),
       )),
     );
   }

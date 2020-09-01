@@ -57,6 +57,7 @@ class MyColor {
   static Color save = success;
   static Color cancel = warning;
   static Color delete = danger;
+  static Color edit = sunFlower;
   static Color navigate = brightGoldenYellow;
   static Color log = aquaAccent;
   static Color exclude = pinkRoseAccent;
