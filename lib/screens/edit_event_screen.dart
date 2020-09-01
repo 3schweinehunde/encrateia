@@ -26,7 +26,7 @@ class _EditEventScreenState extends State<EditEventScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyColor.activity,
-        title: const Text('Athlete Credentials'),
+        title: const Text('Edit Record'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
