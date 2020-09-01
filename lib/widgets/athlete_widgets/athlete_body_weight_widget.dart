@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:encrateia/screens/add_weight_screen.dart';
+import 'package:encrateia/utils/PQText.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
@@ -8,7 +10,6 @@ import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:csv/csv.dart';
-import 'package:intl/intl.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
   const AthleteBodyWeightWidget({
@@ -40,50 +41,11 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
     if (weights != null) {
       if (weights.isNotEmpty) {
         rows = (weights.length < 8) ? weights.length : 8;
-        return Column(
-          children: <Widget>[
-            DataTable(
-              columns: const <DataColumn>[
-                DataColumn(label: Text('Date')),
-                DataColumn(
-                  label: Text('Weight\nin kg'),
-                  numeric: true,
-                ),
-                DataColumn(label: Text('Edit'))
-              ],
-              rows: weights.sublist(offset, offset + rows).map((Weight weight) {
-                return DataRow(
-                  key: ValueKey<int>(weight.id),
-                  cells: <DataCell>[
-                    DataCell(
-                        Text(DateFormat('d MMM yyyy').format(weight.date))),
-                    DataCell(Text(weight.value.toString())),
-                    DataCell(MyIcon.edit, onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) =>
-                              AddWeightScreen(weight: weight),
-                        ),
-                      );
-                      getData();
-                    })
-                  ],
-                );
-              }).toList(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                '${offset + 1} - ${offset + rows} '
-                'of ${weights.length} ',
-                textAlign: TextAlign.right,
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                const Spacer(),
-                MyButton.add(
+        return  SingleChildScrollView(
+            child: PaginatedDataTable(
+              header: Row(
+                children: <Widget>[
+                  MyButton.add(
                     child: const Text('New weighting'),
                     onPressed: () async {
                       await Navigator.push(
@@ -95,32 +57,27 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                         ),
                       );
                       getData();
-                    }),
-                const Spacer(),
-                MyButton.navigate(
-                  child: const Text('<<'),
-                  onPressed: (offset == 0)
-                      ? null
-                      : () => setState(() {
-                            offset > 8 ? offset = offset - rows : offset = 0;
-                          }),
+                    },
+                  ),
+                  const Spacer(),
+                ],
+              ),
+              columns: const <DataColumn>[
+                DataColumn(label: Text('Date')),
+                DataColumn(
+                  label: Text('Weight'),
+                  numeric: true,
                 ),
-                const Spacer(),
-                MyButton.navigate(
-                  child: const Text('>>'),
-                  onPressed: (offset + rows == weights.length)
-                      ? null
-                      : () => setState(() {
-                            offset + rows < weights.length - rows
-                                ? offset = offset + rows
-                                : offset = weights.length - rows;
-                          }),
-                ),
-                const Spacer(),
+                DataColumn(label: Text('Edit'))
               ],
+              rowsPerPage: 8,
+              source: BodyWeightSource(
+                weights: weights,
+                context: context,
+                callback: getData,
+              ),
             ),
-          ],
-        );
+          );
       } else {
         return Column(
           children: <Widget>[
@@ -150,8 +107,7 @@ You can change these later.
                   onPressed: () => importWeights(),
                 ),
                 const Spacer(),
-                RaisedButton(
-                    color: Colors.green,
+                MyButton.add(
                     child: const Text('New weighting'),
                     onPressed: () async {
                       await Navigator.push(
@@ -180,8 +136,7 @@ You can change these later.
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     weights = await athlete.weights;
-    if (widget.callBackFunction != null)
-      await widget.callBackFunction();
+    if (widget.callBackFunction != null) await widget.callBackFunction();
     setState(() {});
   }
 
@@ -217,4 +172,50 @@ You can change these later.
       await getData();
     }
   }
+}
+
+class BodyWeightSource extends DataTableSource {
+  BodyWeightSource({
+    @required this.weights,
+    @required this.context,
+    @required this.callback,
+  });
+
+  final List<Weight> weights;
+  final BuildContext context;
+  final Function callback;
+
+  @override
+  DataRow getRow(int index) {
+    return DataRow.byIndex(
+      index: index,
+      cells: <DataCell>[
+        DataCell(PQText(
+          value: weights[index].date,
+          pq: PQ.dateTime,
+          format: DateTimeFormat.longDate,
+        )),
+        DataCell(PQText(value: weights[index].value, pq: PQ.weight)),
+        DataCell(MyIcon.edit, onTap: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute<BuildContext>(
+              builder: (BuildContext context) =>
+                  AddWeightScreen(weight: weights[index]),
+            ),
+          );
+          callback();
+        })
+      ],
+    );
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => weights.length;
+
+  @override
+  int get selectedRowCount => 0;
 }

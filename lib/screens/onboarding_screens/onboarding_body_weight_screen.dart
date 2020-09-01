@@ -54,7 +54,7 @@ class _OnBoardingBodyWeightScreenState
                 ),
                 const SizedBox(width: 20),
               ]),
-              const Spacer(),
+              const SizedBox(height: 20),
             ],
           ),
         ),
