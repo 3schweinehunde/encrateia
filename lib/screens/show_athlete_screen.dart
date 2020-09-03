@@ -30,7 +30,7 @@ import 'package:encrateia/screens/show_athlete_detail_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'edit_activity_screen.dart';
+import 'create_activity_screen.dart';
 import 'edit_athlete_screen.dart';
 
 class ShowAthleteScreen extends StatefulWidget {

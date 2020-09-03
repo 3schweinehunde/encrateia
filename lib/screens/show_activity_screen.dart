@@ -27,6 +27,7 @@ import 'package:encrateia/widgets/activity_widgets/activity_form_power_widget.da
 import 'package:encrateia/widgets/activity_widgets/activity_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_stride_ratio_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_vertical_oscillation_widget.dart';
+import 'package:encrateia/widgets/activity_widgets/edit_activity_widget.dart';
 import 'package:encrateia/screens/show_activity_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -389,6 +390,17 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
+      navigationButton(
+        title: 'Edit Activity',
+        color: MyColor.activity,
+        icon: MyIcon.addActivity,
+        context: context,
+        nextWidget: EditActivityWidget(
+          activity: widget.activity,
+        ),
+      ),
+
+
       if (<String>['new', 'downloaded', 'persisted']
           .contains(widget.activity.state))
         RaisedButton.icon(

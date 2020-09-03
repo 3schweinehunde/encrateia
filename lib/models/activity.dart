@@ -59,6 +59,12 @@ class Activity {
     _db = DbActivity()
       ..athletesId = athlete.id
       ..stravaId = DateTime.now().millisecondsSinceEpoch
+      ..movingTime = 0
+      ..totalAscent = 0
+      ..totalDescent = 0
+      ..totalDistance = 0
+      ..avgHeartRate = 0
+      ..avgPower = 0
       ..timeCreated = DateTime.now();
   }
 
