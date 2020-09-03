@@ -79,6 +79,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                             builder: (BuildContext context) =>
                                 AddHeartRateZoneSchemaScreen(
                               heartRateZoneSchema: heartRateZoneSchema,
+                              numberOfSchemas: heartRateZoneSchemas.length,
                             ),
                           ),
                         );
@@ -103,6 +104,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                               AddHeartRateZoneSchemaScreen(
                             heartRateZoneSchema:
                                 HeartRateZoneSchema(athlete: widget.athlete),
+                            numberOfSchemas: heartRateZoneSchemas.length,
                           ),
                         ),
                       );
@@ -159,6 +161,7 @@ You could also create a schema from scratch.
                           AddHeartRateZoneSchemaScreen(
                         heartRateZoneSchema:
                             HeartRateZoneSchema(athlete: widget.athlete),
+                        numberOfSchemas: heartRateZoneSchemas.length,
                       ),
                     ),
                   );

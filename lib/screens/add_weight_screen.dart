@@ -9,9 +9,11 @@ class AddWeightScreen extends StatelessWidget {
   const AddWeightScreen({
     Key key,
     this.weight,
+    @required this.numberOfWeights
   }) : super(key: key);
 
   final Weight weight;
+  final int numberOfWeights;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class AddWeightScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+                if (numberOfWeights > 1)
                 MyButton.delete(
                   onPressed: () => deleteWeight(context),
                 ),

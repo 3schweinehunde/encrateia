@@ -9,10 +9,12 @@ class AddPowerZoneScreen extends StatefulWidget {
     Key key,
     this.powerZone,
     this.base,
+    @required this.numberOfZones
   }) : super(key: key);
 
   final PowerZone powerZone;
   final int base;
+  final int numberOfZones;
 
   @override
   _AddPowerZoneScreenState createState() => _AddPowerZoneScreenState();
@@ -146,6 +148,7 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
+                if (widget.numberOfZones > 1)
                 MyButton.delete(onPressed: () => deletePowerZone(context)),
                 const SizedBox(width: 5),
                 MyButton.cancel(onPressed: () => Navigator.of(context).pop()),

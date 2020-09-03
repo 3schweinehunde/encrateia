@@ -78,6 +78,7 @@ class _AthletePowerZoneSchemaWidgetState
                             builder: (BuildContext context) =>
                                 AddPowerZoneSchemaScreen(
                               powerZoneSchema: powerZoneSchema,
+                              numberOfSchemas: powerZoneSchemas.length,
                             ),
                           ),
                         );
@@ -102,6 +103,7 @@ class _AthletePowerZoneSchemaWidgetState
                               AddPowerZoneSchemaScreen(
                             powerZoneSchema:
                                 PowerZoneSchema(athlete: widget.athlete),
+                            numberOfSchemas: powerZoneSchemas.length,
                           ),
                         ),
                       );
@@ -161,6 +163,7 @@ You could also create a schema from scratch.
                           AddPowerZoneSchemaScreen(
                         powerZoneSchema:
                             PowerZoneSchema(athlete: widget.athlete),
+                        numberOfSchemas: powerZoneSchemas.length,
                       ),
                     ),
                   );

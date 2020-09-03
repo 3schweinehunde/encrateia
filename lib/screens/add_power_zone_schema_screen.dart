@@ -10,10 +10,14 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'add_power_zone_screen.dart';
 
 class AddPowerZoneSchemaScreen extends StatefulWidget {
-  const AddPowerZoneSchemaScreen({Key key, this.powerZoneSchema})
-      : super(key: key);
+  const AddPowerZoneSchemaScreen({
+    Key key,
+    this.powerZoneSchema,
+    @required this.numberOfSchemas,
+  }) : super(key: key);
 
   final PowerZoneSchema powerZoneSchema;
+  final int numberOfSchemas;
 
   @override
   _AddPowerZoneSchemaScreenState createState() =>
@@ -46,8 +50,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
               margin: EdgeInsets.all(40),
               child: ListTile(
                 leading: MyIcon.warning,
-                title:
-                    Text('Instructions to update your current base value'),
+                title: Text('Instructions to update your current base value'),
                 subtitle: Text(
                   '1) Change the VALID FROM date to today to copy the power zone schema.\n'
                   '2) Edit the BASE VALUE to the new value.\n'
@@ -116,9 +119,11 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                         await Navigator.push(
                           context,
                           MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext context) => AddPowerZoneScreen(
+                            builder: (BuildContext context) =>
+                                AddPowerZoneScreen(
                               powerZone: powerZone,
                               base: widget.powerZoneSchema.base,
+                              numberOfZones: powerZones.length,
                             ),
                           ),
                         );
@@ -140,9 +145,10 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                       context,
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) => AddPowerZoneScreen(
-                          powerZone:
-                              PowerZone(powerZoneSchema: widget.powerZoneSchema),
+                          powerZone: PowerZone(
+                              powerZoneSchema: widget.powerZoneSchema),
                           base: widget.powerZoneSchema.base,
+                          numberOfZones: powerZones.length,
                         ),
                       ),
                     );
@@ -155,11 +161,12 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                MyButton.delete(
-                  onPressed: () => deletePowerZoneSchema(
-                    powerZoneSchema: widget.powerZoneSchema,
+                if (widget.numberOfSchemas > 1)
+                  MyButton.delete(
+                    onPressed: () => deletePowerZoneSchema(
+                      powerZoneSchema: widget.powerZoneSchema,
+                    ),
                   ),
-                ),
                 const SizedBox(width: 5),
                 MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
                 const SizedBox(width: 5),
@@ -192,10 +199,8 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     setState(() {
       widget.powerZoneSchema.base = base;
       for (final PowerZone powerZone in powerZones) {
-        powerZone.lowerLimit =
-            (powerZone.lowerPercentage * base / 100).round();
-        powerZone.upperLimit =
-            (powerZone.upperPercentage * base / 100).round();
+        powerZone.lowerLimit = (powerZone.lowerPercentage * base / 100).round();
+        powerZone.upperLimit = (powerZone.upperPercentage * base / 100).round();
       }
     });
     return null;

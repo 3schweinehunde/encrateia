@@ -41,43 +41,46 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
     if (weights != null) {
       if (weights.isNotEmpty) {
         rows = (weights.length < 8) ? weights.length : 8;
-        return  SingleChildScrollView(
-            child: PaginatedDataTable(
-              header: Row(
-                children: <Widget>[
-                  MyButton.add(
-                    child: const Text('New weighting'),
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => AddWeightScreen(
-                            weight: Weight(athlete: widget.athlete),
+        return SingleChildScrollView(
+          child: PaginatedDataTable(
+            header: Row(
+              children: <Widget>[
+                MyButton.add(
+                  child: const Text('New weighting'),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) => AddWeightScreen(
+                          weight: Weight(
+                            athlete: widget.athlete,
                           ),
+                          numberOfWeights: weights.length,
                         ),
-                      );
-                      getData();
-                    },
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              columns: const <DataColumn>[
-                DataColumn(label: Text('Date')),
-                DataColumn(
-                  label: Text('Weight'),
-                  numeric: true,
+                      ),
+                    );
+                    getData();
+                  },
                 ),
-                DataColumn(label: Text('Edit'))
+                const Spacer(),
               ],
-              rowsPerPage: 8,
-              source: BodyWeightSource(
-                weights: weights,
-                context: context,
-                callback: getData,
-              ),
             ),
-          );
+            columns: const <DataColumn>[
+              DataColumn(label: Text('Date')),
+              DataColumn(
+                label: Text('Weight'),
+                numeric: true,
+              ),
+              DataColumn(label: Text('Edit'))
+            ],
+            rowsPerPage: 8,
+            source: BodyWeightSource(
+              weights: weights,
+              context: context,
+              callback: getData,
+            ),
+          ),
+        );
       } else {
         return Column(
           children: <Widget>[
@@ -115,6 +118,7 @@ You can change these later.
                         MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddWeightScreen(
                             weight: Weight(athlete: widget.athlete),
+                            numberOfWeights: weights.length,
                           ),
                         ),
                       );
@@ -201,8 +205,10 @@ class BodyWeightSource extends DataTableSource {
           await Navigator.push(
             context,
             MaterialPageRoute<BuildContext>(
-              builder: (BuildContext context) =>
-                  AddWeightScreen(weight: weights[index]),
+              builder: (BuildContext context) => AddWeightScreen(
+                weight: weights[index],
+                numberOfWeights: weights.length,
+              ),
             ),
           );
           callback();

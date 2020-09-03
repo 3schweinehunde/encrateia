@@ -10,10 +10,14 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'add_heart_rate_zone_screen.dart';
 
 class AddHeartRateZoneSchemaScreen extends StatefulWidget {
-  const AddHeartRateZoneSchemaScreen({Key key, this.heartRateZoneSchema})
-      : super(key: key);
+  const AddHeartRateZoneSchemaScreen({
+    Key key,
+    this.heartRateZoneSchema,
+    @required this.numberOfSchemas,
+  }) : super(key: key);
 
   final HeartRateZoneSchema heartRateZoneSchema;
+  final int numberOfSchemas;
 
   @override
   _AddHeartRateZoneSchemaScreenState createState() =>
@@ -47,8 +51,7 @@ class _AddHeartRateZoneSchemaScreenState
               margin: EdgeInsets.all(40),
               child: ListTile(
                 leading: MyIcon.warning,
-                title:
-                    Text('Instructions to update your current base value'),
+                title: Text('Instructions to update your current base value'),
                 subtitle: Text(
                   '1) Change the VALID FROM date to today to copy the heart rate zone schema.\n'
                   '2) Edit the BASE VALUE to the new value.\n'
@@ -71,7 +74,8 @@ class _AddHeartRateZoneSchemaScreenState
                   lastDate: DateTime(2100),
                 );
               },
-              onChanged: (DateTime value) => copyHeartRateZoneSchema(date: value),
+              onChanged: (DateTime value) =>
+                  copyHeartRateZoneSchema(date: value),
             ),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Name'),
@@ -124,6 +128,7 @@ class _AddHeartRateZoneSchemaScreenState
                                 AddHeartRateZoneScreen(
                               heartRateZone: heartRateZone,
                               base: widget.heartRateZoneSchema.base,
+                              numberOfZones: heartRateZones.length,
                             ),
                           ),
                         );
@@ -144,10 +149,12 @@ class _AddHeartRateZoneSchemaScreenState
                     await Navigator.push(
                       context,
                       MaterialPageRoute<BuildContext>(
-                        builder: (BuildContext context) => AddHeartRateZoneScreen(
+                        builder: (BuildContext context) =>
+                            AddHeartRateZoneScreen(
                           heartRateZone: HeartRateZone(
                               heartRateZoneSchema: widget.heartRateZoneSchema),
                           base: widget.heartRateZoneSchema.base,
+                          numberOfZones: heartRateZones.length,
                         ),
                       ),
                     );
@@ -160,15 +167,17 @@ class _AddHeartRateZoneSchemaScreenState
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                MyButton.delete(
-                  onPressed: () => deleteHeartRateZoneSchema(
-                    heartRateZoneSchema: widget.heartRateZoneSchema,
+                if (widget.numberOfSchemas > 1)
+                  MyButton.delete(
+                    onPressed: () => deleteHeartRateZoneSchema(
+                      heartRateZoneSchema: widget.heartRateZoneSchema,
+                    ),
                   ),
-                ),
                 const SizedBox(width: 5),
                 MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
                 const SizedBox(width: 5),
-                MyButton.save(onPressed: () => saveHeartRateZoneSchema(context)),
+                MyButton.save(
+                    onPressed: () => saveHeartRateZoneSchema(context)),
               ],
             ),
           ],
@@ -210,8 +219,7 @@ class _AddHeartRateZoneSchemaScreenState
     widget.heartRateZoneSchema
       ..date = date
       ..id = null;
-    final int heartRateZoneSchemaId =
-        await widget.heartRateZoneSchema.save();
+    final int heartRateZoneSchemaId = await widget.heartRateZoneSchema.save();
     for (final HeartRateZone heartRateZone in heartRateZones) {
       heartRateZone
         ..heartRateZoneSchemataId = heartRateZoneSchemaId
