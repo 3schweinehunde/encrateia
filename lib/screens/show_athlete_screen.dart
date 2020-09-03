@@ -13,6 +13,7 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_stryd_cadence_widget.d
 import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/actions/auto_tagging.dart';
 import 'package:encrateia/actions/delete_athlete.dart';
 import 'package:encrateia/actions/download_demo_data.dart';
@@ -29,6 +30,7 @@ import 'package:encrateia/screens/show_athlete_detail_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'edit_activity_screen.dart';
 import 'edit_athlete_screen.dart';
 
 class ShowAthleteScreen extends StatefulWidget {
@@ -162,6 +164,14 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         title: 'Tags',
         icon: MyIcon.tag,
         nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
+      ),
+      RaisedButton.icon(
+        icon: MyIcon.addActivity,
+        color: MyColor.activity,
+        onPressed: () => goToEditActivityScreen(athlete: widget.athlete),
+        label: const Expanded(
+          child: Text('Create Activity manually'),
+        ),
       ),
       RaisedButton.icon(
         icon: MyIcon.secrets,
@@ -322,12 +332,22 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     );
   }
 
-  Future<void> goToEditAthleteScreen({Athlete athlete}) async {
+  Future<void> goToEditAthleteScreen({@required Athlete athlete}) async {
     await athlete.readCredentials();
     await Navigator.push(
       context,
       MaterialPageRoute<BuildContext>(
         builder: (BuildContext context) => EditAthleteScreen(athlete: athlete),
+      ),
+    );
+  }
+
+  Future<void> goToEditActivityScreen({@required Athlete athlete}) async {
+    final Activity activity = Activity.manual(athlete: athlete);
+    await Navigator.push(
+      context,
+      MaterialPageRoute<BuildContext>(
+        builder: (BuildContext context) => EditActivityScreen(activity: activity),
       ),
     );
   }

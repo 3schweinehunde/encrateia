@@ -88,43 +88,40 @@ class _EditEventScreenState extends State<EditEventScreen> {
                     onChanged: (DateTime value) =>
                         widget.record.timeStamp = value,
                   ),
-
                   Row(children: <Widget>[
                     Flexible(
                       child: TextFormField(
-                        decoration:
-                            const InputDecoration(labelText: 'Latitude Degrees'),
+                        decoration: const InputDecoration(
+                            labelText: 'Latitude Degrees'),
                         onChanged: (String value) => widget.record.positionLat =
                             widget.record.positionLat
                                 .setDegrees(int.parse(value)),
-                        initialValue: widget.record.positionLat
-                            .semicirclesDegreePortion()
-                            .toString(),
+                        initialValue:
+                            widget.record.positionLat.fullDegrees.toString(),
                         keyboardType: TextInputType.number,
                       ),
                     ),
                     Flexible(
                       child: TextFormField(
-                        decoration:
-                            const InputDecoration(labelText: 'Latitude Minutes'),
+                        decoration: const InputDecoration(
+                            labelText: 'Latitude Minutes'),
                         onChanged: (String value) => widget.record.positionLat =
                             widget.record.positionLat
                                 .setMinutes(int.parse(value)),
-                        initialValue: widget.record.positionLat
-                            .semicirclesMinutesPortion()
-                            .toString(),
+                        initialValue:
+                            widget.record.positionLat.fullMinutes.toString(),
                         keyboardType: TextInputType.number,
                       ),
                     ),
                     Flexible(
                       child: TextFormField(
-                        decoration:
-                            const InputDecoration(labelText: 'Latitude Seconds'),
+                        decoration: const InputDecoration(
+                            labelText: 'Latitude Seconds'),
                         onChanged: (String value) => widget.record.positionLat =
-                            widget.record.positionLat.setSeconds(double.parse(value)),
-                        initialValue: widget.record.positionLat
-                            .semicirclesSecondsPortion()
-                            .toString(),
+                            widget.record.positionLat
+                                .setSeconds(double.parse(value)),
+                        initialValue:
+                            widget.record.positionLat.seconds.toString(),
                         keyboardType: TextInputType.number,
                       ),
                     ),
@@ -132,39 +129,40 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   Row(children: <Widget>[
                     Flexible(
                       child: TextFormField(
-                        decoration:
-                        const InputDecoration(labelText: 'Longitude Degrees'),
-                        onChanged: (String value) => widget.record.positionLong =
-                            widget.record.positionLong
+                        decoration: const InputDecoration(
+                            labelText: 'Longitude Degrees'),
+                        onChanged: (String value) =>
+                            widget.record.positionLong = widget
+                                .record.positionLong
                                 .setDegrees(int.parse(value)),
-                        initialValue: widget.record.positionLong
-                            .semicirclesDegreePortion()
-                            .toString(),
+                        initialValue:
+                            widget.record.positionLong.fullDegrees.toString(),
                         keyboardType: TextInputType.number,
                       ),
                     ),
                     Flexible(
                       child: TextFormField(
-                        decoration:
-                        const InputDecoration(labelText: 'Longitude Minutes'),
-                        onChanged: (String value) => widget.record.positionLong =
-                            widget.record.positionLong
+                        decoration: const InputDecoration(
+                            labelText: 'Longitude Minutes'),
+                        onChanged: (String value) =>
+                            widget.record.positionLong = widget
+                                .record.positionLong
                                 .setMinutes(int.parse(value)),
-                        initialValue: widget.record.positionLong
-                            .semicirclesMinutesPortion()
-                            .toString(),
+                        initialValue:
+                            widget.record.positionLong.fullMinutes.toString(),
                         keyboardType: TextInputType.number,
                       ),
                     ),
                     Flexible(
                       child: TextFormField(
-                        decoration:
-                        const InputDecoration(labelText: 'Longitude Seconds'),
-                        onChanged: (String value) => widget.record.positionLong =
-                            widget.record.positionLong.setSeconds(double.parse(value)),
-                        initialValue: widget.record.positionLong
-                            .semicirclesSecondsPortion()
-                            .toString(),
+                        decoration: const InputDecoration(
+                            labelText: 'Longitude Seconds'),
+                        onChanged: (String value) =>
+                            widget.record.positionLong = widget
+                                .record.positionLong
+                                .setSeconds(double.parse(value)),
+                        initialValue:
+                            widget.record.positionLong.seconds.toString(),
                         keyboardType: TextInputType.number,
                       ),
                     ),

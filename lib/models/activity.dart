@@ -36,8 +36,8 @@ class Activity {
   Activity._fromDb(this._db);
 
   Activity.fromStrava({
-    strava_activity.SummaryActivity summaryActivity,
-    Athlete athlete,
+    @required strava_activity.SummaryActivity summaryActivity,
+    @required Athlete athlete,
   }) {
     _db = DbActivity()
       ..athletesId = athlete.id
@@ -48,11 +48,18 @@ class Activity {
       ..movingTime = summaryActivity.movingTime;
   }
 
-  Activity.fromLocalDirectory({Athlete athlete}) {
+  Activity.fromLocalDirectory({@required Athlete athlete}) {
     _db = DbActivity()
       ..athletesId = athlete.id
       ..stravaId = DateTime.now().millisecondsSinceEpoch
       ..name = 'new activity';
+  }
+
+  Activity.manual({@required Athlete athlete}){
+    _db = DbActivity()
+      ..athletesId = athlete.id
+      ..stravaId = DateTime.now().millisecondsSinceEpoch
+      ..timeCreated = DateTime.now();
   }
 
   DbActivity _db;
@@ -208,6 +215,16 @@ class Activity {
   set name(String value) => _db.name = value;
   set nonParsable(bool value) => _db.nonParsable = value;
   set state(String value) => _db.state = value;
+  set timeStamp(DateTime value) => _db.timeStamp = value;
+  set timeCreated(DateTime value) => _db.timeCreated = value;
+  set totalDistance(int value) => _db.totalDistance = value;
+  set totalAscent(int value) => _db.totalAscent = value;
+  set totalDescent(int value) => _db.totalDescent = value;
+  set avgHeartRate(int value) => _db.avgHeartRate = value;
+  set avgPower(double value) => _db.avgPower = value;
+  set sport(String value) => _db.sport = value;
+  set subSport(String value) => _db.subSport = value;
+  set movingTime(int value) => _db.movingTime = value;
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();

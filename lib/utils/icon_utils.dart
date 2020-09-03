@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 // ignore: avoid_classes_with_only_static_members
 class MyIcon {
   // A
+  static const Icon addActivity = Icon(Icons.add_circle_outline);
   static const Icon activities = Icon(Icons.view_list);
   static const Icon amount = Icon(Icons.playlist_add);
   static const Icon altitude = Icon(Icons.landscape);

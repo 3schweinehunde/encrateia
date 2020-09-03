@@ -415,7 +415,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       appBar: AppBar(
         backgroundColor: MyColor.activity,
         title: Text(
-          widget.activity.name,
+          widget.activity.name ?? '',
           overflow: TextOverflow.ellipsis,
         ),
       ),
