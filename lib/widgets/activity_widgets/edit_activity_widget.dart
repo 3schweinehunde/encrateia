@@ -148,8 +148,9 @@ class _EditActivityWidgetState extends State<EditActivityWidget> {
                       ),
                       onChanged: (String value) => widget.activity.movingTime =
                           widget.activity.movingTime.setHours(int.parse(value)),
-                      initialValue:
-                          widget.activity.movingTime.fullHours.toString(),
+                      initialValue: (widget.activity.movingTime ?? 0)
+                          .fullHours
+                          .toString(),
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -162,8 +163,9 @@ class _EditActivityWidgetState extends State<EditActivityWidget> {
                       onChanged: (String value) => widget.activity.movingTime =
                           widget.activity.movingTime
                               .setMinutes(int.parse(value)),
-                      initialValue:
-                          widget.activity.movingTime.fullMinutes.toString(),
+                      initialValue: (widget.activity.movingTime ?? 0)
+                          .fullMinutes
+                          .toString(),
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -177,7 +179,8 @@ class _EditActivityWidgetState extends State<EditActivityWidget> {
                           widget.activity.movingTime
                               .setSeconds(int.parse(value)),
                       initialValue:
-                          widget.activity.movingTime.fullSeconds.toString(),
+                          (widget.activity.movingTime ??0).fullSeconds
+                              .toString(),
                       keyboardType: TextInputType.number,
                     ),
                   ),

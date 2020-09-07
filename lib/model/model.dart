@@ -237,6 +237,7 @@ const SqfEntityTable tableLap = SqfEntityTable(
     SqfEntityField('sdevStrideRatio', DbType.real),
     SqfEntityField('cp', DbType.real),
     SqfEntityField('ftp', DbType.real),
+    SqfEntityField('movingTime', DbType.integer),
 
     SqfEntityFieldRelationship(
         parentTable: tableActivity,
@@ -299,6 +300,7 @@ const SqfEntityTable tableInterval = SqfEntityTable(
       SqfEntityField('totalDescent', DbType.integer),
       SqfEntityField('cp', DbType.real),
       SqfEntityField('ftp', DbType.real),
+      SqfEntityField('movingTime', DbType.integer),
 
       SqfEntityFieldRelationship(
           fieldName: 'firstRecordId',

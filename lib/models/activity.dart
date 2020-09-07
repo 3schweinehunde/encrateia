@@ -44,8 +44,7 @@ class Activity {
       ..name = summaryActivity.name
       ..type = summaryActivity.type
       ..distance = summaryActivity.distance.toInt()
-      ..stravaId = summaryActivity.id
-      ..movingTime = summaryActivity.movingTime;
+      ..stravaId = summaryActivity.id;
   }
 
   Activity.fromLocalDirectory({@required Athlete athlete}) {
