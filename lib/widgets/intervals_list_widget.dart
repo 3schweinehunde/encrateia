@@ -33,22 +33,28 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (intervals.isNotEmpty)
-      return SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Row(children: <Widget>[
+            const Spacer(),
             MyButton.add(
-              child: const Text('Specify an Interval'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute<BuildContext>(
-                  builder: (BuildContext context) => SelectIntervalScreen(
-                    athlete: widget.athlete,
-                    activity: widget.activity,
-                  ),
-                ),
-              ),
-            ),
+                child: const Text('Specify an Interval'),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute<BuildContext>(
+                      builder: (BuildContext context) => SelectIntervalScreen(
+                        athlete: widget.athlete,
+                        activity: widget.activity,
+                      ),
+                    ),
+                  );
+                  getData();
+                }),
+            const Spacer(),
+          ]),
+          if (intervals.isNotEmpty)
             DataTable(
               showCheckboxColumn: false,
               onSelectAll: (_) {},
@@ -100,13 +106,9 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                 );
               }).toList(),
             ),
-          ],
-        ),
-      );
-    else
-      return Center(
-        child: Text(loading ? 'Loading' : 'No data available'),
-      );
+        ],
+      ),
+    );
   }
 
   Future<void> getData() async {
