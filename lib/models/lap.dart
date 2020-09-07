@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import 'bar_zone.dart';
 
 class Lap {
@@ -88,6 +87,7 @@ class Lap {
   int get maxTemperature => _db.maxTemperature;
   int get minHeartRate => _db.minHeartRate;
   int get minPower => _db.minPower;
+  int get movingTime => _db.movingTime;
   int get totalAscent => _db.totalAscent;
   int get totalCalories => _db.totalCalories;
   int get totalDescent => _db.totalDescent;
@@ -278,7 +278,8 @@ class Lap {
       ..avgPowerRatio = recordList.avgPowerRatio()
       ..sdevPowerRatio = recordList.sdevPowerRatio()
       ..avgStrideRatio = recordList.avgStrideRatio()
-      ..sdevStrideRatio = recordList.sdevStrideRatio();
+      ..sdevStrideRatio = recordList.sdevStrideRatio()
+      ..movingTime = recordList.movingTime();
     await save();
   }
 

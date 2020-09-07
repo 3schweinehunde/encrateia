@@ -45,6 +45,7 @@ class _LapsListWidgetState extends State<LapsListWidget> {
               DataColumn(label: Text('Power'), numeric: true),
               DataColumn(label: Text('Dist.'), numeric: true),
               DataColumn(label: Text('Ascent'), numeric: true),
+              DataColumn(label: Text('Moving Time'), numeric: true),
               DataColumn(label: Text('Total Timer Time'), numeric: true),
             ],
             rows: laps.map((Lap lap) {
@@ -76,6 +77,7 @@ class _LapsListWidgetState extends State<LapsListWidget> {
                       pq: PQ.elevation,
                     ),
                   ),
+                  DataCell(PQText(value: lap.movingTime, pq: PQ.shortDuration)),
                   DataCell(PQText(value: lap.totalTimerTime, pq: PQ.shortDuration)),
                 ],
               );

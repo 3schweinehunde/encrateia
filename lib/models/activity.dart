@@ -389,7 +389,8 @@ class Activity {
       ..avgPowerRatio = recordList.avgPowerRatio()
       ..sdevPowerRatio = recordList.sdevPowerRatio()
       ..avgStrideRatio = recordList.avgStrideRatio()
-      ..sdevStrideRatio = recordList.sdevStrideRatio();
+      ..sdevStrideRatio = recordList.sdevStrideRatio()
+      ..movingTime = recordList.movingTime();
 
     final List<Lap> laps = await this.laps;
     for (final Lap lap in laps) {

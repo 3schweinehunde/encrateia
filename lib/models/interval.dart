@@ -124,7 +124,8 @@ class Interval {
       ..minFormPower = recordList.minFormPower()
       ..maxFormPower = recordList.maxFormPower()
       ..totalAscent = recordList.totalAscent().round()
-      ..totalDescent = recordList.totalDescent().round();
+      ..totalDescent = recordList.totalDescent().round()
+      ..movingTime = recordList.movingTime();
     await save();
   }
 

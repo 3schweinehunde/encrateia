@@ -34,6 +34,24 @@ class RecordList<E> extends DelegatingList<E> {
       .map((Event record) => record.power)
       .sdev();
 
+  int movingTime() {
+    int movingTime = 0;
+    DateTime lastTimestamp;
+    double lastSpeed = 0;
+
+    for (final Event record in _records) {
+      if (record.speed != null && record.speed > 0) {
+        if (lastSpeed > 0)
+          movingTime += record.timeStamp.difference(lastTimestamp).inSeconds;
+        else
+          movingTime += 1;
+      }
+      lastTimestamp = record.timeStamp;
+      lastSpeed = record.speed;
+    }
+    return movingTime;
+  }
+
   int minPower() {
     final List<int> powers =
         _records.map((Event record) => record.power).nonZeros().cast<int>();

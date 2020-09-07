@@ -16,7 +16,7 @@ class LogListScreen extends StatefulWidget {
 }
 
 class _LogListScreenState extends State<LogListScreen> {
-  List<Log> logs;
+  List<Log> logs = <Log>[];
 
   @override
   void initState() {
