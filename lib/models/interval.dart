@@ -170,8 +170,8 @@ class Interval {
   }
 
   double get avgPace {
-    if (avgSpeed != null && avgSpeed != 0)
-      return 50 / 3 / avgSpeed;
+    if (avgSpeedByDistance != null && avgSpeedByDistance != 0)
+      return 50 / 3 / avgSpeedByDistance;
     else
       return null;
   }

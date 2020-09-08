@@ -8,6 +8,7 @@ import 'package:encrateia/widgets/interval_widgets/interval_ground_time_widget.d
 import 'package:encrateia/widgets/interval_widgets/interval_heart_rate_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_overview_widget.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_pace_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_power_duration.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_power_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_speed_widget.dart';
@@ -75,7 +76,7 @@ class ShowIntervalScreen extends StatelessWidget {
             icon: MyIcon.speed,
             context: context,
             nextWidget: ({encrateia.Interval interval}) =>
-                const Text('') // IntervalPaceWidget(interval: interval),
+                IntervalPaceWidget(interval: interval),
             ),
       if (interval.speedAvailable)
         navigationButton(
