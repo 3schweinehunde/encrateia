@@ -9,6 +9,7 @@ import 'package:encrateia/widgets/interval_widgets/interval_leg_spring_stiffness
 import 'package:encrateia/widgets/interval_widgets/interval_overview_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_power_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_stryd_cadence_widget.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_vertical_oscillation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
