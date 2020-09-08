@@ -198,7 +198,7 @@ class Activity {
   bool get heartRateAvailable => !<num>[null, -1].contains(avgHeartRate);
   bool get ascentAvailable => totalAscent != null && totalDescent != null;
   bool get cadenceAvailable => !<num>[null, -1].contains(avgStrydCadence);
-  bool get speedAvailable => !<num>[null, 0, -1].contains(avgSpeed);
+  bool get speedAvailable => !<num>[null, 0, -1].contains(avgSpeedByDistance);
   bool get paceAvailable => !<num>[null, -1].contains(avgPace);
   bool get ecorAvailable => powerAvailable && speedAvailable;
   bool get groundTimeAvailable => !<num>[null, -1].contains(avgGroundTime);

@@ -10,6 +10,7 @@ import 'package:encrateia/widgets/interval_widgets/interval_leg_spring_stiffness
 import 'package:encrateia/widgets/interval_widgets/interval_overview_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_power_duration.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_power_widget.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_speed_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_vertical_oscillation_widget.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +84,7 @@ class ShowIntervalScreen extends StatelessWidget {
             icon: MyIcon.speed,
             context: context,
             nextWidget: ({encrateia.Interval interval}) =>
-                const Text('') // IntervalSpeedWidget(interval: interval),
+                IntervalSpeedWidget(interval: interval),
             ),
       if (interval.speedAvailable && interval.powerAvailable)
         navigationButton(

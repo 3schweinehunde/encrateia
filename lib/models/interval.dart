@@ -38,6 +38,9 @@ class Interval {
   double get avgLegSpringStiffness => _db.avgLegSpringStiffness;
   double get avgPower => _db.avgPower;
   double get avgSpeed => _db.avgSpeed;
+  double get avgSpeedByMeasurements => _db.avgSpeedByMeasurements;
+  double get avgSpeedByDistance => _db.avgSpeedByDistance;
+  double get avgSpeedBySpeed => _db.avgSpeedBySpeed;
   double get avgStrydCadence => _db.avgStrydCadence;
   double get avgVerticalOscillation => _db.avgVerticalOscillation;
   double get cp => _db.cp;
@@ -209,7 +212,7 @@ class Interval {
   bool get heartRateAvailable => !<num>[null, -1].contains(avgHeartRate);
   bool get ascentAvailable => totalAscent != null && totalDescent != null;
   bool get cadenceAvailable => !<num>[null, -1].contains(avgStrydCadence);
-  bool get speedAvailable => !<num>[null, 0, -1].contains(avgSpeed);
+  bool get speedAvailable => !<num>[null, 0, -1].contains(avgSpeedByDistance);
   bool get weightAvailable => !<num>[null, 0].contains(weight);
   bool get paceAvailable => !<num>[null, -1].contains(avgPace);
   bool get ecorAvailable => !<num>[null, -1].contains(ecor);

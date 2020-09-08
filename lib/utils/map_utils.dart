@@ -76,5 +76,4 @@ extension StatisticFunctions on Map<DateTime, double> {
 
     return sumOfValues / sumOfWeights;
   }
-
 }

@@ -30,7 +30,7 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
     return <Widget>[
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.interval.avgSpeed, pq: PQ.paceFromSpeed),
+          PQText(value: widget.interval.avgSpeedByDistance, pq: PQ.paceFromSpeed),
           const Text(' / '),
           PQText(value: widget.interval.maxSpeed, pq: PQ.paceFromSpeed),
         ]),
@@ -80,7 +80,7 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
         title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              PQText(value: widget.interval.avgSpeed, pq: PQ.speed),
+              PQText(value: widget.interval.avgSpeedByDistance, pq: PQ.speed),
               PQText(value: widget.interval.maxSpeed, pq: PQ.speed),
             ]),
         subtitle: const Text('avg / max speed'),

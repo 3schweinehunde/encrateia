@@ -60,11 +60,11 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
               onSelectAll: (_) {},
               columns: const <DataColumn>[
                 DataColumn(label: Text('Lap'), numeric: true),
-                DataColumn(label: Text('HR\nbpm'), numeric: true),
-                DataColumn(label: Text('Pace\nmin:s'), numeric: true),
-                DataColumn(label: Text('Power\nWatt'), numeric: true),
-                DataColumn(label: Text('Dist.\nm'), numeric: true),
-                DataColumn(label: Text('Ascent\nm'), numeric: true),
+                DataColumn(label: Text('Heart Rate'), numeric: true),
+                DataColumn(label: Text('Pace\n(calculated)'), numeric: true),
+                DataColumn(label: Text('Power'), numeric: true),
+                DataColumn(label: Text('Distance'), numeric: true),
+                DataColumn(label: Text('Ascent'), numeric: true),
               ],
               rows: intervals.map((encrateia.Interval interval) {
                 return DataRow(
@@ -90,7 +90,7 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                       pq: PQ.heartRate,
                     )),
                     DataCell(PQText(
-                      value: interval.avgSpeed,
+                      value: interval.avgSpeedByDistance,
                       pq: PQ.paceFromSpeed,
                     )),
                     DataCell(PQText(value: interval.avgPower, pq: PQ.power)),
