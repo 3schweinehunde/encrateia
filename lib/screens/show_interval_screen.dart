@@ -8,6 +8,7 @@ import 'package:encrateia/widgets/interval_widgets/interval_heart_rate_widget.da
 import 'package:encrateia/widgets/interval_widgets/interval_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_overview_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_power_widget.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_stryd_cadence_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -110,31 +111,31 @@ class ShowIntervalScreen extends StatelessWidget {
         ),
       if (interval.formPowerAvailable)
         navigationButton(
-            title: 'Form Power',
-            color: MyColor.navigate,
-            icon: MyIcon.formPower,
-            context: context,
-            nextWidget: ({encrateia.Interval interval}) =>
-                IntervalFormPowerWidget(interval: interval),
-            ),
+          title: 'Form Power',
+          color: MyColor.navigate,
+          icon: MyIcon.formPower,
+          context: context,
+          nextWidget: ({encrateia.Interval interval}) =>
+              IntervalFormPowerWidget(interval: interval),
+        ),
       if (interval.cadenceAvailable)
         navigationButton(
-            title: 'Cadence',
-            color: MyColor.navigate,
-            icon: MyIcon.cadence,
-            context: context,
-            nextWidget: ({encrateia.Interval interval}) => const Text(
-                '') // IntervalStrydCadenceWidget(interval: interval),
-            ),
+          title: 'Cadence',
+          color: MyColor.navigate,
+          icon: MyIcon.cadence,
+          context: context,
+          nextWidget: ({encrateia.Interval interval}) =>
+              IntervalStrydCadenceWidget(interval: interval),
+        ),
       if (interval.verticalOscillationAvailable)
         navigationButton(
-            title: 'Vertical Oscillation',
-            color: MyColor.navigate,
-            icon: MyIcon.verticalOscillation,
-            context: context,
-            nextWidget: ({encrateia.Interval interval}) => const Text(
-                '') // IntervalVerticalOscillationWidget(interval: interval),
-            ),
+          title: 'Vertical Oscillation',
+          color: MyColor.navigate,
+          icon: MyIcon.verticalOscillation,
+          context: context,
+          nextWidget: ({encrateia.Interval interval}) =>
+              IntervalVerticalOscillationWidget(interval: interval),
+        ),
       navigationButton(
           title: 'Altitude',
           color: MyColor.navigate,
