@@ -67,6 +67,25 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
         ]),
         subtitle: const Text('total ascent - descent = total climb'),
       ),
+      ListTile(
+        title: PQText(value: widget.interval.timeStamp, pq: PQ.dateTime),
+        subtitle: const Text('timestamp'),
+      ),
+      ListTile(
+        title: PQText(
+            value: widget.interval.avgVerticalOscillation, pq: PQ.verticalOscillation),
+        subtitle: const Text('avg vertical oscillation'),
+      ),
+      ListTile(
+        title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              PQText(value: widget.interval.avgSpeed, pq: PQ.speed),
+              PQText(value: widget.interval.maxSpeed, pq: PQ.speed),
+            ]),
+        subtitle: const Text('avg / max speed'),
+      ),
+
     ];
   }
 

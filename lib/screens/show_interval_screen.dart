@@ -139,14 +139,6 @@ class ShowIntervalScreen extends StatelessWidget {
               const Text('') // IntervalAltitudeWidget(interval: interval),
           ),
       navigationButton(
-          title: 'Metadata',
-          color: MyColor.settings,
-          icon: MyIcon.metaData,
-          context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
-              const Text('') // IntervalMetadataWidget(interval: interval),
-          ),
-      navigationButton(
           title: 'Tags',
           color: MyColor.tag,
           icon: MyIcon.tag,
