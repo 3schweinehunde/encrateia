@@ -59,12 +59,13 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
               showCheckboxColumn: false,
               onSelectAll: (_) {},
               columns: const <DataColumn>[
-                DataColumn(label: Text('Lap'), numeric: true),
+                DataColumn(label: Text('Interval'), numeric: true),
                 DataColumn(label: Text('Heart Rate'), numeric: true),
                 DataColumn(label: Text('Pace\n(calculated)'), numeric: true),
                 DataColumn(label: Text('Power'), numeric: true),
                 DataColumn(label: Text('Distance'), numeric: true),
                 DataColumn(label: Text('Ascent'), numeric: true),
+                DataColumn(label: Text('Moving Time'), numeric: true),
               ],
               rows: intervals.map((encrateia.Interval interval) {
                 return DataRow(
@@ -102,6 +103,10 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                         pq: PQ.elevation,
                       ),
                     ),
+                    DataCell(PQText(
+                      value: interval.movingTime,
+                      pq: PQ.shortDuration,
+                    ))
                   ],
                 );
               }).toList(),

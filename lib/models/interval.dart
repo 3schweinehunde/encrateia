@@ -84,6 +84,7 @@ class Interval {
   int get totalAscent => _db.totalAscent;
   int get totalDescent => _db.totalDescent;
 
+  set timeStamp(DateTime value) => _db.timeStamp = value;
   set firstRecordId(int value) => _db.firstRecordId = value;
   set lastRecordId(int value) => _db.lastRecordId = value;
   set athletesId(int value) => _db.athletesId = value;

@@ -40,7 +40,7 @@ class _LapsListWidgetState extends State<LapsListWidget> {
             onSelectAll: (_) {},
             columns: const <DataColumn>[
               DataColumn(label: Text('Lap'), numeric: true),
-              DataColumn(label: Text('HR'), numeric: true),
+              DataColumn(label: Text('Heart Rate'), numeric: true),
               DataColumn(label: Text('Pace'), numeric: true),
               DataColumn(label: Text('Power'), numeric: true),
               DataColumn(label: Text('Dist.'), numeric: true),
