@@ -160,6 +160,18 @@ class ShowIntervalScreen extends StatelessWidget {
           nextWidget: ({encrateia.Interval interval}) => const Text(
               '') // IntervalTagWidget(          interval: interval,          athlete: athlete,        ),
           ),
+      RaisedButton.icon(
+        color: MyColor.delete,
+        icon: MyIcon.delete,
+        textColor: MyColor.textColor(backgroundColor: MyColor.delete),
+        label: const Expanded(
+          child: Text('Delete Interval'),
+        ),
+        onPressed: () async {
+          await interval.delete();
+          Navigator.of(context).pop();
+        },
+      ),
     ];
   }
 

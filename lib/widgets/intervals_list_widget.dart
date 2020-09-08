@@ -70,9 +70,9 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
               rows: intervals.map((encrateia.Interval interval) {
                 return DataRow(
                   key: ValueKey<int>(interval.id),
-                  onSelectChanged: (bool selected) {
+                  onSelectChanged: (bool selected) async {
                     if (selected) {
-                      Navigator.push(
+                      await Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => ShowIntervalScreen(
@@ -82,6 +82,7 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                           ),
                         ),
                       );
+                      getData();
                     }
                   },
                   cells: <DataCell>[
