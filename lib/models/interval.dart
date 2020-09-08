@@ -288,6 +288,7 @@ class Interval {
     distance = (records.last.distance - records.first.distance).round();
     duration = records.last.timeStamp.difference(records.first.timeStamp);
     ftp = Ftp.calculate(records: records);
+    timeStamp = records.first.timeStamp;
     await setValues();
   }
 

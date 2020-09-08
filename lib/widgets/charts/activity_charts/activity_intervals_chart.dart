@@ -303,10 +303,9 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                               record.id <= interval.firstRecordId &&
                               record.id <= interval.lastRecordId)
                           .toList());
-                      await interval.calculateAndSave(records: records);
                       interval.athletesId = widget.athlete.id;
                       interval.activitiesId = widget.activity.id;
-                      interval.timeStamp = records.first.timeStamp;
+                      await interval.calculateAndSave(records: records);
                       widget.activity.cachedIntervals = <encrateia.Interval>[];
                       setState(() {});
                     },
