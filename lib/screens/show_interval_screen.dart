@@ -2,11 +2,12 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/screens/show_interval_detail_screen.dart';
 import 'package:encrateia/utils/my_color.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_form_power_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_ground_time_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_heart_rate_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_overview_widget.dart';
-import 'package:encrateia/widgets/interval_widgets/lap_power_widget.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_power_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -114,7 +115,7 @@ class ShowIntervalScreen extends StatelessWidget {
             icon: MyIcon.formPower,
             context: context,
             nextWidget: ({encrateia.Interval interval}) =>
-                const Text('') // IntervalFormPowerWidget(interval: interval),
+                IntervalFormPowerWidget(interval: interval),
             ),
       if (interval.cadenceAvailable)
         navigationButton(
