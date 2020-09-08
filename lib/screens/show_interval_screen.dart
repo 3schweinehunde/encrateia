@@ -4,6 +4,7 @@ import 'package:encrateia/screens/show_interval_detail_screen.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_ground_time_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_heart_rate_widget.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_leg_spring_stiffness_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_overview_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/lap_power_widget.dart';
 import 'package:flutter/material.dart';
@@ -36,22 +37,22 @@ class ShowIntervalScreen extends StatelessWidget {
       ),
       if (interval.heartRateAvailable)
         navigationButton(
-            title: 'Heart Rate',
-            color: MyColor.navigate,
-            icon: MyIcon.heartRate,
-            context: context,
-            nextWidget: ({encrateia.Interval interval}) =>
-                IntervalHeartRateWidget(interval: interval),
-            ),
+          title: 'Heart Rate',
+          color: MyColor.navigate,
+          icon: MyIcon.heartRate,
+          context: context,
+          nextWidget: ({encrateia.Interval interval}) =>
+              IntervalHeartRateWidget(interval: interval),
+        ),
       if (interval.powerAvailable)
         navigationButton(
-            title: 'Power',
-            color: MyColor.navigate,
-            icon: MyIcon.power,
-            context: context,
-            nextWidget: ({encrateia.Interval interval}) =>
-                IntervalPowerWidget(interval: interval),
-            ),
+          title: 'Power',
+          color: MyColor.navigate,
+          icon: MyIcon.power,
+          context: context,
+          nextWidget: ({encrateia.Interval interval}) =>
+              IntervalPowerWidget(interval: interval),
+        ),
       if (interval.powerAvailable)
         navigationButton(
             title: 'Power Duration',
@@ -90,22 +91,22 @@ class ShowIntervalScreen extends StatelessWidget {
             ),
       if (interval.groundTimeAvailable)
         navigationButton(
-            title: 'Ground Time',
-            color: MyColor.navigate,
-            icon: MyIcon.groundTime,
-            context: context,
-            nextWidget: ({encrateia.Interval interval}) =>
-                IntervalGroundTimeWidget(interval: interval),
-            ),
+          title: 'Ground Time',
+          color: MyColor.navigate,
+          icon: MyIcon.groundTime,
+          context: context,
+          nextWidget: ({encrateia.Interval interval}) =>
+              IntervalGroundTimeWidget(interval: interval),
+        ),
       if (interval.groundTimeAvailable)
         navigationButton(
-            title: 'Leg Spring Stiffness',
-            color: MyColor.navigate,
-            icon: MyIcon.legSpringStiffness,
-            context: context,
-            nextWidget: ({encrateia.Interval interval}) => const Text(
-                '') // IntervalLegSpringStiffnessWidget(interval: interval),
-            ),
+          title: 'Leg Spring Stiffness',
+          color: MyColor.navigate,
+          icon: MyIcon.legSpringStiffness,
+          context: context,
+          nextWidget: ({encrateia.Interval interval}) =>
+              IntervalLegSpringStiffnessWidget(interval: interval),
+        ),
       if (interval.formPowerAvailable)
         navigationButton(
             title: 'Form Power',
