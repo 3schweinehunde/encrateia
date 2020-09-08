@@ -2,6 +2,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/screens/show_interval_detail_screen.dart';
 import 'package:encrateia/utils/my_color.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_altitude_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_form_power_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_ground_time_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_heart_rate_widget.dart';
@@ -143,7 +144,7 @@ class ShowIntervalScreen extends StatelessWidget {
           icon: MyIcon.altitude,
           context: context,
           nextWidget: ({encrateia.Interval interval}) =>
-              const Text('') // IntervalAltitudeWidget(interval: interval),
+              IntervalAltitudeWidget(interval: interval),
           ),
       navigationButton(
           title: 'Tags',
