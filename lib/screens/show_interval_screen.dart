@@ -1,5 +1,6 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
+import 'package:encrateia/screens/show_interval_detail_screen.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_overview_widget.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +26,10 @@ class ShowIntervalScreen extends StatelessWidget {
         color: MyColor.settings,
         icon: MyIcon.metaData,
         context: context,
-        nextWidget: ({encrateia.Interval interval}) =>
-            IntervalOverviewWidget(interval: interval, athlete: athlete, ),
+        nextWidget: ({encrateia.Interval interval}) => IntervalOverviewWidget(
+          interval: interval,
+          athlete: athlete,
+        ),
       ),
       if (interval.heartRateAvailable)
         navigationButton(
@@ -199,9 +202,13 @@ class ShowIntervalScreen extends StatelessWidget {
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(
-            builder: (BuildContext context) => const Text(
-                '') //ShowIntervalDetailScreen(            interval: interval,            intervals: intervals,            nextWidget: nextWidget,            title: title,          ),
-            ),
+          builder: (BuildContext context) => ShowIntervalDetailScreen(
+            interval: interval,
+            intervals: intervals,
+            nextWidget: nextWidget,
+            title: title,
+          ),
+        ),
       ),
     );
   }
