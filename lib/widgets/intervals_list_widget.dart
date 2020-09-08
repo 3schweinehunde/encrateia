@@ -6,7 +6,7 @@ import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/screens/show_lap_screen.dart';
+import 'package:encrateia/screens/show_interval_screen.dart';
 
 class IntervalsListWidget extends StatefulWidget {
   const IntervalsListWidget({
@@ -74,9 +74,9 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                       Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => ShowLapScreen(
-                            lap: null,
-                            laps: null,
+                          builder: (BuildContext context) => ShowIntervalScreen(
+                            interval: interval,
+                            intervals: intervals,
                             athlete: widget.athlete,
                           ),
                         ),

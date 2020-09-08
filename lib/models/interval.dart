@@ -18,6 +18,7 @@ class Interval {
   double firstDistance = 0;
   double lastDistance = 0;
   int index;
+  double weight;
 
   int get id => _db?.id;
   DateTime get timeStamp => _db.timeStamp;
@@ -67,6 +68,7 @@ class Interval {
   int get minFormPower => _db.minFormPower;
   int get minHeartRate => _db.minHeartRate;
   int get minPower => _db.minPower;
+  int get movingTime => _db.movingTime;
   int get totalAscent => _db.totalAscent;
   int get totalDescent => _db.totalDescent;
 
@@ -142,6 +144,71 @@ class Interval {
     _records = events.where((Event event) => event.event == 'record').toList();
     return _records;
   }
+
+  // calculated from other attributes:
+  double get ecor {
+    if (avgPower != null &&
+        avgSpeed != null &&
+        avgSpeed > 0 &&
+        weight != null &&
+        weight > 0)
+      return avgPower / avgSpeed / weight;
+    else
+      return null;
+  }
+
+  double get avgPace {
+    if (avgSpeed != null && avgSpeed != 0)
+      return 50 / 3 / avgSpeed;
+    else
+      return null;
+  }
+
+  double get avgSpeedPerHeartRate {
+    if (avgSpeed != null && avgHeartRate != null && avgHeartRate != 0)
+      return 100 * (avgSpeed / avgHeartRate);
+    else
+      return null;
+  }
+
+  double get avgPowerPerHeartRate {
+    if (avgPower != null &&
+        avgPower != -1 &&
+        avgHeartRate != null &&
+        avgHeartRate != null)
+      return avgPower / avgHeartRate;
+    else
+      return null;
+  }
+
+  int get elevationDifference {
+    if (totalAscent != null && totalDescent != null)
+      return totalAscent - totalDescent;
+    else
+      return null;
+  }
+
+  double get avgDoubleStrydCadence {
+    if (avgStrydCadence != null)
+      return avgStrydCadence * 2;
+    else
+      return null;
+  }
+
+  // easier check for data availability
+  bool get powerAvailable => !<num>[null, -1].contains(avgPower);
+  bool get heartRateAvailable => !<num>[null, -1].contains(avgHeartRate);
+  bool get ascentAvailable => totalAscent != null && totalDescent != null;
+  bool get cadenceAvailable => !<num>[null, -1].contains(avgStrydCadence);
+  bool get speedAvailable => !<num>[null, 0, -1].contains(avgSpeed);
+  bool get weightAvailable => !<num>[null, 0].contains(weight);
+  bool get paceAvailable => !<num>[null, -1].contains(avgPace);
+  bool get ecorAvailable => !<num>[null, -1].contains(ecor);
+  bool get groundTimeAvailable => !<num>[null, -1].contains(avgGroundTime);
+  bool get formPowerAvailable => !<num>[null, -1].contains(avgFormPower);
+  bool get verticalOscillationAvailable => !<num>[null, -1].contains(avgVerticalOscillation);
+  bool get strideCadenceAvailable => !<num>[null, -1].contains(avgDoubleStrydCadence);
+  bool get legSpringStiffnessAvailable => !<num>[null, -1].contains(avgLegSpringStiffness);
 
   Future<void> calculateAndSave({RecordList<Event> records}) async {
     distance = (records.last.distance - records.first.distance).round();
