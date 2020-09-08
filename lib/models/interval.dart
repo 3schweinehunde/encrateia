@@ -1,9 +1,14 @@
-import 'package:encrateia/model/model.dart' show DbEvent, DbInterval;
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/ftp.dart';
-import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/model/model.dart'
+    show DbInterval, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+import 'activity.dart';
+import 'event.dart';
+import 'ftp.dart';
+import 'heart_rate_zone.dart';
+import 'heart_rate_zone_schema.dart';
+import 'power_zone.dart';
+import 'power_zone_schema.dart';
+import 'record_list.dart';
 
 class Interval {
   Interval() {
@@ -19,6 +24,10 @@ class Interval {
   double lastDistance = 0;
   int index;
   double weight;
+  PowerZoneSchema _powerZoneSchema;
+  PowerZone _powerZone;
+  HeartRateZone _heartRateZone;
+  HeartRateZoneSchema _heartRateZoneSchema;
 
   int get id => _db?.id;
   DateTime get timeStamp => _db.timeStamp;
@@ -209,6 +218,67 @@ class Interval {
   bool get verticalOscillationAvailable => !<num>[null, -1].contains(avgVerticalOscillation);
   bool get strideCadenceAvailable => !<num>[null, -1].contains(avgDoubleStrydCadence);
   bool get legSpringStiffnessAvailable => !<num>[null, -1].contains(avgLegSpringStiffness);
+
+  Future<PowerZone> get powerZone async {
+    if (_powerZone == null) {
+      final DbPowerZone dbPowerZone = await DbPowerZone()
+          .select()
+          .powerZoneSchemataId
+          .equals((await powerZoneSchema).id)
+          .and
+          .lowerLimit
+          .lessThanOrEquals(avgPower)
+          .and
+          .upperLimit
+          .greaterThanOrEquals(avgPower)
+          .toSingle();
+      _powerZone = PowerZone.exDb(dbPowerZone);
+    }
+    return _powerZone;
+  }
+
+  Future<HeartRateZone> get heartRateZone async {
+    if (_heartRateZone == null) {
+      final DbHeartRateZone dbHeartRateZone = await DbHeartRateZone()
+          .select()
+          .heartRateZoneSchemataId
+          .equals((await heartRateZoneSchema).id)
+          .and
+          .lowerLimit
+          .lessThanOrEquals(avgHeartRate)
+          .and
+          .upperLimit
+          .greaterThanOrEquals(avgHeartRate)
+          .toSingle();
+
+      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone);
+    }
+    return _heartRateZone;
+  }
+
+  Future<HeartRateZoneSchema> get heartRateZoneSchema async {
+    if (_heartRateZoneSchema == null) {
+      final DbActivity dbActivity = await DbActivity().getById(activitiesId);
+
+      _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
+        athletesId: dbActivity.athletesId,
+        date: dbActivity.timeCreated,
+      );
+    }
+    return _heartRateZoneSchema;
+  }
+
+  Future<PowerZoneSchema> get powerZoneSchema async {
+    if (_powerZoneSchema == null) {
+      final DbActivity dbActivity = await DbActivity().getById(activitiesId);
+
+      _powerZoneSchema = await PowerZoneSchema.getBy(
+        athletesId: dbActivity.athletesId,
+        date: dbActivity.timeCreated,
+      );
+    }
+    return _powerZoneSchema;
+  }
 
   Future<void> calculateAndSave({RecordList<Event> records}) async {
     distance = (records.last.distance - records.first.distance).round();
