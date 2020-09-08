@@ -803,16 +803,19 @@ class Activity {
   }
 
   Future<List<encrateia.Interval>> get intervals async {
-    int counter = 1;
+    if(cachedIntervals.isEmpty) {
+      int counter = 1;
 
-    final List<DbInterval> dbIntervalList = await _db.getDbIntervals().toList();
-    cachedIntervals = dbIntervalList.map(encrateia.Interval.exDb).toList();
+      final List<DbInterval> dbIntervalList = await _db.getDbIntervals()
+          .toList();
+      cachedIntervals = dbIntervalList.map(encrateia.Interval.exDb).toList();
 
-    for (final encrateia.Interval interval in cachedIntervals) {
-      interval
-        ..activity = this
-        ..index = counter;
-      counter = counter + 1;
+      for (final encrateia.Interval interval in cachedIntervals) {
+        interval
+          ..activity = this
+          ..index = counter;
+        counter = counter + 1;
+      }
     }
     return cachedIntervals;
   }

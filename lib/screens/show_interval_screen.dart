@@ -1,3 +1,4 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/screens/show_interval_detail_screen.dart';
@@ -24,12 +25,14 @@ class ShowIntervalScreen extends StatelessWidget {
     Key key,
     @required this.interval,
     @required this.intervals,
+    @required this.activity,
     @required this.athlete,
   }) : super(key: key);
 
   final encrateia.Interval interval;
   final List<encrateia.Interval> intervals;
   final Athlete athlete;
+  final Activity activity;
 
   List<Widget> tiles({@required BuildContext context}) {
     return <Widget>[
@@ -169,6 +172,7 @@ class ShowIntervalScreen extends StatelessWidget {
         ),
         onPressed: () async {
           await interval.delete();
+          activity.cachedIntervals = <encrateia.Interval>[];
           Navigator.of(context).pop();
         },
       ),

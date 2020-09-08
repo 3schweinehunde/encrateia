@@ -79,6 +79,7 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                             interval: interval,
                             intervals: intervals,
                             athlete: widget.athlete,
+                            activity: widget.activity,
                           ),
                         ),
                       );
