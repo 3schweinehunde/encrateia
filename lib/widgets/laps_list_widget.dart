@@ -115,6 +115,7 @@ class _LapsListWidgetState extends State<LapsListWidget> {
     await interval.calculateAndSave(records: RecordList<Event>(records));
     await interval.copyTaggings(lap: lap);
     lap.copied = true;
+    widget.activity.cachedIntervals = <encrateia.Interval>[];
     setState(() {});
   }
 
