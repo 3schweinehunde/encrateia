@@ -15,6 +15,7 @@ import 'package:encrateia/widgets/interval_widgets/interval_power_duration.dart'
 import 'package:encrateia/widgets/interval_widgets/interval_power_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_speed_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_stryd_cadence_widget.dart';
+import 'package:encrateia/widgets/interval_widgets/interval_tag_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_vertical_oscillation_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/utils/icon_utils.dart';
@@ -156,13 +157,15 @@ class ShowIntervalScreen extends StatelessWidget {
             IntervalAltitudeWidget(interval: interval),
       ),
       navigationButton(
-          title: 'Tags',
-          color: MyColor.tag,
-          icon: MyIcon.tag,
-          context: context,
-          nextWidget: ({encrateia.Interval interval}) => const Text(
-              '') // IntervalTagWidget(          interval: interval,          athlete: athlete,        ),
-          ),
+        title: 'Tags',
+        color: MyColor.tag,
+        icon: MyIcon.tag,
+        context: context,
+        nextWidget: ({encrateia.Interval interval}) => IntervalTagWidget(
+          interval: interval,
+          athlete: athlete,
+        ),
+      ),
       RaisedButton.icon(
         color: MyColor.delete,
         icon: MyIcon.delete,

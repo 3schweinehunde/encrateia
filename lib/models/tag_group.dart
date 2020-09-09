@@ -2,10 +2,11 @@ import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart'
-    show DbActivityTagging, DbLapTagging, DbTag, DbTagGroup;
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
+    show DbActivityTagging, DbLapTagging, DbIntervalTagging, DbTag, DbTagGroup;
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
+import 'activity.dart';
+import 'athlete.dart';
+import 'interval.dart' as encrateia;
 import 'lap.dart';
 
 class TagGroup {
@@ -165,6 +166,27 @@ class TagGroup {
 
     final Iterable<int> selectedTagIds =
         dbLapTaggings.map((DbLapTagging dbLapTagging) => dbLapTagging.tagsId);
+
+    for (final TagGroup tagGroup in tagGroups) {
+      tagGroup.cachedTags = await tagGroup.tags;
+      for (final Tag tag in tagGroup.cachedTags) {
+        tag.selected = selectedTagIds.contains(tag.id);
+      }
+    }
+    return tagGroups;
+  }
+
+  static Future<List<TagGroup>> includingIntervalTaggings({
+    @required Athlete athlete,
+    @required encrateia.Interval interval,
+  }) async {
+    final List<TagGroup> tagGroups = await athlete.tagGroups;
+
+    final List<DbIntervalTagging> dbIntervalTaggings =
+    await DbIntervalTagging().select().intervalsId.equals(interval.id).toList();
+
+    final Iterable<int> selectedTagIds =
+    dbIntervalTaggings.map((DbIntervalTagging dbIntervalTagging) => dbIntervalTagging.tagsId);
 
     for (final TagGroup tagGroup in tagGroups) {
       tagGroup.cachedTags = await tagGroup.tags;
