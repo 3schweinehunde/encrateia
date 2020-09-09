@@ -1,11 +1,14 @@
 import 'package:encrateia/model/model.dart'
     show DbInterval, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
+import 'package:encrateia/models/tag.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 import 'activity.dart';
 import 'event.dart';
 import 'ftp.dart';
 import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';
+import 'interval_tagging.dart';
+import 'lap.dart';
 import 'power_zone.dart';
 import 'power_zone_schema.dart';
 import 'record_list.dart';
@@ -219,9 +222,12 @@ class Interval {
   bool get ecorAvailable => !<num>[null, -1].contains(ecor);
   bool get groundTimeAvailable => !<num>[null, -1].contains(avgGroundTime);
   bool get formPowerAvailable => !<num>[null, -1].contains(avgFormPower);
-  bool get verticalOscillationAvailable => !<num>[null, -1].contains(avgVerticalOscillation);
-  bool get strideCadenceAvailable => !<num>[null, -1].contains(avgDoubleStrydCadence);
-  bool get legSpringStiffnessAvailable => !<num>[null, -1].contains(avgLegSpringStiffness);
+  bool get verticalOscillationAvailable =>
+      !<num>[null, -1].contains(avgVerticalOscillation);
+  bool get strideCadenceAvailable =>
+      !<num>[null, -1].contains(avgDoubleStrydCadence);
+  bool get legSpringStiffnessAvailable =>
+      !<num>[null, -1].contains(avgLegSpringStiffness);
 
   Future<PowerZone> get powerZone async {
     if (_powerZone == null) {
@@ -290,6 +296,13 @@ class Interval {
     ftp = Ftp.calculate(records: records);
     timeStamp = records.first.timeStamp;
     await setValues();
+  }
+
+  Future<void> copyTaggings({Lap lap}) async {
+    final List<Tag> tags = await Tag.allByLap(lap: lap);
+    for (final Tag tag in tags) {
+      await IntervalTagging(tag: tag, interval: this).save();
+    }
   }
 
   static Interval exDb(DbInterval db) => Interval._fromDb(db);

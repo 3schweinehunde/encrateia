@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
+import 'icon_utils.dart';
 import 'my_color.dart';
 
 class MyButton extends RaisedButton {
@@ -41,6 +41,13 @@ class MyButton extends RaisedButton {
           child: child ?? const Text('Add'),
           onPressed: onPressed,
         );
+
+  MyButton.copy({Widget child, VoidCallback onPressed})
+      : super(
+    color: MyColor.copy,
+    child: child ?? MyIcon.copy,
+    onPressed: onPressed,
+  );
 
   MyButton.navigate({Widget child, VoidCallback onPressed})
       : super(

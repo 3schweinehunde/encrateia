@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart' show DbTag, DbActivityTagging;
+import 'package:encrateia/model/model.dart'
+    show DbActivityTagging, DbLapTagging, DbTag;
 import 'package:encrateia/models/tag_group.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart'
     show BoolCommitResult, BoolResult;
 import 'activity.dart';
 import 'athlete.dart';
+import 'lap.dart';
 
 class Tag {
   Tag({
@@ -55,8 +57,26 @@ class Tag {
               .toList())
           .orderBy('tagGroupsId')
           .toList();
-      final List<Tag> tags =
-          dbTags.map(Tag.exDb).toList();
+      final List<Tag> tags = dbTags.map(Tag.exDb).toList();
+      return tags;
+    } else {
+      return <Tag>[];
+    }
+  }
+
+  static Future<List<Tag>> allByLap({@required Lap lap}) async {
+    final List<DbLapTagging> dbLapTaggings =
+        await DbLapTagging().select().lapsId.equals(lap.id).toList();
+    if (dbLapTaggings.isNotEmpty) {
+      final List<DbTag> dbTags = await DbTag()
+          .select()
+          .id
+          .inValues(dbLapTaggings
+              .map((DbLapTagging dbLapTagging) => dbLapTagging.tagsId)
+              .toList())
+          .orderBy('tagGroupsId')
+          .toList();
+      final List<Tag> tags = dbTags.map(Tag.exDb).toList();
       return tags;
     } else {
       return <Tag>[];

@@ -24,6 +24,7 @@ class MyIcon {
   static const Icon cadence = Icon(Icons.pets);
   static const Icon calories = Icon(Icons.battery_charging_full);
   static const Icon climb = ascent;
+  static const Icon copy = Icon(Icons.content_copy);
   static const Icon create = Icon(Icons.star);
   static const Icon cycling = Icon(Icons.directions_bike);
   static const Icon cycles = Icon(Icons.repeat);

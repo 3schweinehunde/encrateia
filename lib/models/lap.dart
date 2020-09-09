@@ -1,5 +1,5 @@
 import 'package:encrateia/model/model.dart'
-    show DbLap, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
+    show DbActivity, DbEvent, DbHeartRateZone, DbLap, DbLapTagging, DbPowerZone;
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
@@ -23,17 +23,18 @@ class Lap {
 
   Lap._fromDb(this._db);
 
-  DbLap _db;
   Activity activity;
-  int index;
-  List<Event> _records;
-  PowerZoneSchema _powerZoneSchema;
-  PowerZone _powerZone;
+  bool copied;
+  DbLap _db;
   HeartRateZone _heartRateZone;
   HeartRateZoneSchema _heartRateZoneSchema;
-  List<BarZone> powerDistributions;
   List<BarZone> heartRateDistributions;
+  List<BarZone> powerDistributions;
+  List<Event> _records;
+  PowerZone _powerZone;
+  PowerZoneSchema _powerZoneSchema;
   double weight;
+  int index;
 
   int get id => _db?.id;
   DateTime get startTime => _db.startTime;
@@ -377,6 +378,12 @@ class Lap {
   Future<List<Event>> get events async {
     final List<DbEvent> dbEvents = await _db.getDbEvents().toList();
     return dbEvents.map(Event.exDb).toList();
+  }
+
+  Future<List<LapTagging>> get lapTaggings async {
+    final List<DbLapTagging> dbLapTaggings =
+    await DbLapTagging().select().lapsId.equals(id).toList();
+    return dbLapTaggings.map(LapTagging.exDb).toList();
   }
 
   static Lap exDb(DbLap db) => Lap._fromDb(db);

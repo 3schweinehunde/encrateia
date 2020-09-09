@@ -54,6 +54,7 @@ class MyColor {
   static Color detail = brightGoldenYellow;
   static Color settings = lightGray;
   static Color add = mint;
+  static Color copy = mintAccent;
   static Color save = success;
   static Color cancel = warning;
   static Color delete = danger;
