@@ -2,7 +2,9 @@ import 'package:encrateia/model/model.dart'
     show DbInterval, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
 import 'package:encrateia/models/tag.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+import 'package:flutter/material.dart';
 import 'activity.dart';
+import 'athlete.dart';
 import 'event.dart';
 import 'ftp.dart';
 import 'heart_rate_zone.dart';
@@ -288,6 +290,38 @@ class Interval {
       );
     }
     return _powerZoneSchema;
+  }
+
+  Future<void> autoTagger({@required Athlete athlete}) async {
+    final PowerZone powerZone = await this.powerZone;
+    if (powerZone.id != null) {
+      final Tag powerTag = await Tag.autoPowerTag(
+        athlete: athlete,
+        sortOrder: powerZone.lowerLimit,
+        color: powerZone.color,
+        name: powerZone.name,
+      );
+      await IntervalTagging.createBy(
+        interval: this,
+        tag: powerTag,
+        system: true,
+      );
+    }
+
+    final HeartRateZone heartRateZone = await this.heartRateZone;
+    if (heartRateZone.id != null) {
+      final Tag heartRateTag = await Tag.autoHeartRateTag(
+        athlete: athlete,
+        sortOrder: heartRateZone.lowerLimit,
+        color: heartRateZone.color,
+        name: heartRateZone.name,
+      );
+      await IntervalTagging.createBy(
+        interval: this,
+        tag: heartRateTag,
+        system: true,
+      );
+    }
   }
 
   Future<void> calculateAndSave({RecordList<Event> records}) async {

@@ -296,18 +296,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                   const Spacer(),
                   MyButton.save(
                     child: const Text('Save interval'),
-                    onPressed: () async {
-                      final RecordList<Event> records = RecordList<Event>(widget
-                          .records
-                          .where((Event record) =>
-                              record.id <= interval.firstRecordId &&
-                              record.id <= interval.lastRecordId)
-                          .toList());
-                      await interval.calculateAndSave(records: records);
-                      widget.activity.cachedIntervals = <encrateia.Interval>[];
-                      interval = encrateia.Interval();
-                      getData();
-                    },
+                    onPressed: saveInterval,
                   ),
                   const SizedBox(width: 20),
                 ],
@@ -366,6 +355,19 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
       }
     }
     setState(() {});
+  }
+
+  Future<void> saveInterval() async {
+    final RecordList<Event> records = RecordList<Event>(widget.records
+        .where((Event record) =>
+            record.id <= interval.firstRecordId &&
+            record.id <= interval.lastRecordId)
+        .toList());
+    await interval.calculateAndSave(records: records);
+    await interval.autoTagger(athlete: widget.athlete);
+    widget.activity.cachedIntervals = <encrateia.Interval>[];
+    interval = encrateia.Interval();
+    getData();
   }
 
   Future<void> getData() async {
