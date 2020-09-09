@@ -62,9 +62,15 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
         return ListTile(
           title: Text(activityMap[activityId].name),
           subtitle: Column(children: <Widget>[
-            for (encrateia.Interval interval in intervalsInCard)
+            for (encrateia.Interval interval in intervalsInCard.reversed)
               Row(
                 children: <Widget>[
+                  PQText(
+                    value: interval.timeStamp,
+                    pq: PQ.dateTime,
+                    format: DateTimeFormat.shortTime,
+                  ),
+                  const SizedBox(width: 20),
                   PQText(value: interval.distance, pq: PQ.distance),
                   const SizedBox(width: 20),
                   PQText(value: interval.movingTime, pq: PQ.shortDuration),
@@ -83,7 +89,8 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
                           Chip(
                             avatar: CircleAvatar(
                                 foregroundColor: MyColor.textColor(
-                                    backgroundColor: Color(tagGroup(tag).color)),
+                                    backgroundColor:
+                                        Color(tagGroup(tag).color)),
                                 backgroundColor: Color(tagGroup(tag).color),
                                 child: Text(capitals(tag))),
                             label: Text(
@@ -141,7 +148,8 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
     tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete);
     for (final encrateia.Interval interval in intervals) {
       await interval.tags;
-      if (disposed) break;
+      if (disposed)
+        break;
       setState(() {});
     }
   }

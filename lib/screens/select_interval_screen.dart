@@ -45,8 +45,8 @@ class _SelectIntervalScreenState extends State<SelectIntervalScreen> {
             records: RecordList<Event>(paceRecords),
             activity: widget.activity,
             athlete: widget.athlete,
-            minimum: widget.activity.avgSpeed * 3.6 / 1.5,
-            maximum: widget.activity.avgSpeed * 3.6 * 1.5,
+            minimum: widget.activity.avgSpeed * 3.6 / 2,
+            maximum: widget.activity.avgSpeed * 3.6 * 2,
           ),
         ),
       );

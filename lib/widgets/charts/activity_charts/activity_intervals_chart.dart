@@ -83,7 +83,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
               aspectRatio:
                   MediaQuery.of(context).orientation == Orientation.portrait
                       ? 1
-                      : 2,
+                      : 2.5,
               child: LineChart(
                 data,
                 defaultRenderer: LineRendererConfig<num>(
@@ -112,42 +112,104 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                 behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
                       PanAndZoomBehavior(),
                       RangeAnnotation(GraphUtils.rangeAnnotations(laps: laps)),
-                      if (interval.firstDistance > 0 &&
-                          interval.lastDistance > 0)
-                        RangeAnnotation(
-                          <RangeAnnotationSegment<int>>[
+                      RangeAnnotation(
+                        <RangeAnnotationSegment<int>>[
+                          if (interval.firstDistance > 0 &&
+                              interval.lastDistance > 0)
                             RangeAnnotationSegment<int>(
                               interval.firstDistance.round(),
                               interval.lastDistance.round(),
                               RangeAnnotationAxisType.domain,
                               color: const Color(r: 255, g: 200, b: 200),
                               endLabel: 'Interval',
-                            )
-                          ],
-                        ),
+                            ),
+                          if (selectedRecord != null)
+                            RangeAnnotationSegment<int>(
+                              (selectedRecord.distance - 10).round(),
+                              (selectedRecord.distance + 10).round(),
+                              RangeAnnotationAxisType.domain,
+                              color: const Color(r: 200, g: 255, b: 200),
+                              endLabel: '',
+                            ),
+                          if (selectedRecord != null)
+                            RangeAnnotationSegment<int>(
+                              (selectedRecord.distance - 1).round(),
+                              (selectedRecord.distance + 1).round(),
+                              RangeAnnotationAxisType.domain,
+                              color: const Color(r: 0, g: 100, b: 0),
+                              endLabel: 'Cursor',
+                            ),
+                        ],
+                      ),
                     ] +
                     GraphUtils.axis(measureTitle: 'Speed (km/h)'),
               ),
             ),
+            const SizedBox(height: 20),
             if (selectedRecord != null)
               Column(
                 children: <Widget>[
-                  Text('Current selection: ' +
-                      selectedRecord.distance.round().toString() +
-                      ' m; ' +
-                      (selectedRecord.speed * 3.6).toStringAsPrecision(2) +
-                      ' km/h; ' +
-                      (selectedRecord.power ?? 0).toString() +
-                      ' W'),
+                  Row(children: <Widget>[
+                    const SizedBox(width: 20),
+                    Text('Cursor position: ' +
+                        selectedRecord.distance.round().toString() +
+                        ' m; ' +
+                        (selectedRecord.speed * 3.6).toStringAsPrecision(2) +
+                        ' km/h; ' +
+                        (selectedRecord.power ?? 0).toString() +
+                        ' W   ' +
+                        '      Use Buttons to move Cursor'),
+                    const Spacer(),
+                  ]),
+                  if (selectedRecord != null)
+                    ButtonTheme(
+                      minWidth: 36,
+                      child: Row(children: <Widget>[
+                        const Spacer(),
+                        MyButton.activity(
+                          child: const Text('-100'),
+                          onPressed: () => moveSelectedRecord(amount: -100),
+                        ),
+                        const Spacer(),
+                        MyButton.activity(
+                          child: const Text('-10'),
+                          onPressed: () => moveSelectedRecord(amount: -10),
+                        ),
+                        const Spacer(),
+                        MyButton.activity(
+                          child: const Text('-1'),
+                          onPressed: () => moveSelectedRecord(amount: -1),
+                        ),
+                        const Spacer(),
+                        MyButton.activity(
+                          child: const Text('+1'),
+                          onPressed: () => moveSelectedRecord(amount: 1),
+                        ),
+                        const Spacer(),
+                        MyButton.activity(
+                          child: const Text('+10'),
+                          onPressed: () => moveSelectedRecord(amount: 10),
+                        ),
+                        const Spacer(),
+                        MyButton.activity(
+                          child: const Text('+100'),
+                          onPressed: () => moveSelectedRecord(amount: 100),
+                        ),
+                        const Spacer(),
+                      ]),
+                    ),
                   Row(
                     children: <Widget>[
                       const Spacer(),
                       MyButton.activity(
                           child: const Text('Select as start'),
                           onPressed: () {
-                            interval.firstRecordId = selectedRecord.id;
-                            interval.firstDistance = selectedRecord.distance;
-                            setState(() {});
+                            if (interval.lastRecordId == 0 ||
+                                (selectedRecord.id < interval.lastRecordId)) {
+                              interval.firstRecordId = selectedRecord.id;
+                              interval.firstDistance = selectedRecord.distance;
+                              setState(() {});
+                            }
                           }),
                       const Spacer(),
                       if (interval.firstRecordId == 0)
@@ -159,69 +221,18 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                       const Spacer(),
                     ],
                   ),
-                  ButtonTheme(
-                    minWidth: 36,
-                    child: Row(children: <Widget>[
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('-100'),
-                        onPressed: () => moveInterval(
-                          amount: -100,
-                          boundary: IntervalBoundary.left,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('-10'),
-                        onPressed: () => moveInterval(
-                          amount: -10,
-                          boundary: IntervalBoundary.left,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('-1'),
-                        onPressed: () => moveInterval(
-                          amount: -1,
-                          boundary: IntervalBoundary.left,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('+1'),
-                        onPressed: () => moveInterval(
-                          amount: 1,
-                          boundary: IntervalBoundary.left,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('+10'),
-                        onPressed: () => moveInterval(
-                          amount: 10,
-                          boundary: IntervalBoundary.left,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('+100'),
-                        onPressed: () => moveInterval(
-                          amount: 100,
-                          boundary: IntervalBoundary.left,
-                        ),
-                      ),
-                      const Spacer(),
-                    ]),
-                  ),
                   Row(
                     children: <Widget>[
                       const Spacer(),
                       MyButton.activity(
                         child: const Text('Select as end'),
                         onPressed: () {
-                          interval.lastRecordId = selectedRecord.id;
-                          interval.lastDistance = selectedRecord.distance;
-                          setState(() {});
+                          if (interval.firstRecordId == 0 ||
+                              (selectedRecord.id > interval.firstRecordId)) {
+                            interval.lastRecordId = selectedRecord.id;
+                            interval.lastDistance = selectedRecord.distance;
+                            setState(() {});
+                          }
                         },
                       ),
                       const Spacer(),
@@ -233,60 +244,6 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                             ' m'),
                       const Spacer(),
                     ],
-                  ),
-                  ButtonTheme(
-                    minWidth: 36,
-                    child: Row(children: <Widget>[
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('-100'),
-                        onPressed: () => moveInterval(
-                          amount: -100,
-                          boundary: IntervalBoundary.right,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('-10'),
-                        onPressed: () => moveInterval(
-                          amount: -10,
-                          boundary: IntervalBoundary.right,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('-1'),
-                        onPressed: () => moveInterval(
-                          amount: -1,
-                          boundary: IntervalBoundary.right,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('+1'),
-                        onPressed: () => moveInterval(
-                          amount: 1,
-                          boundary: IntervalBoundary.right,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('+10'),
-                        onPressed: () => moveInterval(
-                          amount: 10,
-                          boundary: IntervalBoundary.right,
-                        ),
-                      ),
-                      const Spacer(),
-                      MyButton.activity(
-                        child: const Text('+100'),
-                        onPressed: () => moveInterval(
-                          amount: 100,
-                          boundary: IntervalBoundary.right,
-                        ),
-                      ),
-                      const Spacer(),
-                    ]),
                   ),
                 ],
               ),
@@ -312,47 +269,18 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
       return GraphUtils.loadingContainer;
   }
 
-  void moveInterval({int amount, IntervalBoundary boundary}) {
+  void moveSelectedRecord({int amount}) {
     if (amount < 0) {
-      switch (boundary) {
-        case IntervalBoundary.left:
-          {
-            interval.firstRecordId =
-                max(interval.firstRecordId + amount, widget.records.first.id);
-            selectedRecord = widget.records.firstWhere(
-                (Event record) => record.id == interval.firstRecordId);
-            interval.firstDistance = selectedRecord.distance;
-            break;
-          }
-        case IntervalBoundary.right:
-          {
-            interval.lastRecordId =
-                max(interval.lastRecordId + amount, interval.firstRecordId + 1);
-            selectedRecord = widget.records.firstWhere(
-                (Event record) => record.id == interval.lastRecordId);
-            interval.lastDistance = selectedRecord.distance;
-          }
-      }
+      final int newSelectedRecordId =
+          max(selectedRecord.id + amount, widget.records.first.id);
+      selectedRecord = widget.records
+          .firstWhere((Event record) => record.id == newSelectedRecordId);
     } else {
-      switch (boundary) {
-        case IntervalBoundary.left:
-          {
-            interval.firstRecordId =
-                min(interval.firstRecordId + amount, interval.lastRecordId - 1);
-            selectedRecord = widget.records.firstWhere(
-                (Event record) => record.id == interval.firstRecordId);
-            interval.firstDistance = selectedRecord.distance;
-            break;
-          }
-        case IntervalBoundary.right:
-          {
-            interval.lastRecordId =
-                min(interval.lastRecordId + amount, widget.records.last.id);
-            selectedRecord = widget.records.firstWhere(
-                (Event record) => record.id == interval.lastRecordId);
-            interval.lastDistance = selectedRecord.distance;
-          }
-      }
+      final int newSelectedRecordId =
+          min(selectedRecord.id + amount, widget.records.last.id);
+      print(newSelectedRecordId);
+      selectedRecord = widget.records
+          .firstWhere((Event record) => record.id == newSelectedRecordId);
     }
     setState(() {});
   }
