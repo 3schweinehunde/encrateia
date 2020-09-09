@@ -67,6 +67,7 @@ class MyIcon {
     color: MyColor.blueJeans,
   );
   static const Icon intensity = Icon(Icons.power);
+  static const Icon intervals = Icon(Icons.timer);
   // L
   static const Icon laps = Icon(Icons.timer);
   static const Icon legSpringStiffness = Icon(Icons.airline_seat_recline_extra);

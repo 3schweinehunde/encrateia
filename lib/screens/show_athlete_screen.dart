@@ -11,6 +11,7 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widg
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart';
+import 'package:encrateia/widgets/intervals_feed_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
@@ -65,6 +66,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         icon: MyIcon.activities,
         backgroundColor: MyColor.activity,
         nextWidget: ActivitiesListWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.interval,
+        title: 'Interval Feed',
+        icon: MyIcon.intervals,
+        backgroundColor: MyColor.activity,
+        nextWidget: IntervalsFeedWidget(athlete: widget.athlete),
       ),
       navigationButton(
         color: MyColor.navigate,

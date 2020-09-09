@@ -820,6 +820,12 @@ class Activity {
     return cachedIntervals;
   }
 
+  static Future<Activity> byId(int id) async {
+    final DbActivity dbActivity = await DbActivity().getById(id);
+    return exDb(dbActivity);
+  }
+
+
   Future<BoolResult> deleteEvents() async => await _db.getDbEvents().delete();
   Future<BoolResult> deleteLaps() async => await _db.getDbLaps().delete();
 

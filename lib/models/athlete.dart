@@ -3,17 +3,12 @@ import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/strava_token.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/model/model.dart'
-    show
-        DbActivity,
-        DbAthlete,
-        DbHeartRateZoneSchema,
-        DbPowerZoneSchema,
-        DbTagGroup,
-        DbWeight;
+    show DbActivity, DbAthlete, DbHeartRateZoneSchema, DbInterval, DbPowerZoneSchema, DbTagGroup, DbWeight;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
 import 'package:strava_flutter/Models/detailedAthlete.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/weight.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'heart_rate_zone_schema.dart';
@@ -161,6 +156,12 @@ class Athlete {
       tagGroup.cachedTags = await tagGroup.tags;
     }
     return tagGroups;
+  }
+
+  Future<List<encrateia.Interval>> get intervals async {
+    final List<DbInterval> dbIntervalList =
+        await _db.getDbIntervals().orderByDesc('timeStamp').toList();
+    return dbIntervalList.map(encrateia.Interval.exDb).toList();
   }
 
   Future<BoolResult> delete() async {

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart'
-    show DbActivityTagging, DbLapTagging, DbTag;
+    show DbActivityTagging, DbIntervalTagging, DbLapTagging, DbTag;
 import 'package:encrateia/models/tag_group.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart'
     show BoolCommitResult, BoolResult;
 import 'activity.dart';
 import 'athlete.dart';
+import 'interval.dart' as encrateia;
 import 'lap.dart';
 
 class Tag {
@@ -48,13 +49,14 @@ class Tag {
         .equals(activity.id)
         .toList();
     if (dbActivityTaggings.isNotEmpty) {
+      final List<int> tagIds = dbActivityTaggings
+          .map((DbActivityTagging dbActivityTagging) =>
+      dbActivityTagging.tagsId)
+          .toList();
       final List<DbTag> dbTags = await DbTag()
           .select()
           .id
-          .inValues(dbActivityTaggings
-              .map((DbActivityTagging dbActivityTagging) =>
-                  dbActivityTagging.tagsId)
-              .toList())
+          .inValues(tagIds)
           .orderBy('tagGroupsId')
           .toList();
       final List<Tag> tags = dbTags.map(Tag.exDb).toList();
@@ -68,12 +70,33 @@ class Tag {
     final List<DbLapTagging> dbLapTaggings =
         await DbLapTagging().select().lapsId.equals(lap.id).toList();
     if (dbLapTaggings.isNotEmpty) {
+      final List<int> tagIds = dbLapTaggings
+          .map((DbLapTagging dbLapTagging) => dbLapTagging.tagsId)
+          .toList();
       final List<DbTag> dbTags = await DbTag()
           .select()
           .id
-          .inValues(dbLapTaggings
-              .map((DbLapTagging dbLapTagging) => dbLapTagging.tagsId)
-              .toList())
+          .inValues(tagIds)
+          .orderBy('tagGroupsId')
+          .toList();
+      final List<Tag> tags = dbTags.map(Tag.exDb).toList();
+      return tags;
+    } else {
+      return <Tag>[];
+    }
+  }
+
+  static Future<List<Tag>> allByInterval({@required encrateia.Interval interval}) async {
+    final List<DbIntervalTagging> dbIntervalTaggings =
+    await DbIntervalTagging().select().intervalsId.equals(interval.id).toList();
+    if (dbIntervalTaggings.isNotEmpty) {
+      final List<int> tagIds = dbIntervalTaggings
+          .map((DbIntervalTagging dbIntervalTagging) => dbIntervalTagging.tagsId)
+          .toList();
+      final List<DbTag> dbTags = await DbTag()
+          .select()
+          .id
+          .inValues(tagIds)
           .orderBy('tagGroupsId')
           .toList();
       final List<Tag> tags = dbTags.map(Tag.exDb).toList();

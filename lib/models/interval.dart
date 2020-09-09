@@ -25,6 +25,7 @@ class Interval {
   DbInterval _db;
   Activity activity;
   List<Event> _records = <Event>[];
+  List<Tag> cachedTags = <Tag>[];
   double firstDistance = 0;
   double lastDistance = 0;
   int index;
@@ -337,6 +338,13 @@ class Interval {
     for (final Tag tag in tags) {
       await IntervalTagging(tag: tag, interval: this).save();
     }
+  }
+
+  Future<List<Tag>> get tags async {
+    if (cachedTags.isEmpty) {
+      cachedTags = await Tag.allByInterval(interval: this);
+    }
+    return cachedTags;
   }
 
   static Interval exDb(DbInterval db) => Interval._fromDb(db);
