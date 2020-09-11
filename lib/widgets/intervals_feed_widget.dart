@@ -4,6 +4,7 @@ import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/tag_group.dart';
+import 'package:encrateia/screens/show_interval_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_color.dart';
@@ -61,56 +62,74 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
             groupedIntervals[activityId];
         return ListTile(
           title: Text(activityMap[activityId].name),
-          subtitle: Column(children: <Widget>[
-            for (encrateia.Interval interval in intervalsInCard.reversed)
-              Row(
-                children: <Widget>[
-                  PQText(
-                    value: interval.timeStamp,
-                    pq: PQ.dateTime,
-                    format: DateTimeFormat.shortTime,
-                  ),
-                  const SizedBox(width: 20),
-                  PQText(value: interval.distance, pq: PQ.distance),
-                  const SizedBox(width: 20),
-                  PQText(value: interval.movingTime, pq: PQ.shortDuration),
-                  const SizedBox(width: 20),
-                  PQText(value: interval.avgPace, pq: PQ.pace),
-                  const SizedBox(width: 20),
-                  PQText(value: interval.avgPower, pq: PQ.power),
-                  const SizedBox(width: 20),
-                  PQText(value: interval.avgHeartRate, pq: PQ.heartRate),
-                  const SizedBox(width: 20),
-                  Flexible(
-                    child: Wrap(
-                      spacing: 10,
-                      children: <Widget>[
-                        for (Tag tag in interval.cachedTags)
-                          Chip(
-                            avatar: CircleAvatar(
-                                foregroundColor: MyColor.textColor(
-                                    backgroundColor:
-                                        Color(tagGroup(tag).color)),
-                                backgroundColor: Color(tagGroup(tag).color),
-                                child: Text(capitals(tag))),
-                            label: Text(
-                              tag.name,
-                              style: TextStyle(
-                                color: MyColor.textColor(
-                                  selected: true,
-                                  backgroundColor: Color(tag.color ?? 99999),
+          subtitle: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Column(children: <Widget>[
+              for (encrateia.Interval interval in intervalsInCard.reversed)
+                InkWell(
+                  child: Row(
+                    children: <Widget>[
+                      PQText(
+                        value: interval.timeStamp,
+                        pq: PQ.dateTime,
+                        format: DateTimeFormat.shortTime,
+                      ),
+                      const SizedBox(width: 20),
+                      PQText(value: interval.distance, pq: PQ.distance),
+                      const SizedBox(width: 20),
+                      PQText(value: interval.movingTime, pq: PQ.shortDuration),
+                      const SizedBox(width: 20),
+                      PQText(value: interval.avgPace, pq: PQ.pace),
+                      const SizedBox(width: 20),
+                      PQText(value: interval.avgPower, pq: PQ.power),
+                      const SizedBox(width: 20),
+                      PQText(value: interval.avgHeartRate, pq: PQ.heartRate),
+                      const SizedBox(width: 20),
+                      Wrap(
+                        spacing: 10,
+                        children: <Widget>[
+                          for (Tag tag in interval.cachedTags)
+                            Chip(
+                              avatar: CircleAvatar(
+                                  foregroundColor: MyColor.textColor(
+                                      backgroundColor:
+                                          Color(tagGroup(tag).color)),
+                                  backgroundColor: Color(tagGroup(tag).color),
+                                  child: Text(capitals(tag))),
+                              label: Text(
+                                tag.name,
+                                style: TextStyle(
+                                  color: MyColor.textColor(
+                                    selected: true,
+                                    backgroundColor: Color(tag.color ?? 99999),
+                                  ),
                                 ),
                               ),
+                              backgroundColor: Color(tag.color ?? 99999),
+                              elevation: 3,
                             ),
-                            backgroundColor: Color(tag.color ?? 99999),
-                            elevation: 3,
-                          ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              )
-          ]),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) => ShowIntervalScreen(
+                          interval: interval,
+                          intervals: intervals,
+                          athlete: widget.athlete,
+                          activity: activityMap[activityId],
+                        ),
+                      ),
+                    );
+                    getData();
+                  },
+                ),
+            ]),
+          ),
+
         );
       },
     );
@@ -146,8 +165,11 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
     };
     setState(() {});
     tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete);
-    for (final encrateia.Interval interval in intervals) {
+    int index = 1;
+    for (final encrateia.Interval interval in intervals.reversed) {
       await interval.tags;
+      interval.index = index;
+      index++;
       if (disposed)
         break;
       setState(() {});

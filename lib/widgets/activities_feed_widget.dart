@@ -81,42 +81,45 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                   leading: sportsIcon(sport: activity.sport),
                   title: Text(activity.name ?? 'Activity'),
                   trailing: activity.excluded == true ? MyIcon.excluded : const Text(''),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(children: <Widget>[
-                        PQText(
-                          pq: PQ.dateTime,
-                          value: activity.timeCreated,
-                          format: DateTimeFormat.shortDate,
-                        ),
-                        PQText(
-                          pq: PQ.distance,
-                          value: activity.totalDistance,
-                        ),
-                      ]),
-                      const SizedBox(width: 20),
-                      Column(children: <Widget>[
-                        PQText(pq: PQ.paceFromSpeed, value: activity.avgSpeed),
-                        PQText(
-                          pq: PQ.heartRate,
-                          value: activity.avgHeartRate,
-                        ),
-                      ]),
-                      const SizedBox(width: 20),
-                      Column(
-                        children: <Widget>[
+                  subtitle: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Column(children: <Widget>[
                           PQText(
-                            pq: PQ.power,
-                            value: activity.avgPower,
+                            pq: PQ.dateTime,
+                            value: activity.timeCreated,
+                            format: DateTimeFormat.shortDate,
                           ),
                           PQText(
-                            pq: PQ.ecor,
-                            value: activity.cachedEcor,
+                            pq: PQ.distance,
+                            value: activity.totalDistance,
                           ),
-                        ],
-                      )
-                    ],
+                        ]),
+                        const SizedBox(width: 20),
+                        Column(children: <Widget>[
+                          PQText(pq: PQ.paceFromSpeed, value: activity.avgSpeed),
+                          PQText(
+                            pq: PQ.heartRate,
+                            value: activity.avgHeartRate,
+                          ),
+                        ]),
+                        const SizedBox(width: 20),
+                        Column(
+                          children: <Widget>[
+                            PQText(
+                              pq: PQ.power,
+                              value: activity.avgPower,
+                            ),
+                            PQText(
+                              pq: PQ.ecor,
+                              value: activity.cachedEcor,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                   onTap: () async {
                     await Navigator.push(

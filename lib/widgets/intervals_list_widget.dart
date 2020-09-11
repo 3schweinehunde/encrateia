@@ -55,63 +55,67 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
             const Spacer(),
           ]),
           if (intervals.isNotEmpty)
-            DataTable(
-              showCheckboxColumn: false,
-              onSelectAll: (_) {},
-              columns: const <DataColumn>[
-                DataColumn(label: Text('Interval'), numeric: true),
-                DataColumn(label: Text('Heart Rate'), numeric: true),
-                DataColumn(label: Text('Pace\n(calculated)'), numeric: true),
-                DataColumn(label: Text('Power'), numeric: true),
-                DataColumn(label: Text('Distance'), numeric: true),
-                DataColumn(label: Text('Ascent'), numeric: true),
-                DataColumn(label: Text('Moving Time'), numeric: true),
-              ],
-              rows: intervals.map((encrateia.Interval interval) {
-                return DataRow(
-                  key: ValueKey<int>(interval.id),
-                  onSelectChanged: (bool selected) async {
-                    if (selected) {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => ShowIntervalScreen(
-                            interval: interval,
-                            intervals: intervals,
-                            athlete: widget.athlete,
-                            activity: widget.activity,
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                showCheckboxColumn: false,
+                columnSpacing: 10,
+                onSelectAll: (_) {},
+                columns: const <DataColumn>[
+                  DataColumn(label: Text('Interval'), numeric: true),
+                  DataColumn(label: Text('Heart Rate'), numeric: true),
+                  DataColumn(label: Text('Pace\n(calculated)'), numeric: true),
+                  DataColumn(label: Text('Power'), numeric: true),
+                  DataColumn(label: Text('Distance'), numeric: true),
+                  DataColumn(label: Text('Ascent'), numeric: true),
+                  DataColumn(label: Text('Moving Time'), numeric: true),
+                ],
+                rows: intervals.map((encrateia.Interval interval) {
+                  return DataRow(
+                    key: ValueKey<int>(interval.id),
+                    onSelectChanged: (bool selected) async {
+                      if (selected) {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute<BuildContext>(
+                            builder: (BuildContext context) => ShowIntervalScreen(
+                              interval: interval,
+                              intervals: intervals,
+                              athlete: widget.athlete,
+                              activity: widget.activity,
+                            ),
                           ),
+                        );
+                        getData();
+                      }
+                    },
+                    cells: <DataCell>[
+                      DataCell(PQText(value: interval.index, pq: PQ.integer)),
+                      DataCell(PQText(
+                        value: interval.avgHeartRate,
+                        pq: PQ.heartRate,
+                      )),
+                      DataCell(PQText(
+                        value: interval.avgSpeedByDistance,
+                        pq: PQ.paceFromSpeed,
+                      )),
+                      DataCell(PQText(value: interval.avgPower, pq: PQ.power)),
+                      DataCell(PQText(value: interval.distance, pq: PQ.distance)),
+                      DataCell(
+                        PQText(
+                          value: (interval.totalAscent ?? 0) -
+                              (interval.totalDescent ?? 0),
+                          pq: PQ.elevation,
                         ),
-                      );
-                      getData();
-                    }
-                  },
-                  cells: <DataCell>[
-                    DataCell(PQText(value: interval.index, pq: PQ.integer)),
-                    DataCell(PQText(
-                      value: interval.avgHeartRate,
-                      pq: PQ.heartRate,
-                    )),
-                    DataCell(PQText(
-                      value: interval.avgSpeedByDistance,
-                      pq: PQ.paceFromSpeed,
-                    )),
-                    DataCell(PQText(value: interval.avgPower, pq: PQ.power)),
-                    DataCell(PQText(value: interval.distance, pq: PQ.distance)),
-                    DataCell(
-                      PQText(
-                        value: (interval.totalAscent ?? 0) -
-                            (interval.totalDescent ?? 0),
-                        pq: PQ.elevation,
                       ),
-                    ),
-                    DataCell(PQText(
-                      value: interval.movingTime,
-                      pq: PQ.shortDuration,
-                    ))
-                  ],
-                );
-              }).toList(),
+                      DataCell(PQText(
+                        value: interval.movingTime,
+                        pq: PQ.shortDuration,
+                      ))
+                    ],
+                  );
+                }).toList(),
+              ),
             ),
         ],
       ),
