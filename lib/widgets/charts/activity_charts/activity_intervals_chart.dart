@@ -149,7 +149,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
             if (selectedRecord != null)
               Column(
                 children: <Widget>[
-                  Row(children: <Widget>[
+                  Wrap(children: <Widget>[
                     const SizedBox(width: 20),
                     Text('Cursor position: ' +
                         selectedRecord.distance.round().toString() +
@@ -157,8 +157,8 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                         (selectedRecord.speed * 3.6).toStringAsPrecision(2) +
                         ' km/h; ' +
                         (selectedRecord.power ?? 0).toString() +
-                        ' W   ' +
-                        '      Use Buttons to move Cursor'),
+                        ' W. \n' +
+                        'Use Buttons to move Cursor'),
                     const Spacer(),
                   ]),
                   if (selectedRecord != null)
@@ -278,7 +278,6 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
     } else {
       final int newSelectedRecordId =
           min(selectedRecord.id + amount, widget.records.last.id);
-      print(newSelectedRecordId);
       selectedRecord = widget.records
           .firstWhere((Event record) => record.id == newSelectedRecordId);
     }
@@ -288,7 +287,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
   Future<void> saveInterval() async {
     final RecordList<Event> records = RecordList<Event>(widget.records
         .where((Event record) =>
-            record.id <= interval.firstRecordId &&
+            record.id >= interval.firstRecordId &&
             record.id <= interval.lastRecordId)
         .toList());
     await interval.calculateAndSave(records: records);

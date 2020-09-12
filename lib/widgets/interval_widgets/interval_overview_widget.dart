@@ -29,8 +29,14 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
   List<Widget> get tiles {
     return <Widget>[
       ListTile(
+        title: PQText(
+            value: widget.interval.distance.toInt(), pq: PQ.distance),
+        subtitle: const Text('distance'),
+      ),
+      ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.interval.avgSpeedByDistance, pq: PQ.paceFromSpeed),
+          PQText(
+              value: widget.interval.avgSpeedByDistance, pq: PQ.paceFromSpeed),
           const Text(' / '),
           PQText(value: widget.interval.maxSpeed, pq: PQ.paceFromSpeed),
         ]),
@@ -50,7 +56,8 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
       ),
       ListTile(
         title: PQText(
-            value: widget.interval.avgPowerPerHeartRate, pq: PQ.powerPerHeartRate),
+            value: widget.interval.avgPowerPerHeartRate,
+            pq: PQ.powerPerHeartRate),
         subtitle: const Text('power / heart rate'),
       ),
       ListTile(
@@ -73,7 +80,8 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
       ),
       ListTile(
         title: PQText(
-            value: widget.interval.avgVerticalOscillation, pq: PQ.verticalOscillation),
+            value: widget.interval.avgVerticalOscillation,
+            pq: PQ.verticalOscillation),
         subtitle: const Text('avg vertical oscillation'),
       ),
       ListTile(
@@ -85,7 +93,6 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
             ]),
         subtitle: const Text('avg / max speed'),
       ),
-
     ];
   }
 
@@ -93,10 +100,10 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
   Widget build(BuildContext context) {
     return StaggeredGridView.count(
       staggeredTiles:
-      List<StaggeredTile>.filled(tiles.length, const StaggeredTile.fit(1)),
+          List<StaggeredTile>.filled(tiles.length, const StaggeredTile.fit(1)),
       mainAxisSpacing: 4,
       crossAxisCount:
-      MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
       children: tiles,
     );
   }
