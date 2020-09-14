@@ -45,16 +45,15 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             title: Text(activity.name ?? 'Activity'),
             subtitle: const Text('Activity cannot be parsed. 🙇'),
             onTap: () {
-              if (activity.state == 'persisted')
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<BuildContext>(
-                    builder: (BuildContext context) => ShowActivityScreen(
-                      activity: activity,
-                      athlete: widget.athlete,
-                    ),
+              Navigator.push(
+                context,
+                MaterialPageRoute<BuildContext>(
+                  builder: (BuildContext context) => ShowActivityScreen(
+                    activity: activity,
+                    athlete: widget.athlete,
                   ),
-                );
+                ),
+              );
             },
           )
         else
@@ -62,23 +61,23 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
             dense: true,
             leading: sportsIcon(sport: activity.sport),
             title: Text(activity.name ?? 'Activity'),
-            trailing: activity.excluded == true ? MyIcon.excluded : const Text(''),
+            trailing:
+                activity.excluded == true ? MyIcon.excluded : const Text(''),
             subtitle: PQText(
               pq: PQ.dateTime,
               value: activity.timeCreated,
               format: DateTimeFormat.longDate,
             ),
             onTap: () {
-              if (activity.state == 'persisted')
-                Navigator.push(
-                  context,
-                  MaterialPageRoute<BuildContext>(
-                    builder: (BuildContext context) => ShowActivityScreen(
-                      activity: activity,
-                      athlete: widget.athlete,
-                    ),
+              Navigator.push(
+                context,
+                MaterialPageRoute<BuildContext>(
+                  builder: (BuildContext context) => ShowActivityScreen(
+                    activity: activity,
+                    athlete: widget.athlete,
                   ),
-                );
+                ),
+              );
             },
           )
     ]);
