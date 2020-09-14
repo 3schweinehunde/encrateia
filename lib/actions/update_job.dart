@@ -37,6 +37,7 @@ Future<void> updateJob({
         (Activity activity) =>
             activity.state == 'downloaded' &&
             activity.manual != true &&
+            activity.nonParsable != true &&
             activity.excluded != true);
     for (final Activity activity in downloadedActivities) {
       await parseActivity(
