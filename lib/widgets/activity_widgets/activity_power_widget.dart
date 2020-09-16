@@ -29,9 +29,9 @@ class ActivityPowerWidget extends StatefulWidget {
 class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
-  String screenShotButtonText = 'Save Image';
   PowerZoneSchema powerZoneSchema;
   List<PowerZone> powerZones;
+  String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
 
   @override
@@ -66,7 +66,6 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W are shown.'),
-              const Divider(),
               Row(children: <Widget>[
                 const Spacer(),
                 MyButton.save(
@@ -79,7 +78,6 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                 ),
                 const SizedBox(width: 20),
               ]),
-              const Divider(),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(value: widget.activity.avgPower, pq: PQ.power),

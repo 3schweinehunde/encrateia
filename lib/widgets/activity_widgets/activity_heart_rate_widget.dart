@@ -5,6 +5,8 @@ import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -29,6 +31,8 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
   HeartRateZoneSchema heartRateZoneSchema;
   List<HeartRateZone> heartRateZones;
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -50,16 +54,30 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityHeartRateChart(
-                records: RecordList<Event>(heartRateRecords),
-                activity: widget.activity,
-                heartRateZones: heartRateZones,
-                athlete: widget.athlete,
+              RepaintBoundary(
+                key: widgetKey,
+                child: ActivityHeartRateChart(
+                  records: RecordList<Event>(heartRateRecords),
+                  activity: widget.activity,
+                  heartRateZones: heartRateZones,
+                  athlete: widget.athlete,
+                ),
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'heart rate > 10 bpm are shown.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(

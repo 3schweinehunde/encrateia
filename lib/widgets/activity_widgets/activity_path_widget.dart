@@ -1,6 +1,8 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_path.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,9 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String screenShotButtonText = 'Save as .png-Image';
+    final GlobalKey widgetKey = GlobalKey();
+
     if (records.isNotEmpty) {
       final List<Event> geoRecords = records
           .where((Event value) =>
@@ -37,11 +42,28 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
           .toList();
 
       if (geoRecords.isNotEmpty && geoRecords != null) {
-        return Center(
-          child: MyPath(
-            activity: widget.activity,
-            records: RecordList<Event>(geoRecords),
-          ),
+        return Column(
+          children: <Widget>[
+            RepaintBoundary(
+              key: widgetKey,
+              child: MyPath(
+                activity: widget.activity,
+                records: RecordList<Event>(geoRecords),
+              ),
+            ),
+            Row(children: <Widget>[
+              const Spacer(),
+              MyButton.save(
+                child: Text(screenShotButtonText),
+                onPressed: () async {
+                  await ImageUtils.capturePng(widgetKey: widgetKey);
+                  screenShotButtonText = 'Image saved';
+                  setState(() {});
+                },
+              ),
+              const SizedBox(width: 20),
+            ]),
+          ],
         );
       } else {
         return const Center(
