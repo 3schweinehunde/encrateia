@@ -1,6 +1,8 @@
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
@@ -19,6 +21,8 @@ class LapStrydCadenceWidget extends StatefulWidget {
 class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -46,14 +50,28 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapStrydCadenceChart(
-                records: RecordList<Event>(strydCadenceRecords),
-                minimum: widget.lap.avgStrydCadence * 2 / 1.25,
-                maximum: widget.lap.avgStrydCadence * 2 * 1.25,
+              RepaintBoundary(
+                key: widgetKey,
+                child: LapStrydCadenceChart(
+                  records: RecordList<Event>(strydCadenceRecords),
+                  minimum: widget.lap.avgStrydCadence * 2 / 1.25,
+                  maximum: widget.lap.avgStrydCadence * 2 * 1.25,
+                ),
               ),
               const Text('Only records where cadence > 0 s/min are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(

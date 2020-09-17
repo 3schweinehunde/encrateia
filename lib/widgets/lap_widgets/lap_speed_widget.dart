@@ -2,6 +2,8 @@ import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_speed_chart.dart';
@@ -19,6 +21,8 @@ class LapSpeedWidget extends StatefulWidget {
 class _LapSpeedWidgetState extends State<LapSpeedWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -45,14 +49,28 @@ class _LapSpeedWidgetState extends State<LapSpeedWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapSpeedChart(
-                records: RecordList<Event>(paceRecords),
-                minimum: (widget.lap.avgSpeed - 3 * widget.lap.sdevSpeed) * 3.6,
-                maximum: (widget.lap.avgSpeed + 3 * widget.lap.sdevSpeed) * 3.6,
+              RepaintBoundary(
+                key: widgetKey,
+                child: LapSpeedChart(
+                  records: RecordList<Event>(paceRecords),
+                  minimum: (widget.lap.avgSpeed - 3 * widget.lap.sdevSpeed) * 3.6,
+                  maximum: (widget.lap.avgSpeed + 3 * widget.lap.sdevSpeed) * 3.6,
+                ),
               ),
               const Text('Only records where speed > 0 m/s are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(value: widget.lap.avgSpeed, pq: PQ.speed),

@@ -3,6 +3,8 @@ import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/event.dart';
@@ -23,6 +25,8 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
 bool loading = true;
   PowerZoneSchema powerZoneSchema;
   List<PowerZone> powerZones;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -49,13 +53,27 @@ bool loading = true;
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapPowerChart(
-                records: RecordList<Event>(powerRecords),
-                powerZones: powerZones,
+              RepaintBoundary(
+                key: widgetKey,
+                child: LapPowerChart(
+                  records: RecordList<Event>(powerRecords),
+                  powerZones: powerZones,
+                ),
               ),
               const Text('Only records where power > 100 W are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(value: widget.lap.avgPower, pq: PQ.power),

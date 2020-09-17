@@ -4,6 +4,8 @@ import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
@@ -23,6 +25,8 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   bool loading = true;
   HeartRateZoneSchema heartRateZoneSchema;
   List<HeartRateZone> heartRateZones;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -50,13 +54,27 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapHeartRateChart(
-                records: RecordList<Event>(heartRateRecords),
-                heartRateZones: heartRateZones,
+              RepaintBoundary(
+                key: widgetKey,
+                child: LapHeartRateChart(
+                  records: RecordList<Event>(heartRateRecords),
+                  heartRateZones: heartRateZones,
+                ),
               ),
               const Text('Only records where heart rate > 10 bpm are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(value: widget.lap.avgHeartRate, pq: PQ.heartRate),
