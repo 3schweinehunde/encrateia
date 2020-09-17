@@ -1,5 +1,7 @@
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/power_duration_chart.dart';
@@ -10,12 +12,16 @@ class IntervalPowerDurationWidget extends StatefulWidget {
   final encrateia.Interval interval;
 
   @override
-  _IntervalPowerDurationWidgetState createState() => _IntervalPowerDurationWidgetState();
+  _IntervalPowerDurationWidgetState createState() =>
+      _IntervalPowerDurationWidgetState();
 }
 
-class _IntervalPowerDurationWidgetState extends State<IntervalPowerDurationWidget> {
+class _IntervalPowerDurationWidgetState
+    extends State<IntervalPowerDurationWidget> {
   List<Event> records = <Event>[];
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -40,9 +46,23 @@ class _IntervalPowerDurationWidgetState extends State<IntervalPowerDurationWidge
         return ListView(
           padding: const EdgeInsets.only(left: 15),
           children: <Widget>[
-            PowerDurationChart(records: powerRecords),
+            RepaintBoundary(
+              key: widgetKey,
+              child: PowerDurationChart(records: powerRecords),
+            ),
             const Text('Swipe left/write to compare with other intervals.'),
-            const Divider(),
+            Row(children: <Widget>[
+              const Spacer(),
+              MyButton.save(
+                child: Text(screenShotButtonText),
+                onPressed: () async {
+                  await ImageUtils.capturePng(widgetKey: widgetKey);
+                  screenShotButtonText = 'Image saved';
+                  setState(() {});
+                },
+              ),
+              const SizedBox(width: 20),
+            ]),
           ],
         );
       } else {

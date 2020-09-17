@@ -2,6 +2,8 @@ import 'package:encrateia/models/activity_list.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/athlete_time_series_chart.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
@@ -21,6 +23,8 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -42,13 +46,28 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              AthleteTimeSeriesChart(
-                activities: paceActivities,
-                activityAttr: ActivityAttr.avgPace,
-                chartTitleText: 'Pace',
-                athlete: widget.athlete,
-                flipVerticalAxis: true,
+              RepaintBoundary(
+                key: widgetKey,
+                child: AthleteTimeSeriesChart(
+                  activities: paceActivities,
+                  activityAttr: ActivityAttr.avgPace,
+                  chartTitleText: 'Pace',
+                  athlete: widget.athlete,
+                  flipVerticalAxis: true,
+                ),
               ),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               AthleteFilterWidget(
                 athlete: widget.athlete,
                 tagGroups: tagGroups,

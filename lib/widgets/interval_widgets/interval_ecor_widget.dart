@@ -4,6 +4,8 @@ import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_ecor_chart.dart';
@@ -26,6 +28,8 @@ class _IntervalEcorWidgetState extends State<IntervalEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   Weight weight;
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -56,14 +60,29 @@ class _IntervalEcorWidgetState extends State<IntervalEcorWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapEcorChart(
-                records: RecordList<Event>(powerRecords),
-                weight: weight.value,
+              RepaintBoundary(
+                key: widgetKey,
+                child: LapEcorChart(
+                  records: RecordList<Event>(powerRecords),
+                  weight: weight.value,
+                ),
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 0 W and speed > 1 m/s are shown.'),
-              const Divider(),
+              const Text('Swipe left/write to compare with other intervals.'),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.weight,
                 title: PQText(value: widget.interval.weight, pq: PQ.weight),

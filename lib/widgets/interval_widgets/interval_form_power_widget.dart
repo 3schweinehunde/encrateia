@@ -1,6 +1,8 @@
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_form_power_chart.dart';
@@ -19,6 +21,8 @@ class IntervalFormPowerWidget extends StatefulWidget {
 class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -46,15 +50,29 @@ class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              LapFormPowerChart(
-                records: RecordList<Event>(formPowerRecords),
-                minimum: widget.interval.avgFormPower / 1.1,
-                maximum: widget.interval.avgFormPower * 1.25,
+              RepaintBoundary(
+                key: widgetKey,
+                child: LapFormPowerChart(
+                  records: RecordList<Event>(formPowerRecords),
+                  minimum: widget.interval.avgFormPower / 1.1,
+                  maximum: widget.interval.avgFormPower * 1.25,
+                ),
               ),
               const Text(
                   'Only records where 0 W < form power < 200 W are shown.'),
               const Text('Swipe left/write to compare with other intervals.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(value: widget.interval.avgFormPower, pq: PQ.power),
