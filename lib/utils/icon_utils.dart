@@ -115,6 +115,7 @@ class MyIcon {
   static const Icon upload = Icon(Icons.file_upload);
   // V
   static const Icon verticalOscillation = Icon(Icons.unfold_more);
+  static const Icon volume = Icon(Icons.timeline);
   // W
   static const Icon warning = Icon(Icons.warning);
   static const Icon website = Icon(Icons.web);

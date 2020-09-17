@@ -11,8 +11,10 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widg
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_volume_widget.dart';
 import 'package:encrateia/widgets/intervals_feed_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/actions/auto_tagging.dart';
@@ -134,6 +136,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         icon: MyIcon.ftp,
         nextWidget: AthleteFtpWidget(athlete: widget.athlete),
       ),
+      if (kDebugMode)
+        navigationButton(
+          color: MyColor.navigate,
+          title: 'Volume',
+          icon: MyIcon.volume,
+          nextWidget: AthleteVolumeWidget(athlete: widget.athlete),
+        ),
       RaisedButton.icon(
         color: MyColor.add,
         textColor: MyColor.textColor(backgroundColor: MyColor.add),
