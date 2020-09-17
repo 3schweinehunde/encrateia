@@ -2,6 +2,8 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_power_per_heart_rate_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
@@ -26,6 +28,8 @@ class _ActivityPowerPerHeartRateWidgetState
     extends State<ActivityPowerPerHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -50,15 +54,29 @@ class _ActivityPowerPerHeartRateWidgetState
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityPowerPerHeartRateChart(
-                records: RecordList<Event>(powerPerHeartRateRecords),
-                activity: widget.activity,
-                athlete: widget.athlete,
+              RepaintBoundary(
+                key: widgetKey,
+                child: ActivityPowerPerHeartRateChart(
+                  records: RecordList<Event>(powerPerHeartRateRecords),
+                  activity: widget.activity,
+                  athlete: widget.athlete,
+                ),
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W and heart rate > 0 bpm are shown.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(

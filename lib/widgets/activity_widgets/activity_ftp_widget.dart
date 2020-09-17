@@ -1,5 +1,7 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -21,6 +23,8 @@ class ActivityFtpWidget extends StatefulWidget {
 class _ActivityFtpWidgetState extends State<ActivityFtpWidget> {
   bool loading = true;
   RecordList<Event> records = RecordList<Event>(<Event>[]);
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -36,8 +40,25 @@ class _ActivityFtpWidgetState extends State<ActivityFtpWidget> {
           .toList();
 
       if (powerRecords.isNotEmpty) {
-        return SingleChildScrollView(
-          child: FtpChart(records: powerRecords),
+        return Column(
+          children: <Widget>[
+            RepaintBoundary(
+              key: widgetKey,
+              child: FtpChart(records: powerRecords),
+            ),
+            Row(children: <Widget>[
+              const Spacer(),
+              MyButton.save(
+                child: Text(screenShotButtonText),
+                onPressed: () async {
+                  await ImageUtils.capturePng(widgetKey: widgetKey);
+                  screenShotButtonText = 'Image saved';
+                  setState(() {});
+                },
+              ),
+              const SizedBox(width: 20),
+            ]),
+          ],
         );
       } else {
         return const Center(

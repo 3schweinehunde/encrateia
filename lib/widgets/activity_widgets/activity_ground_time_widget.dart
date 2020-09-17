@@ -2,6 +2,8 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -24,7 +26,9 @@ class ActivityGroundTimeWidget extends StatefulWidget {
 
 class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-bool loading = true;
+  bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -36,8 +40,8 @@ bool loading = true;
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> groundTimeRecords = records
-          .where((Event value) =>
-              value.groundTime != null && value.groundTime > 0)
+          .where(
+              (Event value) => value.groundTime != null && value.groundTime > 0)
           .toList();
 
       if (groundTimeRecords.isNotEmpty) {
@@ -46,25 +50,41 @@ bool loading = true;
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityGroundTimeChart(
-                records: RecordList<Event>(groundTimeRecords),
-                activity: widget.activity,
-                athlete: widget.athlete,
-                minimum: widget.activity.avgGroundTime / 1.5,
-                maximum: widget.activity.avgGroundTime * 1.25,
+              RepaintBoundary(
+                key: widgetKey,
+                child: ActivityGroundTimeChart(
+                  records: RecordList<Event>(groundTimeRecords),
+                  activity: widget.activity,
+                  athlete: widget.athlete,
+                  minimum: widget.activity.avgGroundTime / 1.5,
+                  maximum: widget.activity.avgGroundTime * 1.25,
+                ),
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'ground time > 0 ms are shown.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.activity.avgGroundTime, pq: PQ.groundTime),
+                title: PQText(
+                    value: widget.activity.avgGroundTime, pq: PQ.groundTime),
                 subtitle: const Text('average ground time'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title:  PQText(value: widget.activity.sdevGroundTime, pq: PQ.groundTime),
+                title: PQText(
+                    value: widget.activity.sdevGroundTime, pq: PQ.groundTime),
                 subtitle: const Text('standard deviation ground time'),
               ),
               ListTile(

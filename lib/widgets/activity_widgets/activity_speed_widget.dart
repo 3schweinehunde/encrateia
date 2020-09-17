@@ -2,6 +2,8 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -24,6 +26,8 @@ class ActivitySpeedWidget extends StatefulWidget {
 class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -44,21 +48,35 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivitySpeedChart(
-                records: RecordList<Event>(paceRecords),
-                activity: widget.activity,
-                athlete: widget.athlete,
-                minimum:
-                    (widget.activity.avgSpeed - 3 * widget.activity.sdevSpeed) *
-                        3.6,
-                maximum:
-                    (widget.activity.avgSpeed + 3 * widget.activity.sdevSpeed) *
-                        3.6,
+              RepaintBoundary(
+                key: widgetKey,
+                child: ActivitySpeedChart(
+                  records: RecordList<Event>(paceRecords),
+                  activity: widget.activity,
+                  athlete: widget.athlete,
+                  minimum:
+                      (widget.activity.avgSpeed - 3 * widget.activity.sdevSpeed) *
+                          3.6,
+                  maximum:
+                      (widget.activity.avgSpeed + 3 * widget.activity.sdevSpeed) *
+                          3.6,
+                ),
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'speed > 0 m/s are shown.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(value: widget.activity.avgSpeed, pq: PQ.speed),

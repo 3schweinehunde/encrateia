@@ -23,6 +23,8 @@ class ActivityPathWidget extends StatefulWidget {
 class _ActivityPathWidgetState extends State<ActivityPathWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  final GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -32,9 +34,6 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String screenShotButtonText = 'Save as .png-Image';
-    final GlobalKey widgetKey = GlobalKey();
-
     if (records.isNotEmpty) {
       final List<Event> geoRecords = records
           .where((Event value) =>

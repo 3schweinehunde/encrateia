@@ -2,6 +2,8 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/event.dart';
@@ -25,6 +27,8 @@ class ActivityFormPowerWidget extends StatefulWidget {
 class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
+  String screenShotButtonText = 'Save as .png-Image';
+  GlobalKey widgetKey = GlobalKey();
 
   @override
   void initState() {
@@ -50,17 +54,31 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 25),
             children: <Widget>[
-              ActivityFormPowerChart(
-                records: RecordList<Event>(formPowerRecords),
-                activity: activity,
-                athlete: widget.athlete,
-                minimum: activity.avgFormPower / 1.25,
-                maximum: activity.avgFormPower * 1.25,
+              RepaintBoundary(
+                key: widgetKey,
+                child: ActivityFormPowerChart(
+                  records: RecordList<Event>(formPowerRecords),
+                  activity: activity,
+                  athlete: widget.athlete,
+                  minimum: activity.avgFormPower / 1.25,
+                  maximum: activity.avgFormPower * 1.25,
+                ),
               ),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   '0 W < form power < 200 W are shown.'),
-              const Divider(),
+              Row(children: <Widget>[
+                const Spacer(),
+                MyButton.save(
+                  child: Text(screenShotButtonText),
+                  onPressed: () async {
+                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    screenShotButtonText = 'Image saved';
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 20),
+              ]),
               ListTile(
                 leading: MyIcon.formPower,
                 title: PQText(value: activity.avgFormPower, pq: PQ.power),
