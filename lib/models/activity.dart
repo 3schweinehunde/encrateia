@@ -575,8 +575,12 @@ class Activity {
             ..swcLong = dataMessage.get('swc_long') as double
             ..totalCalories =
                 (dataMessage.get('total_calories') as double)?.round()
-            ..avgSpeed = dataMessage.get('avg_speed') as double
-            ..maxSpeed = dataMessage.get('max_speed') as double
+            ..avgSpeed = dataMessage.get('avg_speed') == 65.535
+                ? dataMessage.get('enhanced_avg_speed') as double
+                : dataMessage.get('avg_speed') as double
+            ..maxSpeed = dataMessage.get('max_speed') == 65.535
+                ? dataMessage.get('enhanced_max_speed') as double
+                : dataMessage.get('max_speed') as double
             ..totalAscent = (dataMessage.get('total_ascent') as double)?.round()
             ..totalDescent =
                 (dataMessage.get('total_descent') as double)?.round()
@@ -803,11 +807,11 @@ class Activity {
   }
 
   Future<List<encrateia.Interval>> get intervals async {
-    if(cachedIntervals.isEmpty) {
+    if (cachedIntervals.isEmpty) {
       int counter = 1;
 
-      final List<DbInterval> dbIntervalList = await _db.getDbIntervals()
-          .toList();
+      final List<DbInterval> dbIntervalList =
+          await _db.getDbIntervals().toList();
       cachedIntervals = dbIntervalList.map(encrateia.Interval.exDb).toList();
 
       for (final encrateia.Interval interval in cachedIntervals) {
@@ -824,7 +828,6 @@ class Activity {
     final DbActivity dbActivity = await DbActivity().getById(id);
     return exDb(dbActivity);
   }
-
 
   Future<BoolResult> deleteEvents() async => await _db.getDbEvents().delete();
   Future<BoolResult> deleteLaps() async => await _db.getDbLaps().delete();
