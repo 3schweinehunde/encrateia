@@ -118,7 +118,7 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) => ShowIntervalScreen(
                           interval: interval,
-                          intervals: intervals,
+                          intervals: intervalsInCard,
                           athlete: widget.athlete,
                           activity: activityMap[activityId],
                         ),

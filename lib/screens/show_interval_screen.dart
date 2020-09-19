@@ -188,7 +188,7 @@ class ShowIntervalScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: MyColor.interval,
         title: Text(
-          'Interval ${interval.index}',
+          'Interval ${intervals.reversed.toList().indexOf(interval) + 1}',
           overflow: TextOverflow.ellipsis,
         ),
       ),

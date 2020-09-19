@@ -18,16 +18,19 @@ class ShowIntervalDetailScreen extends StatefulWidget {
   final String title;
 
   @override
-  _ShowIntervalDetailScreenState createState() => _ShowIntervalDetailScreenState();
+  _ShowIntervalDetailScreenState createState() =>
+      _ShowIntervalDetailScreenState();
 }
 
 class _ShowIntervalDetailScreenState extends State<ShowIntervalDetailScreen> {
   encrateia.Interval currentInterval;
   double dragAmount = 0;
+  int currentIntervalIndex;
 
   @override
   void initState() {
     currentInterval = widget.interval;
+    getData();
     super.initState();
   }
 
@@ -37,7 +40,7 @@ class _ShowIntervalDetailScreenState extends State<ShowIntervalDetailScreen> {
       appBar: AppBar(
         backgroundColor: MyColor.interval,
         title: Text(
-          'Interval ${currentInterval.index.toString()}: ${widget.title}',
+          'Interval ${widget.intervals.length - currentIntervalIndex}: ${widget.title}',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -50,19 +53,25 @@ class _ShowIntervalDetailScreenState extends State<ShowIntervalDetailScreen> {
           onHorizontalDragEnd: (DragEndDetails details) {
             if (dragAmount < -50) {
               dragAmount = 0;
-              if (currentInterval.index < widget.intervals.length) {
-                setState(() => currentInterval = widget.intervals[currentInterval.index - 1 + 1]);
+              if (currentIntervalIndex > 0) {
+                currentInterval = widget.intervals[currentIntervalIndex - 1];
+                getData();
               }
             } else if (dragAmount > 50) {
               dragAmount = 0;
-              if (currentInterval.index > 1) {
-                setState(
-                        () => currentInterval = widget.intervals[currentInterval.index - 1 - 1]);
+              if (currentIntervalIndex + 1 < widget.intervals.length) {
+                currentInterval = widget.intervals[currentIntervalIndex + 1];
+                getData();
               }
             }
           },
         ),
       ),
     );
+  }
+
+  void getData() {
+    setState(
+        () => currentIntervalIndex = widget.intervals.indexOf(currentInterval));
   }
 }
