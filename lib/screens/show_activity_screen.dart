@@ -89,18 +89,17 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (kDebugMode)
-        navigationButton(
-          title: 'Intervals',
-          color: MyColor.interval,
-          backgroundColor: MyColor.interval,
-          icon: MyIcon.laps,
-          context: context,
-          nextWidget: IntervalsListWidget(
-            activity: widget.activity,
-            athlete: widget.athlete,
-          ),
+      navigationButton(
+        title: 'Intervals',
+        color: MyColor.interval,
+        backgroundColor: MyColor.interval,
+        icon: MyIcon.laps,
+        context: context,
+        nextWidget: IntervalsListWidget(
+          activity: widget.activity,
+          athlete: widget.athlete,
         ),
+      ),
       navigationButton(
         title: 'Path',
         color: MyColor.navigate,
