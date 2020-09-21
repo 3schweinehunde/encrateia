@@ -1,5 +1,7 @@
 import 'package:encrateia/models/activity_list.dart';
 import 'package:encrateia/models/tag_group.dart';
+import 'package:encrateia/utils/athlete_volume_chart.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +48,12 @@ class _AthleteVolumeWidgetState extends State<AthleteVolumeWidget> {
             children: <Widget>[
               RepaintBoundary(
                 key: widgetKey,
-                child: Text(activities.length.toString()),
+                child: AthleteVolumeChart(
+                  athlete: widget.athlete,
+                  chartTitleText: 'Distance over Time',
+                  activities: activities,
+                  volumeAttr: VolumeAttr.distance,
+                ),
               ),
               Row(children: <Widget>[
                 const Spacer(),

@@ -32,6 +32,10 @@ enum ActivityAttr {
   ftp,
 }
 
+enum VolumeAttr {
+  distance,
+}
+
 enum IntervalBoundary {
   left,
   right,
