@@ -8,16 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
-class AthleteDistanceWidget extends StatefulWidget {
-  const AthleteDistanceWidget({this.athlete});
+class AthleteMovingTimeWidget extends StatefulWidget {
+  const AthleteMovingTimeWidget({this.athlete});
 
   final Athlete athlete;
 
   @override
-  _AthleteDistanceWidgetState createState() => _AthleteDistanceWidgetState();
+  _AthleteMovingTimeWidgetState createState() => _AthleteMovingTimeWidgetState();
 }
 
-class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
+class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -37,7 +37,7 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> distanceActivities = activities
           .where((Activity activity) =>
-              activity.distance != null && activity.distance > 0)
+      activity.distance != null && activity.distance > 0)
           .toList();
 
       if (distanceActivities.isNotEmpty) {
@@ -50,9 +50,9 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
                 key: widgetKey,
                 child: AthleteVolumeChart(
                   athlete: widget.athlete,
-                  chartTitleText: 'Distance over Time (km)',
+                  chartTitleText: 'Moving Time over Time (h)',
                   activities: activities,
-                  volumeAttr: ActivityAttr.distanceThisYear,
+                  volumeAttr: ActivityAttr.movingTimeThisYear,
                 ),
               ),
               Row(children: <Widget>[
@@ -104,7 +104,7 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
-    int distanceSoFar = 0;
+    int movingTimeSoFar = 0;
     int year = 1900;
     sports = unfilteredActivities
         .map((Activity activity) => activity.sport)
@@ -117,13 +117,13 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
     for (final Activity activity in activities.reversed) {
       if (activity.timeStamp.year != year) {
         year = activity.timeStamp.year;
-        distanceSoFar = activity.distance;
+        movingTimeSoFar = activity.movingTime;
       } else
-        distanceSoFar += activity.distance;
-      activity.distanceSoFar = distanceSoFar;
+        movingTimeSoFar += activity.movingTime;
+      activity.movingTimeSoFar = movingTimeSoFar;
     }
 
     setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    loadingStatus = activities.length.toString() + ' activities found');
   }
 }

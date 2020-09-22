@@ -5,6 +5,7 @@ import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_ftp_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_moving_time_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_pace_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
@@ -136,13 +137,19 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         icon: MyIcon.ftp,
         nextWidget: AthleteFtpWidget(athlete: widget.athlete),
       ),
-      if (kDebugMode)
         navigationButton(
           color: MyColor.navigate,
           title: 'Distance over Time',
           icon: MyIcon.volume,
           nextWidget: AthleteDistanceWidget(athlete: widget.athlete),
         ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Moving Time over Time',
+        icon: MyIcon.volume,
+        nextWidget: AthleteMovingTimeWidget(athlete: widget.athlete),
+      ),
+
       RaisedButton.icon(
         color: MyColor.add,
         textColor: MyColor.textColor(backgroundColor: MyColor.add),

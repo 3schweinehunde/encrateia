@@ -267,6 +267,8 @@ class Activity {
         return ftp;
       case ActivityAttr.distanceThisYear:
         return distanceSoFar / 1000;
+      case ActivityAttr.movingTimeThisYear:
+        return movingTimeSoFar / 3600;
     }
   }
 

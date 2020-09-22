@@ -31,6 +31,7 @@ enum ActivityAttr {
   avgDoubleStrydCadence,
   ftp,
   distanceThisYear,
+  movingTimeThisYear,
 }
 
 enum IntervalBoundary {
