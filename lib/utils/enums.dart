@@ -30,10 +30,7 @@ enum ActivityAttr {
   avgHeartRate,
   avgDoubleStrydCadence,
   ftp,
-}
-
-enum VolumeAttr {
-  distance,
+  distanceThisYear,
 }
 
 enum IntervalBoundary {

@@ -15,7 +15,7 @@ class AthleteVolumeChart extends StatefulWidget {
 
   final Athlete athlete;
   final List<Activity> activities;
-  final VolumeAttr volumeAttr;
+  final ActivityAttr volumeAttr;
   final String chartTitleText;
 
   @override
@@ -36,8 +36,7 @@ class _AthleteVolumeChartState extends State<AthleteVolumeChart> {
         colorFn: (Activity activity, __) => colorForYear(activity: activity),
         domainFn: (Activity activity, _) =>
             movedIntoThisYear(activity: activity),
-        measureFn: (Activity activity, _) =>
-            aggregatedVolume(currentActivity: activity),
+        measureFn: (Activity activity, _) => activity.getAttribute(widget.volumeAttr) as num,
         data: widget.activities,
       ),
     ];
@@ -51,7 +50,7 @@ class _AthleteVolumeChartState extends State<AthleteVolumeChart> {
                   : 2,
           child: TimeSeriesChart(
             data,
-            animate: true,
+            animate: false,
             defaultRenderer: LineRendererConfig<DateTime>(
               includePoints: true,
               includeLine: false,
@@ -91,22 +90,6 @@ class _AthleteVolumeChartState extends State<AthleteVolumeChart> {
         ])
       ],
     );
-  }
-
-  double aggregatedVolume({Activity currentActivity}) {
-    final DateTime beginningOfYear = DateTime(currentActivity.timeStamp.year);
-    final List<Activity> activitiesBefore = widget.activities
-        .where(
-            (Activity activity) => activity.timeStamp.isAfter(beginningOfYear))
-        .where((Activity activity) =>
-            activity.timeStamp.isBefore(currentActivity.timeStamp))
-        .toList();
-    return activitiesBefore.isEmpty
-        ? 0
-        : activitiesBefore
-                .map((Activity activity) => activity.distance)
-                .reduce((int a, int b) => a + b) /
-            1000;
   }
 
   DateTime movedIntoThisYear({Activity activity}) => DateTime(

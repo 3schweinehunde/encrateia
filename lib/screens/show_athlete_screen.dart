@@ -11,7 +11,7 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widg
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_stryd_cadence_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_volume_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_distance_widget.dart';
 import 'package:encrateia/widgets/intervals_feed_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
@@ -139,9 +139,9 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       if (kDebugMode)
         navigationButton(
           color: MyColor.navigate,
-          title: 'Volume',
+          title: 'Distance over Time',
           icon: MyIcon.volume,
-          nextWidget: AthleteVolumeWidget(athlete: widget.athlete),
+          nextWidget: AthleteDistanceWidget(athlete: widget.athlete),
         ),
       RaisedButton.icon(
         color: MyColor.add,

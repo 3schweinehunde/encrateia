@@ -79,6 +79,8 @@ class Activity {
   PowerZone _powerZone;
   HeartRateZone _heartRateZone;
   HeartRateZoneSchema _heartRateZoneSchema;
+  int distanceSoFar;
+  int movingTimeSoFar;
 
   // Getter
   int get id => _db?.id;
@@ -263,6 +265,8 @@ class Activity {
         return avgDoubleStrydCadence;
       case ActivityAttr.ftp:
         return ftp;
+      case ActivityAttr.distanceThisYear:
+        return distanceSoFar / 1000;
     }
   }
 

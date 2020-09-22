@@ -8,16 +8,16 @@ import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/activity.dart';
 
-class AthleteVolumeWidget extends StatefulWidget {
-  const AthleteVolumeWidget({this.athlete});
+class AthleteDistanceWidget extends StatefulWidget {
+  const AthleteDistanceWidget({this.athlete});
 
   final Athlete athlete;
 
   @override
-  _AthleteVolumeWidgetState createState() => _AthleteVolumeWidgetState();
+  _AthleteDistanceWidgetState createState() => _AthleteDistanceWidgetState();
 }
 
-class _AthleteVolumeWidgetState extends State<AthleteVolumeWidget> {
+class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -50,9 +50,9 @@ class _AthleteVolumeWidgetState extends State<AthleteVolumeWidget> {
                 key: widgetKey,
                 child: AthleteVolumeChart(
                   athlete: widget.athlete,
-                  chartTitleText: 'Distance over Time',
+                  chartTitleText: 'Distance over Time (km)',
                   activities: activities,
-                  volumeAttr: VolumeAttr.distance,
+                  volumeAttr: ActivityAttr.distanceThisYear,
                 ),
               ),
               Row(children: <Widget>[
@@ -104,6 +104,8 @@ class _AthleteVolumeWidgetState extends State<AthleteVolumeWidget> {
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
+    int distanceSoFar = 0;
+    int year = 1900;
     sports = unfilteredActivities
         .map((Activity activity) => activity.sport)
         .toSet()
@@ -111,6 +113,15 @@ class _AthleteVolumeWidgetState extends State<AthleteVolumeWidget> {
     activities = ActivityList<Activity>(unfilteredActivities
         .where((Activity activity) => activity.sport == selectedSports)
         .toList());
+
+    for (final Activity activity in activities.reversed) {
+      if (activity.timeStamp.year != year) {
+        year = activity.timeStamp.year;
+        distanceSoFar = activity.distance;
+      } else
+        distanceSoFar += activity.distance;
+      activity.distanceSoFar = distanceSoFar;
+    }
 
     setState(() =>
         loadingStatus = activities.length.toString() + ' activities found');
