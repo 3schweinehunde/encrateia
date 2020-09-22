@@ -114,6 +114,7 @@ class MyIcon {
   //
   static const Icon upload = Icon(Icons.file_upload);
   // V
+  static const Icon versus = Icon(Icons.scatter_plot);
   static const Icon verticalOscillation = Icon(Icons.unfold_more);
   static const Icon volume = Icon(Icons.timeline);
   // W

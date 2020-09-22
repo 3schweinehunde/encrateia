@@ -25,6 +25,7 @@ enum ActivityAttr {
   avgSpeedPerHeartRate,
   avgPowerRatio,
   avgStrideRatio,
+  distance,
   ecor,
   avgPace,
   avgHeartRate,

@@ -269,6 +269,8 @@ class Activity {
         return distanceSoFar / 1000;
       case ActivityAttr.movingTimeThisYear:
         return movingTimeSoFar / 3600;
+      case ActivityAttr.distance:
+        return distance / 1000;
     }
   }
 
