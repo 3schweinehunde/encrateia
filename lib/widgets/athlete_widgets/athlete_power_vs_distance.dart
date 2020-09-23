@@ -1,12 +1,13 @@
+import 'dart:math';
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/activity_list.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/athlete_scatter_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
 
 class AthletePowerVsDistanceWidget extends StatefulWidget {
   const AthletePowerVsDistanceWidget({this.athlete});
@@ -114,7 +115,8 @@ class _AthletePowerVsDistanceWidgetState extends State<AthletePowerVsDistanceWid
     activities = ActivityList<Activity>(unfilteredActivities
         .where((Activity activity) => activity.avgPower > 0)
         .where((Activity activity) => activity.sport == selectedSports)
-        .toList().sublist(0, 255));
+        .toList());
+    activities = ActivityList<Activity>(activities.sublist(0, min(255, activities.length)));
 
     setState(() =>
     loadingStatus = activities.length.toString() + ' activities found');
