@@ -51,9 +51,9 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
             activity.getAttribute(widget.firstAttr) as double,
         measureFn: (Activity activity, _) =>
             activity.getAttribute(widget.secondAttr) as double,
-        data: widget.activities,
+        data: widget.activities.reversed.toList(),
         radiusPxFn: (Activity activity, _) =>
-            activity == widget.activities.first ? 8 : 3,
+            activity == widget.activities.first ? 5 : 3,
       ),
     ];
 
