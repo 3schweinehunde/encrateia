@@ -6,6 +6,7 @@ import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_ftp_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_moving_time_widget.dart';
+import 'package:encrateia/widgets/athlete_widgets/athlete_pace_vs_distance.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_pace_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_power_vs_distance.dart';
@@ -149,6 +150,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         title: 'Moving Time over Time',
         icon: MyIcon.volume,
         nextWidget: AthleteMovingTimeWidget(athlete: widget.athlete),
+      ),
+      navigationButton(
+        color: MyColor.navigate,
+        title: 'Pace vs Distance',
+        icon: MyIcon.versus,
+        nextWidget: AthletePaceVsDistanceWidget(athlete: widget.athlete),
       ),
       navigationButton(
         color: MyColor.navigate,

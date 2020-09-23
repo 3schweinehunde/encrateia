@@ -13,6 +13,7 @@ class AthleteScatterChart extends StatefulWidget {
     @required this.chartTitleText,
     @required this.firstAxesText,
     @required this.secondAxesText,
+    this.flipVerticalAxis,
   });
 
   final Athlete athlete;
@@ -22,6 +23,7 @@ class AthleteScatterChart extends StatefulWidget {
   final String chartTitleText;
   final String firstAxesText;
   final String secondAxesText;
+  final bool flipVerticalAxis;
 
   @override
   _AthleteScatterChartState createState() => _AthleteScatterChartState();
@@ -72,6 +74,7 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
                 desiredTickCount: 6,
               ),
             ),
+            flipVerticalAxis: widget.flipVerticalAxis ?? false,
             behaviors: <ChartTitle>[
               ChartTitle(
                 widget.firstAxesText,
