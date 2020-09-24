@@ -107,7 +107,7 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     int movingTimeSoFar = 0;
     int year = 1900;
-    sports = ['all'] +
+    sports = <String>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()
