@@ -84,7 +84,7 @@ class _AthleteVolumeChartState extends State<AthleteVolumeChart> {
             ],
           ),
         ),
-        Row(children: <Widget>[
+        Wrap(children: <Widget>[
           const Text('Legend:'),
           for (Color color in colorPalette) legendTextWidget(color: color)
         ])

@@ -14,7 +14,8 @@ class AthleteMovingTimeWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthleteMovingTimeWidgetState createState() => _AthleteMovingTimeWidgetState();
+  _AthleteMovingTimeWidgetState createState() =>
+      _AthleteMovingTimeWidgetState();
 }
 
 class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
@@ -37,7 +38,7 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> distanceActivities = activities
           .where((Activity activity) =>
-      activity.distance != null && activity.distance > 0)
+              activity.distance != null && activity.distance > 0)
           .toList();
 
       if (distanceActivities.isNotEmpty) {
@@ -106,13 +107,16 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     int movingTimeSoFar = 0;
     int year = 1900;
-    sports = unfilteredActivities
-        .map((Activity activity) => activity.sport)
-        .toSet()
-        .toList();
-    activities = ActivityList<Activity>(unfilteredActivities
-        .where((Activity activity) => activity.sport == selectedSports)
-        .toList());
+    sports = ['all'] +
+        unfilteredActivities
+            .map((Activity activity) => activity.sport)
+            .toSet()
+            .toList();
+    activities = ActivityList<Activity>(selectedSports == 'all'
+        ? unfilteredActivities
+        : unfilteredActivities
+            .where((Activity activity) => activity.sport == selectedSports)
+            .toList());
 
     for (final Activity activity in activities.reversed) {
       if (activity.timeStamp.year != year) {
@@ -124,6 +128,6 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
     }
 
     setState(() =>
-    loadingStatus = activities.length.toString() + ' activities found');
+        loadingStatus = activities.length.toString() + ' activities found');
   }
 }

@@ -106,13 +106,16 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     int distanceSoFar = 0;
     int year = 1900;
-    sports = unfilteredActivities
-        .map((Activity activity) => activity.sport)
-        .toSet()
-        .toList();
-    activities = ActivityList<Activity>(unfilteredActivities
-        .where((Activity activity) => activity.sport == selectedSports)
-        .toList());
+    sports = ['all'] +
+        unfilteredActivities
+            .map((Activity activity) => activity.sport)
+            .toSet()
+            .toList();
+    activities = ActivityList<Activity>(selectedSports == 'all'
+        ? unfilteredActivities
+        : unfilteredActivities
+            .where((Activity activity) => activity.sport == selectedSports)
+            .toList());
 
     for (final Activity activity in activities.reversed) {
       if (activity.timeStamp.year != year) {
