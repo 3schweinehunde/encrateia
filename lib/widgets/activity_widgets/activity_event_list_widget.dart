@@ -9,8 +9,8 @@ import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
 
-class ActivityRecordListWidget extends StatefulWidget {
-  const ActivityRecordListWidget({
+class ActivityEventListWidget extends StatefulWidget {
+  const ActivityEventListWidget({
     @required this.activity,
     @required this.athlete,
   });
@@ -19,12 +19,12 @@ class ActivityRecordListWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _ActivityRecordListWidgetState createState() =>
-      _ActivityRecordListWidgetState();
+  _ActivityEventListWidgetState createState() =>
+      _ActivityEventListWidgetState();
 }
 
-class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
-  RecordList<Event> records = RecordList<Event>(<Event>[]);
+class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
+  RecordList<Event> events = RecordList<Event>(<Event>[]);
   bool loading = true;
   int offset = 0;
   int rows;
@@ -37,42 +37,45 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (records.isNotEmpty) {
-      rows = (records.length < 8) ? records.length : 8;
-      final DateTime startingTime = records.first.timeStamp;
+    if (events.isNotEmpty) {
+      rows = (events.length < 8) ? events.length : 8;
+      final DateTime startingTime = events.first.timeStamp;
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               DataTable(
-          columnSpacing: 10,
+                columnSpacing: 10,
                 columns: const <DataColumn>[
                   DataColumn(label: Text('Point in time')),
                   DataColumn(label: Text('Time elapsed')),
+                  DataColumn(label: Text('Type')),
                   DataColumn(
                     label: Text('Distance'),
                     numeric: true,
                   ),
                   DataColumn(label: Text('Details')),
                 ],
-                rows:
-                    records.sublist(offset, offset + rows).map((Event record) {
+                rows: events.sublist(offset, offset + rows).map((Event event) {
                   return DataRow(
-                    key: ValueKey<int>(record.id),
+                    key: ValueKey<int>(event.id),
                     cells: <DataCell>[
                       DataCell(PQText(
-                        value: record.timeStamp,
+                        value: event.timeStamp,
                         pq: PQ.dateTime,
                         format: DateTimeFormat.longDateTime,
                       )),
                       DataCell(PQText(
                         value:
-                            record.timeStamp.difference(startingTime).inSeconds,
+                            event.timeStamp.difference(startingTime).inSeconds,
                         pq: PQ.duration,
                       )),
+                      DataCell(PQText(value: event.eventType, pq: PQ.text)),
                       DataCell(PQText(
-                          value: record.distance, pq: PQ.distanceInMeters)),
+                        value: event.distance,
+                        pq: PQ.distanceInMeters,
+                      )),
                       DataCell(
                         MyIcon.show,
                         onTap: () async {
@@ -80,7 +83,7 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
                             context,
                             MaterialPageRoute<BuildContext>(
                                 builder: (BuildContext context) =>
-                                    ShowEventScreen(record: record)),
+                                    ShowEventScreen(record: event)),
                           );
                           getData();
                         },
@@ -93,7 +96,7 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
                 padding: const EdgeInsets.all(10),
                 child: Text(
                   '${offset + 1} - ${offset + rows} '
-                  'of ${records.length} (Page ${(offset / 8).round() + 1} of ${(records.length / 8).round()})',
+                  'of ${events.length} (Page ${(offset / 8).round() + 1} of ${(events.length / 8).round()})',
                   textAlign: TextAlign.right,
                 ),
               ),
@@ -117,20 +120,20 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
                   const SizedBox(width: 10),
                   MyButton.navigate(
                     child: const Text('>'),
-                    onPressed: (offset + rows == records.length)
+                    onPressed: (offset + rows == events.length)
                         ? null
                         : () => setState(() {
-                              offset + rows < records.length - rows
+                              offset + rows < events.length - rows
                                   ? offset = offset + rows
-                                  : offset = records.length - rows;
+                                  : offset = events.length - rows;
                             }),
                   ),
                   const SizedBox(width: 10),
                   MyButton.navigate(
                     child: const Text('|>'),
-                    onPressed: (offset + rows == records.length)
+                    onPressed: (offset + rows == events.length)
                         ? null
-                        : () => setState(() => offset = records.length - rows),
+                        : () => setState(() => offset = events.length - rows),
                   ),
                 ],
               ),
@@ -161,23 +164,23 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
                   const SizedBox(width: 10),
                   MyButton.navigate(
                     child: const Text('10 >'),
-                    onPressed: (offset + rows == records.length)
+                    onPressed: (offset + rows == events.length)
                         ? null
                         : () => setState(() {
-                              offset + 10 * rows < records.length - rows
+                              offset + 10 * rows < events.length - rows
                                   ? offset = offset + 10 * rows
-                                  : offset = records.length - rows;
+                                  : offset = events.length - rows;
                             }),
                   ),
                   const SizedBox(width: 10),
                   MyButton.navigate(
                     child: const Text('100 >'),
-                    onPressed: (offset + rows == records.length)
+                    onPressed: (offset + rows == events.length)
                         ? null
                         : () => setState(() {
-                              offset + 100 * rows < records.length - rows
+                              offset + 100 * rows < events.length - rows
                                   ? offset = offset + 100 * rows
-                                  : offset = records.length - rows;
+                                  : offset = events.length - rows;
                             }),
                   ),
                 ],
@@ -195,7 +198,7 @@ class _ActivityRecordListWidgetState extends State<ActivityRecordListWidget> {
 
   Future<void> getData() async {
     final Activity activity = widget.activity;
-    records = RecordList<Event>(await activity.records);
+    events = RecordList<Event>(await activity.events);
     setState(() {});
   }
 }

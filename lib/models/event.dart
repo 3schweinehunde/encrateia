@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:encrateia/model/model.dart' show DbEvent;
 import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
@@ -13,13 +15,16 @@ class Event {
     @required DataMessage dataMessage,
     @required this.activity,
   }) {
-    if (dataMessage.any('max_heart_rate') != null) {
-      activity
-        ..maxHeartRate = (dataMessage.get('max_heart_rate') as double)?.round()
-        ..save();
+    if (dataMessage.any('max_heart_rate') != false) {
+      _db = DbEvent()
+        ..event = dataMessage.get('event') as String
+        ..eventType = dataMessage.get('event_type') as String
+        ..heartRate = (dataMessage.get('max_heart_rate') as double)?.round()
+        ..timeStamp =
+        dateTimeFromStrava(dataMessage.get('timestamp') as double);
     } else if (dataMessage.values.any((Value value) =>
         value.fieldName == 'event_type' &&
-        <String>['start', 'stop_all'].contains(value.value))) {
+        <String>['start', 'stop', 'stop_all'].contains(value.value))) {
       _db = DbEvent()
         ..activitiesId = activity.id
         ..event = dataMessage.get('event') as String
@@ -41,7 +46,8 @@ class Event {
             dateTimeFromStrava(dataMessage.get('timestamp') as double);
     } else {
       // Use this debugger to include new event messages, such as heart rate alerts, ...
-      // debugger();
+      debugger();
+      print(dataMessage.get('event'));
     }
   }
 

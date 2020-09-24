@@ -338,6 +338,13 @@ class Activity {
     return cachedRecords;
   }
 
+  Future<List<Event>> get events async {
+    final List<DbEvent> dbEventList = await _db.getDbEvents().toList();
+    final Iterable<DbEvent> dbRecordList =
+    dbEventList.where((DbEvent dbEvent) => dbEvent.event != 'rrrecord');
+    return dbRecordList.map(Event.exDb).toList();
+  }
+
   Future<List<Tag>> get tags async {
     if (cachedTags.isEmpty) {
       cachedTags = await Tag.allByActivity(activity: this);
