@@ -26,6 +26,8 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
+  List<String> sports;
+  String selectedSports = 'running';
 
   @override
   void initState() {
@@ -68,6 +70,27 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
                 ),
                 const SizedBox(width: 20),
               ]),
+              Row(
+                children: <Widget>[
+                  const Spacer(),
+                  const Text('Select Sport'),
+                  const SizedBox(width: 20),
+                  DropdownButton<String>(
+                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    value: selectedSports,
+                    onChanged: (String value) {
+                      selectedSports = value;
+                      getData();
+                    },
+                  ),
+                  const Spacer(),
+                ],
+              ),
               AthleteFilterWidget(
                 athlete: widget.athlete,
                 tagGroups: tagGroups,
@@ -105,7 +128,16 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
     final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    activities = await ActivityList<Activity>(unfilteredActivities).applyFilter(
+    sports = ['all'] +
+        unfilteredActivities
+            .map((Activity activity) => activity.sport)
+            .toSet()
+            .toList();
+    activities = await ActivityList<Activity>(selectedSports == 'all'
+        ? unfilteredActivities
+        : unfilteredActivities
+        .where((Activity activity) => activity.sport == selectedSports)
+        .toList()).applyFilter(
       athlete: athlete,
       tagGroups: tagGroups,
     );

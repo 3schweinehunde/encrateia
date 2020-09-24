@@ -103,8 +103,6 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
   }
 
   int opacity({Activity activity}) {
-    print(255 -
-        (DateTime.now().difference(activity.timeStamp).inDays / 2).round());
     return 255 -
         (DateTime.now().difference(activity.timeStamp).inDays / 2).round();
   }
