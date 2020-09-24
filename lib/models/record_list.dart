@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
@@ -40,17 +42,23 @@ class RecordList<E> extends DelegatingList<E> {
     double lastSpeed = 0;
 
     for (final Event record in _records) {
-      if (record.speed != null && record.timeStamp != null) {
-        if (record.speed > 0) {
-          if (lastSpeed > 0)
-            movingTime += record.timeStamp.difference(lastTimestamp).inSeconds;
-          else
-            movingTime += 1;
+      if (record.event == 'record') {
+        if (record.speed != null && record.timeStamp != null) {
+          if (record.speed > 0) {
+            if (lastSpeed > 0)
+              movingTime +=
+                  record.timeStamp.difference(lastTimestamp).inSeconds;
+            else
+              movingTime += 1;
+          }
+          lastTimestamp = record.timeStamp;
+          lastSpeed = record.speed;
         }
+      } else if (record.event == 'timer' && record.eventType == 'start') {
         lastTimestamp = record.timeStamp;
-        lastSpeed = record.speed;
       }
     }
+
     return movingTime;
   }
 

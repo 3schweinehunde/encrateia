@@ -340,9 +340,7 @@ class Activity {
 
   Future<List<Event>> get events async {
     final List<DbEvent> dbEventList = await _db.getDbEvents().toList();
-    final Iterable<DbEvent> dbRecordList =
-    dbEventList.where((DbEvent dbEvent) => dbEvent.event != 'rrrecord');
-    return dbRecordList.map(Event.exDb).toList();
+    return dbEventList.map(Event.exDb).toList();
   }
 
   Future<List<Tag>> get tags async {
@@ -375,6 +373,7 @@ class Activity {
 
   Future<bool> setAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(await records);
+    final RecordList<Event> eventList = RecordList<Event>(await events);
     _db
       ..avgPower = recordList.avgPower()
       ..sdevPower = recordList.sdevPower()
@@ -405,7 +404,7 @@ class Activity {
       ..sdevPowerRatio = recordList.sdevPowerRatio()
       ..avgStrideRatio = recordList.avgStrideRatio()
       ..sdevStrideRatio = recordList.sdevStrideRatio()
-      ..movingTime = recordList.movingTime();
+      ..movingTime = eventList.movingTime();
 
     final List<Lap> laps = await this.laps;
     for (final Lap lap in laps) {

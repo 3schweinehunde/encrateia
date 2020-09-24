@@ -249,6 +249,7 @@ class Lap {
 
   Future<void> setAverages() async {
     final RecordList<Event> recordList = RecordList<Event>(await records);
+    final RecordList<Event> eventList = RecordList<Event>(await events);
     _db
       ..avgPower = recordList.avgPower()
       ..sdevPower = recordList.sdevPower()
@@ -280,7 +281,7 @@ class Lap {
       ..sdevPowerRatio = recordList.sdevPowerRatio()
       ..avgStrideRatio = recordList.avgStrideRatio()
       ..sdevStrideRatio = recordList.sdevStrideRatio()
-      ..movingTime = recordList.movingTime();
+      ..movingTime = eventList.movingTime();
     await save();
   }
 
