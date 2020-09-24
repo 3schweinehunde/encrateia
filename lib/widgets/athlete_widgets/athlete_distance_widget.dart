@@ -106,7 +106,7 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     int distanceSoFar = 0;
     int year = 1900;
-    sports = ['all'] +
+    sports = <String>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()
