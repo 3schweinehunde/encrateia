@@ -1,15 +1,16 @@
+import 'dart:math';
+import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/bar_zone.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/bar_zone.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_bar_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
 
 class ActivityBarGraphWidget extends StatefulWidget {
   const ActivityBarGraphWidget({
@@ -152,8 +153,8 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 const Text('Activity'),
                 MyBarChart(
                   height: 20,
-                  value: widget.activity.avgPace,
-                  maximum: 700,
+                  value: widget.activity.avgSpeed,
+                  maximum: _laps.map((Lap lap) => lap.avgSpeed).reduce(max),
                 ),
                 PQText(value: widget.activity.avgSpeed, pq: PQ.paceFromSpeed),
               ]),
@@ -162,8 +163,8 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                   Text('Lap ' + lap.index.toString()),
                   MyBarChart(
                     height: 20,
-                    value: lap.avgPace,
-                    maximum: 700,
+                    value: lap.avgSpeed,
+                    maximum: _laps.map((Lap lap) => lap.avgSpeed).reduce(max),
                   ),
                   PQText(value: lap.avgSpeed, pq: PQ.paceFromSpeed),
                 ]),
