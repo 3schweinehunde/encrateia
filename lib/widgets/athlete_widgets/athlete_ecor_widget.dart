@@ -52,9 +52,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
     } else {
       final List<Activity> ecorActivities = activities
           .where((Activity activity) =>
-              activity.avgPower != null &&
-              activity.avgPower > 0 &&
-              activity.avgSpeed != null)
+              activity.cachedEcor != 0 && activity.cachedEcor != -1)
           .toList();
       if (ecorActivities.isEmpty) {
         return const Center(
@@ -111,25 +109,28 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
 
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
-    final List<Activity> unfilteredActivities = await athlete.validActivities;
+    List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
     sports = <String>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()
             .toList();
-    activities = await ActivityList<Activity>(selectedSports == 'all'
+    unfilteredActivities = selectedSports == 'all'
         ? unfilteredActivities
         : unfilteredActivities
-        .where((Activity activity) => activity.sport == selectedSports)
-        .toList()).applyFilter(
+            .where((Activity activity) => activity.sport == selectedSports)
+            .toList();
+
+    for (final Activity activity in unfilteredActivities) {
+      await activity.ecor;
+    }
+
+    activities = await ActivityList<Activity>(unfilteredActivities).applyFilter(
       athlete: athlete,
       tagGroups: tagGroups,
     );
 
-    for (final Activity activity in activities) {
-      await activity.ecor;
-    }
     setState(() =>
         loadingStatus = activities.length.toString() + ' activities found');
   }
