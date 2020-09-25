@@ -107,16 +107,19 @@ class _AthletePowerVsDistanceWidgetState extends State<AthletePowerVsDistanceWid
 
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
-    final List<Activity> unfilteredActivities = await athlete.validActivities;
-    sports = unfilteredActivities
+    List<Activity> unfilteredActivities = await athlete.validActivities;
+    sports = <String>['all'] + unfilteredActivities
         .map((Activity activity) => activity.sport)
         .toSet()
         .toList();
+    unfilteredActivities = selectedSports == 'all'
+        ? unfilteredActivities
+        : unfilteredActivities
+        .where((Activity activity) => activity.sport == selectedSports)
+        .toList();
     activities = ActivityList<Activity>(unfilteredActivities
         .where((Activity activity) => activity.avgPower > 0)
-        .where((Activity activity) => activity.sport == selectedSports)
         .toList());
-    activities = ActivityList<Activity>(activities.sublist(0, min(255, activities.length)));
 
     setState(() =>
     loadingStatus = activities.length.toString() + ' activities found');
