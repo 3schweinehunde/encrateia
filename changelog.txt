@@ -1,0 +1,580 @@
+* `2020-09-25 08:50` [72987c0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/72987c0) -  (HEAD -> master, origin/master, oberwart/master, github/master) filter for valid ecors only"
+* `2020-09-25 08:37` [c27de5d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c27de5d) -  sport selector for power,pace vs distance and power/hr
+* `2020-09-24 16:04` [624e413](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/624e413) -  type annotations
+* `2020-09-24 16:02` [f33296d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f33296d) -  sport selector for ftp and power ratio athlete diagrams
+* `2020-09-24 15:56` [b3104e8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b3104e8) -  sport selector for ecor and power athlete diagrams
+* `2020-09-24 15:49` [62b8128](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/62b8128) -  sport selector for styd cadence and speed per heart rate athlete diagrams
+* `2020-09-24 15:41` [0dbe8c2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0dbe8c2) -  sport selector for pace and hr athlete diagrams
+* `2020-09-24 14:58` [dfd1d2c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/dfd1d2c) -  add 'all' option to sports for moving time and distance to select all activities
+* `2020-09-24 14:31` [8af3d32](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8af3d32) -  sizing of lap bars"
+* `2020-09-24 13:13` [b7b4c0d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b7b4c0d) -  skip pauses by moving ahead lastTimestamp with every start event
+* `2020-09-24 11:50` [2e9d11d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2e9d11d) -  extend record list to be an event list
+* `2020-09-23 17:06` [732f838](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/732f838) -  optimize record viewer for smaller devices
+* `2020-09-23 16:52` [9079401](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9079401) -  show record details on selection for lap pace screen
+* `2020-09-23 15:46` [7f8a681](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7f8a681) -  invert drawing order to let last activity stand out
+* `2020-09-23 15:42` [45cf92a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/45cf92a) -  pace vs distance chart
+* `2020-09-23 15:32` [607dcb5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/607dcb5) -  capture shorter activity lists
+* `2020-09-22 15:38` [0fec199](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0fec199) -  power vs. distance
+* `2020-09-22 12:12` [e80e727](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e80e727) -  moving time over time
+* `2020-09-22 12:04` [81ab76a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/81ab76a) -  performance improvements and code refactoring
+* `2020-09-21 15:09` [bac00c8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bac00c8) -  distance volume diagram
+* `2020-09-19 21:11` [85953f4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/85953f4) -  bugfix: swiping between intervals
+* `2020-09-19 18:34` [48a5a31](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/48a5a31) -  bugfix: don't hide interval list any more
+* `2020-09-18 14:12` [9fc2b4c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9fc2b4c) -  use enhanced_avg_speed if avg_speed is maxed out
+* `2020-09-17 18:18` [e49fc77](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e49fc77) -  volume widget, sports selection & filtering
+* `2020-09-17 12:24` [1acbe34](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1acbe34) -  .png-generation for all lap charts
+* `2020-09-17 12:15` [59ea6a1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/59ea6a1) -  .png-generation for all athlete and interval charts
+* `2020-09-17 11:41` [ff5fc05](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ff5fc05) -  .png-generation for all activity charts
+* `2020-09-16 18:42` [abd8666](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/abd8666) -  .png-generation for more charts
+* `2020-09-14 17:46` [5abe8da](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5abe8da) -  unparseable activities should not be parsed
+* `2020-09-14 17:39` [a6b2530](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a6b2530) -  navigation to activity should be possible from feed list for all states
+* `2020-09-12 09:02` [007d4d5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/007d4d5) -  merge in changes for iOS
+* `2020-09-12 08:59` [358a78e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/358a78e) -  bugfix: wrong records used for distance calculation
+* `2020-09-11 16:09` [f9b7940](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f9b7940) -  updated compile settings for iOS
+* `2020-09-11 14:32` [c2282b8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c2282b8) -  clearing the changelog
+* `2020-09-11 14:28` [aa023bd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/aa023bd) -  version bump: 0.4.8
+* `2020-09-11 13:44` [46c894a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/46c894a) -  navigate from Interval Feed Widget to Interval Show Screen via tap
+* `2020-09-09 19:07` [eba26c9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/eba26c9) -  show cursor as line + stripe
+* `2020-09-09 14:38` [c5a1400](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c5a1400) -  intervals feed
+* `2020-09-09 13:01` [9a3fc26](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9a3fc26) -  autotag intervals, that have been created manually
+* `2020-09-09 11:46` [d886eae](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d886eae) -  bugfix: clear interval cache, when new interval has been copied from lap
+* `2020-09-09 11:40` [285e2c7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/285e2c7) -  copy interval from lap including it's taggings
+* `2020-09-09 10:15` [67a7abd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/67a7abd) -  tags on interval level selectable, bugfix: reset interval after saving
+* `2020-09-08 18:33` [b1b4056](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b1b4056) -  bugfix: missing timeStamp on interval
+* `2020-09-08 18:26` [8e909ed](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8e909ed) -  back to proper caching of intervals
+* `2020-09-08 18:15` [d5571b8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d5571b8) -  let's not cache intervals, they can be created
+* `2020-09-08 17:58` [14d77c2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/14d77c2) -  improve lap and interval lists
+* `2020-09-08 17:47` [04b2cba](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/04b2cba) -  IntervalEcorWidget
+* `2020-09-08 17:44` [97db32d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/97db32d) -  IntervalPaceWidget
+* `2020-09-08 17:40` [2a0f854](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2a0f854) -  IntervalSpeedWidget
+* `2020-09-08 17:23` [fee7efd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fee7efd) -  IntervalPowerDurationWidget
+* `2020-09-08 17:20` [ba37b09](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ba37b09) -  IntervalAltitudeWidget
+* `2020-09-08 17:18` [ca46c5c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ca46c5c) -  IntervalVerticalOscillationWidget
+* `2020-09-08 17:16` [6035ca1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6035ca1) -  IntervalStrydCadenceWidget
+* `2020-09-08 17:14` [844c8fd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/844c8fd) -  IntervalFormPowerWidget
+* `2020-09-08 17:11` [117dfa5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/117dfa5) -  IntervalLegSpringStiffnessWidget
+* `2020-09-08 16:41` [ff261e5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ff261e5) -  IntervalGroundTimeWidget
+* `2020-09-08 16:38` [bcfbbe9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bcfbbe9) -  IntervalPowerWidget
+* `2020-09-08 16:36` [c714aaa](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c714aaa) -  IntervalHeartRateWidget
+* `2020-09-08 16:25` [f06c965](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f06c965) -  merged metadata into overview
+* `2020-09-08 16:21` [8147842](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8147842) -  ShowIntervalDetailScreen
+* `2020-09-08 16:14` [94df217](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/94df217) -  ShowIntervalScreen and IntervalOverviewWidget
+* `2020-09-07 18:36` [3ae43d0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3ae43d0) -  bugfix: specify an interval has to be available for empty list, refresh list on back after interval creation
+* `2020-09-07 18:21` [fc9ebb4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fc9ebb4) -  ignore events without timestamp or speed
+* `2020-09-07 15:57` [1779847](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1779847) -  caculate actual moving time on activity, lap and interval level
+* `2020-09-07 15:32` [cb90f64](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cb90f64) -  add movingTime for Laps and Intervals as database fields
+* `2020-09-03 16:37` [3e1bbe4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3e1bbe4) -  edit any activity
+* `2020-09-03 15:50` [caba41f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/caba41f) -  create manual activity
+* `2020-09-03 09:52` [7709bcb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7709bcb) -  prevent last weight, power/heartRateZone/Schema from being deleted
+* `2020-09-01 19:51` [77e6cf8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/77e6cf8) -  typo in heading
+* `2020-09-01 19:49` [28df575](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/28df575) -  Edit Record Screen
+* `2020-09-01 15:37` [3088b18](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3088b18) -  show event screen
+* `2020-09-01 14:20` [bca23a7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bca23a7) -  data points list
+* `2020-09-01 11:38` [92fc115](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/92fc115) -  use PaginatedDataTable for Weights
+* `2020-09-01 10:31` [2b9c746](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2b9c746) -  exclude excluded activties from athlete diagrams, show block icon in acitvity list and feed for excluded activities
+* `2020-08-31 20:00` [dffb8db](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/dffb8db) -  button on activity detail screen to exclude from / include into analysis
+* `2020-08-31 19:42` [ebd7a74](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ebd7a74) -  denote nonParsable activities in activity feed and list
+* `2020-08-31 19:25` [d13be57](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d13be57) -  prevent nonParsable, excluded and manual activities to be parsed
+* `2020-08-31 15:46` [0df9c50](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0df9c50) -  log entry deletion
+* `2020-08-31 13:49` [703b5e6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/703b5e6) -  show log detail screen
+* `2020-08-31 13:34` [958c54a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/958c54a) -  create excluded, nonParsable and manual database fields for activity
+* `2020-08-31 13:23` [419755a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/419755a) -  bugfix: cachedEcor is now the proper way to display ecor
+* `2020-08-30 13:39` [58f3ae5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/58f3ae5) -  log screen
+* `2020-08-30 13:05` [bb5ccd7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bb5ccd7) -  catching parsing errors and logging stacktrace
+* `2020-08-27 17:07` [7025f78](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7025f78) -  lss on lap level [/1.2, * 1.2]
+* `2020-08-27 17:03` [287a641](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/287a641) -  added total timer time to lap list
+* `2020-08-27 16:51` [55870fc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/55870fc) -  moved total timer time from metadata to overview widget on lap level
+* `2020-08-26 16:03` [8ba49e4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8ba49e4) -  bugFix: now cachedEcor to read cached value
+* `2020-08-26 15:54` [ab21675](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ab21675) -  refactoring ecor and weight derivation, added ecor to activity feed
+* `2020-08-26 14:24` [0996cfa](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0996cfa) -  ecor consistently in kJ/kg/km
+* `2020-08-26 14:13` [b0403c9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b0403c9) -  flip vertical axes for pace charts on activity and lap level
+* `2020-08-26 14:05` [955d5fb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/955d5fb) -  bugfix: Base(bpm) for heart rate zone schema list
+* `2020-08-21 15:18` [4262f1a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4262f1a) -  athlete diagram needs average Heartrate as a double
+* `2020-08-21 15:02` [181503c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/181503c) -  fixed some more -1 values to be displayed as n.a.
+* `2020-08-20 15:45` [cfcec5e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cfcec5e) -  version bump, changelog
+* `2020-08-20 13:01` [3c8cf9d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3c8cf9d) -  cleanup of - - - Strings, cleanup of pace helper functions
+* `2020-08-20 12:54` [f76870b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f76870b) -  cleanup of - - - Strings, num_utils, switch lap list and interval list to stateful widgets
+* `2020-08-20 12:28` [34552fa](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/34552fa) -  fallback to oldest HeartRateZoneSchema / PowerZoneSchema, if no schema old enough can be found
+* `2020-08-20 12:17` [bf39431](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bf39431) -  enforce heartRate zone schema input in wizard
+* `2020-08-20 12:12` [12e9c7f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/12e9c7f) -  enforce power zone schema input in wizard
+* `2020-08-20 11:35` [0c6729c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0c6729c) -  enforce body weight input in wizard
+* `2020-08-20 10:23` [c5c16df](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c5c16df) -  removing resetIcons from heartRateZoneSchemaScreen and powerZoneSchemaScreen
+* `2020-08-20 10:02` [e38c73f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e38c73f) -  heart rate zone list shows Limits(W) instead of Limits(bpm)
+* `2020-08-20 09:56` [ee443bb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ee443bb) -  layout of buttons in athlete ftp view and athlete filter widget
+* `2020-08-20 09:25` [a64ab74](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a64ab74) -  flip vertical axis for athlete pace chart
+* `2020-08-19 18:22` [75874cf](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/75874cf) -  loading status for athlete views
+* `2020-08-19 15:56` [2ead107](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2ead107) -  switching all lap views to physical quantities
+* `2020-08-19 12:40` [2589d1b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2589d1b) -  bugfix: show only views available on lap level
+* `2020-08-19 12:36` [e6daeab](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e6daeab) -  switching more activity views to physical quantities
+* `2020-08-19 11:25` [854d4cd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/854d4cd) -  switching more activity views to physical quantities
+* `2020-08-19 10:42` [fb84caf](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fb84caf) -  switching more activity views to physical quantities
+* `2020-08-18 18:47` [7cfec80](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7cfec80) -  switching even more activity views to physical quantities
+* `2020-08-18 16:02` [1cc8d0c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1cc8d0c) -  switching more activity views to physical quantities
+* `2020-08-18 14:31` [e8686fd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e8686fd) -  switching the first activity views to physical quantities
+* `2020-08-18 13:30` [6407f37](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6407f37) -  switch to physical quantities, alignment of rows
+* `2020-08-18 12:41` [87a7b1e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/87a7b1e) -  switch to physical quantities on lap metadata view
+* `2020-08-18 12:24` [8ffda4f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8ffda4f) -  show only buttons for views with data on lap level
+* `2020-08-18 11:31` [fecc65a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fecc65a) -  delete strava token feature
+* `2020-08-17 16:12` [5dfe8a3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5dfe8a3) -  a few type conversion bugs
+* `2020-08-17 15:27` [e60d6fe](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e60d6fe) -  allow empty activities to be diplayed and deleted
+* `2020-08-14 21:47` [50192c4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/50192c4) -  removing unused code
+* `2020-08-14 21:45` [8eaf47f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8eaf47f) -  removing unused code
+* `2020-08-14 21:38` [5029bdb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5029bdb) -  removing dataless view from show activity sceen, part 1
+* `2020-08-14 21:30` [c07bd0b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c07bd0b) -  physical quantity transition continued
+* `2020-08-14 17:42` [3684523](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3684523) -  more pq's
+* `2020-08-13 19:27` [3e8fbd5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3e8fbd5) -  refactoring PQ to PQText
+* `2020-08-13 15:55` [9ed675c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9ed675c) -  introducing physical quantity PQ
+* `2020-08-13 14:08` [d1fb97a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d1fb97a) -  logging
+* `2020-08-13 13:47` [6377119](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6377119) -  log table and wrapper class
+* `2020-08-12 18:00` [0469dd0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0469dd0) -  bump ios version
+* `2020-08-12 17:54` [89df3fa](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/89df3fa) -  version bump
+* `2020-08-12 17:27` [beb2dde](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/beb2dde) -  iOS version bump
+* `2020-08-12 17:06` [fba1140](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fba1140) -  updated Podfile
+* `2020-08-12 15:48` [4cbabd3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4cbabd3) -  updated fit_parser dependency
+* `2020-08-07 13:12` [9aa57cb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9aa57cb) -  show min and max speed as well
+* `2020-08-07 12:39` [e49effe](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e49effe) -  cleaning up naming
+* `2020-08-07 12:02` [01be337](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/01be337) -  bugfix: distance is total, not relative
+* `2020-08-07 11:55` [f201d44](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f201d44) -  avgSpeeds
+* `2020-08-07 10:59` [877599b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/877599b) -  calculate avgSpeedByMeasurement, avgSpeedByTime and avgSpeedByDistance seperately
+* `2020-08-07 10:00` [91992a9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/91992a9) -  updating dependencies, to be able to compile sqfentity_again for new avgSpeeds
+* `2020-08-06 18:39` [57a0f6d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/57a0f6d) -  enhanced speed support, missing ascent and descent support
+* `2020-08-06 12:45` [d80cd7b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d80cd7b) -  version bump: 0.4.5
+* `2020-08-06 09:26` [952206f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/952206f) -  reduce stroke width
+* `2020-08-06 08:33` [b098b65](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b098b65) -  added lap speed widget
+* `2020-08-06 08:09` [983099c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/983099c) -  merge flutter dependencies
+* `2020-08-06 08:07` [826c4c3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/826c4c3) -  y-axes intervals
+* `2020-08-03 16:27` [4e2724f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4e2724f) -  mitigating some versioning issues on ios
+* `2020-08-03 15:51` [f32bddd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f32bddd) -  version bump to 0.4.4 & bug in version number display
+* `2020-08-03 15:36` [c37ce6f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c37ce6f) -  hack to make strava_flutter multi user
+* `2020-08-03 13:30` [1bda747](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1bda747) -  .fit-files may have non lower-case file ending for manual upload
+* `2020-08-03 12:49` [ec35f4c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ec35f4c) -  bump flutter version + display version below athletes list
+* `2020-08-03 11:10` [49caca2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/49caca2) -  updated url_launcher, set android:launchMode to singleInstance
+* `2020-08-03 10:42` [00ff271](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/00ff271) -  actitities default sort order by timeCreated descending
+* `2020-08-03 10:08` [83ea88e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/83ea88e) -  alitude on lap level
+* `2020-08-03 09:57` [acc9a9d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/acc9a9d) -  altitude on activity level
+* `2020-07-29 20:41` [f3a9cae](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f3a9cae) -  update ios compilation settings
+* `2020-07-29 20:24` [42e33e2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/42e33e2) -  version bump: 0.4.2
+* `2020-07-29 18:29` [9fe20fb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9fe20fb) -  show only activities with an average heart rate > 20 bpm
+* `2020-07-29 18:26` [80e3fbe](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/80e3fbe) -  show intervals and CP only in debug mode
+* `2020-07-29 16:52` [ec77322](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ec77322) -  interval list on activity level
+* `2020-07-29 14:29` [15fa791](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/15fa791) -  calculate ascent and descent, initialize interval after save
+* `2020-07-29 14:14` [6c6d1c7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6c6d1c7) -  calculate interval
+* `2020-07-29 12:55` [8115683](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8115683) -  handover RecordList to Interval to calculate and save
+* `2020-07-27 10:17` [a6fe157](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a6fe157) -  color shading for interval, once it's selected
+* `2020-07-27 10:04` [b0a8ebf](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b0a8ebf) -  move interval boundaries
+* `2020-07-24 15:36` [8a0dd08](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8a0dd08) -  basic selection of records for intervals
+* `2020-07-24 14:14` [46b03fe](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/46b03fe) -  show record details and and do not smooth plot for intervall chart
+* `2020-07-24 14:05` [e053398](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e053398) -  transfer selection on interval screen into corresponding record
+* `2020-07-24 11:51` [51c8500](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/51c8500) -  bug in coloring
+* `2020-07-24 11:37` [455a53b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/455a53b) -  ActivitySpeedWidget and ActivityIntervalWidget
+* `2020-07-23 18:02` [ecb5fcd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ecb5fcd) -  Interval class for DbInterval data class
+* `2020-07-23 17:21` [16407cb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/16407cb) -  more relations for intervals
+* `2020-07-23 15:43` [d6e9473](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d6e9473) -  introducing the interval data model part 2
+* `2020-07-23 15:29` [3f3d1ec](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3f3d1ec) -  introducing the interval data model
+* `2020-07-23 14:05` [b8fd6b9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b8fd6b9) -  show tagGroup avatars in activity feed chips
+* `2020-07-23 12:45` [6265ae1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6265ae1) -  spacing
+* `2020-07-23 12:44` [828a512](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/828a512) -  stop user from going back in onboarding wizard once a user has been created, allow user to leave back using back, clear the stack after running through the wizard
+* `2020-07-23 12:23` [8828a6b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8828a6b) -  hiding work/cp menu item from ShowActivitySceen
+* `2020-07-23 11:50` [a3142aa](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a3142aa) -  notice texts to double check base values, switch to columns to be able to have next buttons higher up on the screen
+* `2020-07-22 17:40` [949412b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/949412b) -  critical power implementation
+* `2020-07-18 18:41` [a1e85fd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a1e85fd) -  version bump 4.1
+* `2020-07-17 15:46` [338edb0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/338edb0) -  work diagramm on activity level
+* `2020-07-17 13:36` [177bfbc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/177bfbc) -  ftp decay now 90 days
+* `2020-07-17 13:12` [b04a6ab](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b04a6ab) -  ftp on athlete level improved
+* `2020-07-17 12:39` [f09f154](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f09f154) -  ftp on athlete level
+* `2020-07-16 17:27` [4c6053c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4c6053c) -  a first version of ftp on athlete level, but values are too low
+* `2020-07-16 15:35` [89fd284](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/89fd284) -  ftp diagram on activity level (done) and athlete level (prepared)
+* `2020-07-16 13:50` [361b70c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/361b70c) -  introducing cp and ftp on activity and lap level
+* `2020-07-16 10:59` [51207c5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/51207c5) -  cadence diagram on athlete level
+* `2020-07-16 10:51` [2607445](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2607445) -  scaling y-axes for stryd cadence charts
+* `2020-07-16 10:18` [576d6c7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/576d6c7) -  add 'diagram created' texts to power duration diagrams
+* `2020-07-16 10:16` [76ad4cb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/76ad4cb) -  add 'diagram created' texts to all diagrams except power duration, fix in axes label on lap level
+* `2020-07-15 22:24` [8898c5e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8898c5e) -  screenshotting a widget
+* `2020-07-15 14:32` [1d348b4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1d348b4) -  lazy load tags in activities feed
+* `2020-07-15 13:49` [87ec293](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/87ec293) -  checking for stravaId before checking for username and password for feed as well
+* `2020-07-15 13:46` [e36121f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e36121f) -  checking for stravaId before checking for username and password
+* `2020-07-15 13:40` [042e99e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/042e99e) -  lap list scrolling vertically
+* `2020-07-15 12:53` [e00f72d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e00f72d) -  y-axes for form power, vertical oscillation and contact time on activity and lap level
+* `2020-07-15 10:56` [09fc0d6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/09fc0d6) -  data enrichment has to be done for filter change as well
+* `2020-07-15 10:10` [7a17b20](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7a17b20) -  limit y-axes for pace charts
+* `2020-07-13 20:36` [037a6e7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/037a6e7) -  calculate sdev pace properly
+* `2020-07-10 09:31` [f63cc87](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f63cc87) -  version bump: 0.4.0
+* `2020-07-09 15:12` [dde0b5c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/dde0b5c) -  wrapped 28 Scaffold bodies in SafeArea
+* `2020-07-09 11:01` [72b98c4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/72b98c4) -  heart rate on athlete level
+* `2020-07-09 10:52` [cc10dea](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cc10dea) -  pace on athlete level
+* `2020-07-09 09:59` [4a1443e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4a1443e) -  pace on lap level
+* `2020-07-08 16:04` [ad0dc7a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ad0dc7a) -  download single .fit-file now also triggers parsing it after the download has finished
+* `2020-07-08 15:50` [9a51677](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9a51677) -  handle case for no data sent to bargraph distribution widget
+* `2020-07-08 15:25` [0418a0b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0418a0b) -  removed unused imports
+* `2020-07-08 15:21` [a4ba092](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a4ba092) -  working to make checking the credentials more reliable
+* `2020-07-08 13:39` [4f89544](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4f89544) -  refactor edit athlete sceens to use EditStravaAthleteWidget and EditStandaloneAthleteWidget part 2
+* `2020-07-08 13:24` [f68c1ba](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f68c1ba) -  refactor edit athlete sceens to use EditStravaAthleteWidget and EditStandaloneAthleteWidget
+* `2020-07-08 12:52` [bfec1f9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bfec1f9) -  order tags by tagGroup
+* `2020-07-08 11:23` [e7557e6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e7557e6) -  onboarding process working
+* `2020-07-08 10:59` [c158525](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c158525) -  weight fallback
+* `2020-07-08 10:51` [2c76562](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2c76562) -  wizard for strava athlete
+* `2020-06-16 17:37` [2edcb77](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2edcb77) -  wizard for setting up standalone athlete
+* `2020-06-16 15:59` [a9377eb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a9377eb) -  finetuning flushbars during demo account setup
+* `2020-06-16 14:58` [8225ba7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8225ba7) -  should await flushbar.dismiss()
+* `2020-06-15 18:53` [e129906](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e129906) -  setup demo user
+* `2020-06-15 16:45` [7084609](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7084609) -  extracting actions from show athlete screen
+* `2020-06-15 09:11` [36bd21c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/36bd21c) -  refactoring onboarding process: continued
+* `2020-06-12 16:25` [77f5bb8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/77f5bb8) -  onboarding process redesign started
+* `2020-06-12 14:13` [49953a8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/49953a8) -  starting with BoardingWidget
+* `2020-06-12 11:55` [5f0d8e9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5f0d8e9) -  add markdown support, swtich into screen to markdown, including links and headlines
+* `2020-06-12 11:06` [73de79f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/73de79f) -  refactoring dashboard and extracting boarding widget'
+* `2020-06-10 08:49` [1fecb36](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1fecb36) -  version bump
+* `2020-06-10 08:23` [631b2b2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/631b2b2) -  charts with area below (I see the overshoot...)
+* `2020-06-10 07:36` [cf9ad46](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cf9ad46) -  bugfix: consistent buttons
+* `2020-06-09 16:43` [bf698d5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bf698d5) -  check strava credentials
+* `2020-06-09 16:16` [daf849c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/daf849c) -  bugfix: zonelimitcalculations
+* `2020-06-09 15:47` [609f863](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/609f863) -  finally storing data is working again, no clue why...
+* `2020-06-09 13:55` [e046494](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e046494) -  cleaning up: getters, setters, unnecssary futures
+* `2020-06-09 13:44` [d3c031c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d3c031c) -  consistently caching min, max, sdev and averages for laps and activities
+* `2020-06-09 12:07` [23a0275](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/23a0275) -  cleanup
+* `2020-06-09 11:52` [4760d32](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4760d32) -  bugfix: check for non persisted records
+* `2020-06-09 11:24` [f96d605](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f96d605) -  bugfix: store athlete after receiving Strava-token, store credentials user specific
+* `2020-06-08 18:57` [600f266](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/600f266) -  fixing return types
+* `2020-06-08 18:51` [48669dd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/48669dd) -  hide db from Activity
+* `2020-06-08 17:47` [8c8b4f5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8c8b4f5) -  refactoring fromDb connstructors to exDb static methods for more compact maps
+* `2020-06-08 17:36` [5d7c6a2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5d7c6a2) -  hide db from Athlete
+* `2020-06-08 15:55` [d175ac6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d175ac6) -  hide db from Lap
+* `2020-06-08 14:33` [0810876](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0810876) -  hide db from Event
+* `2020-06-08 14:08` [cf4be37](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cf4be37) -  hide db from HeartRateZone
+* `2020-06-08 13:45` [d6c0ebb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d6c0ebb) -  hide db from HeartRateZoneSchema
+* `2020-06-08 13:38` [aee84ff](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/aee84ff) -  hide db from PowerZone
+* `2020-06-08 13:05` [a7099b3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a7099b3) -  hide db from PowerZoneSchema
+* `2020-06-08 12:52` [2d40c87](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2d40c87) -  hide db from Weight
+* `2020-06-08 12:46` [f891987](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f891987) -  hide db from LapTagging
+* `2020-06-08 12:44` [a239da0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a239da0) -  hide db from ActivityTagging
+* `2020-06-08 12:42` [aa90527](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/aa90527) -  hide db from Tag
+* `2020-06-08 12:30` [a10e141](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a10e141) -  hide db from TagGroup
+* `2020-06-08 11:15` [8d222dd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8d222dd) -  replace all Providers and all Models by Statefull Widgets
+* `2020-06-08 10:44` [68af2e7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/68af2e7) -  show Db classes explicitely
+* `2020-06-08 10:36` [d1886a4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d1886a4) -  Revert "refactoring: Tag, TagGroup, LapTagging, ActivityTagging inheriting from Db classes directly"
+* `2020-06-08 09:29` [43e4e91](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/43e4e91) -  refactoring: Tag, TagGroup, LapTagging, ActivityTagging inheriting from Db classes directly
+* `2020-06-07 18:25` [8e26898](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8e26898) -  power duration curve interpreted as (average power) duration curve instead of (minimum power) duration curve
+* `2020-06-07 12:46` [b275383](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b275383) -  show tags in feed
+* `2020-06-06 08:54` [be64cbc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/be64cbc) -  tweaking bargraphs to be more decent
+* `2020-06-06 08:42` [3ca5ec0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3ca5ec0) -  more compact bargraphs
+* `2020-06-05 16:18` [f6e7145](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f6e7145) -  let bargraphs scroll in both directions
+* `2020-06-05 16:08` [64e54f9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/64e54f9) -  show percentages in distribution bar charts
+* `2020-06-05 13:11` [367248b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/367248b) -  data alignment
+* `2020-06-05 13:10` [4dc336b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4dc336b) -  move parse .fit-file into ShowActivityScreen
+* `2020-06-05 12:53` [dc21eaf](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/dc21eaf) -  move redownload .fit-file into ShowActivityScreen
+* `2020-06-05 12:29` [3a6588f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3a6588f) -  move delete activity into ShowActivityScreen
+* `2020-06-05 12:11` [9721c07](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9721c07) -  extract and refactor get tiles methods for staggered grid views
+* `2020-06-05 11:08` [bdd9763](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bdd9763) -  move editing credentials button to ShowAthleteScreen
+* `2020-06-05 10:22` [7652913](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7652913) -  left align buttons on activity and lap screen
+* `2020-06-05 10:17` [9e9f575](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9e9f575) -  split activities list in feed and list, activity file sharing on ios, styling of menus
+* `2020-06-04 15:43` [54f342f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/54f342f) -  correct positioning of path
+* `2020-06-04 15:22` [118b1fd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/118b1fd) -  encapsulate tag groups within expanded widget to make them scrollable
+* `2020-06-04 15:02` [85d1b59](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/85d1b59) -  path widget
+* `2020-06-04 13:28` [a5f8fba](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a5f8fba) -  bugfix: avgEcor not displayed.  ios/Flutter/flutter_export_environment.sh kicked out of git repo
+* `2020-06-03 18:22` [9218873](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9218873) -  version bump
+* `2020-06-03 17:21` [ce07dd2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ce07dd2) -  FilterWidget extracted, filtering enabled on all athlete widgets
+* `2020-06-03 11:52` [7043443](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7043443) -  bug: not each result set that is not empty is the first, even if the intermediate result set is empty
+* `2020-06-02 18:27` [7bc6cc1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7bc6cc1) -  filter seems to be working
+* `2020-06-02 12:45` [7b53418](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7b53418) -  ecor unit and naming
+* `2020-06-02 11:20` [080cb4b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/080cb4b) -  average ecor on ecor activity screen
+* `2020-06-02 11:05` [224af5b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/224af5b) -  3 decimal places for ecor in overview widget'
+* `2020-05-30 15:05` [70edafd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/70edafd) -  bugfix: wrong type created
+* `2020-05-30 14:58` [2c2a2eb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2c2a2eb) -  bugfix: lap scrolling broken
+* `2020-05-29 14:33` [e500b11](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e500b11) -  powerZone and heartRateZoneDistribution
+* `2020-05-29 11:05` [fc4a246](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fc4a246) -  first version of bargraph
+* `2020-05-29 07:10` [d3702dc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d3702dc) -  spacing between row elements
+* `2020-05-28 19:41` [f61c286](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f61c286) -  xcode wants to update some settings...
+* `2020-05-28 19:33` [3370999](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3370999) -  update sqfentity _gen, layout on small devices
+* `2020-05-28 18:58` [09822b7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/09822b7) -  version bump
+* `2020-05-28 18:56` [bc82025](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bc82025) -  bugfix: t.b.d. may only affect title, not all the attributes!
+* `2020-05-28 18:34` [b4c261f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b4c261f) -  merge dependencies
+* `2020-05-28 18:32` [10b76c9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/10b76c9) -  casting first, then rounding!
+* `2020-05-28 18:09` [d8e3940](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d8e3940) -  catch missing ascent
+* `2020-05-28 15:41` [8a3bbd2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8a3bbd2) -  version bump
+* `2020-05-28 15:40` [8d20927](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8d20927) -  wrap button text in flexible
+* `2020-05-28 14:44` [77bd7c1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/77bd7c1) -  don't load tags/powerZones/heartrateZones if tagGroup/powerZoneSchema/heartrateZoneSchema is not persisted yet
+* `2020-05-28 14:35` [c9bff3a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c9bff3a) -  don't load tags if tagroup is not persisted yet
+* `2020-05-28 14:17` [df2df46](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/df2df46) -  add log output for debugging
+* `2020-05-28 14:14` [6bc8f2a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6bc8f2a) -  fixed all linter warnings
+* `2020-05-28 14:02` [f5860b8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f5860b8) -  fix more linter warnings
+* `2020-05-28 12:58` [1ad66f5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1ad66f5) -  fix more linter warnings
+* `2020-05-28 11:30` [4b93822](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4b93822) -  fix more linter warnings
+* `2020-05-28 09:32` [419081b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/419081b) -  fix more linter warnings
+* `2020-05-28 07:17` [eb66ae6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/eb66ae6) -  fix more linter warnings
+* `2020-05-27 21:21` [a9333b4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a9333b4) -  fixing linter warnings
+* `2020-05-27 17:58` [0a06d71](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0a06d71) -  activated linter with flutter recommendations, started to follow warnings
+* `2020-05-27 13:11` [f293be6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f293be6) -  a bit of code cleanup
+* `2020-05-27 11:08` [8527790](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8527790) -  check for existance of heart rate zone schema and power zone schema
+* `2020-05-27 10:29` [83b6e0c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/83b6e0c) -  ensure AutoPowerTagGroup and AutoHeartrateTagGroup exist
+* `2020-05-26 13:56` [8322bc7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8322bc7) -  instroducing staggered grid to show screens
+* `2020-05-26 13:17` [14e4d8e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/14e4d8e) -  activity and lap list a bit less dense
+* `2020-05-26 13:02` [17cd44b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/17cd44b) -  autotagging admin job, autotag new activities
+* `2020-05-25 18:58` [41de5ac](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/41de5ac) -  autotaggings disabled, ordered by lower limit
+* `2020-05-25 18:35` [05c715c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/05c715c) -  fix all charts
+* `2020-05-25 16:54` [61db939](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/61db939) -  deleteAllAutoPowerTags to be able to debug, still bugs ahead
+* `2020-05-25 15:41` [10a5ee1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/10a5ee1) -  refactoring => RecordList, ActivityList: continued 2
+* `2020-05-25 14:15` [b84d9f0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b84d9f0) -  refactoring => RecordList, ActivityList: continued
+* `2020-05-25 14:07` [7185e08](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7185e08) -  introduce RecordList
+* `2020-05-22 14:45` [bf55755](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bf55755) -  autotagging on actvity level
+* `2020-05-22 10:29` [4ccfa21](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4ccfa21) -  version 0.3.1
+* `2020-05-20 18:29` [77fac8c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/77fac8c) -  y-axes scaling in activity diagrams according to heartRateZones
+* `2020-05-20 17:14` [485031e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/485031e) -  y-axes scaling in activity diagrams according to powerzones: bug! heartRateZones have to be taken into account as well
+* `2020-05-19 13:40` [f9fa112](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f9fa112) -  switch to staggered grid view and remove icons for activity and lap overview and metadata widget
+* `2020-05-19 11:05` [3e9ee65](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3e9ee65) -  bugfix: filtering empty event.db records before saving
+* `2020-05-16 09:05` [5941898](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5941898) -  updated sqfentity_gen to latest version, that fixed the issues with relations for non persisted parents
+* `2020-05-16 08:34` [18e79db](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/18e79db) -  double checked for last version creation of sqfentity
+* `2020-05-15 21:43` [03a9676](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/03a9676) -  lap and activity tagging with staggered tile view finally working
+* `2020-05-15 20:05` [518f2f1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/518f2f1) -  fix the getChildren() for parent.id == null bug with if-conditions
+* `2020-05-15 19:33` [2d3369c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2d3369c) -  tags on lap level, including bug: new taggroup contains all tags
+* `2020-05-15 14:48` [0b16235](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0b16235) -  activities taggable
+* `2020-05-15 10:15` [98afc6e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/98afc6e) -  color scheme work
+* `2020-05-15 09:44` [11f3808](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/11f3808) -  color schema usage
+* `2020-05-15 09:35` [8adcaaa](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8adcaaa) -  overview and metadata views on lap and activity level as grid, missing cached values on lap level
+* `2020-05-14 15:56` [acb0813](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/acb0813) -  lapTaggings, activityTaggings sqfentity models
+* `2020-05-14 15:32` [33c7586](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/33c7586) -  system generated tagGroups can only be inspected, not edited
+* `2020-05-14 14:47` [ed3ba5c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ed3ba5c) -  update flutter, bug in counting existing tagGroups
+* `2020-05-14 14:32` [0289e56](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0289e56) -  tag and tag cloud admin
+* `2020-05-14 12:00` [7fdec90](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7fdec90) -  model classes
+* `2020-05-14 11:48` [9c70202](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9c70202) -  tag and tagGroup models
+* `2020-05-14 10:52` [eca77bf](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/eca77bf) -  add ecor to activity overview
+* `2020-05-13 17:08` [0da2f8b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0da2f8b) -  instruction on updating current base values
+* `2020-05-13 16:49` [508f711](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/508f711) -  gridview orientation fix in athlete diagrams
+* `2020-05-13 14:30` [801b8c9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/801b8c9) -  version bump 0.3.0
+* `2020-05-13 14:15` [5759062](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5759062) -  show selected activity in athlete diagrams, navigate to activity
+* `2020-05-13 10:24` [ff13fdb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ff13fdb) -  show at least 40 activities on athlete level
+* `2020-05-12 16:26` [7586846](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7586846) -  demo data import
+* `2020-05-12 14:44` [94fc19a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/94fc19a) -  ecor on athlete level
+* `2020-05-12 13:54` [59bf0d0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/59bf0d0) -  some progress on athlete ecor chart (still displaying power data though)
+* `2020-05-12 13:39` [75b322f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/75b322f) -  addresses #38
+* `2020-05-09 13:32` [9027b15](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9027b15) -  name zone schema templates after base value
+* `2020-05-08 13:24` [5684538](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5684538) -  ecor on lap level not properly embedded
+* `2020-05-08 11:47` [186c8cd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/186c8cd) -  color scheme of list app bars
+* `2020-05-08 11:39` [2daa33c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2daa33c) -  color scheme for list buttons
+* `2020-05-08 11:34` [3f3710e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3f3710e) -  color scheme applied to app bars
+* `2020-05-08 11:23` [887e2fc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/887e2fc) -  disclaimer texts for lap diagrams
+* `2020-05-08 11:13` [0027fad](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0027fad) -  swiping between laps for lap detail views
+* `2020-05-08 08:23` [8a99595](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8a99595) -  switch lap detail screen from tabview to gridview, ecor on lap level
+* `2020-05-07 15:27` [524f429](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/524f429) -  record aggregation configurable, disclosure of record filtering on activity level
+* `2020-05-06 15:43` [28c4c14](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/28c4c14) -  ecor on activity level
+* `2020-05-06 14:14` [5048cea](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5048cea) -  templates for zone schemas available, when a zone exists; Dillinger heart rate zone schema
+* `2020-05-05 19:55` [810ceef](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/810ceef) -  another unknown message number, optimizing for small screens
+* `2020-05-05 19:12` [12e4095](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/12e4095) -  version bump
+* `2020-05-05 19:01` [8b19bce](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8b19bce) -  stravaflutter in info.plist twice
+* `2020-05-05 15:48` [d7c328f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d7c328f) -  switch to navigation buttons on activity level, ecor widget (still with power in it, though)
+* `2020-05-05 14:07` [e886a57](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e886a57) -  heart rate zones in lap heart rate diagram
+* `2020-05-05 13:34` [aaf964f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/aaf964f) -  heart rate zones in activity heart rate diagram
+* `2020-05-05 11:27` [7ca6c8a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7ca6c8a) -  heart rate zone and heart rate zone schema management
+* `2020-05-05 09:59` [a916481](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a916481) -  extend overview tabs by avg power, power/heart rate, sort order
+* `2020-05-05 09:01` [c9bfb34](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c9bfb34) -  we need empty power zone list for updating
+* `2020-05-05 08:57` [18677a1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/18677a1) -  power zone display on lap level
+* `2020-05-05 08:23` [55e7499](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/55e7499) -  proper check for empty zones
+* `2020-05-04 15:24` [fa7c1fd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fa7c1fd) -  zones with alpha channel in activity overview
+* `2020-05-04 12:03` [06e9df7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/06e9df7) -  copy power zone schema including power power zones on date change, bugfix: maincolor was used instead of color for power zone picker
+* `2020-05-04 11:04` [af0607f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/af0607f) -  updating base value updates power zones on screen, saving powerzone schema saves updated power zones as well
+* `2020-05-04 10:42` [66b27e7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/66b27e7) -  fix buttons on standalone user creation screen, 4 columns for grid view on landscape mode
+* `2020-04-30 20:15` [26c2b89](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/26c2b89) -  power zone scheme dillinger
+* `2020-04-30 18:13` [cdd8bd7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cdd8bd7) -  updated strava_flutter dependency
+* `2020-04-30 14:55` [6d6a9c4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6d6a9c4) -  deployed
+* `2020-04-30 14:34` [0c765a2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0c765a2) -  merged
+* `2020-04-30 14:32` [078ccf2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/078ccf2) -  ios environment
+* `2020-04-30 14:29` [d5b1737](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d5b1737) -  bump version
+* `2020-04-30 13:30` [14a9eeb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/14a9eeb) -  Ubuntu font, color schema, theme data, power zone and power zone schema management
+* `2020-04-29 18:06` [35f68ef](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/35f68ef) -  introducing my own theme MyTheme
+* `2020-04-29 08:48` [50e16f8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/50e16f8) -  working on power zone management
+* `2020-04-28 17:49` [d07b493](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d07b493) -  power zone admin started
+* `2020-04-28 14:05` [d875b1c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d875b1c) -  heading
+* `2020-04-28 14:04` [9a50dcd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9a50dcd) -  manage power schema zones
+* `2020-04-28 11:26` [2b29f5b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2b29f5b) -  update url schemata for strava_flutter
+* `2020-04-25 18:11` [695acb6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/695acb6) -  downgraded sqfentity
+* `2020-04-25 17:38` [ad4bb9b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ad4bb9b) -  version bump
+* `2020-04-25 17:38` [5efe297](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5efe297) -  bugfix: speed should be existing, not power
+* `2020-04-25 17:29` [46e9656](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/46e9656) -  dependency update, bugfix: power dump, bugfix: missing flushbar
+* `2020-04-25 16:47` [601d1cf](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/601d1cf) -  update strava_flutter should fix token hijacking, compatibility to Garmin 245 Music
+* `2020-04-23 16:56` [2c94445](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2c94445) -  started with power zone admin
+* `2020-04-23 14:57` [f474ccf](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f474ccf) -  weightings management
+* `2020-04-23 14:09` [7e5c69b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7e5c69b) -  weight management
+* `2020-04-23 11:22` [14641da](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/14641da) -  weights list
+* `2020-04-22 17:18` [94517d5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/94517d5) -  import body weight from .csv working
+* `2020-04-22 15:25` [f05c1d8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f05c1d8) -  import weight csv-data: user interface
+* `2020-04-22 11:09` [cc1d476](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cc1d476) -  power zones, heart rate zones, weight
+* `2020-04-21 09:16` [b601267](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b601267) -  significant digits limited for avg heart rate
+* `2020-04-21 08:49` [a8c82a7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a8c82a7) -  significant digits increased for pr/hr
+* `2020-04-21 08:41` [f36389f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f36389f) -  update path_provider dependency, absolute paths in imports
+* `2020-04-20 10:05` [5738f16](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5738f16) -  updated readme
+* `2020-04-20 10:04` [2670e88](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2670e88) -  updated readme
+* `2020-04-20 10:03` [8aa7999](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8aa7999) -  Merge branch 'master' of github.com:3schweinehunde/encrateia
+* `2020-04-20 10:03` [ba8787c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ba8787c) -  updated readme
+* `2020-04-16 16:19` [7a732f6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7a732f6) -  version 0.2.1
+* `2020-04-16 16:18` [4a68ceb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4a68ceb) -  there is no externalStorageDirectory for iOS, just ApplicationDocumentsDirectory
+* `2020-04-16 16:17` [89a7b9a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/89a7b9a) -  first deployment to app store
+* `2020-04-16 13:44` [1388a3f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1388a3f) -  bump up version number to 0.2.0
+* `2020-04-15 17:52` [ec1883c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ec1883c) -  filter avgHeartRate = 255
+* `2020-04-15 17:10` [23d45e1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/23d45e1) -  Form power average, more points in activity plots, filter 255 for heart rate, filter -1 for power
+* `2020-04-15 16:06` [f836520](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f836520) -  smooth only 15 data points instead of 30
+* `2020-04-09 16:31` [c7467c0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c7467c0) -  merged
+* `2020-04-09 16:29` [e618cab](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e618cab) -  lots of typos, more intro
+* `2020-04-06 13:13` [9c19501](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9c19501) -  more documenation on standalone user
+* `2020-04-06 13:02` [7c20be0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7c20be0) -  intro to standalone user
+* `2020-04-05 22:55` [bcb4b27](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bcb4b27) -  typo
+* `2020-04-05 22:49` [94588b3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/94588b3) -  findMyStryd
+* `2020-04-05 10:00` [1b11d30](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1b11d30) -  formPower cutoff value 200
+* `2020-04-03 16:29` [0588157](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0588157) -  extra card removed
+* `2020-04-03 16:00` [8275496](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8275496) -  delete athlete
+* `2020-04-03 13:59` [d955cf8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d955cf8) -  allow users without strava connection
+* `2020-04-03 12:55` [8a67c34](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8a67c34) -  add another athlete
+* `2020-03-19 15:52` [bff50ce](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bff50ce) -  version bump
+* `2020-03-19 14:59` [53a939c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/53a939c) -  batch import from local storage working
+* `2020-03-18 17:06` [bf3d03e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bf3d03e) -  import local .fit-files, filter insanely high power records
+* `2020-03-18 10:22` [48cabba](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/48cabba) -  progress on local upload
+* `2020-03-18 08:27` [f496495](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f496495) -  started to develop local file pickup
+* `2020-03-17 15:36` [c887a0a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c887a0a) -  improvements on lap list layout
+* `2020-03-16 22:12` [5ddf02f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5ddf02f) -  stryd cadence bug, lap list scrollable, typos in help text, power in lap list
+* `2020-03-16 10:37` [261d967](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/261d967) -  longer flash messages when downloading
+* `2020-03-16 08:28` [496a70f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/496a70f) -  fit_parser version update
+* `2020-03-11 18:02` [5486550](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5486550) -  nontransparent icons for ios
+* `2020-03-11 17:53` [54c03e6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/54c03e6) -  first (unsuccessfull) build for iOS
+* `2020-03-11 12:41` [6a5a6f0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6a5a6f0) -  consistently EnCrateia (no k)
+* `2020-03-06 14:39` [8386fd6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8386fd6) -  read valid records in widget and transfer only those to chart for athlete
+* `2020-03-06 14:23` [4e4f76f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4e4f76f) -  read valid records in widget and transfer only those to chart
+* `2020-03-06 12:16` [e2a8aa0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e2a8aa0) -  bug: catching cases, where data not available
+* `2020-03-06 10:03` [da5c737](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/da5c737) -  fine tuning flushbar presentation time
+* `2020-03-06 09:53` [5e29a49](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5e29a49) -  fixed: first athlete not loaded after saved via button
+* `2020-03-06 09:00` [7b3a5e8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7b3a5e8) -  fixed: null heart rate on activity list
+* `2020-02-27 13:36` [6b94ab5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6b94ab5) -  moving calculations into it's own job instead of doing it on demand
+* `2020-02-27 10:53` [54e4ea3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/54e4ea3) -  stride ratio on activity level
+* `2020-02-27 09:00` [2cfa760](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2cfa760) -  check for null heartRates
+* `2020-02-26 18:50` [bacf846](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bacf846) -  glidingAverageSpeedPerHeartRate
+* `2020-02-26 18:42` [6e7c851](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6e7c851) -  glidingAveragePowerPerHeartRate
+* `2020-02-26 17:30` [7e54dab](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7e54dab) -  extract gliding enrichment
+* `2020-02-26 16:45` [ebdda84](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ebdda84) -  convert quartities to enums, extract enums into helper
+* `2020-02-26 10:43` [3a35b30](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3a35b30) -  gliding average power
+* `2020-02-26 08:51` [2765c37](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2765c37) -  converted athlete screen to button table instead of tabview
+* `2020-02-26 08:24` [bdaac7b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bdaac7b) -  move show into onTap at actitvities list
+* `2020-02-25 17:41` [e64befb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e64befb) -  paladino power ratio
+* `2020-02-25 15:47` [f664628](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f664628) -  a screen with cards instead of tabs
+* `2020-02-13 16:43` [7f7443f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7f7443f) -  screenshot fix
+* `2020-02-10 21:26` [291bd22](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/291bd22) -  wrong screenshot
+* `2020-02-10 21:25` [f53bc9c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f53bc9c) -  fixed links
+* `2020-02-10 21:22` [264dc3c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/264dc3c) -  fixed links
+* `2020-02-10 21:20` [572cc4b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/572cc4b) -  added some screenshots to readme
+* `2020-02-10 20:43` [f464a23](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f464a23) -  (my ;-) ) bugfix release for strava_flutter, download intervall as setting
+* `2020-02-08 20:14` [b4e2165](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b4e2165) -  update strava_flutter, path_provider
+* `2020-02-07 13:49` [247bcbc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/247bcbc) -  streamlining onboarding process
+* `2020-02-07 11:08` [2f66bc2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2f66bc2) -  dashboard design
+* `2020-02-07 11:04` [b4daba1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b4daba1) -  introduction screen
+* `2020-02-07 08:55` [bf54668](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bf54668) -  speed per heart rate on activity level
+* `2020-02-07 08:25` [3ca91ff](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3ca91ff) -  power per heart rate on activity level
+* `2020-02-07 07:15` [886903e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/886903e) -  sort widgets into directories
+* `2020-02-06 20:29` [9ab14c4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9ab14c4) -  speed / hr diagram
+* `2020-02-06 20:10` [91f218f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/91f218f) -  power and power/heartrate charts on athlete level
+* `2020-02-06 10:22` [0501737](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0501737) -  message fine tuning
+* `2020-02-06 10:17` [c8c0642](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c8c0642) -  storing records lap wise in batches, proper relation from lap to record
+* `2020-02-05 15:03` [12a8d98](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/12a8d98) -  download job, hiding floatingActionButton
+* `2020-02-05 14:22` [0ede42f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0ede42f) -  flashbars for Strava-download and .fit-download
+* `2020-02-05 12:35` [54e8571](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/54e8571) -  back to storing laps and events individually, showing progress in flashbar
+* `2020-02-04 13:41` [0471292](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0471292) -  bug fix: activities list not refreshing after parsing, average data not updated
+* `2020-02-04 13:17` [a4fbf21](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a4fbf21) -  bug fix: activities list not refreshing after download
+* `2020-02-04 11:23` [d158b92](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d158b92) -  denser lap list
+* `2020-02-04 11:15` [7f16d77](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7f16d77) -  storing events and laps as via upsertAll (but actually it seems not a lot faster at all)
+* `2020-02-04 08:27` [8a5fe47](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8a5fe47) -  remove unnecessary new keywords
+* `2020-02-04 08:24` [4a5dce3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4a5dce3) -  fixed bug in reading credentials asynchronously
+* `2020-02-03 19:29` [b0a3a69](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b0a3a69) -  ectract icons
+* `2020-02-03 18:22` [e664c42](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e664c42) -  replacing icons
+* `2020-02-03 17:54` [22c578c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/22c578c) -  replacing icons
+* `2020-02-03 12:53` [94a5a79](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/94a5a79) -  extracting icons
+* `2020-02-03 12:41` [e98adb3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e98adb3) -  clean up lap charts
+* `2020-02-03 11:55` [825e7ac](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/825e7ac) -  convert all activity widgets to use MyLineChart
+* `2020-01-31 22:35` [531fa04](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/531fa04) -  extracted LineChart defaults to MyLineChart
+* `2020-01-30 12:23` [2fb3399](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2fb3399) -  list activities viel -> list builder, seperators, icon differentiation
+* `2020-01-29 16:41` [8d45ce5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8d45ce5) -  reduce spacing between tiles
+* `2020-01-29 16:05` [464caf1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/464caf1) -  switch to FloatingActionButton for Download
+* `2020-01-29 15:26` [b5efa19](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b5efa19) -  moved warning messages to snackbar
+* `2020-01-29 13:05` [af7436b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/af7436b) -  vertical oscillation on lap and activity level
+* `2020-01-29 12:03` [a986072](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/a986072) -  (stryd) cadence on lap and activity level
+* `2020-01-28 16:06` [f15ff15](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f15ff15) -  form power on lap level
+* `2020-01-28 15:52` [4f7789b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/4f7789b) -  form power on activity level
+* `2020-01-28 13:33` [205c341](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/205c341) -  leg spring stiffness on lap level
+* `2020-01-28 13:21` [59d32b4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/59d32b4) -  leg spring stiffness on activity level
+* `2020-01-28 12:56` [3bc93bc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3bc93bc) -  async bug in Activity().setState
+* `2020-01-28 12:27` [e817bec](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e817bec) -  ground time on lap level
+* `2020-01-28 11:36` [0e0b07f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0e0b07f) -  ground Time on activity level
+* `2020-01-27 14:32` [dc0a46d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/dc0a46d) -  cache laps and records on activity level, records on lap level in memory
+* `2020-01-27 13:53` [ce12246](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ce12246) -  cache average, min, max, sdev power in db on activity and lap level
+* `2020-01-25 20:52` [351e134](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/351e134) -  overhauled activity list, fixed overflows for charts
+* `2020-01-24 12:33` [e3659cc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e3659cc) -  switched to PopupDropdownMenu and fixed a lot of async issues
+* `2020-01-23 16:17` [ab7ba6f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ab7ba6f) -  hopefully fixed the weird state message
+* `2020-01-23 16:09` [20dbeb2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/20dbeb2) -  fixed non updating state after download of new episodes, download only new episodes, rename Duration.string() to Duration.asString()
+* `2020-01-23 09:25` [5c4b899](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/5c4b899) -  power duration curve on lap and activity level, properly scaled logarithmically
+* `2020-01-22 23:07` [233b786](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/233b786) -  power duration calculation & power duration curve for laps
+* `2020-01-22 18:47` [609efe2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/609efe2) -  smoothing activity diagrams
+* `2020-01-22 13:29` [85a069a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/85a069a) -  power and heart rate diagrams on lap and activity level
+* `2020-01-21 15:33` [02be8f4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/02be8f4) -  get more resilient against missing values
+* `2020-01-21 13:25` [2157e33](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2157e33) -  switch icons
+* `2020-01-21 12:56` [baccafb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/baccafb) -  filter 0 and null values from heart rate and power
+* `2020-01-21 12:29` [c8497bc](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c8497bc) -  icon color
+* `2020-01-21 12:27` [86cf3c9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/86cf3c9) -  power and heart rate widget on activity level
+* `2020-01-21 10:00` [07deb0a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/07deb0a) -  power and heart rate widget, including standard deviation, min, max, average
+* `2020-01-20 12:40` [0b60de2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0b60de2) -  pace instead of speed
+* `2020-01-20 11:43` [b842805](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b842805) -  einheiten
+* `2020-01-20 11:35` [8f2d247](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8f2d247) -  lap watch data completely in view
+* `2020-01-20 10:51` [20c16b4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/20c16b4) -  splitting up activity and lap watch data into oview and metadata
+* `2020-01-19 19:46` [29c31d4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/29c31d4) -  changes in layout
+* `2020-01-18 12:29` [eabdcec](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/eabdcec) -  list view styling, lap detail screen and metadata widget
+* `2020-01-17 15:32` [c551ba5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c551ba5) -  dataTable styling
+* `2020-01-17 15:23` [156d242](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/156d242) -  decrease dataRowHeight
+* `2020-01-17 15:20` [6d92e12](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6d92e12) -  implemented dataTable for Laps
+* `2020-01-17 13:00` [c667c3a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c667c3a) -  extracted LapsListWidget
+* `2020-01-17 12:49` [f28dda9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f28dda9) -  extracted ActivityMetadataWidget
+* `2020-01-17 11:45` [490286c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/490286c) -  metadata tab for activity show
+* `2020-01-16 15:48` [aee5f6e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/aee5f6e) -  activity show continued
+* `2020-01-16 14:36` [9f15150](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9f15150) -  activity show screen started
+* `2020-01-16 10:55` [6dc804e](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6dc804e) -  bugfix: DbActivity was missing athletesId
+* `2020-01-16 10:47` [b2dacb0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b2dacb0) -  git delete leftover events and laps from prior runs
+* `2020-01-15 18:06` [b160e48](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b160e48) -  first full storing of all records of a .fit-file
+* `2020-01-15 13:27` [1b14d89](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1b14d89) -  laps implemented, next up: session
+* `2020-01-15 11:54` [0eed826](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0eed826) -  started to store laps in db
+* `2020-01-14 15:49` [21849d3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/21849d3) -  storing records and markers, next up: laps
+* `2020-01-14 14:18` [19ac33d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/19ac33d) -  extraction of get and any for dataMessage
+* `2020-01-13 18:17` [2d1e2d1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2d1e2d1) -  parsing continued
+* `2020-01-13 14:07` [dfa0763](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/dfa0763) -  parsing of events started
+* `2020-01-10 21:13` [7441074](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7441074) -  parse .fit-File, ready to analyse to store in db
+* `2020-01-10 15:03` [e20633b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e20633b) -  stravaId got lost somehow, clean up code
+* `2020-01-09 15:05` [702a370](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/702a370) -  updated strava_flutter, bug in state/geoState
+* `2020-01-07 19:31` [013846b](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/013846b) -  introducing pana as linter
+* `2019-12-30 13:13` [071ccbd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/071ccbd) -  remove ButtonBarTheme
+* `2019-12-29 21:06` [6e363f9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6e363f9) -  upgraded to using AndroidX, switched to VSCode
+* `2019-12-12 16:46` [65f5bfd](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/65f5bfd) -  cleaning up code
+* `2019-12-12 14:09` [cfbe2a5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cfbe2a5) -  formatting cleanup
+* `2019-12-12 14:03` [54d7677](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/54d7677) -  move state into db
+* `2019-12-12 12:48` [8fd6ae1](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8fd6ae1) -  cache logged in state during app run
+* `2019-12-11 17:07` [eb8ce58](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/eb8ce58) -  A monster of a commit: Email and Password entered via Form ... stored in credentials ... used to download via web scraping from Strava Switched to provider
+* `2019-11-13 17:20` [50e8b0d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/50e8b0d) -  remove headers
+* `2019-10-10 18:29` [b2c9063](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b2c9063) -  .fit's cannot be downloaded via api, so I have to scrape the web page...
+* `2019-10-09 14:53` [d5be7e7](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d5be7e7) -  code cleanup
+* `2019-10-08 15:29` [8f0440a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8f0440a) -  downloaded first activity summary, persistet and displayed
+* `2019-10-08 14:22` [76cdabf](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/76cdabf) -  trigger episode download, but: High download request numbers
+* `2019-10-08 12:31` [9c21f51](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/9c21f51) -  ListActivitiesScreen starting
+* `2019-10-08 11:22` [70506b9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/70506b9) -  introducing ListActivitiesScreen
+* `2019-10-02 14:26` [b76aa66](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/b76aa66) -  definition of activity: started
+* `2019-09-20 17:20` [6c345c4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6c345c4) -  load athletes on startup
+* `2019-09-20 16:01` [43b99cb](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/43b99cb) -  factory needs it's own initializer
+* `2019-09-19 16:58` [6480ce2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6480ce2) -  refactoring
+* `2019-09-19 16:46` [3a1432a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3a1432a) -  switch to sqfentity
+* `2019-09-18 16:51` [0825952](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0825952) -  create table athletes, if it does not exist
+* `2019-09-18 14:50` [49f873a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/49f873a) -  persisting athlete, todo: create database and table
+* `2019-08-18 15:11` [6e6b0f5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6e6b0f5) -  lots of small reformattings and reorganisations
+* `2019-08-17 20:21` [3c79a87](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3c79a87) -  fix all linting issues
+* `2019-08-17 11:51` [fe55e2a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fe55e2a) -  store data in scoped model
+* `2019-08-17 11:14` [48e4d8c](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/48e4d8c) -  copy data into athlete
+* `2019-08-17 08:14` [8753384](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8753384) -  extracted dashboard widget
+* `2019-08-17 07:58` [ea388f4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/ea388f4) -  use same attribute naming as strava
+* `2019-08-16 19:27` [7d1ada8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/7d1ada8) -  first successfull request to Strava
+* `2019-08-16 17:49` [1a249a3](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1a249a3) -  failing with strava auth"
+* `2019-08-16 16:45` [0e46668](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0e46668) -  do not version controll secrets
+* `2019-08-15 21:04` [bc80c85](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/bc80c85) -  EditAthleteScreen as scoped model from Athlete
+* `2019-08-15 15:39` [042d9d9](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/042d9d9) -  dashboard with help and create new athlete card widgets
+* `2019-08-15 15:01` [1e727df](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/1e727df) -  set application launcher icon
+* `2019-08-14 17:06` [cb727b6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/cb727b6) -  generated athletes bean
+* `2019-08-12 20:58` [d3117f4](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d3117f4) -  removed some boiler plate code
+* `2019-08-12 20:48` [45a0871](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/45a0871) -  app sceleton
+* `2019-04-16 11:07` [c665291](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c665291) -  Initial commit
