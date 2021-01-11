@@ -481,7 +481,7 @@ class Activity {
         case 325:
         case 326:
         case 327:
-        // Device yet unknown (ramon)
+        // Garmin Forerunner 945
         case 329:
           break;
         default:
