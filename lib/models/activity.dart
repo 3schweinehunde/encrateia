@@ -481,11 +481,13 @@ class Activity {
         case 325:
         case 326:
         case 327:
+        // Device yet unknown (ramon)
+        case 329:
           break;
         default:
           print('Message number ' +
               dataMessage.definitionMessage.globalMessageNumber.toString() +
-              'unknown.');
+              ' unknown.');
           debugger();
       }
     } else {
