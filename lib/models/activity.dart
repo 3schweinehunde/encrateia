@@ -559,6 +559,7 @@ class Activity {
         case 'training_file':
         case 'workout':
         case 'workout_step':
+        case 'hrv':
           break;
 
         case 'session':
@@ -649,7 +650,7 @@ class Activity {
         default:
           print('Messages of type ' +
               dataMessage.definitionMessage.globalMessageName +
-              'are not implemented yet.');
+              ' are not implemented yet.');
           print(dataMessage.values.map((Value v) => v.fieldName).toList());
         // Use this debugger to implement additional message types!
         // debugger();
