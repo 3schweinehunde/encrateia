@@ -4,6 +4,7 @@ import 'package:encrateia/screens/add_weight_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/weight.dart';
@@ -103,9 +104,8 @@ You can change these later.
             Row(
               children: <Widget>[
                 const Spacer(),
-                RaisedButton(
-                  // MyIcon.downloadLocal,
-                  color: Colors.orange,
+                TextButton(
+                  style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
                   child: const Text('Import Weights'),
                   onPressed: () => importWeights(),
                 ),

@@ -1,7 +1,7 @@
 import 'package:encrateia/actions/setupDemoAthlete.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_finished_screen.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_strava_credentials_screen.dart';
-import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +54,7 @@ class _OnboardingCreateUserScreenState
                     ButtonBar(
                       children: <Widget>[
                         ElevatedButton(
-                          style: MyButton.raisedButtonStyle,
+                          style: MyButtonStyle.raisedButtonStyle(),
                           child: const Text('Create Demo User'),
                           onPressed: () async {
                             await setupDemoAthlete(
@@ -90,7 +90,7 @@ class _OnboardingCreateUserScreenState
                     ButtonBar(
                       children: <Widget>[
                         TextButton(
-                          style: MyButton.flatButtonStyle,
+                          style: MyButtonStyle.flatButtonStyle(),
                           child: const Text('Connect to Strava'),
                           onPressed: () async {
                             await Navigator.push(
@@ -129,7 +129,7 @@ class _OnboardingCreateUserScreenState
                     ButtonBar(
                       children: <Widget>[
                         TextButton(
-                          style: MyButton.flatButtonStyle,
+                          style: MyButtonStyle.flatButtonStyle(),
                           child: const Text('Create standalone User'),
                           onPressed: () {
                             athlete.setupStandaloneAthlete();

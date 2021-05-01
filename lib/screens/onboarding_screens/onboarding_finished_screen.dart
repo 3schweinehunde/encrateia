@@ -1,5 +1,5 @@
 import 'package:encrateia/screens/dashboard.dart';
-import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -35,7 +35,7 @@ class OnboardingFinishedScreen extends StatelessWidget {
                   ButtonBar(
                     children: <Widget>[
                       TextButton(
-                        style: MyButton.flatButtonStyle,
+                        style: MyButtonStyle.flatButtonStyle(),
                         child: const Text('Finish'),
                         onPressed: () async {
                           await Navigator.pushAndRemoveUntil(

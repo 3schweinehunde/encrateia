@@ -1,5 +1,6 @@
 import 'package:encrateia/screens/add_power_zone_schema_screen.dart';
 import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
@@ -152,8 +153,8 @@ just click on one of the the buttons und go from there.
 You could also create a schema from scratch.
 
 '''),
-              RaisedButton(
-                color: Colors.green,
+              TextButton(
+                style: MyButtonStyle.raisedButtonStyle(color: Colors.green),
                 child: const Text('New schema'),
                 onPressed: () async {
                   await Navigator.push(
@@ -219,21 +220,18 @@ You could also create a schema from scratch.
     return Column(children: <Widget>[
       const Divider(),
       const Text('Add power zone schema from template:'),
-      RaisedButton(
-        // MyIcon.downloadLocal,
-        color: Colors.orange,
+      TextButton(
+        style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
         child: const Text('like Stryd'),
         onPressed: () => likeStryd(),
       ),
-      RaisedButton(
-        // MyIcon.downloadLocal,
-        color: Colors.orange,
+      TextButton(
+        style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
         child: const Text('like Jim Vance'),
         onPressed: () => likeJimVance(),
       ),
-      RaisedButton(
-        // MyIcon.downloadLocal,
-        color: Colors.orange,
+      TextButton(
+        style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
         child: const Text('like Stefan Dillinger'),
         onPressed: () => likeStefanDillinger(),
       ),

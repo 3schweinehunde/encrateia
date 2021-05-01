@@ -1,5 +1,6 @@
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
@@ -227,7 +228,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             'power zone schema manually.'),
         actions: <Widget>[
           TextButton(
-            style: MyButton.flatButtonStyle,
+            style: MyButtonStyle.flatButtonStyle(),
             child: const Text('OK'),
             onPressed: () => Navigator.of(context).pop(),
           ),
