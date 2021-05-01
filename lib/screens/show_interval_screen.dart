@@ -2,6 +2,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/screens/show_interval_detail_screen.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_altitude_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_ecor_widget.dart';
@@ -166,10 +167,11 @@ class ShowIntervalScreen extends StatelessWidget {
           athlete: athlete,
         ),
       ),
-      RaisedButton.icon(
-        color: MyColor.delete,
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(
+            color: MyColor.delete,
+            textColor: MyColor.textColor(backgroundColor: MyColor.delete)),
         icon: MyIcon.delete,
-        textColor: MyColor.textColor(backgroundColor: MyColor.delete),
         label: const Expanded(
           child: Text('Delete Interval'),
         ),
@@ -217,9 +219,10 @@ class ShowIntervalScreen extends StatelessWidget {
     @required String title,
     @required Color color,
   }) {
-    return RaisedButton.icon(
-      color: color ?? MyColor.primary,
-      textColor: MyColor.textColor(backgroundColor: color),
+    return ElevatedButton.icon(
+      style: MyButtonStyle.raisedButtonStyle(
+          color: color ?? MyColor.primary,
+          textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(
         child: Text(title),

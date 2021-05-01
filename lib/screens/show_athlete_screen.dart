@@ -1,6 +1,7 @@
 import 'package:encrateia/actions/analyse_activities.dart';
 import 'package:encrateia/actions/import_activities_locally.dart';
 import 'package:encrateia/models/strava_token.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activities_list_widget.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_ftp_widget.dart';
@@ -140,11 +141,11 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         nextWidget: AthleteFtpWidget(athlete: widget.athlete),
       ),
       navigationButton(
-          color: MyColor.navigate,
-          title: 'Distance over Time',
-          icon: MyIcon.volume,
-          nextWidget: AthleteDistanceWidget(athlete: widget.athlete),
-        ),
+        color: MyColor.navigate,
+        title: 'Distance over Time',
+        icon: MyIcon.volume,
+        nextWidget: AthleteDistanceWidget(athlete: widget.athlete),
+      ),
       navigationButton(
         color: MyColor.navigate,
         title: 'Moving Time over Time',
@@ -163,9 +164,10 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         icon: MyIcon.versus,
         nextWidget: AthletePowerVsDistanceWidget(athlete: widget.athlete),
       ),
-      RaisedButton.icon(
-        color: MyColor.add,
-        textColor: MyColor.textColor(backgroundColor: MyColor.add),
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(
+            color: MyColor.add,
+            textColor: MyColor.textColor(backgroundColor: MyColor.add)),
         icon: MyIcon.downloadLocal,
         label: const Expanded(
           child: Text('Import .fit from Folder'),
@@ -202,17 +204,17 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         icon: MyIcon.tag,
         nextWidget: AthleteTagGroupWidget(athlete: widget.athlete),
       ),
-      RaisedButton.icon(
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(color: MyColor.activity),
         icon: MyIcon.addActivity,
-        color: MyColor.activity,
         onPressed: () => goToEditActivityScreen(athlete: widget.athlete),
         label: const Expanded(
           child: Text('Create Activity manually'),
         ),
       ),
-      RaisedButton.icon(
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(color: MyColor.settings),
         icon: MyIcon.secrets,
-        color: MyColor.settings,
         onPressed: () => goToEditAthleteScreen(athlete: widget.athlete),
         label: const Expanded(
           child: Text('Credentials'),
@@ -224,9 +226,10 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         icon: MyIcon.settings,
         nextWidget: AthleteSettingsWidget(athlete: widget.athlete),
       ),
-      RaisedButton.icon(
-        color: MyColor.danger,
-        textColor: MyColor.textColor(backgroundColor: MyColor.danger),
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(
+            color: MyColor.danger,
+            textColor: MyColor.textColor(backgroundColor: MyColor.danger)),
         icon: MyIcon.delete,
         label: const Expanded(
           child: Text('Delete Athlete'),
@@ -237,10 +240,11 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           flushbar: flushbar,
         ),
       ),
-      RaisedButton.icon(
-        color: MyColor.settings,
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(
+            color: MyColor.settings,
+            textColor: MyColor.textColor(backgroundColor: MyColor.settings)),
         icon: MyIcon.settings,
-        textColor: MyColor.textColor(backgroundColor: MyColor.add),
         label: const Expanded(
           child: Text('Reanalyse Activities'),
         ),
@@ -250,9 +254,10 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           flushbar: flushbar,
         ),
       ),
-      RaisedButton.icon(
-        color: MyColor.settings,
-        textColor: MyColor.textColor(backgroundColor: MyColor.settings),
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(
+            color: MyColor.settings,
+            textColor: MyColor.textColor(backgroundColor: MyColor.settings)),
         icon: MyIcon.settings,
         label: const Expanded(
           child: Text('Redo Autotagging'),
@@ -263,8 +268,8 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           flushbar: flushbar,
         ),
       ),
-      RaisedButton.icon(
-        color: MyColor.primary,
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
         icon: MyIcon.download,
         label: const Expanded(
           child: Text('Download Demo Data'),
@@ -276,9 +281,11 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
       ),
       if (widget.athlete.stravaId != null)
-        RaisedButton.icon(
-            color: MyColor.settings,
-            textColor: MyColor.textColor(backgroundColor: MyColor.settings),
+        ElevatedButton.icon(
+            style: MyButtonStyle.raisedButtonStyle(
+                color: MyColor.settings,
+                textColor:
+                    MyColor.textColor(backgroundColor: MyColor.settings)),
             icon: MyIcon.settings,
             label: const Expanded(
               child: Text('Delete Strava Token'),
@@ -348,9 +355,10 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     @required Color color,
     Color backgroundColor,
   }) {
-    return RaisedButton.icon(
-      color: color ?? MyColor.primary,
-      textColor: MyColor.textColor(backgroundColor: color),
+    return ElevatedButton.icon(
+      style: MyButtonStyle.raisedButtonStyle(
+          color: color ?? MyColor.primary,
+          textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(
         child: Text(title),
@@ -384,7 +392,8 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute<BuildContext>(
-        builder: (BuildContext context) => EditActivityScreen(activity: activity),
+        builder: (BuildContext context) =>
+            EditActivityScreen(activity: activity),
       ),
     );
   }

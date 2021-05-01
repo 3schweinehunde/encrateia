@@ -1,5 +1,6 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/screens/show_lap_detail_screen.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_ecor_widget.dart';
 import 'package:encrateia/widgets/lap_widgets/lap_metadata_widget.dart';
@@ -40,7 +41,8 @@ class ShowLapScreen extends StatelessWidget {
         color: MyColor.settings,
         icon: MyIcon.metaData,
         context: context,
-        nextWidget: ({Lap lap}) => LapOverviewWidget(lap: lap, athlete: athlete ),
+        nextWidget: ({Lap lap}) =>
+            LapOverviewWidget(lap: lap, athlete: athlete),
       ),
       if (lap.heartRateAvailable)
         navigationButton(
@@ -195,9 +197,10 @@ class ShowLapScreen extends StatelessWidget {
     @required String title,
     @required Color color,
   }) {
-    return RaisedButton.icon(
-      color: color ?? MyColor.primary,
-      textColor: MyColor.textColor(backgroundColor: color),
+    return ElevatedButton.icon(
+      style: MyButtonStyle.raisedButtonStyle(
+          color: color ?? MyColor.primary,
+          textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(
         child: Text(title),

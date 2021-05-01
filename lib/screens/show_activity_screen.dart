@@ -1,5 +1,6 @@
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/weight.dart';
+import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_bargraph_widget.dart';
 import 'package:encrateia/widgets/activity_widgets/activity_ftp_widget.dart';
@@ -329,10 +330,11 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-      RaisedButton.icon(
-        color: MyColor.add,
+      ElevatedButton.icon(
+        style: MyButtonStyle.raisedButtonStyle(
+            color: MyColor.add,
+            textColor: MyColor.textColor(backgroundColor: MyColor.add)),
         icon: MyIcon.settings,
-        textColor: MyColor.textColor(backgroundColor: MyColor.add),
         label: const Expanded(
           child: Text('Rerun Autotagging'),
         ),
@@ -340,40 +342,44 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       ),
       if (<String>['new', 'downloaded', 'persisted']
           .contains(widget.activity.state))
-        RaisedButton.icon(
-          color: MyColor.add,
+        ElevatedButton.icon(
+          style: MyButtonStyle.raisedButtonStyle(
+              color: MyColor.add,
+              textColor: MyColor.textColor(backgroundColor: MyColor.add)),
           icon: MyIcon.download,
-          textColor: MyColor.textColor(backgroundColor: MyColor.add),
           label: const Expanded(
             child: Text('Download fit file'),
           ),
           onPressed: () => download(),
         ),
       if (<String>['downloaded', 'persisted'].contains(widget.activity.state))
-        RaisedButton.icon(
-          color: MyColor.add,
+        ElevatedButton.icon(
+          style: MyButtonStyle.raisedButtonStyle(
+              color: MyColor.add,
+              textColor: MyColor.textColor(backgroundColor: MyColor.add)),
           icon: MyIcon.parse,
-          textColor: MyColor.textColor(backgroundColor: MyColor.add),
           label: const Expanded(
             child: Text('Parse fit file'),
           ),
           onPressed: () => parse(),
         ),
       if (widget.activity.excluded == true)
-        RaisedButton.icon(
-          color: MyColor.include,
+        ElevatedButton.icon(
+          style: MyButtonStyle.raisedButtonStyle(
+              color: MyColor.include,
+              textColor: MyColor.textColor(backgroundColor: MyColor.include)),
           icon: MyIcon.filter,
-          textColor: MyColor.textColor(backgroundColor: MyColor.include),
           label: const Expanded(
             child: Text('Include in Analysis'),
           ),
           onPressed: () => include(),
         )
       else
-        RaisedButton.icon(
-          color: MyColor.exclude,
+        ElevatedButton.icon(
+          style: MyButtonStyle.raisedButtonStyle(
+              color: MyColor.exclude,
+              textColor: MyColor.textColor(backgroundColor: MyColor.exclude)),
           icon: MyIcon.filter,
-          textColor: MyColor.textColor(backgroundColor: MyColor.exclude),
           label: const Expanded(
             child: Text('Exclude from Analysis'),
           ),
@@ -398,14 +404,13 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           activity: widget.activity,
         ),
       ),
-
-
       if (<String>['new', 'downloaded', 'persisted']
           .contains(widget.activity.state))
-        RaisedButton.icon(
-          color: MyColor.delete,
+        ElevatedButton.icon(
+          style: MyButtonStyle.raisedButtonStyle(
+              color: MyColor.delete,
+              textColor: MyColor.textColor(backgroundColor: MyColor.delete)),
           icon: MyIcon.delete,
-          textColor: MyColor.textColor(backgroundColor: MyColor.delete),
           label: const Expanded(
             child: Text('Delete Activity'),
           ),
@@ -456,9 +461,9 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
     @required Color color,
     Color backgroundColor,
   }) {
-    return RaisedButton.icon(
-      color: color,
-      textColor: MyColor.textColor(backgroundColor: color),
+    return ElevatedButton.icon(
+      style: MyButtonStyle.raisedButtonStyle(
+          color: color, textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(
         child: Text(title),

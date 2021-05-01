@@ -151,7 +151,7 @@ just click on the button below und go from there.
 You could also create a schema from scratch.
 
 '''),
-              TextButton(
+              ElevatedButton(
                 style: MyButtonStyle.raisedButtonStyle(color: Colors.green),
                 child: const Text('New schema'),
                 onPressed: () async {
@@ -209,12 +209,12 @@ You could also create a schema from scratch.
     return Column(children: <Widget>[
       const Divider(),
       const Text('Add heart rate zone schema from template:'),
-      TextButton(
+      ElevatedButton(
         style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
         child: const Text('like Garmin'),
         onPressed: () => likeGarmin(),
       ),
-      TextButton(
+      ElevatedButton(
         style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
         child: const Text('like Stefan Dillinger'),
         onPressed: () => likeStefanDillinger(),

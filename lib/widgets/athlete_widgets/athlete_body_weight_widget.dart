@@ -104,7 +104,7 @@ You can change these later.
             Row(
               children: <Widget>[
                 const Spacer(),
-                TextButton(
+                ElevatedButton(
                   style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
                   child: const Text('Import Weights'),
                   onPressed: () => importWeights(),

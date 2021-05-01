@@ -6,7 +6,7 @@ import 'icon_utils.dart';
 import 'my_button_style.dart';
 import 'my_color.dart';
 
-class MyButton extends TextButton {
+class MyButton extends ElevatedButton {
   MyButton.delete({Widget child, VoidCallback onPressed})
       : super(
           style: MyButtonStyle.raisedButtonStyle(
