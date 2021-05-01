@@ -1,3 +1,4 @@
+import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -35,7 +36,8 @@ class OnboardingIntroductionScreen extends StatelessWidget {
                   ),
                   ButtonBar(
                     children: <Widget>[
-                      FlatButton(
+                      TextButton(
+                        style: MyButton.flatButtonStyle,
                         child: const Text('Read Introduction'),
                         onPressed: () => Navigator.push(
                           context,
@@ -44,7 +46,8 @@ class OnboardingIntroductionScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      FlatButton(
+                      TextButton(
+                        style: MyButton.flatButtonStyle,
                         child: const Text('Continue'),
                         onPressed: () async {
                           await Navigator.pushReplacement(

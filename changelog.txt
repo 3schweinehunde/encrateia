@@ -1,4 +1,12 @@
-* `2020-09-25 08:50` [72987c0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/72987c0) -  (HEAD -> master, origin/master, oberwart/master, github/master) filter for valid ecors only"
+* `2021-01-27 13:54` [2d6f117](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/2d6f117) -  (HEAD -> master, origin/master, oberwart/master, github/master) version bump to 0.4.11
+* `2021-01-12 00:51` [f96643f](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f96643f) -  referenced correct watch type
+* `2021-01-12 00:40` [67460d6](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/67460d6) -  ignore hrv data messages
+* `2021-01-12 00:30` [d8c6679](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/d8c6679) -  ignore message type 329
+* `2020-12-27 12:05` [e4f6dd8](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e4f6dd8) -  update ios compatibility settings
+* `2020-12-27 11:45` [f569405](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f569405) -  upgrade android Flutter wrappers
+* `2020-12-27 10:47` [8462364](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/8462364) -  push version to 0.4.10 for apple re-deployment
+* `2020-09-25 09:21` [e5c4d63](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/e5c4d63) -  version bump to 0.4.9 and flutter upgrade
+* `2020-09-25 08:50` [72987c0](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/72987c0) -  filter for valid ecors only"
 * `2020-09-25 08:37` [c27de5d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/c27de5d) -  sport selector for power,pace vs distance and power/hr
 * `2020-09-24 16:04` [624e413](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/624e413) -  type annotations
 * `2020-09-24 16:02` [f33296d](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/f33296d) -  sport selector for ftp and power ratio athlete diagrams

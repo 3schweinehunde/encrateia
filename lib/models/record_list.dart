@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';

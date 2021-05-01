@@ -79,4 +79,25 @@ class MyButton extends RaisedButton {
     child: child ?? const Text('Activity'),
     onPressed: onPressed,
   );
+
+  static ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+    onPrimary: Colors.black87,
+    primary: Colors.grey[300],
+    minimumSize: const Size(88, 36),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(2)),
+    ),
+  );
+
+  static ButtonStyle flatButtonStyle = TextButton.styleFrom(
+    primary: Colors.black87,
+    minimumSize: const Size(88, 36),
+    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(2.0)),
+    ),
+  );
+
+
 }

@@ -226,7 +226,8 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             'If you only wanted to fix the date you need to delete the old '
             'power zone schema manually.'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
+            style: MyButton.flatButtonStyle,
             child: const Text('OK'),
             onPressed: () => Navigator.of(context).pop(),
           ),

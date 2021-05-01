@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/activity_list.dart';
 import 'package:encrateia/models/athlete.dart';
