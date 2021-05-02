@@ -172,8 +172,12 @@ class Lap {
   }) {
     lap._db
       ..activitiesId = activity.id
-      ..avgSpeed = dataMessage.get('avg_speed') as double
-      ..maxSpeed = dataMessage.get('max_speed') as double
+      ..avgSpeed = dataMessage.get('avg_speed') == 65.535
+          ? dataMessage.get('enhanced_avg_speed') as double
+          : dataMessage.get('avg_speed') as double
+      ..maxSpeed = dataMessage.get('max_speed') == 65.535
+          ? dataMessage.get('enhanced_max_speed') as double
+          : dataMessage.get('max_speed') as double
       ..timeStamp = dateTimeFromStrava(dataMessage.get('timestamp') as double)
       ..startTime = dateTimeFromStrava(dataMessage.get('start_time') as double)
       ..startPositionLat = dataMessage.get('start_position_lat') as double
