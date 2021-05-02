@@ -21,7 +21,7 @@ class Event {
         ..eventType = dataMessage.get('event_type') as String
         ..heartRate = (dataMessage.get('max_heart_rate') as double)?.round()
         ..timeStamp =
-        dateTimeFromStrava(dataMessage.get('timestamp') as double);
+            dateTimeFromStrava(dataMessage.get('timestamp') as double);
     } else if (dataMessage.values.any((Value value) =>
         value.fieldName == 'event_type' &&
         <String>['start', 'stop', 'stop_all'].contains(value.value))) {
@@ -66,7 +66,8 @@ class Event {
       ..positionLat = dataMessage.get('position_lat') as double
       ..positionLong = dataMessage.get('position_long') as double
       ..distance = dataMessage.get('distance') as double
-      ..altitude = dataMessage.get('altitude') as double
+      ..altitude = dataMessage.get('altitude') as double ??
+          dataMessage.get('enhanced_altitude') as double
       ..speed = dataMessage.get('speed') as double ??
           dataMessage.get('enhanced_speed') as double
       ..heartRate = (dataMessage.get('heart_rate') as double)?.round()
