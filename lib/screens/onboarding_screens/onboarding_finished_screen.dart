@@ -34,8 +34,8 @@ class OnboardingFinishedScreen extends StatelessWidget {
                   ),
                   ButtonBar(
                     children: <Widget>[
-                      TextButton(
-                        style: MyButtonStyle.flatButtonStyle(),
+                      ElevatedButton(
+                        style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
                         child: const Text('Finish'),
                         onPressed: () async {
                           await Navigator.pushAndRemoveUntil(

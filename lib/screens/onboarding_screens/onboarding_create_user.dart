@@ -54,7 +54,7 @@ class _OnboardingCreateUserScreenState
                     ButtonBar(
                       children: <Widget>[
                         ElevatedButton(
-                          style: MyButtonStyle.raisedButtonStyle(),
+                          style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
                           child: const Text('Create Demo User'),
                           onPressed: () async {
                             await setupDemoAthlete(
@@ -89,8 +89,8 @@ class _OnboardingCreateUserScreenState
                     ),
                     ButtonBar(
                       children: <Widget>[
-                        TextButton(
-                          style: MyButtonStyle.flatButtonStyle(),
+                        ElevatedButton(
+                          style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
                           child: const Text('Connect to Strava'),
                           onPressed: () async {
                             await Navigator.push(
@@ -128,8 +128,8 @@ class _OnboardingCreateUserScreenState
                     ),
                     ButtonBar(
                       children: <Widget>[
-                        TextButton(
-                          style: MyButtonStyle.flatButtonStyle(),
+                        ElevatedButton(
+                          style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
                           child: const Text('Create standalone User'),
                           onPressed: () {
                             athlete.setupStandaloneAthlete();

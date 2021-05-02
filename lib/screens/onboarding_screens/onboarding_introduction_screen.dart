@@ -36,8 +36,8 @@ class OnboardingIntroductionScreen extends StatelessWidget {
                   ),
                   ButtonBar(
                     children: <Widget>[
-                      TextButton(
-                        style: MyButtonStyle.flatButtonStyle(),
+                      ElevatedButton(
+                        style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
                         child: const Text('Read Introduction'),
                         onPressed: () => Navigator.push(
                           context,
@@ -46,8 +46,8 @@ class OnboardingIntroductionScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      TextButton(
-                        style: MyButtonStyle.flatButtonStyle(),
+                      ElevatedButton(
+                        style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
                         child: const Text('Continue'),
                         onPressed: () async {
                           await Navigator.pushReplacement(

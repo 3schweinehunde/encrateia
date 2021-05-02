@@ -236,8 +236,8 @@ class _AddHeartRateZoneSchemaScreenState
             'If you only wanted to fix the date you need to delete the old heart'
             ' rate zone schema manually.'),
         actions: <Widget>[
-          TextButton(
-            style: MyButtonStyle.flatButtonStyle(),
+          ElevatedButton(
+            style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
             child: const Text('OK'),
             onPressed: () => Navigator.of(context).pop(),
           ),
