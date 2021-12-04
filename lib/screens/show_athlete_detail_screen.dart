@@ -1,6 +1,6 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
 
 class ShowAthleteDetailScreen extends StatelessWidget {
   const ShowAthleteDetailScreen({

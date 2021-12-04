@@ -1,7 +1,8 @@
 import 'dart:ui' as ui;
+
+import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/lap.dart';
-import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter/material.dart';
 

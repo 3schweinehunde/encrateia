@@ -1,13 +1,13 @@
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_ground_time_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flutter/material.dart';
 
 class IntervalGroundTimeWidget extends StatefulWidget {
   const IntervalGroundTimeWidget({this.interval});
@@ -15,7 +15,8 @@ class IntervalGroundTimeWidget extends StatefulWidget {
   final encrateia.Interval interval;
 
   @override
-  _IntervalGroundTimeWidgetState createState() => _IntervalGroundTimeWidgetState();
+  _IntervalGroundTimeWidgetState createState() =>
+      _IntervalGroundTimeWidgetState();
 }
 
 class _IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {

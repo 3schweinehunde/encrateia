@@ -1,8 +1,8 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:flutter/material.dart';
 
 class AthleteScatterChart extends StatefulWidget {
   const AthleteScatterChart({

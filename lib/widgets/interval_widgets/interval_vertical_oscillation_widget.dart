@@ -1,13 +1,13 @@
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import 'package:flutter/material.dart';
 
 class IntervalVerticalOscillationWidget extends StatefulWidget {
   const IntervalVerticalOscillationWidget({this.interval});
@@ -43,8 +43,8 @@ class _IntervalVerticalOscillationWidgetState
     if (records.isNotEmpty) {
       final List<Event> verticalOscillationRecords = records
           .where((Event value) =>
-      value.verticalOscillation != null &&
-          value.verticalOscillation > 0)
+              value.verticalOscillation != null &&
+              value.verticalOscillation > 0)
           .toList();
 
       if (verticalOscillationRecords.isNotEmpty) {

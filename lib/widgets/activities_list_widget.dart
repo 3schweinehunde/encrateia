@@ -1,11 +1,11 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter/material.dart';
 
 class ActivitiesListWidget extends StatefulWidget {
   const ActivitiesListWidget({Key key, this.athlete}) : super(key: key);

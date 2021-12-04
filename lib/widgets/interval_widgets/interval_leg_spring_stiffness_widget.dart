@@ -1,13 +1,13 @@
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import 'package:flutter/material.dart';
 
 class IntervalLegSpringStiffnessWidget extends StatefulWidget {
   const IntervalLegSpringStiffnessWidget({this.interval});
@@ -43,7 +43,7 @@ class _IntervalLegSpringStiffnessWidgetState
     if (records.isNotEmpty) {
       final List<Event> legSpringStiffnessRecords = records
           .where((Event value) =>
-      value.legSpringStiffness != null && value.legSpringStiffness > 0)
+              value.legSpringStiffness != null && value.legSpringStiffness > 0)
           .toList();
 
       if (legSpringStiffnessRecords.isNotEmpty) {

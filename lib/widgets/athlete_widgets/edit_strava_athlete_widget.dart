@@ -1,11 +1,11 @@
+import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/models/strava_fit_download.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_power_zone_schema_screen.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 
 class EditStravaAthleteWidget extends StatefulWidget {
   const EditStravaAthleteWidget({
@@ -31,8 +31,7 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
         const Card(
           child: ListTile(
             leading: MyIcon.website,
-            title: Text(
-                'Credentials for .fit-Download from Strava Web Site'),
+            title: Text('Credentials for .fit-Download from Strava Web Site'),
           ),
         ),
         ListTile(
@@ -111,8 +110,7 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
         icon: MyIcon.error,
         message: 'The credentials provided are invalid!',
         duration: const Duration(seconds: 5),
-      )
-        ..show(context);
+      )..show(context);
     }
   }
 }

@@ -1,8 +1,8 @@
+import 'package:encrateia/models/tag.dart';
+import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/models/tag.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class ShowTagGroupScreen extends StatefulWidget {

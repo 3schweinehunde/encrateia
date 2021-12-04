@@ -1,8 +1,8 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/graph_utils.dart';
+import 'package:flutter/material.dart';
 
 class LapAltitudeChart extends StatelessWidget {
   const LapAltitudeChart({
@@ -31,7 +31,7 @@ class LapAltitudeChart extends StatelessWidget {
 
     return AspectRatio(
       aspectRatio:
-      MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 2,
+          MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 2,
       child: LineChart(
         data,
         defaultRenderer: LineRendererConfig<num>(
@@ -53,4 +53,3 @@ class LapAltitudeChart extends StatelessWidget {
     );
   }
 }
-

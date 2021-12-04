@@ -1,13 +1,13 @@
-import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_speed_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flutter/material.dart';
 
 class IntervalSpeedWidget extends StatefulWidget {
   const IntervalSpeedWidget({this.interval});
@@ -53,8 +53,12 @@ class _IntervalSpeedWidgetState extends State<IntervalSpeedWidget> {
                 key: widgetKey,
                 child: LapSpeedChart(
                   records: RecordList<Event>(paceRecords),
-                  minimum: (widget.interval.avgSpeedByDistance - 3 * widget.interval.sdevSpeed) * 3.6,
-                  maximum: (widget.interval.avgSpeedByDistance + 3 * widget.interval.sdevSpeed) * 3.6,
+                  minimum: (widget.interval.avgSpeedByDistance -
+                          3 * widget.interval.sdevSpeed) *
+                      3.6,
+                  maximum: (widget.interval.avgSpeedByDistance +
+                          3 * widget.interval.sdevSpeed) *
+                      3.6,
                 ),
               ),
               const Text('Only records where speed > 0 m/s are shown.'),
@@ -73,7 +77,8 @@ class _IntervalSpeedWidgetState extends State<IntervalSpeedWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.interval.avgSpeedByDistance, pq: PQ.speed),
+                title: PQText(
+                    value: widget.interval.avgSpeedByDistance, pq: PQ.speed),
                 subtitle: const Text('average speed'),
               ),
               ListTile(

@@ -1,15 +1,15 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_ecor_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flutter/material.dart';
 
 class ActivityEcorWidget extends StatefulWidget {
   const ActivityEcorWidget({
@@ -85,7 +85,8 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
               ),
               ListTile(
                 leading: MyIcon.weight,
-                title: PQText(value: widget.activity.cachedWeight, pq: PQ.weight),
+                title:
+                    PQText(value: widget.activity.cachedWeight, pq: PQ.weight),
                 subtitle: const Text('weight'),
               ),
               ListTile(

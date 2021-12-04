@@ -1,10 +1,10 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/my_color.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_intervals_chart.dart';
+import 'package:flutter/material.dart';
 
 class SelectIntervalScreen extends StatefulWidget {
   const SelectIntervalScreen({

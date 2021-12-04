@@ -1,13 +1,13 @@
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_form_power_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import 'package:flutter/material.dart';
 
 class IntervalFormPowerWidget extends StatefulWidget {
   const IntervalFormPowerWidget({this.interval});
@@ -15,7 +15,8 @@ class IntervalFormPowerWidget extends StatefulWidget {
   final encrateia.Interval interval;
 
   @override
-  _IntervalFormPowerWidgetState createState() => _IntervalFormPowerWidgetState();
+  _IntervalFormPowerWidgetState createState() =>
+      _IntervalFormPowerWidgetState();
 }
 
 class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
@@ -75,12 +76,14 @@ class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.interval.avgFormPower, pq: PQ.power),
+                title:
+                    PQText(value: widget.interval.avgFormPower, pq: PQ.power),
                 subtitle: const Text('average form power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.interval.sdevFormPower, pq: PQ.power),
+                title:
+                    PQText(value: widget.interval.sdevFormPower, pq: PQ.power),
                 subtitle: const Text('standard deviation form power'),
               ),
               ListTile(

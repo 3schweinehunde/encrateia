@@ -1,15 +1,16 @@
 import 'dart:math';
+
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/tag_group.dart';
+import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/screens/show_activity_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter/material.dart';
 
 class ActivitiesFeedWidget extends StatefulWidget {
   const ActivitiesFeedWidget({Key key, this.athlete}) : super(key: key);
@@ -80,7 +81,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                 ListTile(
                   leading: sportsIcon(sport: activity.sport),
                   title: Text(activity.name ?? 'Activity'),
-                  trailing: activity.excluded == true ? MyIcon.excluded : const Text(''),
+                  trailing: activity.excluded == true
+                      ? MyIcon.excluded
+                      : const Text(''),
                   subtitle: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -99,7 +102,8 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                         ]),
                         const SizedBox(width: 20),
                         Column(children: <Widget>[
-                          PQText(pq: PQ.paceFromSpeed, value: activity.avgSpeed),
+                          PQText(
+                              pq: PQ.paceFromSpeed, value: activity.avgSpeed),
                           PQText(
                             pq: PQ.heartRate,
                             value: activity.avgHeartRate,
@@ -184,8 +188,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
     for (final Activity activity in activities) {
       await activity.tags;
       await activity.ecor;
-      if (disposed)
-        break;
+      if (disposed) break;
       setState(() {});
     }
   }

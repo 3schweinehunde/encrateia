@@ -1,10 +1,10 @@
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 
 class IntervalOverviewWidget extends StatefulWidget {
   const IntervalOverviewWidget({
@@ -29,8 +29,7 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
   List<Widget> get tiles {
     return <Widget>[
       ListTile(
-        title: PQText(
-            value: widget.interval.distance.toInt(), pq: PQ.distance),
+        title: PQText(value: widget.interval.distance.toInt(), pq: PQ.distance),
         subtitle: const Text('distance'),
       ),
       ListTile(

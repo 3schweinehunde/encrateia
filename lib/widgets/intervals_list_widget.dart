@@ -1,12 +1,12 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/screens/select_interval_screen.dart';
+import 'package:encrateia/screens/show_interval_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/screens/show_interval_screen.dart';
 
 class IntervalsListWidget extends StatefulWidget {
   const IntervalsListWidget({
@@ -78,7 +78,8 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                         await Navigator.push(
                           context,
                           MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext context) => ShowIntervalScreen(
+                            builder: (BuildContext context) =>
+                                ShowIntervalScreen(
                               interval: interval,
                               intervals: intervals,
                               athlete: widget.athlete,
@@ -100,7 +101,8 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                         pq: PQ.paceFromSpeed,
                       )),
                       DataCell(PQText(value: interval.avgPower, pq: PQ.power)),
-                      DataCell(PQText(value: interval.distance, pq: PQ.distance)),
+                      DataCell(
+                          PQText(value: interval.distance, pq: PQ.distance)),
                       DataCell(
                         PQText(
                           value: (interval.totalAscent ?? 0) -

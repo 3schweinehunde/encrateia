@@ -1,8 +1,9 @@
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+
 import 'introduction_text_screen.dart';
 import 'onboarding_create_user.dart';
 
@@ -37,17 +38,20 @@ class OnboardingIntroductionScreen extends StatelessWidget {
                   ButtonBar(
                     children: <Widget>[
                       ElevatedButton(
-                        style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
+                        style: MyButtonStyle.raisedButtonStyle(
+                            color: MyColor.primary),
                         child: const Text('Read Introduction'),
                         onPressed: () => Navigator.push(
                           context,
                           MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext _) => IntroductionTextScreen(),
+                            builder: (BuildContext _) =>
+                                IntroductionTextScreen(),
                           ),
                         ),
                       ),
                       ElevatedButton(
-                        style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
+                        style: MyButtonStyle.raisedButtonStyle(
+                            color: MyColor.primary),
                         child: const Text('Continue'),
                         onPressed: () async {
                           await Navigator.pushReplacement(

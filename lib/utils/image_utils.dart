@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
+
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter/material.dart';
 
 class ImageUtils {
   static Future<void> capturePng({GlobalKey widgetKey}) async {
@@ -21,7 +22,7 @@ class ImageUtils {
         : await getApplicationDocumentsDirectory();
     final File imageFile = File('${dir.path}/screenshot.png');
     // ignore: avoid_slow_async_io
-    if(await imageFile.exists()) {
+    if (await imageFile.exists()) {
       imageFile.delete();
     }
 

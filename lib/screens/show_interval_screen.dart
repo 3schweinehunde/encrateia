@@ -2,6 +2,7 @@ import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/screens/show_interval_detail_screen.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_altitude_widget.dart';
@@ -19,7 +20,6 @@ import 'package:encrateia/widgets/interval_widgets/interval_stryd_cadence_widget
 import 'package:encrateia/widgets/interval_widgets/interval_tag_widget.dart';
 import 'package:encrateia/widgets/interval_widgets/interval_vertical_oscillation_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ShowIntervalScreen extends StatelessWidget {

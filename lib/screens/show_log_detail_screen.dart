@@ -1,8 +1,8 @@
+import 'package:encrateia/models/log.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/log.dart';
 
 class ShowLogDetailScreen extends StatelessWidget {
   const ShowLogDetailScreen({

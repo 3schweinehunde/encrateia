@@ -1,11 +1,12 @@
 import 'dart:ui';
+
 import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag.dart';
+import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/lap_tagging.dart';
+import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class LapTagWidget extends StatefulWidget {

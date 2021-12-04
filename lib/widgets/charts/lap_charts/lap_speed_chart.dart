@@ -1,8 +1,8 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/event.dart';
 
 class LapSpeedChart extends StatelessWidget {
   const LapSpeedChart({

@@ -1,9 +1,9 @@
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/my_button.dart';
+import 'package:encrateia/utils/my_color.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'edit_event_screen.dart';

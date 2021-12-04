@@ -1,14 +1,15 @@
 import 'dart:math';
+
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_altitude_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import 'package:flutter/material.dart';
 
 class IntervalAltitudeWidget extends StatefulWidget {
   const IntervalAltitudeWidget({this.interval});
@@ -41,7 +42,7 @@ class _IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> altitudeRecords =
-      records.where((Event value) => value.altitude != null).toList();
+          records.where((Event value) => value.altitude != null).toList();
 
       if (altitudeRecords.isNotEmpty) {
         return ListTileTheme(

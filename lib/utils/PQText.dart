@@ -1,6 +1,7 @@
+import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
+
 import 'enums.dart';
 
 @immutable
@@ -17,8 +18,7 @@ class PQText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!validValue)
-      return const Text('n.a.');
+    if (!validValue) return const Text('n.a.');
 
     switch (pq) {
       case PQ.dateTime:

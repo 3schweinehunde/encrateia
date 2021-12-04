@@ -1,14 +1,14 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
+import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/screens/show_lap_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/screens/show_lap_screen.dart';
 
 class LapsListWidget extends StatefulWidget {
   const LapsListWidget({

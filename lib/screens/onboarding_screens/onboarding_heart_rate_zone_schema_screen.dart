@@ -1,10 +1,10 @@
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_body_weight_screen.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
 
 class OnBoardingHeartRateZoneSchemaScreen extends StatefulWidget {
   const OnBoardingHeartRateZoneSchemaScreen({

@@ -1,10 +1,10 @@
-import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/power_duration_chart.dart';
+import 'package:flutter/material.dart';
 
 class LapPowerDurationWidget extends StatefulWidget {
   const LapPowerDurationWidget({@required this.lap});

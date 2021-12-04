@@ -1,11 +1,12 @@
 import 'dart:ui';
+
 import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/interval_tagging.dart';
+import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class IntervalTagWidget extends StatefulWidget {
@@ -45,7 +46,7 @@ class _IntervalTagWidgetState extends State<IntervalTagWidget> {
     else
       return StaggeredGridView.countBuilder(
         crossAxisCount:
-        MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
         itemCount: tagGroups.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
@@ -71,9 +72,11 @@ class _IntervalTagWidgetState extends State<IntervalTagWidget> {
                     onSelected: (bool selected) {
                       setState(() {
                         if (selected) {
-                          IntervalTagging.createBy(interval: widget.interval, tag: tag);
+                          IntervalTagging.createBy(
+                              interval: widget.interval, tag: tag);
                         } else {
-                          IntervalTagging.deleteBy(interval: widget.interval, tag: tag);
+                          IntervalTagging.deleteBy(
+                              interval: widget.interval, tag: tag);
                         }
                         tag.selected = selected;
                       });

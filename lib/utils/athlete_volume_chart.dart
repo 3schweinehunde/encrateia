@@ -1,8 +1,8 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart' as painting;
 
 class AthleteVolumeChart extends StatefulWidget {
@@ -36,7 +36,8 @@ class _AthleteVolumeChartState extends State<AthleteVolumeChart> {
         colorFn: (Activity activity, __) => colorForYear(activity: activity),
         domainFn: (Activity activity, _) =>
             movedIntoThisYear(activity: activity),
-        measureFn: (Activity activity, _) => activity.getAttribute(widget.volumeAttr) as num,
+        measureFn: (Activity activity, _) =>
+            activity.getAttribute(widget.volumeAttr) as num,
         data: widget.activities,
       ),
     ];

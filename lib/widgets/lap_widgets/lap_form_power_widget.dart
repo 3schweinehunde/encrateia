@@ -1,13 +1,13 @@
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_form_power_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import 'package:flutter/material.dart';
 
 class LapFormPowerWidget extends StatefulWidget {
   const LapFormPowerWidget({this.lap});

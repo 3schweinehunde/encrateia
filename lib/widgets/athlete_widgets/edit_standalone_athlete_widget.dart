@@ -1,10 +1,10 @@
+import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/screens/onboarding_screens/onboarding_power_zone_schema_screen.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 
 class EditStandaloneAthleteWidget extends StatefulWidget {
   const EditStandaloneAthleteWidget({

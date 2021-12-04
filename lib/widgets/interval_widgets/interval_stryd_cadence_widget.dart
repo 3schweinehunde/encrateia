@@ -1,13 +1,13 @@
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import 'package:flutter/material.dart';
 
 class IntervalStrydCadenceWidget extends StatefulWidget {
   const IntervalStrydCadenceWidget({this.interval});
@@ -15,10 +15,12 @@ class IntervalStrydCadenceWidget extends StatefulWidget {
   final encrateia.Interval interval;
 
   @override
-  _IntervalStrydCadenceWidgetState createState() => _IntervalStrydCadenceWidgetState();
+  _IntervalStrydCadenceWidgetState createState() =>
+      _IntervalStrydCadenceWidgetState();
 }
 
-class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget> {
+class _IntervalStrydCadenceWidgetState
+    extends State<IntervalStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
@@ -41,7 +43,7 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
     if (records.isNotEmpty) {
       final List<Event> strydCadenceRecords = records
           .where((Event value) =>
-      value.strydCadence != null && value.strydCadence > 0)
+              value.strydCadence != null && value.strydCadence > 0)
           .toList();
 
       if (strydCadenceRecords.isNotEmpty) {
@@ -91,7 +93,7 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
               ListTile(
                 leading: MyIcon.amount,
                 title:
-                PQText(value: strydCadenceRecords.length, pq: PQ.integer),
+                    PQText(value: strydCadenceRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],

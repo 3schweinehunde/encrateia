@@ -1,15 +1,15 @@
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/heart_rate_zone_schema.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flutter/material.dart';
 
 class IntervalHeartRateWidget extends StatefulWidget {
   const IntervalHeartRateWidget({this.interval});
@@ -17,7 +17,8 @@ class IntervalHeartRateWidget extends StatefulWidget {
   final encrateia.Interval interval;
 
   @override
-  _IntervalHeartRateWidgetState createState() => _IntervalHeartRateWidgetState();
+  _IntervalHeartRateWidgetState createState() =>
+      _IntervalHeartRateWidgetState();
 }
 
 class _IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
@@ -77,22 +78,26 @@ class _IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.interval.avgHeartRate, pq: PQ.heartRate),
+                title: PQText(
+                    value: widget.interval.avgHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('average heart rate'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.interval.minHeartRate, pq: PQ.heartRate),
+                title: PQText(
+                    value: widget.interval.minHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.interval.maxHeartRate, pq: PQ.heartRate),
+                title: PQText(
+                    value: widget.interval.maxHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('maximum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.interval.sdevHeartRate, pq: PQ.heartRate),
+                title: PQText(
+                    value: widget.interval.sdevHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('standard deviation heart rate'),
               ),
               ListTile(

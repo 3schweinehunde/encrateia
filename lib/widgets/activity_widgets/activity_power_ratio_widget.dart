@@ -1,14 +1,14 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_power_ratio_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flutter/material.dart';
 
 class ActivityPowerRatioWidget extends StatefulWidget {
   const ActivityPowerRatioWidget({
@@ -62,7 +62,8 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
                   athlete: widget.athlete,
                 ),
               ),
-              const Text('power ratio (%) = (power - form power) / power * 100'),
+              const Text(
+                  'power ratio (%) = (power - form power) / power * 100'),
               Text('${widget.athlete.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W and 0 W < form power < 200 W are shown.'),
@@ -80,12 +81,18 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
               ]),
               ListTile(
                 leading: MyIcon.formPower,
-                title: PQText(value: widget.activity.avgPowerRatio, pq: PQ.percentage,),
+                title: PQText(
+                  value: widget.activity.avgPowerRatio,
+                  pq: PQ.percentage,
+                ),
                 subtitle: const Text('average power ratio'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.activity.sdevPowerRatio, pq: PQ.percentage,),
+                title: PQText(
+                  value: widget.activity.sdevPowerRatio,
+                  pq: PQ.percentage,
+                ),
                 subtitle: const Text('standard deviation power ratio '),
               ),
               ListTile(

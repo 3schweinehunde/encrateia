@@ -1,8 +1,8 @@
-import 'package:encrateia/models/power_duration.dart';
 import 'package:charts_flutter/flutter.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/plot_point.dart';
+import 'package:encrateia/models/power_duration.dart';
+import 'package:flutter/material.dart';
 
 class FtpChart extends StatelessWidget {
   const FtpChart({this.records});
