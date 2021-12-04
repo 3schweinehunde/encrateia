@@ -1,7 +1,7 @@
+import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class AddHeartRateZoneScreen extends StatefulWidget {

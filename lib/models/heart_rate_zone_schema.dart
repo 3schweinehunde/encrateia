@@ -1,8 +1,8 @@
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/model/model.dart'
     show DbHeartRateZone, DbHeartRateZoneSchema;
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/heart_rate_zone.dart';
+import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class HeartRateZoneSchema {
@@ -138,17 +138,16 @@ class HeartRateZoneSchema {
     DateTime date,
   }) async {
     List<DbHeartRateZoneSchema> dbHeartRateZoneSchemas;
-    dbHeartRateZoneSchemas =
-        await DbHeartRateZoneSchema()
-            .select()
-            .athletesId
-            .equals(athletesId)
-            .and
-            .date
-            .lessThanOrEquals(date)
-            .orderByDesc('date')
-            .top(1)
-            .toList();
+    dbHeartRateZoneSchemas = await DbHeartRateZoneSchema()
+        .select()
+        .athletesId
+        .equals(athletesId)
+        .and
+        .date
+        .lessThanOrEquals(date)
+        .orderByDesc('date')
+        .top(1)
+        .toList();
     if (dbHeartRateZoneSchemas.isNotEmpty)
       return HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first);
     else

@@ -1,19 +1,20 @@
 import 'package:encrateia/model/model.dart'
     show DbActivity, DbEvent, DbHeartRateZone, DbLap, DbLapTagging, DbPowerZone;
+import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/heart_rate_zone.dart';
+import 'package:encrateia/models/heart_rate_zone_schema.dart';
+import 'package:encrateia/models/lap_tagging.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/models/lap_tagging.dart';
-import 'package:fit_parser/fit_parser.dart';
 import 'package:encrateia/utils/date_time_utils.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/activity.dart';
+import 'package:fit_parser/fit_parser.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
 import 'bar_zone.dart';
 
 class Lap {
@@ -158,9 +159,12 @@ class Lap {
   bool get ecorAvailable => !<num>[null, -1].contains(ecor);
   bool get groundTimeAvailable => !<num>[null, -1].contains(avgGroundTime);
   bool get formPowerAvailable => !<num>[null, -1].contains(avgFormPower);
-  bool get verticalOscillationAvailable => !<num>[null, -1].contains(avgVerticalOscillation);
-  bool get strideCadenceAvailable => !<num>[null, -1].contains(avgDoubleStrydCadence);
-  bool get legSpringStiffnessAvailable => !<num>[null, -1].contains(avgLegSpringStiffness);
+  bool get verticalOscillationAvailable =>
+      !<num>[null, -1].contains(avgVerticalOscillation);
+  bool get strideCadenceAvailable =>
+      !<num>[null, -1].contains(avgDoubleStrydCadence);
+  bool get legSpringStiffnessAvailable =>
+      !<num>[null, -1].contains(avgLegSpringStiffness);
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();
@@ -276,8 +280,7 @@ class Lap {
       ..sdevStrydCadence = recordList.sdevStrydCadence()
       ..avgLegSpringStiffness = recordList.avgLegSpringStiffness()
       ..sdevLegSpringStiffness = recordList.sdevLegSpringStiffness()
-      ..avgVerticalOscillation =
-      recordList.avgVerticalOscillation()
+      ..avgVerticalOscillation = recordList.avgVerticalOscillation()
       ..sdevVerticalOscillation = recordList.sdevVerticalOscillation()
       ..avgFormPower = recordList.avgFormPower()
       ..sdevFormPower = recordList.sdevFormPower()
@@ -387,7 +390,7 @@ class Lap {
 
   Future<List<LapTagging>> get lapTaggings async {
     final List<DbLapTagging> dbLapTaggings =
-    await DbLapTagging().select().lapsId.equals(id).toList();
+        await DbLapTagging().select().lapsId.equals(id).toList();
     return dbLapTaggings.map(LapTagging.exDb).toList();
   }
 

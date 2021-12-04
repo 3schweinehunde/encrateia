@@ -1,9 +1,11 @@
 import 'dart:math';
+
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/activity_list.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/power_duration.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/activity_list.dart';
+
 import 'athlete.dart';
 
 class Ftp {

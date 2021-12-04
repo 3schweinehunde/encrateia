@@ -1,14 +1,14 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
+import 'package:encrateia/models/record_list.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:encrateia/utils/my_line_chart.dart';
-import 'package:encrateia/utils/enums.dart';
+import 'package:flutter/material.dart';
 
 class ActivitySpeedChart extends StatelessWidget {
   const ActivitySpeedChart({

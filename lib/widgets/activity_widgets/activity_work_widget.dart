@@ -1,11 +1,11 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
 import 'package:encrateia/widgets/charts/work_chart.dart';
+import 'package:flutter/material.dart';
 
 class ActivityWorkWidget extends StatefulWidget {
   const ActivityWorkWidget({
@@ -43,8 +43,7 @@ class _ActivityWorkWidgetState extends State<ActivityWorkWidget> {
         return Column(
           children: <Widget>[
             RepaintBoundary(
-                key: widgetKey,
-                child: WorkChart(records: powerRecords)),
+                key: widgetKey, child: WorkChart(records: powerRecords)),
             Row(children: <Widget>[
               const Spacer(),
               MyButton.save(

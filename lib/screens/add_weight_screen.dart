@@ -1,16 +1,13 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/weight.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class AddWeightScreen extends StatelessWidget {
-  const AddWeightScreen({
-    Key key,
-    this.weight,
-    @required this.numberOfWeights
-  }) : super(key: key);
+  const AddWeightScreen({Key key, this.weight, @required this.numberOfWeights})
+      : super(key: key);
 
   final Weight weight;
   final int numberOfWeights;
@@ -43,7 +40,8 @@ class AddWeightScreen extends StatelessWidget {
             TextFormField(
               decoration: const InputDecoration(labelText: 'Weight in kg'),
               initialValue: weight.value.toString(),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
               onChanged: (String value) => weight.value = double.parse(value),
             ),
             const SizedBox(height: 20),
@@ -51,9 +49,9 @@ class AddWeightScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 if (numberOfWeights > 1)
-                MyButton.delete(
-                  onPressed: () => deleteWeight(context),
-                ),
+                  MyButton.delete(
+                    onPressed: () => deleteWeight(context),
+                  ),
                 const SizedBox(width: 5),
                 MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
                 const SizedBox(width: 5),

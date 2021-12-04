@@ -1,5 +1,6 @@
-import 'package:strava_flutter/globals.dart' as globals;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:strava_flutter/globals.dart' as globals;
+
 import 'athlete.dart';
 
 class StravaToken {

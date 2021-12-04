@@ -1,18 +1,18 @@
 import 'dart:math';
+
+import 'package:charts_common/common.dart' as common show ChartBehavior;
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/plot_point.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/utils/graph_utils.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:charts_common/common.dart' as common show ChartBehavior;
-import 'package:flutter/rendering.dart';
+import 'package:encrateia/utils/graph_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
+import 'package:flutter/material.dart';
 
 class ActivityIntervalsChart extends StatefulWidget {
   const ActivityIntervalsChart({

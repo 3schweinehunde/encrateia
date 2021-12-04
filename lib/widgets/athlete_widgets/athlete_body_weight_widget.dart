@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:csv/csv.dart';
+import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/models/weight.dart';
 import 'package:encrateia/screens/add_weight_screen.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_button_style.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:csv/csv.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
   const AthleteBodyWeightWidget({
@@ -140,8 +141,7 @@ You can change these later.
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     weights = await athlete.weights;
-    if (widget.callBackFunction != null)
-      await widget.callBackFunction();
+    if (widget.callBackFunction != null) await widget.callBackFunction();
     setState(() {});
   }
 

@@ -1,16 +1,13 @@
+import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class AddPowerZoneScreen extends StatefulWidget {
-  const AddPowerZoneScreen({
-    Key key,
-    this.powerZone,
-    this.base,
-    @required this.numberOfZones
-  }) : super(key: key);
+  const AddPowerZoneScreen(
+      {Key key, this.powerZone, this.base, @required this.numberOfZones})
+      : super(key: key);
 
   final PowerZone powerZone;
   final int base;
@@ -51,7 +48,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
     _openDialog(
       MaterialColorPicker(
         selectedColor: Color(widget.powerZone.color),
-        onColorChange: (Color color) => setState(() => widget.powerZone.color = color.value),
+        onColorChange: (Color color) =>
+            setState(() => widget.powerZone.color = color.value),
         onBack: () {},
       ),
     );
@@ -63,10 +61,12 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
         TextEditingController(text: widget.powerZone.lowerLimit.toString());
     final TextEditingController upperLimitController =
         TextEditingController(text: widget.powerZone.upperLimit.toString());
-    final TextEditingController lowerPercentageController = TextEditingController(
-        text: widget.powerZone.lowerPercentage.toString());
-    final TextEditingController upperPercentageController = TextEditingController(
-        text: widget.powerZone.upperPercentage.toString());
+    final TextEditingController lowerPercentageController =
+        TextEditingController(
+            text: widget.powerZone.lowerPercentage.toString());
+    final TextEditingController upperPercentageController =
+        TextEditingController(
+            text: widget.powerZone.upperPercentage.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -107,7 +107,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
               },
             ),
             TextFormField(
-              decoration: const InputDecoration(labelText: 'Lower Percentage in %'),
+              decoration:
+                  const InputDecoration(labelText: 'Lower Percentage in %'),
               controller: lowerPercentageController,
               keyboardType: TextInputType.number,
               onChanged: (String value) {
@@ -119,7 +120,8 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
               },
             ),
             TextFormField(
-              decoration: const InputDecoration(labelText: 'Upper Percentage in %'),
+              decoration:
+                  const InputDecoration(labelText: 'Upper Percentage in %'),
               controller: upperPercentageController,
               keyboardType: TextInputType.number,
               onChanged: (String value) {
@@ -149,7 +151,7 @@ class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 if (widget.numberOfZones > 1)
-                MyButton.delete(onPressed: () => deletePowerZone(context)),
+                  MyButton.delete(onPressed: () => deletePowerZone(context)),
                 const SizedBox(width: 5),
                 MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
                 const SizedBox(width: 5),

@@ -1,7 +1,7 @@
+import 'package:encrateia/model/model.dart' show DbLapTagging;
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart' show DbLapTagging;
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 class LapTagging {
@@ -25,8 +25,7 @@ class LapTagging {
   int get tagsId => _db.tagsId;
 
   @override
-  String toString() =>
-      '< LapTagging | lapId $lapsId | tagId $tagsId >';
+  String toString() => '< LapTagging | lapId $lapsId | tagId $tagsId >';
 
   Future<BoolResult> delete() async => await _db.delete();
   Future<int> save() async => await _db.save();

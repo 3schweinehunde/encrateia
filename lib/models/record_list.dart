@@ -1,12 +1,13 @@
+import 'package:collection/collection.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/plot_point.dart';
 import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/models/power_zone_schema.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/list_utils.dart';
 import 'package:encrateia/utils/map_utils.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:encrateia/models/plot_point.dart';
-import 'package:encrateia/utils/enums.dart';
+
 import 'bar_zone.dart';
 import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';

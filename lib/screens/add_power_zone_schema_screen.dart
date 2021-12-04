@@ -1,13 +1,14 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:encrateia/models/power_zone.dart';
+import 'package:encrateia/models/power_zone_schema.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+
 import 'add_power_zone_screen.dart';
 
 class AddPowerZoneSchemaScreen extends StatefulWidget {

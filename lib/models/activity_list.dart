@@ -1,10 +1,11 @@
+import 'package:collection/collection.dart';
+import 'package:encrateia/model/model.dart' show DbActivityTagging;
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/model/model.dart' show DbActivityTagging;
-import 'package:flutter/material.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+
 import 'athlete.dart';
 
 class ActivityList<E> extends DelegatingList<E> {
@@ -102,14 +103,11 @@ class ActivityList<E> extends DelegatingList<E> {
     final List<int> tagIds = tags.map((Tag tag) => tag.id).toList();
 
     if (tagIds.isNotEmpty) {
-      final List<DbActivityTagging> dbTaggings = await DbActivityTagging()
-          .select()
-          .tagsId
-          .inValues(tagIds)
-          .toList();
+      final List<DbActivityTagging> dbTaggings =
+          await DbActivityTagging().select().tagsId.inValues(tagIds).toList();
       activityIds = dbTaggings
           .map((DbActivityTagging dbActivityTagging) =>
-      dbActivityTagging.activitiesId)
+              dbActivityTagging.activitiesId)
           .toList();
     }
 

@@ -1,12 +1,12 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/activity_list.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/athlete_time_series_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
 
 import 'athlete_filter_widget.dart';
 
@@ -134,10 +134,11 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
             .toSet()
             .toList();
     activities = await ActivityList<Activity>(selectedSports == 'all'
-        ? unfilteredActivities
-        : unfilteredActivities
-        .where((Activity activity) => activity.sport == selectedSports)
-        .toList()).applyFilter(
+            ? unfilteredActivities
+            : unfilteredActivities
+                .where((Activity activity) => activity.sport == selectedSports)
+                .toList())
+        .applyFilter(
       athlete: athlete,
       tagGroups: tagGroups,
     );

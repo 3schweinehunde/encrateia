@@ -1,8 +1,9 @@
 import 'package:encrateia/model/model.dart'
     show DbInterval, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
 import 'package:encrateia/models/tag.dart';
-import 'package:sqfentity_gen/sqfentity_gen.dart';
 import 'package:flutter/material.dart';
+import 'package:sqfentity_gen/sqfentity_gen.dart';
+
 import 'activity.dart';
 import 'athlete.dart';
 import 'event.dart';

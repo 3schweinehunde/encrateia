@@ -1,10 +1,10 @@
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/activity_list.dart';
+import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/athlete_time_series_chart.dart';
 import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
 
 import 'athlete_filter_widget.dart';
 

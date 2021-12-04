@@ -1,10 +1,10 @@
-import 'package:encrateia/screens/add_tag_group_screen.dart';
-import 'package:encrateia/screens/show_tag_group_screen.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag_group.dart';
+import 'package:encrateia/screens/add_tag_group_screen.dart';
+import 'package:encrateia/screens/show_tag_group_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
+import 'package:encrateia/utils/my_button.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class AthleteTagGroupWidget extends StatefulWidget {
@@ -127,7 +127,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
       );
     } else {
       return Center(
-        child: Text(loading? 'Loading' : 'No data found'),
+        child: Text(loading ? 'Loading' : 'No data found'),
       );
     }
   }

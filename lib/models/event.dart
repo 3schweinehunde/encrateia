@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:encrateia/model/model.dart' show DbEvent;
-import 'package:fit_parser/fit_parser.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/utils/date_time_utils.dart';
+import 'package:fit_parser/fit_parser.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
 import 'package:flutter/foundation.dart';

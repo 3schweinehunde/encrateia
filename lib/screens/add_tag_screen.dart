@@ -1,7 +1,7 @@
+import 'package:encrateia/models/tag.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/tag.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class AddTagScreen extends StatefulWidget {
@@ -34,7 +34,8 @@ class _AddTagScreenState extends State<AddTagScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
                 MaterialColorPicker(
-                    onColorChange: (Color color) => widget.tag.color = color.value,
+                    onColorChange: (Color color) =>
+                        widget.tag.color = color.value,
                     selectedColor: Color(widget.tag.color));
               },
             ),

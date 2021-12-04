@@ -1,13 +1,13 @@
-import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/models/event.dart';
+import 'package:encrateia/models/lap.dart';
+import 'package:encrateia/models/record_list.dart';
 import 'package:encrateia/utils/PQText.dart';
 import 'package:encrateia/utils/enums.dart';
+import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/widgets/charts/lap_charts/lap_pace_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import 'package:flutter/material.dart';
 
 class LapPaceWidget extends StatefulWidget {
   const LapPaceWidget({this.lap});
@@ -53,8 +53,10 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
                 key: widgetKey,
                 child: LapPaceChart(
                   records: RecordList<Event>(paceRecords),
-                  minimum: 50 / 3 / widget.lap.avgSpeed - 3 * widget.lap.sdevPace,
-                  maximum: 50 / 3 / widget.lap.avgSpeed + 3 * widget.lap.sdevPace,
+                  minimum:
+                      50 / 3 / widget.lap.avgSpeed - 3 * widget.lap.sdevPace,
+                  maximum:
+                      50 / 3 / widget.lap.avgSpeed + 3 * widget.lap.sdevPace,
                 ),
               ),
               const Text('Only records where speed > 0 m/s are shown.'),

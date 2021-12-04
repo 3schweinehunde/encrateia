@@ -1,8 +1,8 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:encrateia/models/activity.dart';
+import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
-import 'package:encrateia/models/activity.dart';
 import 'package:intl/intl.dart';
 
 class EditActivityWidget extends StatefulWidget {
@@ -178,9 +178,9 @@ class _EditActivityWidgetState extends State<EditActivityWidget> {
                       onChanged: (String value) => widget.activity.movingTime =
                           widget.activity.movingTime
                               .setSeconds(int.parse(value)),
-                      initialValue:
-                          (widget.activity.movingTime ??0).fullSeconds
-                              .toString(),
+                      initialValue: (widget.activity.movingTime ?? 0)
+                          .fullSeconds
+                          .toString(),
                       keyboardType: TextInputType.number,
                     ),
                   ),
