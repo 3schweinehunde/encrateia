@@ -141,7 +141,9 @@ You can change these later.
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     weights = await athlete.weights;
-    if (widget.callBackFunction != null) await widget.callBackFunction();
+    if (widget.callBackFunction != null) {
+      await widget.callBackFunction();
+    }
     setState(() {});
   }
 

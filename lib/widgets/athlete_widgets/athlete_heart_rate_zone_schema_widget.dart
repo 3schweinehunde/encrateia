@@ -182,7 +182,9 @@ You could also create a schema from scratch.
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     heartRateZoneSchemas = await athlete.heartRateZoneSchemas;
-    if (widget.callBackFunction != null) await widget.callBackFunction();
+    if (widget.callBackFunction != null) {
+      await widget.callBackFunction();
+    }
     setState(() {});
   }
 

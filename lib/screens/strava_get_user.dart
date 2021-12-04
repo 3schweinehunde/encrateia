@@ -1,9 +1,9 @@
+import 'package:encrateia/models/athlete.dart';
+import 'package:encrateia/secrets/secrets.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/secrets/secrets.dart';
-import 'package:strava_flutter/strava.dart';
-import 'package:encrateia/models/athlete.dart';
 import 'package:strava_flutter/Models/detailedAthlete.dart';
+import 'package:strava_flutter/strava.dart';
 
 class StravaGetUser extends StatefulWidget {
   const StravaGetUser({this.athlete});
@@ -57,9 +57,8 @@ class _StravaGetUserState extends State<StravaGetUser> {
   Future<void> getData() async {
     if (widget.athlete.firstName == null) {
       await loginToStrava();
-      setState((){});
+      setState(() {});
     }
-    if (widget.athlete.state == 'fromStrava')
-      Navigator.of(context).pop();
+    if (widget.athlete.state == 'fromStrava') Navigator.of(context).pop();
   }
 }

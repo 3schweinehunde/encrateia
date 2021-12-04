@@ -18,7 +18,9 @@ class PQText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!validValue) return const Text('n.a.');
+    if (!validValue) {
+      return const Text('n.a.');
+    }
 
     switch (pq) {
       case PQ.dateTime:

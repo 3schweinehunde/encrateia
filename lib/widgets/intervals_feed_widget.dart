@@ -170,7 +170,9 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
       await interval.tags;
       interval.index = index;
       index++;
-      if (disposed) break;
+      if (disposed) {
+        break;
+      }
       setState(() {});
     }
   }

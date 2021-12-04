@@ -188,7 +188,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
     for (final Activity activity in activities) {
       await activity.tags;
       await activity.ecor;
-      if (disposed) break;
+      if (disposed) {
+        break;
+      }
       setState(() {});
     }
   }
