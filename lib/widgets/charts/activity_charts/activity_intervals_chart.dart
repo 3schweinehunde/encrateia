@@ -109,10 +109,11 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                   )
                 ],
                 layoutConfig: GraphUtils.layoutConfig,
-                behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
-                      PanAndZoomBehavior(),
-                      RangeAnnotation(GraphUtils.rangeAnnotations(laps: laps)),
-                      RangeAnnotation(
+                behaviors: <ChartBehavior<num>>[
+                      PanAndZoomBehavior<num>(),
+                      RangeAnnotation<num>(
+                          GraphUtils.rangeAnnotations(laps: laps)),
+                      RangeAnnotation<num>(
                         <RangeAnnotationSegment<int>>[
                           if (interval.firstDistance > 0 &&
                               interval.lastDistance > 0)

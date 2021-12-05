@@ -1,4 +1,6 @@
 import 'dart:math';
+
+import 'package:charts_common/common.dart' as common show Series;
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:encrateia/models/lap.dart';
@@ -6,11 +8,10 @@ import 'package:encrateia/models/power_zone.dart';
 import 'package:encrateia/utils/graph_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:charts_common/common.dart' as common show Series, ChartBehavior;
 
 class MyLineChart extends LineChart {
   MyLineChart({
-    @required List<common.Series<dynamic, dynamic>> data,
+    @required List<common.Series<dynamic, num>> data,
     @required double maxDomain,
     @required List<Lap> laps,
     List<PowerZone> powerZones,
@@ -43,9 +44,9 @@ class MyLineChart extends LineChart {
           animate: false,
           flipVerticalAxis: flipVerticalAxis ?? false,
           layoutConfig: GraphUtils.layoutConfig,
-          behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
-            PanAndZoomBehavior(),
-            RangeAnnotation(
+          behaviors: <ChartBehavior<num>>[
+            PanAndZoomBehavior<num>(),
+            RangeAnnotation<num>(
               GraphUtils.rangeAnnotations(laps: laps) +
                   GraphUtils.powerZoneAnnotations(
                     powerZones: powerZones,
@@ -54,19 +55,19 @@ class MyLineChart extends LineChart {
                     heartRateZones: heartRateZones,
                   ),
             ),
-            ChartTitle(
+            ChartTitle<num>(
               domainTitle,
               titleStyleSpec: const TextStyleSpec(fontSize: 13),
               behaviorPosition: BehaviorPosition.start,
               titleOutsideJustification: OutsideJustification.end,
             ),
-            ChartTitle(
+            ChartTitle<num>(
               measureTitle ?? 'Distance (m)',
               titleStyleSpec: const TextStyleSpec(fontSize: 13),
               behaviorPosition: BehaviorPosition.bottom,
               titleOutsideJustification: OutsideJustification.end,
             ),
-            ChartTitle(
+            ChartTitle<num>(
               '$domainTitle Diagram created with Encrateia https://encreteia.informatom.com',
               behaviorPosition: BehaviorPosition.top,
               titleOutsideJustification: OutsideJustification.endDrawArea,

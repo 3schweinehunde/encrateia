@@ -49,8 +49,8 @@ class LapHeartRateChart extends StatelessWidget {
               desiredTickCount: 6),
         ),
         animate: false,
-        behaviors: <ChartBehavior<common.ChartBehavior<num>>>[
-              RangeAnnotation(
+        behaviors: <ChartBehavior<num>>[
+              RangeAnnotation<num>(
                 GraphUtils.heartRateZoneAnnotations(
                     heartRateZones: heartRateZones),
               ),

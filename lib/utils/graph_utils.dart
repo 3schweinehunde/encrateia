@@ -45,21 +45,21 @@ class GraphUtils {
     child: const Center(child: Text('Loading')),
   );
 
-  static List<ChartTitle> axis({String measureTitle}) {
-    return <ChartTitle>[
-      ChartTitle(
+  static List<ChartTitle<num>> axis({String measureTitle}) {
+    return <ChartTitle<num>>[
+      ChartTitle<num>(
         measureTitle,
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.start,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'Distance (m)',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         '$measureTitle diagram created with Encrateia https://encreteia.informatom.com',
         titleStyleSpec: const TextStyleSpec(fontSize: 10),
         behaviorPosition: BehaviorPosition.top,

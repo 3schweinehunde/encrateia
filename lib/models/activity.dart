@@ -41,10 +41,10 @@ class Activity {
   }) {
     _db = DbActivity()
       ..athletesId = athlete.id
-      ..name = summaryActivity.name
-      ..type = summaryActivity.type
-      ..distance = summaryActivity.distance.toInt()
-      ..stravaId = summaryActivity.id;
+      ..name = summaryActivity.name as String
+      ..type = summaryActivity.type as String
+      ..distance = summaryActivity.distance.toInt() as int
+      ..stravaId = summaryActivity.id as int;
   }
 
   Activity.fromLocalDirectory({@required Athlete athlete}) {

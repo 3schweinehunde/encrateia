@@ -63,20 +63,20 @@ class _AthleteVolumeChartState extends State<AthleteVolumeChart> {
                 desiredTickCount: 6,
               ),
             ),
-            behaviors: <ChartTitle>[
-              ChartTitle(
+            behaviors: <ChartTitle<DateTime>>[
+              ChartTitle<DateTime>(
                 widget.chartTitleText,
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.start,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<DateTime>(
                 'Date',
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.bottom,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<DateTime>(
                 '${widget.chartTitleText} Diagram created with Encrateia https://encreteia.informatom.com',
                 behaviorPosition: BehaviorPosition.top,
                 titleOutsideJustification: OutsideJustification.endDrawArea,
@@ -128,6 +128,6 @@ class _AthleteVolumeChartState extends State<AthleteVolumeChart> {
         colorPalette[yearsAgo % colorPalette.length].b,
         1.0);
     final int year = DateTime.now().year - yearsAgo;
-    return Text('  $year  ', style: TextStyle(color: materialColor));
+    return Text('  $year  ', style: painting.TextStyle(color: materialColor));
   }
 }

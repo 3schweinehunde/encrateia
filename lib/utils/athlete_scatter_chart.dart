@@ -75,20 +75,20 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
               ),
             ),
             flipVerticalAxis: widget.flipVerticalAxis ?? false,
-            behaviors: <ChartTitle>[
-              ChartTitle(
+            behaviors: <ChartTitle<num>>[
+              ChartTitle<num>(
                 widget.firstAxesText,
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.bottom,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<num>(
                 widget.secondAxesText,
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.start,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<num>(
                 '${widget.chartTitleText} Diagram created with Encrateia https://encreteia.informatom.com',
                 behaviorPosition: BehaviorPosition.top,
                 titleOutsideJustification: OutsideJustification.endDrawArea,

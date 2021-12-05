@@ -49,8 +49,8 @@ class LapPowerChart extends StatelessWidget {
               desiredTickCount: 6),
         ),
         animate: false,
-        behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
-              RangeAnnotation(
+        behaviors: <ChartBehavior<num>>[
+              RangeAnnotation<num>(
                 GraphUtils.powerZoneAnnotations(powerZones: powerZones),
               ),
             ] +

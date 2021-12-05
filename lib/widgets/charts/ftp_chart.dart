@@ -34,20 +34,20 @@ class FtpChart extends StatelessWidget {
       TickSpec<int>(PowerDuration.scaled(seconds: 3600), label: '1h'),
     ]);
 
-    final List<ChartTitle> chartTitles = <ChartTitle>[
-      ChartTitle(
+    final List<ChartTitle<num>> chartTitles = <ChartTitle<num>>[
+      ChartTitle<num>(
         'normalized FTP Power (W)',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.start,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'Time',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'FTP diagram created with Encrateia https://encreteia.informatom.com',
         titleStyleSpec: const TextStyleSpec(fontSize: 10),
         behaviorPosition: BehaviorPosition.top,

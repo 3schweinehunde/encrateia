@@ -33,20 +33,20 @@ class WorkChart extends StatelessWidget {
       TickSpec<int>(3600, label: '60min'),
     ]);
 
-    final List<ChartTitle> chartTitles = <ChartTitle>[
-      ChartTitle(
+    final List<ChartTitle<num>> chartTitles = <ChartTitle<num>>[
+      ChartTitle<num>(
         'Work (J)',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.start,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'Time',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'Work diagram created with Encrateia https://encreteia.informatom.com',
         titleStyleSpec: const TextStyleSpec(fontSize: 10),
         behaviorPosition: BehaviorPosition.top,

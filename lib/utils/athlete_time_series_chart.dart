@@ -1,12 +1,14 @@
 import 'dart:math';
+
 import 'package:charts_flutter/flutter.dart';
+import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/activity_list.dart';
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/screens/show_activity_screen.dart';
+import 'package:encrateia/utils/enums.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/enums.dart';
+
 import 'PQText.dart';
 
 class AthleteTimeSeriesChart extends StatefulWidget {
@@ -112,20 +114,20 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                 desiredTickCount: 6,
               ),
             ),
-            behaviors: <ChartTitle>[
-              ChartTitle(
+            behaviors: <ChartTitle<DateTime>>[
+              ChartTitle<DateTime>(
                 widget.chartTitleText,
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.start,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<DateTime>(
                 'Date',
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.bottom,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<DateTime>(
                 '${widget.chartTitleText} Diagram created with Encrateia https://encreteia.informatom.com',
                 behaviorPosition: BehaviorPosition.top,
                 titleOutsideJustification: OutsideJustification.endDrawArea,
@@ -157,8 +159,9 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                     : () {
                         pagingOffset =
                             pagingOffset - (amountDisplayed / 2).round();
-                        if (pagingOffset < 0)
+                        if (pagingOffset < 0) {
                           pagingOffset = 0;
+                        }
                         setScope();
                       },
               ),
