@@ -670,7 +670,6 @@ class Activity {
   static Future<void> queryStrava({Athlete athlete}) async {
     final StravaClient stravaClient =
         StravaClient(clientId: clientId, secret: secret);
-    const String prompt = 'auto';
 
     await stravaClient.authentication
         .authenticate(scopes: <AuthenticationScope>[

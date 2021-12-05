@@ -2,6 +2,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/secrets/secrets.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
 import 'package:strava_flutter/domain/model/model_detailed_athlete.dart';
 import 'package:strava_flutter/strava_client.dart';
 
@@ -46,12 +47,15 @@ class _StravaGetUserState extends State<StravaGetUser> {
         StravaClient(clientId: clientId, secret: secret);
     const String prompt = 'auto';
 
-    await strava.oauth(
-        clientId,
-        'activity:write,activity:read_all,profile:read_all,profile:write',
-        secret,
-        prompt);
-    final DetailedAthlete stravaAthlete = await strava.getLoggedInAthlete();
+    await stravaClient.authentication
+        .authenticate(scopes: <AuthenticationScope>[
+      AuthenticationScope.read_all,
+      AuthenticationScope.profile_read_all,
+      AuthenticationScope.activity_read_all
+    ], redirectUrl: 'stravaflutter://redirect');
+
+    final DetailedAthlete stravaAthlete =
+        await stravaClient.getLoggedInAthlete();
     await widget.athlete.updateFromStravaAthlete(stravaAthlete);
   }
 
