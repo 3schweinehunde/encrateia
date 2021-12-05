@@ -13,8 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-import 'package:strava_flutter/Models/activity.dart' as strava_activity;
-import 'package:strava_flutter/strava.dart';
+import 'package:strava_flutter/domain/model/model_activity.dart'
+    as strava_activity;
+import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
+import 'package:strava_flutter/strava_client.dart';
 
 import 'activity_tagging.dart';
 import 'athlete.dart';
@@ -666,20 +668,22 @@ class Activity {
   }
 
   static Future<void> queryStrava({Athlete athlete}) async {
-    final Strava strava = Strava(true, secret);
+    final StravaClient stravaClient =
+        StravaClient(clientId: clientId, secret: secret);
     const String prompt = 'auto';
 
-    await strava.oauth(
-        clientId,
-        'activity:write,activity:read_all,profile:read_all,profile:write',
-        secret,
-        prompt);
+    await stravaClient.authentication
+        .authenticate(scopes: <AuthenticationScope>[
+      AuthenticationScope.read_all,
+      AuthenticationScope.profile_read_all,
+      AuthenticationScope.activity_read_all
+    ], redirectUrl: 'stravaflutter://redirect');
 
     final int now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     final int startDate = now - athlete.downloadInterval * 86400;
 
     final List<strava_activity.SummaryActivity> summaryActivities =
-        await strava.getLoggedInAthleteActivities(now, startDate);
+        await stravaClient.getLoggedInAthleteActivities(now, startDate);
 
     await Future.forEach(summaryActivities,
         (strava_activity.SummaryActivity summaryActivity) async {
