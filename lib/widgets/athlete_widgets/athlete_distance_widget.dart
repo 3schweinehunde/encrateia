@@ -4,7 +4,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/athlete_volume_chart.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/image_utils.dart' as image_utils;
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 
@@ -60,7 +60,7 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },

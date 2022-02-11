@@ -4,7 +4,7 @@ import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/athlete_scatter_chart.dart';
 import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
+import 'package:encrateia/utils/image_utils.dart' as image_utils;
 import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +14,12 @@ class AthletePowerVsDistanceWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthletePowerVsDistanceWidgetState createState() => _AthletePowerVsDistanceWidgetState();
+  _AthletePowerVsDistanceWidgetState createState() =>
+      _AthletePowerVsDistanceWidgetState();
 }
 
-class _AthletePowerVsDistanceWidgetState extends State<AthletePowerVsDistanceWidget> {
+class _AthletePowerVsDistanceWidgetState
+    extends State<AthletePowerVsDistanceWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -37,7 +39,7 @@ class _AthletePowerVsDistanceWidgetState extends State<AthletePowerVsDistanceWid
     if (activities.isNotEmpty) {
       final List<Activity> distanceActivities = activities
           .where((Activity activity) =>
-      activity.distance != null && activity.distance > 0)
+              activity.distance != null && activity.distance > 0)
           .toList();
 
       if (distanceActivities.isNotEmpty) {
@@ -63,7 +65,7 @@ class _AthletePowerVsDistanceWidgetState extends State<AthletePowerVsDistanceWid
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -107,20 +109,21 @@ class _AthletePowerVsDistanceWidgetState extends State<AthletePowerVsDistanceWid
   Future<void> getData() async {
     final Athlete athlete = widget.athlete;
     List<Activity> unfilteredActivities = await athlete.validActivities;
-    sports = <String>['all'] + unfilteredActivities
-        .map((Activity activity) => activity.sport)
-        .toSet()
-        .toList();
+    sports = <String>['all'] +
+        unfilteredActivities
+            .map((Activity activity) => activity.sport)
+            .toSet()
+            .toList();
     unfilteredActivities = selectedSports == 'all'
         ? unfilteredActivities
         : unfilteredActivities
-        .where((Activity activity) => activity.sport == selectedSports)
-        .toList();
+            .where((Activity activity) => activity.sport == selectedSports)
+            .toList();
     activities = ActivityList<Activity>(unfilteredActivities
         .where((Activity activity) => activity.avgPower > 0)
         .toList());
 
     setState(() =>
-    loadingStatus = activities.length.toString() + ' activities found');
+        loadingStatus = activities.length.toString() + ' activities found');
   }
 }
