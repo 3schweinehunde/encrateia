@@ -1,9 +1,10 @@
-import 'package:encrateia/model/model.dart'
-    show DbInterval, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
-import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
+import '../model/model.dart'
+    show DbInterval, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
+import '../models/ftp.dart' as ftp_lib;
+import '../models/tag.dart';
 import 'activity.dart';
 import 'athlete.dart';
 import 'event.dart';
@@ -328,7 +329,7 @@ class Interval {
   Future<void> calculateAndSave({RecordList<Event> records}) async {
     distance = (records.last.distance - records.first.distance).round();
     duration = records.last.timeStamp.difference(records.first.timeStamp);
-    ftp = ftp.calculate(records: records);
+    ftp = ftp_lib.calculate(records: records);
     timeStamp = records.first.timeStamp;
     await setValues();
   }

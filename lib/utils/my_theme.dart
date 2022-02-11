@@ -25,5 +25,4 @@ ThemeData myTheme() {
       primaryColor: MyColor.primary,
       primarySwatch: primaryColorSwatch,
       fontFamily: 'Ubuntu');
-  }
 }
