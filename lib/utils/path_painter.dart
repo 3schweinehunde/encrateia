@@ -1,10 +1,12 @@
 import 'dart:math';
 import 'dart:ui';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/my_color.dart';
+
 import 'package:flutter/material.dart';
+
+import '/models/activity.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/utils/my_color.dart';
 
 class PathPainter extends CustomPainter {
   PathPainter({

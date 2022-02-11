@@ -1,4 +1,4 @@
-import 'package:encrateia/models/power_zone.dart';
+import '/models/power_zone.dart';
 import 'heart_rate_zone.dart';
 
 class BarZone {

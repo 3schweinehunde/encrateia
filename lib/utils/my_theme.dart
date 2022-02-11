@@ -1,5 +1,6 @@
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+
+import '/utils/my_color.dart';
 
 ThemeData myTheme() {
   final int redness = MyColor.primary.red;

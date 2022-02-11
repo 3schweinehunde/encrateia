@@ -1,10 +1,11 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '/models/event.dart';
+import '/utils/date_time_utils.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
 
 class EditEventScreen extends StatefulWidget {
   const EditEventScreen({

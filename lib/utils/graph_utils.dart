@@ -1,10 +1,11 @@
 import 'dart:ui' as ui;
 
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter/material.dart';
+
+import '/models/heart_rate_zone.dart';
+import '/models/lap.dart';
+import '/models/power_zone.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class GraphUtils {

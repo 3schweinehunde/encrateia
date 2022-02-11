@@ -1,8 +1,9 @@
-import 'package:encrateia/model/model.dart' show DbLapTagging;
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
+import '/model/model.dart' show DbLapTagging;
+import '/models/lap.dart';
+import '/models/tag.dart';
 
 class LapTagging {
   LapTagging({

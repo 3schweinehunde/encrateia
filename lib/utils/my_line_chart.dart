@@ -2,12 +2,13 @@ import 'dart:math';
 
 import 'package:charts_common/common.dart' as common show Series;
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/utils/graph_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+
+import '/models/heart_rate_zone.dart';
+import '/models/lap.dart';
+import '/models/power_zone.dart';
+import '/utils/graph_utils.dart';
 
 class MyLineChart extends LineChart {
   MyLineChart({

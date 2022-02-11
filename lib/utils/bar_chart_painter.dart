@@ -1,6 +1,7 @@
-import 'package:encrateia/models/bar_zone.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+
+import '/models/bar_zone.dart';
+import '/utils/my_color.dart';
 
 class BarChartPainter extends CustomPainter {
   BarChartPainter({
@@ -57,8 +58,9 @@ class BarChartPainter extends CustomPainter {
         double lowerInPixel;
         double upperInPixel;
 
-        if (value < barZone.lower)
+        if (value < barZone.lower) {
           continue;
+        }
         if (value >= barZone.upper) {
           lowerInPixel = (width - 2 * strokeWidth) /
                   (maximum - minimum) *

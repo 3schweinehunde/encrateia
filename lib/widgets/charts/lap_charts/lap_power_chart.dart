@@ -1,10 +1,11 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/graph_utils.dart';
-import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:flutter/material.dart';
+
+import '/models/event.dart';
+import '/models/power_zone.dart';
+import '/models/record_list.dart';
+import '/utils/graph_utils.dart';
+import '/utils/my_line_chart.dart';
 
 class LapPowerChart extends StatelessWidget {
   const LapPowerChart({

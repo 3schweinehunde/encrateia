@@ -1,20 +1,20 @@
-import 'package:encrateia/model/model.dart'
-    show DbActivity, DbEvent, DbHeartRateZone, DbLap, DbLapTagging, DbPowerZone;
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/models/lap_tagging.dart';
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:fit_parser/fit_parser.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
+import '/model/model.dart'
+    show DbActivity, DbEvent, DbHeartRateZone, DbLap, DbLapTagging, DbPowerZone;
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/event.dart';
+import '/models/heart_rate_zone.dart';
+import '/models/heart_rate_zone_schema.dart';
+import '/models/lap_tagging.dart';
+import '/models/power_zone.dart';
+import '/models/power_zone_schema.dart';
+import '/models/record_list.dart';
+import '/models/tag.dart';
+import '/utils/date_time_utils.dart';
 import 'bar_zone.dart';
 
 class Lap {

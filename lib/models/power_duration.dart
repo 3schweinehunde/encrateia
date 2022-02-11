@@ -1,6 +1,7 @@
 import 'dart:math';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
+
+import '/models/event.dart';
+import '/models/plot_point.dart';
 
 class PowerDuration {
   PowerDuration({List<Event> records}) {
@@ -27,8 +28,9 @@ class PowerDuration {
           for (int durationIndex = newDuration;
               durationIndex > 0;
               durationIndex--) {
-            if (newPower <= (powerMap[durationIndex] ?? 0))
+            if (newPower <= (powerMap[durationIndex] ?? 0)) {
               break;
+            }
             powerMap[durationIndex] = newPower;
           }
         }
@@ -41,8 +43,9 @@ class PowerDuration {
 
       if (power > (powerMap[duration] ?? 0)) {
         for (int durationIndex = duration; durationIndex > 0; durationIndex--) {
-          if (power <= (powerMap[durationIndex] ?? 0))
+          if (power <= (powerMap[durationIndex] ?? 0)) {
             break;
+          }
           powerMap[durationIndex] = power.toDouble();
         }
       }

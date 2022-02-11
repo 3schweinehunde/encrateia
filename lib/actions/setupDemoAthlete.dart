@@ -1,10 +1,11 @@
-import 'package:encrateia/actions/download_demo_data.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/weight.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
+import '/actions/download_demo_data.dart';
+import '/models/athlete.dart';
+import '/models/heart_rate_zone_schema.dart';
+import '/models/power_zone_schema.dart';
+import '/models/weight.dart';
 
 Future<void> setupDemoAthlete({
   @required BuildContext context,

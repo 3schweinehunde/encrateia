@@ -1,11 +1,12 @@
-import 'package:encrateia/actions/download_activity.dart';
-import 'package:encrateia/actions/parse_activity.dart';
-import 'package:encrateia/actions/query_strava.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
+import '/actions/download_activity.dart';
+import '/actions/parse_activity.dart';
+import '/actions/query_strava.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/utils/icon_utils.dart';
 
 Future<void> updateJob({
   @required BuildContext context,

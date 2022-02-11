@@ -1,13 +1,13 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/log.dart';
-import 'package:encrateia/screens/log_list_screen.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_create_user.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
+import '/models/athlete.dart';
+import '/models/log.dart';
+import '/screens/log_list_screen.dart';
+import '/screens/onboarding_screens/onboarding_create_user.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
 import 'onboarding_screens/onboarding_introduction_screen.dart';
 import 'show_athlete_screen.dart';
 

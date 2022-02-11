@@ -1,9 +1,10 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '/models/weight.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
 
 class AddWeightScreen extends StatelessWidget {
   const AddWeightScreen({Key key, this.weight, @required this.numberOfWeights})

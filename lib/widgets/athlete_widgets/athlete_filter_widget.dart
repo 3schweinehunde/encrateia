@@ -1,9 +1,9 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/screens/add_filter_screen.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 
+import '/models/athlete.dart';
+import '/models/tag_group.dart';
+import '/screens/add_filter_screen.dart';
+import '/utils/my_button.dart';
 import 'athlete_current_filter_widget.dart';
 
 class AthleteFilterWidget extends StatelessWidget {

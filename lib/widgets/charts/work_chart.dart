@@ -1,9 +1,10 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/critical_power.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter/material.dart';
+
+import '/models/critical_power.dart';
+import '/models/event.dart';
+import '/models/plot_point.dart';
+import '/utils/icon_utils.dart';
 
 class WorkChart extends StatelessWidget {
   const WorkChart({this.records});

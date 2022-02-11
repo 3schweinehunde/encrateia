@@ -1,16 +1,17 @@
 import 'dart:math';
 
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/screens/show_activity_screen.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/tag.dart';
+import '/models/tag_group.dart';
+import '/screens/show_activity_screen.dart';
+import '/utils/PQText.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_color.dart';
 
 class ActivitiesFeedWidget extends StatefulWidget {
   const ActivitiesFeedWidget({Key key, this.athlete}) : super(key: key);

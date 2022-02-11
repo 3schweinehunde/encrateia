@@ -1,9 +1,10 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '/models/activity.dart';
+import '/utils/date_time_utils.dart';
+import '/utils/my_button.dart';
 
 class EditActivityWidget extends StatefulWidget {
   const EditActivityWidget({

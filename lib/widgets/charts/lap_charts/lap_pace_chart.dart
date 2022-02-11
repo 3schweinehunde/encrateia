@@ -1,12 +1,13 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/screens/show_event_screen.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/graph_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
+
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/screens/show_event_screen.dart';
+import '/utils/PQText.dart';
+import '/utils/enums.dart';
+import '/utils/graph_utils.dart';
+import '/utils/my_button.dart';
 
 class LapPaceChart extends StatefulWidget {
   const LapPaceChart({

@@ -1,8 +1,9 @@
-import 'package:encrateia/model/model.dart' show DbPowerZone, DbPowerZoneSchema;
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
+import '/model/model.dart' show DbPowerZone, DbPowerZoneSchema;
+import '/models/athlete.dart';
+import '/models/power_zone.dart';
 
 class PowerZoneSchema {
   PowerZoneSchema({@required Athlete athlete}) {

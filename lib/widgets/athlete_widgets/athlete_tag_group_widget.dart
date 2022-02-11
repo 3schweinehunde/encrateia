@@ -1,11 +1,12 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/screens/add_tag_group_screen.dart';
-import 'package:encrateia/screens/show_tag_group_screen.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+
+import '/models/athlete.dart';
+import '/models/tag_group.dart';
+import '/screens/add_tag_group_screen.dart';
+import '/screens/show_tag_group_screen.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
 
 class AthleteTagGroupWidget extends StatefulWidget {
   const AthleteTagGroupWidget({this.athlete});

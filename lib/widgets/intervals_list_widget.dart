@@ -1,12 +1,13 @@
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/screens/select_interval_screen.dart';
-import 'package:encrateia/screens/show_interval_screen.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
+
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/interval.dart' as encrateia;
+import '/screens/select_interval_screen.dart';
+import '/screens/show_interval_screen.dart';
+import '/utils/PQText.dart';
+import '/utils/enums.dart';
+import '/utils/my_button.dart';
 
 class IntervalsListWidget extends StatefulWidget {
   const IntervalsListWidget({

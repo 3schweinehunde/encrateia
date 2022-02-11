@@ -1,10 +1,11 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '/models/athlete.dart';
+import '/models/lap.dart';
+import '/models/weight.dart';
+import '/utils/PQText.dart';
+import '/utils/enums.dart';
 
 class LapOverviewWidget extends StatefulWidget {
   const LapOverviewWidget({

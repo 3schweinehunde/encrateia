@@ -1,8 +1,9 @@
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/path_painter.dart';
 import 'package:flutter/material.dart';
+
+import '/models/activity.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/utils/path_painter.dart';
 
 class MyPath extends StatelessWidget {
   MyPath({
@@ -27,11 +28,10 @@ class MyPath extends StatelessWidget {
       height: _height,
       child: CustomPaint(
         painter: PathPainter(
-          width: _width,
-          height: _height,
-          activity: _activity,
-          records: _records
-        ),
+            width: _width,
+            height: _height,
+            activity: _activity,
+            records: _records),
       ),
     );
   }

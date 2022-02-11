@@ -1,4 +1,4 @@
-import 'package:encrateia/model/model.dart';
+import '/model/model.dart';
 
 class Db {
   Db();

@@ -1,13 +1,14 @@
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/image_utils.dart' as image_utils;
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 import 'package:flutter/material.dart';
+
+import '/models/event.dart';
+import '/models/interval.dart' as encrateia;
+import '/models/record_list.dart';
+import '/utils/PQText.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 
 class IntervalLegSpringStiffnessWidget extends StatefulWidget {
   const IntervalLegSpringStiffnessWidget({this.interval});

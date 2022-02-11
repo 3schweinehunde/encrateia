@@ -1,8 +1,9 @@
-import 'package:encrateia/model/model.dart' show DbIntervalTagging;
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
+import '/model/model.dart' show DbIntervalTagging;
+import '/models/interval.dart' as encrateia;
+import '/models/tag.dart';
 
 class IntervalTagging {
   IntervalTagging({

@@ -1,8 +1,9 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+
+import '/models/athlete.dart';
+import '/models/tag.dart';
+import '/models/tag_group.dart';
+import '/utils/my_color.dart';
 
 class AthleteCurrentFilterWidget extends StatelessWidget {
   const AthleteCurrentFilterWidget({
@@ -55,8 +56,9 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
         if (empty == false) {
           empty = true;
           widgets.add(const Text(')'));
-          if (tagGroup != tagGroups.last)
+          if (tagGroup != tagGroups.last) {
             widgets.add(const Text('AND'));
+          }
         }
       }
 

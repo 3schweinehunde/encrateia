@@ -1,14 +1,14 @@
-import 'package:encrateia/actions/setupDemoAthlete.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_finished_screen.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_strava_credentials_screen.dart';
-import 'package:encrateia/screens/strava_get_user.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
+import '/actions/setupDemoAthlete.dart';
+import '/models/athlete.dart';
+import '/screens/onboarding_screens/onboarding_finished_screen.dart';
+import '/screens/onboarding_screens/onboarding_strava_credentials_screen.dart';
+import '/screens/strava_get_user.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button_style.dart';
+import '/utils/my_color.dart';
 import 'onboarding_standalone_credentials_screen.dart';
 
 class OnboardingCreateUserScreen extends StatefulWidget {

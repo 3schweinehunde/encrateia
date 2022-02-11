@@ -1,9 +1,9 @@
-import 'package:encrateia/model/model.dart'
-    show DbHeartRateZone, DbHeartRateZoneSchema;
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
+import '/model/model.dart' show DbHeartRateZone, DbHeartRateZoneSchema;
+import '/models/athlete.dart';
+import '/models/heart_rate_zone.dart';
 
 class HeartRateZoneSchema {
   HeartRateZoneSchema({@required Athlete athlete}) {

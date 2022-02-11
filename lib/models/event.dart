@@ -1,14 +1,15 @@
 import 'dart:developer';
 
-import 'package:encrateia/model/model.dart' show DbEvent;
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
 import 'package:fit_parser/fit_parser.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
+import '/model/model.dart' show DbEvent;
+import '/models/activity.dart';
+import '/models/lap.dart';
+import '/utils/date_time_utils.dart';
 
 class Event {
   Event({

@@ -1,8 +1,9 @@
-import 'package:encrateia/model/model.dart' show DbActivityTagging;
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/tag.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
+import '/model/model.dart' show DbActivityTagging;
+import '/models/activity.dart';
+import '/models/tag.dart';
 
 class ActivityTagging {
   ActivityTagging({

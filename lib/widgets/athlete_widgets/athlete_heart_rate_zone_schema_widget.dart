@@ -1,11 +1,12 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/screens/add_heart_rate_zone_schema_screen.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_button_style.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import '/models/athlete.dart';
+import '/models/heart_rate_zone_schema.dart';
+import '/screens/add_heart_rate_zone_schema_screen.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
+import '/utils/my_button_style.dart';
 
 class AthleteHeartRateZoneSchemaWidget extends StatefulWidget {
   const AthleteHeartRateZoneSchemaWidget({

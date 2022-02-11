@@ -1,16 +1,18 @@
 import 'dart:math';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/bar_zone.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/my_bar_chart.dart';
+
 import 'package:flutter/material.dart';
+
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/bar_zone.dart';
+import '/models/heart_rate_zone.dart';
+import '/models/heart_rate_zone_schema.dart';
+import '/models/lap.dart';
+import '/models/power_zone.dart';
+import '/models/power_zone_schema.dart';
+import '/utils/PQText.dart';
+import '/utils/enums.dart';
+import '/utils/my_bar_chart.dart';
 
 class ActivityBarGraphWidget extends StatefulWidget {
   const ActivityBarGraphWidget({

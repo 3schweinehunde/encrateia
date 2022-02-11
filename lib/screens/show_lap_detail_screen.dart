@@ -1,6 +1,7 @@
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+
+import '/models/lap.dart';
+import '/utils/my_color.dart';
 
 class ShowLapDetailScreen extends StatefulWidget {
   const ShowLapDetailScreen({

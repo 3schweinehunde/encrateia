@@ -1,11 +1,12 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/strava_fit_download.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_power_zone_schema_screen.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
+import '/models/athlete.dart';
+import '/models/power_zone_schema.dart';
+import '/models/strava_fit_download.dart';
+import '/screens/onboarding_screens/onboarding_power_zone_schema_screen.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
 
 class EditStravaAthleteWidget extends StatefulWidget {
   const EditStravaAthleteWidget({

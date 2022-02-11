@@ -1,8 +1,9 @@
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+
+import '/models/power_zone.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
 
 class AddPowerZoneScreen extends StatefulWidget {
   const AddPowerZoneScreen(

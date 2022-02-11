@@ -1,10 +1,10 @@
-import 'package:encrateia/model/model.dart'
-    show DbActivityTagging, DbIntervalTagging, DbLapTagging, DbTag;
-import 'package:encrateia/models/tag_group.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart'
     show BoolCommitResult, BoolResult;
 
+import '/model/model.dart'
+    show DbActivityTagging, DbIntervalTagging, DbLapTagging, DbTag;
+import '/models/tag_group.dart';
 import 'activity.dart';
 import 'athlete.dart';
 import 'interval.dart' as encrateia;

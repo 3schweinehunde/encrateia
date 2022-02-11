@@ -1,9 +1,10 @@
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/tag_group.dart';
+import '/utils/icon_utils.dart';
 
 Future<void> autoTagging({
   @required BuildContext context,

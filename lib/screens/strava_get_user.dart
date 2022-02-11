@@ -1,10 +1,11 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/secrets/secrets.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
 import 'package:strava_flutter/domain/model/model_detailed_athlete.dart';
 import 'package:strava_flutter/strava_client.dart';
+
+import '/models/athlete.dart';
+import '/secrets/secrets.dart';
+import '/utils/my_color.dart';
 
 class StravaGetUser extends StatefulWidget {
   const StravaGetUser({this.athlete});

@@ -1,11 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:encrateia/model/model.dart'
-    show DbActivity, DbEvent, DbHeartRateZone, DbInterval, DbLap, DbPowerZone;
-import 'package:encrateia/secrets/secrets.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:fit_parser/fit_parser.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
@@ -13,11 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-import 'package:strava_flutter/domain/model/model_activity.dart'
-    as strava_activity;
 import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
+import 'package:strava_flutter/domain/model/model_summary_activity.dart';
 import 'package:strava_flutter/strava_client.dart';
 
+import '/model/model.dart'
+    show DbActivity, DbEvent, DbHeartRateZone, DbInterval, DbLap, DbPowerZone;
+import '/secrets/secrets.dart';
+import '/utils/date_time_utils.dart';
+import '/utils/enums.dart';
 import 'activity_tagging.dart';
 import 'athlete.dart';
 import 'bar_zone.dart';
@@ -38,15 +37,15 @@ class Activity {
   Activity._fromDb(this._db);
 
   Activity.fromStrava({
-    @required strava_activity.SummaryActivity summaryActivity,
+    @required SummaryActivity summaryActivity,
     @required Athlete athlete,
   }) {
     _db = DbActivity()
       ..athletesId = athlete.id
-      ..name = summaryActivity.name as String
-      ..type = summaryActivity.type as String
-      ..distance = summaryActivity.distance.toInt() as int
-      ..stravaId = summaryActivity.id as int;
+      ..name = summaryActivity.name
+      ..type = summaryActivity.type
+      ..distance = summaryActivity.distance.toInt()
+      ..stravaId = summaryActivity.id;
   }
 
   Activity.fromLocalDirectory({@required Athlete athlete}) {
@@ -678,14 +677,16 @@ class Activity {
       AuthenticationScope.activity_read_all
     ], redirectUrl: 'stravaflutter://redirect');
 
-    final int now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final int startDate = now - athlete.downloadInterval * 86400;
+    final DateTime now = DateTime.now();
+    final DateTime startDate =
+        DateTime.now().subtract(Duration(days: athlete.downloadInterval));
 
-    final List<strava_activity.SummaryActivity> summaryActivities =
-        await stravaClient.getLoggedInAthleteActivities(now, startDate);
+    final List<SummaryActivity> summaryActivities = await stravaClient
+        .activities
+        .listLoggedInAthleteActivities(now, startDate, 1, 100);
 
     await Future.forEach(summaryActivities,
-        (strava_activity.SummaryActivity summaryActivity) async {
+        (SummaryActivity summaryActivity) async {
       final Activity activity = Activity.fromStrava(
         summaryActivity: summaryActivity,
         athlete: athlete,

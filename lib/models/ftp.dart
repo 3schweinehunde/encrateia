@@ -1,11 +1,10 @@
 import 'dart:math';
 
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/activity_list.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/power_duration.dart';
-import 'package:encrateia/models/tag_group.dart';
-
+import '/models/activity.dart';
+import '/models/activity_list.dart';
+import '/models/event.dart';
+import '/models/power_duration.dart';
+import '/models/tag_group.dart';
 import 'athlete.dart';
 
 Future<List<Activity>> deriveBacklog({

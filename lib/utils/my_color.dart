@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:encrateia/utils/my_color.dart';
+// import '/utils/my_color.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class MyColor {

@@ -1,6 +1,7 @@
 import 'dart:math';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
+
+import '/models/event.dart';
+import '/models/plot_point.dart';
 
 class MinimumPowerDuration {
   MinimumPowerDuration({List<Event> records}) {
@@ -24,8 +25,9 @@ class MinimumPowerDuration {
         for (int durationIndex = persistedFor;
             durationIndex > 0;
             durationIndex--) {
-          if (power <= (powerMap[durationIndex] ?? 0))
+          if (power <= (powerMap[durationIndex] ?? 0)) {
             break;
+          }
           powerMap[durationIndex] = power;
         }
       }

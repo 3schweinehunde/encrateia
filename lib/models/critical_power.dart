@@ -1,10 +1,13 @@
 import 'dart:math';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
-import 'package:encrateia/models/power_duration.dart';
+
+import '/models/event.dart';
+import '/models/plot_point.dart';
+import '/models/power_duration.dart';
 
 class CriticalPower extends PowerDuration {
-  CriticalPower({List<Event> records}) {PowerDuration(records: records);}
+  CriticalPower({List<Event> records}) {
+    PowerDuration(records: records);
+  }
 
   List<DoublePlotPoint> asWorkList() {
     final List<DoublePlotPoint> plotPoints = <DoublePlotPoint>[];

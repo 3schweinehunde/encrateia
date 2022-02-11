@@ -1,9 +1,10 @@
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/utils/PQText.dart';
+import '/utils/enums.dart';
 
 class ActivityMetadataWidget extends StatelessWidget {
   const ActivityMetadataWidget({

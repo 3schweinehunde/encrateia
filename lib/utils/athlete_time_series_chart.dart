@@ -1,14 +1,14 @@
 import 'dart:math';
 
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/activity_list.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/screens/show_activity_screen.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
 
+import '/models/activity.dart';
+import '/models/activity_list.dart';
+import '/models/athlete.dart';
+import '/screens/show_activity_screen.dart';
+import '/utils/enums.dart';
+import '/utils/my_button.dart';
 import 'PQText.dart';
 
 class AthleteTimeSeriesChart extends StatefulWidget {

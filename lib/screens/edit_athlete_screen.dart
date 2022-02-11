@@ -1,8 +1,9 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:encrateia/widgets/athlete_widgets/edit_standalone_athlete_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/edit_strava_athlete_widget.dart';
 import 'package:flutter/material.dart';
+
+import '/models/athlete.dart';
+import '/utils/my_color.dart';
+import '/widgets/athlete_widgets/edit_standalone_athlete_widget.dart';
+import '/widgets/athlete_widgets/edit_strava_athlete_widget.dart';
 
 class EditAthleteScreen extends StatelessWidget {
   const EditAthleteScreen({

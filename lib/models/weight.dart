@@ -1,7 +1,8 @@
-import 'package:encrateia/model/model.dart';
-import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+
+import '/model/model.dart';
+import '/models/athlete.dart';
 
 class Weight {
   Weight({@required Athlete athlete}) {

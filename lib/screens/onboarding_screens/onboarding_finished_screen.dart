@@ -1,8 +1,9 @@
-import 'package:encrateia/screens/dashboard.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+
+import '/screens/dashboard.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button_style.dart';
+import '/utils/my_color.dart';
 
 class OnboardingFinishedScreen extends StatelessWidget {
   const OnboardingFinishedScreen();
