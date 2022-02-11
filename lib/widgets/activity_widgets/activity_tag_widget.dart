@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '/models/activity.dart';
 import '/models/activity_tagging.dart';
@@ -37,9 +36,15 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
         child: Text('Loading ...'),
       );
     else
-      return StaggeredGridView.countBuilder(
-        crossAxisCount:
-            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 2
+                    : 3,
+            mainAxisSpacing: 3,
+            crossAxisSpacing: 3,
+            childAspectRatio: 3),
         itemCount: tagGroups.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
@@ -88,9 +93,6 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
             ),
           ),
         ),
-        staggeredTileBuilder: (_) => const StaggeredTile.fit(1),
-        mainAxisSpacing: 3,
-        crossAxisSpacing: 3,
       );
   }
 

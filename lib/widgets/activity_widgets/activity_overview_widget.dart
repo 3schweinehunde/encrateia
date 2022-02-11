@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '/models/activity.dart';
 import '/models/athlete.dart';
@@ -111,10 +110,9 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.count(
-      staggeredTiles:
-          List<StaggeredTile>.filled(tiles.length, const StaggeredTile.fit(1)),
+    return GridView.count(
       mainAxisSpacing: 4,
+      crossAxisSpacing: 4,
       crossAxisCount:
           MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
       children: tiles,

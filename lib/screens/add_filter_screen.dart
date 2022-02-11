@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '/models/athlete.dart';
 import '/models/tag.dart';
@@ -47,12 +46,16 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
               ),
             ),
             Expanded(
-              child: StaggeredGridView.countBuilder(
-                shrinkWrap: true,
-                crossAxisCount:
-                    MediaQuery.of(context).orientation == Orientation.portrait
-                        ? 1
-                        : 2,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? 1
+                          : 2,
+                  mainAxisSpacing: 3,
+                  crossAxisSpacing: 3,
+                  childAspectRatio: 3,
+                ),
                 itemCount: tagGroups == null ? 0 : tagGroups.length,
                 itemBuilder: (BuildContext context, int index) => Card(
                   child: ListTile(
@@ -94,9 +97,6 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
                     ),
                   ),
                 ),
-                staggeredTileBuilder: (_) => const StaggeredTile.fit(1),
-                mainAxisSpacing: 3,
-                crossAxisSpacing: 3,
               ),
             ),
             Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[

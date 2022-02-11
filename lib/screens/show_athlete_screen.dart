@@ -1,6 +1,5 @@
-import 'package:flushbar/flushbar.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '/actions/analyse_activities.dart';
 import '/actions/auto_tagging.dart';
@@ -331,12 +330,9 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
       ),
       body: SafeArea(
-        child: StaggeredGridView.count(
-          staggeredTiles: List<StaggeredTile>.filled(
-            tiles.length,
-            const StaggeredTile.fit(1),
-          ),
+        child: GridView.count(
           crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
           padding: const EdgeInsets.all(10),
           crossAxisCount:
               MediaQuery.of(context).orientation == Orientation.portrait

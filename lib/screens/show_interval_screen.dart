@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '/models/activity.dart';
 import '/models/athlete.dart';
@@ -196,12 +195,9 @@ class ShowIntervalScreen extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: StaggeredGridView.count(
-          staggeredTiles: List<StaggeredTile>.filled(
-            tiles(context: context).length,
-            const StaggeredTile.fit(1),
-          ),
+        child: GridView.count(
           crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
           padding: const EdgeInsets.all(10),
           crossAxisCount:
               MediaQuery.of(context).orientation == Orientation.portrait

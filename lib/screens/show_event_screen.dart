@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '/models/event.dart';
 import '/utils/PQText.dart';
@@ -173,10 +172,9 @@ class ShowEventScreen extends StatelessWidget {
           title: Text('Event ${record.timeStamp.toString()} /'
               ' ${record.distance} m')),
       body: SafeArea(
-          child: StaggeredGridView.count(
-        staggeredTiles: List<StaggeredTile>.filled(
-            tiles(context: context).length, const StaggeredTile.fit(1)),
+          child: GridView.count(
         mainAxisSpacing: 4,
+        crossAxisSpacing: 4,
         crossAxisCount:
             MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
         children: tiles(context: context),
