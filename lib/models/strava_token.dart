@@ -7,8 +7,9 @@ Future<void> persist({encrateia.Athlete athlete}) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   athlete
     ..stravaAccessToken = prefs.getString('strava_accessToken')
-    ..stravaExpire = prefs.getInt('strava_expire')
-    ..stravaScope = prefs.getString('strava_token_type')
+    ..stravaExpiresAt = prefs.getInt('strava_expires_at')
+    ..stravaExpiresIn = prefs.getInt('strava_expires_in')
+    ..stravaTokenType = prefs.getString('strava_token_type')
     ..stravaRefreshToken = prefs.getString('strava_refreshToken');
 
   await athlete.save();
@@ -17,12 +18,12 @@ Future<void> persist({encrateia.Athlete athlete}) async {
 Future<void> load({encrateia.Athlete athlete}) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('strava_accessToken', athlete.stravaAccessToken);
-  await prefs.setInt('strava_expire_at', athlete.stravaExpiresAt);
-  await prefs.setInt('strava_expire_in', athlete.stravaExpiresIn);
+  await prefs.setInt('strava_expires_at', athlete.stravaExpiresAt);
+  await prefs.setInt('strava_expires_in', athlete.stravaExpiresIn);
   await prefs.setString('strava_token_type', athlete.stravaTokenType);
   await prefs.setString('strava_refreshToken', athlete.stravaRefreshToken);
 
-  final TokenResponse token = TokenResponse(
+  final TokenResponse _token = TokenResponse(
       tokenType: athlete.stravaTokenType,
       expiresAt: athlete.stravaExpiresAt,
       expiresIn: athlete.stravaExpiresIn,
@@ -41,7 +42,8 @@ Future<void> delete({encrateia.Athlete athlete}) async {
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('strava_accessToken', null);
-  await prefs.setInt('strava_expire', null);
-  await prefs.setString('strava_scope', null);
+  await prefs.setInt('strava_expires_in', null);
+  await prefs.setInt('strava_expires_at', null);
+  await prefs.setString('strava_token_type', null);
   await prefs.setString('strava_refreshToken', null);
 }

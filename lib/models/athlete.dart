@@ -53,9 +53,10 @@ class Athlete {
   set lastName(String value) => _db.lastName = value;
   set recordAggregationCount(int value) => _db.recordAggregationCount = value;
   set stravaAccessToken(String value) => _db.stravaAccessToken = value;
-  set stravaScope(String value) => _db.stravaScope = value;
+  set stravaTokenType(String value) => _db.stravaTokenType = value;
   set stravaRefreshToken(String value) => _db.stravaRefreshToken = value;
-  set stravaExpire(int value) => _db.stravaExpire = value;
+  set stravaExpiresAt(int value) => _db.stravaExpiresAt = value;
+  set stravaExpiresIn(int value) => _db.stravaExpiresIn = value;
 
   @override
   String toString() => '< Athlete | $firstName $lastName | $stravaId >';
