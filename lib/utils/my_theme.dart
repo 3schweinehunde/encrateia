@@ -1,8 +1,7 @@
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 
-class MyTheme{
-
+class MyTheme {
   static ThemeData call() {
     final int redness = MyColor.primary.red;
     final int greenness = MyColor.primary.green;
@@ -25,8 +24,6 @@ class MyTheme{
           900: Color.fromRGBO(redness, greenness, blueness, 1),
         },
       ),
-      // #ff9800
-      accentColor: MyColor.primaryAccent,
       fontFamily: 'Ubuntu',
     );
   }
