@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/interval_tagging.dart';

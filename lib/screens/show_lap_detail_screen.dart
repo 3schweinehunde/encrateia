@@ -1,7 +1,6 @@
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class ShowLapDetailScreen extends StatefulWidget {
   const ShowLapDetailScreen({
@@ -51,7 +50,8 @@ class _ShowLapDetailScreenState extends State<ShowLapDetailScreen> {
             if (dragAmount < -50) {
               dragAmount = 0;
               if (currentLap.index < widget.laps.length) {
-                setState(() => currentLap = widget.laps[currentLap.index - 1 + 1]);
+                setState(
+                    () => currentLap = widget.laps[currentLap.index - 1 + 1]);
               }
             } else if (dragAmount > 50) {
               dragAmount = 0;

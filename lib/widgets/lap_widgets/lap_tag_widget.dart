@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:encrateia/models/athlete.dart';
 import 'package:encrateia/models/lap.dart';
 import 'package:encrateia/models/lap_tagging.dart';

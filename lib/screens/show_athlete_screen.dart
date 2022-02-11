@@ -34,7 +34,6 @@ import 'package:encrateia/widgets/athlete_widgets/athlete_stryd_cadence_widget.d
 import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart';
 import 'package:encrateia/widgets/intervals_feed_widget.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 

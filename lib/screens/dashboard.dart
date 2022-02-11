@@ -6,7 +6,6 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:package_info/package_info.dart';
 
 import 'onboarding_screens/onboarding_introduction_screen.dart';

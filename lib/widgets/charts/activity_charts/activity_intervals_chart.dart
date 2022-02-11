@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:charts_common/common.dart' as common show ChartBehavior;
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';

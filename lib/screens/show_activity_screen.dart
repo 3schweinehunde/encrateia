@@ -35,7 +35,6 @@ import 'package:encrateia/widgets/laps_list_widget.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ShowActivityScreen extends StatefulWidget {

@@ -1,4 +1,3 @@
-import 'package:charts_common/common.dart' as common show ChartBehavior;
 import 'package:charts_flutter/flutter.dart';
 import 'package:encrateia/models/event.dart';
 import 'package:encrateia/models/heart_rate_zone.dart';

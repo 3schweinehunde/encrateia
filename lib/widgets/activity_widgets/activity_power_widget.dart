@@ -10,7 +10,6 @@ import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/image_utils.dart';
 import 'package:encrateia/utils/my_button.dart';
 import 'package:encrateia/widgets/charts/activity_charts/activity_power_chart.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ActivityPowerWidget extends StatefulWidget {

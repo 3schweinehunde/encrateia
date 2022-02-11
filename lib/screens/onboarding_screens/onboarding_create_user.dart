@@ -8,7 +8,6 @@ import 'package:encrateia/utils/my_button_style.dart';
 import 'package:encrateia/utils/my_color.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'onboarding_standalone_credentials_screen.dart';
 

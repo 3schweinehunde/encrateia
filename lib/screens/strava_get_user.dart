@@ -45,7 +45,6 @@ class _StravaGetUserState extends State<StravaGetUser> {
   Future<void> loginToStrava() async {
     final StravaClient stravaClient =
         StravaClient(clientId: clientId, secret: secret);
-    const String prompt = 'auto';
 
     await stravaClient.authentication
         .authenticate(scopes: <AuthenticationScope>[
@@ -64,6 +63,8 @@ class _StravaGetUserState extends State<StravaGetUser> {
       await loginToStrava();
       setState(() {});
     }
-    if (widget.athlete.state == 'fromStrava') Navigator.of(context).pop();
+    if (widget.athlete.state == 'fromStrava') {
+      Navigator.of(context).pop();
+    }
   }
 }
