@@ -12,7 +12,7 @@ import 'package:encrateia/model/model.dart'
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/interval.dart' as encrateia;
 import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/strava_token.dart';
+import 'package:encrateia/models/strava_token.dart' as strava_token;
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/models/weight.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -109,10 +109,10 @@ class Athlete {
   }
 
   Future<void> loadStravaToken() async =>
-      await StravaToken.loadTokenData(athlete: this);
+      await strava_token.load(athlete: this);
 
   Future<void> persistStravaToken() async =>
-      await StravaToken.persistTokenData(athlete: this);
+      await strava_token.persist(athlete: this);
 
   static Future<List<Athlete>> all() async {
     final List<DbAthlete> dbAthleteList = await DbAthlete().select().toList();

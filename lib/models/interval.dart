@@ -7,7 +7,6 @@ import 'package:sqfentity_gen/sqfentity_gen.dart';
 import 'activity.dart';
 import 'athlete.dart';
 import 'event.dart';
-import 'ftp.dart';
 import 'heart_rate_zone.dart';
 import 'heart_rate_zone_schema.dart';
 import 'interval_tagging.dart';
@@ -329,7 +328,7 @@ class Interval {
   Future<void> calculateAndSave({RecordList<Event> records}) async {
     distance = (records.last.distance - records.first.distance).round();
     duration = records.last.timeStamp.difference(records.first.timeStamp);
-    ftp = Ftp.calculate(records: records);
+    ftp = ftp.calculate(records: records);
     timeStamp = records.first.timeStamp;
     await setValues();
   }

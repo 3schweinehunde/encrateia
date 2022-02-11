@@ -6,7 +6,7 @@ import 'package:encrateia/actions/import_activities_locally.dart';
 import 'package:encrateia/actions/update_job.dart';
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/strava_token.dart';
+import 'package:encrateia/models/strava_token.dart' as strava_token;
 import 'package:encrateia/screens/show_athlete_detail_screen.dart';
 import 'package:encrateia/utils/icon_utils.dart';
 import 'package:encrateia/utils/my_button_style.dart';
@@ -291,7 +291,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               child: Text('Delete Strava Token'),
             ),
             onPressed: () async {
-              await StravaToken.deleteTokenData(athlete: widget.athlete);
+              await strava_token.delete(athlete: widget.athlete);
               setState(() {});
             }),
     ];

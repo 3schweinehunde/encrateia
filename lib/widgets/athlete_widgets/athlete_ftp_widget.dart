@@ -1,8 +1,7 @@
 import 'package:encrateia/models/activity.dart';
 import 'package:encrateia/models/activity_list.dart';
-// ignore: directives_ordering
 import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/ftp.dart';
+import 'package:encrateia/models/ftp.dart' as ftp;
 import 'package:encrateia/models/tag_group.dart';
 import 'package:encrateia/utils/athlete_time_series_chart.dart';
 import 'package:encrateia/utils/enums.dart';
@@ -109,7 +108,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                     MyButton.activity(
                         child: const Text('Calculate missing FTP'),
                         onPressed: () async {
-                          await Ftp.catchUp(backlog: backlog);
+                          await ftp.catchUp(backlog: backlog);
                           getData();
                         }),
                     const SizedBox(width: 20),
@@ -127,7 +126,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
               MyButton.activity(
                   child: const Text('Calculate FTP'),
                   onPressed: () async {
-                    Ftp.catchUp(backlog: backlog);
+                    ftp.catchUp(backlog: backlog);
                     setState(() {});
                   }),
               const SizedBox(width: 20),
@@ -169,7 +168,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
 
   Future<void> checkForBacklog() async {
     final Athlete athlete = widget.athlete;
-    backlog = await Ftp.deriveBacklog(athlete: athlete);
+    backlog = await ftp.deriveBacklog(athlete: athlete);
 
     setState(() => loadingStatus = ftpActivities.length.toString() +
         ' tagged in Effort Taggroup, ' +
