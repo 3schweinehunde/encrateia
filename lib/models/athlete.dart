@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
-import 'package:strava_flutter/Models/detailedAthlete.dart';
+import 'package:strava_flutter/domain/model/model_detailed_athlete.dart';
 
 import '/model/model.dart'
     show
@@ -40,11 +40,12 @@ class Athlete {
   String get state => _db.state;
   String get stravaUsername => _db.stravaUsername;
   String get stravaAccessToken => _db.stravaAccessToken;
-  String get stravaScope => _db.stravaScope;
+  String get stravaTokenType => _db.stravaTokenType;
   String get stravaRefreshToken => _db.stravaRefreshToken;
   int get downloadInterval => _db.downloadInterval;
   int get recordAggregationCount => _db.recordAggregationCount;
-  int get stravaExpire => _db.stravaExpire;
+  int get stravaExpiresAt => _db.stravaExpiresAt;
+  int get stravaExpiresIn => _db.stravaExpiresIn;
   int get stravaId => _db.stravaId;
 
   set downloadInterval(int value) => _db.downloadInterval = value;

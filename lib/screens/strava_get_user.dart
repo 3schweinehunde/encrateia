@@ -55,7 +55,7 @@ class _StravaGetUserState extends State<StravaGetUser> {
     ], redirectUrl: 'stravaflutter://redirect');
 
     final DetailedAthlete stravaAthlete =
-        await stravaClient.getLoggedInAthlete();
+        await stravaClient.athletes.getAuthenticatedAthlete();
     await widget.athlete.updateFromStravaAthlete(stravaAthlete);
   }
 
