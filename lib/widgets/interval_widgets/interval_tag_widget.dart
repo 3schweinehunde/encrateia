@@ -37,11 +37,11 @@ class _IntervalTagWidgetState extends State<IntervalTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (tagGroups == null)
+    if (tagGroups == null) {
       return const Center(
         child: Text('Loading ...'),
       );
-    else
+    } else {
       return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount:
@@ -96,6 +96,7 @@ class _IntervalTagWidgetState extends State<IntervalTagWidget> {
           ),
         ),
       );
+    }
   }
 
   Future<void> getData() async {

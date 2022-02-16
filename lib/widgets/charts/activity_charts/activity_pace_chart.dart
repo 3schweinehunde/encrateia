@@ -70,8 +70,9 @@ class ActivityPaceChart extends StatelessWidget {
               flipVerticalAxis: true,
             ),
           );
-        } else
+        } else {
           return GraphUtils.loadingContainer;
+        }
       },
     );
   }

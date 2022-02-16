@@ -68,9 +68,9 @@ class TagGroup {
         .name
         .equals('Auto Power Zones')
         .toSingle();
-    if (dbTagGroup != null)
+    if (dbTagGroup != null) {
       return TagGroup._fromDb(dbTagGroup);
-    else {
+    } else {
       final TagGroup autoPowerTagGroup = TagGroup.by(
         name: 'Auto Power Zones',
         athlete: athlete,
@@ -95,9 +95,9 @@ class TagGroup {
         .name
         .equals('Auto Heart Rate Zones')
         .toSingle();
-    if (dbTagGroup != null)
+    if (dbTagGroup != null) {
       return TagGroup._fromDb(dbTagGroup);
-    else {
+    } else {
       final TagGroup autoHeartRateTagGroup = TagGroup.by(
         name: 'Auto Heart Rate Zones',
         athlete: athlete,
@@ -119,9 +119,9 @@ class TagGroup {
         .name
         .equals('Effort')
         .toSingle();
-    if (dbTagGroup != null)
+    if (dbTagGroup != null) {
       return TagGroup._fromDb(dbTagGroup);
-    else {
+    } else {
       final TagGroup autoEffortTagGroup = TagGroup.by(
         name: 'Effort',
         athlete: athlete,

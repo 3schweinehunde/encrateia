@@ -31,9 +31,9 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    if (athletes.isEmpty)
+    if (athletes.isEmpty) {
       return Container();
-    else {
+    } else {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: MyColor.primary,

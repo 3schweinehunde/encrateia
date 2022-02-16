@@ -41,9 +41,9 @@ class Weight {
         .orderByDesc('date')
         .top(1)
         .toList();
-    if (dbWeights.isNotEmpty)
+    if (dbWeights.isNotEmpty) {
       return Weight._fromDb(dbWeights.first);
-    else
+    } else {
       dbWeights = await DbWeight()
           .select()
           .athletesId
@@ -51,6 +51,7 @@ class Weight {
           .orderBy('date')
           .top(1)
           .toList();
+    }
     return (dbWeights.isNotEmpty) ? Weight._fromDb(dbWeights.first) : null;
   }
 

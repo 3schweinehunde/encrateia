@@ -124,10 +124,11 @@ class _IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
   Future<void> getData() async {
     records = RecordList<Event>(await widget.interval.records);
     heartRateZoneSchema = await widget.interval.heartRateZoneSchema;
-    if (heartRateZoneSchema != null)
+    if (heartRateZoneSchema != null) {
       heartRateZones = await heartRateZoneSchema.heartRateZones;
-    else
+    } else {
       heartRateZones = <HeartRateZone>[];
+    }
     setState(() => loading = false);
   }
 }

@@ -80,10 +80,10 @@ class ActivityList<E> extends DelegatingList<E> {
           {
             firstGroupWithData = false;
             activityIds = activityIdsFromThisGroup;
-          } else
-            // For the others: intersect.
+          } else {
             activityIds.removeWhere(
                 (int tagId) => !activityIdsFromThisGroup.contains(tagId));
+          }
         }
       }
     }

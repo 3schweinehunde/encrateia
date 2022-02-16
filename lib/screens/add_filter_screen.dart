@@ -80,11 +80,12 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
                             ),
                             onSelected: (bool selected) {
                               setState(() {
-                                if (selected)
+                                if (selected) {
                                   widget.athlete.filters.add(tag.id);
-                                else
+                                } else {
                                   widget.athlete.filters.removeWhere(
                                       (int tagId) => tagId == tag.id);
+                                }
                               });
                             },
                             selected: widget.athlete.filters.contains(tag.id),

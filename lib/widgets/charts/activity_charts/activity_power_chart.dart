@@ -65,8 +65,9 @@ class ActivityPowerChart extends StatelessWidget {
                   const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
-        } else
+        } else {
           return GraphUtils.loadingContainer;
+        }
       },
     );
   }

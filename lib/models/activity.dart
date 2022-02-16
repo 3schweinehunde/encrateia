@@ -169,24 +169,27 @@ class Activity {
 
   // calculated from other attributes:
   double get avgPace {
-    if (avgSpeed != null && avgSpeed != 0)
+    if (avgSpeed != null && avgSpeed != 0) {
       return 50 / 3 / avgSpeed;
-    else
+    } else {
       return null;
+    }
   }
 
   double get avgSpeedPerHeartRate {
-    if (avgSpeed != null && heartRateAvailable)
+    if (avgSpeed != null && heartRateAvailable) {
       return 60 * avgSpeed / avgHeartRate;
-    else
+    } else {
       return null;
+    }
   }
 
   double get avgPowerPerHeartRate {
-    if (powerAvailable && heartRateAvailable)
+    if (powerAvailable && heartRateAvailable) {
       return avgPower / avgHeartRate;
-    else
+    } else {
       return null;
+    }
   }
 
   int get elevationDifference =>
@@ -567,9 +570,10 @@ class Activity {
           final DateTime startTime =
               dateTimeFromStrava(dataMessage.get('start_time') as double);
 
-          if (name == 'new activity')
+          if (name == 'new activity') {
             name =
                 'Activity on ' + DateFormat.yMMMMd('en_US').format(startTime);
+          }
           _db
             ..timeStamp =
                 dateTimeFromStrava(dataMessage.get('timestamp') as double)

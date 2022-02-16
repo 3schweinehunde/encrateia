@@ -112,8 +112,9 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
   Future<void> decreaseDownloadInterval() async {
     widget.athlete.downloadInterval =
         (widget.athlete.downloadInterval ?? 21) - 7;
-    if (widget.athlete.downloadInterval < 7)
+    if (widget.athlete.downloadInterval < 7) {
       widget.athlete.downloadInterval = 7;
+    }
     await widget.athlete.save();
     setState(() {});
   }
@@ -128,14 +129,15 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
   Future<void> decreaseRecordAggregationCount() async {
     widget.athlete.recordAggregationCount =
         ((widget.athlete.recordAggregationCount ?? 16) / 2).round();
-    if (widget.athlete.recordAggregationCount < 1)
+    if (widget.athlete.recordAggregationCount < 1) {
       widget.athlete.recordAggregationCount = 1;
+    }
     await widget.athlete.save();
     setState(() {});
   }
 
   Widget stravaTile({Athlete athlete}) {
-    if (athlete.id != null)
+    if (athlete.id != null) {
       return ListTile(
         leading: MyIcon.stravaDownload,
         title: const Text('Strava ID / Username / Location'),
@@ -145,7 +147,8 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
             ' / ' +
             (athlete.geoState ?? '')),
       );
-    else
+    } else {
       return Container(width: 0, height: 0);
+    }
   }
 }

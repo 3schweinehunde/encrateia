@@ -122,8 +122,9 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
       if (activity.timeStamp.year != year) {
         year = activity.timeStamp.year;
         distanceSoFar = activity.distance;
-      } else
+      } else {
         distanceSoFar += activity.distance;
+      }
       activity.distanceSoFar = distanceSoFar;
     }
 

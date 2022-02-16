@@ -171,48 +171,54 @@ class Interval {
         avgSpeed != null &&
         avgSpeed > 0 &&
         weight != null &&
-        weight > 0)
+        weight > 0) {
       return avgPower / avgSpeed / weight;
-    else
+    } else {
       return null;
+    }
   }
 
   double get avgPace {
-    if (avgSpeedByDistance != null && avgSpeedByDistance != 0)
+    if (avgSpeedByDistance != null && avgSpeedByDistance != 0) {
       return 50 / 3 / avgSpeedByDistance;
-    else
+    } else {
       return null;
+    }
   }
 
   double get avgSpeedPerHeartRate {
-    if (avgSpeed != null && avgHeartRate != null && avgHeartRate != 0)
+    if (avgSpeed != null && avgHeartRate != null && avgHeartRate != 0) {
       return 100 * (avgSpeed / avgHeartRate);
-    else
+    } else {
       return null;
+    }
   }
 
   double get avgPowerPerHeartRate {
     if (avgPower != null &&
         avgPower != -1 &&
         avgHeartRate != null &&
-        avgHeartRate != null)
+        avgHeartRate != null) {
       return avgPower / avgHeartRate;
-    else
+    } else {
       return null;
+    }
   }
 
   int get elevationDifference {
-    if (totalAscent != null && totalDescent != null)
+    if (totalAscent != null && totalDescent != null) {
       return totalAscent - totalDescent;
-    else
+    } else {
       return null;
+    }
   }
 
   double get avgDoubleStrydCadence {
-    if (avgStrydCadence != null)
+    if (avgStrydCadence != null) {
       return avgStrydCadence * 2;
-    else
+    } else {
       return null;
+    }
   }
 
   // easier check for data availability

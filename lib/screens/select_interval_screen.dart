@@ -51,7 +51,7 @@ class _SelectIntervalScreenState extends State<SelectIntervalScreen> {
           ),
         ),
       );
-    } else
+    } else {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: MyColor.settings,
@@ -59,6 +59,7 @@ class _SelectIntervalScreenState extends State<SelectIntervalScreen> {
         ),
         body: const Text('Loading...'),
       );
+    }
   }
 
   Future<void> getData() async {

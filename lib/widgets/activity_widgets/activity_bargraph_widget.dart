@@ -190,15 +190,17 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
     }
 
     _powerZoneSchema = await activity.powerZoneSchema;
-    if (_powerZoneSchema != null)
+    if (_powerZoneSchema != null) {
       _powerZones = await _powerZoneSchema.powerZones;
+    }
 
     _heartRateDistributions = await activity.powerZoneCounts();
     _powerDistributions = await activity.heartRateZoneCounts();
 
     _heartRateZoneSchema = await activity.heartRateZoneSchema;
-    if (_heartRateZoneSchema != null)
+    if (_heartRateZoneSchema != null) {
       _heartRateZones = await _heartRateZoneSchema.heartRateZones;
+    }
 
     setState(() => loading = false);
   }

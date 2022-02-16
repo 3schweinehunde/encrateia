@@ -31,11 +31,11 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (tagGroups == null)
+    if (tagGroups == null) {
       return const Center(
         child: Text('Loading ...'),
       );
-    else
+    } else {
       return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount:
@@ -94,6 +94,7 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
           ),
         ),
       );
+    }
   }
 
   Future<void> getData() async {

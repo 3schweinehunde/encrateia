@@ -134,10 +134,11 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
     records = RecordList<Event>(await activity.records);
 
     powerZoneSchema = await activity.powerZoneSchema;
-    if (powerZoneSchema != null)
+    if (powerZoneSchema != null) {
       powerZones = await powerZoneSchema.powerZones;
-    else
+    } else {
       powerZones = <PowerZone>[];
+    }
     setState(() => loading = false);
   }
 }

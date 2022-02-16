@@ -96,10 +96,11 @@ class _LapsListWidgetState extends State<LapsListWidget> {
           ),
         ),
       );
-    } else
+    } else {
       return Center(
         child: Text(loading ? 'Loading' : 'No data available'),
       );
+    }
   }
 
   Future<void> copyToInterval({Lap lap}) async {

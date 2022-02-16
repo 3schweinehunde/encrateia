@@ -75,7 +75,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
       )
     ];
 
-    if (laps.isNotEmpty)
+    if (laps.isNotEmpty) {
       return SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -260,14 +260,13 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                 ],
               ),
             if (selectedRecord == null)
-              Container(
-                child: const Text('Select a record to continue.'),
-              ),
+              const Text('Select a record to continue.'),
           ],
         ),
       );
-    else
+    } else {
       return GraphUtils.loadingContainer;
+    }
   }
 
   void moveSelectedRecord({int amount}) {

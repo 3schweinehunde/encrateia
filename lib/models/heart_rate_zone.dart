@@ -22,12 +22,14 @@ class HeartRateZone {
       ..upperPercentage = upperPercentage ?? 0
       ..color = color ?? 0xFFFFc107;
 
-    if (lowerPercentage != null)
+    if (lowerPercentage != null) {
       _db.lowerLimit =
           (lowerPercentage * heartRateZoneSchema.base / 100).round();
-    if (upperPercentage != null)
+    }
+    if (upperPercentage != null) {
       _db.upperLimit =
           (upperPercentage * heartRateZoneSchema.base / 100).round();
+    }
   }
   HeartRateZone._fromDb(this._db);
 

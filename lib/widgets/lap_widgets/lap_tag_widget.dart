@@ -37,11 +37,11 @@ class _LapTagWidgetState extends State<LapTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (tagGroups == null)
+    if (tagGroups == null) {
       return const Center(
         child: Text('Loading ...'),
       );
-    else
+    } else {
       return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount:
@@ -94,6 +94,7 @@ class _LapTagWidgetState extends State<LapTagWidget> {
           ),
         ),
       );
+    }
   }
 
   Future<void> getData() async {

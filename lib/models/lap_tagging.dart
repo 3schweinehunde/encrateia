@@ -45,9 +45,9 @@ class LapTagging {
         .equals(tag.id)
         .toSingle();
 
-    if (dbLapTagging != null)
+    if (dbLapTagging != null) {
       return LapTagging._fromDb(dbLapTagging);
-    else {
+    } else {
       final LapTagging lapTagging = LapTagging(
         lap: lap,
         tag: tag,

@@ -69,8 +69,9 @@ class ActivityVerticalOscillationChart extends StatelessWidget {
               maximum: maximum,
             ),
           );
-        } else
+        } else {
           return GraphUtils.loadingContainer;
+        }
       },
     );
   }

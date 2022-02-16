@@ -183,8 +183,9 @@ class Athlete {
       await activity.deleteLaps();
 
       // ignore: avoid_slow_async_io
-      if (await File(appDocDir.path + '/$stravaId.fit').exists())
+      if (await File(appDocDir.path + '/$stravaId.fit').exists()) {
         await File(appDocDir.path + '/$stravaId.fit').delete();
+      }
     }
     await _db.getDbActivities().delete();
     return await _db.delete();

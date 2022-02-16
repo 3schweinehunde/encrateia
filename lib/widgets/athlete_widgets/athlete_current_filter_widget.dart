@@ -29,8 +29,9 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
               widgets.add(const Text('('));
               widgets.add(Text(' ${tagGroup.name}: '));
               empty = false;
-            } else
+            } else {
               widgets.add(const Text('OR'));
+            }
             widgets.add(
               Chip(
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -67,7 +68,8 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
         runSpacing: 15,
         children: widgets,
       );
-    } else
+    } else {
       return Container();
+    }
   }
 }

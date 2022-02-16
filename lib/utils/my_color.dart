@@ -76,11 +76,13 @@ class MyColor {
   }) {
     if (selected) {
       if (ThemeData.estimateBrightnessForColor(backgroundColor) ==
-          Brightness.light)
+          Brightness.light) {
         return black;
-      else
+      } else {
         return white;
-    } else
+      }
+    } else {
       return black;
+    }
   }
 }

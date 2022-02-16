@@ -75,7 +75,7 @@ class _EditStandaloneAthleteWidgetState
 
     final List<PowerZoneSchema> powerZoneSchemas =
         await widget.athlete.powerZoneSchemas;
-    if (powerZoneSchemas.isEmpty)
+    if (powerZoneSchemas.isEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute<BuildContext>(
@@ -83,7 +83,8 @@ class _EditStandaloneAthleteWidgetState
               OnBoardingPowerZoneSchemaScreen(athlete: widget.athlete),
         ),
       );
-    else
+    } else {
       Navigator.of(context).pop();
+    }
   }
 }

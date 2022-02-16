@@ -39,9 +39,9 @@ class ActivityTagging {
         .equals(tag.id)
         .toSingle();
 
-    if (dbActivityTagging != null)
+    if (dbActivityTagging != null) {
       return ActivityTagging._fromDb(dbActivityTagging);
-    else {
+    } else {
       final ActivityTagging activityTagging = ActivityTagging(
           activity: activity, tag: tag, system: system ?? false);
       await activityTagging._db.save();
@@ -61,8 +61,9 @@ class ActivityTagging {
         .tagsId
         .equals(tag.id)
         .toSingle();
-    if (dbActivityTagging != null)
+    if (dbActivityTagging != null) {
       return ActivityTagging._fromDb(dbActivityTagging);
+    }
     return null;
   }
 

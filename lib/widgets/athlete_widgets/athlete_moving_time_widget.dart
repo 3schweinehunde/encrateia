@@ -123,8 +123,9 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
       if (activity.timeStamp.year != year) {
         year = activity.timeStamp.year;
         movingTimeSoFar = activity.movingTime;
-      } else
+      } else {
         movingTimeSoFar += activity.movingTime;
+      }
       activity.movingTimeSoFar = movingTimeSoFar;
     }
 

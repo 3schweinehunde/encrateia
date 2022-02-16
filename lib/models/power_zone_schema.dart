@@ -212,9 +212,9 @@ class PowerZoneSchema {
         .orderByDesc('date')
         .top(1)
         .toList();
-    if (dbPowerZoneSchemas.isNotEmpty)
+    if (dbPowerZoneSchemas.isNotEmpty) {
       return PowerZoneSchema._fromDb(dbPowerZoneSchemas.first);
-    else
+    } else {
       dbPowerZoneSchemas = await DbPowerZoneSchema()
           .select()
           .athletesId
@@ -222,6 +222,7 @@ class PowerZoneSchema {
           .orderBy('date')
           .top(1)
           .toList();
+    }
     return (dbPowerZoneSchemas.isNotEmpty)
         ? PowerZoneSchema._fromDb(dbPowerZoneSchemas.first)
         : null;

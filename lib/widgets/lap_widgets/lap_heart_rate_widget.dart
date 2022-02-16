@@ -120,10 +120,11 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   Future<void> getData() async {
     records = RecordList<Event>(await widget.lap.records);
     heartRateZoneSchema = await widget.lap.heartRateZoneSchema;
-    if (heartRateZoneSchema != null)
+    if (heartRateZoneSchema != null) {
       heartRateZones = await heartRateZoneSchema.heartRateZones;
-    else
+    } else {
       heartRateZones = <HeartRateZone>[];
+    }
     setState(() => loading = false);
   }
 }

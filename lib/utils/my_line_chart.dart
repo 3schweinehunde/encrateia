@@ -83,7 +83,7 @@ class MyLineChart extends LineChart {
     double minimum,
     double maximum,
   }) {
-    if (powerZones != null)
+    if (powerZones != null) {
       return NumericExtents(
           powerZones
                   .map((PowerZone powerZone) => powerZone.lowerLimit)
@@ -93,7 +93,7 @@ class MyLineChart extends LineChart {
                   .map((PowerZone powerZone) => powerZone.upperLimit)
                   .reduce(max) *
               1.1);
-    else if (heartRateZones != null)
+    } else if (heartRateZones != null) {
       return NumericExtents(
           heartRateZones
                   .map(
@@ -105,9 +105,10 @@ class MyLineChart extends LineChart {
                       (HeartRateZone heartRateZone) => heartRateZone.upperLimit)
                   .reduce(max) *
               1.1);
-    else if (minimum != null)
+    } else if (minimum != null) {
       return NumericExtents(minimum, maximum);
-    else
+    } else {
       return null;
+    }
   }
 }

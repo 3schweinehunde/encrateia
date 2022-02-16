@@ -46,9 +46,9 @@ class IntervalTagging {
         .equals(tag.id)
         .toSingle();
 
-    if (dbIntervalTagging != null)
+    if (dbIntervalTagging != null) {
       return IntervalTagging._fromDb(dbIntervalTagging);
-    else {
+    } else {
       final IntervalTagging intervalTagging = IntervalTagging(
         interval: interval,
         tag: tag,

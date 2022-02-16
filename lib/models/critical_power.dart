@@ -13,11 +13,12 @@ class CriticalPower extends PowerDuration {
     final List<DoublePlotPoint> plotPoints = <DoublePlotPoint>[];
 
     powerMap.forEach((int duration, double power) {
-      if (duration > 60 && duration < 1200)
+      if (duration > 60 && duration < 1200) {
         plotPoints.add(DoublePlotPoint(
           domain: duration,
           measure: power,
         ));
+      }
     });
 
     plotPoints.sort(

@@ -136,10 +136,11 @@ class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
     records = RecordList<Event>(await activity.records);
 
     heartRateZoneSchema = await activity.heartRateZoneSchema;
-    if (heartRateZoneSchema != null)
+    if (heartRateZoneSchema != null) {
       heartRateZones = await heartRateZoneSchema.heartRateZones;
-    else
+    } else {
       heartRateZones = <HeartRateZone>[];
+    }
     setState(() => loading = false);
   }
 }

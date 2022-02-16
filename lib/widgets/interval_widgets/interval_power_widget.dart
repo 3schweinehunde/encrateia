@@ -13,7 +13,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_power_chart.dart';
 
 class IntervalPowerWidget extends StatefulWidget {
-  const IntervalPowerWidget({this.interval});
+  const IntervalPowerWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval interval;
 
@@ -118,10 +118,11 @@ class _IntervalPowerWidgetState extends State<IntervalPowerWidget> {
   Future<void> getData() async {
     records = RecordList<Event>(await widget.interval.records);
     powerZoneSchema = await widget.interval.powerZoneSchema;
-    if (powerZoneSchema != null)
+    if (powerZoneSchema != null) {
       powerZones = await powerZoneSchema.powerZones;
-    else
+    } else {
       powerZones = <PowerZone>[];
+    }
     setState(() => loading = false);
   }
 }

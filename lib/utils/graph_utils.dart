@@ -41,9 +41,9 @@ class GraphUtils {
     bottomMarginSpec: MarginSpec.fixedPixel(40),
   );
 
-  static Container loadingContainer = Container(
+  static SizedBox loadingContainer = const SizedBox(
     height: 100,
-    child: const Center(child: Text('Loading')),
+    child: Center(child: Text('Loading')),
   );
 
   static List<ChartTitle<num>> axis({String measureTitle}) {

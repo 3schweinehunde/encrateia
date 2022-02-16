@@ -548,9 +548,9 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
     final Stream<int> percentageStream =
         widget.activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
-      if (value == -2)
-        await flushbar?.dismiss();
-      else if (value == -1) {
+      if (value == -2) {
+        var object = await flushbar?.dismiss();
+      } else if (value == -1) {
         await flushbar?.dismiss();
         flushbar = Flushbar<Object>(
           message: 'Analysing »${widget.activity.name}«',

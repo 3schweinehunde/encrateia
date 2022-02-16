@@ -56,7 +56,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {
         final Activity activity = activities[index];
-        if (activity.nonParsable == true)
+        if (activity.nonParsable == true) {
           return ListTile(
             leading: sportsIcon(sport: activity.sport),
             title: Text(activity.name ?? 'Activity'),
@@ -75,7 +75,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
               getData();
             },
           );
-        else
+        } else {
           return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -167,6 +167,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                   ),
                 )
               ]);
+        }
       },
     );
   }

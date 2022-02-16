@@ -44,11 +44,12 @@ class RecordList<E> extends DelegatingList<E> {
       if (record.event == 'record') {
         if (record.speed != null && record.timeStamp != null) {
           if (record.speed > 0) {
-            if (lastSpeed > 0)
+            if (lastSpeed > 0) {
               movingTime +=
                   record.timeStamp.difference(lastTimestamp).inSeconds;
-            else
+            } else {
               movingTime += 1;
+            }
           }
           lastTimestamp = record.timeStamp;
           lastSpeed = record.speed;
@@ -401,8 +402,9 @@ class RecordList<E> extends DelegatingList<E> {
         .cast<double>();
 
     for (final double altitude in altitudes) {
-      if (lastAltitude != 0 && altitude > lastAltitude)
+      if (lastAltitude != 0 && altitude > lastAltitude) {
         sumOfAscents += altitude - lastAltitude;
+      }
       lastAltitude = altitude;
     }
     return sumOfAscents;
@@ -417,8 +419,9 @@ class RecordList<E> extends DelegatingList<E> {
         .cast<double>();
 
     for (final double altitude in altitudes) {
-      if (lastAltitude != 0 && altitude < lastAltitude)
+      if (lastAltitude != 0 && altitude < lastAltitude) {
         sumOfDescents += lastAltitude - altitude;
+      }
       lastAltitude = altitude;
     }
     return sumOfDescents;

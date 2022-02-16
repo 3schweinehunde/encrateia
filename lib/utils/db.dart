@@ -12,8 +12,9 @@ class Db {
   static bool _isConnected = false;
 
   Future<bool> connect() async {
-    if (_isConnected == false)
+    if (_isConnected == false) {
       _isConnected = await DbEncrateia().initializeDB();
+    }
     return _isConnected;
   }
 }

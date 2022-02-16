@@ -70,10 +70,11 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                         context,
                         MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) {
-                            if (tagGroup.system)
+                            if (tagGroup.system) {
                               return ShowTagGroupScreen(tagGroup: tagGroup);
-                            else
+                            } else {
                               return AddTagGroupScreen(tagGroup: tagGroup);
+                            }
                           },
                         ),
                       );

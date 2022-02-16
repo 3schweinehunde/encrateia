@@ -33,11 +33,9 @@ class _StravaGetUserState extends State<StravaGetUser> {
         backgroundColor: MyColor.primary,
       ),
       body: SafeArea(
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(widget.athlete.stateText),
-          ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(widget.athlete.stateText),
         ),
       ),
     );

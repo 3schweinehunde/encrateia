@@ -148,9 +148,9 @@ class HeartRateZoneSchema {
         .orderByDesc('date')
         .top(1)
         .toList();
-    if (dbHeartRateZoneSchemas.isNotEmpty)
+    if (dbHeartRateZoneSchemas.isNotEmpty) {
       return HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first);
-    else
+    } else {
       dbHeartRateZoneSchemas = await DbHeartRateZoneSchema()
           .select()
           .athletesId
@@ -158,6 +158,7 @@ class HeartRateZoneSchema {
           .orderBy('date')
           .top(1)
           .toList();
+    }
     return (dbHeartRateZoneSchemas.isNotEmpty)
         ? HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first)
         : null;
