@@ -77,7 +77,7 @@ class ActivityTagging {
         .and
         .tagsId
         .equals(tag.id)
-        .toSingle() as FutureOr<DbActivityTagging>);
+        .toSingle() as Future<DbActivityTagging>);
     await dbActivityTagging.delete();
   }
 

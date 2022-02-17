@@ -6,11 +6,11 @@ import '/models/record_list.dart';
 import '/utils/graph_utils.dart';
 
 class LapStrydCadenceChart extends StatelessWidget {
-  const LapStrydCadenceChart({
+  const LapStrydCadenceChart({Key? key,
     required this.records,
     required this.minimum,
     required this.maximum,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double minimum;

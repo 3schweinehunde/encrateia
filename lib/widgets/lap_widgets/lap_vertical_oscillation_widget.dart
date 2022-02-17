@@ -117,7 +117,7 @@ class _LapVerticalOscillationWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
+    records = RecordList<Event>(await (widget.lap!.records as Future<List<Event>>));
     setState(() => loading = false);
   }
 }

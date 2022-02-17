@@ -6,11 +6,11 @@ import '/models/record_list.dart';
 import '/utils/graph_utils.dart';
 
 class LapLegSpringStiffnessChart extends StatelessWidget {
-  const LapLegSpringStiffnessChart({
+  const LapLegSpringStiffnessChart({Key? key,
     required this.records,
     required this.minimum,
     required this.maximum,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double minimum;

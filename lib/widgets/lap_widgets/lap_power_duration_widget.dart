@@ -77,7 +77,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
+    records = RecordList<Event>(await (widget.lap!.records as Future<List<Event>>));
     setState(() => loading = false);
   }
 }

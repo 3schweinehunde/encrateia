@@ -6,10 +6,10 @@ import '/models/record_list.dart';
 import '/utils/graph_utils.dart';
 
 class LapEcorChart extends StatelessWidget {
-  const LapEcorChart({
+  const LapEcorChart({Key? key,
     required this.records,
     required this.weight,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double? weight;

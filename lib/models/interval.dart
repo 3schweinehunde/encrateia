@@ -277,7 +277,7 @@ class Interval {
 
   Future<HeartRateZoneSchema?> get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
-      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as FutureOr<DbActivity>);
+      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as Future<DbActivity>);
 
       _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -289,7 +289,7 @@ class Interval {
 
   Future<PowerZoneSchema?> get powerZoneSchema async {
     if (_powerZoneSchema == null) {
-      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as FutureOr<DbActivity>);
+      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as Future<DbActivity>);
 
       _powerZoneSchema = await PowerZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -300,7 +300,7 @@ class Interval {
   }
 
   Future<void> autoTagger({required Athlete? athlete}) async {
-    final PowerZone powerZone = await (this.powerZone as FutureOr<PowerZone>);
+    final PowerZone powerZone = await (this.powerZone as Future<PowerZone>);
     if (powerZone.id != null) {
       final Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete!,
@@ -315,7 +315,7 @@ class Interval {
       );
     }
 
-    final HeartRateZone heartRateZone = await (this.heartRateZone as FutureOr<HeartRateZone>);
+    final HeartRateZone heartRateZone = await (this.heartRateZone as Future<HeartRateZone>);
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete!,

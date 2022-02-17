@@ -285,7 +285,7 @@ class Activity {
 
   static Future<void> importFromLocalDirectory({Athlete? athlete}) async {
     if (Platform.isAndroid) {
-      final List<Directory> directories = await (getExternalStorageDirectories() as FutureOr<List<Directory>>);
+      final List<Directory> directories = await (getExternalStorageDirectories() as Future<List<Directory>>);
       final Directory localDir = directories[0];
       final Directory appDocDir = await getApplicationDocumentsDirectory();
 
@@ -359,7 +359,7 @@ class Activity {
       final Weight weight = await (Weight.getBy(
         athletesId: athletesId,
         date: timeCreated,
-      ) as FutureOr<Weight>);
+      ) as Future<Weight>);
       cachedWeight = weight.value;
     }
     return cachedWeight;
@@ -757,7 +757,7 @@ class Activity {
   }
 
   Future<void> autoTagger({required Athlete? athlete}) async {
-    final PowerZone powerZone = await (this.powerZone as FutureOr<PowerZone>);
+    final PowerZone powerZone = await (this.powerZone as Future<PowerZone>);
     if (powerZone.id != null) {
       final Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete!,
@@ -772,7 +772,7 @@ class Activity {
       );
     }
 
-    final HeartRateZone heartRateZone = await (this.heartRateZone as FutureOr<HeartRateZone>);
+    final HeartRateZone heartRateZone = await (this.heartRateZone as Future<HeartRateZone>);
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete!,
@@ -793,7 +793,7 @@ class Activity {
   }
 
   Future<List<BarZone>> powerZoneCounts() async {
-    final PowerZoneSchema powerZoneSchema = await (this.powerZoneSchema as FutureOr<PowerZoneSchema>);
+    final PowerZoneSchema powerZoneSchema = await (this.powerZoneSchema as Future<PowerZoneSchema>);
     final List<Event> records = await this.records;
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();
@@ -804,7 +804,7 @@ class Activity {
 
   Future<List<BarZone>> heartRateZoneCounts() async {
     final HeartRateZoneSchema heartRateZoneSchema =
-        await (this.heartRateZoneSchema as FutureOr<HeartRateZoneSchema>);
+        await (this.heartRateZoneSchema as Future<HeartRateZoneSchema>);
     final List<Event> records = await this.records;
     final List<Event> heartRateRecords =
         records.where((Event record) => record.heartRate != null).toList();

@@ -86,7 +86,7 @@ class IntervalTagging {
         .and
         .tagsId
         .equals(tag.id)
-        .toSingle() as FutureOr<DbIntervalTagging>);
+        .toSingle() as Future<DbIntervalTagging>);
     await dbIntervalTagging.delete();
   }
 

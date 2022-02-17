@@ -6,7 +6,7 @@ import '/models/plot_point.dart';
 import '/models/power_duration.dart';
 
 class FtpChart extends StatelessWidget {
-  const FtpChart({this.records});
+   const FtpChart({Key? key, this.records}) : super(key: key);
 
   final List<Event>? records;
 

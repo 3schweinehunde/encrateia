@@ -6,7 +6,7 @@ import '/models/record_list.dart';
 import '/utils/path_painter.dart';
 
 class MyPath extends StatelessWidget {
-  MyPath({
+  MyPath({Key? key,
     int? width,
     int? height,
     required Activity? activity,
@@ -14,7 +14,7 @@ class MyPath extends StatelessWidget {
   })  : _width = width?.toDouble() ?? 300.0,
         _height = height?.toDouble() ?? 300.0,
         _activity = activity,
-        _records = records;
+        _records = records, super(key: key);
 
   final double _width;
   final double _height;

@@ -102,7 +102,7 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
 
   Future<void> getData() async {
     final Lap lap = widget.lap!;
-    records = RecordList<Event>(await (lap.records as FutureOr<List<Event>>));
+    records = RecordList<Event>(await (lap.records as Future<List<Event>>));
 
     setState(() => loading = false);
   }

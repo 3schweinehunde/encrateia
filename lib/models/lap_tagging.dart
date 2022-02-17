@@ -83,7 +83,7 @@ class LapTagging {
         .and
         .tagsId
         .equals(tag.id)
-        .toSingle() as FutureOr<DbLapTagging>);
+        .toSingle() as Future<DbLapTagging>);
     await dbLapTagging.delete();
   }
 

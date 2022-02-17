@@ -153,7 +153,7 @@ You can change these later.
     Weight weight;
 
     if (Platform.isAndroid) {
-      final List<Directory> directories = await (getExternalStorageDirectories() as FutureOr<List<Directory>>);
+      final List<Directory> directories = await (getExternalStorageDirectories() as Future<List<Directory>>);
       directory = directories[0];
     } else {
       directory = await getApplicationDocumentsDirectory();

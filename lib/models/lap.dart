@@ -25,7 +25,7 @@ class Lap {
 
   Activity? activity;
   bool? copied;
-  DbLap? _db;
+  DbLap? _db = DbLap();
   HeartRateZone? _heartRateZone;
   HeartRateZoneSchema? _heartRateZoneSchema;
   late List<BarZone> heartRateDistributions;
@@ -36,7 +36,7 @@ class Lap {
   double? weight;
   int? index;
 
-  int? get id => _db?.id;
+  int? get id => _db!.id;
   DateTime? get startTime => _db!.startTime;
   DateTime? get timeStamp => _db!.timeStamp;
   String? get event => _db!.event;
@@ -238,7 +238,7 @@ class Lap {
 
   Future<PowerZoneSchema?> get powerZoneSchema async {
     if (_powerZoneSchema == null) {
-      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as FutureOr<DbActivity>);
+      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as Future<DbActivity>);
 
       _powerZoneSchema = await PowerZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -250,7 +250,7 @@ class Lap {
 
   Future<HeartRateZoneSchema?> get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
-      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as FutureOr<DbActivity>);
+      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as Future<DbActivity>);
 
       _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -261,7 +261,7 @@ class Lap {
   }
 
   Future<void> setAverages() async {
-    final RecordList<Event> recordList = RecordList<Event>(await (records as FutureOr<List<Event>>));
+    final RecordList<Event> recordList = RecordList<Event>(await (records as Future<List<Event>>));
     final RecordList<Event> eventList = RecordList<Event>(await events);
     _db
       ..avgPower = recordList.avgPower()
@@ -335,7 +335,7 @@ class Lap {
   }
 
   Future<void> autoTagger({required Athlete? athlete}) async {
-    final PowerZone powerZone = await (this.powerZone as FutureOr<PowerZone>);
+    final PowerZone powerZone = await (this.powerZone as Future<PowerZone>);
     if (powerZone.id != null) {
       final Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete!,
@@ -350,7 +350,7 @@ class Lap {
       );
     }
 
-    final HeartRateZone heartRateZone = await (this.heartRateZone as FutureOr<HeartRateZone>);
+    final HeartRateZone heartRateZone = await (this.heartRateZone as Future<HeartRateZone>);
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete!,
@@ -367,8 +367,8 @@ class Lap {
   }
 
   Future<List<BarZone>> powerZoneCounts() async {
-    final PowerZoneSchema powerZoneSchema = await (this.powerZoneSchema as FutureOr<PowerZoneSchema>);
-    final List<Event> records = await (this.records as FutureOr<List<Event>>);
+    final PowerZoneSchema powerZoneSchema = await (this.powerZoneSchema as Future<PowerZoneSchema>);
+    final List<Event> records = await (this.records as Future<List<Event>>);
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();
     final List<BarZone> powerZoneCounts = await RecordList<Event>(powerRecords)
@@ -378,8 +378,8 @@ class Lap {
 
   Future<List<BarZone>> heartRateZoneCounts() async {
     final HeartRateZoneSchema heartRateZoneSchema =
-        await (this.heartRateZoneSchema as FutureOr<HeartRateZoneSchema>);
-    final List<Event> records = await (this.records as FutureOr<List<Event>>);
+        await (this.heartRateZoneSchema as Future<HeartRateZoneSchema>);
+    final List<Event> records = await (this.records as Future<List<Event>>);
     final List<Event> heartRateRecords =
         records.where((Event record) => record.heartRate != null).toList();
     final List<BarZone> heartRateZoneCounts =

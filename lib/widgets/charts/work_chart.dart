@@ -7,7 +7,7 @@ import '/models/plot_point.dart';
 import '/utils/icon_utils.dart';
 
 class WorkChart extends StatelessWidget {
-  const WorkChart({this.records});
+  const WorkChart({Key? key, this.records}) : super(key: key);
 
   final List<Event>? records;
 

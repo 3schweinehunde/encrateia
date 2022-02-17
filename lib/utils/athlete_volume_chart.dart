@@ -7,12 +7,12 @@ import '/models/athlete.dart';
 import '/utils/enums.dart';
 
 class AthleteVolumeChart extends StatefulWidget {
-  const AthleteVolumeChart({
+  const AthleteVolumeChart({Key? key,
     required this.athlete,
     required this.activities,
     required this.volumeAttr,
     required this.chartTitleText,
-  });
+  }) : super(key: key);
 
   final Athlete? athlete;
   final List<Activity> activities;

@@ -6,7 +6,7 @@ import '/models/athlete.dart';
 import '/utils/enums.dart';
 
 class AthleteScatterChart extends StatefulWidget {
-  const AthleteScatterChart({
+  const AthleteScatterChart({Key? key,
     required this.athlete,
     required this.activities,
     required this.firstAttr,
@@ -15,7 +15,7 @@ class AthleteScatterChart extends StatefulWidget {
     required this.firstAxesText,
     required this.secondAxesText,
     this.flipVerticalAxis,
-  });
+  }) : super(key: key);
 
   final Athlete? athlete;
   final List<Activity> activities;

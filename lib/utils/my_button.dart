@@ -27,8 +27,8 @@ class MyButton extends ElevatedButton {
           onPressed: onPressed,
         );
 
-  MyButton.save({Widget? child, VoidCallback? onPressed})
-      : super(
+  MyButton.save({Key? key, Widget? child, VoidCallback? onPressed})
+      : super(key: key,
           style: MyButtonStyle.raisedButtonStyle(color: MyColor.save),
           child: child ?? const Text('Save'),
           onPressed: onPressed,

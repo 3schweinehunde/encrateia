@@ -110,7 +110,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
+    records = RecordList<Event>(await (widget.lap!.records as Future<List<Event>>));
     weight = await Weight.getBy(
       athletesId: widget.athlete!.id,
       date: widget.lap!.startTime,

@@ -11,13 +11,13 @@ Future<void> capturePng({required GlobalKey widgetKey}) async {
       widgetKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
   final ui.Image image = await boundary.toImage(pixelRatio: 3.0);
   final ByteData byteData =
-      await (image.toByteData(format: ui.ImageByteFormat.png) as FutureOr<ByteData>);
+      await (image.toByteData(format: ui.ImageByteFormat.png) as Future<ByteData>);
   await writeByteToImageFile(byteData);
 }
 
 Future<String> writeByteToImageFile(ByteData byteData) async {
   final Directory dir = Platform.isAndroid
-      ? await (getExternalStorageDirectory() as FutureOr<Directory>)
+      ? await (getExternalStorageDirectory() as Future<Directory>)
       : await getApplicationDocumentsDirectory();
   final File imageFile = File('${dir.path}/screenshot.png');
   // ignore: avoid_slow_async_io

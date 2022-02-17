@@ -106,7 +106,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
 
   Future<void> getData() async {
     final Lap lap = widget.lap!;
-    records = RecordList<Event>(await (lap.records as FutureOr<List<Event>>));
+    records = RecordList<Event>(await (lap.records as Future<List<Event>>));
     setState(() => loading = false);
   }
 }
