@@ -16,7 +16,7 @@ dependencies:
   datetime_picker_formfield: 2.0.0
   dio: ^4.0.4
   dio_cookie_manager: ^2.0.0
-  fit_parser: ^0.2.0
+  fit_parser: ^2.0.0
   # fit_parser:
   #   path: '../fit_parser'
   flutter:
