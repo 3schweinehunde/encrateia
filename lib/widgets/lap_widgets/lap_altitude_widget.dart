@@ -13,7 +13,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_altitude_chart.dart';
 
 class LapAltitudeWidget extends StatefulWidget {
-  const LapAltitudeWidget({this.lap});
+  const LapAltitudeWidget({Key? key, this.lap}) : super(key: key);
 
   final Lap? lap;
 

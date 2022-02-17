@@ -12,11 +12,11 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class ActivityPowerPerHeartRateChart extends StatelessWidget {
-  const ActivityPowerPerHeartRateChart({
+  const ActivityPowerPerHeartRateChart({Key? key,
     this.records,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final RecordList<Event>? records;
   final Activity? activity;

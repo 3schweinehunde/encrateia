@@ -8,7 +8,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/power_duration_chart.dart';
 
 class LapPowerDurationWidget extends StatefulWidget {
-  const LapPowerDurationWidget({required this.lap});
+  const LapPowerDurationWidget({Key? key, required this.lap}) : super(key: key);
 
   final Lap? lap;
 

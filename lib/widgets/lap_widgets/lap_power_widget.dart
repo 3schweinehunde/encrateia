@@ -13,7 +13,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_power_chart.dart';
 
 class LapPowerWidget extends StatefulWidget {
-  const LapPowerWidget({this.lap});
+  const LapPowerWidget({Key? key, this.lap}) : super(key: key);
 
   final Lap? lap;
 

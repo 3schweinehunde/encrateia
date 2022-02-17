@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_ground_time_chart.dart';
 
 class LapGroundTimeWidget extends StatefulWidget {
-  const LapGroundTimeWidget({this.lap});
+  const LapGroundTimeWidget({Key? key, this.lap}) : super(key: key);
 
   final Lap? lap;
 

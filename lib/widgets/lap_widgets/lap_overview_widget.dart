@@ -7,10 +7,10 @@ import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 
 class LapOverviewWidget extends StatefulWidget {
-  const LapOverviewWidget({
+  const LapOverviewWidget({Key? key,
     this.lap,
     this.athlete,
-  });
+  }) : super(key: key);
 
   final Lap? lap;
   final Athlete? athlete;

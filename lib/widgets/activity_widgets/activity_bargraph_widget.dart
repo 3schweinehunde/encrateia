@@ -15,10 +15,10 @@ import '/utils/enums.dart';
 import '/utils/my_bar_chart.dart';
 
 class ActivityBarGraphWidget extends StatefulWidget {
-  const ActivityBarGraphWidget({
+  const ActivityBarGraphWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

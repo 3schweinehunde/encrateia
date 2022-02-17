@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
 
 class LapStrydCadenceWidget extends StatefulWidget {
-  const LapStrydCadenceWidget({this.lap});
+  const LapStrydCadenceWidget({Key? key, this.lap}) : super(key: key);
 
   final Lap? lap;
 

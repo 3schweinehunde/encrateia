@@ -13,10 +13,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_ecor_chart.dart';
 
 class LapEcorWidget extends StatefulWidget {
-  const LapEcorWidget({
+  const LapEcorWidget({Key? key,
     required this.lap,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Lap? lap;
   final Athlete? athlete;

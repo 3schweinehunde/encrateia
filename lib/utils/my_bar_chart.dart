@@ -8,7 +8,7 @@ import '/models/power_zone.dart';
 import 'bar_chart_painter.dart';
 
 class MyBarChart extends StatelessWidget {
-  MyBarChart({
+  MyBarChart({Key? key,
     int? width,
     int? height,
     required num value,
@@ -34,7 +34,7 @@ class MyBarChart extends StatelessWidget {
           powerZones: powerZones,
           heartRateZones: heartRateZones,
         ),
-        _showPercentage = showPercentage;
+        _showPercentage = showPercentage, super(key: key);
 
   MyBarChart.visualizeDistributions(
       {int? width, int? height, required List<BarZone> distributions})

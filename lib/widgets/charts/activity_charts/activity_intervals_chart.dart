@@ -15,13 +15,13 @@ import '/utils/graph_utils.dart';
 import '/utils/my_button.dart';
 
 class ActivityIntervalsChart extends StatefulWidget {
-  const ActivityIntervalsChart({
+  const ActivityIntervalsChart({Key? key,
     this.records,
     required this.activity,
     required this.athlete,
     required this.minimum,
     required this.maximum,
-  });
+  }) : super(key: key);
 
   final RecordList<Event>? records;
   final Activity? activity;

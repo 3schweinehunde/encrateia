@@ -15,10 +15,10 @@ import '/utils/my_button.dart';
 import '/utils/my_button_style.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
-  const AthleteBodyWeightWidget({
+  const AthleteBodyWeightWidget({Key? key,
     this.athlete,
     this.callBackFunction,
-  });
+  }) : super(key: key);
 
   final Athlete? athlete;
   final Function? callBackFunction;

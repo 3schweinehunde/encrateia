@@ -12,12 +12,12 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class ActivityEcorChart extends StatelessWidget {
-  const ActivityEcorChart({
+  const ActivityEcorChart({Key? key,
     this.records,
     required this.activity,
     required this.weight,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final RecordList<Event>? records;
   final Activity? activity;
