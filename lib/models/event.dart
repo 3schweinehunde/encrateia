@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:fit_parser/fit_parser.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 import '/model/model.dart' show DbEvent;
@@ -47,7 +48,7 @@ class Event {
     } else {
       // Use this debugger to include new event messages, such as heart rate alerts, ...
       debugger();
-      print(dataMessage.get('event'));
+      debugPrint(dataMessage.get('event'));
     }
   }
 

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:fit_parser/fit_parser.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
@@ -424,7 +425,7 @@ class Activity {
     final Directory appDocDir = await getApplicationDocumentsDirectory();
     final FitFile fitFile =
         FitFile(path: appDocDir.path + '/$stravaId.fit').parse();
-    print('Parsing .fit-File for »$name« done.');
+    debugPrint('Parsing .fit-File for »$name« done.');
 
     // delete left overs from prior runs:
     await _db.getDbEvents()!.delete();
@@ -488,7 +489,7 @@ class Activity {
         case 329:
           break;
         default:
-          print('Message number ' +
+          debugPrint('Message number ' +
               dataMessage.definitionMessage!.globalMessageNumber.toString() +
               ' unknown.');
           debugger();
@@ -652,10 +653,10 @@ class Activity {
           break;
 
         default:
-          print('Messages of type ' +
+          debugPrint('Messages of type ' +
               dataMessage.definitionMessage!.globalMessageName! +
               ' are not implemented yet.');
-          print(dataMessage.values.map((Value v) => v.fieldName).toList());
+          debugPrint(dataMessage.values.map((Value v) => v.fieldName).toList().toString());
         // Use this debugger to implement additional message types!
         // debugger();
       }

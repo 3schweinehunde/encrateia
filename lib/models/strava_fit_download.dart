@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:path_provider/path_provider.dart';
@@ -31,10 +32,10 @@ abstract class StravaFitDownload {
     final bool loggedIn = await logInIfNecessary(dio: dio, athlete: athlete);
 
     if (loggedIn == true) {
-      print('Starting download for $exportUri');
+      debugPrint('Starting download for $exportUri');
       final Response<dynamic> downloadResponse =
           await dio.download(exportUri, appDocDir.path + '/$id.fit');
-      print('Download fit file for activity $id completed.');
+      debugPrint('Download fit file for activity $id completed.');
 
       return downloadResponse.statusCode;
     } else {
@@ -46,7 +47,7 @@ abstract class StravaFitDownload {
       {required Dio dio, required Athlete? athlete}) async {
     Response<dynamic> dashboardResponse = await getDashboard(dio: dio);
     if (dashboardResponse.data.toString().contains('logged-in')) {
-      print('Already logged in to Strava');
+      debugPrint('Already logged in to Strava');
       return true;
     }
 
@@ -54,10 +55,10 @@ abstract class StravaFitDownload {
 
     dashboardResponse = await getDashboard(dio: dio);
     if (dashboardResponse.data.toString().contains('logged-in')) {
-      print('Successfully logged in to Strava');
+      debugPrint('Successfully logged in to Strava');
       return true;
     } else {
-      print('Error: Could not log in to Strava');
+      debugPrint('Error: Could not log in to Strava');
       return false;
     }
   }

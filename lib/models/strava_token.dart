@@ -23,7 +23,8 @@ Future<void> load({required encrateia.Athlete athlete}) async {
   await prefs.setString('strava_token_type', athlete.stravaTokenType!);
   await prefs.setString('strava_refreshToken', athlete.stravaRefreshToken!);
 
-  final TokenResponse _token = TokenResponse(
+  //FIXME: We don't use the Response yet!
+  TokenResponse(
       tokenType: athlete.stravaTokenType!,
       expiresAt: athlete.stravaExpiresAt!,
       expiresIn: athlete.stravaExpiresIn!,

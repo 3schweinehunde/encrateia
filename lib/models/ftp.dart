@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+
 import '/models/activity.dart';
 import '/models/activity_list.dart';
 import '/models/event.dart';
@@ -24,14 +26,14 @@ Future<List<Activity>> deriveBacklog({
 
 Future<void> catchUp({required List<Activity> backlog}) async {
   for (final Activity activity in backlog) {
-    print('calculating ftp for ${activity.name} ...');
+    debugPrint('calculating ftp for ${activity.name} ...');
     final List<Event> records = await activity.records;
     final List<Event> powerRecords = records
         .where((Event value) => value.power != null && value.power! > 100)
         .toList();
     activity.ftp = calculate(records: powerRecords);
     activity.save();
-    print('ftp calculated');
+    debugPrint('ftp calculated');
   }
 }
 

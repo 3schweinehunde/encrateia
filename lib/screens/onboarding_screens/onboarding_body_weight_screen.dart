@@ -65,13 +65,13 @@ class _OnBoardingBodyWeightScreenState
 
   Future<void> getData() async {
     final List<Weight> weights = await widget.athlete!.weights;
-    print(weights.length);
+    debugPrint(weights.length.toString());
     setState(() => weightHasBeenEntered = weights.isNotEmpty);
   }
 
   Future<void> nextButton() async {
     await widget.athlete!.save();
-    print('OK');
+    debugPrint('OK');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute<BuildContext>(

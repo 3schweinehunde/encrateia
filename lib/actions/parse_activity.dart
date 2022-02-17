@@ -24,7 +24,7 @@ Future<void> parseActivity({
     percentageStream = activity.parse(athlete: athlete);
     await for (final int value in percentageStream) {
       if (value == -2) {
-        var object = await flushbar?.dismiss();
+        await flushbar?.dismiss();
       } else if (value == -1) {
         await flushbar?.dismiss();
         flushbar = Flushbar<Object>(
