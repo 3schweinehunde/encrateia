@@ -218,26 +218,26 @@ class Activity {
 
   // Setter
 
-  set excluded(bool? value) => _db!.excluded = value;
-  set ftp(double? value) => _db!.ftp = value;
-  set manual(bool? value) => _db!.manual = value;
-  set maxHeartRate(int? value) => _db!.maxHeartRate = value;
-  set name(String? value) => _db!.name = value;
-  set nonParsable(bool? value) => _db!.nonParsable = value;
-  set state(String? value) => _db!.state = value;
-  set timeStamp(DateTime? value) => _db!.timeStamp = value;
-  set timeCreated(DateTime? value) => _db!.timeCreated = value;
-  set totalDistance(int? value) => _db!.totalDistance = value;
-  set totalAscent(int? value) => _db!.totalAscent = value;
-  set totalDescent(int? value) => _db!.totalDescent = value;
-  set avgHeartRate(int? value) => _db!.avgHeartRate = value;
-  set avgPower(double? value) => _db!.avgPower = value;
-  set sport(String? value) => _db!.sport = value;
-  set subSport(String? value) => _db!.subSport = value;
-  set movingTime(int? value) => _db!.movingTime = value;
+  set excluded(bool? value) => _db.excluded = value;
+  set ftp(double? value) => _db.ftp = value;
+  set manual(bool? value) => _db.manual = value;
+  set maxHeartRate(int? value) => _db.maxHeartRate = value;
+  set name(String? value) => _db.name = value;
+  set nonParsable(bool? value) => _db.nonParsable = value;
+  set state(String? value) => _db.state = value;
+  set timeStamp(DateTime? value) => _db.timeStamp = value;
+  set timeCreated(DateTime? value) => _db.timeCreated = value;
+  set totalDistance(int? value) => _db.totalDistance = value;
+  set totalAscent(int? value) => _db.totalAscent = value;
+  set totalDescent(int? value) => _db.totalDescent = value;
+  set avgHeartRate(int? value) => _db.avgHeartRate = value;
+  set avgPower(double? value) => _db.avgPower = value;
+  set sport(String? value) => _db.sport = value;
+  set subSport(String? value) => _db.subSport = value;
+  set movingTime(int? value) => _db.movingTime = value;
 
-  Future<BoolResult> delete() async => await _db!.delete();
-  Future<int?> save() async => await _db!.save();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int?> save() async => await _db.save();
 
   // intermediate data structures used for parsing
   late Lap currentLap;
@@ -327,13 +327,13 @@ class Activity {
   }
 
   Future<void> setState(String state) async {
-    _db!.state = state;
+    _db.state = state;
     await save();
   }
 
   Future<List<Event>> get records async {
     if (cachedRecords.isEmpty) {
-      final List<DbEvent> dbEventList = await _db!.getDbEvents()!.toList();
+      final List<DbEvent> dbEventList = await _db.getDbEvents()!.toList();
       final Iterable<DbEvent> dbRecordList =
           dbEventList.where((DbEvent dbEvent) => dbEvent.event == 'record');
       cachedRecords = dbRecordList.map(Event.exDb).toList();
@@ -342,7 +342,7 @@ class Activity {
   }
 
   Future<List<Event>> get events async {
-    final List<DbEvent> dbEventList = await _db!.getDbEvents()!.toList();
+    final List<DbEvent> dbEventList = await _db.getDbEvents()!.toList();
     return dbEventList.map(Event.exDb).toList();
   }
 
@@ -427,8 +427,8 @@ class Activity {
     print('Parsing .fit-File for »$name« done.');
 
     // delete left overs from prior runs:
-    await _db!.getDbEvents()!.delete();
-    await _db!.getDbLaps()!.delete();
+    await _db.getDbEvents()!.delete();
+    await _db.getDbLaps()!.delete();
     _db
       ..avgPower = null
       ..minPower = null
@@ -817,7 +817,7 @@ class Activity {
     if (cachedLaps.isEmpty) {
       int counter = 1;
 
-      final List<DbLap> dbLapList = await _db!.getDbLaps()!.toList();
+      final List<DbLap> dbLapList = await _db.getDbLaps()!.toList();
       cachedLaps = dbLapList.map(Lap.exDb).toList();
 
       for (final Lap lap in cachedLaps) {
@@ -835,7 +835,7 @@ class Activity {
       int counter = 1;
 
       final List<DbInterval> dbIntervalList =
-          await _db!.getDbIntervals()!.toList();
+          await _db.getDbIntervals()!.toList();
       cachedIntervals = dbIntervalList.map(encrateia.Interval.exDb).toList();
 
       for (final encrateia.Interval interval in cachedIntervals) {
@@ -853,8 +853,8 @@ class Activity {
     return exDb(dbActivity);
   }
 
-  Future<BoolResult> deleteEvents() async => await _db!.getDbEvents()!.delete();
-  Future<BoolResult> deleteLaps() async => await _db!.getDbLaps()!.delete();
+  Future<BoolResult> deleteEvents() async => await _db.getDbEvents()!.delete();
+  Future<BoolResult> deleteLaps() async => await _db.getDbLaps()!.delete();
 
   static Activity exDb(DbActivity? db) => Activity._fromDb(db);
 }

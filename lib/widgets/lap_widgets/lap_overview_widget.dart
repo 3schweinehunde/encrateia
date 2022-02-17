@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/models/athlete.dart';
 import '/models/lap.dart';
 import '/models/weight.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 
 class LapOverviewWidget extends StatefulWidget {

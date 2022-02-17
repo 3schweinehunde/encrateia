@@ -9,11 +9,11 @@ class PQText extends StatelessWidget {
   const PQText({
     required this.pq,
     this.value,
-    this.format,
+    this.format = DateTimeFormat.longDateTime,
   });
 
   final dynamic value;
-  final DateTimeFormat? format;
+  final DateTimeFormat format;
   final PQ pq;
 
   @override
@@ -93,8 +93,6 @@ class PQText extends StatelessWidget {
       case PQ.double:
         return Text((value as double).toStringAsPrecision(3));
     }
-    return const Text(
-        'the pq Parameter was not provided.'); // just to silence the dart analyzer
   }
 
   String get formatString {
@@ -112,7 +110,6 @@ class PQText extends StatelessWidget {
       case DateTimeFormat.compact:
         return 'dd.MM.yyyy\nH:mm:ss';
     }
-    return 'E d MMM yy, H:mm:ss';
   }
 
   bool get validValue {

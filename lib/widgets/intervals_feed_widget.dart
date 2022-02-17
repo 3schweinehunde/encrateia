@@ -10,7 +10,7 @@ import '/models/interval.dart' as encrateia;
 import '/models/tag.dart';
 import '/models/tag_group.dart';
 import '/screens/show_interval_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/my_color.dart';

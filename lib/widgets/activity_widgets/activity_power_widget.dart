@@ -6,7 +6,7 @@ import '/models/event.dart';
 import '/models/power_zone.dart';
 import '/models/power_zone_schema.dart';
 import '/models/record_list.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;

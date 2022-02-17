@@ -5,7 +5,7 @@ import '/models/athlete.dart';
 import '/models/interval.dart' as encrateia;
 import '/screens/select_interval_screen.dart';
 import '/screens/show_interval_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/my_button.dart';
 

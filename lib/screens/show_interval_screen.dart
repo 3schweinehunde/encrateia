@@ -218,7 +218,7 @@ class ShowIntervalScreen extends StatelessWidget {
   }) {
     return ElevatedButton.icon(
       style: MyButtonStyle.raisedButtonStyle(
-          color: color ?? MyColor.primary,
+          color: color,
           textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(

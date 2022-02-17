@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import '/models/athlete.dart';
 import '/models/weight.dart';
 import '/screens/add_weight_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';

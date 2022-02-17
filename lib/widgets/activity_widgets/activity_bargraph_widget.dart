@@ -10,7 +10,7 @@ import '/models/heart_rate_zone_schema.dart';
 import '/models/lap.dart';
 import '/models/power_zone.dart';
 import '/models/power_zone_schema.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/my_bar_chart.dart';
 
@@ -48,7 +48,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
     if (_powerZones.isNotEmpty && _laps.isNotEmpty) {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Container(
+        child: SizedBox(
           width: 500,
           child: ListView(padding: const EdgeInsets.all(20), children: <Widget>[
             Table(columnWidths: const <int, TableColumnWidth>{

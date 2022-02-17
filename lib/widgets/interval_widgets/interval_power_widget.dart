@@ -5,7 +5,7 @@ import '/models/interval.dart' as encrateia;
 import '/models/power_zone.dart';
 import '/models/power_zone_schema.dart';
 import '/models/record_list.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;
@@ -13,7 +13,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_power_chart.dart';
 
 class IntervalPowerWidget extends StatefulWidget {
-  const IntervalPowerWidget({Key?? key, this.interval}) : super(key: key);
+  const IntervalPowerWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

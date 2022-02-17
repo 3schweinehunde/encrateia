@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '/models/activity.dart';
 import '/models/athlete.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 
 class ActivityMetadataWidget extends StatelessWidget {

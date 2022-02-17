@@ -9,7 +9,7 @@ import '/models/athlete.dart';
 import '/screens/show_activity_screen.dart';
 import '/utils/enums.dart';
 import '/utils/my_button.dart';
-import 'PQText.dart';
+import 'pg_text.dart';
 
 class AthleteTimeSeriesChart extends StatefulWidget {
   const AthleteTimeSeriesChart({
@@ -169,7 +169,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
             ],
           ),
         if (selectedActivity != null)
-          Container(
+          SizedBox(
             height: 200,
             child: GridView.count(
               padding: const EdgeInsets.all(5),

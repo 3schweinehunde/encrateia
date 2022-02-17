@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/screens/show_activity_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 

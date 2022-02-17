@@ -1,7 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
-import '/actions/setupDemoAthlete.dart';
+import '/actions/setup_demo_athlete.dart';
 import '/models/athlete.dart';
 import '/screens/onboarding_screens/onboarding_finished_screen.dart';
 import '/screens/onboarding_screens/onboarding_strava_credentials_screen.dart';

@@ -65,7 +65,7 @@ class _ActivityWorkWidgetState extends State<ActivityWorkWidget> {
         );
       }
     } else {
-      return Container(
+      return SizedBox(
         height: 100,
         child: Center(
           child: Text(loading ? 'Loading' : 'No data available'),

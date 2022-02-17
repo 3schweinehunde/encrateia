@@ -1607,7 +1607,7 @@ class DbAthlete extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbAthlete] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -4307,7 +4307,7 @@ class DbActivity extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbActivity] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -6679,7 +6679,7 @@ class DbEvent extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbEvent] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -8952,7 +8952,7 @@ class DbLap extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbLap] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -11592,7 +11592,7 @@ class DbInterval extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbInterval] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -13116,7 +13116,7 @@ class DbWeight extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbWeight] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -14104,7 +14104,7 @@ class DbHeartRateZoneSchema extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbHeartRateZoneSchema] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -15114,7 +15114,7 @@ class DbHeartRateZone extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbHeartRateZone] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -16157,7 +16157,7 @@ class DbPowerZoneSchema extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbPowerZoneSchema] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -17149,7 +17149,7 @@ class DbPowerZone extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbPowerZone] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -18272,7 +18272,7 @@ class DbTag extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbTag] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -19305,7 +19305,7 @@ class DbTagGroup extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbTagGroup] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -20250,7 +20250,7 @@ class DbLapTagging extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbLapTagging] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -21177,7 +21177,7 @@ class DbActivityTagging extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbActivityTagging] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -22107,7 +22107,7 @@ class DbIntervalTagging extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbIntervalTagging] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -22994,7 +22994,7 @@ class DbLog extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    final msg =
+    const msg =
         'set useSoftDeleting:true in the table definition of [DbLog] to use this feature';
     throw UnimplementedError(msg);
   }

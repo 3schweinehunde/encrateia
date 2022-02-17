@@ -7,7 +7,7 @@ import '/models/interval.dart' as encrateia;
 import '/models/lap.dart';
 import '/models/record_list.dart';
 import '/screens/show_lap_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/my_button.dart';
 
