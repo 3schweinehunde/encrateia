@@ -8,9 +8,9 @@ import 'athlete_current_filter_widget.dart';
 
 class AthleteFilterWidget extends StatelessWidget {
   const AthleteFilterWidget(
-      {required this.athlete,
+      {Key? key, required this.athlete,
       required this.tagGroups,
-      required this.callBackFunction});
+      required this.callBackFunction}) : super(key: key);
 
   final Athlete? athlete;
   final List<TagGroup> tagGroups;

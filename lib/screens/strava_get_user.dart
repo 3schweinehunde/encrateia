@@ -8,7 +8,7 @@ import '/secrets/secrets.dart';
 import '/utils/my_color.dart';
 
 class StravaGetUser extends StatefulWidget {
-  const StravaGetUser({this.athlete});
+  const StravaGetUser({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

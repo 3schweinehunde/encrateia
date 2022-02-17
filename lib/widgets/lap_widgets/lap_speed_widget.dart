@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_speed_chart.dart';
 
 class LapSpeedWidget extends StatefulWidget {
-  const LapSpeedWidget({this.lap});
+  const LapSpeedWidget({Key? key, this.lap}) : super(key: key);
 
   final Lap? lap;
 

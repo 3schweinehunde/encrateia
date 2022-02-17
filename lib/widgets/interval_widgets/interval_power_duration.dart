@@ -8,7 +8,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/power_duration_chart.dart';
 
 class IntervalPowerDurationWidget extends StatefulWidget {
-  const IntervalPowerDurationWidget({required this.interval});
+  const IntervalPowerDurationWidget({Key? key, required this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

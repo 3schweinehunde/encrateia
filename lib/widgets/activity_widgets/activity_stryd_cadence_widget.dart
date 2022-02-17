@@ -13,9 +13,10 @@ import '/widgets/charts/activity_charts/activity_stryd_cadence_chart.dart';
 
 class ActivityStrydCadenceWidget extends StatefulWidget {
   const ActivityStrydCadenceWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

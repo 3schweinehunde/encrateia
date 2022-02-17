@@ -9,10 +9,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/power_duration_chart.dart';
 
 class ActivityPowerDurationWidget extends StatefulWidget {
-  const ActivityPowerDurationWidget({
+  const ActivityPowerDurationWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

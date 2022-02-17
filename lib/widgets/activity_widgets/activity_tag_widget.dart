@@ -8,10 +8,10 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class ActivityTagWidget extends StatefulWidget {
-  const ActivityTagWidget({
+  const ActivityTagWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

@@ -5,6 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '/utils/my_color.dart';
 
 class IntroductionTextScreen extends StatelessWidget {
+  const IntroductionTextScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

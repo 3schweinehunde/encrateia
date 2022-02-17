@@ -9,7 +9,7 @@ import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';
 
 class AthleteTagGroupWidget extends StatefulWidget {
-  const AthleteTagGroupWidget({this.athlete});
+  const AthleteTagGroupWidget({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

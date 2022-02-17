@@ -6,11 +6,11 @@ import '/models/record_list.dart';
 import '/utils/graph_utils.dart';
 
 class LapGroundTimeChart extends StatelessWidget {
-  const LapGroundTimeChart({
+  const LapGroundTimeChart({Key? key,
     required this.records,
     required this.minimum,
     required this.maximum,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double minimum;

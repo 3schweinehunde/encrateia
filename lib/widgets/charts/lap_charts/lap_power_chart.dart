@@ -8,10 +8,10 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class LapPowerChart extends StatelessWidget {
-  const LapPowerChart({
+  const LapPowerChart({Key? key,
     required this.records,
     this.powerZones,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final List<PowerZone>? powerZones;

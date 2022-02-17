@@ -6,7 +6,7 @@ import '/models/plot_point.dart';
 import '/models/power_duration.dart';
 
 class PowerDurationChart extends StatelessWidget {
-  const PowerDurationChart({this.records});
+  const PowerDurationChart({Key? key, this.records}) : super(key: key);
 
   final List<Event>? records;
 

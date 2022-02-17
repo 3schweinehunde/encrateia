@@ -9,10 +9,10 @@ import '/utils/my_button.dart';
 import '/utils/my_path.dart';
 
 class ActivityPathWidget extends StatefulWidget {
-  const ActivityPathWidget({
+  const ActivityPathWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

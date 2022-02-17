@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthletePowerRatioWidget extends StatefulWidget {
-  const AthletePowerRatioWidget({this.athlete});
+  const AthletePowerRatioWidget({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

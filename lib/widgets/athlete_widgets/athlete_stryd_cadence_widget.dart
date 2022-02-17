@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteStrydCadenceWidget extends StatefulWidget {
-  const AthleteStrydCadenceWidget({this.athlete});
+  const AthleteStrydCadenceWidget({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

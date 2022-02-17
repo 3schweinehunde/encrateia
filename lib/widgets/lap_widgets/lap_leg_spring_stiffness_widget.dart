@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 
 class LapLegSpringStiffnessWidget extends StatefulWidget {
-  const LapLegSpringStiffnessWidget({this.lap});
+  const LapLegSpringStiffnessWidget({Key? key, this.lap}) : super(key: key);
 
   final Lap? lap;
 

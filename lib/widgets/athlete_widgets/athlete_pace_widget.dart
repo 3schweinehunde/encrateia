@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthletePaceWidget extends StatefulWidget {
-  const AthletePaceWidget({this.athlete});
+  const AthletePaceWidget({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

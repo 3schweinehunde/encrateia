@@ -6,10 +6,10 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class AthleteCurrentFilterWidget extends StatelessWidget {
-  const AthleteCurrentFilterWidget({
+  const AthleteCurrentFilterWidget({Key? key,
     required this.athlete,
     required this.tagGroups,
-  });
+  }) : super(key: key);
 
   final Athlete? athlete;
   final List<TagGroup> tagGroups;

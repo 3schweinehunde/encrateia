@@ -9,10 +9,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/work_chart.dart';
 
 class ActivityWorkWidget extends StatefulWidget {
-  const ActivityWorkWidget({
+  const ActivityWorkWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

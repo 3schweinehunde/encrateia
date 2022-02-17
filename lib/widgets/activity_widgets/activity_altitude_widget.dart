@@ -12,10 +12,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_altitude_chart.dart';
 
 class ActivityAltitudeWidget extends StatefulWidget {
-  const ActivityAltitudeWidget({
+  const ActivityAltitudeWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

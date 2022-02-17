@@ -8,10 +8,10 @@ import '/utils/my_color.dart';
 import '/widgets/charts/activity_charts/activity_intervals_chart.dart';
 
 class SelectIntervalScreen extends StatefulWidget {
-  const SelectIntervalScreen({
+  const SelectIntervalScreen({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
 
 class LapVerticalOscillationWidget extends StatefulWidget {
-  const LapVerticalOscillationWidget({this.lap});
+  const LapVerticalOscillationWidget({Key? key, this.lap}) : super(key: key);
 
   final Lap? lap;
 

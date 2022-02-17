@@ -8,10 +8,10 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class LapHeartRateChart extends StatelessWidget {
-  const LapHeartRateChart({
+  const LapHeartRateChart({Key? key,
     required this.records,
     this.heartRateZones,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final List<HeartRateZone>? heartRateZones;

@@ -11,8 +11,7 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthletePowerWidget extends StatefulWidget {
-  const AthletePowerWidget({this.athlete});
-
+  const AthletePowerWidget({Key? key, this.athlete}) : super(key: key);
   final Athlete? athlete;
 
   @override

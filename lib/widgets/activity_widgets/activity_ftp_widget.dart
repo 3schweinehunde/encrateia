@@ -9,10 +9,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/ftp_chart.dart';
 
 class ActivityFtpWidget extends StatefulWidget {
-  const ActivityFtpWidget({
+  const ActivityFtpWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

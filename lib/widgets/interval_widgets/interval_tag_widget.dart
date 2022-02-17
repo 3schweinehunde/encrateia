@@ -8,10 +8,10 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class IntervalTagWidget extends StatefulWidget {
-  const IntervalTagWidget({
+  const IntervalTagWidget({Key? key,
     required this.interval,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final encrateia.Interval? interval;
   final Athlete? athlete;

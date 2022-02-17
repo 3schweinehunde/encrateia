@@ -12,7 +12,7 @@ import 'onboarding_screens/onboarding_introduction_screen.dart';
 import 'show_athlete_screen.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard();
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
   _DashboardState createState() => _DashboardState();
