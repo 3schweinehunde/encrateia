@@ -9,7 +9,7 @@ import '/utils/enums.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteEcorWidget extends StatefulWidget {
-  const AthleteEcorWidget({this.athlete});
+  const AthleteEcorWidget({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

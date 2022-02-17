@@ -12,10 +12,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_vertical_oscillation_chart.dart';
 
 class ActivityVerticalOscillationWidget extends StatefulWidget {
-  const ActivityVerticalOscillationWidget({
+  const ActivityVerticalOscillationWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

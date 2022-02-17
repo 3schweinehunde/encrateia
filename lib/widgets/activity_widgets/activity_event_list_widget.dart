@@ -11,10 +11,10 @@ import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';
 
 class ActivityEventListWidget extends StatefulWidget {
-  const ActivityEventListWidget({
+  const ActivityEventListWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

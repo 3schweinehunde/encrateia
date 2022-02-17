@@ -12,7 +12,7 @@ import '/utils/my_color.dart';
 import 'onboarding_standalone_credentials_screen.dart';
 
 class OnboardingCreateUserScreen extends StatefulWidget {
-  const OnboardingCreateUserScreen();
+  const OnboardingCreateUserScreen({Key? key}) : super(key: key);
 
   @override
   _OnboardingCreateUserScreenState createState() =>

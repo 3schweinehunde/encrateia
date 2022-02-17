@@ -13,7 +13,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_altitude_chart.dart';
 
 class IntervalAltitudeWidget extends StatefulWidget {
-  const IntervalAltitudeWidget({this.interval});
+  const IntervalAltitudeWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

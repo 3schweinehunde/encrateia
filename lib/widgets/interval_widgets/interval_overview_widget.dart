@@ -7,10 +7,10 @@ import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 
 class IntervalOverviewWidget extends StatefulWidget {
-  const IntervalOverviewWidget({
+  const IntervalOverviewWidget({Key? key,
     this.interval,
     this.athlete,
-  });
+  }) : super(key: key);
 
   final encrateia.Interval? interval;
   final Athlete? athlete;

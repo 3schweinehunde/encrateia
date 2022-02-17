@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
 
 class IntervalVerticalOscillationWidget extends StatefulWidget {
-  const IntervalVerticalOscillationWidget({this.interval});
+  const IntervalVerticalOscillationWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

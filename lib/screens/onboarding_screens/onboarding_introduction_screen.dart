@@ -7,7 +7,7 @@ import 'introduction_text_screen.dart';
 import 'onboarding_create_user.dart';
 
 class OnboardingIntroductionScreen extends StatelessWidget {
-  const OnboardingIntroductionScreen();
+  const OnboardingIntroductionScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class OnboardingIntroductionScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute<BuildContext>(
                             builder: (BuildContext _) =>
-                                IntroductionTextScreen(),
+                                const IntroductionTextScreen(),
                           ),
                         ),
                       ),

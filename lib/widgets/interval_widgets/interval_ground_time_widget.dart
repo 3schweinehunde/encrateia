@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_ground_time_chart.dart';
 
 class IntervalGroundTimeWidget extends StatefulWidget {
-  const IntervalGroundTimeWidget({this.interval});
+  const IntervalGroundTimeWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

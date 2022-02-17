@@ -13,7 +13,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
 
 class IntervalHeartRateWidget extends StatefulWidget {
-  const IntervalHeartRateWidget({this.interval});
+  const IntervalHeartRateWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

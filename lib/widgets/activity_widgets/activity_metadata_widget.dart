@@ -6,10 +6,10 @@ import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 
 class ActivityMetadataWidget extends StatelessWidget {
-  const ActivityMetadataWidget({
+  const ActivityMetadataWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

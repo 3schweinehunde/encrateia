@@ -13,10 +13,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_ecor_chart.dart';
 
 class IntervalEcorWidget extends StatefulWidget {
-  const IntervalEcorWidget({
+  const IntervalEcorWidget({Key? key,
     required this.interval,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final encrateia.Interval? interval;
   final Athlete? athlete;

@@ -10,7 +10,7 @@ import '/utils/image_utils.dart' as image_utils;
 import '/utils/my_button.dart';
 
 class AthleteDistanceWidget extends StatefulWidget {
-  const AthleteDistanceWidget({this.athlete});
+  const AthleteDistanceWidget({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

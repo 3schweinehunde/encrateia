@@ -12,10 +12,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_power_ratio_chart.dart';
 
 class ActivityPowerRatioWidget extends StatefulWidget {
-  const ActivityPowerRatioWidget({
+  const ActivityPowerRatioWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

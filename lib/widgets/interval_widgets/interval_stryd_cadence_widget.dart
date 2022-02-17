@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
 
 class IntervalStrydCadenceWidget extends StatefulWidget {
-  const IntervalStrydCadenceWidget({this.interval});
+  const IntervalStrydCadenceWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

@@ -10,11 +10,11 @@ import '/utils/graph_utils.dart';
 import '/utils/my_button.dart';
 
 class LapPaceChart extends StatefulWidget {
-  const LapPaceChart({
+  const LapPaceChart({Key? key,
     required this.records,
     required this.minimum,
     required this.maximum,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double minimum;

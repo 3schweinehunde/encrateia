@@ -10,10 +10,10 @@ import '/utils/enums.dart';
 import '/utils/my_button.dart';
 
 class IntervalsListWidget extends StatefulWidget {
-  const IntervalsListWidget({
+  const IntervalsListWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

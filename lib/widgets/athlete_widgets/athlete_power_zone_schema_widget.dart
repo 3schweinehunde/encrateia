@@ -9,10 +9,10 @@ import '/utils/my_button.dart';
 import '/utils/my_button_style.dart';
 
 class AthletePowerZoneSchemaWidget extends StatefulWidget {
-  const AthletePowerZoneSchemaWidget({
+  const AthletePowerZoneSchemaWidget({Key? key,
     this.athlete,
     this.callBackFunction,
-  });
+  }) : super(key: key);
 
   final Athlete? athlete;
   final Function? callBackFunction;

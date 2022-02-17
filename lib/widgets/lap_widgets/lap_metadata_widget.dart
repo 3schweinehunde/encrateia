@@ -5,7 +5,7 @@ import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 
 class LapMetadataWidget extends StatelessWidget {
-  const LapMetadataWidget({this.lap});
+  const LapMetadataWidget({Key? key, this.lap}) : super(key: key);
 
   final Lap? lap;
 

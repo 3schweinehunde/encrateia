@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_form_power_chart.dart';
 
 class IntervalFormPowerWidget extends StatefulWidget {
-  const IntervalFormPowerWidget({this.interval});
+  const IntervalFormPowerWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

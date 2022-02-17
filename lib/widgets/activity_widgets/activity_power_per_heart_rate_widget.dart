@@ -12,10 +12,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_power_per_heart_rate_chart.dart';
 
 class ActivityPowerPerHeartRateWidget extends StatefulWidget {
-  const ActivityPowerPerHeartRateWidget({
+  const ActivityPowerPerHeartRateWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

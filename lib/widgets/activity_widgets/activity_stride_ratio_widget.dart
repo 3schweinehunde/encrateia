@@ -12,10 +12,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_stride_ratio_chart.dart';
 
 class ActivityStrideRatioWidget extends StatefulWidget {
-  const ActivityStrideRatioWidget({
+  const ActivityStrideRatioWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

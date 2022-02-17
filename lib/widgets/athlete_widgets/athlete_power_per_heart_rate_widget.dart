@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthletePowerPerHeartRateWidget extends StatefulWidget {
-  const AthletePowerPerHeartRateWidget({this.athlete});
+  const AthletePowerPerHeartRateWidget({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

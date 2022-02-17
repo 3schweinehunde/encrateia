@@ -12,10 +12,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_speed_chart.dart';
 
 class ActivitySpeedWidget extends StatefulWidget {
-  const ActivitySpeedWidget({
+  const ActivitySpeedWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

@@ -12,14 +12,14 @@ import '/utils/my_button.dart';
 import 'pg_text.dart';
 
 class AthleteTimeSeriesChart extends StatefulWidget {
-  const AthleteTimeSeriesChart({
+  const AthleteTimeSeriesChart({Key? key,
     required this.athlete,
     required this.activities,
     required this.activityAttr,
     required this.chartTitleText,
     this.fullDecay,
     this.flipVerticalAxis,
-  });
+  }) : super(key: key);
 
   final Athlete? athlete;
   final List<Activity> activities;

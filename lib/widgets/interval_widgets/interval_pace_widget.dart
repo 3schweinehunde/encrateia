@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_pace_chart.dart';
 
 class IntervalPaceWidget extends StatefulWidget {
-  const IntervalPaceWidget({this.interval});
+  const IntervalPaceWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 
