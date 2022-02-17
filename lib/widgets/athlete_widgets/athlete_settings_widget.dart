@@ -6,7 +6,7 @@ import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';
 
 class AthleteSettingsWidget extends StatefulWidget {
-  const AthleteSettingsWidget({this.athlete});
+  const AthleteSettingsWidget({Key? key, this.athlete}) : super(key: key);
 
   final Athlete? athlete;
 

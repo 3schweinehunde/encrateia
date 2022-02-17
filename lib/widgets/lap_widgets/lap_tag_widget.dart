@@ -8,10 +8,10 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class LapTagWidget extends StatefulWidget {
-  const LapTagWidget({
+  const LapTagWidget({Key? key,
     required this.lap,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Lap? lap;
   final Athlete? athlete;

@@ -6,7 +6,7 @@ import '/utils/my_button_style.dart';
 import '/utils/my_color.dart';
 
 class OnboardingFinishedScreen extends StatelessWidget {
-  const OnboardingFinishedScreen();
+  const OnboardingFinishedScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

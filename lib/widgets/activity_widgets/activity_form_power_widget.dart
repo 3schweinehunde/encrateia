@@ -12,10 +12,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_form_power_chart.dart';
 
 class ActivityFormPowerWidget extends StatefulWidget {
-  const ActivityFormPowerWidget({
+  const ActivityFormPowerWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

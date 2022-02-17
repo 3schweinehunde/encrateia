@@ -12,10 +12,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_leg_spring_stiffness_chart.dart';
 
 class ActivityLegSpringStiffnessWidget extends StatefulWidget {
-  const ActivityLegSpringStiffnessWidget({
+  const ActivityLegSpringStiffnessWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

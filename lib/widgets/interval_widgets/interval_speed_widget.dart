@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_speed_chart.dart';
 
 class IntervalSpeedWidget extends StatefulWidget {
-  const IntervalSpeedWidget({this.interval});
+  const IntervalSpeedWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

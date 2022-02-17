@@ -14,10 +14,10 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_power_chart.dart';
 
 class ActivityPowerWidget extends StatefulWidget {
-  const ActivityPowerWidget({
+  const ActivityPowerWidget({Key? key,
     required this.activity,
     required this.athlete,
-  });
+  }) : super(key: key);
 
   final Activity? activity;
   final Athlete? athlete;

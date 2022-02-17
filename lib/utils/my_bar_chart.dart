@@ -37,14 +37,14 @@ class MyBarChart extends StatelessWidget {
         _showPercentage = showPercentage, super(key: key);
 
   MyBarChart.visualizeDistributions(
-      {int? width, int? height, required List<BarZone> distributions})
+      {Key? key, int? width, int? height, required List<BarZone> distributions})
       : _width = width?.toDouble() ?? 200.0,
         _height = height?.toDouble() ?? 30.0,
         _minimum = 0,
         _maximum = distributions.last.upper!.toDouble(),
         _value = distributions.last.upper!.toDouble(),
         _barZones = distributions,
-        _showPercentage = true;
+        _showPercentage = true, super(key: key);
 
   final double _width;
   final double _height;

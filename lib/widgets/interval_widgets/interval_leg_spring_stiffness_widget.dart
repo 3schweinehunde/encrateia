@@ -11,7 +11,7 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 
 class IntervalLegSpringStiffnessWidget extends StatefulWidget {
-  const IntervalLegSpringStiffnessWidget({this.interval});
+  const IntervalLegSpringStiffnessWidget({Key? key, this.interval}) : super(key: key);
 
   final encrateia.Interval? interval;
 

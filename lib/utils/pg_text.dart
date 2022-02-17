@@ -6,11 +6,11 @@ import 'enums.dart';
 
 @immutable
 class PQText extends StatelessWidget {
-  const PQText({
+  const PQText({Key? key,
     required this.pq,
     this.value,
     this.format = DateTimeFormat.longDateTime,
-  });
+  }) : super(key: key);
 
   final dynamic value;
   final DateTimeFormat format;
