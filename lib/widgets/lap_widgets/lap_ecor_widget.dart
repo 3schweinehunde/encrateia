@@ -14,12 +14,12 @@ import '/widgets/charts/lap_charts/lap_ecor_chart.dart';
 
 class LapEcorWidget extends StatefulWidget {
   const LapEcorWidget({
-    @required this.lap,
-    @required this.athlete,
+    required this.lap,
+    required this.athlete,
   });
 
-  final Lap lap;
-  final Athlete athlete;
+  final Lap? lap;
+  final Athlete? athlete;
 
   @override
   _LapEcorWidgetState createState() => _LapEcorWidgetState();
@@ -27,7 +27,7 @@ class LapEcorWidget extends StatefulWidget {
 
 class _LapEcorWidgetState extends State<LapEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  Weight weight;
+  Weight? weight;
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
@@ -50,9 +50,9 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
       final List<Event> powerRecords = records
           .where((Event value) =>
               value.power != null &&
-              value.power > 100 &&
+              value.power! > 100 &&
               value.speed != null &&
-              value.speed >= 1)
+              value.speed! >= 1)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -65,10 +65,10 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
                 key: widgetKey,
                 child: LapEcorChart(
                   records: RecordList<Event>(powerRecords),
-                  weight: weight.value,
+                  weight: weight!.value,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 0 W and speed > 1 m/s are shown.'),
               const Text('Swipe left/write to compare with other laps.'),
@@ -86,7 +86,7 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
               ]),
               ListTile(
                 leading: MyIcon.weight,
-                title: PQText(value: widget.lap.weight, pq: PQ.weight),
+                title: PQText(value: widget.lap!.weight, pq: PQ.weight),
                 subtitle: const Text('weight'),
               ),
               ListTile(
@@ -110,12 +110,12 @@ class _LapEcorWidgetState extends State<LapEcorWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
+    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
     weight = await Weight.getBy(
-      athletesId: widget.athlete.id,
-      date: widget.lap.startTime,
+      athletesId: widget.athlete!.id,
+      date: widget.lap!.startTime,
     );
-    widget.lap.weight = weight?.value;
+    widget.lap!.weight = weight?.value;
     setState(() => loading = false);
   }
 }

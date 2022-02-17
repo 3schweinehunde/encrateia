@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
 import '/model/model.dart' show DbIntervalTagging;
@@ -7,9 +6,9 @@ import '/models/tag.dart';
 
 class IntervalTagging {
   IntervalTagging({
-    @required encrateia.Interval interval,
-    @required Tag tag,
-    bool system,
+    required encrateia.Interval interval,
+    required Tag tag,
+    bool? system,
   }) {
     _db = DbIntervalTagging()
       ..intervalsId = interval.id
@@ -19,25 +18,25 @@ class IntervalTagging {
 
   IntervalTagging._fromDb(this._db);
 
-  DbIntervalTagging _db;
+  DbIntervalTagging? _db;
 
-  int get id => _db?.id;
-  int get intervalsId => _db.intervalsId;
-  int get tagsId => _db.tagsId;
+  int? get id => _db?.id;
+  int? get intervalsId => _db!.intervalsId;
+  int? get tagsId => _db!.tagsId;
 
   @override
   String toString() =>
       '< IntervalTagging | intervalId $intervalsId | tagId $tagsId >';
 
-  Future<BoolResult> delete() async => await _db.delete();
-  Future<int> save() async => await _db.save();
+  Future<BoolResult> delete() async => await _db!.delete();
+  Future<int?> save() async => await _db!.save();
 
   static Future<IntervalTagging> createBy({
-    @required encrateia.Interval interval,
-    @required Tag tag,
-    bool system,
+    required encrateia.Interval interval,
+    required Tag tag,
+    bool? system,
   }) async {
-    final DbIntervalTagging dbIntervalTagging = await DbIntervalTagging()
+    final DbIntervalTagging? dbIntervalTagging = await DbIntervalTagging()
         .select()
         .intervalsId
         .equals(interval.id)
@@ -59,11 +58,11 @@ class IntervalTagging {
     }
   }
 
-  static Future<IntervalTagging> getBy({
-    @required encrateia.Interval interval,
-    @required Tag tag,
+  static Future<IntervalTagging?> getBy({
+    required encrateia.Interval interval,
+    required Tag tag,
   }) async {
-    final DbIntervalTagging dbIntervalTagging = await DbIntervalTagging()
+    final DbIntervalTagging? dbIntervalTagging = await DbIntervalTagging()
         .select()
         .intervalsId
         .equals(interval.id)
@@ -77,17 +76,17 @@ class IntervalTagging {
   }
 
   static Future<void> deleteBy({
-    @required encrateia.Interval interval,
-    @required Tag tag,
+    required encrateia.Interval interval,
+    required Tag tag,
   }) async {
-    final DbIntervalTagging dbIntervalTagging = await DbIntervalTagging()
+    final DbIntervalTagging dbIntervalTagging = await (DbIntervalTagging()
         .select()
         .intervalsId
         .equals(interval.id)
         .and
         .tagsId
         .equals(tag.id)
-        .toSingle();
+        .toSingle() as FutureOr<DbIntervalTagging>);
     await dbIntervalTagging.delete();
   }
 

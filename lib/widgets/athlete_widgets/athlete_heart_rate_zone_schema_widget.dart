@@ -14,8 +14,8 @@ class AthleteHeartRateZoneSchemaWidget extends StatefulWidget {
     this.callBackFunction,
   });
 
-  final Athlete athlete;
-  final Function callBackFunction;
+  final Athlete? athlete;
+  final Function? callBackFunction;
 
   @override
   _AthleteHeartRateZoneSchemaWidgetState createState() =>
@@ -26,7 +26,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
     extends State<AthleteHeartRateZoneSchemaWidget> {
   List<HeartRateZoneSchema> heartRateZoneSchemas = <HeartRateZoneSchema>[];
   int offset = 0;
-  int rows;
+  late int rows;
 
   @override
   void initState() {
@@ -66,11 +66,11 @@ class _AthleteHeartRateZoneSchemaWidgetState
                   .sublist(offset, offset + rows)
                   .map((HeartRateZoneSchema heartRateZoneSchema) {
                 return DataRow(
-                  key: ValueKey<int>(heartRateZoneSchema.id),
+                  key: ValueKey<int?>(heartRateZoneSchema.id),
                   cells: <DataCell>[
                     DataCell(Text(DateFormat('d MMM yyyy')
-                        .format(heartRateZoneSchema.date))),
-                    DataCell(Text(heartRateZoneSchema.name)),
+                        .format(heartRateZoneSchema.date!))),
+                    DataCell(Text(heartRateZoneSchema.name!)),
                     DataCell(Text(heartRateZoneSchema.base.toString())),
                     DataCell(
                       MyIcon.edit,
@@ -105,7 +105,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                           builder: (BuildContext context) =>
                               AddHeartRateZoneSchemaScreen(
                             heartRateZoneSchema:
-                                HeartRateZoneSchema(athlete: widget.athlete),
+                                HeartRateZoneSchema(athlete: widget.athlete!),
                             numberOfSchemas: heartRateZoneSchemas.length,
                           ),
                         ),
@@ -162,7 +162,7 @@ You could also create a schema from scratch.
                       builder: (BuildContext context) =>
                           AddHeartRateZoneSchemaScreen(
                         heartRateZoneSchema:
-                            HeartRateZoneSchema(athlete: widget.athlete),
+                            HeartRateZoneSchema(athlete: widget.athlete!),
                         numberOfSchemas: heartRateZoneSchemas.length,
                       ),
                     ),
@@ -181,16 +181,16 @@ You could also create a schema from scratch.
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     heartRateZoneSchemas = await athlete.heartRateZoneSchemas;
     if (widget.callBackFunction != null) {
-      await widget.callBackFunction();
+      await widget.callBackFunction!();
     }
     setState(() {});
   }
 
   Future<void> likeGarmin() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final HeartRateZoneSchema heartRateZoneSchema =
         HeartRateZoneSchema.likeGarmin(athlete: athlete);
     await heartRateZoneSchema.save();
@@ -199,7 +199,7 @@ You could also create a schema from scratch.
   }
 
   Future<void> likeStefanDillinger() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final HeartRateZoneSchema heartRateZoneSchema =
         HeartRateZoneSchema.likeStefanDillinger(athlete: athlete);
     await heartRateZoneSchema.save();

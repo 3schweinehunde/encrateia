@@ -14,12 +14,12 @@ import '/widgets/charts/lap_charts/lap_ecor_chart.dart';
 
 class IntervalEcorWidget extends StatefulWidget {
   const IntervalEcorWidget({
-    @required this.interval,
-    @required this.athlete,
+    required this.interval,
+    required this.athlete,
   });
 
-  final encrateia.Interval interval;
-  final Athlete athlete;
+  final encrateia.Interval? interval;
+  final Athlete? athlete;
 
   @override
   _IntervalEcorWidgetState createState() => _IntervalEcorWidgetState();
@@ -27,7 +27,7 @@ class IntervalEcorWidget extends StatefulWidget {
 
 class _IntervalEcorWidgetState extends State<IntervalEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  Weight weight;
+  Weight? weight;
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
@@ -50,9 +50,9 @@ class _IntervalEcorWidgetState extends State<IntervalEcorWidget> {
       final List<Event> powerRecords = records
           .where((Event value) =>
               value.power != null &&
-              value.power > 100 &&
+              value.power! > 100 &&
               value.speed != null &&
-              value.speed >= 1)
+              value.speed! >= 1)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -65,10 +65,10 @@ class _IntervalEcorWidgetState extends State<IntervalEcorWidget> {
                 key: widgetKey,
                 child: LapEcorChart(
                   records: RecordList<Event>(powerRecords),
-                  weight: weight.value,
+                  weight: weight!.value,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 0 W and speed > 1 m/s are shown.'),
               const Text('Swipe left/write to compare with other intervals.'),
@@ -86,7 +86,7 @@ class _IntervalEcorWidgetState extends State<IntervalEcorWidget> {
               ]),
               ListTile(
                 leading: MyIcon.weight,
-                title: PQText(value: widget.interval.weight, pq: PQ.weight),
+                title: PQText(value: widget.interval!.weight, pq: PQ.weight),
                 subtitle: const Text('weight'),
               ),
               ListTile(
@@ -110,12 +110,12 @@ class _IntervalEcorWidgetState extends State<IntervalEcorWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
+    records = RecordList<Event>(await widget.interval!.records);
     weight = await Weight.getBy(
-      athletesId: widget.athlete.id,
-      date: widget.interval.timeStamp,
+      athletesId: widget.athlete!.id,
+      date: widget.interval!.timeStamp,
     );
-    widget.interval.weight = weight?.value;
+    widget.interval!.weight = weight?.value;
     setState(() => loading = false);
   }
 }

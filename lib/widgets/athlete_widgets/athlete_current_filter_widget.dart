@@ -7,24 +7,24 @@ import '/utils/my_color.dart';
 
 class AthleteCurrentFilterWidget extends StatelessWidget {
   const AthleteCurrentFilterWidget({
-    @required this.athlete,
-    @required this.tagGroups,
+    required this.athlete,
+    required this.tagGroups,
   });
 
-  final Athlete athlete;
+  final Athlete? athlete;
   final List<TagGroup> tagGroups;
 
   @override
   Widget build(BuildContext context) {
     bool empty;
 
-    if (tagGroups != null && athlete.filters.isNotEmpty) {
+    if (tagGroups != null && athlete!.filters.isNotEmpty) {
       final List<Widget> widgets = <Widget>[];
       widgets.add(const Text('Current Filter: '));
       for (final TagGroup tagGroup in tagGroups) {
         empty = true;
         for (final Tag tag in tagGroup.cachedTags) {
-          if (athlete.filters.contains(tag.id)) {
+          if (athlete!.filters.contains(tag.id)) {
             if (empty == true) {
               widgets.add(const Text('('));
               widgets.add(Text(' ${tagGroup.name}: '));
@@ -40,7 +40,7 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(1))),
                 label: Text(
-                  tag.name,
+                  tag.name!,
                   style: TextStyle(
                     color: MyColor.textColor(
                       selected: true,

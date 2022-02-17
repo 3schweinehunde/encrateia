@@ -13,12 +13,12 @@ import '/utils/my_button.dart';
 
 class LapsListWidget extends StatefulWidget {
   const LapsListWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _LapsListWidgetState createState() => _LapsListWidgetState();
@@ -56,9 +56,9 @@ class _LapsListWidgetState extends State<LapsListWidget> {
             ],
             rows: laps.map((Lap lap) {
               return DataRow(
-                key: ValueKey<int>(lap.id),
-                onSelectChanged: (bool selected) {
-                  if (selected) {
+                key: ValueKey<int?>(lap.id),
+                onSelectChanged: (bool? selected) {
+                  if (selected!) {
                     Navigator.push(
                       context,
                       MaterialPageRoute<BuildContext>(
@@ -103,12 +103,12 @@ class _LapsListWidgetState extends State<LapsListWidget> {
     }
   }
 
-  Future<void> copyToInterval({Lap lap}) async {
-    final List<Event> records = await lap.records;
+  Future<void> copyToInterval({required Lap lap}) async {
+    final List<Event> records = await (lap.records as FutureOr<List<Event>>);
 
     final encrateia.Interval interval = encrateia.Interval()
-      ..athletesId = widget.athlete.id
-      ..activitiesId = widget.activity.id
+      ..athletesId = widget.athlete!.id
+      ..activitiesId = widget.activity!.id
       ..firstRecordId = records.first.id
       ..firstDistance = records.first.distance
       ..lastRecordId = records.last.id
@@ -117,12 +117,12 @@ class _LapsListWidgetState extends State<LapsListWidget> {
     await interval.calculateAndSave(records: RecordList<Event>(records));
     await interval.copyTaggings(lap: lap);
     lap.copied = true;
-    widget.activity.cachedIntervals = <encrateia.Interval>[];
+    widget.activity!.cachedIntervals = <encrateia.Interval>[];
     setState(() {});
   }
 
   Future<void> getData() async {
-    laps = await widget.activity.laps;
+    laps = await widget.activity!.laps;
     setState(() => loading = false);
   }
 }

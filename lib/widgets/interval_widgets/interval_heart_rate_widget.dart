@@ -15,7 +15,7 @@ import '/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
 class IntervalHeartRateWidget extends StatefulWidget {
   const IntervalHeartRateWidget({this.interval});
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalHeartRateWidgetState createState() =>
@@ -25,8 +25,8 @@ class IntervalHeartRateWidget extends StatefulWidget {
 class _IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
-  HeartRateZoneSchema heartRateZoneSchema;
-  List<HeartRateZone> heartRateZones;
+  HeartRateZoneSchema? heartRateZoneSchema;
+  List<HeartRateZone>? heartRateZones;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
 
@@ -47,7 +47,7 @@ class _IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
     if (records.isNotEmpty) {
       final List<Event> heartRateRecords = records
           .where(
-              (Event value) => value.heartRate != null && value.heartRate > 0)
+              (Event value) => value.heartRate != null && value.heartRate! > 0)
           .toList();
 
       if (heartRateRecords.isNotEmpty) {
@@ -80,25 +80,25 @@ class _IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                    value: widget.interval.avgHeartRate, pq: PQ.heartRate),
+                    value: widget.interval!.avgHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('average heart rate'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
                 title: PQText(
-                    value: widget.interval.minHeartRate, pq: PQ.heartRate),
+                    value: widget.interval!.minHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
                 title: PQText(
-                    value: widget.interval.maxHeartRate, pq: PQ.heartRate),
+                    value: widget.interval!.maxHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('maximum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                    value: widget.interval.sdevHeartRate, pq: PQ.heartRate),
+                    value: widget.interval!.sdevHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('standard deviation heart rate'),
               ),
               ListTile(
@@ -122,10 +122,10 @@ class _IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
-    heartRateZoneSchema = await widget.interval.heartRateZoneSchema;
+    records = RecordList<Event>(await widget.interval!.records);
+    heartRateZoneSchema = await widget.interval!.heartRateZoneSchema;
     if (heartRateZoneSchema != null) {
-      heartRateZones = await heartRateZoneSchema.heartRateZones;
+      heartRateZones = await heartRateZoneSchema!.heartRateZones;
     } else {
       heartRateZones = <HeartRateZone>[];
     }

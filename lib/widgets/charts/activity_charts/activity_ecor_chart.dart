@@ -14,27 +14,27 @@ import '/utils/my_line_chart.dart';
 class ActivityEcorChart extends StatelessWidget {
   const ActivityEcorChart({
     this.records,
-    @required this.activity,
-    @required this.weight,
-    @required this.athlete,
+    required this.activity,
+    required this.weight,
+    required this.athlete,
   });
 
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-  final double weight;
+  final RecordList<Event>? records;
+  final Activity? activity;
+  final Athlete? athlete;
+  final double? weight;
 
   @override
   Widget build(BuildContext context) {
-    final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
+    final List<DoublePlotPoint> smoothedRecords = records!.toDoubleDataPoints(
       attribute: LapDoubleAttr.ecor,
-      amount: athlete.recordAggregationCount,
+      amount: athlete!.recordAggregationCount,
       weight: weight,
     );
 
-    final List<Series<DoublePlotPoint, int>> data =
-        <Series<DoublePlotPoint, int>>[
-      Series<DoublePlotPoint, int>(
+    final List<Series<DoublePlotPoint, int?>> data =
+        <Series<DoublePlotPoint, int?>>[
+      Series<DoublePlotPoint, int?>(
         id: 'Ecor',
         colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -44,10 +44,10 @@ class ActivityEcorChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: activity.laps,
+      future: activity!.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data!;
 
           return AspectRatio(
             aspectRatio:
@@ -56,7 +56,7 @@ class ActivityEcorChart extends StatelessWidget {
                     : 2,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.distance,
+              maxDomain: records!.last.distance!,
               laps: laps,
               domainTitle: 'Ecor (kJ/kg/km)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

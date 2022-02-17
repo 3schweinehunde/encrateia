@@ -13,7 +13,7 @@ import '/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 class LapLegSpringStiffnessWidget extends StatefulWidget {
   const LapLegSpringStiffnessWidget({this.lap});
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapLegSpringStiffnessWidgetState createState() =>
@@ -44,7 +44,7 @@ class _LapLegSpringStiffnessWidgetState
     if (records.isNotEmpty) {
       final List<Event> legSpringStiffnessRecords = records
           .where((Event value) =>
-              value.legSpringStiffness != null && value.legSpringStiffness > 0)
+              value.legSpringStiffness != null && value.legSpringStiffness! > 0)
           .toList();
 
       if (legSpringStiffnessRecords.isNotEmpty) {
@@ -57,8 +57,8 @@ class _LapLegSpringStiffnessWidgetState
                 key: widgetKey,
                 child: LapLegSpringStiffnessChart(
                   records: RecordList<Event>(legSpringStiffnessRecords),
-                  minimum: widget.lap.avgLegSpringStiffness / 1.20,
-                  maximum: widget.lap.avgLegSpringStiffness * 1.20,
+                  minimum: widget.lap!.avgLegSpringStiffness! / 1.20,
+                  maximum: widget.lap!.avgLegSpringStiffness! * 1.20,
                 ),
               ),
               const Text('Only records where leg spring stiffness > 0 kN/m '
@@ -79,7 +79,7 @@ class _LapLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.lap.avgLegSpringStiffness,
+                  value: widget.lap!.avgLegSpringStiffness,
                   pq: PQ.legSpringStiffness,
                 ),
                 subtitle: const Text('average leg spring stiffness'),
@@ -87,7 +87,7 @@ class _LapLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.lap.sdevLegSpringStiffness,
+                  value: widget.lap!.sdevLegSpringStiffness,
                   pq: PQ.legSpringStiffness,
                 ),
                 subtitle: const Text('standard leg spring stiffness'),
@@ -116,7 +116,7 @@ class _LapLegSpringStiffnessWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
+    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
     setState(() => loading = false);
   }
 }

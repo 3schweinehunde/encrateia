@@ -9,9 +9,9 @@ import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 
 class ActivitiesListWidget extends StatefulWidget {
-  const ActivitiesListWidget({Key key, this.athlete}) : super(key: key);
+  const ActivitiesListWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _ActivitiesListWidgetState createState() => _ActivitiesListWidgetState();
@@ -19,12 +19,12 @@ class ActivitiesListWidget extends StatefulWidget {
 
 class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   List<Activity> activities = <Activity>[];
-  Flushbar<Object> flushbar;
+  Flushbar<Object>? flushbar;
 
   @override
   void initState() {
     getActivities();
-    WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
@@ -84,7 +84,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     ]);
   }
 
-  Icon sportsIcon({String sport}) {
+  Icon sportsIcon({String? sport}) {
     switch (sport) {
       case 'running':
         return MyIcon.running;
@@ -95,12 +95,12 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     }
   }
 
-  Future<void> delete({Activity activity}) async {
+  Future<void> delete({required Activity activity}) async {
     await activity.delete();
     getActivities();
   }
 
-  Future<void> download({Activity activity}) async {
+  Future<void> download({required Activity activity}) async {
     flushbar = Flushbar<Object>(
       message: 'Download .fit-File for »${activity.name}«',
       duration: const Duration(seconds: 10),
@@ -118,7 +118,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     setState(() {});
   }
 
-  Future<void> parse({Activity activity}) async {
+  Future<void> parse({required Activity activity}) async {
     Flushbar<Object> flushbar = Flushbar<Object>(
       message: '0% of storing »${activity.name}«',
       duration: const Duration(seconds: 10),
@@ -141,19 +141,19 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   }
 
   Future<void> getActivities() async {
-    activities = await widget.athlete.activities;
+    activities = await widget.athlete!.activities;
     setState(() {});
   }
 
   void showMyFlushbar() {
-    if (widget.athlete.stravaId != null) {
-      if (widget.athlete.email == null) {
+    if (widget.athlete!.stravaId != null) {
+      if (widget.athlete!.email == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava email not provided yet!',
           duration: const Duration(seconds: 3),
-          backgroundColor: Colors.yellow[900],
+          backgroundColor: Colors.yellow[900]!,
         )..show(context);
-      } else if (widget.athlete.password == null) {
+      } else if (widget.athlete!.password == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava password not provided yet!',
           duration: const Duration(seconds: 3),

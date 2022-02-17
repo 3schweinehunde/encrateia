@@ -14,27 +14,27 @@ import '/utils/my_line_chart.dart';
 class ActivityFormPowerChart extends StatelessWidget {
   const ActivityFormPowerChart({
     this.records,
-    @required this.activity,
-    @required this.athlete,
-    @required this.minimum,
-    @required this.maximum,
+    required this.activity,
+    required this.athlete,
+    required this.minimum,
+    required this.maximum,
   });
 
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
+  final RecordList<Event>? records;
+  final Activity? activity;
+  final Athlete? athlete;
   final double minimum;
   final double maximum;
 
   @override
   Widget build(BuildContext context) {
-    final List<IntPlotPoint> smoothedRecords = records.toIntDataPoints(
+    final List<IntPlotPoint> smoothedRecords = records!.toIntDataPoints(
       attribute: LapIntAttr.formPower,
-      amount: athlete.recordAggregationCount,
+      amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
-      Series<IntPlotPoint, int>(
+    final List<Series<IntPlotPoint, int?>> data = <Series<IntPlotPoint, int?>>[
+      Series<IntPlotPoint, int?>(
         id: 'Form power',
         colorFn: (_, __) => Color.black,
         domainFn: (IntPlotPoint record, _) => record.domain,
@@ -44,10 +44,10 @@ class ActivityFormPowerChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: activity.laps,
+      future: activity!.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data!;
           return AspectRatio(
             aspectRatio:
                 MediaQuery.of(context).orientation == Orientation.portrait
@@ -55,7 +55,7 @@ class ActivityFormPowerChart extends StatelessWidget {
                     : 2,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.distance,
+              maxDomain: records!.last.distance!,
               laps: laps,
               domainTitle: 'Form Power (W)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

@@ -6,10 +6,10 @@ import '/models/athlete.dart';
 import '/models/log.dart';
 
 Future<void> parseActivity({
-  @required BuildContext context,
-  @required Activity activity,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Activity activity,
+  required Athlete athlete,
+  required Flushbar<Object>? flushbar,
 }) async {
   await flushbar?.dismiss();
   flushbar = Flushbar<Object>(

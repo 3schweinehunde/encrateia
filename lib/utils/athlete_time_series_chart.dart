@@ -13,32 +13,32 @@ import 'PQText.dart';
 
 class AthleteTimeSeriesChart extends StatefulWidget {
   const AthleteTimeSeriesChart({
-    @required this.athlete,
-    @required this.activities,
-    @required this.activityAttr,
-    @required this.chartTitleText,
+    required this.athlete,
+    required this.activities,
+    required this.activityAttr,
+    required this.chartTitleText,
     this.fullDecay,
     this.flipVerticalAxis,
   });
 
-  final Athlete athlete;
+  final Athlete? athlete;
   final List<Activity> activities;
   final ActivityAttr activityAttr;
   final String chartTitleText;
-  final int fullDecay;
-  final bool flipVerticalAxis;
+  final int? fullDecay;
+  final bool? flipVerticalAxis;
 
   @override
   _AthleteTimeSeriesChartState createState() => _AthleteTimeSeriesChartState();
 }
 
 class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
-  Activity selectedActivity;
-  List<Activity> displayedActivities;
+  Activity? selectedActivity;
+  late List<Activity> displayedActivities;
   int pagingOffset = 0;
   final int xAxesDays = 60;
   final int amountDisplayed = 40;
-  int numberOfActivities;
+  late int numberOfActivities;
 
   @override
   void initState() {
@@ -50,7 +50,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
     final List<SeriesDatum<dynamic>> selectedDatum = model.selectedDatum;
 
     if (selectedDatum.isNotEmpty) {
-      setState(() => selectedActivity = selectedDatum[1].datum as Activity);
+      setState(() => selectedActivity = selectedDatum[1].datum as Activity?);
     }
   }
 
@@ -62,16 +62,16 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Series<Activity, DateTime>> data = <Series<Activity, DateTime>>[
-      Series<Activity, DateTime>(
+    final List<Series<Activity, DateTime?>> data = <Series<Activity, DateTime?>>[
+      Series<Activity, DateTime?>(
         id: widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.timeCreated,
         measureFn: (Activity activity, _) =>
-            activity.getAttribute(widget.activityAttr) as num,
+            activity.getAttribute(widget.activityAttr) as num?,
         data: displayedActivities,
       ),
-      Series<Activity, DateTime>(
+      Series<Activity, DateTime?>(
         id: 'gliding_' + widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.timeCreated,
@@ -88,7 +88,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                   ? 1
                   : 2,
           child: TimeSeriesChart(
-            data,
+            data as List<Series<dynamic, DateTime>>,
             animate: true,
             flipVerticalAxis: widget.flipVerticalAxis ?? false,
             selectionModels: <SelectionModelConfig<DateTime>>[
@@ -182,7 +182,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
               mainAxisSpacing: 3,
               children: <Widget>[
                 MyButton.activity(
-                  child: Text(selectedActivity.name),
+                  child: Text(selectedActivity!.name!),
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute<BuildContext>(
@@ -195,7 +195,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                 ),
                 ListTile(
                   title: PQText(
-                    value: selectedActivity.timeCreated,
+                    value: selectedActivity!.timeCreated,
                     pq: PQ.dateTime,
                     format: DateTimeFormat.longDateTime,
                   ),
@@ -203,30 +203,30 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                 ),
                 ListTile(
                   title: PQText(
-                    value: selectedActivity.distance,
+                    value: selectedActivity!.distance,
                     pq: PQ.distance,
                   ),
                   subtitle: const Text('Distance'),
                 ),
                 ListTile(
                   title: PQText(
-                    value: selectedActivity.avgSpeed,
+                    value: selectedActivity!.avgSpeed,
                     pq: PQ.paceFromSpeed,
                   ),
                   subtitle: const Text('Average speed'),
                 ),
                 ListTile(
-                  title: PQText(value: selectedActivity.avgPower, pq: PQ.power),
+                  title: PQText(value: selectedActivity!.avgPower, pq: PQ.power),
                   subtitle: const Text('Average power'),
                 ),
-                if (selectedActivity.ftp != null)
+                if (selectedActivity!.ftp != null)
                   ListTile(
-                    title: PQText(value: selectedActivity.ftp, pq: PQ.power),
+                    title: PQText(value: selectedActivity!.ftp, pq: PQ.power),
                     subtitle: const Text('FTP'),
                   ),
                 ListTile(
                     title: PQText(
-                      value: selectedActivity.avgHeartRate,
+                      value: selectedActivity!.avgHeartRate,
                       pq: PQ.heartRate,
                     ),
                     subtitle: const Text('Average heart rate')),

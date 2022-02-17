@@ -22,7 +22,7 @@ class OnboardingCreateUserScreen extends StatefulWidget {
 class _OnboardingCreateUserScreenState
     extends State<OnboardingCreateUserScreen> {
   Athlete athlete = Athlete();
-  Flushbar<Object> flushbar;
+  Flushbar<Object>? flushbar;
 
   @override
   Widget build(BuildContext context) {

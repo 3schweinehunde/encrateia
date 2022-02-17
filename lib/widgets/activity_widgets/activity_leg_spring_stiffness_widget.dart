@@ -13,12 +13,12 @@ import '/widgets/charts/activity_charts/activity_leg_spring_stiffness_chart.dart
 
 class ActivityLegSpringStiffnessWidget extends StatefulWidget {
   const ActivityLegSpringStiffnessWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityLegSpringStiffnessWidgetState createState() =>
@@ -43,7 +43,7 @@ class _ActivityLegSpringStiffnessWidgetState
     if (records.isNotEmpty) {
       final List<Event> legSpringStiffnessRecords = records
           .where((Event value) =>
-              value.legSpringStiffness != null && value.legSpringStiffness > 0)
+              value.legSpringStiffness != null && value.legSpringStiffness! > 0)
           .toList();
 
       if (legSpringStiffnessRecords.isNotEmpty) {
@@ -60,7 +60,7 @@ class _ActivityLegSpringStiffnessWidgetState
                   athlete: widget.athlete,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'leg spring stiffness > 0 kN/m are shown.'),
               Row(children: <Widget>[
@@ -78,7 +78,7 @@ class _ActivityLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.activity.avgLegSpringStiffness,
+                  value: widget.activity!.avgLegSpringStiffness,
                   pq: PQ.legSpringStiffness,
                 ),
                 subtitle: const Text('average leg spring stiffness'),
@@ -86,7 +86,7 @@ class _ActivityLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.activity.sdevLegSpringStiffness,
+                  value: widget.activity!.sdevLegSpringStiffness,
                   pq: PQ.legSpringStiffness,
                 ),
                 subtitle: const Text('standard deviation leg spring stiffness'),
@@ -112,7 +112,7 @@ class _ActivityLegSpringStiffnessWidgetState
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
     setState(() => loading = false);
   }

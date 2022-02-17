@@ -7,13 +7,13 @@ import 'enums.dart';
 @immutable
 class PQText extends StatelessWidget {
   const PQText({
-    @required this.pq,
+    required this.pq,
     this.value,
     this.format,
   });
 
   final dynamic value;
-  final DateTimeFormat format;
+  final DateTimeFormat? format;
   final PQ pq;
 
   @override
@@ -50,9 +50,9 @@ class PQText extends StatelessWidget {
       case PQ.powerPerHeartRate:
         return Text((value as num).toStringAsFixed(2) + ' W/bpm');
       case PQ.calories:
-        return Text((value as num).toString() + ' kcal');
+        return Text((value as num?).toString() + ' kcal');
       case PQ.elevation:
-        return Text((value as num).toString() + ' m');
+        return Text((value as num?).toString() + ' m');
       case PQ.cadence:
         return Text(((value as num) * 2).toStringAsPrecision(3) + ' spm');
       case PQ.duration:
@@ -60,17 +60,17 @@ class PQText extends StatelessWidget {
       case PQ.shortDuration:
         return Text(Duration(seconds: value as int).asShortString());
       case PQ.trainingEffect:
-        return Text((value as num).toString());
+        return Text((value as num?).toString());
       case PQ.text:
         return Text(value as String);
       case PQ.temperature:
-        return Text((value as num).toString() + '°C');
+        return Text((value as num?).toString() + '°C');
       case PQ.verticalOscillation:
         return Text((value as num).toStringAsFixed(2) + ' cm');
       case PQ.cycles:
-        return Text((value as num).toString() + ' cycles');
+        return Text((value as num?).toString() + ' cycles');
       case PQ.integer:
-        return Text((value as num).toString());
+        return Text((value as num?).toString());
       case PQ.fractionalCadence:
         return Text((value as num).toStringAsFixed(2));
       case PQ.percentage:
@@ -79,9 +79,9 @@ class PQText extends StatelessWidget {
       case PQ.groundTime:
         return Text((value as num).toStringAsPrecision(4) + ' ms');
       case PQ.longitude:
-        return Text((value as double).semicirclesToString() + ' E');
+        return Text((value as double?)!.semicirclesToString() + ' E');
       case PQ.latitude:
-        return Text((value as double).semicirclesToString() + ' N');
+        return Text((value as double?)!.semicirclesToString() + ' N');
       case PQ.speed:
         return Text(((value as num) * 3.6).toStringAsFixed(2) + ' km/h');
       case PQ.speedPerHeartRate:

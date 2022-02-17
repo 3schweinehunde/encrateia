@@ -9,19 +9,19 @@ import '/utils/my_color.dart';
 
 class LapTagWidget extends StatefulWidget {
   const LapTagWidget({
-    @required this.lap,
-    @required this.athlete,
+    required this.lap,
+    required this.athlete,
   });
 
-  final Lap lap;
-  final Athlete athlete;
+  final Lap? lap;
+  final Athlete? athlete;
 
   @override
   _LapTagWidgetState createState() => _LapTagWidgetState();
 }
 
 class _LapTagWidgetState extends State<LapTagWidget> {
-  List<TagGroup> tagGroups;
+  List<TagGroup>? tagGroups;
 
   @override
   void initState() {
@@ -51,40 +51,40 @@ class _LapTagWidgetState extends State<LapTagWidget> {
             mainAxisSpacing: 3,
             crossAxisSpacing: 3,
             childAspectRatio: 3),
-        itemCount: tagGroups.length,
+        itemCount: tagGroups!.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups[index].name + '\n'),
+            title: Text(tagGroups![index].name! + '\n'),
             subtitle: Wrap(
               spacing: 15,
               children: <Widget>[
-                for (Tag tag in tagGroups[index].cachedTags)
+                for (Tag tag in tagGroups![index].cachedTags)
                   InputChip(
                     isEnabled: tag.system != true,
                     label: Text(
-                      tag.name,
+                      tag.name!,
                       style: TextStyle(
                         color: MyColor.textColor(
                           selected: tag.selected,
-                          backgroundColor: Color(tag.color),
+                          backgroundColor: Color(tag.color!),
                         ),
                       ),
                     ),
                     avatar: CircleAvatar(
-                      backgroundColor: Color(tag.color),
+                      backgroundColor: Color(tag.color!),
                     ),
                     onSelected: (bool selected) {
                       setState(() {
                         if (selected) {
-                          LapTagging.createBy(lap: widget.lap, tag: tag);
+                          LapTagging.createBy(lap: widget.lap!, tag: tag);
                         } else {
-                          LapTagging.deleteBy(lap: widget.lap, tag: tag);
+                          LapTagging.deleteBy(lap: widget.lap!, tag: tag);
                         }
                         tag.selected = selected;
                       });
                     },
                     selected: tag.selected,
-                    selectedColor: Color(tag.color),
+                    selectedColor: Color(tag.color!),
                     backgroundColor: MyColor.white,
                     elevation: 3,
                     padding: const EdgeInsets.all(10),
@@ -99,8 +99,8 @@ class _LapTagWidgetState extends State<LapTagWidget> {
 
   Future<void> getData() async {
     tagGroups = await TagGroup.includingLapTaggings(
-      athlete: widget.athlete,
-      lap: widget.lap,
+      athlete: widget.athlete!,
+      lap: widget.lap!,
     );
     setState(() {});
   }

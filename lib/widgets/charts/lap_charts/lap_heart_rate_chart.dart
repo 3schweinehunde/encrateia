@@ -9,22 +9,22 @@ import '/utils/my_line_chart.dart';
 
 class LapHeartRateChart extends StatelessWidget {
   const LapHeartRateChart({
-    @required this.records,
+    required this.records,
     this.heartRateZones,
   });
 
   final RecordList<Event> records;
-  final List<HeartRateZone> heartRateZones;
+  final List<HeartRateZone>? heartRateZones;
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.distance.round();
+    final int offset = records.first.distance!.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Heart Rate',
         colorFn: (_, __) => MaterialPalette.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
         measureFn: (Event record, _) => record.heartRate,
         data: records,
       )
@@ -52,7 +52,7 @@ class LapHeartRateChart extends StatelessWidget {
         behaviors: <ChartBehavior<num>>[
               RangeAnnotation<num>(
                 GraphUtils.heartRateZoneAnnotations(
-                    heartRateZones: heartRateZones),
+                    heartRateZones: heartRateZones) as List<AnnotationSegment<Object>>,
               ),
             ] +
             GraphUtils.axis(

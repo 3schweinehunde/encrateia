@@ -71,7 +71,7 @@ class MyColor {
   static Color interval = pinkRose;
 
   static Color textColor({
-    @required Color backgroundColor,
+    required Color backgroundColor,
     bool selected = true,
   }) {
     if (selected) {

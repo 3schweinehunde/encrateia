@@ -3,7 +3,7 @@ import 'package:strava_flutter/domain/model/model_authentication_response.dart';
 
 import '/models/athlete.dart' as encrateia;
 
-Future<void> persist({encrateia.Athlete athlete}) async {
+Future<void> persist({required encrateia.Athlete athlete}) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   athlete
     ..stravaAccessToken = prefs.getString('strava_accessToken')
@@ -15,23 +15,23 @@ Future<void> persist({encrateia.Athlete athlete}) async {
   await athlete.save();
 }
 
-Future<void> load({encrateia.Athlete athlete}) async {
+Future<void> load({required encrateia.Athlete athlete}) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('strava_accessToken', athlete.stravaAccessToken);
-  await prefs.setInt('strava_expires_at', athlete.stravaExpiresAt);
-  await prefs.setInt('strava_expires_in', athlete.stravaExpiresIn);
-  await prefs.setString('strava_token_type', athlete.stravaTokenType);
-  await prefs.setString('strava_refreshToken', athlete.stravaRefreshToken);
+  await prefs.setString('strava_accessToken', athlete.stravaAccessToken!);
+  await prefs.setInt('strava_expires_at', athlete.stravaExpiresAt!);
+  await prefs.setInt('strava_expires_in', athlete.stravaExpiresIn!);
+  await prefs.setString('strava_token_type', athlete.stravaTokenType!);
+  await prefs.setString('strava_refreshToken', athlete.stravaRefreshToken!);
 
   final TokenResponse _token = TokenResponse(
-      tokenType: athlete.stravaTokenType,
-      expiresAt: athlete.stravaExpiresAt,
-      expiresIn: athlete.stravaExpiresIn,
-      accessToken: athlete.stravaAccessToken,
-      refreshToken: athlete.stravaRefreshToken);
+      tokenType: athlete.stravaTokenType!,
+      expiresAt: athlete.stravaExpiresAt!,
+      expiresIn: athlete.stravaExpiresIn!,
+      accessToken: athlete.stravaAccessToken!,
+      refreshToken: athlete.stravaRefreshToken!);
 }
 
-Future<void> delete({encrateia.Athlete athlete}) async {
+Future<void> delete({required encrateia.Athlete athlete}) async {
   athlete
     ..stravaAccessToken = null
     ..stravaExpiresAt = null

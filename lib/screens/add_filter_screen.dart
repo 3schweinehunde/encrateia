@@ -8,18 +8,18 @@ import '/utils/my_color.dart';
 
 class AddFilterScreen extends StatefulWidget {
   const AddFilterScreen({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AddFilterScreenState createState() => _AddFilterScreenState();
 }
 
 class _AddFilterScreenState extends State<AddFilterScreen> {
-  List<TagGroup> tagGroups;
+  List<TagGroup>? tagGroups;
 
   @override
   void initState() {
@@ -56,21 +56,21 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
                   crossAxisSpacing: 3,
                   childAspectRatio: 3,
                 ),
-                itemCount: tagGroups == null ? 0 : tagGroups.length,
+                itemCount: tagGroups == null ? 0 : tagGroups!.length,
                 itemBuilder: (BuildContext context, int index) => Card(
                   child: ListTile(
-                    title: Text(tagGroups[index].name),
+                    title: Text(tagGroups![index].name!),
                     subtitle: Wrap(
                       spacing: 10,
                       children: <Widget>[
-                        for (Tag tag in tagGroups[index].cachedTags)
+                        for (Tag tag in tagGroups![index].cachedTags)
                           FilterChip(
                             label: Text(
-                              tag.name,
+                              tag.name!,
                               style: TextStyle(
                                 color: MyColor.textColor(
                                   selected:
-                                      widget.athlete.filters.contains(tag.id),
+                                      widget.athlete!.filters.contains(tag.id),
                                   backgroundColor: Color(tag.color ?? 99999),
                                 ),
                               ),
@@ -81,14 +81,14 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
                             onSelected: (bool selected) {
                               setState(() {
                                 if (selected) {
-                                  widget.athlete.filters.add(tag.id);
+                                  widget.athlete!.filters.add(tag.id);
                                 } else {
-                                  widget.athlete.filters.removeWhere(
-                                      (int tagId) => tagId == tag.id);
+                                  widget.athlete!.filters.removeWhere(
+                                      (int? tagId) => tagId == tag.id);
                                 }
                               });
                             },
-                            selected: widget.athlete.filters.contains(tag.id),
+                            selected: widget.athlete!.filters.contains(tag.id),
                             selectedColor: Color(tag.color ?? 99999),
                             backgroundColor: MyColor.white,
                             elevation: 3,
@@ -116,7 +116,7 @@ class _AddFilterScreenState extends State<AddFilterScreen> {
   }
 
   Future<void> getData() async {
-    tagGroups = await widget.athlete.tagGroups;
+    tagGroups = await widget.athlete!.tagGroups;
     setState(() {});
   }
 }

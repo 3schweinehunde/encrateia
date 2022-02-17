@@ -13,7 +13,7 @@ import '/widgets/charts/lap_charts/lap_ground_time_chart.dart';
 class IntervalGroundTimeWidget extends StatefulWidget {
   const IntervalGroundTimeWidget({this.interval});
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalGroundTimeWidgetState createState() =>
@@ -43,7 +43,7 @@ class _IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {
     if (records.isNotEmpty) {
       final List<Event> groundTimeRecords = records
           .where(
-              (Event value) => value.groundTime != null && value.groundTime > 0)
+              (Event value) => value.groundTime != null && value.groundTime! > 0)
           .toList();
 
       if (groundTimeRecords.isNotEmpty) {
@@ -56,8 +56,8 @@ class _IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {
                 key: widgetKey,
                 child: LapGroundTimeChart(
                   records: RecordList<Event>(groundTimeRecords),
-                  minimum: widget.interval.avgGroundTime / 1.25,
-                  maximum: widget.interval.avgGroundTime * 1.25,
+                  minimum: widget.interval!.avgGroundTime! / 1.25,
+                  maximum: widget.interval!.avgGroundTime! * 1.25,
                 ),
               ),
               const Text('Only records where ground time > 0 ms are shown.'),
@@ -77,7 +77,7 @@ class _IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.interval.avgGroundTime,
+                  value: widget.interval!.avgGroundTime,
                   pq: PQ.groundTime,
                 ),
                 subtitle: const Text('average ground time'),
@@ -85,7 +85,7 @@ class _IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.interval.sdevGroundTime,
+                  value: widget.interval!.sdevGroundTime,
                   pq: PQ.groundTime,
                 ),
                 subtitle: const Text('standard deviation ground time'),
@@ -111,7 +111,7 @@ class _IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {
   }
 
   Future<void> getData() async {
-    final encrateia.Interval interval = widget.interval;
+    final encrateia.Interval interval = widget.interval!;
     records = RecordList<Event>(await interval.records);
     setState(() => loading = false);
   }

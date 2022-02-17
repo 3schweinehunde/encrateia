@@ -5,16 +5,16 @@ import '/utils/my_color.dart';
 
 class ShowLapDetailScreen extends StatefulWidget {
   const ShowLapDetailScreen({
-    Key key,
-    @required this.lap,
-    @required this.laps,
-    @required this.nextWidget,
-    @required this.title,
+    Key? key,
+    required this.lap,
+    required this.laps,
+    required this.nextWidget,
+    required this.title,
   }) : super(key: key);
 
   final Lap lap;
   final List<Lap> laps;
-  final Widget Function({Lap lap}) nextWidget;
+  final Widget Function({Lap? lap}) nextWidget;
   final String title;
 
   @override
@@ -22,7 +22,7 @@ class ShowLapDetailScreen extends StatefulWidget {
 }
 
 class _ShowLapDetailScreenState extends State<ShowLapDetailScreen> {
-  Lap currentLap;
+  Lap? currentLap;
   double dragAmount = 0;
 
   @override
@@ -37,7 +37,7 @@ class _ShowLapDetailScreenState extends State<ShowLapDetailScreen> {
       appBar: AppBar(
         backgroundColor: MyColor.lap,
         title: Text(
-          'Lap ${currentLap.index.toString()}: ${widget.title}',
+          'Lap ${currentLap!.index.toString()}: ${widget.title}',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -45,20 +45,20 @@ class _ShowLapDetailScreenState extends State<ShowLapDetailScreen> {
         child: GestureDetector(
           child: widget.nextWidget(lap: currentLap),
           onHorizontalDragUpdate: (DragUpdateDetails details) {
-            dragAmount = dragAmount + details.primaryDelta;
+            dragAmount = dragAmount + details.primaryDelta!;
           },
           onHorizontalDragEnd: (DragEndDetails details) {
             if (dragAmount < -50) {
               dragAmount = 0;
-              if (currentLap.index < widget.laps.length) {
+              if (currentLap!.index! < widget.laps.length) {
                 setState(
-                    () => currentLap = widget.laps[currentLap.index - 1 + 1]);
+                    () => currentLap = widget.laps[currentLap!.index! - 1 + 1]);
               }
             } else if (dragAmount > 50) {
               dragAmount = 0;
-              if (currentLap.index > 1) {
+              if (currentLap!.index! > 1) {
                 setState(
-                    () => currentLap = widget.laps[currentLap.index - 1 - 1]);
+                    () => currentLap = widget.laps[currentLap!.index! - 1 - 1]);
               }
             }
           },

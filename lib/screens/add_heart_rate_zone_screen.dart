@@ -7,11 +7,11 @@ import '/utils/my_color.dart';
 
 class AddHeartRateZoneScreen extends StatefulWidget {
   const AddHeartRateZoneScreen(
-      {Key key, this.heartRateZone, this.base, @required this.numberOfZones})
+      {Key? key, this.heartRateZone, this.base, required this.numberOfZones})
       : super(key: key);
 
-  final HeartRateZone heartRateZone;
-  final int base;
+  final HeartRateZone? heartRateZone;
+  final int? base;
   final int numberOfZones;
 
   @override
@@ -35,8 +35,8 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
                 Navigator.of(context).pop();
                 MaterialColorPicker(
                     onColorChange: (Color color) =>
-                        widget.heartRateZone.color = color.value,
-                    selectedColor: Color(widget.heartRateZone.color));
+                        widget.heartRateZone!.color = color.value,
+                    selectedColor: Color(widget.heartRateZone!.color!));
               },
             ),
           ],
@@ -48,9 +48,9 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
   Future<void> openColorPicker() async {
     _openDialog(
       MaterialColorPicker(
-        selectedColor: Color(widget.heartRateZone.color),
+        selectedColor: Color(widget.heartRateZone!.color!),
         onColorChange: (Color color) =>
-            setState(() => widget.heartRateZone.color = color.value),
+            setState(() => widget.heartRateZone!.color = color.value),
         onBack: () {},
       ),
     );
@@ -59,15 +59,15 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController lowerLimitController =
-        TextEditingController(text: widget.heartRateZone.lowerLimit.toString());
+        TextEditingController(text: widget.heartRateZone!.lowerLimit.toString());
     final TextEditingController upperLimitController =
-        TextEditingController(text: widget.heartRateZone.upperLimit.toString());
+        TextEditingController(text: widget.heartRateZone!.upperLimit.toString());
     final TextEditingController lowerPercentageController =
         TextEditingController(
-            text: widget.heartRateZone.lowerPercentage.toString());
+            text: widget.heartRateZone!.lowerPercentage.toString());
     final TextEditingController upperPercentageController =
         TextEditingController(
-            text: widget.heartRateZone.upperPercentage.toString());
+            text: widget.heartRateZone!.upperPercentage.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -80,8 +80,8 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
           children: <Widget>[
             TextFormField(
               decoration: const InputDecoration(labelText: 'Name'),
-              initialValue: widget.heartRateZone.name,
-              onChanged: (String value) => widget.heartRateZone.name = value,
+              initialValue: widget.heartRateZone!.name,
+              onChanged: (String value) => widget.heartRateZone!.name = value,
             ),
             TextFormField(
               decoration:
@@ -89,11 +89,11 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
               controller: lowerLimitController,
               keyboardType: TextInputType.number,
               onChanged: (String value) {
-                widget.heartRateZone.lowerLimit = int.parse(value);
-                widget.heartRateZone.lowerPercentage =
-                    (int.parse(value) * 100 / widget.base).round();
+                widget.heartRateZone!.lowerLimit = int.parse(value);
+                widget.heartRateZone!.lowerPercentage =
+                    (int.parse(value) * 100 / widget.base!).round();
                 lowerPercentageController.text =
-                    (int.parse(value) * 100 / widget.base).round().toString();
+                    (int.parse(value) * 100 / widget.base!).round().toString();
               },
             ),
             TextFormField(
@@ -102,11 +102,11 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
               controller: upperLimitController,
               keyboardType: TextInputType.number,
               onChanged: (String value) {
-                widget.heartRateZone.upperLimit = int.parse(value);
-                widget.heartRateZone.upperPercentage =
-                    (int.parse(value) * 100 / widget.base).round();
+                widget.heartRateZone!.upperLimit = int.parse(value);
+                widget.heartRateZone!.upperPercentage =
+                    (int.parse(value) * 100 / widget.base!).round();
                 upperPercentageController.text =
-                    (int.parse(value) * 100 / widget.base).round().toString();
+                    (int.parse(value) * 100 / widget.base!).round().toString();
               },
             ),
             TextFormField(
@@ -115,11 +115,11 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
               controller: lowerPercentageController,
               keyboardType: TextInputType.number,
               onChanged: (String value) {
-                widget.heartRateZone.lowerPercentage = int.parse(value);
-                widget.heartRateZone.lowerLimit =
-                    (int.parse(value) * widget.base / 100).round();
+                widget.heartRateZone!.lowerPercentage = int.parse(value);
+                widget.heartRateZone!.lowerLimit =
+                    (int.parse(value) * widget.base! / 100).round();
                 lowerLimitController.text =
-                    (int.parse(value) * widget.base / 100).round().toString();
+                    (int.parse(value) * widget.base! / 100).round().toString();
               },
             ),
             TextFormField(
@@ -128,11 +128,11 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
               controller: upperPercentageController,
               keyboardType: TextInputType.number,
               onChanged: (String value) {
-                widget.heartRateZone.upperPercentage = int.parse(value);
-                widget.heartRateZone.upperLimit =
-                    (int.parse(value) * widget.base / 100).round();
+                widget.heartRateZone!.upperPercentage = int.parse(value);
+                widget.heartRateZone!.upperLimit =
+                    (int.parse(value) * widget.base! / 100).round();
                 upperLimitController.text =
-                    (int.parse(value) * widget.base / 100).round().toString();
+                    (int.parse(value) * widget.base! / 100).round().toString();
               },
             ),
             const SizedBox(height: 10),
@@ -140,7 +140,7 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
               const Text('Color'),
               const Spacer(),
               CircleAvatar(
-                backgroundColor: Color(widget.heartRateZone.color),
+                backgroundColor: Color(widget.heartRateZone!.color!),
                 radius: 20.0,
               ),
               const Spacer(),
@@ -169,12 +169,12 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
   }
 
   Future<void> saveHeartRateZone(BuildContext context) async {
-    await widget.heartRateZone.save();
+    await widget.heartRateZone!.save();
     Navigator.of(context).pop();
   }
 
   Future<void> deleteHeartRateZone(BuildContext context) async {
-    await widget.heartRateZone.delete();
+    await widget.heartRateZone!.delete();
     Navigator.of(context).pop();
   }
 }

@@ -17,15 +17,15 @@ import '/utils/my_button.dart';
 class ActivityIntervalsChart extends StatefulWidget {
   const ActivityIntervalsChart({
     this.records,
-    @required this.activity,
-    @required this.athlete,
-    @required this.minimum,
-    @required this.maximum,
+    required this.activity,
+    required this.athlete,
+    required this.minimum,
+    required this.maximum,
   });
 
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
+  final RecordList<Event>? records;
+  final Activity? activity;
+  final Athlete? athlete;
   final double minimum;
   final double maximum;
 
@@ -34,8 +34,8 @@ class ActivityIntervalsChart extends StatefulWidget {
 }
 
 class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
-  DoublePlotPoint selectedPlotPoint;
-  Event selectedRecord;
+  DoublePlotPoint? selectedPlotPoint;
+  Event? selectedRecord;
   List<Lap> laps = <Lap>[];
   encrateia.Interval interval = encrateia.Interval();
 
@@ -49,9 +49,9 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
     final List<SeriesDatum<dynamic>> selectedDatum = model.selectedDatum;
 
     if (selectedDatum.isNotEmpty) {
-      selectedPlotPoint = selectedDatum[0].datum as DoublePlotPoint;
-      selectedRecord = widget.records.firstWhere((Event record) =>
-          record.distance.round() == selectedPlotPoint.domain);
+      selectedPlotPoint = selectedDatum[0].datum as DoublePlotPoint?;
+      selectedRecord = widget.records!.firstWhere((Event record) =>
+          record.distance!.round() == selectedPlotPoint!.domain);
       setState(() {});
     }
   }
@@ -59,14 +59,14 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
   @override
   Widget build(BuildContext context) {
     final List<DoublePlotPoint> smoothedRecords =
-        widget.records.toDoubleDataPoints(
+        widget.records!.toDoubleDataPoints(
       attribute: LapDoubleAttr.speed,
-      amount: widget.athlete.recordAggregationCount,
+      amount: widget.athlete!.recordAggregationCount,
     );
 
-    final List<Series<DoublePlotPoint, int>> data =
-        <Series<DoublePlotPoint, int>>[
-      Series<DoublePlotPoint, int>(
+    final List<Series<DoublePlotPoint, int?>> data =
+        <Series<DoublePlotPoint, int?>>[
+      Series<DoublePlotPoint, int?>(
         id: 'Speed',
         colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -85,13 +85,13 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                       ? 1
                       : 2.5,
               child: LineChart(
-                data,
+                data as List<Series<dynamic, num>>,
                 defaultRenderer: LineRendererConfig<num>(
                   includeArea: true,
                 ),
                 domainAxis: NumericAxisSpec(
                   viewport:
-                      NumericExtents(0, widget.records.last.distance + 500),
+                      NumericExtents(0, widget.records!.last.distance! + 500),
                   tickProviderSpec:
                       const BasicNumericTickProviderSpec(desiredTickCount: 6),
                 ),
@@ -112,30 +112,30 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                 behaviors: <ChartBehavior<num>>[
                       PanAndZoomBehavior<num>(),
                       RangeAnnotation<num>(
-                          GraphUtils.rangeAnnotations(laps: laps)),
+                          GraphUtils.rangeAnnotations(laps: laps) as List<AnnotationSegment<Object>>),
                       RangeAnnotation<num>(
                         <RangeAnnotationSegment<int>>[
-                          if (interval.firstDistance > 0 &&
-                              interval.lastDistance > 0)
+                          if (interval.firstDistance! > 0 &&
+                              interval.lastDistance! > 0)
                             RangeAnnotationSegment<int>(
-                              interval.firstDistance.round(),
-                              interval.lastDistance.round(),
+                              interval.firstDistance!.round(),
+                              interval.lastDistance!.round(),
                               RangeAnnotationAxisType.domain,
                               color: const Color(r: 255, g: 200, b: 200),
                               endLabel: 'Interval',
                             ),
                           if (selectedRecord != null)
                             RangeAnnotationSegment<int>(
-                              (selectedRecord.distance - 10).round(),
-                              (selectedRecord.distance + 10).round(),
+                              (selectedRecord!.distance! - 10).round(),
+                              (selectedRecord!.distance! + 10).round(),
                               RangeAnnotationAxisType.domain,
                               color: const Color(r: 200, g: 255, b: 200),
                               endLabel: '',
                             ),
                           if (selectedRecord != null)
                             RangeAnnotationSegment<int>(
-                              (selectedRecord.distance - 1).round(),
-                              (selectedRecord.distance + 1).round(),
+                              (selectedRecord!.distance! - 1).round(),
+                              (selectedRecord!.distance! + 1).round(),
                               RangeAnnotationAxisType.domain,
                               color: const Color(r: 0, g: 100, b: 0),
                               endLabel: 'Cursor',
@@ -153,11 +153,11 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                   Wrap(children: <Widget>[
                     const SizedBox(width: 20),
                     Text('Cursor position: ' +
-                        selectedRecord.distance.round().toString() +
+                        selectedRecord!.distance!.round().toString() +
                         ' m; ' +
-                        (selectedRecord.speed * 3.6).toStringAsPrecision(2) +
+                        (selectedRecord!.speed! * 3.6).toStringAsPrecision(2) +
                         ' km/h; ' +
-                        (selectedRecord.power ?? 0).toString() +
+                        (selectedRecord!.power ?? 0).toString() +
                         ' W. \n' +
                         'Use Buttons to move Cursor'),
                     const Spacer(),
@@ -206,18 +206,18 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                           child: const Text('Select as start'),
                           onPressed: () {
                             if (interval.lastRecordId == 0 ||
-                                (selectedRecord.id < interval.lastRecordId)) {
-                              interval.firstRecordId = selectedRecord.id;
-                              interval.firstDistance = selectedRecord.distance;
+                                (selectedRecord!.id! < interval.lastRecordId!)) {
+                              interval.firstRecordId = selectedRecord!.id;
+                              interval.firstDistance = selectedRecord!.distance;
                               setState(() {});
                             }
                           }),
                       const Spacer(),
                       if (interval.firstRecordId == 0)
                         const Text('No start record selected'),
-                      if (interval.firstRecordId > 0)
+                      if (interval.firstRecordId! > 0)
                         Text('Selected: ' +
-                            interval.firstDistance.round().toString() +
+                            interval.firstDistance!.round().toString() +
                             ' m'),
                       const Spacer(),
                     ],
@@ -229,9 +229,9 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                         child: const Text('Select as end'),
                         onPressed: () {
                           if (interval.firstRecordId == 0 ||
-                              (selectedRecord.id > interval.firstRecordId)) {
-                            interval.lastRecordId = selectedRecord.id;
-                            interval.lastDistance = selectedRecord.distance;
+                              (selectedRecord!.id! > interval.firstRecordId!)) {
+                            interval.lastRecordId = selectedRecord!.id;
+                            interval.lastDistance = selectedRecord!.distance;
                             setState(() {});
                           }
                         },
@@ -239,16 +239,16 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                       const Spacer(),
                       if (interval.lastRecordId == 0)
                         const Text('No end record selected'),
-                      if (interval.lastRecordId > 0)
+                      if (interval.lastRecordId! > 0)
                         Text('Selected: ' +
-                            interval.lastDistance.round().toString() +
+                            interval.lastDistance!.round().toString() +
                             ' m'),
                       const Spacer(),
                     ],
                   ),
                 ],
               ),
-            if (interval.firstDistance > 0 && interval.lastDistance > 0)
+            if (interval.firstDistance! > 0 && interval.lastDistance! > 0)
               Row(
                 children: <Widget>[
                   const Spacer(),
@@ -269,38 +269,38 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
     }
   }
 
-  void moveSelectedRecord({int amount}) {
+  void moveSelectedRecord({required int amount}) {
     if (amount < 0) {
       final int newSelectedRecordId =
-          max(selectedRecord.id + amount, widget.records.first.id);
-      selectedRecord = widget.records
+          max(selectedRecord!.id! + amount, widget.records!.first.id!);
+      selectedRecord = widget.records!
           .firstWhere((Event record) => record.id == newSelectedRecordId);
     } else {
       final int newSelectedRecordId =
-          min(selectedRecord.id + amount, widget.records.last.id);
-      selectedRecord = widget.records
+          min(selectedRecord!.id! + amount, widget.records!.last.id!);
+      selectedRecord = widget.records!
           .firstWhere((Event record) => record.id == newSelectedRecordId);
     }
     setState(() {});
   }
 
   Future<void> saveInterval() async {
-    final RecordList<Event> records = RecordList<Event>(widget.records
+    final RecordList<Event> records = RecordList<Event>(widget.records!
         .where((Event record) =>
-            record.id >= interval.firstRecordId &&
-            record.id <= interval.lastRecordId)
+            record.id! >= interval.firstRecordId! &&
+            record.id! <= interval.lastRecordId!)
         .toList());
     await interval.calculateAndSave(records: records);
     await interval.autoTagger(athlete: widget.athlete);
-    widget.activity.cachedIntervals = <encrateia.Interval>[];
+    widget.activity!.cachedIntervals = <encrateia.Interval>[];
     interval = encrateia.Interval();
     getData();
   }
 
   Future<void> getData() async {
-    interval.athletesId = widget.athlete.id;
-    interval.activitiesId = widget.activity.id;
-    laps = await widget.activity.laps;
+    interval.athletesId = widget.athlete!.id;
+    interval.activitiesId = widget.activity!.id;
+    laps = await widget.activity!.laps;
     setState(() {});
   }
 }

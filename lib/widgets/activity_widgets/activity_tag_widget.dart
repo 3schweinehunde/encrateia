@@ -9,19 +9,19 @@ import '/utils/my_color.dart';
 
 class ActivityTagWidget extends StatefulWidget {
   const ActivityTagWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityTagWidgetState createState() => _ActivityTagWidgetState();
 }
 
 class _ActivityTagWidgetState extends State<ActivityTagWidget> {
-  List<TagGroup> tagGroups;
+  List<TagGroup>? tagGroups;
 
   @override
   void initState() {
@@ -45,18 +45,18 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
             mainAxisSpacing: 3,
             crossAxisSpacing: 3,
             childAspectRatio: 3),
-        itemCount: tagGroups.length,
+        itemCount: tagGroups!.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups[index].name + '\n'),
+            title: Text(tagGroups![index].name! + '\n'),
             subtitle: Wrap(
               spacing: 15,
               children: <Widget>[
-                for (Tag tag in tagGroups[index].cachedTags)
+                for (Tag tag in tagGroups![index].cachedTags)
                   InputChip(
                     isEnabled: tag.system != true,
                     label: Text(
-                      tag.name,
+                      tag.name!,
                       style: TextStyle(
                         color: MyColor.textColor(
                           selected: tag.selected,
@@ -71,12 +71,12 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
                       setState(() {
                         if (selected) {
                           ActivityTagging.createBy(
-                            activity: widget.activity,
+                            activity: widget.activity!,
                             tag: tag,
                           );
                         } else {
                           ActivityTagging.deleteBy(
-                            activity: widget.activity,
+                            activity: widget.activity!,
                             tag: tag,
                           );
                         }
@@ -99,8 +99,8 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
 
   Future<void> getData() async {
     tagGroups = await TagGroup.includingActivityTaggings(
-      athlete: widget.athlete,
-      activity: widget.activity,
+      athlete: widget.athlete!,
+      activity: widget.activity!,
     );
     setState(() {});
   }

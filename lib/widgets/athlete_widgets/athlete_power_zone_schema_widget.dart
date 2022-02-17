@@ -14,8 +14,8 @@ class AthletePowerZoneSchemaWidget extends StatefulWidget {
     this.callBackFunction,
   });
 
-  final Athlete athlete;
-  final Function callBackFunction;
+  final Athlete? athlete;
+  final Function? callBackFunction;
 
   @override
   _AthletePowerZoneSchemaWidgetState createState() =>
@@ -26,7 +26,7 @@ class _AthletePowerZoneSchemaWidgetState
     extends State<AthletePowerZoneSchemaWidget> {
   List<PowerZoneSchema> powerZoneSchemas = <PowerZoneSchema>[];
   int offset = 0;
-  int rows;
+  late int rows;
 
   @override
   void initState() {
@@ -65,11 +65,11 @@ class _AthletePowerZoneSchemaWidgetState
                   .sublist(offset, offset + rows)
                   .map((PowerZoneSchema powerZoneSchema) {
                 return DataRow(
-                  key: ValueKey<int>(powerZoneSchema.id),
+                  key: ValueKey<int?>(powerZoneSchema.id),
                   cells: <DataCell>[
                     DataCell(Text(
-                        DateFormat('d MMM yyyy').format(powerZoneSchema.date))),
-                    DataCell(Text(powerZoneSchema.name)),
+                        DateFormat('d MMM yyyy').format(powerZoneSchema.date!))),
+                    DataCell(Text(powerZoneSchema.name!)),
                     DataCell(Text(powerZoneSchema.base.toString())),
                     DataCell(
                       MyIcon.edit,
@@ -104,7 +104,7 @@ class _AthletePowerZoneSchemaWidgetState
                           builder: (BuildContext context) =>
                               AddPowerZoneSchemaScreen(
                             powerZoneSchema:
-                                PowerZoneSchema(athlete: widget.athlete),
+                                PowerZoneSchema(athlete: widget.athlete!),
                             numberOfSchemas: powerZoneSchemas.length,
                           ),
                         ),
@@ -164,7 +164,7 @@ You could also create a schema from scratch.
                       builder: (BuildContext context) =>
                           AddPowerZoneSchemaScreen(
                         powerZoneSchema:
-                            PowerZoneSchema(athlete: widget.athlete),
+                            PowerZoneSchema(athlete: widget.athlete!),
                         numberOfSchemas: powerZoneSchemas.length,
                       ),
                     ),
@@ -183,16 +183,16 @@ You could also create a schema from scratch.
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     powerZoneSchemas = await athlete.powerZoneSchemas;
     if (widget.callBackFunction != null) {
-      await widget.callBackFunction();
+      await widget.callBackFunction!();
     }
     setState(() {});
   }
 
   Future<void> likeStryd() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final PowerZoneSchema powerZoneSchema =
         PowerZoneSchema.likeStryd(athlete: athlete);
     await powerZoneSchema.save();
@@ -201,7 +201,7 @@ You could also create a schema from scratch.
   }
 
   Future<void> likeJimVance() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final PowerZoneSchema powerZoneSchema =
         PowerZoneSchema.likeJimVance(athlete: athlete);
     await powerZoneSchema.save();
@@ -210,7 +210,7 @@ You could also create a schema from scratch.
   }
 
   Future<void> likeStefanDillinger() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final PowerZoneSchema powerZoneSchema =
         PowerZoneSchema.likeStefanDillinger(athlete: athlete);
     await powerZoneSchema.save();

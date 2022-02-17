@@ -7,10 +7,10 @@ import '/utils/my_button.dart';
 import '/utils/my_color.dart';
 
 class AddWeightScreen extends StatelessWidget {
-  const AddWeightScreen({Key key, this.weight, @required this.numberOfWeights})
+  const AddWeightScreen({Key? key, this.weight, required this.numberOfWeights})
       : super(key: key);
 
-  final Weight weight;
+  final Weight? weight;
   final int numberOfWeights;
 
   @override
@@ -27,8 +27,8 @@ class AddWeightScreen extends StatelessWidget {
             DateTimeField(
               decoration: const InputDecoration(labelText: 'Date'),
               format: DateFormat('yyyy-MM-dd'),
-              initialValue: weight.date,
-              onShowPicker: (BuildContext context, DateTime currentValue) {
+              initialValue: weight!.date,
+              onShowPicker: (BuildContext context, DateTime? currentValue) {
                 return showDatePicker(
                   context: context,
                   firstDate: DateTime(1990),
@@ -36,14 +36,14 @@ class AddWeightScreen extends StatelessWidget {
                   lastDate: DateTime(2100),
                 );
               },
-              onChanged: (DateTime value) => weight.date = value,
+              onChanged: (DateTime? value) => weight!.date = value,
             ),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Weight in kg'),
-              initialValue: weight.value.toString(),
+              initialValue: weight!.value.toString(),
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              onChanged: (String value) => weight.value = double.parse(value),
+              onChanged: (String value) => weight!.value = double.parse(value),
             ),
             const SizedBox(height: 20),
             Row(
@@ -66,12 +66,12 @@ class AddWeightScreen extends StatelessWidget {
   }
 
   Future<void> saveWeight(BuildContext context) async {
-    await weight.save();
+    await weight!.save();
     Navigator.of(context).pop();
   }
 
   Future<void> deleteWeight(BuildContext context) async {
-    await weight.delete();
+    await weight!.delete();
     Navigator.of(context).pop();
   }
 }

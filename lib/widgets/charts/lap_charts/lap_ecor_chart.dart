@@ -7,23 +7,23 @@ import '/utils/graph_utils.dart';
 
 class LapEcorChart extends StatelessWidget {
   const LapEcorChart({
-    @required this.records,
-    @required this.weight,
+    required this.records,
+    required this.weight,
   });
 
   final RecordList<Event> records;
-  final double weight;
+  final double? weight;
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.distance.round();
+    final int offset = records.first.distance!.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Ecor',
         colorFn: (_, __) => MaterialPalette.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
-        measureFn: (Event record, _) => record.power / record.speed / weight,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
+        measureFn: (Event record, _) => record.power! / record.speed! / weight!,
         data: records,
       )
     ];

@@ -13,7 +13,7 @@ Future<void> setup() async {
 
 Future<void> _createHintFile() async {
   if (Platform.isAndroid) {
-    final List<Directory> directories = await getExternalStorageDirectories();
+    final List<Directory> directories = await (getExternalStorageDirectories() as FutureOr<List<Directory>>);
     final File hintFile =
         File('${directories[0].path}/put_your_fit_files_here.txt');
     await hintFile.writeAsString(

@@ -10,12 +10,12 @@ import '/widgets/charts/power_duration_chart.dart';
 
 class ActivityPowerDurationWidget extends StatefulWidget {
   const ActivityPowerDurationWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityPowerDurationWidgetState createState() =>
@@ -39,7 +39,7 @@ class _ActivityPowerDurationWidgetState
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -79,7 +79,7 @@ class _ActivityPowerDurationWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
+    records = RecordList<Event>(await widget.activity!.records);
     setState(() => loading = false);
   }
 }

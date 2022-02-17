@@ -7,9 +7,9 @@ import '/utils/graph_utils.dart';
 
 class LapLegSpringStiffnessChart extends StatelessWidget {
   const LapLegSpringStiffnessChart({
-    @required this.records,
-    @required this.minimum,
-    @required this.maximum,
+    required this.records,
+    required this.minimum,
+    required this.maximum,
   });
 
   final RecordList<Event> records;
@@ -18,13 +18,13 @@ class LapLegSpringStiffnessChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.distance.round();
+    final int offset = records.first.distance!.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Leg Spring Stiffness',
         colorFn: (_, __) => Color.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
         measureFn: (Event record, _) => record.legSpringStiffness,
         data: records,
       )

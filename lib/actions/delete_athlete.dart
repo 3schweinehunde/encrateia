@@ -5,9 +5,9 @@ import '/models/athlete.dart';
 import '/utils/my_button.dart';
 
 Future<void> deleteAthlete({
-  @required BuildContext context,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Athlete? athlete,
+  required Flushbar<Object> flushbar,
 }) {
   return showDialog<void>(
     context: context,
@@ -32,7 +32,7 @@ Future<void> deleteAthlete({
           ),
           MyButton.delete(
             onPressed: () async {
-              await athlete.delete();
+              await athlete!.delete();
               Navigator.of(context)
                   .popUntil((Route<dynamic> route) => route.isFirst);
             },

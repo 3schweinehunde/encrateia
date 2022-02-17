@@ -14,28 +14,28 @@ import '/utils/my_line_chart.dart';
 class ActivitySpeedChart extends StatelessWidget {
   const ActivitySpeedChart({
     this.records,
-    @required this.activity,
-    @required this.athlete,
-    @required this.minimum,
-    @required this.maximum,
+    required this.activity,
+    required this.athlete,
+    required this.minimum,
+    required this.maximum,
   });
 
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
+  final RecordList<Event>? records;
+  final Activity? activity;
+  final Athlete? athlete;
   final double minimum;
   final double maximum;
 
   @override
   Widget build(BuildContext context) {
-    final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
+    final List<DoublePlotPoint> smoothedRecords = records!.toDoubleDataPoints(
       attribute: LapDoubleAttr.speed,
-      amount: athlete.recordAggregationCount,
+      amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<DoublePlotPoint, int>> data =
-        <Series<DoublePlotPoint, int>>[
-      Series<DoublePlotPoint, int>(
+    final List<Series<DoublePlotPoint, int?>> data =
+        <Series<DoublePlotPoint, int?>>[
+      Series<DoublePlotPoint, int?>(
         id: 'Speed',
         colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -45,10 +45,10 @@ class ActivitySpeedChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: activity.laps,
+      future: activity!.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data!;
           return AspectRatio(
             aspectRatio:
                 MediaQuery.of(context).orientation == Orientation.portrait
@@ -56,7 +56,7 @@ class ActivitySpeedChart extends StatelessWidget {
                     : 2,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.distance,
+              maxDomain: records!.last.distance!,
               laps: laps,
               domainTitle: 'Speed (km/h)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

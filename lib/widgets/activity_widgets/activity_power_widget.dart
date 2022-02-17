@@ -15,12 +15,12 @@ import '/widgets/charts/activity_charts/activity_power_chart.dart';
 
 class ActivityPowerWidget extends StatefulWidget {
   const ActivityPowerWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityPowerWidgetState createState() => _ActivityPowerWidgetState();
@@ -29,8 +29,8 @@ class ActivityPowerWidget extends StatefulWidget {
 class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
-  PowerZoneSchema powerZoneSchema;
-  List<PowerZone> powerZones;
+  PowerZoneSchema? powerZoneSchema;
+  List<PowerZone>? powerZones;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
 
@@ -44,7 +44,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty && powerZones != null) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -63,7 +63,7 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
                   athlete: widget.athlete,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W are shown.'),
               Row(children: <Widget>[
@@ -80,22 +80,22 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.activity.avgPower, pq: PQ.power),
+                title: PQText(value: widget.activity!.avgPower, pq: PQ.power),
                 subtitle: const Text('average power'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.activity.minPower, pq: PQ.power),
+                title: PQText(value: widget.activity!.minPower, pq: PQ.power),
                 subtitle: const Text('minimum power'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.activity.maxPower, pq: PQ.power),
+                title: PQText(value: widget.activity!.maxPower, pq: PQ.power),
                 subtitle: const Text('maximum power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.activity.sdevPower, pq: PQ.power),
+                title: PQText(value: widget.activity!.sdevPower, pq: PQ.power),
                 subtitle: const Text('standard deviation power'),
               ),
               ListTile(
@@ -130,12 +130,12 @@ class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
 
     powerZoneSchema = await activity.powerZoneSchema;
     if (powerZoneSchema != null) {
-      powerZones = await powerZoneSchema.powerZones;
+      powerZones = await powerZoneSchema!.powerZones;
     } else {
       powerZones = <PowerZone>[];
     }

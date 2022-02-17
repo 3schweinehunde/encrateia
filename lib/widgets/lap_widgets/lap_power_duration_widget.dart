@@ -8,9 +8,9 @@ import '/utils/my_button.dart';
 import '/widgets/charts/power_duration_chart.dart';
 
 class LapPowerDurationWidget extends StatefulWidget {
-  const LapPowerDurationWidget({@required this.lap});
+  const LapPowerDurationWidget({required this.lap});
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapPowerDurationWidgetState createState() => _LapPowerDurationWidgetState();
@@ -38,7 +38,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -77,7 +77,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
+    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
     setState(() => loading = false);
   }
 }

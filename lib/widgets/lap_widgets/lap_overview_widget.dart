@@ -12,8 +12,8 @@ class LapOverviewWidget extends StatefulWidget {
     this.athlete,
   });
 
-  final Lap lap;
-  final Athlete athlete;
+  final Lap? lap;
+  final Athlete? athlete;
 
   @override
   _LapOverviewWidgetState createState() => _LapOverviewWidgetState();
@@ -30,69 +30,69 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
     return <Widget>[
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.avgSpeed, pq: PQ.paceFromSpeed),
+          PQText(value: widget.lap!.avgSpeed, pq: PQ.paceFromSpeed),
           const Text(' / '),
-          PQText(value: widget.lap.maxSpeed, pq: PQ.paceFromSpeed),
+          PQText(value: widget.lap!.maxSpeed, pq: PQ.paceFromSpeed),
         ]),
         subtitle: const Text('avg / max pace'),
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.avgHeartRate, pq: PQ.heartRate),
+          PQText(value: widget.lap!.avgHeartRate, pq: PQ.heartRate),
           const Text(' / '),
-          PQText(value: widget.lap.maxHeartRate, pq: PQ.heartRate),
+          PQText(value: widget.lap!.maxHeartRate, pq: PQ.heartRate),
         ]),
         subtitle: const Text('avg / max heart rate'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.avgPower, pq: PQ.power),
+        title: PQText(value: widget.lap!.avgPower, pq: PQ.power),
         subtitle: const Text('avg power'),
       ),
       ListTile(
         title: PQText(
-            value: widget.lap.avgPowerPerHeartRate, pq: PQ.powerPerHeartRate),
+            value: widget.lap!.avgPowerPerHeartRate, pq: PQ.powerPerHeartRate),
         subtitle: const Text('power / heart rate'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.startTime, pq: PQ.dateTime),
+        title: PQText(value: widget.lap!.startTime, pq: PQ.dateTime),
         subtitle: const Text('start time'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.movingTime, pq: PQ.duration),
+        title: PQText(value: widget.lap!.movingTime, pq: PQ.duration),
         subtitle: const Text('moving time'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.totalTimerTime, pq: PQ.duration),
+        title: PQText(value: widget.lap!.totalTimerTime, pq: PQ.duration),
         subtitle: const Text('total timer time'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.totalDistance, pq: PQ.distance),
+        title: PQText(value: widget.lap!.totalDistance, pq: PQ.distance),
         subtitle: const Text('distance'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.totalCalories, pq: PQ.calories),
+        title: PQText(value: widget.lap!.totalCalories, pq: PQ.calories),
         subtitle: const Text('total calories'),
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.totalAscent, pq: PQ.integer),
+          PQText(value: widget.lap!.totalAscent, pq: PQ.integer),
           const Text(' - '),
-          PQText(value: widget.lap.totalDescent, pq: PQ.integer),
+          PQText(value: widget.lap!.totalDescent, pq: PQ.integer),
           const Text(' = '),
-          PQText(value: widget.lap.elevationDifference, pq: PQ.elevation),
+          PQText(value: widget.lap!.elevationDifference, pq: PQ.elevation),
         ]),
         subtitle: const Text('total ascent - descent = total climb'),
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.avgRunningCadence, pq: PQ.cadence),
+          PQText(value: widget.lap!.avgRunningCadence, pq: PQ.cadence),
           const Text(' / '),
-          PQText(value: widget.lap.maxRunningCadence, pq: PQ.cadence),
+          PQText(value: widget.lap!.maxRunningCadence, pq: PQ.cadence),
         ]),
         subtitle: const Text('avg / max steps per minute'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.totalStrides, pq: PQ.integer),
+        title: PQText(value: widget.lap!.totalStrides, pq: PQ.integer),
         subtitle: const Text('total strides'),
       ),
     ];
@@ -110,10 +110,10 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
   }
 
   Future<void> getData() async {
-    final Weight weight = await Weight.getBy(
-      athletesId: widget.athlete.id,
-      date: widget.lap.timeStamp,
+    final Weight? weight = await Weight.getBy(
+      athletesId: widget.athlete!.id,
+      date: widget.lap!.timeStamp,
     );
-    setState(() => widget.lap.weight = weight?.value);
+    setState(() => widget.lap!.weight = weight?.value);
   }
 }

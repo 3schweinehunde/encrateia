@@ -13,7 +13,7 @@ import '/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
 class LapStrydCadenceWidget extends StatefulWidget {
   const LapStrydCadenceWidget({this.lap});
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapStrydCadenceWidgetState createState() => _LapStrydCadenceWidgetState();
@@ -42,7 +42,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
     if (records.isNotEmpty) {
       final List<Event> strydCadenceRecords = records
           .where((Event value) =>
-              value.strydCadence != null && value.strydCadence > 0)
+              value.strydCadence != null && value.strydCadence! > 0)
           .toList();
 
       if (strydCadenceRecords.isNotEmpty) {
@@ -55,8 +55,8 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
                 key: widgetKey,
                 child: LapStrydCadenceChart(
                   records: RecordList<Event>(strydCadenceRecords),
-                  minimum: widget.lap.avgStrydCadence * 2 / 1.25,
-                  maximum: widget.lap.avgStrydCadence * 2 * 1.25,
+                  minimum: widget.lap!.avgStrydCadence! * 2 / 1.25,
+                  maximum: widget.lap!.avgStrydCadence! * 2 * 1.25,
                 ),
               ),
               const Text('Only records where cadence > 0 s/min are shown.'),
@@ -76,7 +76,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.lap.avgStrydCadence,
+                  value: widget.lap!.avgStrydCadence,
                   pq: PQ.cadence,
                 ),
                 subtitle: const Text('average cadence'),
@@ -84,7 +84,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.lap.sdevStrydCadence,
+                  value: widget.lap!.sdevStrydCadence,
                   pq: PQ.cadence,
                 ),
                 subtitle: const Text('standard deviation cadence'),
@@ -111,7 +111,7 @@ class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
+    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
     setState(() => loading = false);
   }
 }

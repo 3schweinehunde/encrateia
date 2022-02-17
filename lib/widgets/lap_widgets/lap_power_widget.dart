@@ -15,7 +15,7 @@ import '/widgets/charts/lap_charts/lap_power_chart.dart';
 class LapPowerWidget extends StatefulWidget {
   const LapPowerWidget({this.lap});
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapPowerWidgetState createState() => _LapPowerWidgetState();
@@ -24,8 +24,8 @@ class LapPowerWidget extends StatefulWidget {
 class _LapPowerWidgetState extends State<LapPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
-  PowerZoneSchema powerZoneSchema;
-  List<PowerZone> powerZones;
+  PowerZoneSchema? powerZoneSchema;
+  List<PowerZone>? powerZones;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
 
@@ -45,7 +45,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -77,22 +77,22 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.lap.avgPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.avgPower, pq: PQ.power),
                 subtitle: const Text('average power'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.lap.minPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.minPower, pq: PQ.power),
                 subtitle: const Text('minimum power'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.lap.maxPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.maxPower, pq: PQ.power),
                 subtitle: const Text('maximum power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.lap.sdevPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.sdevPower, pq: PQ.power),
                 subtitle: const Text('standard deviation power'),
               ),
               ListTile(
@@ -116,10 +116,10 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
-    powerZoneSchema = await widget.lap.powerZoneSchema;
+    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
+    powerZoneSchema = await widget.lap!.powerZoneSchema;
     if (powerZoneSchema != null) {
-      powerZones = await powerZoneSchema.powerZones;
+      powerZones = await powerZoneSchema!.powerZones;
     } else {
       powerZones = <PowerZone>[];
     }

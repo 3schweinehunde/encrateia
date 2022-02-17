@@ -13,12 +13,12 @@ import '/widgets/charts/activity_charts/activity_vertical_oscillation_chart.dart
 
 class ActivityVerticalOscillationWidget extends StatefulWidget {
   const ActivityVerticalOscillationWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityVerticalOscillationWidgetState createState() =>
@@ -57,11 +57,11 @@ class _ActivityVerticalOscillationWidgetState
                   records: RecordList<Event>(powerRecords),
                   activity: widget.activity,
                   athlete: widget.athlete,
-                  minimum: widget.activity.avgVerticalOscillation / 1.25,
-                  maximum: widget.activity.avgVerticalOscillation * 1.25,
+                  minimum: widget.activity!.avgVerticalOscillation! / 1.25,
+                  maximum: widget.activity!.avgVerticalOscillation! * 1.25,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'vertical oscillation is present are shown.'),
               Row(children: <Widget>[
@@ -79,7 +79,7 @@ class _ActivityVerticalOscillationWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.activity.avgVerticalOscillation,
+                  value: widget.activity!.avgVerticalOscillation,
                   pq: PQ.verticalOscillation,
                 ),
                 subtitle: const Text('average vertical oscillation'),
@@ -87,7 +87,7 @@ class _ActivityVerticalOscillationWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.activity.sdevVerticalOscillation,
+                  value: widget.activity!.sdevVerticalOscillation,
                   pq: PQ.verticalOscillation,
                 ),
                 subtitle: const Text('standard deviation vertical oscillation'),
@@ -113,7 +113,7 @@ class _ActivityVerticalOscillationWidgetState
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
     setState(() => loading = false);
   }

@@ -4,19 +4,19 @@ import '/models/event.dart';
 import '/models/plot_point.dart';
 
 class PowerDuration {
-  PowerDuration({List<Event> records}) {
+  PowerDuration({required List<Event> records}) {
     final Map<int, EnergyPoint> powerSum = <int, EnergyPoint>{};
 
     for (int index = 1; index <= records.length - 1; index++) {
-      final int power = records[index].power;
+      final int power = records[index].power!;
       final int duration = records[index]
-          .timeStamp
-          .difference(records[index - 1].timeStamp)
+          .timeStamp!
+          .difference(records[index - 1].timeStamp!)
           .inSeconds;
 
       powerSum.forEach((int start, EnergyPoint energyPoint) {
-        final int newEnergy = energyPoint.energy + power * duration;
-        final int newDuration = energyPoint.duration + duration;
+        final int newEnergy = energyPoint.energy! + power * duration;
+        final int newDuration = energyPoint.duration! + duration;
 
         powerSum[start] = EnergyPoint(
           energy: newEnergy,
@@ -65,7 +65,7 @@ class PowerDuration {
     });
 
     plotPoints.sort(
-        (DoublePlotPoint a, DoublePlotPoint b) => a.domain.compareTo(b.domain));
+        (DoublePlotPoint a, DoublePlotPoint b) => a.domain!.compareTo(b.domain!));
     return plotPoints;
   }
 
@@ -75,5 +75,5 @@ class PowerDuration {
     return this;
   }
 
-  static int scaled({int seconds}) => (200 * log(seconds)).round();
+  static int scaled({required int seconds}) => (200 * log(seconds)).round();
 }

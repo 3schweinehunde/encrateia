@@ -8,8 +8,8 @@ import '/models/power_zone_schema.dart';
 import '/models/weight.dart';
 
 Future<void> setupDemoAthlete({
-  @required BuildContext context,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Flushbar<Object>? flushbar,
 }) async {
   final Athlete athlete = Athlete();
   await athlete.setupStandaloneAthlete();

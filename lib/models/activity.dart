@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:fit_parser/fit_parser.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
@@ -37,25 +36,25 @@ class Activity {
   Activity._fromDb(this._db);
 
   Activity.fromStrava({
-    @required SummaryActivity summaryActivity,
-    @required Athlete athlete,
+    required SummaryActivity summaryActivity,
+    required Athlete athlete,
   }) {
     _db = DbActivity()
       ..athletesId = athlete.id
       ..name = summaryActivity.name
       ..type = summaryActivity.type
-      ..distance = summaryActivity.distance.toInt()
+      ..distance = summaryActivity.distance!.toInt()
       ..stravaId = summaryActivity.id;
   }
 
-  Activity.fromLocalDirectory({@required Athlete athlete}) {
+  Activity.fromLocalDirectory({required Athlete athlete}) {
     _db = DbActivity()
       ..athletesId = athlete.id
       ..stravaId = DateTime.now().millisecondsSinceEpoch
       ..name = 'new activity';
   }
 
-  Activity.manual({@required Athlete athlete}) {
+  Activity.manual({required Athlete athlete}) {
     _db = DbActivity()
       ..athletesId = athlete.id
       ..stravaId = DateTime.now().millisecondsSinceEpoch
@@ -68,181 +67,181 @@ class Activity {
       ..timeCreated = DateTime.now();
   }
 
-  DbActivity _db;
+  DbActivity _db = DbActivity();
   List<Event> cachedRecords = <Event>[];
   List<Lap> cachedLaps = <Lap>[];
   List<encrateia.Interval> cachedIntervals = <encrateia.Interval>[];
   List<Tag> cachedTags = <Tag>[];
-  double glidingMeasureAttribute;
-  double cachedWeight;
-  double cachedEcor;
-  PowerZoneSchema _powerZoneSchema;
-  PowerZone _powerZone;
-  HeartRateZone _heartRateZone;
-  HeartRateZoneSchema _heartRateZoneSchema;
-  int distanceSoFar;
-  int movingTimeSoFar;
+  double? glidingMeasureAttribute;
+  double? cachedWeight;
+  double? cachedEcor;
+  PowerZoneSchema? _powerZoneSchema;
+  PowerZone? _powerZone;
+  HeartRateZone? _heartRateZone;
+  HeartRateZoneSchema? _heartRateZoneSchema;
+  late int distanceSoFar;
+  late int movingTimeSoFar;
 
   // Getter
-  int get id => _db?.id;
+  int? get id => _db.id;
 
-  DateTime get startTime => _db.startTime;
-  DateTime get timeCreated => _db.timeCreated;
-  DateTime get timeStamp => _db.timeStamp;
+  DateTime? get startTime => _db.startTime;
+  DateTime? get timeCreated => _db.timeCreated;
+  DateTime? get timeStamp => _db.timeStamp;
 
-  String get event => _db.event;
-  String get eventType => _db.eventType;
-  String get name => _db.name;
-  String get sport => _db.sport;
-  String get state => _db.state;
-  String get subSport => _db.subSport;
-  String get trigger => _db.trigger;
-  String get type => _db.type;
+  String? get event => _db.event;
+  String? get eventType => _db.eventType;
+  String? get name => _db.name;
+  String? get sport => _db.sport;
+  String? get state => _db.state;
+  String? get subSport => _db.subSport;
+  String? get trigger => _db.trigger;
+  String? get type => _db.type;
 
-  bool get excluded => _db.excluded;
-  bool get manual => _db.manual;
-  bool get nonParsable => _db.nonParsable;
+  bool? get excluded => _db.excluded;
+  bool? get manual => _db.manual;
+  bool? get nonParsable => _db.nonParsable;
 
-  double get avgFormPower => _db.avgFormPower;
-  double get avgFractionalCadence => _db.avgFractionalCadence;
-  double get avgGroundTime => _db.avgGroundTime;
-  double get avgLegSpringStiffness => _db.avgLegSpringStiffness;
-  double get avgPower => _db.avgPower;
-  double get avgPowerRatio => _db.avgPowerRatio;
-  double get avgRunningCadence => _db.avgRunningCadence;
-  double get avgSpeed => _db.avgSpeed;
-  double get avgSpeedByDistance => _db.avgSpeedByDistance;
-  double get avgSpeedByMeasurements => _db.avgSpeedByMeasurements;
-  double get avgSpeedBySpeed => _db.avgSpeedBySpeed;
-  double get avgStanceTime => _db.avgStanceTime;
-  double get avgStanceTimePercent => _db.avgStanceTimePercent;
-  double get avgStrideRatio => _db.avgStrideRatio;
-  double get avgStrydCadence => _db.avgStrydCadence;
-  double get avgVerticalOscillation => _db.avgVerticalOscillation;
-  double get cp => _db.cp;
-  double get ftp => _db.ftp;
-  double get maxFractionalCadence => _db.maxFractionalCadence;
-  double get maxSpeed => _db.maxSpeed;
-  double get minSpeed => _db.minSpeed;
-  double get necLat => _db.necLat;
-  double get necLong => _db.necLong;
-  double get sdevFormPower => _db.sdevFormPower;
-  double get sdevGroundTime => _db.sdevGroundTime;
-  double get sdevHeartRate => _db.sdevHeartRate;
-  double get sdevLegSpringStiffness => _db.sdevLegSpringStiffness;
-  double get sdevPace => _db.sdevPace;
-  double get sdevPower => _db.sdevPower;
-  double get sdevPowerRatio => _db.sdevPowerRatio;
-  double get sdevSpeed => _db.sdevSpeed;
-  double get sdevStrideRatio => _db.sdevStrideRatio;
-  double get sdevStrydCadence => _db.sdevStrydCadence;
-  double get sdevVerticalOscillation => _db.sdevVerticalOscillation;
-  double get startPositionLat => _db.startPositionLat;
-  double get startPositionLong => _db.startPositionLong;
-  double get swcLat => _db.swcLat;
-  double get swcLong => _db.swcLong;
-  double get totalFractionalCycles => _db.totalFractionalCycles;
+  double? get avgFormPower => _db.avgFormPower;
+  double? get avgFractionalCadence => _db.avgFractionalCadence;
+  double? get avgGroundTime => _db.avgGroundTime;
+  double? get avgLegSpringStiffness => _db.avgLegSpringStiffness;
+  double? get avgPower => _db.avgPower;
+  double? get avgPowerRatio => _db.avgPowerRatio;
+  double? get avgRunningCadence => _db.avgRunningCadence;
+  double? get avgSpeed => _db.avgSpeed;
+  double? get avgSpeedByDistance => _db.avgSpeedByDistance;
+  double? get avgSpeedByMeasurements => _db.avgSpeedByMeasurements;
+  double? get avgSpeedBySpeed => _db.avgSpeedBySpeed;
+  double? get avgStanceTime => _db.avgStanceTime;
+  double? get avgStanceTimePercent => _db.avgStanceTimePercent;
+  double? get avgStrideRatio => _db.avgStrideRatio;
+  double? get avgStrydCadence => _db.avgStrydCadence;
+  double? get avgVerticalOscillation => _db.avgVerticalOscillation;
+  double? get cp => _db.cp;
+  double? get ftp => _db.ftp;
+  double? get maxFractionalCadence => _db.maxFractionalCadence;
+  double? get maxSpeed => _db.maxSpeed;
+  double? get minSpeed => _db.minSpeed;
+  double? get necLat => _db.necLat;
+  double? get necLong => _db.necLong;
+  double? get sdevFormPower => _db.sdevFormPower;
+  double? get sdevGroundTime => _db.sdevGroundTime;
+  double? get sdevHeartRate => _db.sdevHeartRate;
+  double? get sdevLegSpringStiffness => _db.sdevLegSpringStiffness;
+  double? get sdevPace => _db.sdevPace;
+  double? get sdevPower => _db.sdevPower;
+  double? get sdevPowerRatio => _db.sdevPowerRatio;
+  double? get sdevSpeed => _db.sdevSpeed;
+  double? get sdevStrideRatio => _db.sdevStrideRatio;
+  double? get sdevStrydCadence => _db.sdevStrydCadence;
+  double? get sdevVerticalOscillation => _db.sdevVerticalOscillation;
+  double? get startPositionLat => _db.startPositionLat;
+  double? get startPositionLong => _db.startPositionLong;
+  double? get swcLat => _db.swcLat;
+  double? get swcLong => _db.swcLong;
+  double? get totalFractionalCycles => _db.totalFractionalCycles;
 
-  int get athletesId => _db.athletesId;
-  int get avgHeartRate => _db.avgHeartRate;
-  int get avgTemperature => _db.avgTemperature;
-  int get distance => _db.distance;
-  int get maxHeartRate => _db.maxHeartRate;
-  int get maxPower => _db.maxPower;
-  int get maxRunningCadence => _db.maxRunningCadence;
-  int get maxTemperature => _db.maxTemperature;
-  int get minHeartRate => _db.minHeartRate;
-  int get minPower => _db.minPower;
-  int get movingTime => _db.movingTime;
-  int get numLaps => _db.numLaps;
-  int get numSessions => _db.numSessions;
-  int get serialNumber => _db.serialNumber;
-  int get stravaId => _db.stravaId;
-  int get totalAscent => _db.totalAscent;
-  int get totalCalories => _db.totalCalories;
-  int get totalDescent => _db.totalDescent;
-  int get totalDistance => _db.totalDistance;
-  int get totalElapsedTime => _db.totalElapsedTime;
-  int get totalStrides => _db.totalStrides;
-  int get totalTimerTime => _db.totalTimerTime;
-  int get totalTrainingEffect => _db.totalTrainingEffect;
+  int? get athletesId => _db.athletesId;
+  int? get avgHeartRate => _db.avgHeartRate;
+  int? get avgTemperature => _db.avgTemperature;
+  int? get distance => _db.distance;
+  int? get maxHeartRate => _db.maxHeartRate;
+  int? get maxPower => _db.maxPower;
+  int? get maxRunningCadence => _db.maxRunningCadence;
+  int? get maxTemperature => _db.maxTemperature;
+  int? get minHeartRate => _db.minHeartRate;
+  int? get minPower => _db.minPower;
+  int? get movingTime => _db.movingTime;
+  int? get numLaps => _db.numLaps;
+  int? get numSessions => _db.numSessions;
+  int? get serialNumber => _db.serialNumber;
+  int? get stravaId => _db.stravaId;
+  int? get totalAscent => _db.totalAscent;
+  int? get totalCalories => _db.totalCalories;
+  int? get totalDescent => _db.totalDescent;
+  int? get totalDistance => _db.totalDistance;
+  int? get totalElapsedTime => _db.totalElapsedTime;
+  int? get totalStrides => _db.totalStrides;
+  int? get totalTimerTime => _db.totalTimerTime;
+  int? get totalTrainingEffect => _db.totalTrainingEffect;
 
   // calculated from other attributes:
-  double get avgPace {
+  double? get avgPace {
     if (avgSpeed != null && avgSpeed != 0) {
-      return 50 / 3 / avgSpeed;
+      return 50 / 3 / avgSpeed!;
     } else {
       return null;
     }
   }
 
-  double get avgSpeedPerHeartRate {
+  double? get avgSpeedPerHeartRate {
     if (avgSpeed != null && heartRateAvailable) {
-      return 60 * avgSpeed / avgHeartRate;
+      return 60 * avgSpeed! / avgHeartRate!;
     } else {
       return null;
     }
   }
 
-  double get avgPowerPerHeartRate {
+  double? get avgPowerPerHeartRate {
     if (powerAvailable && heartRateAvailable) {
-      return avgPower / avgHeartRate;
+      return avgPower! / avgHeartRate!;
     } else {
       return null;
     }
   }
 
-  int get elevationDifference =>
-      ascentAvailable ? totalAscent - totalDescent : null;
+  int? get elevationDifference =>
+      ascentAvailable ? totalAscent! - totalDescent! : null;
 
-  double get avgDoubleStrydCadence =>
-      cadenceAvailable ? avgStrydCadence * 2 : null;
+  double? get avgDoubleStrydCadence =>
+      cadenceAvailable ? avgStrydCadence! * 2 : null;
 
   // easier check for data availability
-  bool get powerAvailable => !<num>[null, -1].contains(avgPower);
-  bool get powerRatioAvailable => !<num>[null, -1].contains(avgPowerRatio);
-  bool get heartRateAvailable => !<num>[null, -1].contains(avgHeartRate);
+  bool get powerAvailable => !<num?>[null, -1].contains(avgPower);
+  bool get powerRatioAvailable => !<num?>[null, -1].contains(avgPowerRatio);
+  bool get heartRateAvailable => !<num?>[null, -1].contains(avgHeartRate);
   bool get ascentAvailable => totalAscent != null && totalDescent != null;
-  bool get cadenceAvailable => !<num>[null, -1].contains(avgStrydCadence);
-  bool get speedAvailable => !<num>[null, 0, -1].contains(avgSpeedByDistance);
-  bool get paceAvailable => !<num>[null, -1].contains(avgPace);
+  bool get cadenceAvailable => !<num?>[null, -1].contains(avgStrydCadence);
+  bool get speedAvailable => !<num?>[null, 0, -1].contains(avgSpeedByDistance);
+  bool get paceAvailable => !<num?>[null, -1].contains(avgPace);
   bool get ecorAvailable => powerAvailable && speedAvailable;
-  bool get groundTimeAvailable => !<num>[null, -1].contains(avgGroundTime);
-  bool get formPowerAvailable => !<num>[null, -1].contains(avgFormPower);
+  bool get groundTimeAvailable => !<num?>[null, -1].contains(avgGroundTime);
+  bool get formPowerAvailable => !<num?>[null, -1].contains(avgFormPower);
   bool get verticalOscillationAvailable =>
-      !<num>[null, -1].contains(avgVerticalOscillation);
-  bool get strideRatioAvailable => !<num>[null, -1].contains(avgStrideRatio);
+      !<num?>[null, -1].contains(avgVerticalOscillation);
+  bool get strideRatioAvailable => !<num?>[null, -1].contains(avgStrideRatio);
   bool get strideCadenceAvailable =>
-      !<num>[null, -1].contains(avgDoubleStrydCadence);
+      !<num?>[null, -1].contains(avgDoubleStrydCadence);
   bool get legSpringStiffnessAvailable =>
-      !<num>[null, -1].contains(avgLegSpringStiffness);
+      !<num?>[null, -1].contains(avgLegSpringStiffness);
 
   // Setter
 
-  set excluded(bool value) => _db.excluded = value;
-  set ftp(double value) => _db.ftp = value;
-  set manual(bool value) => _db.manual = value;
-  set maxHeartRate(int value) => _db.maxHeartRate = value;
-  set name(String value) => _db.name = value;
-  set nonParsable(bool value) => _db.nonParsable = value;
-  set state(String value) => _db.state = value;
-  set timeStamp(DateTime value) => _db.timeStamp = value;
-  set timeCreated(DateTime value) => _db.timeCreated = value;
-  set totalDistance(int value) => _db.totalDistance = value;
-  set totalAscent(int value) => _db.totalAscent = value;
-  set totalDescent(int value) => _db.totalDescent = value;
-  set avgHeartRate(int value) => _db.avgHeartRate = value;
-  set avgPower(double value) => _db.avgPower = value;
-  set sport(String value) => _db.sport = value;
-  set subSport(String value) => _db.subSport = value;
-  set movingTime(int value) => _db.movingTime = value;
+  set excluded(bool? value) => _db!.excluded = value;
+  set ftp(double? value) => _db!.ftp = value;
+  set manual(bool? value) => _db!.manual = value;
+  set maxHeartRate(int? value) => _db!.maxHeartRate = value;
+  set name(String? value) => _db!.name = value;
+  set nonParsable(bool? value) => _db!.nonParsable = value;
+  set state(String? value) => _db!.state = value;
+  set timeStamp(DateTime? value) => _db!.timeStamp = value;
+  set timeCreated(DateTime? value) => _db!.timeCreated = value;
+  set totalDistance(int? value) => _db!.totalDistance = value;
+  set totalAscent(int? value) => _db!.totalAscent = value;
+  set totalDescent(int? value) => _db!.totalDescent = value;
+  set avgHeartRate(int? value) => _db!.avgHeartRate = value;
+  set avgPower(double? value) => _db!.avgPower = value;
+  set sport(String? value) => _db!.sport = value;
+  set subSport(String? value) => _db!.subSport = value;
+  set movingTime(int? value) => _db!.movingTime = value;
 
-  Future<BoolResult> delete() async => await _db.delete();
-  Future<int> save() async => await _db.save();
+  Future<BoolResult> delete() async => await _db!.delete();
+  Future<int?> save() async => await _db!.save();
 
   // intermediate data structures used for parsing
-  Lap currentLap;
-  List<Event> eventsForCurrentLap;
+  late Lap currentLap;
+  late List<Event> eventsForCurrentLap;
 
   @override
   String toString() => '< Activity | $name | $startTime >';
@@ -264,7 +263,7 @@ class Activity {
       case ActivityAttr.avgPace:
         return avgPace;
       case ActivityAttr.avgHeartRate:
-        return avgHeartRate.toDouble();
+        return avgHeartRate!.toDouble();
       case ActivityAttr.avgDoubleStrydCadence:
         return avgDoubleStrydCadence;
       case ActivityAttr.ftp:
@@ -274,18 +273,18 @@ class Activity {
       case ActivityAttr.movingTimeThisYear:
         return movingTimeSoFar / 3600;
       case ActivityAttr.distance:
-        return distance / 1000;
+        return distance! / 1000;
     }
   }
 
-  Future<void> download({@required Athlete athlete}) async {
+  Future<void> download({required Athlete? athlete}) async {
     await StravaFitDownload.byId(id: stravaId.toString(), athlete: athlete);
     setState('downloaded');
   }
 
-  static Future<void> importFromLocalDirectory({Athlete athlete}) async {
+  static Future<void> importFromLocalDirectory({Athlete? athlete}) async {
     if (Platform.isAndroid) {
-      final List<Directory> directories = await getExternalStorageDirectories();
+      final List<Directory> directories = await (getExternalStorageDirectories() as FutureOr<List<Directory>>);
       final Directory localDir = directories[0];
       final Directory appDocDir = await getApplicationDocumentsDirectory();
 
@@ -295,7 +294,7 @@ class Activity {
       );
 
       await for (final FileSystemEntity entity in entityStream) {
-        final Activity activity = Activity.fromLocalDirectory(athlete: athlete);
+        final Activity activity = Activity.fromLocalDirectory(athlete: athlete!);
         // ignore: avoid_slow_async_io
         final bool isFile = await FileSystemEntity.isFile(entity.path);
         if (isFile == true && entity.path.toLowerCase().endsWith('.fit')) {
@@ -314,7 +313,7 @@ class Activity {
       );
 
       await for (final FileSystemEntity entity in entityStream) {
-        final Activity activity = Activity.fromLocalDirectory(athlete: athlete);
+        final Activity activity = Activity.fromLocalDirectory(athlete: athlete!);
         // ignore: avoid_slow_async_io
         final bool isFile = await FileSystemEntity.isFile(entity.path);
         if (isFile == true && entity.path.endsWith('.fit')) {
@@ -328,13 +327,13 @@ class Activity {
   }
 
   Future<void> setState(String state) async {
-    _db.state = state;
+    _db!.state = state;
     await save();
   }
 
   Future<List<Event>> get records async {
     if (cachedRecords.isEmpty) {
-      final List<DbEvent> dbEventList = await _db.getDbEvents().toList();
+      final List<DbEvent> dbEventList = await _db!.getDbEvents()!.toList();
       final Iterable<DbEvent> dbRecordList =
           dbEventList.where((DbEvent dbEvent) => dbEvent.event == 'record');
       cachedRecords = dbRecordList.map(Event.exDb).toList();
@@ -343,7 +342,7 @@ class Activity {
   }
 
   Future<List<Event>> get events async {
-    final List<DbEvent> dbEventList = await _db.getDbEvents().toList();
+    final List<DbEvent> dbEventList = await _db!.getDbEvents()!.toList();
     return dbEventList.map(Event.exDb).toList();
   }
 
@@ -354,22 +353,22 @@ class Activity {
     return cachedTags;
   }
 
-  Future<double> get weight async {
+  Future<double?> get weight async {
     if (cachedWeight == null) {
-      final Weight weight = await Weight.getBy(
+      final Weight weight = await (Weight.getBy(
         athletesId: athletesId,
         date: timeCreated,
-      );
+      ) as FutureOr<Weight>);
       cachedWeight = weight.value;
     }
     return cachedWeight;
   }
 
-  Future<double> get ecor async {
+  Future<double?> get ecor async {
     if (cachedEcor == null) {
-      final double weightValue = await weight;
+      final double? weightValue = await weight;
       cachedEcor = (powerAvailable && speedAvailable && weightValue != null)
-          ? avgPower / avgSpeed / weightValue
+          ? avgPower! / avgSpeed! / weightValue
           : -1;
     }
     return cachedEcor;
@@ -418,9 +417,9 @@ class Activity {
     return true;
   }
 
-  Stream<int> parse({@required Athlete athlete}) async* {
+  Stream<int> parse({required Athlete? athlete}) async* {
     int counter = 0;
-    int percentage;
+    int? percentage;
 
     final Directory appDocDir = await getApplicationDocumentsDirectory();
     final FitFile fitFile =
@@ -428,8 +427,8 @@ class Activity {
     print('Parsing .fit-File for »$name« done.');
 
     // delete left overs from prior runs:
-    await _db.getDbEvents().delete();
-    await _db.getDbLaps().delete();
+    await _db!.getDbEvents()!.delete();
+    await _db!.getDbLaps()!.delete();
     _db
       ..avgPower = null
       ..minPower = null
@@ -465,9 +464,9 @@ class Activity {
     yield -2;
   }
 
-  Future<int> handleDataMessage({DataMessage dataMessage}) async {
-    if (dataMessage.definitionMessage.globalMessageName == null) {
-      switch (dataMessage.definitionMessage.globalMessageNumber) {
+  Future<int?> handleDataMessage({required DataMessage dataMessage}) async {
+    if (dataMessage.definitionMessage!.globalMessageName == null) {
+      switch (dataMessage.definitionMessage!.globalMessageNumber) {
         // Garmin Forerunner 235uses global message numbers, which are not specified:
         case 13:
         case 22:
@@ -490,12 +489,12 @@ class Activity {
           break;
         default:
           print('Message number ' +
-              dataMessage.definitionMessage.globalMessageNumber.toString() +
+              dataMessage.definitionMessage!.globalMessageNumber.toString() +
               ' unknown.');
           debugger();
       }
     } else {
-      switch (dataMessage.definitionMessage.globalMessageName) {
+      switch (dataMessage.definitionMessage!.globalMessageName) {
         case 'developer_data_id':
         case 'device_info':
         case 'device_settings':
@@ -508,7 +507,7 @@ class Activity {
         case 'file_id':
           _db
             ..serialNumber =
-                (dataMessage.get('serial_number') as double)?.round()
+                (dataMessage.get('serial_number') as double?)?.round()
             ..timeCreated =
                 dateTimeFromStrava(dataMessage.get('time_created') as double);
           await save();
@@ -516,9 +515,9 @@ class Activity {
 
         case 'sport':
           _db
-            ..sportName = dataMessage.get('name') as String
-            ..sport = dataMessage.get('sport') as String
-            ..subSport = dataMessage.get('sub_sport') as String;
+            ..sportName = dataMessage.get('name') as String?
+            ..sport = dataMessage.get('sport') as String?
+            ..subSport = dataMessage.get('sub_sport') as String?;
           await save();
           break;
 
@@ -578,75 +577,75 @@ class Activity {
             ..timeStamp =
                 dateTimeFromStrava(dataMessage.get('timestamp') as double)
             ..startTime = startTime
-            ..startPositionLat = dataMessage.get('start_position_lat') as double
+            ..startPositionLat = dataMessage.get('start_position_lat') as double?
             ..startPositionLong =
-                dataMessage.get('start_position_long') as double
+                dataMessage.get('start_position_long') as double?
             ..totalElapsedTime =
-                (dataMessage.get('total_elapsed_time') as double)?.round()
+                (dataMessage.get('total_elapsed_time') as double?)?.round()
             ..totalTimerTime =
-                (dataMessage.get('total_timer_time') as double)?.round()
+                (dataMessage.get('total_timer_time') as double?)?.round()
             ..distance = (distance ??
-                (dataMessage.get('total_distance') as double)?.round())
+                (dataMessage.get('total_distance') as double?)?.round())
             ..totalDistance =
-                (dataMessage.get('total_distance') as double)?.round()
+                (dataMessage.get('total_distance') as double?)?.round()
             ..totalStrides =
-                (dataMessage.get('total_strides') as double)?.round()
-            ..necLat = dataMessage.get('nec_lat') as double
-            ..necLong = dataMessage.get('nec_long') as double
-            ..swcLat = dataMessage.get('swc_lat') as double
-            ..swcLong = dataMessage.get('swc_long') as double
+                (dataMessage.get('total_strides') as double?)?.round()
+            ..necLat = dataMessage.get('nec_lat') as double?
+            ..necLong = dataMessage.get('nec_long') as double?
+            ..swcLat = dataMessage.get('swc_lat') as double?
+            ..swcLong = dataMessage.get('swc_long') as double?
             ..totalCalories =
-                (dataMessage.get('total_calories') as double)?.round()
+                (dataMessage.get('total_calories') as double?)?.round()
             ..avgSpeed = dataMessage.get('avg_speed') == 65.535
-                ? dataMessage.get('enhanced_avg_speed') as double
-                : dataMessage.get('avg_speed') as double
+                ? dataMessage.get('enhanced_avg_speed') as double?
+                : dataMessage.get('avg_speed') as double?
             ..maxSpeed = dataMessage.get('max_speed') == 65.535
-                ? dataMessage.get('enhanced_max_speed') as double
-                : dataMessage.get('max_speed') as double
-            ..totalAscent = (dataMessage.get('total_ascent') as double)?.round()
+                ? dataMessage.get('enhanced_max_speed') as double?
+                : dataMessage.get('max_speed') as double?
+            ..totalAscent = (dataMessage.get('total_ascent') as double?)?.round()
             ..totalDescent =
-                (dataMessage.get('total_descent') as double)?.round()
+                (dataMessage.get('total_descent') as double?)?.round()
             ..maxRunningCadence =
-                (dataMessage.get('max_running_cadence') as double)?.round()
+                (dataMessage.get('max_running_cadence') as double?)?.round()
             ..firstLapIndex =
-                (dataMessage.get('first_lap_index') as double)?.round()
-            ..numLaps = (dataMessage.get('num_laps') as double)?.round()
+                (dataMessage.get('first_lap_index') as double?)?.round()
+            ..numLaps = (dataMessage.get('num_laps') as double?)?.round()
             ..event = dataMessage.get('event')?.toString()
-            ..type = type ?? dataMessage.get('event_type') as String
-            ..eventType = dataMessage.get('event_type') as String
-            ..eventGroup = (dataMessage.get('event_group') as double)?.round()
-            ..trigger = dataMessage.get('trigger') as String
+            ..type = type ?? dataMessage.get('event_type') as String?
+            ..eventType = dataMessage.get('event_type') as String?
+            ..eventGroup = (dataMessage.get('event_group') as double?)?.round()
+            ..trigger = dataMessage.get('trigger') as String?
             ..avgVerticalOscillation =
-                dataMessage.get('avg_vertical_oscillation') as double
+                dataMessage.get('avg_vertical_oscillation') as double?
             ..avgStanceTimePercent =
-                dataMessage.get('avg_stance_time_percent') as double
-            ..avgStanceTime = dataMessage.get('avg_stance_time') as double
-            ..sport = dataMessage.get('sport') as String
-            ..subSport = dataMessage.get('sub_sport') as String
+                dataMessage.get('avg_stance_time_percent') as double?
+            ..avgStanceTime = dataMessage.get('avg_stance_time') as double?
+            ..sport = dataMessage.get('sport') as String?
+            ..subSport = dataMessage.get('sub_sport') as String?
             ..avgHeartRate =
-                (dataMessage.get('avg_heart_rate') as double)?.round()
+                (dataMessage.get('avg_heart_rate') as double?)?.round()
             ..maxHeartRate =
-                (dataMessage.get('max_heart_rate') as double)?.round()
+                (dataMessage.get('max_heart_rate') as double?)?.round()
             ..avgRunningCadence =
-                dataMessage.get('avg_running_cadence') as double
+                dataMessage.get('avg_running_cadence') as double?
             ..totalTrainingEffect =
-                (dataMessage.get('total_training_effect') as double)?.round()
+                (dataMessage.get('total_training_effect') as double?)?.round()
             ..avgTemperature =
-                (dataMessage.get('avg_temperature') as double)?.round()
+                (dataMessage.get('avg_temperature') as double?)?.round()
             ..maxTemperature =
-                (dataMessage.get('max_temperature') as double)?.round()
+                (dataMessage.get('max_temperature') as double?)?.round()
             ..avgFractionalCadence =
-                dataMessage.get('avg_fractional_cadence') as double
+                dataMessage.get('avg_fractional_cadence') as double?
             ..maxFractionalCadence =
-                dataMessage.get('max_fractional_cadence') as double
+                dataMessage.get('max_fractional_cadence') as double?
             ..totalFractionalCycles =
-                dataMessage.get('total_fractional_cycles') as double;
+                dataMessage.get('total_fractional_cycles') as double?;
           await save();
           break;
 
         case 'activity':
           _db
-            ..numSessions = (dataMessage.get('num_sessions') as double)?.round()
+            ..numSessions = (dataMessage.get('num_sessions') as double?)?.round()
             ..localTimestamp = dateTimeFromStrava(
                 dataMessage.get('local_timestamp') as double);
           await save();
@@ -654,7 +653,7 @@ class Activity {
 
         default:
           print('Messages of type ' +
-              dataMessage.definitionMessage.globalMessageName +
+              dataMessage.definitionMessage!.globalMessageName! +
               ' are not implemented yet.');
           print(dataMessage.values.map((Value v) => v.fieldName).toList());
         // Use this debugger to implement additional message types!
@@ -670,7 +669,7 @@ class Activity {
     eventsForCurrentLap = <Event>[];
   }
 
-  static Future<void> queryStrava({Athlete athlete}) async {
+  static Future<void> queryStrava({required Athlete athlete}) async {
     final StravaClient stravaClient =
         StravaClient(clientId: clientId, secret: secret);
 
@@ -683,7 +682,7 @@ class Activity {
 
     final DateTime now = DateTime.now();
     final DateTime startDate =
-        DateTime.now().subtract(Duration(days: athlete.downloadInterval));
+        DateTime.now().subtract(Duration(days: athlete.downloadInterval!));
 
     final List<SummaryActivity> summaryActivities = await stravaClient
         .activities
@@ -707,24 +706,24 @@ class Activity {
     });
   }
 
-  Future<PowerZoneSchema> get powerZoneSchema async =>
+  Future<PowerZoneSchema?> get powerZoneSchema async =>
       _powerZoneSchema ??= await PowerZoneSchema.getBy(
         athletesId: athletesId,
         date: timeCreated,
       );
 
-  Future<HeartRateZoneSchema> get heartRateZoneSchema async =>
+  Future<HeartRateZoneSchema?> get heartRateZoneSchema async =>
       _heartRateZoneSchema ??= await HeartRateZoneSchema.getBy(
         athletesId: athletesId,
         date: timeCreated,
       );
 
-  Future<PowerZone> get powerZone async {
+  Future<PowerZone?> get powerZone async {
     if (_powerZone == null) {
-      final DbPowerZone dbPowerZone = await DbPowerZone()
+      final DbPowerZone? dbPowerZone = await DbPowerZone()
           .select()
           .powerZoneSchemataId
-          .equals((await powerZoneSchema).id)
+          .equals((await powerZoneSchema)!.id)
           .and
           .lowerLimit
           .lessThanOrEquals(avgPower)
@@ -737,12 +736,12 @@ class Activity {
     return _powerZone;
   }
 
-  Future<HeartRateZone> get heartRateZone async {
+  Future<HeartRateZone?> get heartRateZone async {
     if (_heartRateZone == null) {
-      final DbHeartRateZone dbHeartRateZone = await DbHeartRateZone()
+      final DbHeartRateZone? dbHeartRateZone = await DbHeartRateZone()
           .select()
           .heartRateZoneSchemataId
-          .equals((await heartRateZoneSchema).id)
+          .equals((await heartRateZoneSchema)!.id)
           .and
           .lowerLimit
           .lessThanOrEquals(avgHeartRate)
@@ -756,11 +755,11 @@ class Activity {
     return _heartRateZone;
   }
 
-  Future<void> autoTagger({@required Athlete athlete}) async {
-    final PowerZone powerZone = await this.powerZone;
+  Future<void> autoTagger({required Athlete? athlete}) async {
+    final PowerZone powerZone = await (this.powerZone as FutureOr<PowerZone>);
     if (powerZone.id != null) {
       final Tag powerTag = await Tag.autoPowerTag(
-        athlete: athlete,
+        athlete: athlete!,
         color: powerZone.color,
         sortOrder: powerZone.lowerLimit,
         name: powerZone.name,
@@ -772,10 +771,10 @@ class Activity {
       );
     }
 
-    final HeartRateZone heartRateZone = await this.heartRateZone;
+    final HeartRateZone heartRateZone = await (this.heartRateZone as FutureOr<HeartRateZone>);
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
-        athlete: athlete,
+        athlete: athlete!,
         color: heartRateZone.color,
         sortOrder: heartRateZone.lowerLimit,
         name: heartRateZone.name,
@@ -793,7 +792,7 @@ class Activity {
   }
 
   Future<List<BarZone>> powerZoneCounts() async {
-    final PowerZoneSchema powerZoneSchema = await this.powerZoneSchema;
+    final PowerZoneSchema powerZoneSchema = await (this.powerZoneSchema as FutureOr<PowerZoneSchema>);
     final List<Event> records = await this.records;
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();
@@ -804,7 +803,7 @@ class Activity {
 
   Future<List<BarZone>> heartRateZoneCounts() async {
     final HeartRateZoneSchema heartRateZoneSchema =
-        await this.heartRateZoneSchema;
+        await (this.heartRateZoneSchema as FutureOr<HeartRateZoneSchema>);
     final List<Event> records = await this.records;
     final List<Event> heartRateRecords =
         records.where((Event record) => record.heartRate != null).toList();
@@ -818,7 +817,7 @@ class Activity {
     if (cachedLaps.isEmpty) {
       int counter = 1;
 
-      final List<DbLap> dbLapList = await _db.getDbLaps().toList();
+      final List<DbLap> dbLapList = await _db!.getDbLaps()!.toList();
       cachedLaps = dbLapList.map(Lap.exDb).toList();
 
       for (final Lap lap in cachedLaps) {
@@ -836,7 +835,7 @@ class Activity {
       int counter = 1;
 
       final List<DbInterval> dbIntervalList =
-          await _db.getDbIntervals().toList();
+          await _db!.getDbIntervals()!.toList();
       cachedIntervals = dbIntervalList.map(encrateia.Interval.exDb).toList();
 
       for (final encrateia.Interval interval in cachedIntervals) {
@@ -849,13 +848,13 @@ class Activity {
     return cachedIntervals;
   }
 
-  static Future<Activity> byId(int id) async {
-    final DbActivity dbActivity = await DbActivity().getById(id);
+  static Future<Activity> byId(int? id) async {
+    final DbActivity? dbActivity = await DbActivity().getById(id);
     return exDb(dbActivity);
   }
 
-  Future<BoolResult> deleteEvents() async => await _db.getDbEvents().delete();
-  Future<BoolResult> deleteLaps() async => await _db.getDbLaps().delete();
+  Future<BoolResult> deleteEvents() async => await _db!.getDbEvents()!.delete();
+  Future<BoolResult> deleteLaps() async => await _db!.getDbLaps()!.delete();
 
-  static Activity exDb(DbActivity db) => Activity._fromDb(db);
+  static Activity exDb(DbActivity? db) => Activity._fromDb(db);
 }

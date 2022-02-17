@@ -9,11 +9,11 @@ import '/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
 
 class OnBoardingHeartRateZoneSchemaScreen extends StatefulWidget {
   const OnBoardingHeartRateZoneSchemaScreen({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _OnBoardingHeartRateZoneSchemaScreenState createState() =>
@@ -71,13 +71,13 @@ class _OnBoardingHeartRateZoneSchemaScreenState
 
   Future<void> getData() async {
     final List<HeartRateZoneSchema> heartRateZoneSchemas =
-        await widget.athlete.heartRateZoneSchemas;
+        await widget.athlete!.heartRateZoneSchemas;
     setState(() =>
         heartRateZoneSchemaHasBeenEntered = heartRateZoneSchemas.isNotEmpty);
   }
 
   Future<void> nextButton() async {
-    await widget.athlete.save();
+    await widget.athlete!.save();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute<BuildContext>(

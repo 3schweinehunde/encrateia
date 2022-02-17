@@ -5,10 +5,10 @@ class Db {
 
   factory Db.create() {
     _dB ??= Db();
-    return _dB;
+    return _dB!;
   }
 
-  static Db _dB;
+  static Db? _dB;
   static bool _isConnected = false;
 
   Future<bool> connect() async {

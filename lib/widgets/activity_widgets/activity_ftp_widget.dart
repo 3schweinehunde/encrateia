@@ -10,12 +10,12 @@ import '/widgets/charts/ftp_chart.dart';
 
 class ActivityFtpWidget extends StatefulWidget {
   const ActivityFtpWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityFtpWidgetState createState() => _ActivityFtpWidgetState();
@@ -37,7 +37,7 @@ class _ActivityFtpWidgetState extends State<ActivityFtpWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -77,7 +77,7 @@ class _ActivityFtpWidgetState extends State<ActivityFtpWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
+    records = RecordList<Event>(await widget.activity!.records);
     setState(() => loading = false);
   }
 }

@@ -15,25 +15,25 @@ import '/utils/my_line_chart.dart';
 class ActivityPowerChart extends StatelessWidget {
   const ActivityPowerChart({
     this.records,
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
     this.powerZones,
   });
 
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-  final List<PowerZone> powerZones;
+  final RecordList<Event>? records;
+  final Activity? activity;
+  final Athlete? athlete;
+  final List<PowerZone>? powerZones;
 
   @override
   Widget build(BuildContext context) {
-    final List<IntPlotPoint> smoothedRecords = records.toIntDataPoints(
+    final List<IntPlotPoint> smoothedRecords = records!.toIntDataPoints(
       attribute: LapIntAttr.power,
-      amount: athlete.recordAggregationCount,
+      amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
-      Series<IntPlotPoint, int>(
+    final List<Series<IntPlotPoint, int?>> data = <Series<IntPlotPoint, int?>>[
+      Series<IntPlotPoint, int?>(
         id: 'Power',
         colorFn: (_, __) => Color.black,
         domainFn: (IntPlotPoint record, _) => record.domain,
@@ -43,10 +43,10 @@ class ActivityPowerChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: activity.laps,
+      future: activity!.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data!;
 
           return AspectRatio(
             aspectRatio:
@@ -55,7 +55,7 @@ class ActivityPowerChart extends StatelessWidget {
                     : 2,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.distance,
+              maxDomain: records!.last.distance!,
               laps: laps,
               powerZones: powerZones,
               domainTitle: 'Power (W)',

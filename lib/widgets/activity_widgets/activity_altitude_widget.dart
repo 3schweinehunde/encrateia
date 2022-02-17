@@ -13,12 +13,12 @@ import '/widgets/charts/activity_charts/activity_altitude_chart.dart';
 
 class ActivityAltitudeWidget extends StatefulWidget {
   const ActivityAltitudeWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityAltitudeWidgetState createState() => _ActivityAltitudeWidgetState();
@@ -56,7 +56,7 @@ class _ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
                   athlete: widget.athlete,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records with '
                   'altitude measurements are shown.'),
               Row(children: <Widget>[
@@ -92,7 +92,7 @@ class _ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
     setState(() => loading = false);
   }

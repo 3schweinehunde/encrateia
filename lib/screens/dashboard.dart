@@ -21,7 +21,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   List<Athlete> athletes = <Athlete>[];
   List<Log> logs = <Log>[];
-  String version;
+  String? version;
 
   @override
   void initState() {
@@ -48,7 +48,7 @@ class _DashboardState extends State<Dashboard> {
                 Card(
                   child: ListTile(
                     leading: athlete.photoPath != null
-                        ? Image.network(athlete.photoPath)
+                        ? Image.network(athlete.photoPath!)
                         : MyIcon.runningBig,
                     title: Text('${athlete.firstName} ${athlete.lastName}'),
                     onTap: () async {

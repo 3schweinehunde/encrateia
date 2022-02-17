@@ -15,7 +15,7 @@ import '/widgets/charts/lap_charts/lap_altitude_chart.dart';
 class IntervalAltitudeWidget extends StatefulWidget {
   const IntervalAltitudeWidget({this.interval});
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalAltitudeWidgetState createState() => _IntervalAltitudeWidgetState();
@@ -57,11 +57,11 @@ class _IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
                   records: RecordList<Event>(altitudeRecords),
                   minimum: altitudeRecords
                       .map((Event record) => record.altitude)
-                      .reduce(min)
+                      .reduce(min)!
                       .toDouble(),
                   maximum: altitudeRecords
                       .map((Event record) => record.altitude)
-                      .reduce(max)
+                      .reduce(max)!
                       .toDouble(),
                 ),
               ),
@@ -101,7 +101,7 @@ class _IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
   }
 
   Future<void> getData() async {
-    final encrateia.Interval interval = widget.interval;
+    final encrateia.Interval interval = widget.interval!;
     records = RecordList<Event>(await interval.records);
 
     setState(() => loading = false);

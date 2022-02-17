@@ -6,8 +6,8 @@ import '/widgets/athlete_widgets/edit_strava_athlete_widget.dart';
 
 class OnBoardingStravaCredentialsScreen extends StatelessWidget {
   const OnBoardingStravaCredentialsScreen({
-    Key key,
-    @required this.athlete,
+    Key? key,
+    required this.athlete,
   }) : super(key: key);
 
   final Athlete athlete;

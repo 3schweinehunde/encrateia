@@ -8,9 +8,9 @@ import '/utils/my_button.dart';
 import '/widgets/charts/power_duration_chart.dart';
 
 class IntervalPowerDurationWidget extends StatefulWidget {
-  const IntervalPowerDurationWidget({@required this.interval});
+  const IntervalPowerDurationWidget({required this.interval});
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalPowerDurationWidgetState createState() =>
@@ -40,7 +40,7 @@ class _IntervalPowerDurationWidgetState
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -79,7 +79,7 @@ class _IntervalPowerDurationWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
+    records = RecordList<Event>(await widget.interval!.records);
     setState(() => loading = false);
   }
 }

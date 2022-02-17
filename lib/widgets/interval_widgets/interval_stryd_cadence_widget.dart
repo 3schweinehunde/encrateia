@@ -13,7 +13,7 @@ import '/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
 class IntervalStrydCadenceWidget extends StatefulWidget {
   const IntervalStrydCadenceWidget({this.interval});
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalStrydCadenceWidgetState createState() =>
@@ -44,7 +44,7 @@ class _IntervalStrydCadenceWidgetState
     if (records.isNotEmpty) {
       final List<Event> strydCadenceRecords = records
           .where((Event value) =>
-              value.strydCadence != null && value.strydCadence > 0)
+              value.strydCadence != null && value.strydCadence! > 0)
           .toList();
 
       if (strydCadenceRecords.isNotEmpty) {
@@ -57,8 +57,8 @@ class _IntervalStrydCadenceWidgetState
                 key: widgetKey,
                 child: LapStrydCadenceChart(
                   records: RecordList<Event>(strydCadenceRecords),
-                  minimum: widget.interval.avgStrydCadence * 2 / 1.25,
-                  maximum: widget.interval.avgStrydCadence * 2 * 1.25,
+                  minimum: widget.interval!.avgStrydCadence! * 2 / 1.25,
+                  maximum: widget.interval!.avgStrydCadence! * 2 * 1.25,
                 ),
               ),
               const Text('Only records where cadence > 0 s/min are shown.'),
@@ -78,7 +78,7 @@ class _IntervalStrydCadenceWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.interval.avgStrydCadence,
+                  value: widget.interval!.avgStrydCadence,
                   pq: PQ.cadence,
                 ),
                 subtitle: const Text('average cadence'),
@@ -86,7 +86,7 @@ class _IntervalStrydCadenceWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.interval.sdevStrydCadence,
+                  value: widget.interval!.sdevStrydCadence,
                   pq: PQ.cadence,
                 ),
                 subtitle: const Text('standard deviation cadence'),
@@ -113,7 +113,7 @@ class _IntervalStrydCadenceWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
+    records = RecordList<Event>(await widget.interval!.records);
     setState(() => loading = false);
   }
 }

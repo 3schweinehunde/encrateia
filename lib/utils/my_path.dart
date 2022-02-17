@@ -7,10 +7,10 @@ import '/utils/path_painter.dart';
 
 class MyPath extends StatelessWidget {
   MyPath({
-    int width,
-    int height,
-    @required Activity activity,
-    @required RecordList<Event> records,
+    int? width,
+    int? height,
+    required Activity? activity,
+    required RecordList<Event> records,
   })  : _width = width?.toDouble() ?? 300.0,
         _height = height?.toDouble() ?? 300.0,
         _activity = activity,
@@ -18,7 +18,7 @@ class MyPath extends StatelessWidget {
 
   final double _width;
   final double _height;
-  final Activity _activity;
+  final Activity? _activity;
   final RecordList<Event> _records;
 
   @override

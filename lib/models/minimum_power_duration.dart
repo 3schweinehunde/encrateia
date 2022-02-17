@@ -4,20 +4,20 @@ import '/models/event.dart';
 import '/models/plot_point.dart';
 
 class MinimumPowerDuration {
-  MinimumPowerDuration({List<Event> records}) {
+  MinimumPowerDuration({required List<Event> records}) {
     for (int index = 0; index < records.length - 1; index++) {
-      final int power = records[index].power;
+      final int power = records[index].power!;
       final DateTime nextLower = records
           .sublist(index + 1, records.length)
-          .firstWhere((Event record) => record.power < power,
+          .firstWhere((Event record) => record.power! < power,
               orElse: () => records.last)
-          .timeStamp;
+          .timeStamp!;
 
       final DateTime recentLower = records
           .sublist(0, index)
-          .lastWhere((Event record) => record.power < power,
+          .lastWhere((Event record) => record.power! < power,
               orElse: () => records.first)
-          .timeStamp;
+          .timeStamp!;
 
       final int persistedFor = nextLower.difference(recentLower).inSeconds;
 
@@ -47,9 +47,9 @@ class MinimumPowerDuration {
     });
 
     plotPoints
-        .sort((IntPlotPoint a, IntPlotPoint b) => a.domain.compareTo(b.domain));
+        .sort((IntPlotPoint a, IntPlotPoint b) => a.domain!.compareTo(b.domain!));
     return plotPoints;
   }
 
-  static int scaled({int seconds}) => (200 * log(seconds)).round();
+  static int scaled({required int seconds}) => (200 * log(seconds)).round();
 }

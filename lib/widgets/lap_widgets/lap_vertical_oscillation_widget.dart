@@ -13,7 +13,7 @@ import '/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
 class LapVerticalOscillationWidget extends StatefulWidget {
   const LapVerticalOscillationWidget({this.lap});
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapVerticalOscillationWidgetState createState() =>
@@ -45,7 +45,7 @@ class _LapVerticalOscillationWidgetState
       final List<Event> verticalOscillationRecords = records
           .where((Event value) =>
               value.verticalOscillation != null &&
-              value.verticalOscillation > 0)
+              value.verticalOscillation! > 0)
           .toList();
 
       if (verticalOscillationRecords.isNotEmpty) {
@@ -58,8 +58,8 @@ class _LapVerticalOscillationWidgetState
                 key: widgetKey,
                 child: LapVerticalOscillationChart(
                   records: RecordList<Event>(verticalOscillationRecords),
-                  minimum: widget.lap.avgVerticalOscillation / 1.25,
-                  maximum: widget.lap.avgVerticalOscillation * 1.25,
+                  minimum: widget.lap!.avgVerticalOscillation! / 1.25,
+                  maximum: widget.lap!.avgVerticalOscillation! * 1.25,
                 ),
               ),
               const Text(
@@ -80,7 +80,7 @@ class _LapVerticalOscillationWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.lap.avgVerticalOscillation,
+                  value: widget.lap!.avgVerticalOscillation,
                   pq: PQ.verticalOscillation,
                 ),
                 subtitle: const Text('average vertical oscillation'),
@@ -88,7 +88,7 @@ class _LapVerticalOscillationWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.lap.sdevVerticalOscillation,
+                  value: widget.lap!.sdevVerticalOscillation,
                   pq: PQ.verticalOscillation,
                 ),
                 subtitle: const Text('standard deviation vertical oscillation'),
@@ -117,7 +117,7 @@ class _LapVerticalOscillationWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
+    records = RecordList<Event>(await (widget.lap!.records as FutureOr<List<Event>>));
     setState(() => loading = false);
   }
 }

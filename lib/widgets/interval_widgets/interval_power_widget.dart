@@ -13,9 +13,9 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_power_chart.dart';
 
 class IntervalPowerWidget extends StatefulWidget {
-  const IntervalPowerWidget({Key? key, this.interval}) : super(key: key);
+  const IntervalPowerWidget({Key?? key, this.interval}) : super(key: key);
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalPowerWidgetState createState() => _IntervalPowerWidgetState();
@@ -24,8 +24,8 @@ class IntervalPowerWidget extends StatefulWidget {
 class _IntervalPowerWidgetState extends State<IntervalPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
-  PowerZoneSchema powerZoneSchema;
-  List<PowerZone> powerZones;
+  PowerZoneSchema? powerZoneSchema;
+  List<PowerZone>? powerZones;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
 
@@ -45,7 +45,7 @@ class _IntervalPowerWidgetState extends State<IntervalPowerWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -77,22 +77,22 @@ class _IntervalPowerWidgetState extends State<IntervalPowerWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.interval.avgPower, pq: PQ.power),
+                title: PQText(value: widget.interval!.avgPower, pq: PQ.power),
                 subtitle: const Text('average power'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.interval.minPower, pq: PQ.power),
+                title: PQText(value: widget.interval!.minPower, pq: PQ.power),
                 subtitle: const Text('minimum power'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.interval.maxPower, pq: PQ.power),
+                title: PQText(value: widget.interval!.maxPower, pq: PQ.power),
                 subtitle: const Text('maximum power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.interval.sdevPower, pq: PQ.power),
+                title: PQText(value: widget.interval!.sdevPower, pq: PQ.power),
                 subtitle: const Text('standard deviation power'),
               ),
               ListTile(
@@ -116,10 +116,10 @@ class _IntervalPowerWidgetState extends State<IntervalPowerWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
-    powerZoneSchema = await widget.interval.powerZoneSchema;
+    records = RecordList<Event>(await widget.interval!.records);
+    powerZoneSchema = await widget.interval!.powerZoneSchema;
     if (powerZoneSchema != null) {
-      powerZones = await powerZoneSchema.powerZones;
+      powerZones = await powerZoneSchema!.powerZones;
     } else {
       powerZones = <PowerZone>[];
     }

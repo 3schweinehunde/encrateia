@@ -9,24 +9,24 @@ import '/models/power_zone.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class GraphUtils {
-  static List<RangeAnnotationSegment<int>> rangeAnnotations({List<Lap> laps}) {
+  static List<RangeAnnotationSegment<int?>> rangeAnnotations({required List<Lap> laps}) {
     final List<Color> colorArray = <Color>[
       MaterialPalette.white,
       MaterialPalette.gray.shade200,
     ];
 
-    return <RangeAnnotationSegment<int>>[
+    return <RangeAnnotationSegment<int?>>[
       for (int index = 0; index < laps.length; index++)
-        RangeAnnotationSegment<int>(
+        RangeAnnotationSegment<int?>(
           laps
                   .sublist(0, index + 1)
                   .map((Lap lap) => lap.totalDistance)
-                  .reduce((int a, int b) => a + b) -
-              laps[index].totalDistance,
+                  .reduce((int? a, int? b) => a! + b!)! -
+              laps[index].totalDistance!,
           laps
               .sublist(0, index + 1)
               .map((Lap lap) => lap.totalDistance)
-              .reduce((int a, int b) => a + b),
+              .reduce((int? a, int? b) => a! + b!),
           RangeAnnotationAxisType.domain,
           color: colorArray[index % 2],
           endLabel: 'Lap ${laps[index].index}',
@@ -46,7 +46,7 @@ class GraphUtils {
     child: Center(child: Text('Loading')),
   );
 
-  static List<ChartTitle<num>> axis({String measureTitle}) {
+  static List<ChartTitle<num>> axis({required String measureTitle}) {
     return <ChartTitle<num>>[
       ChartTitle<num>(
         measureTitle,
@@ -69,47 +69,47 @@ class GraphUtils {
     ];
   }
 
-  static List<RangeAnnotationSegment<int>> powerZoneAnnotations(
-      {List<PowerZone> powerZones}) {
-    List<RangeAnnotationSegment<int>> rangeAnnotationSegmentList =
+  static List<RangeAnnotationSegment<int?>> powerZoneAnnotations(
+      {List<PowerZone>? powerZones}) {
+    List<RangeAnnotationSegment<int?>> rangeAnnotationSegmentList =
         <RangeAnnotationSegment<int>>[];
 
     if (powerZones != null) {
-      rangeAnnotationSegmentList = <RangeAnnotationSegment<int>>[
+      rangeAnnotationSegmentList = <RangeAnnotationSegment<int?>>[
         for (PowerZone powerZone in powerZones)
-          RangeAnnotationSegment<int>(
+          RangeAnnotationSegment<int?>(
             powerZone.lowerLimit,
             powerZone.upperLimit,
             RangeAnnotationAxisType.measure,
             startLabel: powerZone.name,
-            color: convertedColor(dbColor: powerZone.color),
+            color: convertedColor(dbColor: powerZone.color!),
           )
       ];
     }
     return rangeAnnotationSegmentList;
   }
 
-  static List<RangeAnnotationSegment<int>> heartRateZoneAnnotations(
-      {List<HeartRateZone> heartRateZones}) {
-    List<RangeAnnotationSegment<int>> rangeAnnotationSegmentList =
+  static List<RangeAnnotationSegment<int?>> heartRateZoneAnnotations(
+      {List<HeartRateZone>? heartRateZones}) {
+    List<RangeAnnotationSegment<int?>> rangeAnnotationSegmentList =
         <RangeAnnotationSegment<int>>[];
 
     if (heartRateZones != null) {
-      rangeAnnotationSegmentList = <RangeAnnotationSegment<int>>[
+      rangeAnnotationSegmentList = <RangeAnnotationSegment<int?>>[
         for (HeartRateZone heartRateZone in heartRateZones)
-          RangeAnnotationSegment<int>(
+          RangeAnnotationSegment<int?>(
             heartRateZone.lowerLimit,
             heartRateZone.upperLimit,
             RangeAnnotationAxisType.measure,
             startLabel: heartRateZone.name,
-            color: convertedColor(dbColor: heartRateZone.color),
+            color: convertedColor(dbColor: heartRateZone.color!),
           )
       ];
     }
     return rangeAnnotationSegmentList;
   }
 
-  static Color convertedColor({int dbColor}) {
+  static Color convertedColor({required int dbColor}) {
     return Color(
       r: ui.Color(dbColor).red,
       g: ui.Color(dbColor).green,

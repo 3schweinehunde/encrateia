@@ -13,12 +13,12 @@ import '/widgets/charts/activity_charts/activity_power_ratio_chart.dart';
 
 class ActivityPowerRatioWidget extends StatefulWidget {
   const ActivityPowerRatioWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityPowerRatioWidgetState createState() =>
@@ -43,10 +43,10 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
       final List<Event> powerRecords = records
           .where((Event value) =>
               value.power != null &&
-              value.power > 100 &&
+              value.power! > 100 &&
               value.formPower != null &&
-              value.formPower > 0 &&
-              value.formPower < 200)
+              value.formPower! > 0 &&
+              value.formPower! < 200)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -65,7 +65,7 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
               ),
               const Text(
                   'power ratio (%) = (power - form power) / power * 100'),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 100 W and 0 W < form power < 200 W are shown.'),
               Row(children: <Widget>[
@@ -83,7 +83,7 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
               ListTile(
                 leading: MyIcon.formPower,
                 title: PQText(
-                  value: widget.activity.avgPowerRatio,
+                  value: widget.activity!.avgPowerRatio,
                   pq: PQ.percentage,
                 ),
                 subtitle: const Text('average power ratio'),
@@ -91,7 +91,7 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.activity.sdevPowerRatio,
+                  value: widget.activity!.sdevPowerRatio,
                   pq: PQ.percentage,
                 ),
                 subtitle: const Text('standard deviation power ratio '),
@@ -117,7 +117,7 @@ class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
     setState(() => loading = false);
   }

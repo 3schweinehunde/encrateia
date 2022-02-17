@@ -13,7 +13,7 @@ import '/widgets/charts/lap_charts/lap_pace_chart.dart';
 class LapPaceWidget extends StatefulWidget {
   const LapPaceWidget({this.lap});
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapPaceWidgetState createState() => _LapPaceWidgetState();
@@ -41,7 +41,7 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> paceRecords = records
-          .where((Event value) => value.speed != null && value.speed > 0)
+          .where((Event value) => value.speed != null && value.speed! > 0)
           .toList();
 
       if (paceRecords.isNotEmpty) {
@@ -55,9 +55,9 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
                 child: LapPaceChart(
                   records: RecordList<Event>(paceRecords),
                   minimum:
-                      50 / 3 / widget.lap.avgSpeed - 3 * widget.lap.sdevPace,
+                      50 / 3 / widget.lap!.avgSpeed! - 3 * widget.lap!.sdevPace!,
                   maximum:
-                      50 / 3 / widget.lap.avgSpeed + 3 * widget.lap.sdevPace,
+                      50 / 3 / widget.lap!.avgSpeed! + 3 * widget.lap!.sdevPace!,
                 ),
               ),
               const Text('Only records where speed > 0 m/s are shown.'),
@@ -76,22 +76,22 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.lap.avgPace, pq: PQ.pace),
+                title: PQText(value: widget.lap!.avgPace, pq: PQ.pace),
                 subtitle: const Text('average pace'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.lap.minSpeed, pq: PQ.paceFromSpeed),
+                title: PQText(value: widget.lap!.minSpeed, pq: PQ.paceFromSpeed),
                 subtitle: const Text('minimum pace'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.lap.maxSpeed, pq: PQ.paceFromSpeed),
+                title: PQText(value: widget.lap!.maxSpeed, pq: PQ.paceFromSpeed),
                 subtitle: const Text('maximum pace'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.lap.sdevPace, pq: PQ.pace),
+                title: PQText(value: widget.lap!.sdevPace, pq: PQ.pace),
                 subtitle: const Text('standard deviation pace'),
               ),
               ListTile(
@@ -115,8 +115,8 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
+    final Lap lap = widget.lap!;
+    records = RecordList<Event>(await (lap.records as FutureOr<List<Event>>));
     setState(() => loading = false);
   }
 }

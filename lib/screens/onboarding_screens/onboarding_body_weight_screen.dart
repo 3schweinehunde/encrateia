@@ -9,11 +9,11 @@ import '/widgets/athlete_widgets/athlete_body_weight_widget.dart';
 
 class OnBoardingBodyWeightScreen extends StatefulWidget {
   const OnBoardingBodyWeightScreen({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _OnBoardingBodyWeightScreenState createState() =>
@@ -64,13 +64,13 @@ class _OnBoardingBodyWeightScreenState
   }
 
   Future<void> getData() async {
-    final List<Weight> weights = await widget.athlete.weights;
+    final List<Weight> weights = await widget.athlete!.weights;
     print(weights.length);
     setState(() => weightHasBeenEntered = weights.isNotEmpty);
   }
 
   Future<void> nextButton() async {
-    await widget.athlete.save();
+    await widget.athlete!.save();
     print('OK');
     Navigator.pushReplacement(
       context,

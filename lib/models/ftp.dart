@@ -8,7 +8,7 @@ import '/models/tag_group.dart';
 import 'athlete.dart';
 
 Future<List<Activity>> deriveBacklog({
-  Athlete athlete,
+  required Athlete athlete,
 }) async {
   final List<Activity> unfilteredActivities = await athlete.activities;
   final TagGroup autoEffortTagGroup =
@@ -22,12 +22,12 @@ Future<List<Activity>> deriveBacklog({
   return backlog;
 }
 
-Future<void> catchUp({List<Activity> backlog}) async {
+Future<void> catchUp({required List<Activity> backlog}) async {
   for (final Activity activity in backlog) {
     print('calculating ftp for ${activity.name} ...');
     final List<Event> records = await activity.records;
     final List<Event> powerRecords = records
-        .where((Event value) => value.power != null && value.power > 100)
+        .where((Event value) => value.power != null && value.power! > 100)
         .toList();
     activity.ftp = calculate(records: powerRecords);
     activity.save();
@@ -35,7 +35,7 @@ Future<void> catchUp({List<Activity> backlog}) async {
   }
 }
 
-double calculate({List<Event> records}) {
+double calculate({required List<Event> records}) {
   final PowerDuration powerDuration = PowerDuration(records: records);
   final PowerDuration ftpCurve = powerDuration.normalize();
   final double ftp = ftpCurve.powerMap.values.toList().reduce(max);

@@ -10,12 +10,12 @@ import '/utils/my_path.dart';
 
 class ActivityPathWidget extends StatefulWidget {
   const ActivityPathWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityPathWidgetState createState() => _ActivityPathWidgetState();
@@ -78,7 +78,7 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
+    records = RecordList<Event>(await widget.activity!.records);
     setState(() => loading = false);
   }
 }

@@ -13,7 +13,7 @@ import 'athlete_filter_widget.dart';
 class AthletePowerRatioWidget extends StatefulWidget {
   const AthletePowerRatioWidget({this.athlete});
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthletePowerRatioWidgetState createState() =>
@@ -26,8 +26,8 @@ class _AthletePowerRatioWidgetState extends State<AthletePowerRatioWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -41,9 +41,9 @@ class _AthletePowerRatioWidgetState extends State<AthletePowerRatioWidget> {
       final List<Activity> powerRatioActivities = activities
           .where((Activity value) =>
               value.avgPower != null &&
-              value.avgPower > 0 &&
+              value.avgPower! > 0 &&
               value.avgFormPower != null &&
-              value.avgFormPower > 0)
+              value.avgFormPower! > 0)
           .toList();
 
       if (powerRatioActivities.isNotEmpty) {
@@ -79,14 +79,14 @@ class _AthletePowerRatioWidgetState extends State<AthletePowerRatioWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items: sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -128,10 +128,10 @@ class _AthletePowerRatioWidgetState extends State<AthletePowerRatioWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()

@@ -13,7 +13,7 @@ import 'athlete_filter_widget.dart';
 class AthleteStrydCadenceWidget extends StatefulWidget {
   const AthleteStrydCadenceWidget({this.athlete});
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteStrydCadenceWidgetState createState() =>
@@ -26,8 +26,8 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> paceActivities = activities
           .where((Activity activity) =>
-              activity.avgStrydCadence != null && activity.avgStrydCadence > 0)
+              activity.avgStrydCadence != null && activity.avgStrydCadence! > 0)
           .toList();
 
       if (paceActivities.isNotEmpty) {
@@ -76,14 +76,14 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items: sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -125,10 +125,10 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()

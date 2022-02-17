@@ -14,24 +14,24 @@ import '/utils/my_line_chart.dart';
 class ActivityPowerPerHeartRateChart extends StatelessWidget {
   const ActivityPowerPerHeartRateChart({
     this.records,
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
+  final RecordList<Event>? records;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   Widget build(BuildContext context) {
-    final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
+    final List<DoublePlotPoint> smoothedRecords = records!.toDoubleDataPoints(
       attribute: LapDoubleAttr.powerPerHeartRate,
-      amount: athlete.recordAggregationCount,
+      amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<DoublePlotPoint, int>> data =
-        <Series<DoublePlotPoint, int>>[
-      Series<DoublePlotPoint, int>(
+    final List<Series<DoublePlotPoint, int?>> data =
+        <Series<DoublePlotPoint, int?>>[
+      Series<DoublePlotPoint, int?>(
         id: 'Power per Heart Rate',
         colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -41,10 +41,10 @@ class ActivityPowerPerHeartRateChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: activity.laps,
+      future: activity!.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data!;
           return AspectRatio(
             aspectRatio:
                 MediaQuery.of(context).orientation == Orientation.portrait
@@ -52,7 +52,7 @@ class ActivityPowerPerHeartRateChart extends StatelessWidget {
                     : 2,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.distance,
+              maxDomain: records!.last.distance!,
               laps: laps,
               domainTitle: 'Power per Heart Rate (W/bpm)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(

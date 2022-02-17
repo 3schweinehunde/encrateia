@@ -9,11 +9,11 @@ import '/utils/my_button.dart';
 
 class EditStandaloneAthleteWidget extends StatefulWidget {
   const EditStandaloneAthleteWidget({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _EditStandaloneAthleteWidgetState createState() =>
@@ -37,13 +37,13 @@ class _EditStandaloneAthleteWidgetState
         ),
         TextFormField(
           decoration: const InputDecoration(labelText: 'First name'),
-          initialValue: widget.athlete.firstName,
-          onChanged: (String value) => widget.athlete.firstName = value,
+          initialValue: widget.athlete!.firstName,
+          onChanged: (String value) => widget.athlete!.firstName = value,
         ),
         TextFormField(
           decoration: const InputDecoration(labelText: 'Last name'),
-          initialValue: widget.athlete.lastName,
-          onChanged: (String value) => widget.athlete.lastName = value,
+          initialValue: widget.athlete!.lastName,
+          onChanged: (String value) => widget.athlete!.lastName = value,
         ),
 
         // Cancel and Save Card
@@ -67,14 +67,14 @@ class _EditStandaloneAthleteWidgetState
   }
 
   Future<void> saveStandaloneUser(BuildContext context) async {
-    widget.athlete.firstName =
-        widget.athlete.firstName ?? widget.athlete.firstName;
-    widget.athlete.lastName =
-        widget.athlete.lastName ?? widget.athlete.lastName;
-    await widget.athlete.save();
+    widget.athlete!.firstName =
+        widget.athlete!.firstName ?? widget.athlete!.firstName;
+    widget.athlete!.lastName =
+        widget.athlete!.lastName ?? widget.athlete!.lastName;
+    await widget.athlete!.save();
 
     final List<PowerZoneSchema> powerZoneSchemas =
-        await widget.athlete.powerZoneSchemas;
+        await widget.athlete!.powerZoneSchemas;
     if (powerZoneSchemas.isEmpty) {
       Navigator.pushReplacement(
         context,

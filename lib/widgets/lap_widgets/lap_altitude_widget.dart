@@ -15,7 +15,7 @@ import '/widgets/charts/lap_charts/lap_altitude_chart.dart';
 class LapAltitudeWidget extends StatefulWidget {
   const LapAltitudeWidget({this.lap});
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapAltitudeWidgetState createState() => _LapAltitudeWidgetState();
@@ -57,11 +57,11 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
                   records: RecordList<Event>(altitudeRecords),
                   minimum: altitudeRecords
                       .map((Event record) => record.altitude)
-                      .reduce(min)
+                      .reduce(min)!
                       .toDouble(),
                   maximum: altitudeRecords
                       .map((Event record) => record.altitude)
-                      .reduce(max)
+                      .reduce(max)!
                       .toDouble(),
                 ),
               ),
@@ -101,8 +101,8 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
+    final Lap lap = widget.lap!;
+    records = RecordList<Event>(await (lap.records as FutureOr<List<Event>>));
 
     setState(() => loading = false);
   }

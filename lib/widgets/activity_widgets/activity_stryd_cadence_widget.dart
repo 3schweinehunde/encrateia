@@ -13,12 +13,12 @@ import '/widgets/charts/activity_charts/activity_stryd_cadence_chart.dart';
 
 class ActivityStrydCadenceWidget extends StatefulWidget {
   const ActivityStrydCadenceWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityStrydCadenceWidgetState createState() =>
@@ -43,7 +43,7 @@ class _ActivityStrydCadenceWidgetState
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
           .where((Event value) =>
-              value.strydCadence != null && value.strydCadence > 0)
+              value.strydCadence != null && value.strydCadence! > 0)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -58,11 +58,11 @@ class _ActivityStrydCadenceWidgetState
                   records: RecordList<Event>(powerRecords),
                   activity: widget.activity,
                   athlete: widget.athlete,
-                  minimum: widget.activity.avgStrydCadence * 2 / 1.25,
-                  maximum: widget.activity.avgStrydCadence * 2 * 1.25,
+                  minimum: widget.activity!.avgStrydCadence! * 2 / 1.25,
+                  maximum: widget.activity!.avgStrydCadence! * 2 * 1.25,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'cadence > 0 s/min are shown.'),
               Row(children: <Widget>[
@@ -80,7 +80,7 @@ class _ActivityStrydCadenceWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.activity.avgStrydCadence,
+                  value: widget.activity!.avgStrydCadence,
                   pq: PQ.cadence,
                 ),
                 subtitle: const Text('average cadence'),
@@ -88,7 +88,7 @@ class _ActivityStrydCadenceWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.activity.sdevStrydCadence,
+                  value: widget.activity!.sdevStrydCadence,
                   pq: PQ.cadence,
                 ),
                 subtitle: const Text('standard deviation cadence'),
@@ -114,7 +114,7 @@ class _ActivityStrydCadenceWidgetState
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
     setState(() => loading = false);
   }

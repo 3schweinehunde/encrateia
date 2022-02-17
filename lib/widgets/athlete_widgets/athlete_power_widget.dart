@@ -13,7 +13,7 @@ import 'athlete_filter_widget.dart';
 class AthletePowerWidget extends StatefulWidget {
   const AthletePowerWidget({this.athlete});
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthletePowerWidgetState createState() => _AthletePowerWidgetState();
@@ -25,8 +25,8 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> powerActivities = activities
           .where((Activity activity) =>
-              activity.avgPower != null && activity.avgPower > 0)
+              activity.avgPower != null && activity.avgPower! > 0)
           .toList();
       if (powerActivities.isNotEmpty) {
         return ListTileTheme(
@@ -75,14 +75,14 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
                     const SizedBox(width: 20),
                     DropdownButton<String>(
                       items:
-                          sports.map<DropdownMenuItem<String>>((String value) {
+                          sports.map<DropdownMenuItem<String>>((String? value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(value!),
                         );
                       }).toList(),
                       value: selectedSports,
-                      onChanged: (String value) {
+                      onChanged: (String? value) {
                         selectedSports = value;
                         getData();
                       },
@@ -123,10 +123,10 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()

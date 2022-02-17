@@ -13,12 +13,12 @@ import 'add_power_zone_screen.dart';
 
 class AddPowerZoneSchemaScreen extends StatefulWidget {
   const AddPowerZoneSchemaScreen({
-    Key key,
+    Key? key,
     this.powerZoneSchema,
-    @required this.numberOfSchemas,
+    required this.numberOfSchemas,
   }) : super(key: key);
 
-  final PowerZoneSchema powerZoneSchema;
+  final PowerZoneSchema? powerZoneSchema;
   final int numberOfSchemas;
 
   @override
@@ -29,7 +29,7 @@ class AddPowerZoneSchemaScreen extends StatefulWidget {
 class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   List<PowerZone> powerZones = <PowerZone>[];
   int offset = 0;
-  int rows;
+  int? rows;
 
   @override
   void initState() {
@@ -63,9 +63,9 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
             DateTimeField(
               decoration: const InputDecoration(labelText: 'Valid from'),
               format: DateFormat('yyyy-MM-dd'),
-              initialValue: widget.powerZoneSchema.date,
+              initialValue: widget.powerZoneSchema!.date,
               resetIcon: null,
-              onShowPicker: (BuildContext context, DateTime currentValue) {
+              onShowPicker: (BuildContext context, DateTime? currentValue) {
                 return showDatePicker(
                   context: context,
                   firstDate: DateTime(1969),
@@ -73,19 +73,19 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                   lastDate: DateTime(2100),
                 );
               },
-              onChanged: (DateTime value) => copyPowerZoneSchema(date: value),
+              onChanged: (DateTime? value) => copyPowerZoneSchema(date: value),
             ),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Name'),
-              initialValue: widget.powerZoneSchema.name,
-              onChanged: (String value) => widget.powerZoneSchema.name = value,
+              initialValue: widget.powerZoneSchema!.name,
+              onChanged: (String value) => widget.powerZoneSchema!.name = value,
             ),
             TextFormField(
               decoration: const InputDecoration(
                 labelText: 'Base value in W',
                 helperText: 'e.g. Critical Power, Functional Threshold Power',
               ),
-              initialValue: widget.powerZoneSchema.base.toString(),
+              initialValue: widget.powerZoneSchema!.base.toString(),
               keyboardType: TextInputType.number,
               onChanged: (String value) =>
                   updatePowerZoneBase(base: int.parse(value)),
@@ -104,16 +104,16 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
               ],
               rows: powerZones.map((PowerZone powerZone) {
                 return DataRow(
-                  key: ValueKey<int>(powerZone.id),
+                  key: ValueKey<int?>(powerZone.id),
                   cells: <DataCell>[
-                    DataCell(Text(powerZone.name)),
+                    DataCell(Text(powerZone.name!)),
                     DataCell(Text(powerZone.lowerLimit.toString() +
                         ' - ' +
                         powerZone.upperLimit.toString())),
                     DataCell(CircleColor(
                       circleSize: 20,
                       elevation: 0,
-                      color: Color(powerZone.color),
+                      color: Color(powerZone.color!),
                     )),
                     DataCell(
                       MyIcon.edit,
@@ -124,7 +124,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                             builder: (BuildContext context) =>
                                 AddPowerZoneScreen(
                               powerZone: powerZone,
-                              base: widget.powerZoneSchema.base,
+                              base: widget.powerZoneSchema!.base,
                               numberOfZones: powerZones.length,
                             ),
                           ),
@@ -148,8 +148,8 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) => AddPowerZoneScreen(
                           powerZone: PowerZone(
-                              powerZoneSchema: widget.powerZoneSchema),
-                          base: widget.powerZoneSchema.base,
+                              powerZoneSchema: widget.powerZoneSchema!),
+                          base: widget.powerZoneSchema!.base,
                           numberOfZones: powerZones.length,
                         ),
                       ),
@@ -166,7 +166,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                 if (widget.numberOfSchemas > 1)
                   MyButton.delete(
                     onPressed: () => deletePowerZoneSchema(
-                      powerZoneSchema: widget.powerZoneSchema,
+                      powerZoneSchema: widget.powerZoneSchema!,
                     ),
                   ),
                 const SizedBox(width: 5),
@@ -182,37 +182,37 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   }
 
   Future<void> savePowerZoneSchema(BuildContext context) async {
-    await widget.powerZoneSchema.save();
+    await widget.powerZoneSchema!.save();
     await PowerZone.upsertAll(powerZones);
     Navigator.of(context).pop();
   }
 
   Future<void> getData() async {
-    powerZones = await widget.powerZoneSchema.powerZones;
+    powerZones = await widget.powerZoneSchema!.powerZones;
     setState(() {});
   }
 
-  Future<void> deletePowerZoneSchema({PowerZoneSchema powerZoneSchema}) async {
+  Future<void> deletePowerZoneSchema({required PowerZoneSchema powerZoneSchema}) async {
     await powerZoneSchema.delete();
     Navigator.of(context).pop();
   }
 
-  Future<void> updatePowerZoneBase({int base}) {
+  Future<void>? updatePowerZoneBase({int? base}) {
     setState(() {
-      widget.powerZoneSchema.base = base;
+      widget.powerZoneSchema!.base = base;
       for (final PowerZone powerZone in powerZones) {
-        powerZone.lowerLimit = (powerZone.lowerPercentage * base / 100).round();
-        powerZone.upperLimit = (powerZone.upperPercentage * base / 100).round();
+        powerZone.lowerLimit = (powerZone.lowerPercentage! * base! / 100).round();
+        powerZone.upperLimit = (powerZone.upperPercentage! * base / 100).round();
       }
     });
     return null;
   }
 
-  Future<void> copyPowerZoneSchema({DateTime date}) async {
+  Future<void> copyPowerZoneSchema({DateTime? date}) async {
     widget.powerZoneSchema
       ..date = date
       ..id = null;
-    final int powerZoneSchemaId = await widget.powerZoneSchema.save();
+    final int? powerZoneSchemaId = await widget.powerZoneSchema!.save();
     for (final PowerZone powerZone in powerZones) {
       powerZone
         ..powerZoneSchemataId = powerZoneSchemaId

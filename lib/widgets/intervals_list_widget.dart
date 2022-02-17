@@ -11,12 +11,12 @@ import '/utils/my_button.dart';
 
 class IntervalsListWidget extends StatefulWidget {
   const IntervalsListWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _IntervalsListWidgetState createState() => _IntervalsListWidgetState();
@@ -73,9 +73,9 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                 ],
                 rows: intervals.map((encrateia.Interval interval) {
                   return DataRow(
-                    key: ValueKey<int>(interval.id),
-                    onSelectChanged: (bool selected) async {
-                      if (selected) {
+                    key: ValueKey<int?>(interval.id),
+                    onSelectChanged: (bool? selected) async {
+                      if (selected!) {
                         await Navigator.push(
                           context,
                           MaterialPageRoute<BuildContext>(
@@ -126,7 +126,7 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
   }
 
   Future<void> getData() async {
-    intervals = await widget.activity.intervals;
+    intervals = await widget.activity!.intervals;
     setState(() => loading = false);
   }
 }

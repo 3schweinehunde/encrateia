@@ -13,7 +13,7 @@ import 'athlete_filter_widget.dart';
 class AthleteHeartRateWidget extends StatefulWidget {
   const AthleteHeartRateWidget({this.athlete});
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteHeartRateWidgetState createState() => _AthleteHeartRateWidgetState();
@@ -25,8 +25,8 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> heartRateActivities = activities
           .where((Activity activity) =>
-              activity.avgHeartRate != null && activity.avgHeartRate > 20)
+              activity.avgHeartRate != null && activity.avgHeartRate! > 20)
           .toList();
 
       if (heartRateActivities.isNotEmpty) {
@@ -75,14 +75,14 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items: sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -124,10 +124,10 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()

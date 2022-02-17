@@ -13,12 +13,12 @@ import '/widgets/charts/activity_charts/activity_stride_ratio_chart.dart';
 
 class ActivityStrideRatioWidget extends StatefulWidget {
   const ActivityStrideRatioWidget({
-    @required this.activity,
-    @required this.athlete,
+    required this.activity,
+    required this.athlete,
   });
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityStrideRatioWidgetState createState() =>
@@ -67,7 +67,7 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
               const Text(
                   'stride length (cm) = 10 000 / 6 * speed (km/h) / cadence '
                   '(strides/min)'),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'cadence is present and vertical oscillation > 0 mm are shown.'),
               Row(children: <Widget>[
@@ -85,13 +85,13 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
               ListTile(
                 leading: MyIcon.strideRatio,
                 title: PQText(
-                    value: widget.activity.avgStrideRatio, pq: PQ.double),
+                    value: widget.activity!.avgStrideRatio, pq: PQ.double),
                 subtitle: const Text('average stride ratio'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                    value: widget.activity.sdevStrideRatio, pq: PQ.double),
+                    value: widget.activity!.sdevStrideRatio, pq: PQ.double),
                 subtitle: const Text('standard deviation stride ratio '),
               ),
               ListTile(
@@ -115,7 +115,7 @@ class _ActivityStrideRatioWidgetState extends State<ActivityStrideRatioWidget> {
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
     setState(() => loading = false);
   }

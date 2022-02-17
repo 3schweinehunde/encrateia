@@ -14,26 +14,26 @@ import '/utils/my_line_chart.dart';
 
 class ActivityHeartRateChart extends StatelessWidget {
   const ActivityHeartRateChart({
-    @required this.records,
-    @required this.activity,
-    @required this.athlete,
+    required this.records,
+    required this.activity,
+    required this.athlete,
     this.heartRateZones,
   });
 
   final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-  final List<HeartRateZone> heartRateZones;
+  final Activity? activity;
+  final Athlete? athlete;
+  final List<HeartRateZone>? heartRateZones;
 
   @override
   Widget build(BuildContext context) {
     final List<IntPlotPoint> smoothedRecords = records.toIntDataPoints(
       attribute: LapIntAttr.heartRate,
-      amount: athlete.recordAggregationCount,
+      amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
-      Series<IntPlotPoint, int>(
+    final List<Series<IntPlotPoint, int?>> data = <Series<IntPlotPoint, int?>>[
+      Series<IntPlotPoint, int?>(
         id: 'Heart Rate',
         colorFn: (_, __) => Color.black,
         domainFn: (IntPlotPoint point, _) => point.domain,
@@ -43,10 +43,10 @@ class ActivityHeartRateChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: activity.laps,
+      future: activity!.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data!;
           return AspectRatio(
             aspectRatio:
                 MediaQuery.of(context).orientation == Orientation.portrait
@@ -54,7 +54,7 @@ class ActivityHeartRateChart extends StatelessWidget {
                     : 2,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.distance,
+              maxDomain: records.last.distance!,
               laps: laps,
               heartRateZones: heartRateZones,
               domainTitle: 'Heart Rate (bpm)',
