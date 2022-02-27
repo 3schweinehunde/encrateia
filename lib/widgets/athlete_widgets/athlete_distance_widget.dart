@@ -10,9 +10,9 @@ import '/utils/image_utils.dart' as image_utils;
 import '/utils/my_button.dart';
 
 class AthleteDistanceWidget extends StatefulWidget {
-  const AthleteDistanceWidget({this.athlete});
+  const AthleteDistanceWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteDistanceWidgetState createState() => _AthleteDistanceWidgetState();
@@ -24,8 +24,8 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> distanceActivities = activities
           .where((Activity activity) =>
-              activity.distance != null && activity.distance > 0)
+              activity.distance != null && activity.distance! > 0)
           .toList();
 
       if (distanceActivities.isNotEmpty) {
@@ -74,14 +74,14 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items: sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -103,11 +103,11 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
-    int distanceSoFar = 0;
+    int? distanceSoFar = 0;
     int year = 1900;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()
@@ -119,12 +119,13 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
             .toList());
 
     for (final Activity activity in activities.reversed) {
-      if (activity.timeStamp.year != year) {
-        year = activity.timeStamp.year;
+      if (activity.timeStamp!.year != year) {
+        year = activity.timeStamp!.year;
         distanceSoFar = activity.distance;
-      } else
-        distanceSoFar += activity.distance;
-      activity.distanceSoFar = distanceSoFar;
+      } else {
+        distanceSoFar += activity.distance!;
+      }
+      activity.distanceSoFar = distanceSoFar!;
     }
 
     setState(() =>

@@ -9,13 +9,13 @@ import '/utils/my_button.dart';
 import '/widgets/charts/ftp_chart.dart';
 
 class ActivityFtpWidget extends StatefulWidget {
-  const ActivityFtpWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivityFtpWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityFtpWidgetState createState() => _ActivityFtpWidgetState();
@@ -37,7 +37,7 @@ class _ActivityFtpWidgetState extends State<ActivityFtpWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -67,7 +67,7 @@ class _ActivityFtpWidgetState extends State<ActivityFtpWidget> {
         );
       }
     } else {
-      return Container(
+      return SizedBox(
         height: 100,
         child: Center(
           child: Text(loading ? 'Loading' : 'No data available'),
@@ -77,7 +77,7 @@ class _ActivityFtpWidgetState extends State<ActivityFtpWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
+    records = RecordList<Event>(await widget.activity!.records);
     setState(() => loading = false);
   }
 }

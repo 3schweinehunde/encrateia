@@ -26,37 +26,37 @@ class Athlete {
   Athlete();
   Athlete._fromDb(this._db);
 
-  String email;
-  String password;
+  String? email;
+  String? password;
 
   DbAthlete _db = DbAthlete();
-  List<int> filters = <int>[];
+  List<int?> filters = <int?>[];
 
-  int get id => _db?.id;
-  String get firstName => _db.firstName;
-  String get geoState => _db.geoState;
-  String get lastName => _db.lastName;
-  String get photoPath => _db.photoPath;
-  String get state => _db.state;
-  String get stravaUsername => _db.stravaUsername;
-  String get stravaAccessToken => _db.stravaAccessToken;
-  String get stravaTokenType => _db.stravaTokenType;
-  String get stravaRefreshToken => _db.stravaRefreshToken;
-  int get downloadInterval => _db.downloadInterval;
-  int get recordAggregationCount => _db.recordAggregationCount;
-  int get stravaExpiresAt => _db.stravaExpiresAt;
-  int get stravaExpiresIn => _db.stravaExpiresIn;
-  int get stravaId => _db.stravaId;
+  int? get id => _db.id;
+  String? get firstName => _db.firstName;
+  String? get geoState => _db.geoState;
+  String? get lastName => _db.lastName;
+  String? get photoPath => _db.photoPath;
+  String? get state => _db.state;
+  String? get stravaUsername => _db.stravaUsername;
+  String? get stravaAccessToken => _db.stravaAccessToken;
+  String? get stravaTokenType => _db.stravaTokenType;
+  String? get stravaRefreshToken => _db.stravaRefreshToken;
+  int? get downloadInterval => _db.downloadInterval;
+  int? get recordAggregationCount => _db.recordAggregationCount;
+  int? get stravaExpiresAt => _db.stravaExpiresAt;
+  int? get stravaExpiresIn => _db.stravaExpiresIn;
+  int? get stravaId => _db.stravaId;
 
-  set downloadInterval(int value) => _db.downloadInterval = value;
-  set firstName(String value) => _db.firstName = value;
-  set lastName(String value) => _db.lastName = value;
-  set recordAggregationCount(int value) => _db.recordAggregationCount = value;
-  set stravaAccessToken(String value) => _db.stravaAccessToken = value;
-  set stravaTokenType(String value) => _db.stravaTokenType = value;
-  set stravaRefreshToken(String value) => _db.stravaRefreshToken = value;
-  set stravaExpiresAt(int value) => _db.stravaExpiresAt = value;
-  set stravaExpiresIn(int value) => _db.stravaExpiresIn = value;
+  set downloadInterval(int? value) => _db.downloadInterval = value;
+  set firstName(String? value) => _db.firstName = value;
+  set lastName(String? value) => _db.lastName = value;
+  set recordAggregationCount(int? value) => _db.recordAggregationCount = value;
+  set stravaAccessToken(String? value) => _db.stravaAccessToken = value;
+  set stravaTokenType(String? value) => _db.stravaTokenType = value;
+  set stravaRefreshToken(String? value) => _db.stravaRefreshToken = value;
+  set stravaExpiresAt(int? value) => _db.stravaExpiresAt = value;
+  set stravaExpiresIn(int? value) => _db.stravaExpiresIn = value;
 
   @override
   String toString() => '< Athlete | $firstName $lastName | $stravaId >';
@@ -123,13 +123,13 @@ class Athlete {
 
   Future<List<Activity>> get activities async {
     final List<DbActivity> dbActivityList =
-        await _db.getDbActivities().orderByDesc('timeCreated').toList();
+        await _db.getDbActivities()!.orderByDesc('timeCreated').toList();
     return dbActivityList.map(Activity.exDb).toList();
   }
 
   Future<List<Activity>> get validActivities async {
     final List<DbActivity> dbActivityList = await _db
-        .getDbActivities()
+        .getDbActivities()!
         .excluded
         .equalsOrNull(false)
         .and
@@ -142,25 +142,25 @@ class Athlete {
 
   Future<List<Weight>> get weights async {
     final List<DbWeight> dbWeightList =
-        await _db.getDbWeights().orderByDesc('date').toList();
+        await _db.getDbWeights()!.orderByDesc('date').toList();
     return dbWeightList.map(Weight.exDb).toList();
   }
 
   Future<List<PowerZoneSchema>> get powerZoneSchemas async {
     final List<DbPowerZoneSchema> dbPowerZoneSchemaList =
-        await _db.getDbPowerZoneSchemas().orderByDesc('date').toList();
+        await _db.getDbPowerZoneSchemas()!.orderByDesc('date').toList();
     return dbPowerZoneSchemaList.map(PowerZoneSchema.exDb).toList();
   }
 
   Future<List<HeartRateZoneSchema>> get heartRateZoneSchemas async {
     final List<DbHeartRateZoneSchema> dbHeartRateZoneSchemaList =
-        await _db.getDbHeartRateZoneSchemas().orderByDesc('date').toList();
+        await _db.getDbHeartRateZoneSchemas()!.orderByDesc('date').toList();
     return dbHeartRateZoneSchemaList.map(HeartRateZoneSchema.exDb).toList();
   }
 
   Future<List<TagGroup>> get tagGroups async {
     final List<DbTagGroup> dbTagGroupList =
-        await _db.getDbTagGroups().orderBy('name').toList();
+        await _db.getDbTagGroups()!.orderBy('name').toList();
     final List<TagGroup> tagGroups = dbTagGroupList.map(TagGroup.exDb).toList();
 
     for (final TagGroup tagGroup in tagGroups) {
@@ -171,7 +171,7 @@ class Athlete {
 
   Future<List<encrateia.Interval>> get intervals async {
     final List<DbInterval> dbIntervalList =
-        await _db.getDbIntervals().orderByDesc('timeStamp').toList();
+        await _db.getDbIntervals()!.orderByDesc('timeStamp').toList();
     return dbIntervalList.map(encrateia.Interval.exDb).toList();
   }
 
@@ -183,14 +183,15 @@ class Athlete {
       await activity.deleteLaps();
 
       // ignore: avoid_slow_async_io
-      if (await File(appDocDir.path + '/$stravaId.fit').exists())
+      if (await File(appDocDir.path + '/$stravaId.fit').exists()) {
         await File(appDocDir.path + '/$stravaId.fit').delete();
+      }
     }
-    await _db.getDbActivities().delete();
+    await _db.getDbActivities()!.delete();
     return await _db.delete();
   }
 
-  Future<int> save() async => await _db.save();
+  Future<int?> save() async => await _db.save();
 
   Future<bool> checkForSchemas() async =>
       (await powerZoneSchemas).isNotEmpty &&

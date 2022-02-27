@@ -8,20 +8,20 @@ import 'package:path_provider/path_provider.dart';
 import '/models/athlete.dart';
 import '/models/weight.dart';
 import '/screens/add_weight_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';
 import '/utils/my_button_style.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
-  const AthleteBodyWeightWidget({
+  const AthleteBodyWeightWidget({Key? key,
     this.athlete,
     this.callBackFunction,
-  });
+  }) : super(key: key);
 
-  final Athlete athlete;
-  final Function callBackFunction;
+  final Athlete? athlete;
+  final Function? callBackFunction;
 
   @override
   _AthleteBodyWeightWidgetState createState() =>
@@ -31,7 +31,7 @@ class AthleteBodyWeightWidget extends StatefulWidget {
 class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
   List<Weight> weights = <Weight>[];
   int offset = 0;
-  int rows;
+  int? rows;
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) => AddWeightScreen(
                           weight: Weight(
-                            athlete: widget.athlete,
+                            athlete: widget.athlete!,
                           ),
                           numberOfWeights: weights.length,
                         ),
@@ -119,7 +119,7 @@ You can change these later.
                         context,
                         MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) => AddWeightScreen(
-                            weight: Weight(athlete: widget.athlete),
+                            weight: Weight(athlete: widget.athlete!),
                             numberOfWeights: weights.length,
                           ),
                         ),
@@ -140,10 +140,10 @@ You can change these later.
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     weights = await athlete.weights;
     if (widget.callBackFunction != null) {
-      await widget.callBackFunction();
+      await widget.callBackFunction!();
     }
     setState(() {});
   }
@@ -153,7 +153,7 @@ You can change these later.
     Weight weight;
 
     if (Platform.isAndroid) {
-      final List<Directory> directories = await getExternalStorageDirectories();
+      final List<Directory> directories = await (getExternalStorageDirectories() as Future<List<Directory>>);
       directory = directories[0];
     } else {
       directory = await getApplicationDocumentsDirectory();
@@ -168,7 +168,7 @@ You can change these later.
           .transform(const CsvToListConverter(eol: '\n'))
           .toList();
       for (final List<dynamic> weighting in weightings) {
-        weight = Weight(athlete: widget.athlete);
+        weight = Weight(athlete: widget.athlete!);
         weight.date = DateTime.utc(
           int.parse((weighting[0] as String).split('-')[0]),
           int.parse((weighting[0] as String).split('-')[1]),
@@ -184,9 +184,9 @@ You can change these later.
 
 class BodyWeightSource extends DataTableSource {
   BodyWeightSource({
-    @required this.weights,
-    @required this.context,
-    @required this.callback,
+    required this.weights,
+    required this.context,
+    required this.callback,
   });
 
   final List<Weight> weights;

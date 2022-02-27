@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/models/event.dart';
 import '/models/lap.dart';
 import '/models/record_list.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;
@@ -11,9 +11,9 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_ground_time_chart.dart';
 
 class LapGroundTimeWidget extends StatefulWidget {
-  const LapGroundTimeWidget({this.lap});
+  const LapGroundTimeWidget({Key? key, this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapGroundTimeWidgetState createState() => _LapGroundTimeWidgetState();
@@ -42,7 +42,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
     if (records.isNotEmpty) {
       final List<Event> groundTimeRecords = records
           .where(
-              (Event value) => value.groundTime != null && value.groundTime > 0)
+              (Event value) => value.groundTime != null && value.groundTime! > 0)
           .toList();
 
       if (groundTimeRecords.isNotEmpty) {
@@ -55,8 +55,8 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
                 key: widgetKey,
                 child: LapGroundTimeChart(
                   records: RecordList<Event>(groundTimeRecords),
-                  minimum: widget.lap.avgGroundTime / 1.25,
-                  maximum: widget.lap.avgGroundTime * 1.25,
+                  minimum: widget.lap!.avgGroundTime! / 1.25,
+                  maximum: widget.lap!.avgGroundTime! * 1.25,
                 ),
               ),
               const Text('Only records where ground time > 0 ms are shown.'),
@@ -76,7 +76,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.lap.avgGroundTime,
+                  value: widget.lap!.avgGroundTime,
                   pq: PQ.groundTime,
                 ),
                 subtitle: const Text('average ground time'),
@@ -84,7 +84,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.lap.sdevGroundTime,
+                  value: widget.lap!.sdevGroundTime,
                   pq: PQ.groundTime,
                 ),
                 subtitle: const Text('standard deviation ground time'),
@@ -110,8 +110,8 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
+    final Lap lap = widget.lap!;
+    records = RecordList<Event>(await (lap.records as Future<List<Event>>));
     setState(() => loading = false);
   }
 }

@@ -7,11 +7,11 @@ import '/widgets/athlete_widgets/edit_strava_athlete_widget.dart';
 
 class EditAthleteScreen extends StatelessWidget {
   const EditAthleteScreen({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class EditAthleteScreen extends StatelessWidget {
           title: const Text('Athlete Credentials'),
         ),
         body: SafeArea(
-          child: (athlete.state == 'standalone')
+          child: (athlete!.state == 'standalone')
               ? EditStandaloneAthleteWidget(athlete: athlete)
               : EditStravaAthleteWidget(athlete: athlete),
         ));

@@ -7,18 +7,18 @@ import '/models/plot_point.dart';
 import '/utils/icon_utils.dart';
 
 class WorkChart extends StatelessWidget {
-  const WorkChart({this.records});
+  const WorkChart({Key? key, this.records}) : super(key: key);
 
-  final List<Event> records;
+  final List<Event>? records;
 
   @override
   Widget build(BuildContext context) {
-    final CriticalPower criticalPower = CriticalPower(records: records);
+    final CriticalPower criticalPower = CriticalPower(records: records!);
     final CriticalPower workCurve = criticalPower.workify();
 
-    final List<Series<DoublePlotPoint, num>> data =
-        <Series<DoublePlotPoint, num>>[
-      Series<DoublePlotPoint, int>(
+    final List<Series<DoublePlotPoint, num?>> data =
+        <Series<DoublePlotPoint, num?>>[
+      Series<DoublePlotPoint, int?>(
         id: 'Work',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -63,7 +63,7 @@ class WorkChart extends StatelessWidget {
                   ? 1
                   : 2,
           child: LineChart(
-            data,
+            data as List<Series<dynamic, num>>,
             defaultRenderer: LineRendererConfig<num>(
               includeArea: true,
               strokeWidthPx: 1,

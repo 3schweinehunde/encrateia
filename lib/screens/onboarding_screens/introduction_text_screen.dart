@@ -5,6 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 import '/utils/my_color.dart';
 
 class IntroductionTextScreen extends StatelessWidget {
+  const IntroductionTextScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,10 +18,10 @@ class IntroductionTextScreen extends StatelessWidget {
         child: Markdown(
           onTapLink: (
             String _text,
-            String url,
+            String? url,
             String _title,
           ) =>
-              launch(url),
+              launch(url!),
           data: '''
 ## What is Encrateia?
 

@@ -6,17 +6,17 @@ import '/models/plot_point.dart';
 import '/models/power_duration.dart';
 
 class PowerDurationChart extends StatelessWidget {
-  const PowerDurationChart({this.records});
+  const PowerDurationChart({Key? key, this.records}) : super(key: key);
 
-  final List<Event> records;
+  final List<Event>? records;
 
   @override
   Widget build(BuildContext context) {
-    final PowerDuration powerDuration = PowerDuration(records: records);
+    final PowerDuration powerDuration = PowerDuration(records: records!);
 
-    final List<Series<DoublePlotPoint, num>> data =
-        <Series<DoublePlotPoint, num>>[
-      Series<DoublePlotPoint, int>(
+    final List<Series<DoublePlotPoint, num?>> data =
+        <Series<DoublePlotPoint, num?>>[
+      Series<DoublePlotPoint, int?>(
         id: 'Power Duration',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -59,7 +59,7 @@ class PowerDurationChart extends StatelessWidget {
       aspectRatio:
           MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 2,
       child: LineChart(
-        data,
+        data as List<Series<dynamic, num>>,
         defaultRenderer: LineRendererConfig<num>(
           includeArea: true,
           strokeWidthPx: 1,

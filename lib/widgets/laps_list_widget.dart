@@ -7,18 +7,18 @@ import '/models/interval.dart' as encrateia;
 import '/models/lap.dart';
 import '/models/record_list.dart';
 import '/screens/show_lap_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/my_button.dart';
 
 class LapsListWidget extends StatefulWidget {
-  const LapsListWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const LapsListWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _LapsListWidgetState createState() => _LapsListWidgetState();
@@ -56,9 +56,9 @@ class _LapsListWidgetState extends State<LapsListWidget> {
             ],
             rows: laps.map((Lap lap) {
               return DataRow(
-                key: ValueKey<int>(lap.id),
-                onSelectChanged: (bool selected) {
-                  if (selected) {
+                key: ValueKey<int?>(lap.id),
+                onSelectChanged: (bool? selected) {
+                  if (selected!) {
                     Navigator.push(
                       context,
                       MaterialPageRoute<BuildContext>(
@@ -96,18 +96,19 @@ class _LapsListWidgetState extends State<LapsListWidget> {
           ),
         ),
       );
-    } else
+    } else {
       return Center(
         child: Text(loading ? 'Loading' : 'No data available'),
       );
+    }
   }
 
-  Future<void> copyToInterval({Lap lap}) async {
-    final List<Event> records = await lap.records;
+  Future<void> copyToInterval({required Lap lap}) async {
+    final List<Event> records = await (lap.records as Future<List<Event>>);
 
     final encrateia.Interval interval = encrateia.Interval()
-      ..athletesId = widget.athlete.id
-      ..activitiesId = widget.activity.id
+      ..athletesId = widget.athlete!.id
+      ..activitiesId = widget.activity!.id
       ..firstRecordId = records.first.id
       ..firstDistance = records.first.distance
       ..lastRecordId = records.last.id
@@ -116,12 +117,12 @@ class _LapsListWidgetState extends State<LapsListWidget> {
     await interval.calculateAndSave(records: RecordList<Event>(records));
     await interval.copyTaggings(lap: lap);
     lap.copied = true;
-    widget.activity.cachedIntervals = <encrateia.Interval>[];
+    widget.activity!.cachedIntervals = <encrateia.Interval>[];
     setState(() {});
   }
 
   Future<void> getData() async {
-    laps = await widget.activity.laps;
+    laps = await widget.activity!.laps;
     setState(() => loading = false);
   }
 }

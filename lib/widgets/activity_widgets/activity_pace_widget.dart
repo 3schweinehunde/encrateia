@@ -4,7 +4,7 @@ import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/models/event.dart';
 import '/models/record_list.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;
@@ -12,13 +12,13 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_pace_chart.dart';
 
 class ActivityPaceWidget extends StatefulWidget {
-  const ActivityPaceWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivityPaceWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityPaceWidgetState createState() => _ActivityPaceWidgetState();
@@ -40,7 +40,7 @@ class _ActivityPaceWidgetState extends State<ActivityPaceWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> paceRecords = records
-          .where((Event value) => value.speed != null && value.speed > 0)
+          .where((Event value) => value.speed != null && value.speed! > 0)
           .toList();
 
       if (paceRecords.isNotEmpty) {
@@ -55,13 +55,13 @@ class _ActivityPaceWidgetState extends State<ActivityPaceWidget> {
                   records: RecordList<Event>(paceRecords),
                   activity: widget.activity,
                   athlete: widget.athlete,
-                  minimum: 50 / 3 / widget.activity.avgSpeed -
-                      3 * widget.activity.sdevPace,
-                  maximum: 50 / 3 / widget.activity.avgSpeed +
-                      3 * widget.activity.sdevPace,
+                  minimum: 50 / 3 / widget.activity!.avgSpeed! -
+                      3 * widget.activity!.sdevPace!,
+                  maximum: 50 / 3 / widget.activity!.avgSpeed! +
+                      3 * widget.activity!.sdevPace!,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'speed > 0 m/s are shown.'),
               Row(children: <Widget>[
@@ -78,12 +78,12 @@ class _ActivityPaceWidgetState extends State<ActivityPaceWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.activity.avgPace, pq: PQ.pace),
+                title: PQText(value: widget.activity!.avgPace, pq: PQ.pace),
                 subtitle: const Text('average pace'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.activity.sdevPace, pq: PQ.pace),
+                title: PQText(value: widget.activity!.sdevPace, pq: PQ.pace),
                 subtitle: const Text('standard deviation pace'),
               ),
               ListTile(
@@ -107,7 +107,7 @@ class _ActivityPaceWidgetState extends State<ActivityPaceWidget> {
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
     setState(() => loading = false);
   }

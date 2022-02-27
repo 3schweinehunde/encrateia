@@ -10,9 +10,9 @@ import '/utils/image_utils.dart' as image_utils;
 import '/utils/my_button.dart';
 
 class AthletePowerVsDistanceWidget extends StatefulWidget {
-  const AthletePowerVsDistanceWidget({this.athlete});
+  const AthletePowerVsDistanceWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthletePowerVsDistanceWidgetState createState() =>
@@ -26,8 +26,8 @@ class _AthletePowerVsDistanceWidgetState
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _AthletePowerVsDistanceWidgetState
     if (activities.isNotEmpty) {
       final List<Activity> distanceActivities = activities
           .where((Activity activity) =>
-              activity.distance != null && activity.distance > 0)
+              activity.distance != null && activity.distance! > 0)
           .toList();
 
       if (distanceActivities.isNotEmpty) {
@@ -79,14 +79,14 @@ class _AthletePowerVsDistanceWidgetState
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items: sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -108,9 +108,9 @@ class _AthletePowerVsDistanceWidgetState
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     List<Activity> unfilteredActivities = await athlete.validActivities;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()
@@ -121,7 +121,7 @@ class _AthletePowerVsDistanceWidgetState
             .where((Activity activity) => activity.sport == selectedSports)
             .toList();
     activities = ActivityList<Activity>(unfilteredActivities
-        .where((Activity activity) => activity.avgPower > 0)
+        .where((Activity activity) => activity.avgPower! > 0)
         .toList());
 
     setState(() =>

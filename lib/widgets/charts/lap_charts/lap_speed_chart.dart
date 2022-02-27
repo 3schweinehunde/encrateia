@@ -6,11 +6,11 @@ import '/models/record_list.dart';
 import '/utils/graph_utils.dart';
 
 class LapSpeedChart extends StatelessWidget {
-  const LapSpeedChart({
-    @required this.records,
-    @required this.minimum,
-    @required this.maximum,
-  });
+  const LapSpeedChart({Key? key,
+    required this.records,
+    required this.minimum,
+    required this.maximum,
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double minimum;
@@ -18,14 +18,14 @@ class LapSpeedChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.distance.round();
+    final int offset = records.first.distance!.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Speed',
         colorFn: (_, __) => MaterialPalette.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
-        measureFn: (Event record, _) => record.speed * 3.6,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
+        measureFn: (Event record, _) => record.speed! * 3.6,
         data: records,
       )
     ];

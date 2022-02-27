@@ -8,15 +8,15 @@ import '/models/athlete.dart';
 import '/models/tag.dart';
 import '/models/tag_group.dart';
 import '/screens/show_activity_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/my_color.dart';
 
 class ActivitiesFeedWidget extends StatefulWidget {
-  const ActivitiesFeedWidget({Key key, this.athlete}) : super(key: key);
+  const ActivitiesFeedWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _ActivitiesFeedWidgetState createState() => _ActivitiesFeedWidgetState();
@@ -25,13 +25,13 @@ class ActivitiesFeedWidget extends StatefulWidget {
 class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   List<Activity> activities = <Activity>[];
   List<TagGroup> tagGroups = <TagGroup>[];
-  Flushbar<Object> flushbar;
+  Flushbar<Object>? flushbar;
   bool disposed = false;
 
   @override
   void initState() {
     getData();
-    WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
@@ -56,7 +56,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {
         final Activity activity = activities[index];
-        if (activity.nonParsable == true)
+        if (activity.nonParsable == true) {
           return ListTile(
             leading: sportsIcon(sport: activity.sport),
             title: Text(activity.name ?? 'Activity'),
@@ -75,7 +75,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
               getData();
             },
           );
-        else
+        } else {
           return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -148,11 +148,11 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                         Chip(
                           avatar: CircleAvatar(
                               foregroundColor: MyColor.textColor(
-                                  backgroundColor: Color(tagGroup(tag).color)),
-                              backgroundColor: Color(tagGroup(tag).color),
+                                  backgroundColor: Color(tagGroup(tag).color!)),
+                              backgroundColor: Color(tagGroup(tag).color!),
                               child: Text(capitals(tag))),
                           label: Text(
-                            tag.name,
+                            tag.name!,
                             style: TextStyle(
                               color: MyColor.textColor(
                                 selected: true,
@@ -167,11 +167,12 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                   ),
                 )
               ]);
+        }
       },
     );
   }
 
-  Icon sportsIcon({String sport}) {
+  Icon sportsIcon({String? sport}) {
     switch (sport) {
       case 'running':
         return MyIcon.running;
@@ -183,9 +184,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   }
 
   Future<void> getData() async {
-    activities = await widget.athlete.activities;
+    activities = await widget.athlete!.activities;
     setState(() {});
-    tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete);
+    tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete!);
     for (final Activity activity in activities) {
       await activity.tags;
       await activity.ecor;
@@ -197,14 +198,14 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   }
 
   void showMyFlushbar() {
-    if (widget.athlete.stravaId != null) {
-      if (widget.athlete.email == null) {
+    if (widget.athlete!.stravaId != null) {
+      if (widget.athlete!.email == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava email not provided yet!',
           duration: const Duration(seconds: 3),
-          backgroundColor: Colors.yellow[900],
+          backgroundColor: Colors.yellow[900]!,
         )..show(context);
-      } else if (widget.athlete.password == null) {
+      } else if (widget.athlete!.password == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava password not provided yet!',
           duration: const Duration(seconds: 3),
@@ -219,7 +220,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
 
   String capitals(Tag tag) {
     final String capitals =
-        tagGroup(tag).name.split(' ').map((String word) => word[0]).join();
+        tagGroup(tag).name!.split(' ').map((String word) => word[0]).join();
     return capitals.substring(0, min(capitals.length, 2));
   }
 }

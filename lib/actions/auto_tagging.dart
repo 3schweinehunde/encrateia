@@ -7,9 +7,9 @@ import '/models/tag_group.dart';
 import '/utils/icon_utils.dart';
 
 Future<void> autoTagging({
-  @required BuildContext context,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Athlete athlete,
+  required Flushbar<Object> flushbar,
 }) async {
   if (await athlete.checkForSchemas()) {
     flushbar = Flushbar<Object>(

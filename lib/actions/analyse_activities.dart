@@ -6,9 +6,9 @@ import '/models/athlete.dart';
 import '/utils/icon_utils.dart';
 
 Future<void> analyseActivities({
-  @required BuildContext context,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Athlete athlete,
+  required Flushbar<Object> flushbar,
 }) async {
   List<Activity> activities;
   activities = await athlete.activities;

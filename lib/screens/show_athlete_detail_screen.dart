@@ -5,17 +5,17 @@ import '/utils/my_color.dart';
 
 class ShowAthleteDetailScreen extends StatelessWidget {
   const ShowAthleteDetailScreen({
-    Key key,
+    Key? key,
     this.athlete,
     this.widget,
     this.title,
     this.backgroundColor,
   }) : super(key: key);
 
-  final Athlete athlete;
-  final Widget widget;
-  final String title;
-  final Color backgroundColor;
+  final Athlete? athlete;
+  final Widget? widget;
+  final String? title;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,11 @@ class ShowAthleteDetailScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: backgroundColor ?? MyColor.athlete,
         title: Text(
-          '$title: ${athlete.firstName} ${athlete.lastName}',
+          '$title: ${athlete!.firstName} ${athlete!.lastName}',
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      body: SafeArea(child: widget),
+      body: SafeArea(child: widget!),
     );
   }
 }

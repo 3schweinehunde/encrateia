@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/models/event.dart';
 import '/models/interval.dart' as encrateia;
 import '/models/record_list.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;
@@ -11,9 +11,9 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
 
 class IntervalVerticalOscillationWidget extends StatefulWidget {
-  const IntervalVerticalOscillationWidget({this.interval});
+  const IntervalVerticalOscillationWidget({Key? key, this.interval}) : super(key: key);
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalVerticalOscillationWidgetState createState() =>
@@ -45,7 +45,7 @@ class _IntervalVerticalOscillationWidgetState
       final List<Event> verticalOscillationRecords = records
           .where((Event value) =>
               value.verticalOscillation != null &&
-              value.verticalOscillation > 0)
+              value.verticalOscillation! > 0)
           .toList();
 
       if (verticalOscillationRecords.isNotEmpty) {
@@ -58,8 +58,8 @@ class _IntervalVerticalOscillationWidgetState
                 key: widgetKey,
                 child: LapVerticalOscillationChart(
                   records: RecordList<Event>(verticalOscillationRecords),
-                  minimum: widget.interval.avgVerticalOscillation / 1.25,
-                  maximum: widget.interval.avgVerticalOscillation * 1.25,
+                  minimum: widget.interval!.avgVerticalOscillation! / 1.25,
+                  maximum: widget.interval!.avgVerticalOscillation! * 1.25,
                 ),
               ),
               const Text(
@@ -80,7 +80,7 @@ class _IntervalVerticalOscillationWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.interval.avgVerticalOscillation,
+                  value: widget.interval!.avgVerticalOscillation,
                   pq: PQ.verticalOscillation,
                 ),
                 subtitle: const Text('average vertical oscillation'),
@@ -88,7 +88,7 @@ class _IntervalVerticalOscillationWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.interval.sdevVerticalOscillation,
+                  value: widget.interval!.sdevVerticalOscillation,
                   pq: PQ.verticalOscillation,
                 ),
                 subtitle: const Text('standard deviation vertical oscillation'),
@@ -117,7 +117,7 @@ class _IntervalVerticalOscillationWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
+    records = RecordList<Event>(await widget.interval!.records);
     setState(() => loading = false);
   }
 }

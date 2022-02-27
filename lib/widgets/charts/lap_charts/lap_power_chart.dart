@@ -8,23 +8,23 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class LapPowerChart extends StatelessWidget {
-  const LapPowerChart({
-    @required this.records,
+  const LapPowerChart({Key? key,
+    required this.records,
     this.powerZones,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
-  final List<PowerZone> powerZones;
+  final List<PowerZone>? powerZones;
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.distance.round();
+    final int offset = records.first.distance!.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Power',
         colorFn: (_, __) => Color.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
         measureFn: (Event record, _) => record.power,
         data: records,
       )
@@ -51,7 +51,7 @@ class LapPowerChart extends StatelessWidget {
         animate: false,
         behaviors: <ChartBehavior<num>>[
               RangeAnnotation<num>(
-                GraphUtils.powerZoneAnnotations(powerZones: powerZones),
+                GraphUtils.powerZoneAnnotations(powerZones: powerZones) as List<AnnotationSegment<Object>>,
               ),
             ] +
             GraphUtils.axis(

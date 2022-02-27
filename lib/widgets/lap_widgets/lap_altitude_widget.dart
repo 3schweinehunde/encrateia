@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '/models/event.dart';
 import '/models/lap.dart';
 import '/models/record_list.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;
@@ -13,9 +13,9 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_altitude_chart.dart';
 
 class LapAltitudeWidget extends StatefulWidget {
-  const LapAltitudeWidget({this.lap});
+  const LapAltitudeWidget({Key? key, this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapAltitudeWidgetState createState() => _LapAltitudeWidgetState();
@@ -57,11 +57,11 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
                   records: RecordList<Event>(altitudeRecords),
                   minimum: altitudeRecords
                       .map((Event record) => record.altitude)
-                      .reduce(min)
+                      .reduce(min)!
                       .toDouble(),
                   maximum: altitudeRecords
                       .map((Event record) => record.altitude)
-                      .reduce(max)
+                      .reduce(max)!
                       .toDouble(),
                 ),
               ),
@@ -101,8 +101,8 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
-    records = RecordList<Event>(await lap.records);
+    final Lap lap = widget.lap!;
+    records = RecordList<Event>(await (lap.records as Future<List<Event>>));
 
     setState(() => loading = false);
   }

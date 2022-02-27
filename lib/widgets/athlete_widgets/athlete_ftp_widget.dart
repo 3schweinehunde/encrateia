@@ -12,9 +12,9 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteFtpWidget extends StatefulWidget {
-  const AthleteFtpWidget({this.athlete});
+  const AthleteFtpWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteFtpWidgetState createState() => _AthleteFtpWidgetState();
@@ -28,8 +28,8 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   List<Activity> backlog = <Activity>[];
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -81,14 +81,14 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
                     const SizedBox(width: 20),
                     DropdownButton<String>(
                       items:
-                          sports.map<DropdownMenuItem<String>>((String value) {
+                          sports.map<DropdownMenuItem<String>>((String? value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(value!),
                         );
                       }).toList(),
                       value: selectedSports,
-                      onChanged: (String value) {
+                      onChanged: (String? value) {
                         selectedSports = value;
                         getData();
                       },
@@ -140,10 +140,10 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()
@@ -158,7 +158,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
       tagGroups: tagGroups,
     );
     ftpActivities = activities
-        .where((Activity activity) => activity.ftp != null && activity.ftp > 0)
+        .where((Activity activity) => activity.ftp != null && activity.ftp! > 0)
         .toList();
     loadingStatus = ftpActivities.length.toString() +
         ' tagged in Effort Taggroup, deriving backlog...';
@@ -167,7 +167,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   }
 
   Future<void> checkForBacklog() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     backlog = await ftp.deriveBacklog(athlete: athlete);
 
     setState(() => loadingStatus = ftpActivities.length.toString() +

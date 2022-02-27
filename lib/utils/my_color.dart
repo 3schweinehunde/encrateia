@@ -71,16 +71,18 @@ class MyColor {
   static Color interval = pinkRose;
 
   static Color textColor({
-    @required Color backgroundColor,
+    required Color backgroundColor,
     bool selected = true,
   }) {
     if (selected) {
       if (ThemeData.estimateBrightnessForColor(backgroundColor) ==
-          Brightness.light)
+          Brightness.light) {
         return black;
-      else
+      } else {
         return white;
-    } else
+      }
+    } else {
       return black;
+    }
   }
 }

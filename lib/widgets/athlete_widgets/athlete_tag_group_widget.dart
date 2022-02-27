@@ -9,18 +9,18 @@ import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';
 
 class AthleteTagGroupWidget extends StatefulWidget {
-  const AthleteTagGroupWidget({this.athlete});
+  const AthleteTagGroupWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteTagGroupWidgetState createState() => _AthleteTagGroupWidgetState();
 }
 
 class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
-  List<TagGroup> tagGroups;
+  List<TagGroup>? tagGroups;
   int offset = 0;
-  int rows;
+  late int rows;
   bool loading = true;
 
   @override
@@ -32,13 +32,13 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
   @override
   Widget build(BuildContext context) {
     if (tagGroups != null) {
-      rows = (tagGroups.length < 8) ? tagGroups.length : 8;
+      rows = (tagGroups!.length < 8) ? tagGroups!.length : 8;
       return ListView(
         children: <Widget>[
           Center(
             child: Text(
               '\nTag Groups ${offset + 1} - ${offset + rows} '
-              'of ${tagGroups.length}',
+              'of ${tagGroups!.length}',
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
@@ -51,29 +51,30 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
               DataColumn(label: Text('Color')),
               DataColumn(label: Text('Edit')),
             ],
-            rows: tagGroups
+            rows: tagGroups!
                 .sublist(offset, offset + rows)
                 .map((TagGroup tagGroup) {
               return DataRow(
-                key: ValueKey<int>(tagGroup.id),
+                key: ValueKey<int?>(tagGroup.id),
                 cells: <DataCell>[
-                  DataCell(Text(tagGroup.name)),
+                  DataCell(Text(tagGroup.name!)),
                   DataCell(CircleColor(
                     circleSize: 20,
                     elevation: 0,
-                    color: Color(tagGroup.color),
+                    color: Color(tagGroup.color!),
                   )),
                   DataCell(
-                    tagGroup.system ? MyIcon.show : MyIcon.edit,
+                    tagGroup.system! ? MyIcon.show : MyIcon.edit,
                     onTap: () async {
                       await Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
                           builder: (BuildContext context) {
-                            if (tagGroup.system)
+                            if (tagGroup.system!) {
                               return ShowTagGroupScreen(tagGroup: tagGroup);
-                            else
+                            } else {
                               return AddTagGroupScreen(tagGroup: tagGroup);
+                            }
                           },
                         ),
                       );
@@ -95,7 +96,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                       context,
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) => AddTagGroupScreen(
-                          tagGroup: TagGroup(athlete: widget.athlete),
+                          tagGroup: TagGroup(athlete: widget.athlete!),
                         ),
                       ),
                     );
@@ -113,12 +114,12 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
               const Spacer(),
               MyButton.navigate(
                 child: const Text('>>'),
-                onPressed: (offset + rows == tagGroups.length)
+                onPressed: (offset + rows == tagGroups!.length)
                     ? null
                     : () => setState(() {
-                          offset + rows < tagGroups.length - rows
+                          offset + rows < tagGroups!.length - rows
                               ? offset = offset + rows
-                              : offset = tagGroups.length - rows;
+                              : offset = tagGroups!.length - rows;
                         }),
               ),
               const Spacer(),
@@ -134,7 +135,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
   }
 
   Future<void> getData() async {
-    tagGroups = await widget.athlete.tagGroups;
+    tagGroups = await widget.athlete!.tagGroups;
     setState(() => loading = false);
   }
 }

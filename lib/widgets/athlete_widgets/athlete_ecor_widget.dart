@@ -9,9 +9,9 @@ import '/utils/enums.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteEcorWidget extends StatefulWidget {
-  const AthleteEcorWidget({this.athlete});
+  const AthleteEcorWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteEcorWidgetState createState() => _AthleteEcorWidgetState();
@@ -21,8 +21,8 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -80,14 +80,14 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items: sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -108,10 +108,10 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()

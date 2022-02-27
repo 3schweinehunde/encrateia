@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '/models/log.dart';
 import '/screens/show_log_detail_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/my_button.dart';
 import '/utils/my_color.dart';
 
 class LogListScreen extends StatefulWidget {
   const LogListScreen({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -62,15 +62,15 @@ class _LogListScreenState extends State<LogListScreen> {
               ],
               rows: logs.map((Log log) {
                 return DataRow(
-                  key: ValueKey<int>(log.id),
+                  key: ValueKey<int?>(log.id),
                   cells: <DataCell>[
                     DataCell(PQText(
                       value: log.dateTime,
                       pq: PQ.dateTime,
                       format: DateTimeFormat.compact,
                     )),
-                    DataCell(Text(log.message)),
-                    DataCell(Text(log.method)),
+                    DataCell(Text(log.message!)),
+                    DataCell(Text(log.method!)),
                     DataCell(MyButton.navigate(
                       child: const Text('Details'),
                       onPressed: () async {

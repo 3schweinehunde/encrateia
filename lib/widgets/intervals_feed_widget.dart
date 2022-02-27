@@ -10,15 +10,15 @@ import '/models/interval.dart' as encrateia;
 import '/models/tag.dart';
 import '/models/tag_group.dart';
 import '/screens/show_interval_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/my_color.dart';
 
 class IntervalsFeedWidget extends StatefulWidget {
-  const IntervalsFeedWidget({Key key, this.athlete}) : super(key: key);
+  const IntervalsFeedWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _IntervalsFeedWidgetState createState() => _IntervalsFeedWidgetState();
@@ -26,11 +26,11 @@ class IntervalsFeedWidget extends StatefulWidget {
 
 class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
   List<encrateia.Interval> intervals = <encrateia.Interval>[];
-  Map<int, List<encrateia.Interval>> groupedIntervals =
+  Map<int?, List<encrateia.Interval>> groupedIntervals =
       <int, List<encrateia.Interval>>{};
-  Map<int, Activity> activityMap = <int, Activity>{};
+  Map<int?, Activity> activityMap = <int, Activity>{};
   List<TagGroup> tagGroups = <TagGroup>[];
-  Flushbar<Object> flushbar;
+  Flushbar<Object>? flushbar;
   bool disposed = false;
 
   @override
@@ -59,11 +59,11 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
       padding: const EdgeInsets.only(top: 10),
       itemCount: groupedIntervals.length,
       itemBuilder: (BuildContext context, int index) {
-        final int activityId = groupedIntervals.keys.toList()[index];
+        final int? activityId = groupedIntervals.keys.toList()[index];
         final List<encrateia.Interval> intervalsInCard =
-            groupedIntervals[activityId];
+            groupedIntervals[activityId]!;
         return ListTile(
-          title: Text(activityMap[activityId].name),
+          title: Text(activityMap[activityId]!.name!),
           subtitle: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Column(children: <Widget>[
@@ -95,11 +95,11 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
                               avatar: CircleAvatar(
                                   foregroundColor: MyColor.textColor(
                                       backgroundColor:
-                                          Color(tagGroup(tag).color)),
-                                  backgroundColor: Color(tagGroup(tag).color),
+                                          Color(tagGroup(tag).color!)),
+                                  backgroundColor: Color(tagGroup(tag).color!),
                                   child: Text(capitals(tag))),
                               label: Text(
-                                tag.name,
+                                tag.name!,
                                 style: TextStyle(
                                   color: MyColor.textColor(
                                     selected: true,
@@ -136,7 +136,7 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
     );
   }
 
-  Icon sportsIcon({String sport}) {
+  Icon sportsIcon({String? sport}) {
     switch (sport) {
       case 'running':
         return MyIcon.running;
@@ -152,20 +152,20 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
 
   String capitals(Tag tag) {
     final String capitals =
-        tagGroup(tag).name.split(' ').map((String word) => word[0]).join();
+        tagGroup(tag).name!.split(' ').map((String word) => word[0]).join();
     return capitals.substring(0, min(capitals.length, 2));
   }
 
   Future<void> getData() async {
-    intervals = await widget.athlete.intervals;
+    intervals = await widget.athlete!.intervals;
     groupedIntervals = groupBy(
         intervals, (encrateia.Interval interval) => interval.activitiesId);
-    activityMap = <int, Activity>{
-      for (int activityId in groupedIntervals.keys)
+    activityMap = <int?, Activity>{
+      for (int? activityId in groupedIntervals.keys)
         activityId: await Activity.byId(activityId)
     };
     setState(() {});
-    tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete);
+    tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete!);
     int index = 1;
     for (final encrateia.Interval interval in intervals.reversed) {
       await interval.tags;

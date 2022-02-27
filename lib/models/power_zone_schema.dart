@@ -6,7 +6,7 @@ import '/models/athlete.dart';
 import '/models/power_zone.dart';
 
 class PowerZoneSchema {
-  PowerZoneSchema({@required Athlete athlete}) {
+  PowerZoneSchema({required Athlete athlete}) {
     _db = DbPowerZoneSchema()
       ..athletesId = athlete.id
       ..base = 250
@@ -15,7 +15,7 @@ class PowerZoneSchema {
   }
   PowerZoneSchema._fromDb(this._db);
 
-  PowerZoneSchema.likeStryd({Athlete athlete}) {
+  PowerZoneSchema.likeStryd({required Athlete athlete}) {
     _db = DbPowerZoneSchema()
       ..athletesId = athlete.id
       ..name = 'CP based'
@@ -24,7 +24,7 @@ class PowerZoneSchema {
   }
 
   // https://www.velopress.com/jim-vances-running-power-zones/
-  PowerZoneSchema.likeJimVance({Athlete athlete}) {
+  PowerZoneSchema.likeJimVance({required Athlete athlete}) {
     _db = DbPowerZoneSchema()
       ..athletesId = athlete.id
       ..name = 'FTP based'
@@ -32,7 +32,7 @@ class PowerZoneSchema {
       ..base = 250;
   }
 
-  PowerZoneSchema.likeStefanDillinger({Athlete athlete}) {
+  PowerZoneSchema.likeStefanDillinger({required Athlete athlete}) {
     _db = DbPowerZoneSchema()
       ..athletesId = athlete.id
       ..name = 'FTP based'
@@ -40,24 +40,24 @@ class PowerZoneSchema {
       ..base = 250;
   }
 
-  DbPowerZoneSchema _db;
+  DbPowerZoneSchema? _db;
 
-  int get id => _db?.id;
-  DateTime get date => _db.date;
-  String get name => _db.name;
-  int get base => _db.base;
+  int? get id => _db?.id;
+  DateTime? get date => _db!.date;
+  String? get name => _db!.name;
+  int? get base => _db!.base;
 
-  set id(int value) => _db.id = value;
-  set base(int value) => _db.base = value;
-  set date(DateTime value) => _db.date = value;
-  set name(String value) => _db.name = value;
+  set id(int? value) => _db!.id = value;
+  set base(int? value) => _db!.base = value;
+  set date(DateTime? value) => _db!.date = value;
+  set name(String? value) => _db!.name = value;
 
-  Future<BoolResult> delete() async => await _db.delete();
-  Future<int> save() async => await _db.save();
+  Future<BoolResult> delete() async => await _db!.delete();
+  Future<int?> save() async => await _db!.save();
 
   Future<List<PowerZone>> get powerZones async {
     final List<DbPowerZone> dbPowerZoneList =
-        await _db.getDbPowerZones().orderBy('lowerLimit').toList();
+        await _db!.getDbPowerZones()!.orderBy('lowerLimit').toList();
     return dbPowerZoneList.map(PowerZone.exDb).toList();
   }
 
@@ -199,7 +199,7 @@ class PowerZoneSchema {
   @override
   String toString() => '< PowerZoneSchema | $name | $date >';
 
-  static Future<PowerZoneSchema> getBy({int athletesId, DateTime date}) async {
+  static Future<PowerZoneSchema?> getBy({int? athletesId, DateTime? date}) async {
     List<DbPowerZoneSchema> dbPowerZoneSchemas;
 
     dbPowerZoneSchemas = await DbPowerZoneSchema()
@@ -212,9 +212,9 @@ class PowerZoneSchema {
         .orderByDesc('date')
         .top(1)
         .toList();
-    if (dbPowerZoneSchemas.isNotEmpty)
+    if (dbPowerZoneSchemas.isNotEmpty) {
       return PowerZoneSchema._fromDb(dbPowerZoneSchemas.first);
-    else
+    } else {
       dbPowerZoneSchemas = await DbPowerZoneSchema()
           .select()
           .athletesId
@@ -222,6 +222,7 @@ class PowerZoneSchema {
           .orderBy('date')
           .top(1)
           .toList();
+    }
     return (dbPowerZoneSchemas.isNotEmpty)
         ? PowerZoneSchema._fromDb(dbPowerZoneSchemas.first)
         : null;

@@ -10,11 +10,11 @@ import '/utils/my_button.dart';
 
 class EditStravaAthleteWidget extends StatefulWidget {
   const EditStravaAthleteWidget({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _EditStravaAthleteWidgetState createState() =>
@@ -37,29 +37,29 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
         ),
         ListTile(
           leading: const Text('First Name'),
-          title: Text(widget.athlete.firstName ?? 't.b.d.'),
+          title: Text(widget.athlete!.firstName ?? 't.b.d.'),
         ),
         ListTile(
           leading: const Text('Last Name'),
-          title: Text(widget.athlete.lastName ?? 't.b.d.'),
+          title: Text(widget.athlete!.lastName ?? 't.b.d.'),
         ),
         ListTile(
           leading: const Text('Strava ID'),
-          title: Text(widget.athlete.stravaId?.toString() ?? 't.b.d.'),
+          title: Text(widget.athlete!.stravaId?.toString() ?? 't.b.d.'),
         ),
         ListTile(
           leading: const Text('Strava Username'),
-          title: Text(widget.athlete.stravaUsername ?? 't.b.d.'),
+          title: Text(widget.athlete!.stravaUsername ?? 't.b.d.'),
         ),
         TextFormField(
           decoration: const InputDecoration(labelText: 'Email'),
-          initialValue: widget.athlete.email,
-          onChanged: (String value) => widget.athlete.email = value,
+          initialValue: widget.athlete!.email,
+          onChanged: (String value) => widget.athlete!.email = value,
         ),
         TextFormField(
           decoration: const InputDecoration(labelText: 'Password'),
-          onChanged: (String value) => widget.athlete.password = value,
-          initialValue: widget.athlete.password,
+          onChanged: (String value) => widget.athlete!.password = value,
+          initialValue: widget.athlete!.password,
           obscureText: true,
         ),
 
@@ -84,19 +84,19 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
   }
 
   Future<void> saveStravaUser(BuildContext context) async {
-    await widget.athlete.save();
-    await widget.athlete.storeCredentials();
+    await widget.athlete!.save();
+    await widget.athlete!.storeCredentials();
     flushbar = Flushbar<Object>(
       icon: MyIcon.information,
       message: 'checking credentials...',
       duration: const Duration(seconds: 10),
     )..show(context);
 
-    if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete)) {
+    if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete!)) {
       final List<PowerZoneSchema> powerZoneSchemas =
-          await widget.athlete.powerZoneSchemas;
+          await widget.athlete!.powerZoneSchemas;
       await flushbar.dismiss();
-      if (powerZoneSchemas.isEmpty)
+      if (powerZoneSchemas.isEmpty) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute<BuildContext>(
@@ -104,8 +104,9 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
                 OnBoardingPowerZoneSchemaScreen(athlete: widget.athlete),
           ),
         );
-      else
+      } else {
         Navigator.of(context).pop();
+      }
     } else {
       flushbar = Flushbar<Object>(
         icon: MyIcon.error,

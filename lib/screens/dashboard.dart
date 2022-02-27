@@ -12,7 +12,7 @@ import 'onboarding_screens/onboarding_introduction_screen.dart';
 import 'show_athlete_screen.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard();
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -21,7 +21,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   List<Athlete> athletes = <Athlete>[];
   List<Log> logs = <Log>[];
-  String version;
+  String? version;
 
   @override
   void initState() {
@@ -31,9 +31,9 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    if (athletes.isEmpty)
+    if (athletes.isEmpty) {
       return Container();
-    else {
+    } else {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: MyColor.primary,
@@ -48,7 +48,7 @@ class _DashboardState extends State<Dashboard> {
                 Card(
                   child: ListTile(
                     leading: athlete.photoPath != null
-                        ? Image.network(athlete.photoPath)
+                        ? Image.network(athlete.photoPath!)
                         : MyIcon.runningBig,
                     title: Text('${athlete.firstName} ${athlete.lastName}'),
                     onTap: () async {

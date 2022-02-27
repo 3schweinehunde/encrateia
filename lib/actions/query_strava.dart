@@ -6,9 +6,9 @@ import '/models/athlete.dart';
 import '/utils/icon_utils.dart';
 
 Future<void> queryStrava({
-  @required BuildContext context,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Athlete athlete,
+  required Flushbar<Object> flushbar,
 }) async {
   flushbar = Flushbar<Object>(
     message: 'Downloading new activities',

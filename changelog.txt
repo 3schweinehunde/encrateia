@@ -576,7 +576,7 @@
 * `2019-09-19 16:58` [6480ce2](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6480ce2) -  refactoring
 * `2019-09-19 16:46` [3a1432a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3a1432a) -  switch to sqfentity
 * `2019-09-18 16:51` [0825952](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/0825952) -  create table athletes, if it does not exist
-* `2019-09-18 14:50` [49f873a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/49f873a) -  persisting athlete, todo: create database and table
+* `2019-09-18 14:50` [49f873a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/49f873a) -  persisting athlete, create database and table
 * `2019-08-18 15:11` [6e6b0f5](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/6e6b0f5) -  lots of small reformattings and reorganisations
 * `2019-08-17 20:21` [3c79a87](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/3c79a87) -  fix all linting issues
 * `2019-08-17 11:51` [fe55e2a](https://gitlab.informatom.com/3-schweinehunde/encrateia/-/commit/fe55e2a) -  store data in scoped model

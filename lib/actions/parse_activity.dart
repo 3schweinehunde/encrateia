@@ -6,10 +6,10 @@ import '/models/athlete.dart';
 import '/models/log.dart';
 
 Future<void> parseActivity({
-  @required BuildContext context,
-  @required Activity activity,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Activity activity,
+  required Athlete athlete,
+  required Flushbar<Object>? flushbar,
 }) async {
   await flushbar?.dismiss();
   flushbar = Flushbar<Object>(
@@ -23,9 +23,9 @@ Future<void> parseActivity({
   try {
     percentageStream = activity.parse(athlete: athlete);
     await for (final int value in percentageStream) {
-      if (value == -2)
+      if (value == -2) {
         await flushbar?.dismiss();
-      else if (value == -1) {
+      } else if (value == -1) {
         await flushbar?.dismiss();
         flushbar = Flushbar<Object>(
           message: 'Analysing »${activity.name}«',

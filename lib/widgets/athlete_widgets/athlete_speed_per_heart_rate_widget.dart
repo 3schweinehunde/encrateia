@@ -11,9 +11,9 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteSpeedPerHeartRateWidget extends StatefulWidget {
-  const AthleteSpeedPerHeartRateWidget({this.athlete});
+  const AthleteSpeedPerHeartRateWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteSpeedPerHeartRateWidgetState createState() =>
@@ -27,8 +27,8 @@ class _AthleteSpeedPerHeartRateWidgetState
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -42,9 +42,9 @@ class _AthleteSpeedPerHeartRateWidgetState
       final List<Activity> speedPerHeartRateActivities = activities
           .where((Activity value) =>
               value.avgSpeed != null &&
-              value.avgSpeed > 0 &&
+              value.avgSpeed! > 0 &&
               value.avgHeartRate != null &&
-              value.avgHeartRate > 0 &&
+              value.avgHeartRate! > 0 &&
               value.avgHeartRate != 255)
           .toList();
 
@@ -81,14 +81,14 @@ class _AthleteSpeedPerHeartRateWidgetState
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items: sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -130,10 +130,10 @@ class _AthleteSpeedPerHeartRateWidgetState
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()

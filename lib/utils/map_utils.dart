@@ -1,15 +1,15 @@
-extension StatisticFunctions on Map<DateTime, double> {
+extension StatisticFunctions on Map<DateTime?, double?> {
   double meanWeightedOverTime() {
     double sumOfValues = 0;
     double sumOfWeights = 0;
 
-    DateTime lastTimeStamp;
+    DateTime? lastTimeStamp;
 
-    forEach((DateTime timeStamp, double speed) {
+    forEach((DateTime? timeStamp, double? speed) {
       final int timeEvolved = lastTimeStamp != null
-          ? timeStamp.difference(lastTimeStamp).inSeconds
+          ? timeStamp!.difference(lastTimeStamp!).inSeconds
           : 0;
-      sumOfValues += timeEvolved * speed;
+      sumOfValues += timeEvolved * speed!;
       sumOfWeights += timeEvolved;
       lastTimeStamp = timeStamp;
     });
@@ -21,13 +21,13 @@ extension StatisticFunctions on Map<DateTime, double> {
     double sumOfValues = 0;
     double sumOfWeights = 0;
 
-    DateTime lastTimeStamp;
+    DateTime? lastTimeStamp;
 
-    forEach((DateTime timeStamp, double speed) {
+    forEach((DateTime? timeStamp, double? speed) {
       final double distanceEvolved = (lastTimeStamp != null
-              ? timeStamp.difference(lastTimeStamp).inSeconds
+              ? timeStamp!.difference(lastTimeStamp!).inSeconds
               : 0) *
-          speed;
+          speed!;
       sumOfValues += distanceEvolved * speed;
       sumOfWeights += distanceEvolved;
       lastTimeStamp = timeStamp;
@@ -40,15 +40,15 @@ extension StatisticFunctions on Map<DateTime, double> {
     double sumOfValues = 0;
     double sumOfWeights = 0;
 
-    DateTime lastTimeStamp;
-    double lastDistance;
+    DateTime? lastTimeStamp;
+    double? lastDistance;
 
-    forEach((DateTime timeStamp, double distance) {
+    forEach((DateTime? timeStamp, double? distance) {
       final int timeEvolved = lastTimeStamp != null
-          ? timeStamp.difference(lastTimeStamp).inSeconds
+          ? timeStamp!.difference(lastTimeStamp!).inSeconds
           : 0;
       final double distanceEvolved = lastDistance != null
-          ? distance - lastDistance
+          ? distance! - lastDistance!
           : 0;
       sumOfValues += distanceEvolved;
       sumOfWeights += timeEvolved;
@@ -63,11 +63,11 @@ extension StatisticFunctions on Map<DateTime, double> {
     double sumOfValues = 0;
     double sumOfWeights = 0;
 
-    DateTime lastTimeStamp;
+    DateTime? lastTimeStamp;
 
-    forEach((DateTime timeStamp, double speed) {
+    forEach((DateTime? timeStamp, double? speed) {
       final int timeEvolved = lastTimeStamp != null
-          ? timeStamp.difference(lastTimeStamp).inSeconds
+          ? timeStamp!.difference(lastTimeStamp!).inSeconds
           : 0;
       sumOfValues += (speed ?? 0) * timeEvolved;
       sumOfWeights += timeEvolved;

@@ -10,26 +10,26 @@ import '/models/heart_rate_zone_schema.dart';
 import '/models/lap.dart';
 import '/models/power_zone.dart';
 import '/models/power_zone_schema.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/my_bar_chart.dart';
 
 class ActivityBarGraphWidget extends StatefulWidget {
-  const ActivityBarGraphWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivityBarGraphWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityBarGraphWidgetState createState() => _ActivityBarGraphWidgetState();
 }
 
 class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
-  PowerZoneSchema _powerZoneSchema;
-  HeartRateZoneSchema _heartRateZoneSchema;
+  PowerZoneSchema? _powerZoneSchema;
+  HeartRateZoneSchema? _heartRateZoneSchema;
   List<PowerZone> _powerZones = <PowerZone>[];
   List<HeartRateZone> _heartRateZones = <HeartRateZone>[];
   List<Lap> _laps = <Lap>[];
@@ -48,7 +48,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
     if (_powerZones.isNotEmpty && _laps.isNotEmpty) {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Container(
+        child: SizedBox(
           width: 500,
           child: ListView(padding: const EdgeInsets.all(20), children: <Widget>[
             Table(columnWidths: const <int, TableColumnWidth>{
@@ -70,19 +70,19 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 MyBarChart(
                   width: 150,
                   height: 20,
-                  value: widget.activity.avgPower,
+                  value: widget.activity!.avgPower!,
                   powerZones: _powerZones,
                 ),
-                Text((widget.activity.avgPower > 0)
-                    ? widget.activity.avgPower.toStringAsFixed(1)
+                Text((widget.activity!.avgPower! > 0)
+                    ? widget.activity!.avgPower!.toStringAsFixed(1)
                     : ''),
                 MyBarChart(
                   width: 150,
                   height: 20,
-                  value: widget.activity.avgHeartRate,
+                  value: widget.activity!.avgHeartRate!,
                   heartRateZones: _heartRateZones,
                 ),
-                Text(widget.activity.avgHeartRate.toString()),
+                Text(widget.activity!.avgHeartRate.toString()),
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[
@@ -90,16 +90,16 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                   MyBarChart(
                     width: 150,
                     height: 20,
-                    value: lap.avgPower,
+                    value: lap.avgPower!,
                     powerZones: _powerZones,
                   ),
-                  Text((lap.avgPower > 0)
-                      ? lap.avgPower.toStringAsFixed(1)
+                  Text((lap.avgPower! > 0)
+                      ? lap.avgPower!.toStringAsFixed(1)
                       : ''),
                   MyBarChart(
                     width: 150,
                     height: 20,
-                    value: lap.avgHeartRate,
+                    value: lap.avgHeartRate!,
                     heartRateZones: _heartRateZones,
                   ),
                   Text(lap.avgHeartRate.toString()),
@@ -155,17 +155,17 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 const Text('Activity'),
                 MyBarChart(
                   height: 20,
-                  value: widget.activity.avgSpeed,
+                  value: widget.activity!.avgSpeed!,
                   maximum: _laps.map((Lap lap) => lap.avgSpeed).reduce(max),
                 ),
-                PQText(value: widget.activity.avgSpeed, pq: PQ.paceFromSpeed),
+                PQText(value: widget.activity!.avgSpeed, pq: PQ.paceFromSpeed),
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[
                   Text('Lap ' + lap.index.toString()),
                   MyBarChart(
                     height: 20,
-                    value: lap.avgSpeed,
+                    value: lap.avgSpeed!,
                     maximum: _laps.map((Lap lap) => lap.avgSpeed).reduce(max),
                   ),
                   PQText(value: lap.avgSpeed, pq: PQ.paceFromSpeed),
@@ -182,7 +182,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     _laps = await activity.laps;
     for (final Lap _lap in _laps) {
       _lap.powerDistributions = await _lap.powerZoneCounts();
@@ -190,15 +190,17 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
     }
 
     _powerZoneSchema = await activity.powerZoneSchema;
-    if (_powerZoneSchema != null)
-      _powerZones = await _powerZoneSchema.powerZones;
+    if (_powerZoneSchema != null) {
+      _powerZones = await _powerZoneSchema!.powerZones;
+    }
 
     _heartRateDistributions = await activity.powerZoneCounts();
     _powerDistributions = await activity.heartRateZoneCounts();
 
     _heartRateZoneSchema = await activity.heartRateZoneSchema;
-    if (_heartRateZoneSchema != null)
-      _heartRateZones = await _heartRateZoneSchema.heartRateZones;
+    if (_heartRateZoneSchema != null) {
+      _heartRateZones = await _heartRateZoneSchema!.heartRateZones;
+    }
 
     setState(() => loading = false);
   }

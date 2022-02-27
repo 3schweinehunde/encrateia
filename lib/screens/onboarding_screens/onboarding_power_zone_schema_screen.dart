@@ -9,11 +9,11 @@ import '/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
 
 class OnBoardingPowerZoneSchemaScreen extends StatefulWidget {
   const OnBoardingPowerZoneSchemaScreen({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _OnBoardingPowerZoneSchemaScreenState createState() =>
@@ -70,12 +70,12 @@ class _OnBoardingPowerZoneSchemaScreenState
 
   Future<void> getData() async {
     final List<PowerZoneSchema> powerZoneSchemas =
-        await widget.athlete.powerZoneSchemas;
+        await widget.athlete!.powerZoneSchemas;
     setState(() => powerZoneSchemaHasBeenEntered = powerZoneSchemas.isNotEmpty);
   }
 
   Future<void> nextButton() async {
-    await widget.athlete.save();
+    await widget.athlete!.save();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute<BuildContext>(

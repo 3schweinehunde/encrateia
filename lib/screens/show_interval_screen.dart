@@ -24,26 +24,26 @@ import '/widgets/interval_widgets/interval_vertical_oscillation_widget.dart';
 
 class ShowIntervalScreen extends StatelessWidget {
   const ShowIntervalScreen({
-    Key key,
-    @required this.interval,
-    @required this.intervals,
-    @required this.activity,
-    @required this.athlete,
+    Key? key,
+    required this.interval,
+    required this.intervals,
+    required this.activity,
+    required this.athlete,
   }) : super(key: key);
 
   final encrateia.Interval interval;
   final List<encrateia.Interval> intervals;
-  final Athlete athlete;
-  final Activity activity;
+  final Athlete? athlete;
+  final Activity? activity;
 
-  List<Widget> tiles({@required BuildContext context}) {
+  List<Widget> tiles({required BuildContext context}) {
     return <Widget>[
       navigationButton(
         title: 'Overview',
         color: MyColor.settings,
         icon: MyIcon.metaData,
         context: context,
-        nextWidget: ({encrateia.Interval interval}) => IntervalOverviewWidget(
+        nextWidget: ({encrateia.Interval? interval}) => IntervalOverviewWidget(
           interval: interval,
           athlete: athlete,
         ),
@@ -54,7 +54,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.heartRate,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalHeartRateWidget(interval: interval),
         ),
       if (interval.powerAvailable)
@@ -63,7 +63,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.power,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalPowerWidget(interval: interval),
         ),
       if (interval.powerAvailable)
@@ -72,7 +72,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.powerDuration,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalPowerDurationWidget(interval: interval),
         ),
       if (interval.paceAvailable)
@@ -81,7 +81,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.speed,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalPaceWidget(interval: interval),
         ),
       if (interval.speedAvailable)
@@ -90,7 +90,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.speed,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalSpeedWidget(interval: interval),
         ),
       if (interval.speedAvailable && interval.powerAvailable)
@@ -99,7 +99,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.power,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) => IntervalEcorWidget(
+          nextWidget: ({encrateia.Interval? interval}) => IntervalEcorWidget(
             interval: interval,
             athlete: athlete,
           ),
@@ -110,7 +110,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.groundTime,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalGroundTimeWidget(interval: interval),
         ),
       if (interval.groundTimeAvailable)
@@ -119,7 +119,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.legSpringStiffness,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalLegSpringStiffnessWidget(interval: interval),
         ),
       if (interval.formPowerAvailable)
@@ -128,7 +128,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.formPower,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalFormPowerWidget(interval: interval),
         ),
       if (interval.cadenceAvailable)
@@ -137,7 +137,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.cadence,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalStrydCadenceWidget(interval: interval),
         ),
       if (interval.verticalOscillationAvailable)
@@ -146,7 +146,7 @@ class ShowIntervalScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.verticalOscillation,
           context: context,
-          nextWidget: ({encrateia.Interval interval}) =>
+          nextWidget: ({encrateia.Interval? interval}) =>
               IntervalVerticalOscillationWidget(interval: interval),
         ),
       navigationButton(
@@ -154,7 +154,7 @@ class ShowIntervalScreen extends StatelessWidget {
         color: MyColor.navigate,
         icon: MyIcon.altitude,
         context: context,
-        nextWidget: ({encrateia.Interval interval}) =>
+        nextWidget: ({encrateia.Interval? interval}) =>
             IntervalAltitudeWidget(interval: interval),
       ),
       navigationButton(
@@ -162,7 +162,7 @@ class ShowIntervalScreen extends StatelessWidget {
         color: MyColor.tag,
         icon: MyIcon.tag,
         context: context,
-        nextWidget: ({encrateia.Interval interval}) => IntervalTagWidget(
+        nextWidget: ({encrateia.Interval? interval}) => IntervalTagWidget(
           interval: interval,
           athlete: athlete,
         ),
@@ -177,7 +177,7 @@ class ShowIntervalScreen extends StatelessWidget {
         ),
         onPressed: () async {
           await interval.delete();
-          activity.cachedIntervals = <encrateia.Interval>[];
+          activity!.cachedIntervals = <encrateia.Interval>[];
           Navigator.of(context).pop();
         },
       ),
@@ -210,15 +210,15 @@ class ShowIntervalScreen extends StatelessWidget {
   }
 
   Widget navigationButton({
-    @required BuildContext context,
-    @required Widget Function({encrateia.Interval interval}) nextWidget,
-    @required Widget icon,
-    @required String title,
-    @required Color color,
+    required BuildContext context,
+    required Widget Function({encrateia.Interval? interval}) nextWidget,
+    required Widget icon,
+    required String title,
+    required Color color,
   }) {
     return ElevatedButton.icon(
       style: MyButtonStyle.raisedButtonStyle(
-          color: color ?? MyColor.primary,
+          color: color,
           textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyButtonStyle extends ButtonStyle {
-  static ButtonStyle raisedButtonStyle({Color color, Color textColor}) {
+  static ButtonStyle raisedButtonStyle({Color? color, Color? textColor}) {
     return ElevatedButton.styleFrom(
       onPrimary: textColor ?? Colors.black,
       primary: color ?? Colors.grey[300],

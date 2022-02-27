@@ -10,8 +10,8 @@ class BarZone {
     return <BarZone>[
       for (final PowerZone powerZone in powerZones)
         BarZone(
-          lower: powerZone.lowerLimit.toDouble(),
-          upper: powerZone.upperLimit.toDouble(),
+          lower: powerZone.lowerLimit!.toDouble(),
+          upper: powerZone.upperLimit!.toDouble(),
           color: powerZone.color,
         )
     ];
@@ -23,14 +23,14 @@ class BarZone {
     return <BarZone>[
       for (final HeartRateZone heartRateZone in heartRateZones)
         BarZone(
-          lower: heartRateZone.lowerLimit.toDouble(),
-          upper: heartRateZone.upperLimit.toDouble(),
+          lower: heartRateZone.lowerLimit!.toDouble(),
+          upper: heartRateZone.upperLimit!.toDouble(),
           color: heartRateZone.color,
         )
     ];
   }
 
-  double lower;
-  double upper;
-  int color;
+  double? lower;
+  double? upper;
+  int? color;
 }

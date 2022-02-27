@@ -6,11 +6,11 @@ import '/models/record_list.dart';
 import '/utils/graph_utils.dart';
 
 class LapFormPowerChart extends StatelessWidget {
-  const LapFormPowerChart({
-    @required this.records,
-    @required this.minimum,
-    @required this.maximum,
-  });
+  const LapFormPowerChart({Key? key,
+    required this.records,
+    required this.minimum,
+    required this.maximum,
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double minimum;
@@ -18,13 +18,13 @@ class LapFormPowerChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.distance.round();
+    final int offset = records.first.distance!.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Form Power',
         colorFn: (_, __) => Color.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
         measureFn: (Event record, _) => record.formPower,
         data: records,
       )

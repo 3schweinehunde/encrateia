@@ -24,24 +24,24 @@ import '/widgets/lap_widgets/lap_vertical_oscillation_widget.dart';
 
 class ShowLapScreen extends StatelessWidget {
   const ShowLapScreen({
-    Key key,
-    @required this.lap,
-    @required this.laps,
-    @required this.athlete,
+    Key? key,
+    required this.lap,
+    required this.laps,
+    required this.athlete,
   }) : super(key: key);
 
   final Lap lap;
   final List<Lap> laps;
-  final Athlete athlete;
+  final Athlete? athlete;
 
-  List<Widget> tiles({@required BuildContext context}) {
+  List<Widget> tiles({required BuildContext context}) {
     return <Widget>[
       navigationButton(
         title: 'Overview',
         color: MyColor.settings,
         icon: MyIcon.metaData,
         context: context,
-        nextWidget: ({Lap lap}) =>
+        nextWidget: ({Lap? lap}) =>
             LapOverviewWidget(lap: lap, athlete: athlete),
       ),
       if (lap.heartRateAvailable)
@@ -50,7 +50,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.heartRate,
           context: context,
-          nextWidget: ({Lap lap}) => LapHeartRateWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapHeartRateWidget(lap: lap),
         ),
       if (lap.powerAvailable)
         navigationButton(
@@ -58,7 +58,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.power,
           context: context,
-          nextWidget: ({Lap lap}) => LapPowerWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapPowerWidget(lap: lap),
         ),
       if (lap.powerAvailable)
         navigationButton(
@@ -66,7 +66,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.powerDuration,
           context: context,
-          nextWidget: ({Lap lap}) => LapPowerDurationWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapPowerDurationWidget(lap: lap),
         ),
       if (lap.paceAvailable)
         navigationButton(
@@ -74,7 +74,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.speed,
           context: context,
-          nextWidget: ({Lap lap}) => LapPaceWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapPaceWidget(lap: lap),
         ),
       if (lap.speedAvailable)
         navigationButton(
@@ -82,7 +82,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.speed,
           context: context,
-          nextWidget: ({Lap lap}) => LapSpeedWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapSpeedWidget(lap: lap),
         ),
       if (lap.speedAvailable && lap.powerAvailable)
         navigationButton(
@@ -90,7 +90,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.power,
           context: context,
-          nextWidget: ({Lap lap}) => LapEcorWidget(
+          nextWidget: ({Lap? lap}) => LapEcorWidget(
             lap: lap,
             athlete: athlete,
           ),
@@ -101,7 +101,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.groundTime,
           context: context,
-          nextWidget: ({Lap lap}) => LapGroundTimeWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapGroundTimeWidget(lap: lap),
         ),
       if (lap.groundTimeAvailable)
         navigationButton(
@@ -109,7 +109,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.legSpringStiffness,
           context: context,
-          nextWidget: ({Lap lap}) => LapLegSpringStiffnessWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapLegSpringStiffnessWidget(lap: lap),
         ),
       if (lap.formPowerAvailable)
         navigationButton(
@@ -117,7 +117,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.formPower,
           context: context,
-          nextWidget: ({Lap lap}) => LapFormPowerWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapFormPowerWidget(lap: lap),
         ),
       if (lap.cadenceAvailable)
         navigationButton(
@@ -125,7 +125,7 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.cadence,
           context: context,
-          nextWidget: ({Lap lap}) => LapStrydCadenceWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapStrydCadenceWidget(lap: lap),
         ),
       if (lap.verticalOscillationAvailable)
         navigationButton(
@@ -133,28 +133,28 @@ class ShowLapScreen extends StatelessWidget {
           color: MyColor.navigate,
           icon: MyIcon.verticalOscillation,
           context: context,
-          nextWidget: ({Lap lap}) => LapVerticalOscillationWidget(lap: lap),
+          nextWidget: ({Lap? lap}) => LapVerticalOscillationWidget(lap: lap),
         ),
       navigationButton(
         title: 'Altitude',
         color: MyColor.navigate,
         icon: MyIcon.altitude,
         context: context,
-        nextWidget: ({Lap lap}) => LapAltitudeWidget(lap: lap),
+        nextWidget: ({Lap? lap}) => LapAltitudeWidget(lap: lap),
       ),
       navigationButton(
         title: 'Metadata',
         color: MyColor.settings,
         icon: MyIcon.metaData,
         context: context,
-        nextWidget: ({Lap lap}) => LapMetadataWidget(lap: lap),
+        nextWidget: ({Lap? lap}) => LapMetadataWidget(lap: lap),
       ),
       navigationButton(
         title: 'Tags',
         color: MyColor.tag,
         icon: MyIcon.tag,
         context: context,
-        nextWidget: ({Lap lap}) => LapTagWidget(
+        nextWidget: ({Lap? lap}) => LapTagWidget(
           lap: lap,
           athlete: athlete,
         ),
@@ -188,15 +188,15 @@ class ShowLapScreen extends StatelessWidget {
   }
 
   Widget navigationButton({
-    @required BuildContext context,
-    @required Widget Function({Lap lap}) nextWidget,
-    @required Widget icon,
-    @required String title,
-    @required Color color,
+    required BuildContext context,
+    required Widget Function({Lap? lap}) nextWidget,
+    required Widget icon,
+    required String title,
+    required Color color,
   }) {
     return ElevatedButton.icon(
       style: MyButtonStyle.raisedButtonStyle(
-          color: color ?? MyColor.primary,
+          color: color,
           textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(

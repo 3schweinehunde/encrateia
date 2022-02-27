@@ -9,13 +9,13 @@ import '/utils/my_button.dart';
 import '/widgets/charts/power_duration_chart.dart';
 
 class ActivityPowerDurationWidget extends StatefulWidget {
-  const ActivityPowerDurationWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivityPowerDurationWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityPowerDurationWidgetState createState() =>
@@ -39,7 +39,7 @@ class _ActivityPowerDurationWidgetState
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -69,7 +69,7 @@ class _ActivityPowerDurationWidgetState
         );
       }
     } else {
-      return Container(
+      return SizedBox(
         height: 100,
         child: Center(
           child: Text(loading ? 'Loading' : 'No data available'),
@@ -79,7 +79,7 @@ class _ActivityPowerDurationWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
+    records = RecordList<Event>(await widget.activity!.records);
     setState(() => loading = false);
   }
 }

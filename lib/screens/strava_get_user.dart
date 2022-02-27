@@ -8,9 +8,9 @@ import '/secrets/secrets.dart';
 import '/utils/my_color.dart';
 
 class StravaGetUser extends StatefulWidget {
-  const StravaGetUser({this.athlete});
+  const StravaGetUser({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _StravaGetUserState createState() => _StravaGetUserState();
@@ -33,11 +33,9 @@ class _StravaGetUserState extends State<StravaGetUser> {
         backgroundColor: MyColor.primary,
       ),
       body: SafeArea(
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(widget.athlete.stateText),
-          ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(widget.athlete!.stateText),
         ),
       ),
     );
@@ -56,15 +54,15 @@ class _StravaGetUserState extends State<StravaGetUser> {
 
     final DetailedAthlete stravaAthlete =
         await stravaClient.athletes.getAuthenticatedAthlete();
-    await widget.athlete.updateFromStravaAthlete(stravaAthlete);
+    await widget.athlete!.updateFromStravaAthlete(stravaAthlete);
   }
 
   Future<void> getData() async {
-    if (widget.athlete.firstName == null) {
+    if (widget.athlete!.firstName == null) {
       await loginToStrava();
       setState(() {});
     }
-    if (widget.athlete.state == 'fromStrava') {
+    if (widget.athlete!.state == 'fromStrava') {
       Navigator.of(context).pop();
     }
   }

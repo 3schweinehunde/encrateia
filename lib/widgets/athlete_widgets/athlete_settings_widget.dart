@@ -6,9 +6,9 @@ import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';
 
 class AthleteSettingsWidget extends StatefulWidget {
-  const AthleteSettingsWidget({this.athlete});
+  const AthleteSettingsWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteSettingsWidgetState createState() => _AthleteSettingsWidgetState();
@@ -32,10 +32,10 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
           leading: MyIcon.athlete,
           title: const Text('Name'),
           subtitle: Text(
-            widget.athlete.firstName + ' ' + widget.athlete.lastName,
+            widget.athlete!.firstName! + ' ' + widget.athlete!.lastName!,
           ),
         ),
-        stravaTile(athlete: widget.athlete),
+        stravaTile(athlete: widget.athlete!),
         ListTile(
           leading: MyIcon.activities,
           title: const Text('Number of activities'),
@@ -52,7 +52,7 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
                 onPressed: () => decreaseDownloadInterval(),
               ),
               const Spacer(),
-              Text(widget.athlete.downloadInterval.toString()),
+              Text(widget.athlete!.downloadInterval.toString()),
               const Spacer(),
               MyButton.save(
                 child: const Text('+ 7 days'),
@@ -76,7 +76,7 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
                 onPressed: () => decreaseRecordAggregationCount(),
               ),
               const Spacer(),
-              Text(widget.athlete.recordAggregationCount.toString()),
+              Text(widget.athlete!.recordAggregationCount.toString()),
               const Spacer(),
               MyButton.save(
                 child: const Text('* 2'),
@@ -95,7 +95,7 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
   }
 
   Future<void> getData() async {
-    activities = await widget.athlete.activities;
+    activities = await widget.athlete!.activities;
 
     setState(() {
       numberOfActivitiesString = activities.length.toString();
@@ -103,49 +103,52 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
   }
 
   Future<void> increaseDownloadInterval() async {
-    widget.athlete.downloadInterval =
-        (widget.athlete.downloadInterval ?? 21) + 7;
-    await widget.athlete.save();
+    widget.athlete!.downloadInterval =
+        (widget.athlete!.downloadInterval ?? 21) + 7;
+    await widget.athlete!.save();
     setState(() {});
   }
 
   Future<void> decreaseDownloadInterval() async {
-    widget.athlete.downloadInterval =
-        (widget.athlete.downloadInterval ?? 21) - 7;
-    if (widget.athlete.downloadInterval < 7)
-      widget.athlete.downloadInterval = 7;
-    await widget.athlete.save();
+    widget.athlete!.downloadInterval =
+        (widget.athlete!.downloadInterval ?? 21) - 7;
+    if (widget.athlete!.downloadInterval! < 7) {
+      widget.athlete!.downloadInterval = 7;
+    }
+    await widget.athlete!.save();
     setState(() {});
   }
 
   Future<void> increaseRecordAggregationCount() async {
-    widget.athlete.recordAggregationCount =
-        (widget.athlete.recordAggregationCount ?? 16) * 2;
-    await widget.athlete.save();
+    widget.athlete!.recordAggregationCount =
+        (widget.athlete!.recordAggregationCount ?? 16) * 2;
+    await widget.athlete!.save();
     setState(() {});
   }
 
   Future<void> decreaseRecordAggregationCount() async {
-    widget.athlete.recordAggregationCount =
-        ((widget.athlete.recordAggregationCount ?? 16) / 2).round();
-    if (widget.athlete.recordAggregationCount < 1)
-      widget.athlete.recordAggregationCount = 1;
-    await widget.athlete.save();
+    widget.athlete!.recordAggregationCount =
+        ((widget.athlete!.recordAggregationCount ?? 16) / 2).round();
+    if (widget.athlete!.recordAggregationCount! < 1) {
+      widget.athlete!.recordAggregationCount = 1;
+    }
+    await widget.athlete!.save();
     setState(() {});
   }
 
-  Widget stravaTile({Athlete athlete}) {
-    if (athlete.id != null)
+  Widget stravaTile({required Athlete athlete}) {
+    if (athlete.id != null) {
       return ListTile(
         leading: MyIcon.stravaDownload,
         title: const Text('Strava ID / Username / Location'),
-        subtitle: Text((athlete.stravaId.toString() ?? '') +
+        subtitle: Text((athlete.stravaId.toString()) +
             ' / ' +
             (athlete.stravaUsername ?? '') +
             ' / ' +
             (athlete.geoState ?? '')),
       );
-    else
-      return Container(width: 0, height: 0);
+    } else {
+      return const SizedBox(width: 0, height: 0);
+    }
   }
 }

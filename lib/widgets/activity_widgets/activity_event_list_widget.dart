@@ -5,19 +5,19 @@ import '/models/athlete.dart';
 import '/models/event.dart';
 import '/models/record_list.dart';
 import '/screens/show_event_screen.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';
 
 class ActivityEventListWidget extends StatefulWidget {
-  const ActivityEventListWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivityEventListWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityEventListWidgetState createState() =>
@@ -28,7 +28,7 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
   RecordList<Event> events = RecordList<Event>(<Event>[]);
   bool loading = true;
   int offset = 0;
-  int rows;
+  late int rows;
 
   @override
   void initState() {
@@ -40,7 +40,7 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
   Widget build(BuildContext context) {
     if (events.isNotEmpty) {
       rows = (events.length < 8) ? events.length : 8;
-      final DateTime startingTime = events.first.timeStamp;
+      final DateTime? startingTime = events.first.timeStamp;
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SingleChildScrollView(
@@ -60,7 +60,7 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                 ],
                 rows: events.sublist(offset, offset + rows).map((Event event) {
                   return DataRow(
-                    key: ValueKey<int>(event.id),
+                    key: ValueKey<int?>(event.id),
                     cells: <DataCell>[
                       DataCell(PQText(
                         value: event.timeStamp,
@@ -69,7 +69,7 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                       )),
                       DataCell(PQText(
                         value:
-                            event.timeStamp.difference(startingTime).inSeconds,
+                            event.timeStamp!.difference(startingTime!).inSeconds,
                         pq: PQ.duration,
                       )),
                       DataCell(PQText(value: event.eventType, pq: PQ.text)),
@@ -198,7 +198,7 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     events = RecordList<Event>(await activity.events);
     setState(() {});
   }

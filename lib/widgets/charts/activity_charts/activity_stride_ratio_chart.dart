@@ -12,26 +12,26 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class ActivityStrideRatioChart extends StatelessWidget {
-  const ActivityStrideRatioChart({
+  const ActivityStrideRatioChart({Key? key,
     this.records,
-    @required this.activity,
-    @required this.athlete,
-  });
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
+  final RecordList<Event>? records;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   Widget build(BuildContext context) {
-    final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
+    final List<DoublePlotPoint> smoothedRecords = records!.toDoubleDataPoints(
       attribute: LapDoubleAttr.strideRatio,
-      amount: athlete.recordAggregationCount,
+      amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<DoublePlotPoint, int>> data =
-        <Series<DoublePlotPoint, int>>[
-      Series<DoublePlotPoint, int>(
+    final List<Series<DoublePlotPoint, int?>> data =
+        <Series<DoublePlotPoint, int?>>[
+      Series<DoublePlotPoint, int?>(
         id: 'Stride Ratio',
         colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -41,10 +41,10 @@ class ActivityStrideRatioChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: activity.laps,
+      future: activity!.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data!;
           return AspectRatio(
             aspectRatio:
                 MediaQuery.of(context).orientation == Orientation.portrait
@@ -52,7 +52,7 @@ class ActivityStrideRatioChart extends StatelessWidget {
                     : 2,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.distance,
+              maxDomain: records!.last.distance!,
               laps: laps,
               domainTitle: 'Stride Ratio (multiple)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(
@@ -63,8 +63,9 @@ class ActivityStrideRatioChart extends StatelessWidget {
                   const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
-        } else
+        } else {
           return GraphUtils.loadingContainer;
+        }
       },
     );
   }

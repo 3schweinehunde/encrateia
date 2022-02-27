@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '/models/event.dart';
 import '/models/interval.dart' as encrateia;
 import '/models/record_list.dart';
-import '/utils/PQText.dart';
+import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;
@@ -11,9 +11,9 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 
 class IntervalLegSpringStiffnessWidget extends StatefulWidget {
-  const IntervalLegSpringStiffnessWidget({this.interval});
+  const IntervalLegSpringStiffnessWidget({Key? key, this.interval}) : super(key: key);
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalLegSpringStiffnessWidgetState createState() =>
@@ -44,7 +44,7 @@ class _IntervalLegSpringStiffnessWidgetState
     if (records.isNotEmpty) {
       final List<Event> legSpringStiffnessRecords = records
           .where((Event value) =>
-              value.legSpringStiffness != null && value.legSpringStiffness > 0)
+              value.legSpringStiffness != null && value.legSpringStiffness! > 0)
           .toList();
 
       if (legSpringStiffnessRecords.isNotEmpty) {
@@ -57,8 +57,8 @@ class _IntervalLegSpringStiffnessWidgetState
                 key: widgetKey,
                 child: LapLegSpringStiffnessChart(
                   records: RecordList<Event>(legSpringStiffnessRecords),
-                  minimum: widget.interval.avgLegSpringStiffness / 1.20,
-                  maximum: widget.interval.avgLegSpringStiffness * 1.20,
+                  minimum: widget.interval!.avgLegSpringStiffness! / 1.20,
+                  maximum: widget.interval!.avgLegSpringStiffness! * 1.20,
                 ),
               ),
               const Text('Only records where leg spring stiffness > 0 kN/m '
@@ -79,7 +79,7 @@ class _IntervalLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.interval.avgLegSpringStiffness,
+                  value: widget.interval!.avgLegSpringStiffness,
                   pq: PQ.legSpringStiffness,
                 ),
                 subtitle: const Text('average leg spring stiffness'),
@@ -87,7 +87,7 @@ class _IntervalLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.interval.sdevLegSpringStiffness,
+                  value: widget.interval!.sdevLegSpringStiffness,
                   pq: PQ.legSpringStiffness,
                 ),
                 subtitle: const Text('standard leg spring stiffness'),
@@ -116,7 +116,7 @@ class _IntervalLegSpringStiffnessWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
+    records = RecordList<Event>(await widget.interval!.records);
     setState(() => loading = false);
   }
 }

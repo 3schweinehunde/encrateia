@@ -8,20 +8,20 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class IntervalTagWidget extends StatefulWidget {
-  const IntervalTagWidget({
-    @required this.interval,
-    @required this.athlete,
-  });
+  const IntervalTagWidget({Key? key,
+    required this.interval,
+    required this.athlete,
+  }) : super(key: key);
 
-  final encrateia.Interval interval;
-  final Athlete athlete;
+  final encrateia.Interval? interval;
+  final Athlete? athlete;
 
   @override
   _IntervalTagWidgetState createState() => _IntervalTagWidgetState();
 }
 
 class _IntervalTagWidgetState extends State<IntervalTagWidget> {
-  List<TagGroup> tagGroups;
+  List<TagGroup>? tagGroups;
 
   @override
   void initState() {
@@ -37,11 +37,11 @@ class _IntervalTagWidgetState extends State<IntervalTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (tagGroups == null)
+    if (tagGroups == null) {
       return const Center(
         child: Text('Loading ...'),
       );
-    else
+    } else {
       return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount:
@@ -51,42 +51,42 @@ class _IntervalTagWidgetState extends State<IntervalTagWidget> {
             mainAxisSpacing: 3,
             crossAxisSpacing: 3,
             childAspectRatio: 3),
-        itemCount: tagGroups.length,
+        itemCount: tagGroups!.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups[index].name + '\n'),
+            title: Text(tagGroups![index].name! + '\n'),
             subtitle: Wrap(
               spacing: 15,
               children: <Widget>[
-                for (Tag tag in tagGroups[index].cachedTags)
+                for (Tag tag in tagGroups![index].cachedTags)
                   InputChip(
                     isEnabled: tag.system != true,
                     label: Text(
-                      tag.name,
+                      tag.name!,
                       style: TextStyle(
                         color: MyColor.textColor(
                           selected: tag.selected,
-                          backgroundColor: Color(tag.color),
+                          backgroundColor: Color(tag.color!),
                         ),
                       ),
                     ),
                     avatar: CircleAvatar(
-                      backgroundColor: Color(tag.color),
+                      backgroundColor: Color(tag.color!),
                     ),
                     onSelected: (bool selected) {
                       setState(() {
                         if (selected) {
                           IntervalTagging.createBy(
-                              interval: widget.interval, tag: tag);
+                              interval: widget.interval!, tag: tag);
                         } else {
                           IntervalTagging.deleteBy(
-                              interval: widget.interval, tag: tag);
+                              interval: widget.interval!, tag: tag);
                         }
                         tag.selected = selected;
                       });
                     },
                     selected: tag.selected,
-                    selectedColor: Color(tag.color),
+                    selectedColor: Color(tag.color!),
                     backgroundColor: MyColor.white,
                     elevation: 3,
                     padding: const EdgeInsets.all(10),
@@ -96,12 +96,13 @@ class _IntervalTagWidgetState extends State<IntervalTagWidget> {
           ),
         ),
       );
+    }
   }
 
   Future<void> getData() async {
     tagGroups = await TagGroup.includingIntervalTaggings(
-      athlete: widget.athlete,
-      interval: widget.interval,
+      athlete: widget.athlete!,
+      interval: widget.interval!,
     );
     setState(() {});
   }

@@ -1,8 +1,8 @@
 class IntPlotPoint {
   IntPlotPoint({this.domain, this.measure});
 
-  int domain;
-  int measure;
+  int? domain;
+  int? measure;
 
   @override
   String toString() => '< IntPlotPoint | $domain | $measure >';
@@ -11,8 +11,8 @@ class IntPlotPoint {
 class DoublePlotPoint {
   DoublePlotPoint({this.domain, this.measure});
 
-  int domain;
-  double measure;
+  int? domain;
+  double? measure;
 
   @override
   String toString() => '< DoublePlotPoint | $domain | $measure >';
@@ -21,8 +21,8 @@ class DoublePlotPoint {
 class EnergyPoint {
   EnergyPoint({this.energy, this.duration});
 
-  int energy;
-  int duration;
+  int? energy;
+  int? duration;
 
   @override
   String toString() => '< EnergyPlotPoint | $energy | $duration >';
