@@ -50,7 +50,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
               value.speed! >= 1)
           .toList();
 
-      if (ecorRecords.isNotEmpty && ecorRecords) {
+      if (ecorRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(

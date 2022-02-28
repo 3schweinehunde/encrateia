@@ -24,23 +24,23 @@ class Tag {
   }
   Tag._fromDb(this._db);
 
-  DbTag? _db;
+  late DbTag _db;
   bool selected = false;
 
-  int? get id => _db?.id;
-  int? get tagGroupsId => _db!.tagGroupsId;
-  String? get name => _db!.name;
-  bool? get system => _db!.system;
-  int? get color => _db!.color;
+  int? get id => _db.id;
+  int? get tagGroupsId => _db.tagGroupsId;
+  String? get name => _db.name;
+  bool? get system => _db.system;
+  int? get color => _db.color;
 
-  set color(int? value) => _db!.color = value;
-  set name(String? value) => _db!.name = value;
+  set color(int? value) => _db.color = value;
+  set name(String? value) => _db.name = value;
 
   @override
   String toString() => '< Tag | $name >';
 
-  Future<BoolResult> delete() async => await _db!.delete();
-  Future<int?> save() async => await _db!.save();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int?> save() async => await _db.save();
 
   static Future<List<Tag>> allByActivity({required Activity activity}) async {
     final List<DbActivityTagging> dbActivityTaggings = await DbActivityTagging()
