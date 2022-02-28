@@ -106,53 +106,53 @@ class Event {
       ..distance = dataMessage.get('total_distance') as double?;
   }
 
-  DbEvent? _db;
+  late DbEvent _db;
   Activity? activity;
   Lap? lap;
   int? index;
 
-  int? get id => _db?.id;
-  DateTime? get timeStamp => _db!.timeStamp;
-  String? get event => _db!.event;
-  String? get eventType => _db!.eventType;
-  String? get timerTrigger => _db!.timerTrigger;
-  double? get altitude => _db!.altitude;
-  double? get cadence => _db!.cadence;
-  double? get data => _db!.data;
-  double? get distance => _db!.distance;
-  double? get fractionalCadence => _db!.fractionalCadence;
-  double? get groundTime => _db!.groundTime;
-  double? get legSpringStiffness => _db!.legSpringStiffness;
-  double? get positionLat => _db!.positionLat;
-  double? get positionLong => _db!.positionLong;
-  double? get speed => _db!.speed;
-  double? get strydCadence => _db!.strydCadence;
-  double? get verticalOscillation => _db!.verticalOscillation;
-  int? get eventGroup => _db!.eventGroup;
-  int? get formPower => _db!.formPower;
-  int? get heartRate => _db!.heartRate;
-  int? get power => _db!.power;
+  int? get id => _db.id;
+  DateTime? get timeStamp => _db.timeStamp;
+  String? get event => _db.event;
+  String? get eventType => _db.eventType;
+  String? get timerTrigger => _db.timerTrigger;
+  double? get altitude => _db.altitude;
+  double? get cadence => _db.cadence;
+  double? get data => _db.data;
+  double? get distance => _db.distance;
+  double? get fractionalCadence => _db.fractionalCadence;
+  double? get groundTime => _db.groundTime;
+  double? get legSpringStiffness => _db.legSpringStiffness;
+  double? get positionLat => _db.positionLat;
+  double? get positionLong => _db.positionLong;
+  double? get speed => _db.speed;
+  double? get strydCadence => _db.strydCadence;
+  double? get verticalOscillation => _db.verticalOscillation;
+  int? get eventGroup => _db.eventGroup;
+  int? get formPower => _db.formPower;
+  int? get heartRate => _db.heartRate;
+  int? get power => _db.power;
 
-  set event(String? value) => _db!.event = value;
-  set eventType(String? value) => _db!.eventType = value;
-  set eventGroup(int? value) => _db!.eventGroup = value;
-  set timerTrigger(String? value) => _db!.timerTrigger = value;
-  set timeStamp(DateTime? value) => _db!.timeStamp = value;
-  set positionLat(double? value) => _db!.positionLat = value;
-  set positionLong(double? value) => _db!.positionLong = value;
-  set distance(double? value) => _db!.distance = value;
-  set altitude(double? value) => _db!.altitude = value;
-  set speed(double? value) => _db!.speed = value;
-  set heartRate(int? value) => _db!.heartRate = value;
-  set cadence(double? value) => _db!.cadence = value;
-  set fractionalCadence(double? value) => _db!.fractionalCadence = value;
-  set power(int? value) => _db!.power = value;
-  set strydCadence(double? value) => _db!.strydCadence = value;
-  set groundTime(double? value) => _db!.groundTime = value;
-  set verticalOscillation(double? value) => _db!.verticalOscillation = value;
-  set formPower(int? value) => _db!.formPower = value;
-  set legSpringStiffness(double? value) => _db!.legSpringStiffness = value;
-  set data(double? value) => _db!.data = value;
+  set event(String? value) => _db.event = value;
+  set eventType(String? value) => _db.eventType = value;
+  set eventGroup(int? value) => _db.eventGroup = value;
+  set timerTrigger(String? value) => _db.timerTrigger = value;
+  set timeStamp(DateTime? value) => _db.timeStamp = value;
+  set positionLat(double? value) => _db.positionLat = value;
+  set positionLong(double? value) => _db.positionLong = value;
+  set distance(double? value) => _db.distance = value;
+  set altitude(double? value) => _db.altitude = value;
+  set speed(double? value) => _db.speed = value;
+  set heartRate(int? value) => _db.heartRate = value;
+  set cadence(double? value) => _db.cadence = value;
+  set fractionalCadence(double? value) => _db.fractionalCadence = value;
+  set power(int? value) => _db.power = value;
+  set strydCadence(double? value) => _db.strydCadence = value;
+  set groundTime(double? value) => _db.groundTime = value;
+  set verticalOscillation(double? value) => _db.verticalOscillation = value;
+  set formPower(int? value) => _db.formPower = value;
+  set legSpringStiffness(double? value) => _db.legSpringStiffness = value;
+  set data(double? value) => _db.data = value;
 
   @override
   String toString() => '< Event | $event | $index >';
@@ -177,13 +177,11 @@ class Event {
   }
 
   static Future<BoolCommitResult> upsertAll(List<Event> events) async {
-    final List<DbEvent?> dbEvents = events
-        .where((Event event) => event._db != null)
-        .map((Event event) => event._db)
-        .toList();
+    final List<DbEvent> dbEvents =
+        events.map((Event event) => event._db).toList();
     return await DbEvent().upsertAll(dbEvents);
   }
 
   static Event exDb(DbEvent dbEvent) => Event._fromDb(dbEvent);
-  Future<int?> save() async => await _db!.save();
+  Future<int?> save() async => await _db.save();
 }

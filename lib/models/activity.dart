@@ -285,7 +285,8 @@ class Activity {
 
   static Future<void> importFromLocalDirectory({Athlete? athlete}) async {
     if (Platform.isAndroid) {
-      final List<Directory> directories = await (getExternalStorageDirectories() as Future<List<Directory>>);
+      final List<Directory> directories =
+          await (getExternalStorageDirectories() as Future<List<Directory>>);
       final Directory localDir = directories[0];
       final Directory appDocDir = await getApplicationDocumentsDirectory();
 
@@ -295,7 +296,8 @@ class Activity {
       );
 
       await for (final FileSystemEntity entity in entityStream) {
-        final Activity activity = Activity.fromLocalDirectory(athlete: athlete!);
+        final Activity activity =
+            Activity.fromLocalDirectory(athlete: athlete!);
         // ignore: avoid_slow_async_io
         final bool isFile = await FileSystemEntity.isFile(entity.path);
         if (isFile == true && entity.path.toLowerCase().endsWith('.fit')) {
@@ -314,7 +316,8 @@ class Activity {
       );
 
       await for (final FileSystemEntity entity in entityStream) {
-        final Activity activity = Activity.fromLocalDirectory(athlete: athlete!);
+        final Activity activity =
+            Activity.fromLocalDirectory(athlete: athlete!);
         // ignore: avoid_slow_async_io
         final bool isFile = await FileSystemEntity.isFile(entity.path);
         if (isFile == true && entity.path.endsWith('.fit')) {
@@ -578,7 +581,8 @@ class Activity {
             ..timeStamp =
                 dateTimeFromStrava(dataMessage.get('timestamp') as double)
             ..startTime = startTime
-            ..startPositionLat = dataMessage.get('start_position_lat') as double?
+            ..startPositionLat =
+                dataMessage.get('start_position_lat') as double?
             ..startPositionLong =
                 dataMessage.get('start_position_long') as double?
             ..totalElapsedTime =
@@ -603,7 +607,8 @@ class Activity {
             ..maxSpeed = dataMessage.get('max_speed') == 65.535
                 ? dataMessage.get('enhanced_max_speed') as double?
                 : dataMessage.get('max_speed') as double?
-            ..totalAscent = (dataMessage.get('total_ascent') as double?)?.round()
+            ..totalAscent =
+                (dataMessage.get('total_ascent') as double?)?.round()
             ..totalDescent =
                 (dataMessage.get('total_descent') as double?)?.round()
             ..maxRunningCadence =
@@ -646,7 +651,8 @@ class Activity {
 
         case 'activity':
           _db
-            ..numSessions = (dataMessage.get('num_sessions') as double?)?.round()
+            ..numSessions =
+                (dataMessage.get('num_sessions') as double?)?.round()
             ..localTimestamp = dateTimeFromStrava(
                 dataMessage.get('local_timestamp') as double);
           await save();
@@ -656,7 +662,10 @@ class Activity {
           debugPrint('Messages of type ' +
               dataMessage.definitionMessage!.globalMessageName! +
               ' are not implemented yet.');
-          debugPrint(dataMessage.values.map((Value v) => v.fieldName).toList().toString());
+          debugPrint(dataMessage.values
+              .map((Value v) => v.fieldName)
+              .toList()
+              .toString());
         // Use this debugger to implement additional message types!
         // debugger();
       }
@@ -772,7 +781,8 @@ class Activity {
       );
     }
 
-    final HeartRateZone heartRateZone = await (this.heartRateZone as Future<HeartRateZone>);
+    final HeartRateZone heartRateZone =
+        await (this.heartRateZone as Future<HeartRateZone>);
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete!,
@@ -793,7 +803,8 @@ class Activity {
   }
 
   Future<List<BarZone>> powerZoneCounts() async {
-    final PowerZoneSchema powerZoneSchema = await (this.powerZoneSchema as Future<PowerZoneSchema>);
+    final PowerZoneSchema powerZoneSchema =
+        await (this.powerZoneSchema as Future<PowerZoneSchema>);
     final List<Event> records = await this.records;
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();
@@ -857,5 +868,5 @@ class Activity {
   Future<BoolResult> deleteEvents() async => await _db.getDbEvents()!.delete();
   Future<BoolResult> deleteLaps() async => await _db.getDbLaps()!.delete();
 
-  static Activity exDb(DbActivity? db) => Activity._fromDb(db);
+  static Activity exDb(DbActivity? db) => Activity._fromDb(db!);
 }
