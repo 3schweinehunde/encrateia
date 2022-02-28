@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import '/models/event.dart';
 import '/models/lap.dart';
 import '/models/record_list.dart';
-import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;
 import '/utils/my_button.dart';
+import '/utils/pg_text.dart';
 import '/widgets/charts/lap_charts/lap_altitude_chart.dart';
 
 class LapAltitudeWidget extends StatefulWidget {
@@ -56,12 +56,12 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
                 child: LapAltitudeChart(
                   records: RecordList<Event>(altitudeRecords),
                   minimum: altitudeRecords
-                      .map((Event record) => record.altitude)
-                      .reduce(min)!
+                      .map((Event record) => record.altitude ?? 0)
+                      .reduce(min)
                       .toDouble(),
                   maximum: altitudeRecords
-                      .map((Event record) => record.altitude)
-                      .reduce(max)!
+                      .map((Event record) => record.altitude ?? 0)
+                      .reduce(max)
                       .toDouble(),
                 ),
               ),

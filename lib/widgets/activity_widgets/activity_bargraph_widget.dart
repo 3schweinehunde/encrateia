@@ -10,12 +10,13 @@ import '/models/heart_rate_zone_schema.dart';
 import '/models/lap.dart';
 import '/models/power_zone.dart';
 import '/models/power_zone_schema.dart';
-import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/my_bar_chart.dart';
+import '/utils/pg_text.dart';
 
 class ActivityBarGraphWidget extends StatefulWidget {
-  const ActivityBarGraphWidget({Key? key,
+  const ActivityBarGraphWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -156,7 +157,8 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                 MyBarChart(
                   height: 20,
                   value: widget.activity!.avgSpeed!,
-                  maximum: _laps.map((Lap lap) => lap.avgSpeed).reduce(max),
+                  maximum:
+                      _laps.map((Lap lap) => lap.avgSpeed ?? 0).reduce(max),
                 ),
                 PQText(value: widget.activity!.avgSpeed, pq: PQ.paceFromSpeed),
               ]),
@@ -166,7 +168,8 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
                   MyBarChart(
                     height: 20,
                     value: lap.avgSpeed!,
-                    maximum: _laps.map((Lap lap) => lap.avgSpeed).reduce(max),
+                    maximum:
+                        _laps.map((Lap lap) => lap.avgSpeed ?? 0).reduce(max),
                   ),
                   PQText(value: lap.avgSpeed, pq: PQ.paceFromSpeed),
                 ]),
