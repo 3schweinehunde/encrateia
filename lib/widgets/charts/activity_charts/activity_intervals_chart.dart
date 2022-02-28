@@ -15,7 +15,8 @@ import '/utils/graph_utils.dart';
 import '/utils/my_button.dart';
 
 class ActivityIntervalsChart extends StatefulWidget {
-  const ActivityIntervalsChart({Key? key,
+  const ActivityIntervalsChart({
+    Key? key,
     this.records,
     required this.activity,
     required this.athlete,
@@ -112,7 +113,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                 behaviors: <ChartBehavior<num>>[
                       PanAndZoomBehavior<num>(),
                       RangeAnnotation<num>(
-                          GraphUtils.rangeAnnotations(laps: laps) as List<AnnotationSegment<Object>>),
+                          GraphUtils.rangeAnnotations(laps: laps)),
                       RangeAnnotation<num>(
                         <RangeAnnotationSegment<int>>[
                           if (interval.firstDistance! > 0 &&
@@ -206,7 +207,8 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                           child: const Text('Select as start'),
                           onPressed: () {
                             if (interval.lastRecordId == 0 ||
-                                (selectedRecord!.id! < interval.lastRecordId!)) {
+                                (selectedRecord!.id! <
+                                    interval.lastRecordId!)) {
                               interval.firstRecordId = selectedRecord!.id;
                               interval.firstDistance = selectedRecord!.distance;
                               setState(() {});

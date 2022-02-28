@@ -5,15 +5,16 @@ import '/models/athlete.dart';
 import '/models/event.dart';
 import '/models/record_list.dart';
 import '/models/weight.dart';
-import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/image_utils.dart' as image_utils;
 import '/utils/my_button.dart';
+import '/utils/pg_text.dart';
 import '/widgets/charts/activity_charts/activity_ecor_chart.dart';
 
 class ActivityEcorWidget extends StatefulWidget {
-  const ActivityEcorWidget({Key? key,
+  const ActivityEcorWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -49,7 +50,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
               value.speed! >= 1)
           .toList();
 
-      if (ecorRecords.isNotEmpty && ecorRecords != null) {
+      if (ecorRecords.isNotEmpty && ecorRecords) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(

@@ -58,10 +58,6 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
         return const Center(
           child: Text('No ecor data available.'),
         );
-      } else if (ecorActivities.first.weight == null) {
-        return const Center(
-          child: Text('Please enter your (historical) weight in the settings.'),
-        );
       } else {
         return ListTileTheme(
           iconColor: Colors.orange,
@@ -80,7 +76,8 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String? value) {
+                    items:
+                        sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value!),

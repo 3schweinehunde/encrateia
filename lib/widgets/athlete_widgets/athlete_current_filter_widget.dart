@@ -6,7 +6,8 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class AthleteCurrentFilterWidget extends StatelessWidget {
-  const AthleteCurrentFilterWidget({Key? key,
+  const AthleteCurrentFilterWidget({
+    Key? key,
     required this.athlete,
     required this.tagGroups,
   }) : super(key: key);
@@ -18,7 +19,7 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool empty;
 
-    if (tagGroups != null && athlete!.filters.isNotEmpty) {
+    if (athlete!.filters.isNotEmpty) {
       final List<Widget> widgets = <Widget>[];
       widgets.add(const Text('Current Filter: '));
       for (final TagGroup tagGroup in tagGroups) {

@@ -8,7 +8,8 @@ import '/models/power_zone.dart';
 import 'bar_chart_painter.dart';
 
 class MyBarChart extends StatelessWidget {
-  MyBarChart({Key? key,
+  MyBarChart({
+    Key? key,
     int? width,
     int? height,
     required num value,
@@ -34,7 +35,8 @@ class MyBarChart extends StatelessWidget {
           powerZones: powerZones,
           heartRateZones: heartRateZones,
         ),
-        _showPercentage = showPercentage, super(key: key);
+        _showPercentage = showPercentage,
+        super(key: key);
 
   MyBarChart.visualizeDistributions(
       {Key? key, int? width, int? height, required List<BarZone> distributions})
@@ -44,7 +46,8 @@ class MyBarChart extends StatelessWidget {
         _maximum = distributions.last.upper!.toDouble(),
         _value = distributions.last.upper!.toDouble(),
         _barZones = distributions,
-        _showPercentage = true, super(key: key);
+        _showPercentage = true,
+        super(key: key);
 
   final double _width;
   final double _height;
@@ -56,7 +59,7 @@ class MyBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_barZones.isEmpty && _value == null || _value <= 0) {
+    if (_barZones.isEmpty || _value <= 0) {
       return const Text('no data');
     } else {
       return SizedBox(

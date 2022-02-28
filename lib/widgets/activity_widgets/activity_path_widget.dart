@@ -9,7 +9,8 @@ import '/utils/my_button.dart';
 import '/utils/my_path.dart';
 
 class ActivityPathWidget extends StatefulWidget {
-  const ActivityPathWidget({Key? key,
+  const ActivityPathWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -41,7 +42,7 @@ class _ActivityPathWidgetState extends State<ActivityPathWidget> {
               value.positionLong != null && value.positionLat != null)
           .toList();
 
-      if (geoRecords.isNotEmpty && geoRecords != null) {
+      if (geoRecords.isNotEmpty) {
         return Column(
           children: <Widget>[
             RepaintBoundary(
