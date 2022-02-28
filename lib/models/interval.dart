@@ -22,7 +22,7 @@ class Interval {
 
   Interval._fromDb(this._db);
 
-  DbInterval? _db;
+  DbInterval _db;
   Activity? activity;
   List<Event> _records = <Event>[];
   List<Tag> cachedTags = <Tag>[];
@@ -35,72 +35,72 @@ class Interval {
   HeartRateZone? _heartRateZone;
   HeartRateZoneSchema? _heartRateZoneSchema;
 
-  int? get id => _db?.id;
-  DateTime? get timeStamp => _db!.timeStamp;
+  int? get id => _db.id;
+  DateTime? get timeStamp => _db.timeStamp;
 
-  double? get avgCadence => _db!.avgCadence;
-  double? get avgFormPower => _db!.avgFormPower;
-  double? get avgGroundTime => _db!.avgGroundTime;
-  double? get avgLegSpringStiffness => _db!.avgLegSpringStiffness;
-  double? get avgPower => _db!.avgPower;
-  double? get avgSpeed => _db!.avgSpeed;
-  double? get avgSpeedByMeasurements => _db!.avgSpeedByMeasurements;
-  double? get avgSpeedByDistance => _db!.avgSpeedByDistance;
-  double? get avgSpeedBySpeed => _db!.avgSpeedBySpeed;
-  double? get avgStrydCadence => _db!.avgStrydCadence;
-  double? get avgVerticalOscillation => _db!.avgVerticalOscillation;
-  double? get cp => _db!.cp;
-  double? get ftp => _db!.ftp;
-  double? get maxCadence => _db!.maxCadence;
-  double? get maxGroundTime => _db!.maxGroundTime;
-  double? get maxLegSpringStiffness => _db!.maxLegSpringStiffness;
-  double? get maxSpeed => _db!.maxSpeed;
-  double? get maxStrydCadence => _db!.maxStrydCadence;
-  double? get maxVerticalOscillation => _db!.maxVerticalOscillation;
-  double? get minCadence => _db!.minCadence;
-  double? get minGroundTime => _db!.minGroundTime;
-  double? get minLegSpringStiffness => _db!.minLegSpringStiffness;
-  double? get minSpeed => _db!.minSpeed;
-  double? get minStrydCadence => _db!.minStrydCadence;
-  double? get minVerticalOscillation => _db!.minVerticalOscillation;
-  double? get sdevCadence => _db!.sdevCadence;
-  double? get sdevFormPower => _db!.sdevFormPower;
-  double? get sdevGroundTime => _db!.sdevGroundTime;
-  double? get sdevHeartRate => _db!.sdevHeartRate;
-  double? get sdevLegSpringStiffness => _db!.sdevLegSpringStiffness;
-  double? get sdevPace => _db!.sdevPace;
-  double? get sdevPower => _db!.sdevPower;
-  double? get sdevSpeed => _db!.sdevSpeed;
-  double? get sdevStrydCadence => _db!.sdevStrydCadence;
-  double? get sdevVerticalOscillation => _db!.sdevVerticalOscillation;
-  int? get activitiesId => _db!.activitiesId;
-  int? get athletesId => _db!.athletesId;
-  int? get firstRecordId => _db!.firstRecordId;
-  int? get lastRecordId => _db!.lastRecordId;
-  int? get avgHeartRate => _db!.avgHeartRate;
-  int? get distance => _db!.distance;
-  Duration get duration => Duration(seconds: _db!.duration ?? 0);
-  int? get maxFormPower => _db!.maxFormPower;
-  int? get maxHeartRate => _db!.maxHeartRate;
-  int? get maxPower => _db!.maxPower;
-  int? get minFormPower => _db!.minFormPower;
-  int? get minHeartRate => _db!.minHeartRate;
-  int? get minPower => _db!.minPower;
-  int? get movingTime => _db!.movingTime;
-  int? get totalAscent => _db!.totalAscent;
-  int? get totalDescent => _db!.totalDescent;
+  double? get avgCadence => _db.avgCadence;
+  double? get avgFormPower => _db.avgFormPower;
+  double? get avgGroundTime => _db.avgGroundTime;
+  double? get avgLegSpringStiffness => _db.avgLegSpringStiffness;
+  double? get avgPower => _db.avgPower;
+  double? get avgSpeed => _db.avgSpeed;
+  double? get avgSpeedByMeasurements => _db.avgSpeedByMeasurements;
+  double? get avgSpeedByDistance => _db.avgSpeedByDistance;
+  double? get avgSpeedBySpeed => _db.avgSpeedBySpeed;
+  double? get avgStrydCadence => _db.avgStrydCadence;
+  double? get avgVerticalOscillation => _db.avgVerticalOscillation;
+  double? get cp => _db.cp;
+  double? get ftp => _db.ftp;
+  double? get maxCadence => _db.maxCadence;
+  double? get maxGroundTime => _db.maxGroundTime;
+  double? get maxLegSpringStiffness => _db.maxLegSpringStiffness;
+  double? get maxSpeed => _db.maxSpeed;
+  double? get maxStrydCadence => _db.maxStrydCadence;
+  double? get maxVerticalOscillation => _db.maxVerticalOscillation;
+  double? get minCadence => _db.minCadence;
+  double? get minGroundTime => _db.minGroundTime;
+  double? get minLegSpringStiffness => _db.minLegSpringStiffness;
+  double? get minSpeed => _db.minSpeed;
+  double? get minStrydCadence => _db.minStrydCadence;
+  double? get minVerticalOscillation => _db.minVerticalOscillation;
+  double? get sdevCadence => _db.sdevCadence;
+  double? get sdevFormPower => _db.sdevFormPower;
+  double? get sdevGroundTime => _db.sdevGroundTime;
+  double? get sdevHeartRate => _db.sdevHeartRate;
+  double? get sdevLegSpringStiffness => _db.sdevLegSpringStiffness;
+  double? get sdevPace => _db.sdevPace;
+  double? get sdevPower => _db.sdevPower;
+  double? get sdevSpeed => _db.sdevSpeed;
+  double? get sdevStrydCadence => _db.sdevStrydCadence;
+  double? get sdevVerticalOscillation => _db.sdevVerticalOscillation;
+  int? get activitiesId => _db.activitiesId;
+  int? get athletesId => _db.athletesId;
+  int? get firstRecordId => _db.firstRecordId;
+  int? get lastRecordId => _db.lastRecordId;
+  int? get avgHeartRate => _db.avgHeartRate;
+  int? get distance => _db.distance;
+  Duration get duration => Duration(seconds: _db.duration ?? 0);
+  int? get maxFormPower => _db.maxFormPower;
+  int? get maxHeartRate => _db.maxHeartRate;
+  int? get maxPower => _db.maxPower;
+  int? get minFormPower => _db.minFormPower;
+  int? get minHeartRate => _db.minHeartRate;
+  int? get minPower => _db.minPower;
+  int? get movingTime => _db.movingTime;
+  int? get totalAscent => _db.totalAscent;
+  int? get totalDescent => _db.totalDescent;
 
-  set timeStamp(DateTime? value) => _db!.timeStamp = value;
-  set firstRecordId(int? value) => _db!.firstRecordId = value;
-  set lastRecordId(int? value) => _db!.lastRecordId = value;
-  set athletesId(int? value) => _db!.athletesId = value;
-  set activitiesId(int? value) => _db!.activitiesId = value;
-  set distance(int? value) => _db!.distance = value;
-  set duration(Duration value) => _db!.duration = value.inSeconds;
-  set ftp(double? value) => _db!.ftp = value;
+  set timeStamp(DateTime? value) => _db.timeStamp = value;
+  set firstRecordId(int? value) => _db.firstRecordId = value;
+  set lastRecordId(int? value) => _db.lastRecordId = value;
+  set athletesId(int? value) => _db.athletesId = value;
+  set activitiesId(int? value) => _db.activitiesId = value;
+  set distance(int? value) => _db.distance = value;
+  set duration(Duration value) => _db.duration = value.inSeconds;
+  set ftp(double? value) => _db.ftp = value;
 
-  Future<BoolResult> delete() async => await _db!.delete();
-  Future<int?> save() async => await _db!.save();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int?> save() async => await _db.save();
 
   Future<void> setValues() async {
     final RecordList<Event> recordList = RecordList<Event>(await records);
@@ -277,7 +277,8 @@ class Interval {
 
   Future<HeartRateZoneSchema?> get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
-      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as Future<DbActivity>);
+      final DbActivity dbActivity =
+          await (DbActivity().getById(activitiesId) as Future<DbActivity>);
 
       _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -289,7 +290,8 @@ class Interval {
 
   Future<PowerZoneSchema?> get powerZoneSchema async {
     if (_powerZoneSchema == null) {
-      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as Future<DbActivity>);
+      final DbActivity dbActivity =
+          await (DbActivity().getById(activitiesId) as Future<DbActivity>);
 
       _powerZoneSchema = await PowerZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -315,7 +317,8 @@ class Interval {
       );
     }
 
-    final HeartRateZone heartRateZone = await (this.heartRateZone as Future<HeartRateZone>);
+    final HeartRateZone heartRateZone =
+        await (this.heartRateZone as Future<HeartRateZone>);
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete!,

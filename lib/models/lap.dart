@@ -25,7 +25,7 @@ class Lap {
 
   Activity? activity;
   bool? copied;
-  DbLap? _db = DbLap();
+  DbLap _db = DbLap();
   HeartRateZone? _heartRateZone;
   HeartRateZoneSchema? _heartRateZoneSchema;
   late List<BarZone> heartRateDistributions;
@@ -36,66 +36,66 @@ class Lap {
   double? weight;
   int? index;
 
-  int? get id => _db!.id;
-  DateTime? get startTime => _db!.startTime;
-  DateTime? get timeStamp => _db!.timeStamp;
-  String? get event => _db!.event;
-  String? get eventType => _db!.eventType;
-  String? get lapTrigger => _db!.lapTrigger;
-  String? get sport => _db!.sport;
-  String? get subSport => _db!.subSport;
-  double? get avgFormPower => _db!.avgFormPower;
-  double? get avgFractionalCadence => _db!.avgFractionalCadence;
-  double? get avgGroundTime => _db!.avgGroundTime;
-  double? get avgLegSpringStiffness => _db!.avgLegSpringStiffness;
-  double? get avgPower => _db!.avgPower;
-  double? get avgRunningCadence => _db!.avgRunningCadence;
-  double? get avgSpeed => _db!.avgSpeed;
-  double? get avgSpeedByMeasurements => _db!.avgSpeedByMeasurements;
-  double? get avgSpeedBySpeed => _db!.avgSpeedBySpeed;
-  double? get avgSpeedByDistance => _db!.avgSpeedByDistance;
-  double? get avgStanceTime => _db!.avgStanceTime;
-  double? get avgStanceTimePercent => _db!.avgStanceTimePercent;
-  double? get avgStrydCadence => _db!.avgStrydCadence;
-  double? get avgVerticalOscillation => _db!.avgVerticalOscillation;
-  double? get cp => _db!.cp;
-  double? get ftp => _db!.ftp;
-  double? get endPositionLat => _db!.endPositionLat;
-  double? get endPositionLong => _db!.endPositionLong;
-  double? get maxFractionalCadence => _db!.maxFractionalCadence;
-  double? get maxSpeed => _db!.maxSpeed;
-  double? get minSpeed => _db!.minSpeed;
-  double? get sdevFormPower => _db!.sdevFormPower;
-  double? get sdevGroundTime => _db!.sdevGroundTime;
-  double? get sdevHeartRate => _db!.sdevHeartRate;
-  double? get sdevLegSpringStiffness => _db!.sdevLegSpringStiffness;
-  double? get sdevPace => _db!.sdevPace;
-  double? get sdevPower => _db!.sdevPower;
-  double? get sdevSpeed => _db!.sdevSpeed;
-  double? get sdevStrydCadence => _db!.sdevStrydCadence;
-  double? get sdevVerticalOscillation => _db!.sdevVerticalOscillation;
-  double? get startPositionLat => _db!.startPositionLat;
-  double? get startPositionLong => _db!.startPositionLong;
-  double? get totalFractionalCycles => _db!.totalFractionalCycles;
-  int? get activitiesId => _db!.activitiesId;
-  int? get avgHeartRate => _db!.avgHeartRate;
-  int? get avgTemperature => _db!.avgTemperature;
-  int? get eventGroup => _db!.eventGroup;
-  int? get intensity => _db!.intensity;
-  int? get maxHeartRate => _db!.maxHeartRate;
-  int? get maxPower => _db!.maxPower;
-  int? get maxRunningCadence => _db!.maxRunningCadence;
-  int? get maxTemperature => _db!.maxTemperature;
-  int? get minHeartRate => _db!.minHeartRate;
-  int? get minPower => _db!.minPower;
-  int? get movingTime => _db!.movingTime;
-  int? get totalAscent => _db!.totalAscent;
-  int? get totalCalories => _db!.totalCalories;
-  int? get totalDescent => _db!.totalDescent;
-  int? get totalDistance => _db!.totalDistance;
-  int? get totalElapsedTime => _db!.totalElapsedTime;
-  int? get totalStrides => _db!.totalStrides;
-  int? get totalTimerTime => _db!.totalTimerTime;
+  int? get id => _db.id;
+  DateTime? get startTime => _db.startTime;
+  DateTime? get timeStamp => _db.timeStamp;
+  String? get event => _db.event;
+  String? get eventType => _db.eventType;
+  String? get lapTrigger => _db.lapTrigger;
+  String? get sport => _db.sport;
+  String? get subSport => _db.subSport;
+  double? get avgFormPower => _db.avgFormPower;
+  double? get avgFractionalCadence => _db.avgFractionalCadence;
+  double? get avgGroundTime => _db.avgGroundTime;
+  double? get avgLegSpringStiffness => _db.avgLegSpringStiffness;
+  double? get avgPower => _db.avgPower;
+  double? get avgRunningCadence => _db.avgRunningCadence;
+  double? get avgSpeed => _db.avgSpeed;
+  double? get avgSpeedByMeasurements => _db.avgSpeedByMeasurements;
+  double? get avgSpeedBySpeed => _db.avgSpeedBySpeed;
+  double? get avgSpeedByDistance => _db.avgSpeedByDistance;
+  double? get avgStanceTime => _db.avgStanceTime;
+  double? get avgStanceTimePercent => _db.avgStanceTimePercent;
+  double? get avgStrydCadence => _db.avgStrydCadence;
+  double? get avgVerticalOscillation => _db.avgVerticalOscillation;
+  double? get cp => _db.cp;
+  double? get ftp => _db.ftp;
+  double? get endPositionLat => _db.endPositionLat;
+  double? get endPositionLong => _db.endPositionLong;
+  double? get maxFractionalCadence => _db.maxFractionalCadence;
+  double? get maxSpeed => _db.maxSpeed;
+  double? get minSpeed => _db.minSpeed;
+  double? get sdevFormPower => _db.sdevFormPower;
+  double? get sdevGroundTime => _db.sdevGroundTime;
+  double? get sdevHeartRate => _db.sdevHeartRate;
+  double? get sdevLegSpringStiffness => _db.sdevLegSpringStiffness;
+  double? get sdevPace => _db.sdevPace;
+  double? get sdevPower => _db.sdevPower;
+  double? get sdevSpeed => _db.sdevSpeed;
+  double? get sdevStrydCadence => _db.sdevStrydCadence;
+  double? get sdevVerticalOscillation => _db.sdevVerticalOscillation;
+  double? get startPositionLat => _db.startPositionLat;
+  double? get startPositionLong => _db.startPositionLong;
+  double? get totalFractionalCycles => _db.totalFractionalCycles;
+  int? get activitiesId => _db.activitiesId;
+  int? get avgHeartRate => _db.avgHeartRate;
+  int? get avgTemperature => _db.avgTemperature;
+  int? get eventGroup => _db.eventGroup;
+  int? get intensity => _db.intensity;
+  int? get maxHeartRate => _db.maxHeartRate;
+  int? get maxPower => _db.maxPower;
+  int? get maxRunningCadence => _db.maxRunningCadence;
+  int? get maxTemperature => _db.maxTemperature;
+  int? get minHeartRate => _db.minHeartRate;
+  int? get minPower => _db.minPower;
+  int? get movingTime => _db.movingTime;
+  int? get totalAscent => _db.totalAscent;
+  int? get totalCalories => _db.totalCalories;
+  int? get totalDescent => _db.totalDescent;
+  int? get totalDistance => _db.totalDistance;
+  int? get totalElapsedTime => _db.totalElapsedTime;
+  int? get totalStrides => _db.totalStrides;
+  int? get totalTimerTime => _db.totalTimerTime;
 
   // calculated from other attributes:
   double? get ecor {
@@ -220,8 +220,10 @@ class Lap {
           (dataMessage.get('max_running_cadence') as double?)?.round()
       ..intensity = dataMessage.get('intensity') as int?
       ..lapTrigger = dataMessage.get('lap_trigger') as String?
-      ..avgTemperature = (dataMessage.get('avg_temperature') as double?)?.round()
-      ..maxTemperature = (dataMessage.get('max_temperature') as double?)?.round()
+      ..avgTemperature =
+          (dataMessage.get('avg_temperature') as double?)?.round()
+      ..maxTemperature =
+          (dataMessage.get('max_temperature') as double?)?.round()
       ..avgFractionalCadence =
           dataMessage.get('avg_fractional_cadence') as double?
       ..maxFractionalCadence =
@@ -238,7 +240,8 @@ class Lap {
 
   Future<PowerZoneSchema?> get powerZoneSchema async {
     if (_powerZoneSchema == null) {
-      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as Future<DbActivity>);
+      final DbActivity dbActivity =
+          await (DbActivity().getById(activitiesId) as Future<DbActivity>);
 
       _powerZoneSchema = await PowerZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -250,7 +253,8 @@ class Lap {
 
   Future<HeartRateZoneSchema?> get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
-      final DbActivity dbActivity = await (DbActivity().getById(activitiesId) as Future<DbActivity>);
+      final DbActivity dbActivity =
+          await (DbActivity().getById(activitiesId) as Future<DbActivity>);
 
       _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -261,7 +265,8 @@ class Lap {
   }
 
   Future<void> setAverages() async {
-    final RecordList<Event> recordList = RecordList<Event>(await (records as Future<List<Event>>));
+    final RecordList<Event> recordList =
+        RecordList<Event>(await (records as Future<List<Event>>));
     final RecordList<Event> eventList = RecordList<Event>(await events);
     _db
       ..avgPower = recordList.avgPower()
@@ -350,7 +355,8 @@ class Lap {
       );
     }
 
-    final HeartRateZone heartRateZone = await (this.heartRateZone as Future<HeartRateZone>);
+    final HeartRateZone heartRateZone =
+        await (this.heartRateZone as Future<HeartRateZone>);
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete!,
@@ -367,7 +373,8 @@ class Lap {
   }
 
   Future<List<BarZone>> powerZoneCounts() async {
-    final PowerZoneSchema powerZoneSchema = await (this.powerZoneSchema as Future<PowerZoneSchema>);
+    final PowerZoneSchema powerZoneSchema =
+        await (this.powerZoneSchema as Future<PowerZoneSchema>);
     final List<Event> records = await (this.records as Future<List<Event>>);
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();
