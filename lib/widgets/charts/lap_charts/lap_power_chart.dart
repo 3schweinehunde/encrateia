@@ -52,8 +52,7 @@ class LapPowerChart extends StatelessWidget {
         animate: false,
         behaviors: <ChartBehavior<num>>[
               RangeAnnotation<num>(
-                GraphUtils.powerZoneAnnotations(powerZones: powerZones)
-                    as List<RangeAnnotationSegment<Object>>,
+                GraphUtils.powerZoneAnnotations(powerZones: powerZones),
               ),
             ] +
             GraphUtils.axis(

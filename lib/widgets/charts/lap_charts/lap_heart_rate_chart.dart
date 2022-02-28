@@ -53,8 +53,7 @@ class LapHeartRateChart extends StatelessWidget {
         behaviors: <ChartBehavior<num>>[
               RangeAnnotation<num>(
                 GraphUtils.heartRateZoneAnnotations(
-                        heartRateZones: heartRateZones)
-                    as List<RangeAnnotationSegment<Object>>,
+                    heartRateZones: heartRateZones),
               ),
             ] +
             GraphUtils.axis(
