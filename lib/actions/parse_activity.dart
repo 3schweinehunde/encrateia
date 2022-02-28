@@ -40,11 +40,11 @@ Future<void> parseActivity({
         )..show(context);
       }
     }
-  } catch (exception) {
+  } catch (exception, stacktrace) {
     final Log log = Log(
       message: exception.runtimeType.toString(),
       method: 'parseActivity',
-      stackTrace: exception.stackTrace.toString(),
+      stackTrace: stacktrace.toString(),
       comment: '/lib/actions/parse_activity.25',
     );
     await log.save();
