@@ -741,7 +741,7 @@ class Activity {
           .upperLimit
           .greaterThanOrEquals(avgPower)
           .toSingle();
-      _powerZone = PowerZone.exDb(dbPowerZone);
+      _powerZone = PowerZone.exDb(dbPowerZone ?? DbPowerZone());
     }
     return _powerZone;
   }
@@ -760,7 +760,7 @@ class Activity {
           .greaterThanOrEquals(avgHeartRate)
           .toSingle();
 
-      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone);
+      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone ?? DbHeartRateZone());
     }
     return _heartRateZone;
   }

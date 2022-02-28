@@ -171,8 +171,8 @@ class Lap {
   bool get legSpringStiffnessAvailable =>
       !<num?>[null, -1].contains(avgLegSpringStiffness);
 
-  Future<BoolResult> delete() async => await _db!.delete();
-  Future<int?> save() async => await _db!.save();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int?> save() async => await _db.save();
 
   static Lap fromLap({
     required DataMessage dataMessage,
@@ -315,7 +315,7 @@ class Lap {
           .upperLimit
           .greaterThanOrEquals(avgPower)
           .toSingle();
-      _powerZone = PowerZone.exDb(dbPowerZone);
+      _powerZone = PowerZone.exDb(dbPowerZone ?? DbPowerZone());
     }
     return _powerZone;
   }
@@ -334,7 +334,7 @@ class Lap {
           .greaterThanOrEquals(avgHeartRate)
           .toSingle();
 
-      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone);
+      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone ?? DbHeartRateZone());
     }
     return _heartRateZone;
   }
@@ -396,7 +396,7 @@ class Lap {
   }
 
   Future<List<Event>> get events async {
-    final List<DbEvent> dbEvents = await _db!.getDbEvents()!.toList();
+    final List<DbEvent> dbEvents = await _db.getDbEvents()!.toList();
     return dbEvents.map(Event.exDb).toList();
   }
 

@@ -34,17 +34,17 @@ Future<void> load({required encrateia.Athlete athlete}) async {
 
 Future<void> delete({required encrateia.Athlete athlete}) async {
   athlete
-    ..stravaAccessToken = null
-    ..stravaExpiresAt = null
-    ..stravaExpiresIn = null
-    ..stravaTokenType = null
-    ..stravaRefreshToken = null;
+    ..stravaAccessToken = "null"
+    ..stravaExpiresAt = 0
+    ..stravaExpiresIn = 0
+    ..stravaTokenType = "null"
+    ..stravaRefreshToken = "null";
   await athlete.save();
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('strava_accessToken', null);
-  await prefs.setInt('strava_expires_in', null);
-  await prefs.setInt('strava_expires_at', null);
-  await prefs.setString('strava_token_type', null);
-  await prefs.setString('strava_refreshToken', null);
+  await prefs.setString('strava_accessToken', "null");
+  await prefs.setInt('strava_expires_in', 0);
+  await prefs.setInt('strava_expires_at', 0);
+  await prefs.setString('strava_token_type', "null");
+  await prefs.setString('strava_refreshToken', "null");
 }

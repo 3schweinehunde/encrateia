@@ -22,40 +22,41 @@ class HeartRateZone {
       ..color = color ?? 0xFFFFc107;
 
     if (lowerPercentage != null) {
-      _db!.lowerLimit =
+      _db.lowerLimit =
           (lowerPercentage * heartRateZoneSchema.base! / 100).round();
     }
     if (upperPercentage != null) {
-      _db!.upperLimit =
+      _db.upperLimit =
           (upperPercentage * heartRateZoneSchema.base! / 100).round();
     }
   }
   HeartRateZone._fromDb(this._db);
 
-  DbHeartRateZone? _db;
+  late DbHeartRateZone _db;
 
-  int? get id => _db?.id;
-  String? get name => _db!.name;
-  int? get color => _db!.color;
-  int? get lowerLimit => _db!.lowerLimit;
-  int? get lowerPercentage => _db!.lowerPercentage;
-  int? get upperLimit => _db!.upperLimit;
-  int? get upperPercentage => _db!.upperPercentage;
+  int? get id => _db.id;
+  String? get name => _db.name;
+  int? get color => _db.color;
+  int? get lowerLimit => _db.lowerLimit;
+  int? get lowerPercentage => _db.lowerPercentage;
+  int? get upperLimit => _db.upperLimit;
+  int? get upperPercentage => _db.upperPercentage;
 
-  set id(int? value) => _db!.id = value;
-  set color(int? value) => _db!.color = value;
-  set heartRateZoneSchemataId(int? value) => _db!.heartRateZoneSchemataId = value;
-  set lowerLimit(int? value) => _db!.lowerLimit = value;
-  set lowerPercentage(int? value) => _db!.lowerPercentage = value;
-  set name(String? value) => _db!.name = value;
-  set upperLimit(int? value) => _db!.upperLimit = value;
-  set upperPercentage(int? value) => _db!.upperPercentage = value;
+  set id(int? value) => _db.id = value;
+  set color(int? value) => _db.color = value;
+  set heartRateZoneSchemataId(int? value) =>
+      _db.heartRateZoneSchemataId = value;
+  set lowerLimit(int? value) => _db.lowerLimit = value;
+  set lowerPercentage(int? value) => _db.lowerPercentage = value;
+  set name(String? value) => _db.name = value;
+  set upperLimit(int? value) => _db.upperLimit = value;
+  set upperPercentage(int? value) => _db.upperPercentage = value;
 
   @override
   String toString() => '< HeartRateZone | $name | $lowerLimit >';
 
-  Future<BoolResult> delete() async => await _db!.delete();
-  Future<int?> save() async => await _db!.save();
+  Future<BoolResult> delete() async => await _db.delete();
+  Future<int?> save() async => await _db.save();
 
   static Future<BoolCommitResult> upsertAll(
       List<HeartRateZone> heartRateZones) async {
@@ -64,5 +65,5 @@ class HeartRateZone {
         .toList());
   }
 
-  static HeartRateZone exDb(DbHeartRateZone? db) => HeartRateZone._fromDb(db);
+  static HeartRateZone exDb(DbHeartRateZone db) => HeartRateZone._fromDb(db);
 }

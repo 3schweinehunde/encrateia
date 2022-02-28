@@ -8,7 +8,8 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class LapHeartRateChart extends StatelessWidget {
-  const LapHeartRateChart({Key? key,
+  const LapHeartRateChart({
+    Key? key,
     required this.records,
     this.heartRateZones,
   }) : super(key: key);
@@ -52,7 +53,8 @@ class LapHeartRateChart extends StatelessWidget {
         behaviors: <ChartBehavior<num>>[
               RangeAnnotation<num>(
                 GraphUtils.heartRateZoneAnnotations(
-                    heartRateZones: heartRateZones) as List<AnnotationSegment<Object>>,
+                        heartRateZones: heartRateZones)
+                    as List<RangeAnnotationSegment<Object>>,
               ),
             ] +
             GraphUtils.axis(

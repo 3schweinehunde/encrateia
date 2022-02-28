@@ -121,7 +121,7 @@ class Tag {
     required int? sortOrder,
     required int? color,
   }) async {
-    DbTag? dbPowerTag;
+    late DbTag? dbPowerTag;
 
     final TagGroup autoPowerTagGroup =
         await TagGroup.autoPowerTagGroup(athlete: athlete);

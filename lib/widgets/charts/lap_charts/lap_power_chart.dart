@@ -8,7 +8,8 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class LapPowerChart extends StatelessWidget {
-  const LapPowerChart({Key? key,
+  const LapPowerChart({
+    Key? key,
     required this.records,
     this.powerZones,
   }) : super(key: key);
@@ -51,7 +52,8 @@ class LapPowerChart extends StatelessWidget {
         animate: false,
         behaviors: <ChartBehavior<num>>[
               RangeAnnotation<num>(
-                GraphUtils.powerZoneAnnotations(powerZones: powerZones) as List<AnnotationSegment<Object>>,
+                GraphUtils.powerZoneAnnotations(powerZones: powerZones)
+                    as List<RangeAnnotationSegment<Object>>,
               ),
             ] +
             GraphUtils.axis(

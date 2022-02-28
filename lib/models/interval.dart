@@ -22,7 +22,7 @@ class Interval {
 
   Interval._fromDb(this._db);
 
-  DbInterval _db;
+  late DbInterval _db;
   Activity? activity;
   List<Event> _records = <Event>[];
   List<Tag> cachedTags = <Tag>[];
@@ -251,7 +251,7 @@ class Interval {
           .upperLimit
           .greaterThanOrEquals(avgPower)
           .toSingle();
-      _powerZone = PowerZone.exDb(dbPowerZone);
+      _powerZone = PowerZone.exDb(dbPowerZone ?? DbPowerZone());
     }
     return _powerZone;
   }
@@ -270,7 +270,7 @@ class Interval {
           .greaterThanOrEquals(avgHeartRate)
           .toSingle();
 
-      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone);
+      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone ?? DbHeartRateZone());
     }
     return _heartRateZone;
   }

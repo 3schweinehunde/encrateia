@@ -52,7 +52,7 @@ class MyLineChart extends LineChart {
                   ) +
                   GraphUtils.heartRateZoneAnnotations(
                     heartRateZones: heartRateZones,
-                  ) as List<AnnotationSegment<Object>>,
+                  ) as List<RangeAnnotationSegment<Object>>,
             ),
             ChartTitle<num>(
               domainTitle,

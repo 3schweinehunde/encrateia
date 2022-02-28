@@ -75,7 +75,8 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String? value) {
+                    items:
+                        sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value!),
@@ -106,7 +107,7 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
   Future<void> getData() async {
     final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
-    int? movingTimeSoFar = 0;
+    int movingTimeSoFar = 0;
     int year = 1900;
     sports = <String?>['all'] +
         unfilteredActivities
@@ -122,11 +123,11 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
     for (final Activity activity in activities.reversed) {
       if (activity.timeStamp!.year != year) {
         year = activity.timeStamp!.year;
-        movingTimeSoFar = activity.movingTime;
+        movingTimeSoFar = activity.movingTime ?? 0;
       } else {
         movingTimeSoFar += activity.movingTime!;
       }
-      activity.movingTimeSoFar = movingTimeSoFar!;
+      activity.movingTimeSoFar = movingTimeSoFar;
     }
 
     setState(() =>
