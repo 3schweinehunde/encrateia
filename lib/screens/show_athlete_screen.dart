@@ -42,10 +42,10 @@ import 'edit_athlete_screen.dart';
 class ShowAthleteScreen extends StatefulWidget {
   const ShowAthleteScreen({
     Key? key,
-    this.athlete,
+    required this.athlete,
   }) : super(key: key);
 
-  final Athlete? athlete;
+  final Athlete athlete;
 
   @override
   _ShowAthleteScreenState createState() => _ShowAthleteScreenState();
@@ -174,7 +174,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         onPressed: () async {
           await importActivitiesLocally(
             context: context,
-            athlete: widget.athlete!,
+            athlete: widget.athlete,
             flushbar: flushbar,
           );
         },
@@ -206,7 +206,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       ElevatedButton.icon(
         style: MyButtonStyle.raisedButtonStyle(color: MyColor.activity),
         icon: MyIcon.addActivity,
-        onPressed: () => goToEditActivityScreen(athlete: widget.athlete!),
+        onPressed: () => goToEditActivityScreen(athlete: widget.athlete),
         label: const Expanded(
           child: Text('Create Activity manually'),
         ),
@@ -214,7 +214,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       ElevatedButton.icon(
         style: MyButtonStyle.raisedButtonStyle(color: MyColor.settings),
         icon: MyIcon.secrets,
-        onPressed: () => goToEditAthleteScreen(athlete: widget.athlete!),
+        onPressed: () => goToEditAthleteScreen(athlete: widget.athlete),
         label: const Expanded(
           child: Text('Credentials'),
         ),
@@ -249,7 +249,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
         onPressed: () => analyseActivities(
           context: context,
-          athlete: widget.athlete!,
+          athlete: widget.athlete,
           flushbar: flushbar,
         ),
       ),
@@ -263,7 +263,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
         onPressed: () => autoTagging(
           context: context,
-          athlete: widget.athlete!,
+          athlete: widget.athlete,
           flushbar: flushbar,
         ),
       ),
@@ -275,11 +275,11 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
         onPressed: () => downloadDemoData(
           context: context,
-          athlete: widget.athlete!,
+          athlete: widget.athlete,
           flushbar: flushbar,
         ),
       ),
-      if (widget.athlete!.stravaId != null)
+      if (widget.athlete.stravaId != null)
         ElevatedButton.icon(
             style: MyButtonStyle.raisedButtonStyle(
                 color: MyColor.settings,
@@ -290,7 +290,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
               child: Text('Delete Strava Token'),
             ),
             onPressed: () async {
-              await strava_token.delete(athlete: widget.athlete!);
+              await strava_token.delete(athlete: widget.athlete);
               setState(() {});
             }),
     ];
@@ -299,7 +299,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   @override
   void initState() {
     floatingActionButtonVisible =
-        widget.athlete!.email != null && widget.athlete!.password != null;
+        widget.athlete.email != null && widget.athlete.password != null;
     super.initState();
   }
 
@@ -309,7 +309,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       appBar: AppBar(
         backgroundColor: MyColor.athlete,
         title: Text(
-          '${widget.athlete!.firstName} ${widget.athlete!.lastName}',
+          '${widget.athlete.firstName} ${widget.athlete.lastName}',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -320,7 +320,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             setState(() => floatingActionButtonVisible = false);
             updateJob(
               context: context,
-              athlete: widget.athlete!,
+              athlete: widget.athlete,
               flushbar: flushbar,
             );
             setState(() => floatingActionButtonVisible = true);
@@ -353,8 +353,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   }) {
     return ElevatedButton.icon(
       style: MyButtonStyle.raisedButtonStyle(
-          color: color,
-          textColor: MyColor.textColor(backgroundColor: color)),
+          color: color, textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(
         child: Text(title),

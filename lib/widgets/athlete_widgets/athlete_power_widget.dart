@@ -11,8 +11,8 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthletePowerWidget extends StatefulWidget {
-  const AthletePowerWidget({Key? key, this.athlete}) : super(key: key);
-  final Athlete? athlete;
+  const AthletePowerWidget({Key? key, required this.athlete}) : super(key: key);
+  final Athlete athlete;
 
   @override
   _AthletePowerWidgetState createState() => _AthletePowerWidgetState();
@@ -122,7 +122,7 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete!;
+    final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
     sports = <String?>['all'] +

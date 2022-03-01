@@ -11,9 +11,9 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthletePaceWidget extends StatefulWidget {
-  const AthletePaceWidget({Key? key, this.athlete}) : super(key: key);
+  const AthletePaceWidget({Key? key, required this.athlete}) : super(key: key);
 
-  final Athlete? athlete;
+  final Athlete athlete;
 
   @override
   _AthletePaceWidgetState createState() => _AthletePaceWidgetState();
@@ -76,7 +76,8 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String? value) {
+                    items:
+                        sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value!),
@@ -125,7 +126,7 @@ class _AthletePaceWidgetState extends State<AthletePaceWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete!;
+    final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
     sports = <String?>['all'] +

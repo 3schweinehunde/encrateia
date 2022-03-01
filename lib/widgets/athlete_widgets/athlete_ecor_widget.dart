@@ -9,9 +9,9 @@ import '/utils/enums.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteEcorWidget extends StatefulWidget {
-  const AthleteEcorWidget({Key? key, this.athlete}) : super(key: key);
+  const AthleteEcorWidget({Key? key, required this.athlete}) : super(key: key);
 
-  final Athlete? athlete;
+  final Athlete athlete;
 
   @override
   _AthleteEcorWidgetState createState() => _AthleteEcorWidgetState();
@@ -105,7 +105,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete!;
+    final Athlete athlete = widget.athlete;
     List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
     sports = <String?>['all'] +

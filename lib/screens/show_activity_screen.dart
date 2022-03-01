@@ -44,8 +44,8 @@ class ShowActivityScreen extends StatefulWidget {
     required this.athlete,
   }) : super(key: key);
 
-  final Activity? activity;
-  final Athlete? athlete;
+  final Activity activity;
+  final Athlete athlete;
 
   @override
   _ShowActivityScreenState createState() => _ShowActivityScreenState();
@@ -77,7 +77,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-      if (widget.activity!.cachedLaps.isNotEmpty)
+      if (widget.activity.cachedLaps.isNotEmpty)
         navigationButton(
           title: 'Laps List',
           color: MyColor.lap,
@@ -111,7 +111,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           athlete: widget.athlete,
         ),
       ),
-      if (widget.activity!.heartRateAvailable)
+      if (widget.activity.heartRateAvailable)
         navigationButton(
           title: 'Heart Rate',
           color: MyColor.navigate,
@@ -122,7 +122,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.powerAvailable)
+      if (widget.activity.powerAvailable)
         navigationButton(
           title: 'Power',
           color: MyColor.navigate,
@@ -133,7 +133,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.powerAvailable)
+      if (widget.activity.powerAvailable)
         navigationButton(
           title: 'Power Duration',
           color: MyColor.navigate,
@@ -144,7 +144,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.powerAvailable && widget.activity!.heartRateAvailable)
+      if (widget.activity.powerAvailable && widget.activity.heartRateAvailable)
         navigationButton(
           title: 'Power / Heart Rate',
           color: MyColor.navigate,
@@ -155,7 +155,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.paceAvailable)
+      if (widget.activity.paceAvailable)
         navigationButton(
           title: 'Pace',
           color: MyColor.navigate,
@@ -166,7 +166,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.speedAvailable)
+      if (widget.activity.speedAvailable)
         navigationButton(
           title: 'Speed',
           color: MyColor.navigate,
@@ -178,7 +178,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.ecorAvailable)
+      if (widget.activity.ecorAvailable)
         navigationButton(
           title: 'Ecor',
           color: MyColor.navigate,
@@ -189,7 +189,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.speedAvailable)
+      if (widget.activity.speedAvailable)
         navigationButton(
           title: 'Speed / Heart Rate',
           color: MyColor.navigate,
@@ -200,7 +200,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.groundTimeAvailable)
+      if (widget.activity.groundTimeAvailable)
         navigationButton(
           title: 'Ground Time',
           color: MyColor.navigate,
@@ -211,7 +211,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.formPowerAvailable)
+      if (widget.activity.formPowerAvailable)
         navigationButton(
           title: 'Form Power',
           color: MyColor.navigate,
@@ -222,7 +222,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.powerRatioAvailable)
+      if (widget.activity.powerRatioAvailable)
         navigationButton(
           title: 'Power Ratio',
           color: MyColor.navigate,
@@ -233,7 +233,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.verticalOscillationAvailable)
+      if (widget.activity.verticalOscillationAvailable)
         navigationButton(
           title: 'Vertical Oscillation',
           color: MyColor.navigate,
@@ -244,7 +244,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.strideRatioAvailable)
+      if (widget.activity.strideRatioAvailable)
         navigationButton(
           title: 'Stride Ratio',
           color: MyColor.navigate,
@@ -255,7 +255,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.strideCadenceAvailable)
+      if (widget.activity.strideCadenceAvailable)
         navigationButton(
           title: 'Cadence',
           color: MyColor.navigate,
@@ -266,7 +266,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.legSpringStiffnessAvailable)
+      if (widget.activity.legSpringStiffnessAvailable)
         navigationButton(
           title: 'Leg Spring Stiffness',
           color: MyColor.navigate,
@@ -277,7 +277,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (widget.activity!.powerAvailable)
+      if (widget.activity.powerAvailable)
         navigationButton(
           title: 'FTP',
           color: MyColor.navigate,
@@ -288,7 +288,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             athlete: widget.athlete,
           ),
         ),
-      if (kDebugMode && widget.activity!.powerAvailable)
+      if (kDebugMode && widget.activity.powerAvailable)
         navigationButton(
           title: 'Work / CP',
           color: MyColor.navigate,
@@ -340,7 +340,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         onPressed: () => autoTagger(),
       ),
       if (<String>['new', 'downloaded', 'persisted']
-          .contains(widget.activity!.state))
+          .contains(widget.activity.state))
         ElevatedButton.icon(
           style: MyButtonStyle.raisedButtonStyle(
               color: MyColor.add,
@@ -351,7 +351,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           ),
           onPressed: () => download(),
         ),
-      if (<String>['downloaded', 'persisted'].contains(widget.activity!.state))
+      if (<String>['downloaded', 'persisted'].contains(widget.activity.state))
         ElevatedButton.icon(
           style: MyButtonStyle.raisedButtonStyle(
               color: MyColor.add,
@@ -362,7 +362,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           ),
           onPressed: () => parse(),
         ),
-      if (widget.activity!.excluded == true)
+      if (widget.activity.excluded == true)
         ElevatedButton.icon(
           style: MyButtonStyle.raisedButtonStyle(
               color: MyColor.include,
@@ -404,7 +404,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         ),
       ),
       if (<String>['new', 'downloaded', 'persisted']
-          .contains(widget.activity!.state))
+          .contains(widget.activity.state))
         ElevatedButton.icon(
           style: MyButtonStyle.raisedButtonStyle(
               color: MyColor.delete,
@@ -430,7 +430,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       appBar: AppBar(
         backgroundColor: MyColor.activity,
         title: Text(
-          widget.activity!.name ?? '',
+          widget.activity.name ?? '',
           overflow: TextOverflow.ellipsis,
         ),
       ),
@@ -485,7 +485,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
 
-    await widget.activity!.autoTagger(athlete: widget.athlete);
+    await widget.activity.autoTagger(athlete: widget.athlete);
 
     await flushbar.dismiss();
     flushbar = Flushbar<Object>(
@@ -497,30 +497,30 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
   }
 
   Future<void> exclude() async {
-    widget.activity!.excluded = true;
-    await widget.activity!.save();
+    widget.activity.excluded = true;
+    await widget.activity.save();
     setState(() {});
   }
 
   Future<void> include() async {
-    widget.activity!.excluded = false;
-    await widget.activity!.save();
+    widget.activity.excluded = false;
+    await widget.activity.save();
     setState(() {});
   }
 
   Future<void> delete() async {
-    await widget.activity!.delete();
+    await widget.activity.delete();
     Navigator.of(context).pop();
   }
 
   Future<void> download() async {
     flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${widget.activity!.name}«',
+      message: 'Download .fit-File for »${widget.activity.name}«',
       duration: const Duration(seconds: 10),
       icon: MyIcon.stravaDownloadWhite,
     )..show(context);
 
-    await widget.activity!.download(athlete: widget.athlete);
+    await widget.activity.download(athlete: widget.athlete);
 
     await flushbar.dismiss();
     flushbar = Flushbar<Object>(
@@ -531,7 +531,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
     await parse();
     flushbar = Flushbar<Object>(
-      message: 'Analysis finished for »${widget.activity!.name}«',
+      message: 'Analysis finished for »${widget.activity.name}«',
       duration: const Duration(seconds: 2),
       animationDuration: const Duration(milliseconds: 0),
     )..show(context);
@@ -539,21 +539,21 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
   Future<void> parse() async {
     Flushbar<Object> flushbar = Flushbar<Object>(
-      message: '0% of storing »${widget.activity!.name}«',
+      message: '0% of storing »${widget.activity.name}«',
       duration: const Duration(seconds: 10),
       animationDuration: const Duration(milliseconds: 0),
       titleText: const LinearProgressIndicator(value: 0),
     )..show(context);
 
     final Stream<int> percentageStream =
-        widget.activity!.parse(athlete: widget.athlete);
+        widget.activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
       if (value == -2) {
         await flushbar.dismiss();
       } else if (value == -1) {
         await flushbar.dismiss();
         flushbar = Flushbar<Object>(
-          message: 'Analysing »${widget.activity!.name}«',
+          message: 'Analysing »${widget.activity.name}«',
           duration: const Duration(seconds: 1),
           animationDuration: const Duration(milliseconds: 0),
         )..show(context);
@@ -561,7 +561,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         await flushbar.dismiss();
         flushbar = Flushbar<Object>(
           titleText: LinearProgressIndicator(value: value / 100),
-          message: '$value% of storing »${widget.activity!.name}«',
+          message: '$value% of storing »${widget.activity.name}«',
           duration: const Duration(seconds: 3),
           animationDuration: const Duration(milliseconds: 0),
         )..show(context);
@@ -571,8 +571,8 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
   }
 
   Future<void> getData() async {
-    await widget.activity!.laps;
-    await widget.activity!.weight;
+    await widget.activity.laps;
+    await widget.activity.weight;
     setState(() {});
   }
 }

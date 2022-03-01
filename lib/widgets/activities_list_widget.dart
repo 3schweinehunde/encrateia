@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/screens/show_activity_screen.dart';
-import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
+import '/utils/pg_text.dart';
 
 class ActivitiesListWidget extends StatefulWidget {
-  const ActivitiesListWidget({Key? key, this.athlete}) : super(key: key);
+  const ActivitiesListWidget({Key? key, required this.athlete})
+      : super(key: key);
 
-  final Athlete? athlete;
+  final Athlete athlete;
 
   @override
   _ActivitiesListWidgetState createState() => _ActivitiesListWidgetState();
@@ -141,19 +142,19 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   }
 
   Future<void> getActivities() async {
-    activities = await widget.athlete!.activities;
+    activities = await widget.athlete.activities;
     setState(() {});
   }
 
   void showMyFlushbar() {
-    if (widget.athlete!.stravaId != null) {
-      if (widget.athlete!.email == null) {
+    if (widget.athlete.stravaId != null) {
+      if (widget.athlete.email == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava email not provided yet!',
           duration: const Duration(seconds: 3),
           backgroundColor: Colors.yellow[900]!,
         )..show(context);
-      } else if (widget.athlete!.password == null) {
+      } else if (widget.athlete.password == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava password not provided yet!',
           duration: const Duration(seconds: 3),

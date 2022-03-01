@@ -8,15 +8,16 @@ import '/models/athlete.dart';
 import '/models/tag.dart';
 import '/models/tag_group.dart';
 import '/screens/show_activity_screen.dart';
-import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 import '/utils/icon_utils.dart';
 import '/utils/my_color.dart';
+import '/utils/pg_text.dart';
 
 class ActivitiesFeedWidget extends StatefulWidget {
-  const ActivitiesFeedWidget({Key? key, this.athlete}) : super(key: key);
+  const ActivitiesFeedWidget({Key? key, required this.athlete})
+      : super(key: key);
 
-  final Athlete? athlete;
+  final Athlete athlete;
 
   @override
   _ActivitiesFeedWidgetState createState() => _ActivitiesFeedWidgetState();
@@ -184,9 +185,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   }
 
   Future<void> getData() async {
-    activities = await widget.athlete!.activities;
+    activities = await widget.athlete.activities;
     setState(() {});
-    tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete!);
+    tagGroups = await TagGroup.allByAthlete(athlete: widget.athlete);
     for (final Activity activity in activities) {
       await activity.tags;
       await activity.ecor;
@@ -198,14 +199,14 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   }
 
   void showMyFlushbar() {
-    if (widget.athlete!.stravaId != null) {
-      if (widget.athlete!.email == null) {
+    if (widget.athlete.stravaId != null) {
+      if (widget.athlete.email == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava email not provided yet!',
           duration: const Duration(seconds: 3),
           backgroundColor: Colors.yellow[900]!,
         )..show(context);
-      } else if (widget.athlete!.password == null) {
+      } else if (widget.athlete.password == null) {
         flushbar = Flushbar<Object>(
           message: 'Strava password not provided yet!',
           duration: const Duration(seconds: 3),

@@ -12,7 +12,8 @@ import '/utils/my_button.dart';
 import 'pg_text.dart';
 
 class AthleteTimeSeriesChart extends StatefulWidget {
-  const AthleteTimeSeriesChart({Key? key,
+  const AthleteTimeSeriesChart({
+    Key? key,
     required this.athlete,
     required this.activities,
     required this.activityAttr,
@@ -21,7 +22,7 @@ class AthleteTimeSeriesChart extends StatefulWidget {
     this.flipVerticalAxis,
   }) : super(key: key);
 
-  final Athlete? athlete;
+  final Athlete athlete;
   final List<Activity> activities;
   final ActivityAttr activityAttr;
   final String chartTitleText;
@@ -62,7 +63,8 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Series<Activity, DateTime?>> data = <Series<Activity, DateTime?>>[
+    final List<Series<Activity, DateTime?>> data =
+        <Series<Activity, DateTime?>>[
       Series<Activity, DateTime?>(
         id: widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
@@ -187,7 +189,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                     context,
                     MaterialPageRoute<BuildContext>(
                       builder: (BuildContext context) => ShowActivityScreen(
-                        activity: selectedActivity,
+                        activity: selectedActivity!,
                         athlete: widget.athlete,
                       ),
                     ),
@@ -216,7 +218,8 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                   subtitle: const Text('Average speed'),
                 ),
                 ListTile(
-                  title: PQText(value: selectedActivity!.avgPower, pq: PQ.power),
+                  title:
+                      PQText(value: selectedActivity!.avgPower, pq: PQ.power),
                   subtitle: const Text('Average power'),
                 ),
                 if (selectedActivity!.ftp != null)

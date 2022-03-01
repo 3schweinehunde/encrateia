@@ -12,9 +12,9 @@ import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteFtpWidget extends StatefulWidget {
-  const AthleteFtpWidget({Key? key, this.athlete}) : super(key: key);
+  const AthleteFtpWidget({Key? key, required this.athlete}) : super(key: key);
 
-  final Athlete? athlete;
+  final Athlete athlete;
 
   @override
   _AthleteFtpWidgetState createState() => _AthleteFtpWidgetState();
@@ -140,7 +140,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete!;
+    final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
     sports = <String?>['all'] +
@@ -167,7 +167,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   }
 
   Future<void> checkForBacklog() async {
-    final Athlete athlete = widget.athlete!;
+    final Athlete athlete = widget.athlete;
     backlog = await ftp.deriveBacklog(athlete: athlete);
 
     setState(() => loadingStatus = ftpActivities.length.toString() +
