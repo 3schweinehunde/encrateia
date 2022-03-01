@@ -6,11 +6,11 @@ import 'utils/my_theme.dart';
 
 Future<void> main() async {
   await setup();
-  runApp(const MyApp());
+  runApp(const Encrateia());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Encrateia extends StatelessWidget {
+  const Encrateia({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

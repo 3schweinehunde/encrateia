@@ -18,10 +18,11 @@ Future<void> persist({required encrateia.Athlete athlete}) async {
 Future<void> load({required encrateia.Athlete athlete}) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString('strava_accessToken', athlete.stravaAccessToken!);
-  await prefs.setInt('strava_expires_at', athlete.stravaExpiresAt!);
-  await prefs.setInt('strava_expires_in', athlete.stravaExpiresIn!);
-  await prefs.setString('strava_token_type', athlete.stravaTokenType!);
-  await prefs.setString('strava_refreshToken', athlete.stravaRefreshToken!);
+  await prefs.setInt('strava_expires_at', athlete.stravaExpiresAt ?? 0);
+  await prefs.setInt('strava_expires_in', athlete.stravaExpiresIn ?? 0);
+  await prefs.setString('strava_token_type', athlete.stravaTokenType ?? "null");
+  await prefs.setString(
+      'strava_refreshToken', athlete.stravaRefreshToken ?? "null");
 
   // FIXME: We don't use the Response yet!
   TokenResponse(
