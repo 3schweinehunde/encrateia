@@ -9,7 +9,6 @@ import '/actions/import_activities_locally.dart';
 import '/actions/update_job.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
-import '/models/strava_token.dart' as strava_token;
 import '/screens/show_athlete_detail_screen.dart';
 import '/utils/icon_utils.dart';
 import '/utils/my_button_style.dart';
@@ -279,20 +278,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           flushbar: flushbar,
         ),
       ),
-      if (widget.athlete.stravaId != null)
-        ElevatedButton.icon(
-            style: MyButtonStyle.raisedButtonStyle(
-                color: MyColor.settings,
-                textColor:
-                    MyColor.textColor(backgroundColor: MyColor.settings)),
-            icon: MyIcon.settings,
-            label: const Expanded(
-              child: Text('Delete Strava Token'),
-            ),
-            onPressed: () async {
-              await strava_token.delete(athlete: widget.athlete);
-              setState(() {});
-            }),
     ];
   }
 

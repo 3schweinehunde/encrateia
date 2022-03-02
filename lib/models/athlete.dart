@@ -17,7 +17,6 @@ import '/model/model.dart'
 import '/models/activity.dart';
 import '/models/interval.dart' as encrateia;
 import '/models/power_zone_schema.dart';
-import '/models/strava_token.dart' as strava_token;
 import '/models/tag_group.dart';
 import '/models/weight.dart';
 import 'heart_rate_zone_schema.dart';
@@ -39,24 +38,14 @@ class Athlete {
   String? get photoPath => _db.photoPath;
   String? get state => _db.state;
   String? get stravaUsername => _db.stravaUsername;
-  String? get stravaAccessToken => _db.stravaAccessToken;
-  String? get stravaTokenType => _db.stravaTokenType;
-  String? get stravaRefreshToken => _db.stravaRefreshToken;
   int? get downloadInterval => _db.downloadInterval;
   int? get recordAggregationCount => _db.recordAggregationCount;
-  int? get stravaExpiresAt => _db.stravaExpiresAt;
-  int? get stravaExpiresIn => _db.stravaExpiresIn;
   int? get stravaId => _db.stravaId;
 
   set downloadInterval(int? value) => _db.downloadInterval = value;
   set firstName(String? value) => _db.firstName = value;
   set lastName(String? value) => _db.lastName = value;
   set recordAggregationCount(int? value) => _db.recordAggregationCount = value;
-  set stravaAccessToken(String? value) => _db.stravaAccessToken = value;
-  set stravaTokenType(String? value) => _db.stravaTokenType = value;
-  set stravaRefreshToken(String? value) => _db.stravaRefreshToken = value;
-  set stravaExpiresAt(int? value) => _db.stravaExpiresAt = value;
-  set stravaExpiresIn(int? value) => _db.stravaExpiresIn = value;
 
   @override
   String toString() => '< Athlete | $firstName $lastName | $stravaId >';
@@ -109,12 +98,6 @@ class Athlete {
     email = await storage.read(key: 'email-$stravaId');
     password = await storage.read(key: 'password-$stravaId');
   }
-
-  Future<void> loadStravaToken() async =>
-      await strava_token.load(athlete: this);
-
-  Future<void> persistStravaToken() async =>
-      await strava_token.persist(athlete: this);
 
   static Future<List<Athlete>> all() async {
     final List<DbAthlete> dbAthleteList = await DbAthlete().select().toList();

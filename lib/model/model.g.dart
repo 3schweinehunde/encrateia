@@ -42,11 +42,6 @@ class TableDbAthlete extends SqfEntityTableBase {
       SqfEntityFieldBase('geoState', DbType.text),
       SqfEntityFieldBase('downloadInterval', DbType.integer),
       SqfEntityFieldBase('recordAggregationCount', DbType.integer),
-      SqfEntityFieldBase('stravaAccessToken', DbType.text),
-      SqfEntityFieldBase('stravaTokenType', DbType.text),
-      SqfEntityFieldBase('stravaRefreshToken', DbType.text),
-      SqfEntityFieldBase('stravaExpiresAt', DbType.integer),
-      SqfEntityFieldBase('stravaExpiresIn', DbType.integer),
     ];
     super.init();
   }
@@ -783,12 +778,7 @@ class DbAthlete extends TableBase {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount,
-      this.stravaAccessToken,
-      this.stravaTokenType,
-      this.stravaRefreshToken,
-      this.stravaExpiresAt,
-      this.stravaExpiresIn}) {
+      this.recordAggregationCount}) {
     _setDefaultValues();
     softDeleteActivated = false;
   }
@@ -801,12 +791,7 @@ class DbAthlete extends TableBase {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount,
-      this.stravaAccessToken,
-      this.stravaTokenType,
-      this.stravaRefreshToken,
-      this.stravaExpiresAt,
-      this.stravaExpiresIn) {
+      this.recordAggregationCount) {
     _setDefaultValues();
   }
   DbAthlete.withId(
@@ -819,12 +804,7 @@ class DbAthlete extends TableBase {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount,
-      this.stravaAccessToken,
-      this.stravaTokenType,
-      this.stravaRefreshToken,
-      this.stravaExpiresAt,
-      this.stravaExpiresIn) {
+      this.recordAggregationCount) {
     _setDefaultValues();
   }
   // fromMap v2.0
@@ -861,21 +841,6 @@ class DbAthlete extends TableBase {
       recordAggregationCount =
           int.tryParse(o['recordAggregationCount'].toString());
     }
-    if (o['stravaAccessToken'] != null) {
-      stravaAccessToken = o['stravaAccessToken'].toString();
-    }
-    if (o['stravaTokenType'] != null) {
-      stravaTokenType = o['stravaTokenType'].toString();
-    }
-    if (o['stravaRefreshToken'] != null) {
-      stravaRefreshToken = o['stravaRefreshToken'].toString();
-    }
-    if (o['stravaExpiresAt'] != null) {
-      stravaExpiresAt = int.tryParse(o['stravaExpiresAt'].toString());
-    }
-    if (o['stravaExpiresIn'] != null) {
-      stravaExpiresIn = int.tryParse(o['stravaExpiresIn'].toString());
-    }
   }
   // FIELDS (DbAthlete)
   int? id;
@@ -888,11 +853,6 @@ class DbAthlete extends TableBase {
   String? geoState;
   int? downloadInterval;
   int? recordAggregationCount;
-  String? stravaAccessToken;
-  String? stravaTokenType;
-  String? stravaRefreshToken;
-  int? stravaExpiresAt;
-  int? stravaExpiresIn;
 
   // end FIELDS (DbAthlete)
 
@@ -1041,21 +1001,6 @@ class DbAthlete extends TableBase {
     if (recordAggregationCount != null || !forView) {
       map['recordAggregationCount'] = recordAggregationCount;
     }
-    if (stravaAccessToken != null || !forView) {
-      map['stravaAccessToken'] = stravaAccessToken;
-    }
-    if (stravaTokenType != null || !forView) {
-      map['stravaTokenType'] = stravaTokenType;
-    }
-    if (stravaRefreshToken != null || !forView) {
-      map['stravaRefreshToken'] = stravaRefreshToken;
-    }
-    if (stravaExpiresAt != null || !forView) {
-      map['stravaExpiresAt'] = stravaExpiresAt;
-    }
-    if (stravaExpiresIn != null || !forView) {
-      map['stravaExpiresIn'] = stravaExpiresIn;
-    }
 
     return map;
   }
@@ -1093,21 +1038,6 @@ class DbAthlete extends TableBase {
     }
     if (recordAggregationCount != null || !forView) {
       map['recordAggregationCount'] = recordAggregationCount;
-    }
-    if (stravaAccessToken != null || !forView) {
-      map['stravaAccessToken'] = stravaAccessToken;
-    }
-    if (stravaTokenType != null || !forView) {
-      map['stravaTokenType'] = stravaTokenType;
-    }
-    if (stravaRefreshToken != null || !forView) {
-      map['stravaRefreshToken'] = stravaRefreshToken;
-    }
-    if (stravaExpiresAt != null || !forView) {
-      map['stravaExpiresAt'] = stravaExpiresAt;
-    }
-    if (stravaExpiresIn != null || !forView) {
-      map['stravaExpiresIn'] = stravaExpiresIn;
     }
 
 // COLLECTIONS (DbAthlete)
@@ -1158,12 +1088,7 @@ class DbAthlete extends TableBase {
       stravaId,
       geoState,
       downloadInterval,
-      recordAggregationCount,
-      stravaAccessToken,
-      stravaTokenType,
-      stravaRefreshToken,
-      stravaExpiresAt,
-      stravaExpiresIn
+      recordAggregationCount
     ];
   }
 
@@ -1179,12 +1104,7 @@ class DbAthlete extends TableBase {
       stravaId,
       geoState,
       downloadInterval,
-      recordAggregationCount,
-      stravaAccessToken,
-      stravaTokenType,
-      stravaRefreshToken,
-      stravaExpiresAt,
-      stravaExpiresIn
+      recordAggregationCount
     ];
   }
 
@@ -1474,7 +1394,7 @@ class DbAthlete extends TableBase {
   Future<int?> upsert({bool ignoreBatch = true}) async {
     try {
       final result = await _mnDbAthlete.rawInsert(
-          'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, stravaAccessToken, stravaTokenType, stravaRefreshToken, stravaExpiresAt, stravaExpiresIn)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+          'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
           [
             id,
             state,
@@ -1485,12 +1405,7 @@ class DbAthlete extends TableBase {
             stravaId,
             geoState,
             downloadInterval,
-            recordAggregationCount,
-            stravaAccessToken,
-            stravaTokenType,
-            stravaRefreshToken,
-            stravaExpiresAt,
-            stravaExpiresIn
+            recordAggregationCount
           ],
           ignoreBatch);
       if (result! > 0) {
@@ -1516,7 +1431,7 @@ class DbAthlete extends TableBase {
   @override
   Future<BoolCommitResult> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
-        'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, stravaAccessToken, stravaTokenType, stravaRefreshToken, stravaExpiresAt, stravaExpiresIn)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -1607,7 +1522,7 @@ class DbAthlete extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbAthlete] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -1880,36 +1795,6 @@ class DbAthleteFilterBuilder extends ConjunctionBase {
   DbAthleteField get recordAggregationCount {
     return _recordAggregationCount = _setField(
         _recordAggregationCount, 'recordAggregationCount', DbType.integer);
-  }
-
-  DbAthleteField? _stravaAccessToken;
-  DbAthleteField get stravaAccessToken {
-    return _stravaAccessToken =
-        _setField(_stravaAccessToken, 'stravaAccessToken', DbType.text);
-  }
-
-  DbAthleteField? _stravaTokenType;
-  DbAthleteField get stravaTokenType {
-    return _stravaTokenType =
-        _setField(_stravaTokenType, 'stravaTokenType', DbType.text);
-  }
-
-  DbAthleteField? _stravaRefreshToken;
-  DbAthleteField get stravaRefreshToken {
-    return _stravaRefreshToken =
-        _setField(_stravaRefreshToken, 'stravaRefreshToken', DbType.text);
-  }
-
-  DbAthleteField? _stravaExpiresAt;
-  DbAthleteField get stravaExpiresAt {
-    return _stravaExpiresAt =
-        _setField(_stravaExpiresAt, 'stravaExpiresAt', DbType.integer);
-  }
-
-  DbAthleteField? _stravaExpiresIn;
-  DbAthleteField get stravaExpiresIn {
-    return _stravaExpiresIn =
-        _setField(_stravaExpiresIn, 'stravaExpiresIn', DbType.integer);
   }
 
   /// Deletes List<DbAthlete> bulk by query
@@ -2320,40 +2205,6 @@ class DbAthleteFields {
     return _fRecordAggregationCount = _fRecordAggregationCount ??
         SqlSyntax.setField(
             _fRecordAggregationCount, 'recordAggregationCount', DbType.integer);
-  }
-
-  static TableField? _fStravaAccessToken;
-  static TableField get stravaAccessToken {
-    return _fStravaAccessToken = _fStravaAccessToken ??
-        SqlSyntax.setField(
-            _fStravaAccessToken, 'stravaAccessToken', DbType.text);
-  }
-
-  static TableField? _fStravaTokenType;
-  static TableField get stravaTokenType {
-    return _fStravaTokenType = _fStravaTokenType ??
-        SqlSyntax.setField(_fStravaTokenType, 'stravaTokenType', DbType.text);
-  }
-
-  static TableField? _fStravaRefreshToken;
-  static TableField get stravaRefreshToken {
-    return _fStravaRefreshToken = _fStravaRefreshToken ??
-        SqlSyntax.setField(
-            _fStravaRefreshToken, 'stravaRefreshToken', DbType.text);
-  }
-
-  static TableField? _fStravaExpiresAt;
-  static TableField get stravaExpiresAt {
-    return _fStravaExpiresAt = _fStravaExpiresAt ??
-        SqlSyntax.setField(
-            _fStravaExpiresAt, 'stravaExpiresAt', DbType.integer);
-  }
-
-  static TableField? _fStravaExpiresIn;
-  static TableField get stravaExpiresIn {
-    return _fStravaExpiresIn = _fStravaExpiresIn ??
-        SqlSyntax.setField(
-            _fStravaExpiresIn, 'stravaExpiresIn', DbType.integer);
   }
 }
 // endregion DbAthleteFields
@@ -4307,7 +4158,7 @@ class DbActivity extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbActivity] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -6679,7 +6530,7 @@ class DbEvent extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbEvent] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -8952,7 +8803,7 @@ class DbLap extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbLap] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -11592,7 +11443,7 @@ class DbInterval extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbInterval] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -13116,7 +12967,7 @@ class DbWeight extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbWeight] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -14104,7 +13955,7 @@ class DbHeartRateZoneSchema extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbHeartRateZoneSchema] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -15114,7 +14965,7 @@ class DbHeartRateZone extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbHeartRateZone] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -16157,7 +16008,7 @@ class DbPowerZoneSchema extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbPowerZoneSchema] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -17149,7 +17000,7 @@ class DbPowerZone extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbPowerZone] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -18272,7 +18123,7 @@ class DbTag extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbTag] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -19305,7 +19156,7 @@ class DbTagGroup extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbTagGroup] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -20250,7 +20101,7 @@ class DbLapTagging extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbLapTagging] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -21177,7 +21028,7 @@ class DbActivityTagging extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbActivityTagging] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -22107,7 +21958,7 @@ class DbIntervalTagging extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbIntervalTagging] to use this feature';
     throw UnimplementedError(msg);
   }
@@ -22994,7 +22845,7 @@ class DbLog extends TableBase {
   @override
   Future<BoolResult> recover([bool recoverChilds = true]) {
     // not implemented because:
-    const msg =
+    final msg =
         'set useSoftDeleting:true in the table definition of [DbLog] to use this feature';
     throw UnimplementedError(msg);
   }

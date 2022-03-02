@@ -2,8 +2,9 @@
 // flutter pub run build_runner build --delete-conflicting-outputs
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:sqfentity/sqfentity.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
 
@@ -25,11 +26,6 @@ const SqfEntityTable tableAthlete = SqfEntityTable(
     SqfEntityField('geoState', DbType.text),
     SqfEntityField('downloadInterval', DbType.integer),
     SqfEntityField('recordAggregationCount', DbType.integer),
-    SqfEntityField('stravaAccessToken', DbType.text),
-    SqfEntityField('stravaTokenType', DbType.text),
-    SqfEntityField('stravaRefreshToken', DbType.text),
-    SqfEntityField('stravaExpiresAt', DbType.integer),
-    SqfEntityField('stravaExpiresIn', DbType.integer),
   ],
 );
 
@@ -248,80 +244,79 @@ const SqfEntityTable tableLap = SqfEntityTable(
 );
 
 const SqfEntityTable tableInterval = SqfEntityTable(
-    tableName: 'intervals',
-    primaryKeyName: 'id',
-    primaryKeyType: PrimaryKeyType.integer_auto_incremental,
-    useSoftDeleting: false,
-    modelName: 'DbInterval',
-    fields: <SqfEntityField>[
-      SqfEntityField('timeStamp', DbType.datetime),
-      SqfEntityField('duration', DbType.integer),
-      SqfEntityField('avgPower', DbType.real),
-      SqfEntityField('minPower', DbType.integer),
-      SqfEntityField('maxPower', DbType.integer),
-      SqfEntityField('sdevPower', DbType.real),
-      SqfEntityField('avgSpeed', DbType.real),
-      SqfEntityField('avgSpeedByMeasurements', DbType.real),
-      SqfEntityField('avgSpeedBySpeed', DbType.real),
-      SqfEntityField('avgSpeedByDistance', DbType.real),
-      SqfEntityField('minSpeed', DbType.real),
-      SqfEntityField('maxSpeed', DbType.real),
-      SqfEntityField('sdevSpeed', DbType.real),
-      SqfEntityField('sdevPace', DbType.real),
-      SqfEntityField('distance', DbType.integer),
-      SqfEntityField('avgHeartRate', DbType.integer),
-      SqfEntityField('minHeartRate', DbType.integer),
-      SqfEntityField('maxHeartRate', DbType.integer),
-      SqfEntityField('sdevHeartRate', DbType.real),
-      SqfEntityField('avgCadence', DbType.real),
-      SqfEntityField('minCadence', DbType.real),
-      SqfEntityField('maxCadence', DbType.real),
-      SqfEntityField('sdevCadence', DbType.real),
-      SqfEntityField('avgStrydCadence', DbType.real),
-      SqfEntityField('minStrydCadence', DbType.real),
-      SqfEntityField('maxStrydCadence', DbType.real),
-      SqfEntityField('sdevStrydCadence', DbType.real),
-      SqfEntityField('avgGroundTime', DbType.real),
-      SqfEntityField('minGroundTime', DbType.real),
-      SqfEntityField('maxGroundTime', DbType.real),
-      SqfEntityField('sdevGroundTime', DbType.real),
-      SqfEntityField('avgVerticalOscillation', DbType.real),
-      SqfEntityField('minVerticalOscillation', DbType.real),
-      SqfEntityField('maxVerticalOscillation', DbType.real),
-      SqfEntityField('sdevVerticalOscillation', DbType.real),
-      SqfEntityField('avgFormPower', DbType.real),
-      SqfEntityField('maxFormPower', DbType.integer),
-      SqfEntityField('minFormPower', DbType.integer),
-      SqfEntityField('sdevFormPower', DbType.real),
-      SqfEntityField('avgLegSpringStiffness', DbType.real),
-      SqfEntityField('maxLegSpringStiffness', DbType.real),
-      SqfEntityField('minLegSpringStiffness', DbType.real),
-      SqfEntityField('sdevLegSpringStiffness', DbType.real),
-      SqfEntityField('totalAscent', DbType.integer),
-      SqfEntityField('totalDescent', DbType.integer),
-      SqfEntityField('cp', DbType.real),
-      SqfEntityField('ftp', DbType.real),
-      SqfEntityField('movingTime', DbType.integer),
-
-      SqfEntityFieldRelationship(
-          fieldName: 'firstRecordId',
-          parentTable: tableEvent,
-          deleteRule: DeleteRule.CASCADE,
-          defaultValue: 0),
-      SqfEntityFieldRelationship(
-          fieldName: 'lastRecordId',
-          parentTable: tableEvent,
-          deleteRule: DeleteRule.CASCADE,
-          defaultValue: 0),
-      SqfEntityFieldRelationship(
-          parentTable: tableAthlete,
-          deleteRule: DeleteRule.CASCADE,
-          defaultValue: 0),
-      SqfEntityFieldRelationship(
-          parentTable: tableActivity,
-          deleteRule: DeleteRule.CASCADE,
-          defaultValue: 0),
-    ],
+  tableName: 'intervals',
+  primaryKeyName: 'id',
+  primaryKeyType: PrimaryKeyType.integer_auto_incremental,
+  useSoftDeleting: false,
+  modelName: 'DbInterval',
+  fields: <SqfEntityField>[
+    SqfEntityField('timeStamp', DbType.datetime),
+    SqfEntityField('duration', DbType.integer),
+    SqfEntityField('avgPower', DbType.real),
+    SqfEntityField('minPower', DbType.integer),
+    SqfEntityField('maxPower', DbType.integer),
+    SqfEntityField('sdevPower', DbType.real),
+    SqfEntityField('avgSpeed', DbType.real),
+    SqfEntityField('avgSpeedByMeasurements', DbType.real),
+    SqfEntityField('avgSpeedBySpeed', DbType.real),
+    SqfEntityField('avgSpeedByDistance', DbType.real),
+    SqfEntityField('minSpeed', DbType.real),
+    SqfEntityField('maxSpeed', DbType.real),
+    SqfEntityField('sdevSpeed', DbType.real),
+    SqfEntityField('sdevPace', DbType.real),
+    SqfEntityField('distance', DbType.integer),
+    SqfEntityField('avgHeartRate', DbType.integer),
+    SqfEntityField('minHeartRate', DbType.integer),
+    SqfEntityField('maxHeartRate', DbType.integer),
+    SqfEntityField('sdevHeartRate', DbType.real),
+    SqfEntityField('avgCadence', DbType.real),
+    SqfEntityField('minCadence', DbType.real),
+    SqfEntityField('maxCadence', DbType.real),
+    SqfEntityField('sdevCadence', DbType.real),
+    SqfEntityField('avgStrydCadence', DbType.real),
+    SqfEntityField('minStrydCadence', DbType.real),
+    SqfEntityField('maxStrydCadence', DbType.real),
+    SqfEntityField('sdevStrydCadence', DbType.real),
+    SqfEntityField('avgGroundTime', DbType.real),
+    SqfEntityField('minGroundTime', DbType.real),
+    SqfEntityField('maxGroundTime', DbType.real),
+    SqfEntityField('sdevGroundTime', DbType.real),
+    SqfEntityField('avgVerticalOscillation', DbType.real),
+    SqfEntityField('minVerticalOscillation', DbType.real),
+    SqfEntityField('maxVerticalOscillation', DbType.real),
+    SqfEntityField('sdevVerticalOscillation', DbType.real),
+    SqfEntityField('avgFormPower', DbType.real),
+    SqfEntityField('maxFormPower', DbType.integer),
+    SqfEntityField('minFormPower', DbType.integer),
+    SqfEntityField('sdevFormPower', DbType.real),
+    SqfEntityField('avgLegSpringStiffness', DbType.real),
+    SqfEntityField('maxLegSpringStiffness', DbType.real),
+    SqfEntityField('minLegSpringStiffness', DbType.real),
+    SqfEntityField('sdevLegSpringStiffness', DbType.real),
+    SqfEntityField('totalAscent', DbType.integer),
+    SqfEntityField('totalDescent', DbType.integer),
+    SqfEntityField('cp', DbType.real),
+    SqfEntityField('ftp', DbType.real),
+    SqfEntityField('movingTime', DbType.integer),
+    SqfEntityFieldRelationship(
+        fieldName: 'firstRecordId',
+        parentTable: tableEvent,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+    SqfEntityFieldRelationship(
+        fieldName: 'lastRecordId',
+        parentTable: tableEvent,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+    SqfEntityFieldRelationship(
+        parentTable: tableAthlete,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+    SqfEntityFieldRelationship(
+        parentTable: tableActivity,
+        deleteRule: DeleteRule.CASCADE,
+        defaultValue: 0),
+  ],
 );
 
 const SqfEntityTable tableWeight = SqfEntityTable(
@@ -458,13 +453,9 @@ const SqfEntityTable tableLapTagging = SqfEntityTable(
   fields: <SqfEntityField>[
     SqfEntityField('system', DbType.bool),
     SqfEntityFieldRelationship(
-        parentTable: tableTag,
-        deleteRule: DeleteRule.CASCADE,
-        defaultValue: 0),
+        parentTable: tableTag, deleteRule: DeleteRule.CASCADE, defaultValue: 0),
     SqfEntityFieldRelationship(
-        parentTable: tableLap,
-        deleteRule: DeleteRule.CASCADE,
-        defaultValue: 0),
+        parentTable: tableLap, deleteRule: DeleteRule.CASCADE, defaultValue: 0),
   ],
 );
 
@@ -477,9 +468,7 @@ const SqfEntityTable tableActivityTagging = SqfEntityTable(
   fields: <SqfEntityField>[
     SqfEntityField('system', DbType.bool),
     SqfEntityFieldRelationship(
-        parentTable: tableTag,
-        deleteRule: DeleteRule.CASCADE,
-        defaultValue: 0),
+        parentTable: tableTag, deleteRule: DeleteRule.CASCADE, defaultValue: 0),
     SqfEntityFieldRelationship(
         parentTable: tableActivity,
         deleteRule: DeleteRule.CASCADE,
@@ -496,9 +485,7 @@ const SqfEntityTable tableIntervalTagging = SqfEntityTable(
   fields: <SqfEntityField>[
     SqfEntityField('system', DbType.bool),
     SqfEntityFieldRelationship(
-        parentTable: tableTag,
-        deleteRule: DeleteRule.CASCADE,
-        defaultValue: 0),
+        parentTable: tableTag, deleteRule: DeleteRule.CASCADE, defaultValue: 0),
     SqfEntityFieldRelationship(
         parentTable: tableInterval,
         deleteRule: DeleteRule.CASCADE,

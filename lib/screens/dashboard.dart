@@ -53,7 +53,6 @@ class _DashboardState extends State<Dashboard> {
                     title: Text('${athlete.firstName} ${athlete.lastName}'),
                     onTap: () async {
                       await athlete.readCredentials();
-                      await athlete.loadStravaToken();
                       await Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
@@ -61,7 +60,6 @@ class _DashboardState extends State<Dashboard> {
                               ShowAthleteScreen(athlete: athlete),
                         ),
                       );
-                      await athlete.persistStravaToken();
                       await getData();
                     },
                   ),
