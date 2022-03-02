@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
 import 'package:strava_flutter/domain/model/model_detailed_athlete.dart';
+import 'package:uuid/uuid.dart';
 
 import '/model/model.dart'
     show
@@ -28,7 +29,7 @@ class Athlete {
   String? email;
   String? password;
 
-  DbAthlete _db = DbAthlete();
+  DbAthlete _db = DbAthlete(uuid: const Uuid().v1());
   List<int?> filters = <int?>[];
 
   int? get id => _db.id;
@@ -38,6 +39,7 @@ class Athlete {
   String? get photoPath => _db.photoPath;
   String? get state => _db.state;
   String? get stravaUsername => _db.stravaUsername;
+  String get uuid => _db.uuid!;
   int? get downloadInterval => _db.downloadInterval;
   int? get recordAggregationCount => _db.recordAggregationCount;
   int? get stravaId => _db.stravaId;
@@ -46,6 +48,7 @@ class Athlete {
   set firstName(String? value) => _db.firstName = value;
   set lastName(String? value) => _db.lastName = value;
   set recordAggregationCount(int? value) => _db.recordAggregationCount = value;
+  set uuid(String value) => _db.uuid = value;
 
   @override
   String toString() => '< Athlete | $firstName $lastName | $stravaId >';

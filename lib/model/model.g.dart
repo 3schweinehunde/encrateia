@@ -42,6 +42,7 @@ class TableDbAthlete extends SqfEntityTableBase {
       SqfEntityFieldBase('geoState', DbType.text),
       SqfEntityFieldBase('downloadInterval', DbType.integer),
       SqfEntityFieldBase('recordAggregationCount', DbType.integer),
+      SqfEntityFieldBase('uuid', DbType.text),
     ];
     super.init();
   }
@@ -778,7 +779,8 @@ class DbAthlete extends TableBase {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount}) {
+      this.recordAggregationCount,
+      this.uuid}) {
     _setDefaultValues();
     softDeleteActivated = false;
   }
@@ -791,7 +793,8 @@ class DbAthlete extends TableBase {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount) {
+      this.recordAggregationCount,
+      this.uuid) {
     _setDefaultValues();
   }
   DbAthlete.withId(
@@ -804,7 +807,8 @@ class DbAthlete extends TableBase {
       this.stravaId,
       this.geoState,
       this.downloadInterval,
-      this.recordAggregationCount) {
+      this.recordAggregationCount,
+      this.uuid) {
     _setDefaultValues();
   }
   // fromMap v2.0
@@ -841,6 +845,9 @@ class DbAthlete extends TableBase {
       recordAggregationCount =
           int.tryParse(o['recordAggregationCount'].toString());
     }
+    if (o['uuid'] != null) {
+      uuid = o['uuid'].toString();
+    }
   }
   // FIELDS (DbAthlete)
   int? id;
@@ -853,6 +860,7 @@ class DbAthlete extends TableBase {
   String? geoState;
   int? downloadInterval;
   int? recordAggregationCount;
+  String? uuid;
 
   // end FIELDS (DbAthlete)
 
@@ -1001,6 +1009,9 @@ class DbAthlete extends TableBase {
     if (recordAggregationCount != null || !forView) {
       map['recordAggregationCount'] = recordAggregationCount;
     }
+    if (uuid != null || !forView) {
+      map['uuid'] = uuid;
+    }
 
     return map;
   }
@@ -1038,6 +1049,9 @@ class DbAthlete extends TableBase {
     }
     if (recordAggregationCount != null || !forView) {
       map['recordAggregationCount'] = recordAggregationCount;
+    }
+    if (uuid != null || !forView) {
+      map['uuid'] = uuid;
     }
 
 // COLLECTIONS (DbAthlete)
@@ -1088,7 +1102,8 @@ class DbAthlete extends TableBase {
       stravaId,
       geoState,
       downloadInterval,
-      recordAggregationCount
+      recordAggregationCount,
+      uuid
     ];
   }
 
@@ -1104,7 +1119,8 @@ class DbAthlete extends TableBase {
       stravaId,
       geoState,
       downloadInterval,
-      recordAggregationCount
+      recordAggregationCount,
+      uuid
     ];
   }
 
@@ -1394,7 +1410,7 @@ class DbAthlete extends TableBase {
   Future<int?> upsert({bool ignoreBatch = true}) async {
     try {
       final result = await _mnDbAthlete.rawInsert(
-          'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+          'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, uuid)  VALUES (?,?,?,?,?,?,?,?,?,?,?)',
           [
             id,
             state,
@@ -1405,7 +1421,8 @@ class DbAthlete extends TableBase {
             stravaId,
             geoState,
             downloadInterval,
-            recordAggregationCount
+            recordAggregationCount,
+            uuid
           ],
           ignoreBatch);
       if (result! > 0) {
@@ -1431,7 +1448,7 @@ class DbAthlete extends TableBase {
   @override
   Future<BoolCommitResult> upsertAll(List<DbAthlete> dbathletes) async {
     final results = await _mnDbAthlete.rawInsertAll(
-        'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount)  VALUES (?,?,?,?,?,?,?,?,?,?)',
+        'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, uuid)  VALUES (?,?,?,?,?,?,?,?,?,?,?)',
         dbathletes);
     return results;
   }
@@ -1795,6 +1812,11 @@ class DbAthleteFilterBuilder extends ConjunctionBase {
   DbAthleteField get recordAggregationCount {
     return _recordAggregationCount = _setField(
         _recordAggregationCount, 'recordAggregationCount', DbType.integer);
+  }
+
+  DbAthleteField? _uuid;
+  DbAthleteField get uuid {
+    return _uuid = _setField(_uuid, 'uuid', DbType.text);
   }
 
   /// Deletes List<DbAthlete> bulk by query
@@ -2205,6 +2227,11 @@ class DbAthleteFields {
     return _fRecordAggregationCount = _fRecordAggregationCount ??
         SqlSyntax.setField(
             _fRecordAggregationCount, 'recordAggregationCount', DbType.integer);
+  }
+
+  static TableField? _fUuid;
+  static TableField get uuid {
+    return _fUuid = _fUuid ?? SqlSyntax.setField(_fUuid, 'uuid', DbType.text);
   }
 }
 // endregion DbAthleteFields

@@ -26,6 +26,7 @@ const SqfEntityTable tableAthlete = SqfEntityTable(
     SqfEntityField('geoState', DbType.text),
     SqfEntityField('downloadInterval', DbType.integer),
     SqfEntityField('recordAggregationCount', DbType.integer),
+    SqfEntityField('uuid', DbType.text),
   ],
 );
 
