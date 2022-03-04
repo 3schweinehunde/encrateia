@@ -167,9 +167,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.add,
             textColor: MyColor.textColor(backgroundColor: MyColor.add)),
         icon: MyIcon.downloadLocal,
-        label: const Expanded(
-          child: Text('Import .fit from Folder'),
-        ),
+        label: const Text('Import .fit from Folder'),
         onPressed: () async {
           await importActivitiesLocally(
             context: context,
@@ -206,17 +204,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         style: MyButtonStyle.raisedButtonStyle(color: MyColor.activity),
         icon: MyIcon.addActivity,
         onPressed: () => goToEditActivityScreen(athlete: widget.athlete),
-        label: const Expanded(
-          child: Text('Create Activity manually'),
-        ),
+        label: const Text('Create Activity manually'),
       ),
       ElevatedButton.icon(
         style: MyButtonStyle.raisedButtonStyle(color: MyColor.settings),
         icon: MyIcon.secrets,
         onPressed: () => goToEditAthleteScreen(athlete: widget.athlete),
-        label: const Expanded(
-          child: Text('Credentials'),
-        ),
+        label: const Text('Credentials'),
       ),
       navigationButton(
         color: MyColor.settings,
@@ -229,9 +223,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.danger,
             textColor: MyColor.textColor(backgroundColor: MyColor.danger)),
         icon: MyIcon.delete,
-        label: const Expanded(
-          child: Text('Delete Athlete'),
-        ),
+        label: const Text('Delete Athlete'),
         onPressed: () => deleteAthlete(
           context: context,
           athlete: widget.athlete,
@@ -243,9 +235,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.settings)),
         icon: MyIcon.settings,
-        label: const Expanded(
-          child: Text('Reanalyse Activities'),
-        ),
+        label: const Text('Reanalyse Activities'),
         onPressed: () => analyseActivities(
           context: context,
           athlete: widget.athlete,
@@ -257,9 +247,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.settings)),
         icon: MyIcon.settings,
-        label: const Expanded(
-          child: Text('Redo Autotagging'),
-        ),
+        label: const Text('Redo Autotagging'),
         onPressed: () => autoTagging(
           context: context,
           athlete: widget.athlete,
@@ -269,9 +257,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       ElevatedButton.icon(
         style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
         icon: MyIcon.download,
-        label: const Expanded(
-          child: Text('Download Demo Data'),
-        ),
+        label: const Text('Download Demo Data'),
         onPressed: () => downloadDemoData(
           context: context,
           athlete: widget.athlete,
@@ -318,6 +304,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         child: GridView.count(
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
+          childAspectRatio: 4,
           padding: const EdgeInsets.all(10),
           crossAxisCount:
               MediaQuery.of(context).orientation == Orientation.portrait
@@ -340,9 +327,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
       style: MyButtonStyle.raisedButtonStyle(
           color: color, textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
-      label: Expanded(
-        child: Text(title),
-      ),
+      label: Text(title),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(
