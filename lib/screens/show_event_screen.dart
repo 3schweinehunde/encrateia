@@ -171,11 +171,11 @@ class ShowEventScreen extends StatelessWidget {
           title: Text('Event ${record!.timeStamp.toString()} /'
               ' ${record!.distance} m')),
       body: SafeArea(
-          child: GridView.count(
+          child: GridView.extent(
         mainAxisSpacing: 4,
         crossAxisSpacing: 4,
-        crossAxisCount:
-            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+        maxCrossAxisExtent: 350,
+        childAspectRatio: 5,
         children: tiles(context: context),
       )),
     );

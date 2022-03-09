@@ -109,11 +109,11 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
+    return GridView.extent(
       mainAxisSpacing: 4,
       crossAxisSpacing: 4,
-      crossAxisCount:
-          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      maxCrossAxisExtent: 400,
+      childAspectRatio: 5,
       children: tiles,
     );
   }

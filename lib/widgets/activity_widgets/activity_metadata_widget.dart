@@ -69,6 +69,7 @@ class ActivityMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: activity!.stravaId, pq: PQ.integer),
@@ -78,6 +79,7 @@ class ActivityMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: activity!.type, pq: PQ.text),
@@ -126,6 +128,7 @@ class ActivityMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: activity!.startPositionLong, pq: PQ.longitude),
@@ -135,6 +138,7 @@ class ActivityMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: activity!.necLong, pq: PQ.longitude),
@@ -144,6 +148,7 @@ class ActivityMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: activity!.swcLong, pq: PQ.longitude),
@@ -153,6 +158,7 @@ class ActivityMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: activity!.avgSpeed, pq: PQ.speed),
@@ -165,11 +171,11 @@ class ActivityMetadataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
+    return GridView.extent(
       mainAxisSpacing: 4,
       crossAxisSpacing: 4,
-      crossAxisCount:
-          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      maxCrossAxisExtent: 350,
+      childAspectRatio: 3,
       children: tiles,
     );
   }
