@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/models/athlete.dart';
@@ -22,7 +21,6 @@ class EditStandaloneAthleteWidget extends StatefulWidget {
 
 class _EditStandaloneAthleteWidgetState
     extends State<EditStandaloneAthleteWidget> {
-  Flushbar<Object> flushbar = Flushbar<Object>();
 
   @override
   Widget build(BuildContext context) {

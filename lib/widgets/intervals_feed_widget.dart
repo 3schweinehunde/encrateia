@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +29,6 @@ class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
       <int, List<encrateia.Interval>>{};
   Map<int?, Activity> activityMap = <int, Activity>{};
   List<TagGroup> tagGroups = <TagGroup>[];
-  Flushbar<Object>? flushbar;
   bool disposed = false;
 
   @override

@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -52,7 +51,6 @@ class ShowActivityScreen extends StatefulWidget {
 }
 
 class _ShowActivityScreenState extends State<ShowActivityScreen> {
-  Flushbar<Object> flushbar = Flushbar<Object>();
   Weight? weight;
 
   List<Widget> get tiles {
@@ -479,20 +477,32 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
   }
 
   Future<void> autoTagger() async {
-    flushbar = Flushbar<Object>(
-      message: 'Starting Autotagger',
-      duration: const Duration(seconds: 10),
-      icon: MyIcon.stravaDownloadWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            MyIcon.stravaDownloadWhite,
+            const Text('Starting Autotagger'),
+          ],
+        ),
+      ),
+    );
 
     await widget.activity.autoTagger(athlete: widget.athlete);
 
-    await flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Autotagging finished',
-      duration: const Duration(seconds: 2),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text('Autotagging finished'),
+          ],
+        ),
+      ),
+    );
     setState(() {});
   }
 
@@ -514,57 +524,81 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
   }
 
   Future<void> download() async {
-    flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${widget.activity.name}«',
-      duration: const Duration(seconds: 10),
-      icon: MyIcon.stravaDownloadWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            MyIcon.stravaDownloadWhite,
+            Text('Download .fit-File for »${widget.activity.name}«'),
+          ],
+        ),
+      ),
+    );
 
     await widget.activity.download(athlete: widget.athlete);
 
-    await flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Download finished',
-      duration: const Duration(seconds: 1),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 1),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text('Download finished'),
+          ],
+        ),
+      ),
+    );
 
     await parse();
-    flushbar = Flushbar<Object>(
-      message: 'Analysis finished for »${widget.activity.name}«',
-      duration: const Duration(seconds: 2),
-      animationDuration: const Duration(milliseconds: 0),
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text('Analysis finished for »${widget.activity.name}«'),
+      ),
+    );
   }
 
   Future<void> parse() async {
-    Flushbar<Object> flushbar = Flushbar<Object>(
-      message: '0% of storing »${widget.activity.name}«',
-      duration: const Duration(seconds: 10),
-      animationDuration: const Duration(milliseconds: 0),
-      titleText: const LinearProgressIndicator(value: 0),
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            const CircularProgressIndicator(value: 0),
+            Text('storing »${widget.activity.name}«'),
+          ],
+        ),
+      ),
+    );
 
     final Stream<int> percentageStream =
         widget.activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
       if (value == -2) {
-        await flushbar.dismiss();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
       } else if (value == -1) {
-        await flushbar.dismiss();
-        flushbar = Flushbar<Object>(
-          message: 'Analysing »${widget.activity.name}«',
-          duration: const Duration(seconds: 1),
-          animationDuration: const Duration(milliseconds: 0),
-        )..show(context);
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 1),
+            content: Text('Analysing »${widget.activity.name}«'),
+          ),
+        );
       } else {
-        await flushbar.dismiss();
-        flushbar = Flushbar<Object>(
-          titleText: LinearProgressIndicator(value: value / 100),
-          message: '$value% of storing »${widget.activity.name}«',
-          duration: const Duration(seconds: 3),
-          animationDuration: const Duration(milliseconds: 0),
-        )..show(context);
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 3),
+            content: Row(
+              children: [
+                CircularProgressIndicator(value: value / 100),
+                Text('storing »${widget.activity.name}«'),
+              ],
+            ),
+          ),
+        );
       }
     }
     setState(() {});

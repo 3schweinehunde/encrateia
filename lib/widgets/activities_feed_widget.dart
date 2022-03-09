@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/models/activity.dart';
@@ -26,7 +25,6 @@ class ActivitiesFeedWidget extends StatefulWidget {
 class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   List<Activity> activities = <Activity>[];
   List<TagGroup> tagGroups = <TagGroup>[];
-  Flushbar<Object>? flushbar;
   bool disposed = false;
 
   @override
@@ -201,17 +199,21 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   void showMyFlushbar() {
     if (widget.athlete.stravaId != null) {
       if (widget.athlete.email == null) {
-        flushbar = Flushbar<Object>(
-          message: 'Strava email not provided yet!',
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.yellow[900]!,
-        )..show(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.yellow,
+            content: Text('Strava email not provided yet!'),
+          ),
+        );
       } else if (widget.athlete.password == null) {
-        flushbar = Flushbar<Object>(
-          message: 'Strava password not provided yet!',
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        )..show(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.red,
+            content: Text('Strava password not provided yet!'),
+          ),
+        );
       }
     }
   }

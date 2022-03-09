@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/actions/setup_demo_athlete.dart';
@@ -22,7 +21,6 @@ class OnboardingCreateUserScreen extends StatefulWidget {
 class _OnboardingCreateUserScreenState
     extends State<OnboardingCreateUserScreen> {
   Athlete athlete = Athlete();
-  Flushbar<Object>? flushbar;
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +55,7 @@ class _OnboardingCreateUserScreenState
                               color: MyColor.primary),
                           child: const Text('Create Demo User'),
                           onPressed: () async {
-                            await setupDemoAthlete(
-                              context: context,
-                              flushbar: flushbar,
-                            );
+                            await setupDemoAthlete(context: context);
                             await Navigator.pushReplacement(
                               context,
                               MaterialPageRoute<BuildContext>(

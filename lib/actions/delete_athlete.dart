@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/models/athlete.dart';
@@ -7,7 +6,6 @@ import '/utils/my_button.dart';
 Future<void> deleteAthlete({
   required BuildContext context,
   required Athlete? athlete,
-  required Flushbar<Object> flushbar,
 }) {
   return showDialog<void>(
     context: context,

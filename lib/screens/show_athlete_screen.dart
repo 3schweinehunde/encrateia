@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/actions/analyse_activities.dart';
@@ -51,7 +50,6 @@ class ShowAthleteScreen extends StatefulWidget {
 }
 
 class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
-  Flushbar<Object> flushbar = Flushbar<Object>();
   Visibility? floatingActionButton;
   late bool floatingActionButtonVisible;
 
@@ -172,7 +170,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
           await importActivitiesLocally(
             context: context,
             athlete: widget.athlete,
-            flushbar: flushbar,
           );
         },
       ),
@@ -227,7 +224,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         onPressed: () => deleteAthlete(
           context: context,
           athlete: widget.athlete,
-          flushbar: flushbar,
         ),
       ),
       ElevatedButton.icon(
@@ -239,7 +235,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         onPressed: () => analyseActivities(
           context: context,
           athlete: widget.athlete,
-          flushbar: flushbar,
         ),
       ),
       ElevatedButton.icon(
@@ -251,7 +246,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         onPressed: () => autoTagging(
           context: context,
           athlete: widget.athlete,
-          flushbar: flushbar,
         ),
       ),
       ElevatedButton.icon(
@@ -261,7 +255,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         onPressed: () => downloadDemoData(
           context: context,
           athlete: widget.athlete,
-          flushbar: flushbar,
         ),
       ),
     ];
@@ -292,7 +285,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             updateJob(
               context: context,
               athlete: widget.athlete,
-              flushbar: flushbar,
             );
             setState(() => floatingActionButtonVisible = true);
           },

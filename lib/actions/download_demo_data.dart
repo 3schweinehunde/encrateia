@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -13,7 +12,6 @@ import '/utils/icon_utils.dart';
 Future<void> downloadDemoData({
   required BuildContext context,
   required Athlete athlete,
-  required Flushbar<Object>? flushbar,
 }) async {
   if (await athlete.checkForSchemas()) {
     List<Activity> activities;
@@ -28,12 +26,17 @@ Future<void> downloadDemoData({
       'upper_palatinate_winter_challenge_half_marathon.fit',
     ];
 
-    await flushbar?.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Downloading Demo data ...',
-      icon: MyIcon.stravaDownloadWhite,
-      animationDuration: const Duration(milliseconds: 0),
-    )..show(context);
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            MyIcon.stravaDownloadWhite,
+            const Text('Downloading Demo data ...'),
+          ],
+        ),
+      ),
+    );
 
     for (final String filename in fileNames) {
       final Activity activity = Activity.fromLocalDirectory(athlete: athlete);
@@ -55,27 +58,33 @@ Future<void> downloadDemoData({
         context: context,
         activity: activity,
         athlete: athlete,
-        flushbar: flushbar,
       );
-      await flushbar?.dismiss();
-      flushbar = Flushbar<Object>(
-        message: 'Tagging »${activity.name}«',
-        animationDuration: const Duration(milliseconds: 0),
-      )..show(context);
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Tagging »${activity.name}«')),
+      );
+
       await activity.autoTagger(athlete: athlete);
     }
-    await flushbar?.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Activities imported!',
-      icon: MyIcon.finishedWhite,
-      animationDuration: const Duration(milliseconds: 0),
-    )..show(context);
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text('Activities imported!'),
+          ],
+        ),
+      ),
+    );
   } else {
-    await flushbar?.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Please set up Power Zone Schema and Heart'
-          ' Rate Zone Schema first!',
-      animationDuration: const Duration(milliseconds: 0),
-    )..show(context);
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please set up Power Zone Schema and Heart'
+            ' Rate Zone Schema first!'),
+      ),
+    );
   }
 }

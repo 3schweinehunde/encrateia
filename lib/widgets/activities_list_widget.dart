@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/models/activity.dart';
@@ -20,7 +19,6 @@ class ActivitiesListWidget extends StatefulWidget {
 
 class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   List<Activity> activities = <Activity>[];
-  Flushbar<Object>? flushbar;
 
   @override
   void initState() {
@@ -102,41 +100,62 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   }
 
   Future<void> download({required Activity activity}) async {
-    flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${activity.name}«',
-      duration: const Duration(seconds: 10),
-      icon: MyIcon.stravaDownloadWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            MyIcon.stravaDownloadWhite,
+            Text('Download .fit-File for »${activity.name}«'),
+          ],
+        ),
+      ),
+    );
 
     await activity.download(athlete: widget.athlete);
-
-    flushbar = Flushbar<Object>(
-      message: 'Download finished',
-      duration: const Duration(seconds: 3),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text('Download finished'),
+          ],
+        ),
+      ),
+    );
 
     setState(() {});
   }
 
   Future<void> parse({required Activity activity}) async {
-    Flushbar<Object> flushbar = Flushbar<Object>(
-      message: '0% of storing »${activity.name}«',
-      duration: const Duration(seconds: 10),
-      animationDuration: const Duration(milliseconds: 1),
-      titleText: const LinearProgressIndicator(value: 0),
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            const CircularProgressIndicator(value: 0),
+            Text('storing »${activity.name}«'),
+          ],
+        ),
+      ),
+    );
 
     final Stream<int> percentageStream =
         activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
-      await flushbar.dismiss();
-      flushbar = Flushbar<Object>(
-        titleText: LinearProgressIndicator(value: value / 100),
-        message: '$value% of storing »${activity.name}«',
-        duration: const Duration(seconds: 3),
-        animationDuration: const Duration(milliseconds: 1),
-      )..show(context);
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 3),
+          content: Row(
+            children: [
+              CircularProgressIndicator(value: value / 100),
+              Text('storing »${activity.name}«'),
+            ],
+          ),
+        ),
+      );
     }
     getActivities();
   }
@@ -149,17 +168,21 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   void showMyFlushbar() {
     if (widget.athlete.stravaId != null) {
       if (widget.athlete.email == null) {
-        flushbar = Flushbar<Object>(
-          message: 'Strava email not provided yet!',
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.yellow[900]!,
-        )..show(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.yellow,
+            content: Text('Strava email not provided yet!'),
+          ),
+        );
       } else if (widget.athlete.password == null) {
-        flushbar = Flushbar<Object>(
-          message: 'Strava password not provided yet!',
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        )..show(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.red,
+            content: Text('Strava password not provided yet!'),
+          ),
+        );
       }
     }
   }

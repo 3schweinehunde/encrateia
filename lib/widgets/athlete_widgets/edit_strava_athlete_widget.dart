@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/models/athlete.dart';
@@ -22,8 +21,6 @@ class EditStravaAthleteWidget extends StatefulWidget {
 }
 
 class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
-  Flushbar<Object> flushbar = Flushbar<Object>();
-
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -86,16 +83,22 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
   Future<void> saveStravaUser(BuildContext context) async {
     await widget.athlete!.save();
     await widget.athlete!.storeCredentials();
-    flushbar = Flushbar<Object>(
-      icon: MyIcon.information,
-      message: 'checking credentials...',
-      duration: const Duration(seconds: 10),
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            MyIcon.information,
+            const Text('checking credentials...'),
+          ],
+        ),
+      ),
+    );
 
     if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete!)) {
       final List<PowerZoneSchema> powerZoneSchemas =
           await widget.athlete!.powerZoneSchemas;
-      await flushbar.dismiss();
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
       if (powerZoneSchemas.isEmpty) {
         Navigator.pushReplacement(
           context,
@@ -108,11 +111,17 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
         Navigator.of(context).pop();
       }
     } else {
-      flushbar = Flushbar<Object>(
-        icon: MyIcon.error,
-        message: 'The credentials provided are invalid!',
-        duration: const Duration(seconds: 5),
-      )..show(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Row(
+            children: [
+              MyIcon.error,
+              const Text('The credentials provided are invalid!'),
+            ],
+          ),
+        ),
+      );
     }
   }
 }

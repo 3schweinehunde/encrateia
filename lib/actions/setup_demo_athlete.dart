@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/actions/download_demo_data.dart';
@@ -9,7 +8,6 @@ import '/models/weight.dart';
 
 Future<void> setupDemoAthlete({
   required BuildContext context,
-  required Flushbar<Object>? flushbar,
 }) async {
   final Athlete athlete = Athlete();
   await athlete.setupStandaloneAthlete();
@@ -31,7 +29,6 @@ Future<void> setupDemoAthlete({
   await downloadDemoData(
     context: context,
     athlete: athlete,
-    flushbar: flushbar,
   );
-  await flushbar?.dismiss();
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
 }

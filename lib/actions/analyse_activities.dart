@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import '/models/activity.dart';
@@ -8,36 +7,50 @@ import '/utils/icon_utils.dart';
 Future<void> analyseActivities({
   required BuildContext context,
   required Athlete athlete,
-  required Flushbar<Object> flushbar,
 }) async {
   List<Activity> activities;
   activities = await athlete.activities;
   int index = 0;
   int percent;
 
-  flushbar = Flushbar<Object>(
-    message: 'Calculating...',
-    duration: const Duration(seconds: 5),
-    icon: MyIcon.finishedWhite,
-  )..show(context);
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      duration: const Duration(seconds: 5),
+      content: Row(
+        children: [
+          MyIcon.finishedWhite,
+          const Text('Calculating...'),
+        ],
+      ),
+    ),
+  );
 
   for (final Activity activity in activities) {
     index += 1;
     await activity.setAverages();
-    await flushbar.dismiss();
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
     percent = 100 * index ~/ activities.length;
-    flushbar = Flushbar<Object>(
-      titleText: LinearProgressIndicator(value: percent / 100),
-      message: '$percent% done (recalculating »${activity.name}« )',
-      duration: const Duration(seconds: 2),
-      animationDuration: const Duration(milliseconds: 1),
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Row(children: [
+          CircularProgressIndicator(value: percent / 100),
+          Text('recalculating »${activity.name}«')
+        ]),
+      ),
+    );
   }
 
-  await flushbar.dismiss();
-  flushbar = Flushbar<Object>(
-    message: 'Averages are now up to date.',
-    duration: const Duration(seconds: 5),
-    icon: MyIcon.finishedWhite,
-  )..show(context);
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      duration: const Duration(seconds: 5),
+      content: Row(
+        children: [
+          MyIcon.finishedWhite,
+          const Text('Averages are now up to date.')
+        ],
+      ),
+    ),
+  );
 }
