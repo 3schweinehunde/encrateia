@@ -1,6 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-
 import '/models/critical_power.dart';
 import '/models/event.dart';
 import '/models/plot_point.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/actions/download_demo_data.dart';
 import '/models/athlete.dart';
 import '/models/heart_rate_zone_schema.dart';

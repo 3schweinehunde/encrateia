@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/actions/analyse_activities.dart';
 import '/actions/auto_tagging.dart';
 import '/actions/delete_athlete.dart';
@@ -293,15 +292,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
       ),
       body: SafeArea(
-        child: GridView.count(
+        child: GridView.extent(
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          childAspectRatio: 4,
+          childAspectRatio: 5,
           padding: const EdgeInsets.all(10),
-          crossAxisCount:
-              MediaQuery.of(context).orientation == Orientation.portrait
-                  ? 2
-                  : 4,
+          maxCrossAxisExtent: 250,
           children: tiles,
         ),
       ),

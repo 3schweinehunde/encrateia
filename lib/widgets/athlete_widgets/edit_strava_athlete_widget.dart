@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/models/power_zone_schema.dart';
 import '/models/strava_fit_download.dart';

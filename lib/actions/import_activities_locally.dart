@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/actions/parse_activity.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';

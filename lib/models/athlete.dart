@@ -1,11 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
 import 'package:strava_flutter/domain/model/model_detailed_athlete.dart';
 import 'package:uuid/uuid.dart';
-
 import '/model/model.dart'
     show
         DbActivity,

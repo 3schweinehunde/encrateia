@@ -1,6 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-
 import '/models/event.dart';
 import '/models/record_list.dart';
 import '/screens/show_event_screen.dart';

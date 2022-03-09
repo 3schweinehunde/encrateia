@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:fit_parser/fit_parser.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import '/model/model.dart' show DbEvent;
 import '/models/activity.dart';
 import '/models/lap.dart';

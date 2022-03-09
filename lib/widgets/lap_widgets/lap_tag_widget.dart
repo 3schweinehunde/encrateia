@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/models/lap.dart';
 import '/models/lap_tagging.dart';

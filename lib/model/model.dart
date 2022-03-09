@@ -1,13 +1,10 @@
 // To update model.g.dart and model.g.form.dart run in the console:
 // flutter pub run build_runner build --delete-conflicting-outputs
-
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sqfentity/sqfentity.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 part 'model.g.dart';
 
 const SqfEntityTable tableAthlete = SqfEntityTable(

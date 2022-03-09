@@ -1,5 +1,4 @@
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import '/model/model.dart' show DbPowerZone;
 import '/models/power_zone_schema.dart';
 

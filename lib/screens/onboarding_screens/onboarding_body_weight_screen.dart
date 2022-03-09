@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/models/weight.dart';
 import '/screens/onboarding_screens/onboarding_finished_screen.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-
 import '/models/athlete.dart';
 import '/models/tag_group.dart';
 import '/screens/add_tag_group_screen.dart';

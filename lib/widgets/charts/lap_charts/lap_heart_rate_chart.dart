@@ -1,6 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-
 import '/models/event.dart';
 import '/models/heart_rate_zone.dart';
 import '/models/record_list.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/log.dart';
 import '/screens/show_log_detail_screen.dart';
 import '/utils/pg_text.dart';

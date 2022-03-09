@@ -1,8 +1,6 @@
 import 'dart:math';
-
 import 'package:charts_common/common.dart' as common show Series;
 import 'package:charts_flutter/flutter.dart';
-
 import '/models/heart_rate_zone.dart';
 import '/models/lap.dart';
 import '/models/power_zone.dart';

@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-
 import '/model/model.dart' show DbActivityTagging;
 import '/models/activity.dart';
 import '/models/tag.dart';

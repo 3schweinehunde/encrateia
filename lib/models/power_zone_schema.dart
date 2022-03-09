@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import '/model/model.dart' show DbPowerZone, DbPowerZoneSchema;
 import '/models/athlete.dart';
 import '/models/power_zone.dart';

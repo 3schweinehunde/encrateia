@@ -1,7 +1,5 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-
 import '/models/bar_zone.dart';
 import '/models/heart_rate_zone.dart';
 import '/models/power_zone.dart';

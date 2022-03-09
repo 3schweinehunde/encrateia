@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '/models/athlete.dart';
 import '/models/heart_rate_zone_schema.dart';
 import '/screens/add_heart_rate_zone_schema_screen.dart';

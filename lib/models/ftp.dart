@@ -1,7 +1,5 @@
 import 'dart:math';
-
 import 'package:flutter/foundation.dart';
-
 import '/models/activity.dart';
 import '/models/activity_list.dart';
 import '/models/event.dart';

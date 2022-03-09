@@ -1,5 +1,4 @@
 import 'package:collection/collection.dart';
-
 import '/models/event.dart';
 import '/models/plot_point.dart';
 import '/models/power_zone.dart';

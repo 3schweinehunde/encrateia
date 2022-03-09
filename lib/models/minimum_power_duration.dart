@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import '/models/event.dart';
 import '/models/plot_point.dart';
 

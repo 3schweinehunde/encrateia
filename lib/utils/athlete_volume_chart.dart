@@ -1,7 +1,6 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart' as painting;
-
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/utils/enums.dart';

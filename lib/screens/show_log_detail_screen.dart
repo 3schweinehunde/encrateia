@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/log.dart';
 import '/utils/pg_text.dart';
 import '/utils/enums.dart';

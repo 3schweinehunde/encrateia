@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/models/heart_rate_zone_schema.dart';
 import '/screens/onboarding_screens/onboarding_body_weight_screen.dart';

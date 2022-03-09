@@ -1,8 +1,6 @@
 import 'dart:math';
-
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/models/event.dart';

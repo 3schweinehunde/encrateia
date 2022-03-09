@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/models/power_zone_schema.dart';
 import '/screens/onboarding_screens/onboarding_heart_rate_zone_schema_screen.dart';

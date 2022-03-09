@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
-
 import '/model/model.dart'
     show DbActivityTagging, DbLapTagging, DbIntervalTagging, DbTag, DbTagGroup;
 import '/models/tag.dart';

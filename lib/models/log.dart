@@ -1,7 +1,5 @@
 import 'dart:developer';
-
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import '/model/model.dart';
 
 // to get something as close as possible to the current method name, use:

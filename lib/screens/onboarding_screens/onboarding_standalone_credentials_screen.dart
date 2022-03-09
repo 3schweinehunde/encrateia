@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/utils/my_color.dart';
 import '/widgets/athlete_widgets/edit_standalone_athlete_widget.dart';

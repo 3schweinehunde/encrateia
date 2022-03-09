@@ -1,5 +1,4 @@
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import '../model/model.dart'
     show DbInterval, DbActivity, DbPowerZone, DbHeartRateZone, DbEvent;
 import '../models/ftp.dart' as ftp_lib;

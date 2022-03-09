@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/models/interval.dart' as encrateia;
 import '/models/interval_tagging.dart';

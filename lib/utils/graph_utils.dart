@@ -1,8 +1,6 @@
 import 'dart:ui' as ui;
-
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-
 import '/models/heart_rate_zone.dart';
 import '/models/lap.dart';
 import '/models/power_zone.dart';

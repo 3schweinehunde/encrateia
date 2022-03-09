@@ -1,8 +1,5 @@
 import 'dart:math';
-
-import 'package:flutter/material.dart';
-
-import '/models/event.dart';
+import 'package:flutter/material.dart';import '/models/event.dart';
 import '/models/lap.dart';
 import '/models/record_list.dart';
 import '/utils/enums.dart';

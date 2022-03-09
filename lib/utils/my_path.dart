@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/activity.dart';
 import '/models/event.dart';
 import '/models/record_list.dart';

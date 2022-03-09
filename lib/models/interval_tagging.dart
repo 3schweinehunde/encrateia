@@ -1,5 +1,4 @@
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import '/model/model.dart' show DbIntervalTagging;
 import '/models/interval.dart' as encrateia;
 import '/models/tag.dart';

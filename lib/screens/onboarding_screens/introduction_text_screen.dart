@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '/utils/my_color.dart';
 
 class IntroductionTextScreen extends StatelessWidget {

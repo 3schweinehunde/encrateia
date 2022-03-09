@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/models/lap.dart';
 import '/screens/show_lap_detail_screen.dart';

@@ -1,7 +1,5 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/models/bar_zone.dart';

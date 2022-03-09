@@ -1,6 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/utils/enums.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
-
 import '/models/athlete.dart';
 import '/models/log.dart';
 import '/screens/log_list_screen.dart';

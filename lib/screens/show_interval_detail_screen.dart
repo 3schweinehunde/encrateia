@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/interval.dart' as encrateia;
 import '/utils/my_color.dart';
 

@@ -1,6 +1,5 @@
 import 'package:fit_parser/fit_parser.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import '/model/model.dart'
     show DbActivity, DbEvent, DbHeartRateZone, DbLap, DbLapTagging, DbPowerZone;
 import '/models/activity.dart';

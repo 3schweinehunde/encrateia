@@ -1,7 +1,6 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '/models/activity.dart';
 import '/utils/date_time_utils.dart';
 import '/utils/my_button.dart';

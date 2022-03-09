@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart' show parse;
 import 'package:path_provider/path_provider.dart';
-
 import 'athlete.dart';
 
 // ignore: avoid_classes_with_only_static_members

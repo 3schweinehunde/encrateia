@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/models/athlete.dart';
 import '/models/tag_group.dart';
 import '/screens/add_filter_screen.dart';

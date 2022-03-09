@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '/actions/download_activity.dart';
 import '/actions/parse_activity.dart';
 import '/actions/query_strava.dart';

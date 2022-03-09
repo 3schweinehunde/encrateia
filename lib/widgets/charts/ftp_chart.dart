@@ -1,6 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-
 import '/models/event.dart';
 import '/models/plot_point.dart';
 import '/models/power_duration.dart';

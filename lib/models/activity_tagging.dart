@@ -1,5 +1,4 @@
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-
 import '/model/model.dart' show DbActivityTagging;
 import '/models/activity.dart';
 import '/models/tag.dart';

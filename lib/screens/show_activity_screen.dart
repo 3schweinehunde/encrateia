@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/models/weight.dart';
@@ -433,14 +432,12 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         ),
       ),
       body: SafeArea(
-        child: GridView.count(
+        child: GridView.extent(
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
+          childAspectRatio: 5,
           padding: const EdgeInsets.all(10),
-          crossAxisCount:
-              MediaQuery.of(context).orientation == Orientation.portrait
-                  ? 2
-                  : 4,
+          maxCrossAxisExtent: 250,
           children: tiles,
         ),
       ),

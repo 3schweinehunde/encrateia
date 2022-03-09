@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:fit_parser/fit_parser.dart';
 // ignore: implementation_imports
 import 'package:fit_parser/src/value.dart';
@@ -11,7 +10,6 @@ import 'package:sqfentity_gen/sqfentity_gen.dart';
 import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
 import 'package:strava_flutter/domain/model/model_summary_activity.dart';
 import 'package:strava_flutter/strava_client.dart';
-
 import '/model/model.dart'
     show DbActivity, DbEvent, DbHeartRateZone, DbInterval, DbLap, DbPowerZone;
 import '/secrets/secrets.dart';
