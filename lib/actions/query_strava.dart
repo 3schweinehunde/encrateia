@@ -12,7 +12,9 @@ Future<void> queryStrava({
     SnackBar(
       duration: const Duration(seconds: 10),
       content: Row(
-        children: [MyIcon.stravaDownloadWhite, const Text('Downloading new activities'),
+        children: [
+          MyIcon.stravaDownloadWhite,
+          const Text(' Downloading new activities'),
         ],
       ),
     ),
@@ -24,7 +26,9 @@ Future<void> queryStrava({
     SnackBar(
       duration: const Duration(seconds: 1),
       content: Row(
-        children: [MyIcon.finishedWhite, const Text('Download finished'),
+        children: [
+          MyIcon.finishedWhite,
+          const Text('Download finished'),
         ],
       ),
     ),

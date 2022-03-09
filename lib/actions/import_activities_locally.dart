@@ -17,7 +17,7 @@ Future<void> importActivitiesLocally({
       content: Row(
         children: [
           MyIcon.stravaDownloadWhite,
-          const Text('Importing activities from local directory'),
+          const Text(' Importing activities from local directory'),
         ],
       ),
     ),
@@ -30,7 +30,7 @@ Future<void> importActivitiesLocally({
       content: Row(
         children: [
           MyIcon.finishedWhite,
-          const Text('Activities moved into application'),
+          const Text(' Activities moved into application'),
         ],
       ),
     ),
@@ -59,7 +59,7 @@ Future<void> importActivitiesLocally({
       content: Row(
         children: [
           MyIcon.finishedWhite,
-          const Text('Activities imported!'),
+          const Text(' Activities imported!'),
         ],
       ),
     ),

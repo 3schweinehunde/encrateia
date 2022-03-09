@@ -483,7 +483,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         content: Row(
           children: [
             MyIcon.stravaDownloadWhite,
-            const Text('Starting Autotagger'),
+            const Text(' Starting Autotagger'),
           ],
         ),
       ),
@@ -498,7 +498,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         content: Row(
           children: [
             MyIcon.finishedWhite,
-            const Text('Autotagging finished'),
+            const Text(' Autotagging finished'),
           ],
         ),
       ),
@@ -530,7 +530,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         content: Row(
           children: [
             MyIcon.stravaDownloadWhite,
-            Text('Download .fit-File for »${widget.activity.name}«'),
+            Text(' Download .fit-File for »${widget.activity.name}«'),
           ],
         ),
       ),
@@ -545,7 +545,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         content: Row(
           children: [
             MyIcon.finishedWhite,
-            const Text('Download finished'),
+            const Text(' Download finished'),
           ],
         ),
       ),
@@ -566,8 +566,8 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         duration: const Duration(seconds: 10),
         content: Row(
           children: [
-            const CircularProgressIndicator(value: 0),
-            Text('storing »${widget.activity.name}«'),
+            CircularProgressIndicator(value: 0, color: MyColor.progress),
+            Text(' storing »${widget.activity.name}«'),
           ],
         ),
       ),
@@ -593,8 +593,8 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             duration: const Duration(seconds: 3),
             content: Row(
               children: [
-                CircularProgressIndicator(value: value / 100),
-                Text('storing »${widget.activity.name}«'),
+                CircularProgressIndicator(value: value / 100, color: MyColor.progress),
+                Text(' storing »${widget.activity.name}«'),
               ],
             ),
           ),

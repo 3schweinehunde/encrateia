@@ -89,7 +89,7 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
         content: Row(
           children: [
             MyIcon.information,
-            const Text('checking credentials...'),
+            const Text(' checking credentials...'),
           ],
         ),
       ),
@@ -117,7 +117,7 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
           content: Row(
             children: [
               MyIcon.error,
-              const Text('The credentials provided are invalid!'),
+              const Text(' The credentials provided are invalid!'),
             ],
           ),
         ),

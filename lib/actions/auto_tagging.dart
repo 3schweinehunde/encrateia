@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils/my_color.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/models/tag_group.dart';
@@ -51,8 +52,8 @@ Future<void> autoTagging({
           duration: const Duration(seconds: 2),
           content: Row(
             children: [
-              CircularProgressIndicator(value: percent / 100),
-              Text('$percent% done (autotagging »${activity.name}« )'),
+              CircularProgressIndicator(value: percent / 100, color: MyColor.progress),
+              Text(' $percent% done (autotagging »${activity.name}« )'),
             ],
           ),
         ),
@@ -66,7 +67,7 @@ Future<void> autoTagging({
         content: Row(
           children: [
             MyIcon.finishedWhite,
-            const Text('Autotaggings are now up to date.'),
+            const Text(' Autotaggings are now up to date.'),
           ],
         ),
       ),
@@ -78,7 +79,7 @@ Future<void> autoTagging({
         content: Row(
           children: [
             MyIcon.finishedWhite,
-            const Text('Please set up Power Zone Schema and '
+            const Text(' Please set up Power Zone Schema and '
                 'Heart Rate Zone Schema first!'),
           ],
         ),

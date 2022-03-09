@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils/my_color.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/screens/show_activity_screen.dart';
@@ -106,7 +107,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         content: Row(
           children: [
             MyIcon.stravaDownloadWhite,
-            Text('Download .fit-File for »${activity.name}«'),
+            Text(' Download .fit-File for »${activity.name}«'),
           ],
         ),
       ),
@@ -119,7 +120,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         content: Row(
           children: [
             MyIcon.finishedWhite,
-            const Text('Download finished'),
+            const Text(' Download finished'),
           ],
         ),
       ),
@@ -134,8 +135,8 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
         duration: const Duration(seconds: 10),
         content: Row(
           children: [
-            const CircularProgressIndicator(value: 0),
-            Text('storing »${activity.name}«'),
+            CircularProgressIndicator(value: 0, color: MyColor.progress),
+            Text(' storing »${activity.name}«'),
           ],
         ),
       ),
@@ -150,8 +151,8 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           duration: const Duration(seconds: 3),
           content: Row(
             children: [
-              CircularProgressIndicator(value: value / 100),
-              Text('storing »${activity.name}«'),
+              CircularProgressIndicator(value: value / 100, color: MyColor.progress),
+              Text(' storing »${activity.name}«'),
             ],
           ),
         ),

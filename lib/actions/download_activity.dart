@@ -15,7 +15,7 @@ Future<void> downloadActivity({
       duration: const Duration(seconds: 10),
       content: Row(children: [
         MyIcon.stravaDownloadWhite,
-        Text('Download .fit-File for »${activity.name}«'),
+        Text(' Download .fit-File for »${activity.name}«'),
       ]),
     ),
   );
@@ -29,7 +29,7 @@ Future<void> downloadActivity({
       content: Row(
         children: [
           MyIcon.finishedWhite,
-          const Text('Download finished'),
+          const Text(' Download finished'),
         ],
       ),
     ),

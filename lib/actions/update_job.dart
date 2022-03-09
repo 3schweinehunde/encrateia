@@ -51,7 +51,7 @@ Future<void> updateJob({
         content: Row(
           children: [
             MyIcon.finishedWhite,
-            const Text('You are now up to date!'),
+            const Text(' You are now up to date!'),
           ],
         ),
       ),
@@ -63,7 +63,7 @@ Future<void> updateJob({
         content: Row(
           children: [
             MyIcon.finishedWhite,
-            const Text('Please set up Power Zone Schema and '
+            const Text(' Please set up Power Zone Schema and '
                 'Heart Rate Zone Schema first!'),
           ],
         ),

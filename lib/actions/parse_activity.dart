@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/my_color.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/models/log.dart';
@@ -14,8 +15,8 @@ Future<void> parseActivity({
     SnackBar(
       content: Row(
         children: [
-          const CircularProgressIndicator(value: 0),
-          Text('storing »${activity.name}«'),
+          CircularProgressIndicator(value: 0, color: MyColor.progress),
+          Text(' storing »${activity.name}«'),
         ],
       ),
     ),
@@ -32,7 +33,7 @@ Future<void> parseActivity({
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Analysing »${activity.name}«'),
+            content: Text(' Analyzing »${activity.name}«'),
           ),
         );
       } else {
@@ -41,8 +42,8 @@ Future<void> parseActivity({
           SnackBar(
             content: Row(
               children: [
-                CircularProgressIndicator(value: value / 100),
-                Text('storing »${activity.name}«'),
+                CircularProgressIndicator(value: value / 100, color: MyColor.progress),
+                Text(' storing »${activity.name}«'),
               ],
             ),
           ),

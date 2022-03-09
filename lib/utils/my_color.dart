@@ -70,6 +70,8 @@ class MyColor {
   static Color tag = lavender;
   static Color interval = pinkRose;
 
+  static Color progress = mint;
+
   static Color textColor({
     required Color backgroundColor,
     bool selected = true,

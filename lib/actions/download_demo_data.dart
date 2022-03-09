@@ -32,7 +32,7 @@ Future<void> downloadDemoData({
         content: Row(
           children: [
             MyIcon.stravaDownloadWhite,
-            const Text('Downloading Demo data ...'),
+            const Text(' Downloading Demo data ...'),
           ],
         ),
       ),
@@ -62,7 +62,7 @@ Future<void> downloadDemoData({
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Tagging »${activity.name}«')),
+        SnackBar(content: Text(' Tagging »${activity.name}«')),
       );
 
       await activity.autoTagger(athlete: athlete);
@@ -73,7 +73,7 @@ Future<void> downloadDemoData({
         content: Row(
           children: [
             MyIcon.finishedWhite,
-            const Text('Activities imported!'),
+            const Text(' Activities imported!'),
           ],
         ),
       ),
@@ -82,7 +82,7 @@ Future<void> downloadDemoData({
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Please set up Power Zone Schema and Heart'
+        content: Text(' Please set up Power Zone Schema and Heart'
             ' Rate Zone Schema first!'),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../utils/my_color.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/utils/icon_utils.dart';
@@ -19,7 +20,7 @@ Future<void> analyseActivities({
       content: Row(
         children: [
           MyIcon.finishedWhite,
-          const Text('Calculating...'),
+          const Text(' Calculating...'),
         ],
       ),
     ),
@@ -34,8 +35,8 @@ Future<void> analyseActivities({
       SnackBar(
         duration: const Duration(seconds: 2),
         content: Row(children: [
-          CircularProgressIndicator(value: percent / 100),
-          Text('recalculating »${activity.name}«')
+          CircularProgressIndicator(value: percent / 100, color: MyColor.progress),
+          Text(' recalculating »${activity.name}«')
         ]),
       ),
     );
@@ -48,7 +49,7 @@ Future<void> analyseActivities({
       content: Row(
         children: [
           MyIcon.finishedWhite,
-          const Text('Averages are now up to date.')
+          const Text(' Averages are now up to date.')
         ],
       ),
     ),
