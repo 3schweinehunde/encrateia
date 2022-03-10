@@ -355,15 +355,15 @@ class Activity {
     return cachedTags;
   }
 
-  Future<double?> get weight async {
+  Future<double> get weight async {
     if (cachedWeight == null) {
-      final Weight weight = await (Weight.getBy(
+      final Weight weight = await Weight.getBy(
         athletesId: athletesId,
         date: timeCreated,
-      ) as Future<Weight>);
+      );
       cachedWeight = weight.value;
     }
-    return cachedWeight;
+    return cachedWeight!;
   }
 
   Future<double?> get ecor async {
@@ -726,8 +726,9 @@ class Activity {
         date: timeCreated,
       );
 
-  Future<PowerZone?> get powerZone async {
-    if (_powerZone == null) {
+  Future<PowerZone> get powerZone async {
+    PowerZone? powerZone = _powerZone;
+    if (powerZone == null) {
       final DbPowerZone? dbPowerZone = await DbPowerZone()
           .select()
           .powerZoneSchemataId
@@ -739,13 +740,14 @@ class Activity {
           .upperLimit
           .greaterThanOrEquals(avgPower)
           .toSingle();
-      _powerZone = PowerZone.exDb(dbPowerZone ?? DbPowerZone());
+      powerZone = PowerZone.exDb(dbPowerZone!);
     }
-    return _powerZone;
+    return powerZone;
   }
 
-  Future<HeartRateZone?> get heartRateZone async {
-    if (_heartRateZone == null) {
+  Future<HeartRateZone> get heartRateZone async {
+    HeartRateZone? heartRateZone = _heartRateZone;
+    if (heartRateZone == null) {
       final DbHeartRateZone? dbHeartRateZone = await DbHeartRateZone()
           .select()
           .heartRateZoneSchemataId
@@ -758,13 +760,13 @@ class Activity {
           .greaterThanOrEquals(avgHeartRate)
           .toSingle();
 
-      _heartRateZone = HeartRateZone.exDb(dbHeartRateZone ?? DbHeartRateZone());
+      return HeartRateZone.exDb(dbHeartRateZone!);
     }
-    return _heartRateZone;
+    return heartRateZone;
   }
 
   Future<void> autoTagger({required Athlete? athlete}) async {
-    final PowerZone powerZone = await (this.powerZone as Future<PowerZone>);
+    final PowerZone powerZone = await this.powerZone;
     if (powerZone.id != null) {
       final Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete!,
@@ -780,7 +782,7 @@ class Activity {
     }
 
     final HeartRateZone heartRateZone =
-        await (this.heartRateZone as Future<HeartRateZone>);
+        await this.heartRateZone ;
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete!,

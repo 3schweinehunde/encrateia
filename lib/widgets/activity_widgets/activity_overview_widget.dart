@@ -112,7 +112,7 @@ class _ActivityOverviewWidgetState extends State<ActivityOverviewWidget> {
     return GridView.extent(
       mainAxisSpacing: 4,
       crossAxisSpacing: 4,
-      maxCrossAxisExtent: 400,
+      maxCrossAxisExtent: 600,
       childAspectRatio: 5,
       children: tiles,
     );

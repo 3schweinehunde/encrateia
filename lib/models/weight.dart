@@ -26,7 +26,7 @@ class Weight {
   Future<BoolResult> delete() async => await _db!.delete();
   Future<int?> save() async => await _db!.save();
 
-  static Future<Weight?> getBy({int? athletesId, DateTime? date}) async {
+  static Future<Weight> getBy({int? athletesId, DateTime? date}) async {
     List<DbWeight> dbWeights;
 
     dbWeights = await DbWeight()
@@ -50,7 +50,12 @@ class Weight {
           .top(1)
           .toList();
     }
-    return (dbWeights.isNotEmpty) ? Weight._fromDb(dbWeights.first) : null;
+    return dbWeights.isNotEmpty
+        ? Weight._fromDb(dbWeights.first)
+        : Weight._fromDb(DbWeight()
+          ..athletesId = athletesId
+          ..value = 70
+          ..date = DateTime.now());
   }
 
   static Weight exDb(DbWeight db) => Weight._fromDb(db);

@@ -331,9 +331,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             color: MyColor.add,
             textColor: MyColor.textColor(backgroundColor: MyColor.add)),
         icon: MyIcon.settings,
-        label: const Expanded(
-          child: Text('Rerun Autotagging'),
-        ),
+        label: const Text('Rerun Autotagging'),
         onPressed: () => autoTagger(),
       ),
       if (<String>['new', 'downloaded', 'persisted']
@@ -343,9 +341,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.add,
               textColor: MyColor.textColor(backgroundColor: MyColor.add)),
           icon: MyIcon.download,
-          label: const Expanded(
-            child: Text('Download fit file'),
-          ),
+          label: const Text('Download fit file'),
           onPressed: () => download(),
         ),
       if (<String>['downloaded', 'persisted'].contains(widget.activity.state))
@@ -354,9 +350,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.add,
               textColor: MyColor.textColor(backgroundColor: MyColor.add)),
           icon: MyIcon.parse,
-          label: const Expanded(
-            child: Text('Parse fit file'),
-          ),
+          label: const Text('Parse fit file'),
           onPressed: () => parse(),
         ),
       if (widget.activity.excluded == true)
@@ -365,9 +359,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.include,
               textColor: MyColor.textColor(backgroundColor: MyColor.include)),
           icon: MyIcon.filter,
-          label: const Expanded(
-            child: Text('Include in Analysis'),
-          ),
+          label: const Text('Include in Analysis'),
           onPressed: () => include(),
         )
       else
@@ -376,9 +368,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.exclude,
               textColor: MyColor.textColor(backgroundColor: MyColor.exclude)),
           icon: MyIcon.filter,
-          label: const Expanded(
-            child: Text('Exclude from Analysis'),
-          ),
+          label: const Text('Exclude from Analysis'),
           onPressed: () => exclude(),
         ),
       navigationButton(
@@ -407,9 +397,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.delete,
               textColor: MyColor.textColor(backgroundColor: MyColor.delete)),
           icon: MyIcon.delete,
-          label: const Expanded(
-            child: Text('Delete Activity'),
-          ),
+          label: const Text('Delete Activity'),
           onPressed: () => delete(),
         ),
     ];
@@ -456,9 +444,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
       style: MyButtonStyle.raisedButtonStyle(
           color: color, textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
-      label: Expanded(
-        child: Text(title),
-      ),
+      label: Text(title),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(
@@ -590,7 +576,8 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             duration: const Duration(seconds: 3),
             content: Row(
               children: [
-                CircularProgressIndicator(value: value / 100, color: MyColor.progress),
+                CircularProgressIndicator(
+                    value: value / 100, color: MyColor.progress),
                 Text(' storing »${widget.activity.name}«'),
               ],
             ),
