@@ -83,6 +83,7 @@ class LapMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: lap!.startPositionLong, pq: PQ.longitude),
@@ -92,6 +93,7 @@ class LapMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: lap!.endPositionLong, pq: PQ.longitude),
@@ -105,6 +107,7 @@ class LapMetadataWidget extends StatelessWidget {
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               PQText(value: lap!.avgSpeed, pq: PQ.speed),
@@ -117,11 +120,11 @@ class LapMetadataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
+    return GridView.extent(
       mainAxisSpacing: 4,
       crossAxisSpacing: 4,
-      crossAxisCount:
-          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      maxCrossAxisExtent: 350,
+      childAspectRatio: 3,
       children: tiles,
     );
   }

@@ -35,13 +35,13 @@ class PQText extends StatelessWidget {
         final int minutes = (totalSeconds / 60).floor();
         final String seconds =
             (totalSeconds - minutes * 60).round().toString().padLeft(2, '0');
-        return Text('$minutes:$seconds /km');
+        return Text('$minutes:$seconds/km');
       case PQ.pace:
         final double minutes = value as double;
         final int fullMinutes = minutes.floor();
         final String seconds =
             ((minutes - fullMinutes) * 60).round().toString().padLeft(2, '0');
-        return Text('$fullMinutes:$seconds /km');
+        return Text('$fullMinutes:$seconds/km');
       case PQ.heartRate:
         return Text((value as num).toStringAsPrecision(3) + ' bpm');
       case PQ.ecor:

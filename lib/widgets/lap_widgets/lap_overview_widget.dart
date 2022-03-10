@@ -99,11 +99,11 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
+    return GridView.extent(
       mainAxisSpacing: 4,
       crossAxisSpacing: 4,
-      crossAxisCount:
-          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      maxCrossAxisExtent: 600,
+      childAspectRatio: 5,
       children: tiles,
     );
   }
