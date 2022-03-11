@@ -38,6 +38,9 @@ Future<void> catchUp({required List<Activity> backlog}) async {
 double calculate({required List<Event> records}) {
   final PowerDuration powerDuration = PowerDuration(records: records);
   final PowerDuration ftpCurve = powerDuration.normalize();
-  final double ftp = ftpCurve.powerMap.values.toList().reduce(max);
-  return ftp;
+  final List<double> powerValues = ftpCurve.powerMap.values.toList();
+  if (powerValues.isNotEmpty) {
+    return ftpCurve.powerMap.values.toList().reduce(max);
+  }
+  return -1;
 }

@@ -110,7 +110,7 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
 
   Future<void> getData() async {
     final Lap lap = widget.lap!;
-    records = RecordList<Event>(await (lap.records as Future<List<Event>>));
+    records = RecordList<Event>(await lap.records);
     setState(() => loading = false);
   }
 }

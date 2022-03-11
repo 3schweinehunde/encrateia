@@ -115,7 +115,7 @@ class _LapLegSpringStiffnessWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await (widget.lap!.records as Future<List<Event>>));
+    records = RecordList<Event>(await widget.lap!.records);
     setState(() => loading = false);
   }
 }

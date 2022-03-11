@@ -103,7 +103,7 @@ class _LapsListWidgetState extends State<LapsListWidget> {
   }
 
   Future<void> copyToInterval({required Lap lap}) async {
-    final List<Event> records = await (lap.records as Future<List<Event>>);
+    final List<Event> records = await lap.records;
 
     final encrateia.Interval interval = encrateia.Interval()
       ..athletesId = widget.athlete!.id

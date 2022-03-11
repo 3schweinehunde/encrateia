@@ -232,9 +232,9 @@ class Lap {
     return lap;
   }
 
-  Future<List<Event>?> get records async {
+  Future<List<Event>> get records async {
     _records ??= await Event.recordsByLap(this);
-    return _records;
+    return _records ?? <Event>[];
   }
 
   Future<PowerZoneSchema?> get powerZoneSchema async {
@@ -265,7 +265,7 @@ class Lap {
 
   Future<void> setAverages() async {
     final RecordList<Event> recordList =
-        RecordList<Event>(await (records as Future<List<Event>>));
+        RecordList<Event>(await records);
     final RecordList<Event> eventList = RecordList<Event>(await events);
     _db
       ..avgPower = recordList.avgPower()
@@ -374,7 +374,7 @@ class Lap {
   Future<List<BarZone>> powerZoneCounts() async {
     final PowerZoneSchema powerZoneSchema =
         await (this.powerZoneSchema as Future<PowerZoneSchema>);
-    final List<Event> records = await (this.records as Future<List<Event>>);
+    final List<Event> records = await this.records;
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();
     final List<BarZone> powerZoneCounts = await RecordList<Event>(powerRecords)
@@ -385,7 +385,7 @@ class Lap {
   Future<List<BarZone>> heartRateZoneCounts() async {
     final HeartRateZoneSchema heartRateZoneSchema =
         await (this.heartRateZoneSchema as Future<HeartRateZoneSchema>);
-    final List<Event> records = await (this.records as Future<List<Event>>);
+    final List<Event> records = await this.records;
     final List<Event> heartRateRecords =
         records.where((Event record) => record.heartRate != null).toList();
     final List<BarZone> heartRateZoneCounts =

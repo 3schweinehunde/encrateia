@@ -115,7 +115,7 @@ class _LapPowerWidgetState extends State<LapPowerWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await (widget.lap!.records as Future<List<Event>>));
+    records = RecordList<Event>(await widget.lap!.records);
     powerZoneSchema = await widget.lap!.powerZoneSchema;
     if (powerZoneSchema != null) {
       powerZones = await powerZoneSchema!.powerZones;
