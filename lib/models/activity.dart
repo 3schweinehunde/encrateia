@@ -85,7 +85,7 @@ class Activity {
   int? get id => _db.id;
 
   DateTime? get startTime => _db.startTime;
-  DateTime? get timeCreated => _db.timeCreated;
+  DateTime get timeCreated => _db.timeCreated!;
   DateTime? get timeStamp => _db.timeStamp;
 
   String? get event => _db.event;

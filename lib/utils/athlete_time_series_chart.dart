@@ -61,9 +61,9 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Series<Activity, DateTime?>> data =
-        <Series<Activity, DateTime?>>[
-      Series<Activity, DateTime?>(
+    final List<Series<Activity, DateTime>> data =
+        <Series<Activity, DateTime>>[
+      Series<Activity, DateTime>(
         id: widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.timeCreated,
@@ -71,7 +71,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
             activity.getAttribute(widget.activityAttr) as num?,
         data: displayedActivities,
       ),
-      Series<Activity, DateTime?>(
+      Series<Activity, DateTime>(
         id: 'gliding_' + widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.timeCreated,
@@ -171,15 +171,12 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
         if (selectedActivity != null)
           SizedBox(
             height: 200,
-            child: GridView.count(
+            child: GridView.extent(
               padding: const EdgeInsets.all(5),
-              crossAxisCount:
-                  MediaQuery.of(context).orientation == Orientation.landscape
-                      ? 4
-                      : 2,
-              childAspectRatio: 4,
-              crossAxisSpacing: 3,
-              mainAxisSpacing: 3,
+              maxCrossAxisExtent: 250,
+              childAspectRatio: 5,
+              crossAxisSpacing: 2,
+              mainAxisSpacing: 2,
               children: <Widget>[
                 MyButton.activity(
                   child: Text(selectedActivity!.name!),
