@@ -40,10 +40,9 @@ class _ActivityWorkWidgetState extends State<ActivityWorkWidget> {
           .toList();
 
       if (powerRecords.isNotEmpty) {
-        return Column(
+        return ListView(
           children: <Widget>[
-            RepaintBoundary(
-                key: widgetKey, child: WorkChart(records: powerRecords)),
+            WorkChart(records: powerRecords),
             Row(children: <Widget>[
               const Spacer(),
               MyButton.save(

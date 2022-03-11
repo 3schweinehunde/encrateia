@@ -28,9 +28,9 @@ class ActivityStrideRatioChart extends StatelessWidget {
       amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<DoublePlotPoint, int?>> data =
-        <Series<DoublePlotPoint, int?>>[
-      Series<DoublePlotPoint, int?>(
+    final List<Series<DoublePlotPoint, int>> data =
+        <Series<DoublePlotPoint, int>>[
+      Series<DoublePlotPoint, int>(
         id: 'Stride Ratio',
         colorFn: (_, __) => Color.black,
         domainFn: (DoublePlotPoint record, _) => record.domain,

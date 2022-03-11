@@ -54,7 +54,8 @@ class WorkChart extends StatelessWidget {
       ),
     ];
 
-    return ListView(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         AspectRatio(
           aspectRatio:

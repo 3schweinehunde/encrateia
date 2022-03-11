@@ -276,8 +276,7 @@ class Interval {
 
   Future<HeartRateZoneSchema?> get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
-      final DbActivity dbActivity =
-          await (DbActivity().getById(activitiesId) as Future<DbActivity>);
+      final DbActivity dbActivity = (await DbActivity().getById(activitiesId))!;
 
       _heartRateZoneSchema = await HeartRateZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
@@ -289,8 +288,7 @@ class Interval {
 
   Future<PowerZoneSchema?> get powerZoneSchema async {
     if (_powerZoneSchema == null) {
-      final DbActivity dbActivity =
-          await (DbActivity().getById(activitiesId) as Future<DbActivity>);
+      final DbActivity dbActivity = (await DbActivity().getById(activitiesId))!;
 
       _powerZoneSchema = await PowerZoneSchema.getBy(
         athletesId: dbActivity.athletesId,
