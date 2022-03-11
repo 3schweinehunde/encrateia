@@ -29,6 +29,6 @@ extension StatisticFunctions on Iterable<dynamic> {
   List<num?> nonZeros() {
     final List<num> values = whereType<num>().toList();
     final Iterable<num?> nonZeroValues = values.where((num value) => value != 0);
-    return nonZeroValues.isNotEmpty ? nonZeroValues.toList() : <num>[];
+    return nonZeroValues.toList();
   }
 }
