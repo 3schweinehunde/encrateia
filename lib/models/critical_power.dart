@@ -19,7 +19,7 @@ class CriticalPower extends PowerDuration {
     });
 
     plotPoints.sort((DoublePlotPoint a, DoublePlotPoint b) =>
-        a.domain!.compareTo(b.domain!));
+        a.domain.compareTo(b.domain));
     return plotPoints;
   }
 

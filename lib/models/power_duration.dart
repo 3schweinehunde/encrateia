@@ -14,8 +14,8 @@ class PowerDuration {
           .inSeconds;
 
       powerSum.forEach((int start, EnergyPoint energyPoint) {
-        final int newEnergy = energyPoint.energy! + power * duration;
-        final int newDuration = energyPoint.duration! + duration;
+        final int newEnergy = energyPoint.energy + power * duration;
+        final int newDuration = energyPoint.duration + duration;
 
         powerSum[start] = EnergyPoint(
           energy: newEnergy,
@@ -64,7 +64,7 @@ class PowerDuration {
     });
 
     plotPoints.sort(
-        (DoublePlotPoint a, DoublePlotPoint b) => a.domain!.compareTo(b.domain!));
+        (DoublePlotPoint a, DoublePlotPoint b) => a.domain.compareTo(b.domain));
     return plotPoints;
   }
 

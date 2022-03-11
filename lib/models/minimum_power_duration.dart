@@ -46,7 +46,7 @@ class MinimumPowerDuration {
     });
 
     plotPoints
-        .sort((IntPlotPoint a, IntPlotPoint b) => a.domain!.compareTo(b.domain!));
+        .sort((IntPlotPoint a, IntPlotPoint b) => a.domain.compareTo(b.domain));
     return plotPoints;
   }
 

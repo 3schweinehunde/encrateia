@@ -31,8 +31,8 @@ class ActivityHeartRateChart extends StatelessWidget {
       amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<IntPlotPoint, int?>> data = <Series<IntPlotPoint, int?>>[
-      Series<IntPlotPoint, int?>(
+    final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
+      Series<IntPlotPoint, int>(
         id: 'Heart Rate',
         colorFn: (_, __) => Color.black,
         domainFn: (IntPlotPoint point, _) => point.domain,
