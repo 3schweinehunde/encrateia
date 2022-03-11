@@ -14,9 +14,9 @@ class FtpChart extends StatelessWidget {
     final PowerDuration powerDuration = PowerDuration(records: records!);
     final PowerDuration ftpCurve = powerDuration.normalize();
 
-    final List<Series<DoublePlotPoint, num?>> data =
-        <Series<DoublePlotPoint, num?>>[
-      Series<DoublePlotPoint, int?>(
+    final List<Series<DoublePlotPoint, num>> data =
+        <Series<DoublePlotPoint, num>>[
+      Series<DoublePlotPoint, int>(
         id: 'Power Duration',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -59,7 +59,7 @@ class FtpChart extends StatelessWidget {
       aspectRatio:
           MediaQuery.of(context).orientation == Orientation.portrait ? 1 : 2,
       child: LineChart(
-        data as List<Series<dynamic, num>>,
+        data,
         defaultRenderer: LineRendererConfig<num>(
           includeArea: true,
           strokeWidthPx: 1,

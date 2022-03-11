@@ -88,7 +88,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                   ? 1
                   : 2,
           child: TimeSeriesChart(
-            data as List<Series<dynamic, DateTime>>,
+            data,
             animate: true,
             flipVerticalAxis: widget.flipVerticalAxis ?? false,
             selectionModels: <SelectionModelConfig<DateTime>>[

@@ -15,9 +15,9 @@ class WorkChart extends StatelessWidget {
     final CriticalPower criticalPower = CriticalPower(records: records!);
     final CriticalPower workCurve = criticalPower.workify();
 
-    final List<Series<DoublePlotPoint, num?>> data =
-        <Series<DoublePlotPoint, num?>>[
-      Series<DoublePlotPoint, int?>(
+    final List<Series<DoublePlotPoint, num>> data =
+        <Series<DoublePlotPoint, num>>[
+      Series<DoublePlotPoint, int>(
         id: 'Work',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (DoublePlotPoint record, _) => record.domain,
@@ -62,7 +62,7 @@ class WorkChart extends StatelessWidget {
                   ? 1
                   : 2,
           child: LineChart(
-            data as List<Series<dynamic, num>>,
+            data,
             defaultRenderer: LineRendererConfig<num>(
               includeArea: true,
               strokeWidthPx: 1,

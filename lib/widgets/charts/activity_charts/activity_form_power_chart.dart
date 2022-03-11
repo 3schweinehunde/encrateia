@@ -32,8 +32,8 @@ class ActivityFormPowerChart extends StatelessWidget {
       amount: athlete!.recordAggregationCount,
     );
 
-    final List<Series<IntPlotPoint, int?>> data = <Series<IntPlotPoint, int?>>[
-      Series<IntPlotPoint, int?>(
+    final List<Series<IntPlotPoint, int>> data = <Series<IntPlotPoint, int>>[
+      Series<IntPlotPoint, int>(
         id: 'Form power',
         colorFn: (_, __) => Color.black,
         domainFn: (IntPlotPoint record, _) => record.domain,

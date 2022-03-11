@@ -24,8 +24,8 @@ class ActivityList<E> extends DelegatingList<E> {
       for (int olderIndex = index + 1;
           olderIndex < _activities.length;
           olderIndex++) {
-        final double daysAgo = activity.timeCreated!
-                .difference(_activities[olderIndex].timeCreated!)
+        final double daysAgo = activity.timeCreated
+                .difference(_activities[olderIndex].timeCreated)
                 .inHours /
             24;
         if (daysAgo > fullDecay) {
