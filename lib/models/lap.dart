@@ -299,7 +299,7 @@ class Lap {
     await save();
   }
 
-  Future<PowerZone?> get powerZone async {
+  Future<PowerZone> get powerZone async {
     if (_powerZone == null) {
       final DbPowerZone? dbPowerZone = await DbPowerZone()
           .select()
@@ -314,10 +314,10 @@ class Lap {
           .toSingle();
       _powerZone = PowerZone.exDb(dbPowerZone ?? DbPowerZone());
     }
-    return _powerZone;
+    return _powerZone!;
   }
 
-  Future<HeartRateZone?> get heartRateZone async {
+  Future<HeartRateZone> get heartRateZone async {
     if (_heartRateZone == null) {
       final DbHeartRateZone? dbHeartRateZone = await DbHeartRateZone()
           .select()
@@ -333,11 +333,11 @@ class Lap {
 
       _heartRateZone = HeartRateZone.exDb(dbHeartRateZone ?? DbHeartRateZone());
     }
-    return _heartRateZone;
+    return _heartRateZone!;
   }
 
   Future<void> autoTagger({required Athlete? athlete}) async {
-    final PowerZone powerZone = await (this.powerZone as Future<PowerZone>);
+    final PowerZone powerZone = await this.powerZone;
     if (powerZone.id != null) {
       final Tag powerTag = await Tag.autoPowerTag(
         athlete: athlete!,
@@ -353,7 +353,7 @@ class Lap {
     }
 
     final HeartRateZone heartRateZone =
-        await (this.heartRateZone as Future<HeartRateZone>);
+        await this.heartRateZone;
     if (heartRateZone.id != null) {
       final Tag heartRateTag = await Tag.autoHeartRateTag(
         athlete: athlete!,

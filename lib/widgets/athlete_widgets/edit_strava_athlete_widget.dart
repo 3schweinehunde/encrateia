@@ -97,7 +97,7 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
     if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete!)) {
       final List<PowerZoneSchema> powerZoneSchemas =
           await widget.athlete!.powerZoneSchemas;
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
       if (powerZoneSchemas.isEmpty) {
         Navigator.pushReplacement(
           context,

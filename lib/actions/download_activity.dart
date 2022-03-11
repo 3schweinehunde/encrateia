@@ -8,7 +8,7 @@ Future<void> downloadActivity({
   required Activity activity,
   required Athlete athlete,
 }) async {
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       duration: const Duration(seconds: 10),
@@ -21,7 +21,7 @@ Future<void> downloadActivity({
 
   await activity.download(athlete: athlete);
 
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       duration: const Duration(seconds: 2),

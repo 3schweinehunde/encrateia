@@ -43,7 +43,7 @@ Future<void> updateJob({
       );
       await activity.autoTagger(athlete: athlete);
     }
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 5),

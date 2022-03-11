@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '/models/activity.dart';
 import '/models/athlete.dart';
 import '/utils/icon_utils.dart';
 
@@ -19,8 +18,8 @@ Future<void> queryStrava({
     ),
   );
 
-  await Activity.queryStrava(athlete: athlete);
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  await athlete.queryStrava();
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       duration: const Duration(seconds: 1),

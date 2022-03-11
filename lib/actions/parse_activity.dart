@@ -9,7 +9,7 @@ Future<void> parseActivity({
   required Activity activity,
   required Athlete athlete,
 }) async {
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
@@ -28,16 +28,16 @@ Future<void> parseActivity({
     percentageStream = activity.parse(athlete: athlete);
     await for (final int value in percentageStream) {
       if (value == -2) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
       } else if (value == -1) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(' Analyzing »${activity.name}«'),
           ),
         );
       } else {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
@@ -60,7 +60,7 @@ Future<void> parseActivity({
     await log.save();
     activity.nonParsable = true;
     await activity.save();
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(

@@ -3,6 +3,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
 import 'package:strava_flutter/domain/model/model_detailed_athlete.dart';
+import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
+import 'package:strava_flutter/domain/model/model_summary_activity.dart';
+import 'package:strava_flutter/strava_client.dart';
 import 'package:uuid/uuid.dart';
 import '/model/model.dart'
     show
@@ -17,6 +20,7 @@ import '/models/activity.dart';
 import '/models/interval.dart' as encrateia;
 import '/models/power_zone_schema.dart';
 import '/models/tag_group.dart';
+import '/secrets/secrets.dart';
 import '/models/weight.dart';
 import 'heart_rate_zone_schema.dart';
 
@@ -26,6 +30,7 @@ class Athlete {
 
   String? email;
   String? password;
+  StravaClient? stravaClient;
 
   DbAthlete _db = DbAthlete(uuid: const Uuid().v1());
   List<int?> filters = <int?>[];
@@ -180,6 +185,46 @@ class Athlete {
   Future<bool> checkForSchemas() async =>
       (await powerZoneSchemas).isNotEmpty &&
       (await heartRateZoneSchemas).isNotEmpty;
+
+  Future<void> queryStrava() async {
+    var currentStravaClient = stravaClient;
+    if (currentStravaClient == null) {
+      stravaClient = StravaClient(clientId: clientId, secret: secret, applicationName: uuid);
+      currentStravaClient = stravaClient!;
+    }
+
+    await currentStravaClient.authentication
+        .authenticate(scopes: <AuthenticationScope>[
+      AuthenticationScope.read_all,
+      AuthenticationScope.profile_read_all,
+      AuthenticationScope.activity_read_all
+    ], redirectUrl: 'stravaflutter://redirect');
+
+    final DateTime now = DateTime.now();
+    final DateTime startDate =
+        DateTime.now().subtract(Duration(days: downloadInterval!));
+
+    final List<SummaryActivity> summaryActivities = await currentStravaClient
+        .activities
+        .listLoggedInAthleteActivities(now, startDate, 1, 100);
+
+    await Future.forEach(summaryActivities,
+        (SummaryActivity summaryActivity) async {
+      final Activity activity = Activity.fromStrava(
+        summaryActivity: summaryActivity,
+        athlete: this,
+      );
+
+      final List<DbActivity> existingAlready = await DbActivity()
+          .select()
+          .stravaId
+          .equals(activity.stravaId)
+          .toList();
+      if (existingAlready.isEmpty) {
+        await activity.save();
+      }
+    });
+  }
 
   static Athlete exDb(DbAthlete db) => Athlete._fromDb(db);
 }

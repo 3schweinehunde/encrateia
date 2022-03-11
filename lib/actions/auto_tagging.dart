@@ -43,7 +43,7 @@ Future<void> autoTagging({
     for (final Activity activity in activities) {
       index += 1;
       await activity.autoTagger(athlete: athlete);
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
       percent = 100 * index ~/ activities.length;
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -59,7 +59,7 @@ Future<void> autoTagging({
       );
     }
 
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 5),

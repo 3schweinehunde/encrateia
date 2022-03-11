@@ -144,7 +144,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     final Stream<int> percentageStream =
         activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 3),

@@ -474,7 +474,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
     await widget.activity.autoTagger(athlete: widget.athlete);
 
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 2),
@@ -521,7 +521,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
 
     await widget.activity.download(athlete: widget.athlete);
 
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 1),
@@ -560,9 +560,9 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         widget.activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
       if (value == -2) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
       } else if (value == -1) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             duration: const Duration(seconds: 1),
@@ -570,7 +570,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
           ),
         );
       } else {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             duration: const Duration(seconds: 3),

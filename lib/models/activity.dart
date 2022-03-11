@@ -7,12 +7,11 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
 import 'package:strava_flutter/domain/model/model_summary_activity.dart';
-import 'package:strava_flutter/strava_client.dart';
+
 import '/model/model.dart'
     show DbActivity, DbEvent, DbHeartRateZone, DbInterval, DbLap, DbPowerZone;
-import '/secrets/secrets.dart';
+
 import '/utils/date_time_utils.dart';
 import '/utils/enums.dart';
 import 'activity_tagging.dart';
@@ -85,7 +84,7 @@ class Activity {
   int? get id => _db.id;
 
   DateTime? get startTime => _db.startTime;
-  DateTime get timeCreated => _db.timeCreated!;
+  DateTime get timeCreated => _db.timeCreated ?? DateTime(1970);
   DateTime? get timeStamp => _db.timeStamp;
 
   String? get event => _db.event;
@@ -675,43 +674,6 @@ class Activity {
     currentLap = Lap();
     await currentLap.save();
     eventsForCurrentLap = <Event>[];
-  }
-
-  static Future<void> queryStrava({required Athlete athlete}) async {
-    final StravaClient stravaClient =
-        StravaClient(clientId: clientId, secret: secret);
-
-    await stravaClient.authentication
-        .authenticate(scopes: <AuthenticationScope>[
-      AuthenticationScope.read_all,
-      AuthenticationScope.profile_read_all,
-      AuthenticationScope.activity_read_all
-    ], redirectUrl: 'stravaflutter://redirect');
-
-    final DateTime now = DateTime.now();
-    final DateTime startDate =
-        DateTime.now().subtract(Duration(days: athlete.downloadInterval!));
-
-    final List<SummaryActivity> summaryActivities = await stravaClient
-        .activities
-        .listLoggedInAthleteActivities(now, startDate, 1, 100);
-
-    await Future.forEach(summaryActivities,
-        (SummaryActivity summaryActivity) async {
-      final Activity activity = Activity.fromStrava(
-        summaryActivity: summaryActivity,
-        athlete: athlete,
-      );
-
-      final List<DbActivity> existingAlready = await DbActivity()
-          .select()
-          .stravaId
-          .equals(activity.stravaId)
-          .toList();
-      if (existingAlready.isEmpty) {
-        await activity.save();
-      }
-    });
   }
 
   Future<PowerZoneSchema?> get powerZoneSchema async =>

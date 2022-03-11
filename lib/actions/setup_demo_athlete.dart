@@ -29,5 +29,5 @@ Future<void> setupDemoAthlete({
     context: context,
     athlete: athlete,
   );
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
 }

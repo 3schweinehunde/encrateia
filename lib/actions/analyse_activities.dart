@@ -28,7 +28,7 @@ Future<void> analyseActivities({
   for (final Activity activity in activities) {
     index += 1;
     await activity.setAverages();
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     percent = 100 * index ~/ activities.length;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -41,7 +41,7 @@ Future<void> analyseActivities({
     );
   }
 
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       duration: const Duration(seconds: 5),

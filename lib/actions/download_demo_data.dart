@@ -24,7 +24,7 @@ Future<void> downloadDemoData({
       'upper_palatinate_winter_challenge_half_marathon.fit',
     ];
 
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -57,7 +57,7 @@ Future<void> downloadDemoData({
         activity: activity,
         athlete: athlete,
       );
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(' Tagging »${activity.name}«')),
@@ -65,7 +65,7 @@ Future<void> downloadDemoData({
 
       await activity.autoTagger(athlete: athlete);
     }
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Row(
@@ -77,7 +77,7 @@ Future<void> downloadDemoData({
       ),
     );
   } else {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text(' Please set up Power Zone Schema and Heart'
