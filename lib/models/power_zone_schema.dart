@@ -198,7 +198,7 @@ class PowerZoneSchema {
   @override
   String toString() => '< PowerZoneSchema | $name | $date >';
 
-  static Future<PowerZoneSchema?> getBy({int? athletesId, DateTime? date}) async {
+  static Future<PowerZoneSchema> getBy({int? athletesId, DateTime? date}) async {
     List<DbPowerZoneSchema> dbPowerZoneSchemas;
 
     dbPowerZoneSchemas = await DbPowerZoneSchema()
@@ -222,9 +222,7 @@ class PowerZoneSchema {
           .top(1)
           .toList();
     }
-    return (dbPowerZoneSchemas.isNotEmpty)
-        ? PowerZoneSchema._fromDb(dbPowerZoneSchemas.first)
-        : null;
+    return PowerZoneSchema._fromDb(dbPowerZoneSchemas.first);
   }
 
   static PowerZoneSchema exDb(DbPowerZoneSchema db) =>

@@ -132,7 +132,7 @@ class HeartRateZoneSchema {
   Future<BoolResult> delete() async => await _db!.delete();
   Future<int?> save() async => await _db!.save();
 
-  static Future<HeartRateZoneSchema?> getBy({
+  static Future<HeartRateZoneSchema> getBy({
     int? athletesId,
     DateTime? date,
   }) async {
@@ -158,9 +158,7 @@ class HeartRateZoneSchema {
           .top(1)
           .toList();
     }
-    return (dbHeartRateZoneSchemas.isNotEmpty)
-        ? HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first)
-        : null;
+    return HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first);
   }
 
   static HeartRateZoneSchema exDb(DbHeartRateZoneSchema db) =>

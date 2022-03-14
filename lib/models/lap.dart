@@ -237,7 +237,7 @@ class Lap {
     return _records ?? <Event>[];
   }
 
-  Future<PowerZoneSchema?> get powerZoneSchema async {
+  Future<PowerZoneSchema> get powerZoneSchema async {
     if (_powerZoneSchema == null) {
       final DbActivity dbActivity =
         (await DbActivity().getById(activitiesId))!;
@@ -247,10 +247,10 @@ class Lap {
         date: dbActivity.timeCreated,
       );
     }
-    return _powerZoneSchema;
+    return _powerZoneSchema!;
   }
 
-  Future<HeartRateZoneSchema?> get heartRateZoneSchema async {
+  Future<HeartRateZoneSchema> get heartRateZoneSchema async {
     if (_heartRateZoneSchema == null) {
       final DbActivity dbActivity = (await DbActivity().getById(activitiesId))!;
 
@@ -259,7 +259,7 @@ class Lap {
         date: dbActivity.timeCreated,
       );
     }
-    return _heartRateZoneSchema;
+    return _heartRateZoneSchema!;
   }
 
   Future<void> setAverages() async {
@@ -304,7 +304,7 @@ class Lap {
       final DbPowerZone? dbPowerZone = await DbPowerZone()
           .select()
           .powerZoneSchemataId
-          .equals((await powerZoneSchema)!.id)
+          .equals((await powerZoneSchema).id)
           .and
           .lowerLimit
           .lessThanOrEquals(avgPower)
@@ -322,7 +322,7 @@ class Lap {
       final DbHeartRateZone? dbHeartRateZone = await DbHeartRateZone()
           .select()
           .heartRateZoneSchemataId
-          .equals((await heartRateZoneSchema)!.id)
+          .equals((await heartRateZoneSchema).id)
           .and
           .lowerLimit
           .lessThanOrEquals(avgHeartRate)
@@ -371,7 +371,7 @@ class Lap {
 
   Future<List<BarZone>> powerZoneCounts() async {
     final PowerZoneSchema powerZoneSchema =
-        await (this.powerZoneSchema as Future<PowerZoneSchema>);
+        await this.powerZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();
@@ -382,7 +382,7 @@ class Lap {
 
   Future<List<BarZone>> heartRateZoneCounts() async {
     final HeartRateZoneSchema heartRateZoneSchema =
-        await (this.heartRateZoneSchema as Future<HeartRateZoneSchema>);
+        await this.heartRateZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> heartRateRecords =
         records.where((Event record) => record.heartRate != null).toList();

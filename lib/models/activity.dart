@@ -676,13 +676,13 @@ class Activity {
     eventsForCurrentLap = <Event>[];
   }
 
-  Future<PowerZoneSchema?> get powerZoneSchema async =>
+  Future<PowerZoneSchema> get powerZoneSchema async =>
       _powerZoneSchema ??= await PowerZoneSchema.getBy(
         athletesId: athletesId,
         date: timeCreated,
       );
 
-  Future<HeartRateZoneSchema?> get heartRateZoneSchema async =>
+  Future<HeartRateZoneSchema> get heartRateZoneSchema async =>
       _heartRateZoneSchema ??= await HeartRateZoneSchema.getBy(
         athletesId: athletesId,
         date: timeCreated,
@@ -694,7 +694,7 @@ class Activity {
       final DbPowerZone? dbPowerZone = await DbPowerZone()
           .select()
           .powerZoneSchemataId
-          .equals((await powerZoneSchema)!.id)
+          .equals((await powerZoneSchema).id)
           .and
           .lowerLimit
           .lessThanOrEquals(avgPower)
@@ -716,7 +716,7 @@ class Activity {
       final DbHeartRateZone? dbHeartRateZone = await DbHeartRateZone()
           .select()
           .heartRateZoneSchemataId
-          .equals((await heartRateZoneSchema)!.id)
+          .equals((await heartRateZoneSchema).id)
           .and
           .lowerLimit
           .lessThanOrEquals(avgHeartRate)
@@ -769,7 +769,7 @@ class Activity {
 
   Future<List<BarZone>> powerZoneCounts() async {
     final PowerZoneSchema powerZoneSchema =
-        await (this.powerZoneSchema as Future<PowerZoneSchema>);
+        await this.powerZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();
@@ -780,7 +780,7 @@ class Activity {
 
   Future<List<BarZone>> heartRateZoneCounts() async {
     final HeartRateZoneSchema heartRateZoneSchema =
-        await (this.heartRateZoneSchema as Future<HeartRateZoneSchema>);
+        await this.heartRateZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> heartRateRecords =
         records.where((Event record) => record.heartRate != null).toList();
