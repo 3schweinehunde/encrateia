@@ -37,8 +37,8 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Series<Activity, double?>> data = <Series<Activity, double?>>[
-      Series<Activity, double?>(
+    final List<Series<Activity, double>> data = <Series<Activity, double>>[
+      Series<Activity, double>(
         id: widget.firstAttr.toString() +
             ' vs. ' +
             widget.secondAttr.toString(),
@@ -48,9 +48,9 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
             b: 0,
             a: opacity(activity: activity)),
         domainFn: (Activity activity, _) =>
-            activity.getAttribute(widget.firstAttr) as double?,
+            activity.getAttribute(widget.firstAttr) as double,
         measureFn: (Activity activity, _) =>
-            activity.getAttribute(widget.secondAttr) as double?,
+            activity.getAttribute(widget.secondAttr) as double,
         data: widget.activities.reversed.toList(),
         radiusPxFn: (Activity activity, _) =>
             activity == widget.activities.first ? 5 : 3,
@@ -65,7 +65,7 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
                   ? 1
                   : 2,
           child: ScatterPlotChart(
-            data as List<Series<dynamic, num>>,
+            data,
             animate: false,
             primaryMeasureAxis: const NumericAxisSpec(
               tickProviderSpec: BasicNumericTickProviderSpec(
