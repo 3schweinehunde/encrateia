@@ -453,7 +453,7 @@ class Activity {
       counter++;
       percentage = await handleDataMessage(dataMessage: dataMessage);
 
-      if (counter % 100 == 0) {
+      if (counter % 1000 == 0) {
         percentage = (counter / numberOfMessages * 100).round();
         yield percentage;
       }
