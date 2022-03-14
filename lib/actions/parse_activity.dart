@@ -43,7 +43,7 @@ Future<void> parseActivity({
             content: Row(
               children: [
                 CircularProgressIndicator(value: value / 100, color: MyColor.progress),
-                Text(' xxx storing »${activity.name}«'),
+                Text(' storing »${activity.name}«'),
               ],
             ),
           ),
