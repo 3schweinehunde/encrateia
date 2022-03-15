@@ -443,7 +443,8 @@ class Activity {
       ..sdevFormPower = null
       ..avgStrydCadence = null
       ..sdevStrydCadence = null
-      ..sdevVerticalOscillation = null;
+      ..sdevVerticalOscillation = null
+      ..nonParsable = false;
     await save();
 
     final int numberOfMessages = fitFile.dataMessages.length;

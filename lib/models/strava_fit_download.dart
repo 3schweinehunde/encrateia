@@ -75,6 +75,7 @@ abstract class StravaFitDownload {
     );
 
     final Document document = parse(homePageResponse.data);
+
     final String? csrfParam =
         document.querySelector('meta[name="csrf-param"]')!.attributes['content'];
     final String? csrfToken =
