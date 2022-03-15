@@ -76,7 +76,7 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
                           sports.map<DropdownMenuItem<String>>((String? value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value ?? 'missing'),
+                          child: Text(value!),
                         );
                       }).toList(),
                       value: selectedSports,
