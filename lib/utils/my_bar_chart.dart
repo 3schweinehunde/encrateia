@@ -57,7 +57,7 @@ class MyBarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (_barZones.isEmpty || _value <= 0) {
+    if (_barZones.isEmpty && _value <= 0) {
       return const Text('no data');
     } else {
       return SizedBox(
