@@ -41,9 +41,9 @@ class _OnboardingCreateUserScreenState
                       leading: MyIcon.create,
                       title: Text('Option 1: Demo Setup'),
                       subtitle: Text(
-                        'Choose this option to create a demo user with demo setup.'
+                        'Choose this option to create a demo user with demo setup.\n'
                         'It will download and analyse 4 activities provided '
-                        'by the Encrateia team. '
+                        'by the Encrateia team.\n'
                         'This is the quickest option to explore Encrateia.',
                       ),
                     ),
@@ -78,7 +78,8 @@ class _OnboardingCreateUserScreenState
                       title: Text('Option 2: Athlete with Strava Account'),
                       subtitle: Text(
                           'Choose this option, if you want to download activities '
-                          'from Strava'),
+                          'from Strava. \n'
+                           'Creating multi users with Strava Accounts will not work.'),
                     ),
                     ButtonBar(
                       children: <Widget>[
