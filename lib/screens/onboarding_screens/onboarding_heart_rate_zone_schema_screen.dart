@@ -1,18 +1,18 @@
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_body_weight_screen.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
+import '/models/athlete.dart';
+import '/models/heart_rate_zone_schema.dart';
+import '/screens/onboarding_screens/onboarding_body_weight_screen.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
+import '/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
 
 class OnBoardingHeartRateZoneSchemaScreen extends StatefulWidget {
   const OnBoardingHeartRateZoneSchemaScreen({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _OnBoardingHeartRateZoneSchemaScreenState createState() =>
@@ -70,13 +70,13 @@ class _OnBoardingHeartRateZoneSchemaScreenState
 
   Future<void> getData() async {
     final List<HeartRateZoneSchema> heartRateZoneSchemas =
-        await widget.athlete.heartRateZoneSchemas;
+        await widget.athlete!.heartRateZoneSchemas;
     setState(() =>
         heartRateZoneSchemaHasBeenEntered = heartRateZoneSchemas.isNotEmpty);
   }
 
   Future<void> nextButton() async {
-    await widget.athlete.save();
+    await widget.athlete!.save();
     Navigator.pushReplacement(
       context,
       MaterialPageRoute<BuildContext>(

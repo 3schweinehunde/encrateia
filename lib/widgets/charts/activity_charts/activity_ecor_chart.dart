@@ -1,33 +1,33 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/plot_point.dart';
-import 'package:encrateia/utils/graph_utils.dart';
-import 'package:encrateia/utils/my_line_chart.dart';
-import 'package:encrateia/utils/enums.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/event.dart';
+import '/models/lap.dart';
+import '/models/plot_point.dart';
+import '/models/record_list.dart';
+import '/utils/enums.dart';
+import '/utils/graph_utils.dart';
+import '/utils/my_line_chart.dart';
 
 class ActivityEcorChart extends StatelessWidget {
-  const ActivityEcorChart({
+  const ActivityEcorChart({Key? key,
     this.records,
-    @required this.activity,
-    @required this.weight,
-    @required this.athlete,
-  });
+    required this.activity,
+    required this.weight,
+    required this.athlete,
+  }) : super(key: key);
 
-  final RecordList<Event> records;
-  final Activity activity;
-  final Athlete athlete;
-  final double weight;
+  final RecordList<Event>? records;
+  final Activity? activity;
+  final Athlete? athlete;
+  final double? weight;
 
   @override
   Widget build(BuildContext context) {
-    final List<DoublePlotPoint> smoothedRecords = records.toDoubleDataPoints(
+    final List<DoublePlotPoint> smoothedRecords = records!.toDoubleDataPoints(
       attribute: LapDoubleAttr.ecor,
-      amount: athlete.recordAggregationCount,
+      amount: athlete!.recordAggregationCount,
       weight: weight,
     );
 
@@ -43,10 +43,10 @@ class ActivityEcorChart extends StatelessWidget {
     ];
 
     return FutureBuilder<List<Lap>>(
-      future: activity.laps,
+      future: activity!.laps,
       builder: (BuildContext context, AsyncSnapshot<List<Lap>> snapshot) {
         if (snapshot.hasData) {
-          final List<Lap> laps = snapshot.data;
+          final List<Lap> laps = snapshot.data!;
 
           return AspectRatio(
             aspectRatio:
@@ -55,7 +55,7 @@ class ActivityEcorChart extends StatelessWidget {
                     : 2,
             child: MyLineChart(
               data: data,
-              maxDomain: records.last.distance,
+              maxDomain: records!.last.distance!,
               laps: laps,
               domainTitle: 'Ecor (kJ/kg/km)',
               measureTickProviderSpec: const BasicNumericTickProviderSpec(
@@ -66,8 +66,9 @@ class ActivityEcorChart extends StatelessWidget {
                   const BasicNumericTickProviderSpec(desiredTickCount: 6),
             ),
           );
-        } else
+        } else {
           return GraphUtils.loadingContainer;
+        }
       },
     );
   }

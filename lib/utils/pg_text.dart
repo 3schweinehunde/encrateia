@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:encrateia/utils/date_time_utils.dart';
+import '/utils/date_time_utils.dart';
 import 'enums.dart';
 
 @immutable
 class PQText extends StatelessWidget {
-  const PQText({
-    @required this.pq,
+  const PQText({Key? key,
+    required this.pq,
     this.value,
-    this.format,
-  });
+    this.format = DateTimeFormat.longDateTime,
+  }) : super(key: key);
 
   final dynamic value;
   final DateTimeFormat format;
@@ -17,8 +17,9 @@ class PQText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!validValue)
+    if (!validValue) {
       return const Text('n.a.');
+    }
 
     switch (pq) {
       case PQ.dateTime:
@@ -34,13 +35,13 @@ class PQText extends StatelessWidget {
         final int minutes = (totalSeconds / 60).floor();
         final String seconds =
             (totalSeconds - minutes * 60).round().toString().padLeft(2, '0');
-        return Text('$minutes:$seconds /km');
+        return Text('$minutes:$seconds/km');
       case PQ.pace:
         final double minutes = value as double;
         final int fullMinutes = minutes.floor();
         final String seconds =
             ((minutes - fullMinutes) * 60).round().toString().padLeft(2, '0');
-        return Text('$fullMinutes:$seconds /km');
+        return Text('$fullMinutes:$seconds/km');
       case PQ.heartRate:
         return Text((value as num).toStringAsPrecision(3) + ' bpm');
       case PQ.ecor:
@@ -48,9 +49,9 @@ class PQText extends StatelessWidget {
       case PQ.powerPerHeartRate:
         return Text((value as num).toStringAsFixed(2) + ' W/bpm');
       case PQ.calories:
-        return Text((value as num).toString() + ' kcal');
+        return Text((value as num?).toString() + ' kcal');
       case PQ.elevation:
-        return Text((value as num).toString() + ' m');
+        return Text((value as num?).toString() + ' m');
       case PQ.cadence:
         return Text(((value as num) * 2).toStringAsPrecision(3) + ' spm');
       case PQ.duration:
@@ -58,17 +59,17 @@ class PQText extends StatelessWidget {
       case PQ.shortDuration:
         return Text(Duration(seconds: value as int).asShortString());
       case PQ.trainingEffect:
-        return Text((value as num).toString());
+        return Text((value as num?).toString());
       case PQ.text:
         return Text(value as String);
       case PQ.temperature:
-        return Text((value as num).toString() + '°C');
+        return Text((value as num?).toString() + '°C');
       case PQ.verticalOscillation:
         return Text((value as num).toStringAsFixed(2) + ' cm');
       case PQ.cycles:
-        return Text((value as num).toString() + ' cycles');
+        return Text((value as num?).toString() + ' cycles');
       case PQ.integer:
-        return Text((value as num).toString());
+        return Text((value as num?).toString());
       case PQ.fractionalCadence:
         return Text((value as num).toStringAsFixed(2));
       case PQ.percentage:
@@ -77,9 +78,9 @@ class PQText extends StatelessWidget {
       case PQ.groundTime:
         return Text((value as num).toStringAsPrecision(4) + ' ms');
       case PQ.longitude:
-        return Text((value as double).semicirclesToString() + ' E');
+        return Text((value as double?)!.semicirclesToString() + ' E');
       case PQ.latitude:
-        return Text((value as double).semicirclesToString() + ' N');
+        return Text((value as double?)!.semicirclesToString() + ' N');
       case PQ.speed:
         return Text(((value as num) * 3.6).toStringAsFixed(2) + ' km/h');
       case PQ.speedPerHeartRate:
@@ -91,8 +92,6 @@ class PQText extends StatelessWidget {
       case PQ.double:
         return Text((value as double).toStringAsPrecision(3));
     }
-    return const Text(
-        'the pq Parameter was not provided.'); // just to silence the dart analyzer
   }
 
   String get formatString {
@@ -110,7 +109,6 @@ class PQText extends StatelessWidget {
       case DateTimeFormat.compact:
         return 'dd.MM.yyyy\nH:mm:ss';
     }
-    return 'E d MMM yy, H:mm:ss';
   }
 
   bool get validValue {

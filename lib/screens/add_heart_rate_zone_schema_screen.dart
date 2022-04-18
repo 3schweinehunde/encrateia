@@ -1,20 +1,20 @@
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:encrateia/utils/my_color.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import '/models/heart_rate_zone.dart';
+import '/models/heart_rate_zone_schema.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
+import '/utils/my_button_style.dart';
+import '/utils/my_color.dart';
 import 'add_heart_rate_zone_screen.dart';
 
 class AddHeartRateZoneSchemaScreen extends StatefulWidget {
   const AddHeartRateZoneSchemaScreen({
-    Key key,
-    this.heartRateZoneSchema,
-    @required this.numberOfSchemas,
+    Key? key,
+    required this.heartRateZoneSchema,
+    required this.numberOfSchemas,
   }) : super(key: key);
 
   final HeartRateZoneSchema heartRateZoneSchema;
@@ -29,7 +29,7 @@ class _AddHeartRateZoneSchemaScreenState
     extends State<AddHeartRateZoneSchemaScreen> {
   List<HeartRateZone> heartRateZones = <HeartRateZone>[];
   int offset = 0;
-  int rows;
+  int? rows;
 
   @override
   void initState() {
@@ -67,7 +67,7 @@ class _AddHeartRateZoneSchemaScreenState
               resetIcon: null,
               format: DateFormat('yyyy-MM-dd'),
               initialValue: widget.heartRateZoneSchema.date,
-              onShowPicker: (BuildContext context, DateTime currentValue) {
+              onShowPicker: (BuildContext context, DateTime? currentValue) {
                 return showDatePicker(
                   context: context,
                   firstDate: DateTime(1969),
@@ -75,7 +75,7 @@ class _AddHeartRateZoneSchemaScreenState
                   lastDate: DateTime(2100),
                 );
               },
-              onChanged: (DateTime value) =>
+              onChanged: (DateTime? value) =>
                   copyHeartRateZoneSchema(date: value),
             ),
             TextFormField(
@@ -108,16 +108,16 @@ class _AddHeartRateZoneSchemaScreenState
               ],
               rows: heartRateZones.map((HeartRateZone heartRateZone) {
                 return DataRow(
-                  key: ValueKey<int>(heartRateZone.id),
+                  key: ValueKey<int?>(heartRateZone.id),
                   cells: <DataCell>[
-                    DataCell(Text(heartRateZone.name)),
+                    DataCell(Text(heartRateZone.name!)),
                     DataCell(Text(heartRateZone.lowerLimit.toString() +
                         ' - ' +
                         heartRateZone.upperLimit.toString())),
                     DataCell(CircleColor(
                       circleSize: 20,
                       elevation: 0,
-                      color: Color(heartRateZone.color),
+                      color: Color(heartRateZone.color!),
                     )),
                     DataCell(
                       MyIcon.edit,
@@ -199,28 +199,28 @@ class _AddHeartRateZoneSchemaScreenState
   }
 
   Future<void> deleteHeartRateZoneSchema(
-      {HeartRateZoneSchema heartRateZoneSchema}) async {
+      {required HeartRateZoneSchema heartRateZoneSchema}) async {
     await heartRateZoneSchema.delete();
     Navigator.of(context).pop();
   }
 
-  void updateHeartRateZoneBase({int base}) {
+  void updateHeartRateZoneBase({int? base}) {
     setState(() {
       widget.heartRateZoneSchema.base = base;
       for (final HeartRateZone heartRateZone in heartRateZones) {
         heartRateZone.lowerLimit =
-            (heartRateZone.lowerPercentage * base / 100).round();
+            (heartRateZone.lowerPercentage! * base! / 100).round();
         heartRateZone.upperLimit =
-            (heartRateZone.upperPercentage * base / 100).round();
+            (heartRateZone.upperPercentage! * base / 100).round();
       }
     });
   }
 
-  Future<void> copyHeartRateZoneSchema({DateTime date}) async {
+  Future<void> copyHeartRateZoneSchema({DateTime? date}) async {
     widget.heartRateZoneSchema
       ..date = date
       ..id = null;
-    final int heartRateZoneSchemaId = await widget.heartRateZoneSchema.save();
+    final int? heartRateZoneSchemaId = await widget.heartRateZoneSchema.save();
     for (final HeartRateZone heartRateZone in heartRateZones) {
       heartRateZone
         ..heartRateZoneSchemataId = heartRateZoneSchemaId

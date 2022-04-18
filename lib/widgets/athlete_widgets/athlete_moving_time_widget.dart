@@ -1,17 +1,17 @@
-import 'package:encrateia/models/activity_list.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/athlete_volume_chart.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
+import '/models/activity.dart';
+import '/models/activity_list.dart';
+import '/models/athlete.dart';
+import '/models/tag_group.dart';
+import '/utils/athlete_volume_chart.dart';
+import '/utils/enums.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
 
 class AthleteMovingTimeWidget extends StatefulWidget {
-  const AthleteMovingTimeWidget({this.athlete});
+  const AthleteMovingTimeWidget({Key? key, this.athlete}) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _AthleteMovingTimeWidgetState createState() =>
@@ -24,8 +24,8 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> distanceActivities = activities
           .where((Activity activity) =>
-              activity.distance != null && activity.distance > 0)
+              activity.distance != null && activity.distance! > 0)
           .toList();
 
       if (distanceActivities.isNotEmpty) {
@@ -61,7 +61,7 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -74,14 +74,15 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items:
+                        sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -103,11 +104,11 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     int movingTimeSoFar = 0;
     int year = 1900;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()
@@ -119,11 +120,12 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
             .toList());
 
     for (final Activity activity in activities.reversed) {
-      if (activity.timeStamp.year != year) {
-        year = activity.timeStamp.year;
-        movingTimeSoFar = activity.movingTime;
-      } else
-        movingTimeSoFar += activity.movingTime;
+      if (activity.timeStamp!.year != year) {
+        year = activity.timeStamp!.year;
+        movingTimeSoFar = activity.movingTime ?? 0;
+      } else {
+        movingTimeSoFar += activity.movingTime!;
+      }
       activity.movingTimeSoFar = movingTimeSoFar;
     }
 

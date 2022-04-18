@@ -1,20 +1,20 @@
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
+import '/models/activity.dart';
+import '/utils/my_color.dart';
 
 class ShowActivityDetailScreen extends StatelessWidget {
   const ShowActivityDetailScreen({
-    Key key,
+    Key? key,
     this.activity,
     this.widget,
     this.title,
     this.backgroundColor,
   }) : super(key: key);
 
-  final Activity activity;
-  final Widget widget;
-  final String title;
-  final Color backgroundColor;
+  final Activity? activity;
+  final Widget? widget;
+  final String? title;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,11 @@ class ShowActivityDetailScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: backgroundColor ?? MyColor.activity,
         title: Text(
-          '$title: ${activity.name}',
+          '$title: ${activity!.name}',
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      body: SafeArea(child: widget),
+      body: SafeArea(child: widget!),
     );
   }
 }

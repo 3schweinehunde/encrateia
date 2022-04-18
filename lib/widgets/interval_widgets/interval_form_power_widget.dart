@@ -1,21 +1,22 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/widgets/charts/lap_charts/lap_form_power_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import '/models/event.dart';
+import '/models/interval.dart' as encrateia;
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_form_power_chart.dart';
 
 class IntervalFormPowerWidget extends StatefulWidget {
-  const IntervalFormPowerWidget({this.interval});
+  const IntervalFormPowerWidget({Key? key, this.interval}) : super(key: key);
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
-  _IntervalFormPowerWidgetState createState() => _IntervalFormPowerWidgetState();
+  _IntervalFormPowerWidgetState createState() =>
+      _IntervalFormPowerWidgetState();
 }
 
 class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
@@ -41,7 +42,7 @@ class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
     if (records.isNotEmpty) {
       final List<Event> formPowerRecords = records
           .where(
-              (Event value) => value.formPower != null && value.formPower > 0)
+              (Event value) => value.formPower != null && value.formPower! > 0)
           .toList();
 
       if (formPowerRecords.isNotEmpty) {
@@ -54,8 +55,8 @@ class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
                 key: widgetKey,
                 child: LapFormPowerChart(
                   records: RecordList<Event>(formPowerRecords),
-                  minimum: widget.interval.avgFormPower / 1.1,
-                  maximum: widget.interval.avgFormPower * 1.25,
+                  minimum: widget.interval!.avgFormPower! / 1.1,
+                  maximum: widget.interval!.avgFormPower! * 1.25,
                 ),
               ),
               const Text(
@@ -66,7 +67,7 @@ class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -75,12 +76,14 @@ class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.interval.avgFormPower, pq: PQ.power),
+                title:
+                    PQText(value: widget.interval!.avgFormPower, pq: PQ.power),
                 subtitle: const Text('average form power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.interval.sdevFormPower, pq: PQ.power),
+                title:
+                    PQText(value: widget.interval!.sdevFormPower, pq: PQ.power),
                 subtitle: const Text('standard deviation form power'),
               ),
               ListTile(
@@ -104,7 +107,7 @@ class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
   }
 
   Future<void> getData() async {
-    final encrateia.Interval interval = widget.interval;
+    final encrateia.Interval interval = widget.interval!;
     records = RecordList<Event>(await interval.records);
     setState(() => loading = false);
   }

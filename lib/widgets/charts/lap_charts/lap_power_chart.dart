@@ -1,30 +1,30 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/my_line_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/graph_utils.dart';
-import 'package:charts_common/common.dart' as common show ChartBehavior;
+import '/models/event.dart';
+import '/models/power_zone.dart';
+import '/models/record_list.dart';
+import '/utils/graph_utils.dart';
+import '/utils/my_line_chart.dart';
 
 class LapPowerChart extends StatelessWidget {
   const LapPowerChart({
-    @required this.records,
+    Key? key,
+    required this.records,
     this.powerZones,
-  });
+  }) : super(key: key);
 
   final RecordList<Event> records;
-  final List<PowerZone> powerZones;
+  final List<PowerZone>? powerZones;
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.distance.round();
+    final int offset = records.first.distance!.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Power',
         colorFn: (_, __) => Color.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
         measureFn: (Event record, _) => record.power,
         data: records,
       )
@@ -49,8 +49,8 @@ class LapPowerChart extends StatelessWidget {
               desiredTickCount: 6),
         ),
         animate: false,
-        behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
-              RangeAnnotation(
+        behaviors: <ChartBehavior<num>>[
+              RangeAnnotation<num>(
                 GraphUtils.powerZoneAnnotations(powerZones: powerZones),
               ),
             ] +

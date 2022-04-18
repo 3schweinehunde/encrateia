@@ -1,15 +1,15 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/record_list.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/graph_utils.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/utils/graph_utils.dart';
 
 class LapStrydCadenceChart extends StatelessWidget {
-  const LapStrydCadenceChart({
-    @required this.records,
-    @required this.minimum,
-    @required this.maximum,
-  });
+  const LapStrydCadenceChart({Key? key,
+    required this.records,
+    required this.minimum,
+    required this.maximum,
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double minimum;
@@ -17,14 +17,14 @@ class LapStrydCadenceChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final int offset = records.first.distance.round();
+    final int offset = records.first.distance!.round();
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Stryd Cadence',
         colorFn: (_, __) => Color.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
-        measureFn: (Event record, _) => 2 * record.strydCadence,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
+        measureFn: (Event record, _) => 2 * record.strydCadence!,
         data: records,
       )
     ];

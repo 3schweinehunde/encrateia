@@ -1,14 +1,14 @@
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/models/tag.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import '/models/tag.dart';
+import '/models/tag_group.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
 
 class ShowTagGroupScreen extends StatefulWidget {
-  const ShowTagGroupScreen({Key key, this.tagGroup}) : super(key: key);
+  const ShowTagGroupScreen({Key? key, this.tagGroup}) : super(key: key);
 
-  final TagGroup tagGroup;
+  final TagGroup? tagGroup;
 
   @override
   _AddTagGroupScreenState createState() => _AddTagGroupScreenState();
@@ -17,7 +17,7 @@ class ShowTagGroupScreen extends StatefulWidget {
 class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
   List<Tag> tags = <Tag>[];
   int offset = 0;
-  int rows;
+  int? rows;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
           children: <Widget>[
             TextFormField(
               decoration: const InputDecoration(labelText: 'Name'),
-              initialValue: widget.tagGroup.name,
+              initialValue: widget.tagGroup!.name,
               readOnly: true,
             ),
             const SizedBox(height: 20),
@@ -46,7 +46,7 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
               const Text('Color'),
               const Spacer(),
               CircleAvatar(
-                backgroundColor: Color(widget.tagGroup.color),
+                backgroundColor: Color(widget.tagGroup!.color!),
                 radius: 20.0,
               ),
               const Spacer(),
@@ -63,13 +63,13 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
               ],
               rows: tags.map((Tag tag) {
                 return DataRow(
-                  key: ValueKey<int>(tag.id),
+                  key: ValueKey<int?>(tag.id),
                   cells: <DataCell>[
-                    DataCell(Text(tag.name)),
+                    DataCell(Text(tag.name!)),
                     DataCell(CircleColor(
                       circleSize: 20,
                       elevation: 0,
-                      color: Color(tag.color),
+                      color: Color(tag.color!),
                     )),
                   ],
                 );
@@ -90,7 +90,7 @@ class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
   }
 
   Future<void> getData() async {
-    tags = await widget.tagGroup.tags;
+    tags = await widget.tagGroup!.tags;
     setState(() {});
   }
 }

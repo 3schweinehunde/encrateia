@@ -1,25 +1,26 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:encrateia/screens/add_weight_screen.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import '/models/athlete.dart';
+import '/models/weight.dart';
+import '/screens/add_weight_screen.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
+import '/utils/my_button_style.dart';
+import '/utils/pg_text.dart';
 
 class AthleteBodyWeightWidget extends StatefulWidget {
   const AthleteBodyWeightWidget({
+    Key? key,
     this.athlete,
     this.callBackFunction,
-  });
+  }) : super(key: key);
 
-  final Athlete athlete;
-  final Function callBackFunction;
+  final Athlete? athlete;
+  final Function? callBackFunction;
 
   @override
   _AthleteBodyWeightWidgetState createState() =>
@@ -29,7 +30,7 @@ class AthleteBodyWeightWidget extends StatefulWidget {
 class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
   List<Weight> weights = <Weight>[];
   int offset = 0;
-  int rows;
+  int? rows;
 
   @override
   void initState() {
@@ -39,55 +40,54 @@ class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (weights != null) {
-      if (weights.isNotEmpty) {
-        rows = (weights.length < 8) ? weights.length : 8;
-        return SingleChildScrollView(
-          child: PaginatedDataTable(
-            header: Row(
-              children: <Widget>[
-                MyButton.add(
-                  child: const Text('New weighting'),
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute<BuildContext>(
-                        builder: (BuildContext context) => AddWeightScreen(
-                          weight: Weight(
-                            athlete: widget.athlete,
-                          ),
-                          numberOfWeights: weights.length,
+    if (weights.isNotEmpty) {
+      rows = (weights.length < 8) ? weights.length : 8;
+      return SingleChildScrollView(
+        child: PaginatedDataTable(
+          header: Row(
+            children: <Widget>[
+              MyButton.add(
+                child: const Text('New weighting'),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute<BuildContext>(
+                      builder: (BuildContext context) => AddWeightScreen(
+                        weight: Weight(
+                          athlete: widget.athlete!,
                         ),
+                        numberOfWeights: weights.length,
                       ),
-                    );
-                    getData();
-                  },
-                ),
-                const Spacer(),
-              ],
-            ),
-            columns: const <DataColumn>[
-              DataColumn(label: Text('Date')),
-              DataColumn(
-                label: Text('Weight'),
-                numeric: true,
+                    ),
+                  );
+                  getData();
+                },
               ),
-              DataColumn(label: Text('Edit'))
+              const Spacer(),
             ],
-            rowsPerPage: 8,
-            source: BodyWeightSource(
-              weights: weights,
-              context: context,
-              callback: getData,
-            ),
           ),
-        );
-      } else {
-        return Column(
-          children: <Widget>[
-            const Padding(
-              padding: EdgeInsets.all(25.0),
-              child: Text('''
+          columns: const <DataColumn>[
+            DataColumn(label: Text('Date')),
+            DataColumn(
+              label: Text('Weight'),
+              numeric: true,
+            ),
+            DataColumn(label: Text('Edit'))
+          ],
+          rowsPerPage: 8,
+          source: BodyWeightSource(
+            weights: weights,
+            context: context,
+            callback: getData,
+          ),
+        ),
+      );
+    } else {
+      return Column(
+        children: <Widget>[
+          const Padding(
+            padding: EdgeInsets.all(25.0),
+            child: Text('''
 No weight data so far:
                 
 You can import your historic weight data by putting a weights.csv-file in the App's document directory.
@@ -100,48 +100,44 @@ Or you can simply enter your current weight using the New Weighting button.
 Please also enter at least a rough estimate default weight for your former activities.
 You can change these later.
                 '''),
-            ),
-            Row(
-              children: <Widget>[
-                const Spacer(),
-                ElevatedButton(
-                  style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
-                  child: const Text('Import Weights'),
-                  onPressed: () => importWeights(),
-                ),
-                const Spacer(),
-                MyButton.add(
-                    child: const Text('New weighting'),
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) => AddWeightScreen(
-                            weight: Weight(athlete: widget.athlete),
-                            numberOfWeights: weights.length,
-                          ),
+          ),
+          Row(
+            children: <Widget>[
+              const Spacer(),
+              ElevatedButton(
+                style: MyButtonStyle.raisedButtonStyle(color: Colors.orange),
+                child: const Text('Import Weights'),
+                onPressed: () => importWeights(),
+              ),
+              const Spacer(),
+              MyButton.add(
+                  child: const Text('New weighting'),
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute<BuildContext>(
+                        builder: (BuildContext context) => AddWeightScreen(
+                          weight: Weight(athlete: widget.athlete!),
+                          numberOfWeights: weights.length,
                         ),
-                      );
-                      getData();
-                    }),
-                const Spacer(),
-              ],
-            )
-          ],
-        );
-      }
-    } else {
-      return const Center(
-        child: Text('loading'),
+                      ),
+                    );
+                    getData();
+                  }),
+              const Spacer(),
+            ],
+          )
+        ],
       );
     }
   }
 
   Future<void> getData() async {
-    final Athlete athlete = widget.athlete;
+    final Athlete athlete = widget.athlete!;
     weights = await athlete.weights;
-    if (widget.callBackFunction != null)
-      await widget.callBackFunction();
+    if (widget.callBackFunction != null) {
+      await widget.callBackFunction!();
+    }
     setState(() {});
   }
 
@@ -150,7 +146,8 @@ You can change these later.
     Weight weight;
 
     if (Platform.isAndroid) {
-      final List<Directory> directories = await getExternalStorageDirectories();
+      final List<Directory> directories =
+          await (getExternalStorageDirectories() as Future<List<Directory>>);
       directory = directories[0];
     } else {
       directory = await getApplicationDocumentsDirectory();
@@ -165,7 +162,7 @@ You can change these later.
           .transform(const CsvToListConverter(eol: '\n'))
           .toList();
       for (final List<dynamic> weighting in weightings) {
-        weight = Weight(athlete: widget.athlete);
+        weight = Weight(athlete: widget.athlete!);
         weight.date = DateTime.utc(
           int.parse((weighting[0] as String).split('-')[0]),
           int.parse((weighting[0] as String).split('-')[1]),
@@ -181,9 +178,9 @@ You can change these later.
 
 class BodyWeightSource extends DataTableSource {
   BodyWeightSource({
-    @required this.weights,
-    @required this.context,
-    @required this.callback,
+    required this.weights,
+    required this.context,
+    required this.callback,
   });
 
   final List<Weight> weights;

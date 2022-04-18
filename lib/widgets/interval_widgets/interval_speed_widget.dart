@@ -1,18 +1,18 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/widgets/charts/lap_charts/lap_speed_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/models/event.dart';
+import '/models/interval.dart' as encrateia;
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_speed_chart.dart';
 
 class IntervalSpeedWidget extends StatefulWidget {
-  const IntervalSpeedWidget({this.interval});
+  const IntervalSpeedWidget({Key? key, this.interval}) : super(key: key);
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalSpeedWidgetState createState() => _IntervalSpeedWidgetState();
@@ -40,7 +40,7 @@ class _IntervalSpeedWidgetState extends State<IntervalSpeedWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> paceRecords = records
-          .where((Event value) => value.speed != null && value.speed > 0)
+          .where((Event value) => value.speed != null && value.speed! > 0)
           .toList();
 
       if (paceRecords.isNotEmpty) {
@@ -53,8 +53,12 @@ class _IntervalSpeedWidgetState extends State<IntervalSpeedWidget> {
                 key: widgetKey,
                 child: LapSpeedChart(
                   records: RecordList<Event>(paceRecords),
-                  minimum: (widget.interval.avgSpeedByDistance - 3 * widget.interval.sdevSpeed) * 3.6,
-                  maximum: (widget.interval.avgSpeedByDistance + 3 * widget.interval.sdevSpeed) * 3.6,
+                  minimum: (widget.interval!.avgSpeedByDistance! -
+                          3 * widget.interval!.sdevSpeed!) *
+                      3.6,
+                  maximum: (widget.interval!.avgSpeedByDistance! +
+                          3 * widget.interval!.sdevSpeed!) *
+                      3.6,
                 ),
               ),
               const Text('Only records where speed > 0 m/s are shown.'),
@@ -64,7 +68,7 @@ class _IntervalSpeedWidgetState extends State<IntervalSpeedWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -73,22 +77,23 @@ class _IntervalSpeedWidgetState extends State<IntervalSpeedWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.interval.avgSpeedByDistance, pq: PQ.speed),
+                title: PQText(
+                    value: widget.interval!.avgSpeedByDistance, pq: PQ.speed),
                 subtitle: const Text('average speed'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.interval.minSpeed, pq: PQ.speed),
+                title: PQText(value: widget.interval!.minSpeed, pq: PQ.speed),
                 subtitle: const Text('minimum speed'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.interval.maxSpeed, pq: PQ.speed),
+                title: PQText(value: widget.interval!.maxSpeed, pq: PQ.speed),
                 subtitle: const Text('maximum speed'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.interval.sdevSpeed, pq: PQ.speed),
+                title: PQText(value: widget.interval!.sdevSpeed, pq: PQ.speed),
                 subtitle: const Text('standard deviation speed'),
               ),
               ListTile(
@@ -112,7 +117,7 @@ class _IntervalSpeedWidgetState extends State<IntervalSpeedWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
+    records = RecordList<Event>(await widget.interval!.records);
     setState(() => loading = false);
   }
 }

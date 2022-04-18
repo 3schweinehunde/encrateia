@@ -1,12 +1,13 @@
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/secrets/secrets.dart';
-import 'package:strava_flutter/strava.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:strava_flutter/Models/detailedAthlete.dart';
+import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
+import 'package:strava_flutter/domain/model/model_detailed_athlete.dart';
+import 'package:strava_flutter/strava_client.dart';
+import '/models/athlete.dart';
+import '/secrets/secrets.dart';
+import '/utils/my_color.dart';
 
 class StravaGetUser extends StatefulWidget {
-  const StravaGetUser({this.athlete});
+  const StravaGetUser({Key? key, required this.athlete}) : super(key: key);
 
   final Athlete athlete;
 
@@ -31,35 +32,37 @@ class _StravaGetUserState extends State<StravaGetUser> {
         backgroundColor: MyColor.primary,
       ),
       body: SafeArea(
-        child: Container(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text(widget.athlete.stateText),
-          ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(widget.athlete.stateText),
         ),
       ),
     );
   }
 
-  Future<void> loginToStrava() async {
-    final Strava strava = Strava(true, secret);
-    const String prompt = 'auto';
+  Future<void> loginToStrava({required Athlete athlete}) async {
+    final StravaClient stravaClient = StravaClient(
+        clientId: clientId, secret: secret, applicationName: athlete.uuid);
 
-    await strava.oauth(
-        clientId,
-        'activity:write,activity:read_all,profile:read_all,profile:write',
-        secret,
-        prompt);
-    final DetailedAthlete stravaAthlete = await strava.getLoggedInAthlete();
+    await stravaClient.authentication
+        .authenticate(scopes: <AuthenticationScope>[
+      AuthenticationScope.read_all,
+      AuthenticationScope.profile_read_all,
+      AuthenticationScope.activity_read_all
+    ], redirectUrl: 'stravaflutter://redirect');
+
+    final DetailedAthlete stravaAthlete =
+        await stravaClient.athletes.getAuthenticatedAthlete();
     await widget.athlete.updateFromStravaAthlete(stravaAthlete);
   }
 
   Future<void> getData() async {
     if (widget.athlete.firstName == null) {
-      await loginToStrava();
-      setState((){});
+      await loginToStrava(athlete: widget.athlete);
+      setState(() {});
     }
-    if (widget.athlete.state == 'fromStrava')
+    if (widget.athlete.state == 'fromStrava') {
       Navigator.of(context).pop();
+    }
   }
 }

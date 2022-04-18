@@ -1,42 +1,43 @@
 import 'dart:math';
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/activity_list.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/screens/show_activity_screen.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'PQText.dart';
+import '/models/activity.dart';
+import '/models/activity_list.dart';
+import '/models/athlete.dart';
+import '/screens/show_activity_screen.dart';
+import '/utils/enums.dart';
+import '/utils/my_button.dart';
+import 'pg_text.dart';
 
 class AthleteTimeSeriesChart extends StatefulWidget {
   const AthleteTimeSeriesChart({
-    @required this.athlete,
-    @required this.activities,
-    @required this.activityAttr,
-    @required this.chartTitleText,
+    Key? key,
+    required this.athlete,
+    required this.activities,
+    required this.activityAttr,
+    required this.chartTitleText,
     this.fullDecay,
     this.flipVerticalAxis,
-  });
+  }) : super(key: key);
 
   final Athlete athlete;
   final List<Activity> activities;
   final ActivityAttr activityAttr;
   final String chartTitleText;
-  final int fullDecay;
-  final bool flipVerticalAxis;
+  final int? fullDecay;
+  final bool? flipVerticalAxis;
 
   @override
   _AthleteTimeSeriesChartState createState() => _AthleteTimeSeriesChartState();
 }
 
 class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
-  Activity selectedActivity;
-  List<Activity> displayedActivities;
+  Activity? selectedActivity;
+  late List<Activity> displayedActivities;
   int pagingOffset = 0;
   final int xAxesDays = 60;
   final int amountDisplayed = 40;
-  int numberOfActivities;
+  late int numberOfActivities;
 
   @override
   void initState() {
@@ -48,7 +49,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
     final List<SeriesDatum<dynamic>> selectedDatum = model.selectedDatum;
 
     if (selectedDatum.isNotEmpty) {
-      setState(() => selectedActivity = selectedDatum[1].datum as Activity);
+      setState(() => selectedActivity = selectedDatum[1].datum as Activity?);
     }
   }
 
@@ -60,13 +61,14 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Series<Activity, DateTime>> data = <Series<Activity, DateTime>>[
+    final List<Series<Activity, DateTime>> data =
+        <Series<Activity, DateTime>>[
       Series<Activity, DateTime>(
         id: widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,
         domainFn: (Activity activity, _) => activity.timeCreated,
         measureFn: (Activity activity, _) =>
-            activity.getAttribute(widget.activityAttr) as num,
+            activity.getAttribute(widget.activityAttr) as num?,
         data: displayedActivities,
       ),
       Series<Activity, DateTime>(
@@ -112,20 +114,20 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                 desiredTickCount: 6,
               ),
             ),
-            behaviors: <ChartTitle>[
-              ChartTitle(
+            behaviors: <ChartTitle<DateTime>>[
+              ChartTitle<DateTime>(
                 widget.chartTitleText,
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.start,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<DateTime>(
                 'Date',
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.bottom,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<DateTime>(
                 '${widget.chartTitleText} Diagram created with Encrateia https://encreteia.informatom.com',
                 behaviorPosition: BehaviorPosition.top,
                 titleOutsideJustification: OutsideJustification.endDrawArea,
@@ -157,8 +159,9 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                     : () {
                         pagingOffset =
                             pagingOffset - (amountDisplayed / 2).round();
-                        if (pagingOffset < 0)
+                        if (pagingOffset < 0) {
                           pagingOffset = 0;
+                        }
                         setScope();
                       },
               ),
@@ -166,25 +169,22 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
             ],
           ),
         if (selectedActivity != null)
-          Container(
+          SizedBox(
             height: 200,
-            child: GridView.count(
+            child: GridView.extent(
               padding: const EdgeInsets.all(5),
-              crossAxisCount:
-                  MediaQuery.of(context).orientation == Orientation.landscape
-                      ? 4
-                      : 2,
-              childAspectRatio: 4,
-              crossAxisSpacing: 3,
-              mainAxisSpacing: 3,
+              maxCrossAxisExtent: 250,
+              childAspectRatio: 5,
+              crossAxisSpacing: 2,
+              mainAxisSpacing: 2,
               children: <Widget>[
                 MyButton.activity(
-                  child: Text(selectedActivity.name),
+                  child: Text(selectedActivity!.name!),
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute<BuildContext>(
                       builder: (BuildContext context) => ShowActivityScreen(
-                        activity: selectedActivity,
+                        activity: selectedActivity!,
                         athlete: widget.athlete,
                       ),
                     ),
@@ -192,7 +192,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                 ),
                 ListTile(
                   title: PQText(
-                    value: selectedActivity.timeCreated,
+                    value: selectedActivity!.timeCreated,
                     pq: PQ.dateTime,
                     format: DateTimeFormat.longDateTime,
                   ),
@@ -200,30 +200,31 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                 ),
                 ListTile(
                   title: PQText(
-                    value: selectedActivity.distance,
+                    value: selectedActivity!.distance,
                     pq: PQ.distance,
                   ),
                   subtitle: const Text('Distance'),
                 ),
                 ListTile(
                   title: PQText(
-                    value: selectedActivity.avgSpeed,
+                    value: selectedActivity!.avgSpeed,
                     pq: PQ.paceFromSpeed,
                   ),
                   subtitle: const Text('Average speed'),
                 ),
                 ListTile(
-                  title: PQText(value: selectedActivity.avgPower, pq: PQ.power),
+                  title:
+                      PQText(value: selectedActivity!.avgPower, pq: PQ.power),
                   subtitle: const Text('Average power'),
                 ),
-                if (selectedActivity.ftp != null)
+                if (selectedActivity!.ftp != null)
                   ListTile(
-                    title: PQText(value: selectedActivity.ftp, pq: PQ.power),
+                    title: PQText(value: selectedActivity!.ftp, pq: PQ.power),
                     subtitle: const Text('FTP'),
                   ),
                 ListTile(
                     title: PQText(
-                      value: selectedActivity.avgHeartRate,
+                      value: selectedActivity!.avgHeartRate,
                       pq: PQ.heartRate,
                     ),
                     subtitle: const Text('Average heart rate')),

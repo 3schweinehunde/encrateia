@@ -1,19 +1,16 @@
-import 'package:encrateia/actions/setupDemoAthlete.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_finished_screen.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_strava_credentials_screen.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/screens/strava_get_user.dart';
-
+import '/actions/setup_demo_athlete.dart';
+import '/models/athlete.dart';
+import '/screens/onboarding_screens/onboarding_finished_screen.dart';
+import '/screens/onboarding_screens/onboarding_strava_credentials_screen.dart';
+import '/screens/strava_get_user.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button_style.dart';
+import '/utils/my_color.dart';
 import 'onboarding_standalone_credentials_screen.dart';
 
 class OnboardingCreateUserScreen extends StatefulWidget {
-  const OnboardingCreateUserScreen();
+  const OnboardingCreateUserScreen({Key? key}) : super(key: key);
 
   @override
   _OnboardingCreateUserScreenState createState() =>
@@ -23,7 +20,6 @@ class OnboardingCreateUserScreen extends StatefulWidget {
 class _OnboardingCreateUserScreenState
     extends State<OnboardingCreateUserScreen> {
   Athlete athlete = Athlete();
-  Flushbar<Object> flushbar;
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +41,20 @@ class _OnboardingCreateUserScreenState
                       leading: MyIcon.create,
                       title: Text('Option 1: Demo Setup'),
                       subtitle: Text(
-                        'Choose this option to create a demo user with demo setup.'
+                        'Choose this option to create a demo user with demo setup.\n'
                         'It will download and analyse 4 activities provided '
-                        'by the Encrateia team. '
+                        'by the Encrateia team.\n'
                         'This is the quickest option to explore Encrateia.',
                       ),
                     ),
                     ButtonBar(
                       children: <Widget>[
                         ElevatedButton(
-                          style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
+                          style: MyButtonStyle.raisedButtonStyle(
+                              color: MyColor.primary),
                           child: const Text('Create Demo User'),
                           onPressed: () async {
-                            await setupDemoAthlete(
-                              context: context,
-                              flushbar: flushbar,
-                            );
+                            await setupDemoAthlete(context: context);
                             await Navigator.pushReplacement(
                               context,
                               MaterialPageRoute<BuildContext>(
@@ -81,16 +75,17 @@ class _OnboardingCreateUserScreenState
                   children: <Widget>[
                     const ListTile(
                       leading: MyIcon.download,
-                      title:
-                          Text('Option 2: Athlete with Strava Account'),
+                      title: Text('Option 2: Athlete with Strava Account'),
                       subtitle: Text(
                           'Choose this option, if you want to download activities '
-                          'from Strava'),
+                          'from Strava. \n'
+                           'Creating multi users with Strava Accounts will not work.'),
                     ),
                     ButtonBar(
                       children: <Widget>[
                         ElevatedButton(
-                          style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
+                          style: MyButtonStyle.raisedButtonStyle(
+                              color: MyColor.primary),
                           child: const Text('Connect to Strava'),
                           onPressed: () async {
                             await Navigator.push(
@@ -122,14 +117,15 @@ class _OnboardingCreateUserScreenState
                     const ListTile(
                       leading: MyIcon.upload,
                       title: Text('Option 3: Standalone Athlete'),
-                      subtitle: Text(
-                          'Choose this option, if you want to upload all'
-                          ' .fit-files manually'),
+                      subtitle:
+                          Text('Choose this option, if you want to upload all'
+                              ' .fit-files manually'),
                     ),
                     ButtonBar(
                       children: <Widget>[
                         ElevatedButton(
-                          style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
+                          style: MyButtonStyle.raisedButtonStyle(
+                              color: MyColor.primary),
                           child: const Text('Create standalone User'),
                           onPressed: () {
                             athlete.setupStandaloneAthlete();

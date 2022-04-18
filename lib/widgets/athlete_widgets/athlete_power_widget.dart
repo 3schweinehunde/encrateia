@@ -1,17 +1,16 @@
-import 'package:encrateia/models/activity_list.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/athlete_time_series_chart.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
+import '/models/activity.dart';
+import '/models/activity_list.dart';
+import '/models/athlete.dart';
+import '/models/tag_group.dart';
+import '/utils/athlete_time_series_chart.dart';
+import '/utils/enums.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthletePowerWidget extends StatefulWidget {
-  const AthletePowerWidget({this.athlete});
-
+  const AthletePowerWidget({Key? key, required this.athlete}) : super(key: key);
   final Athlete athlete;
 
   @override
@@ -24,8 +23,8 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -38,7 +37,7 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> powerActivities = activities
           .where((Activity activity) =>
-              activity.avgPower != null && activity.avgPower > 0)
+              activity.avgPower != null && activity.avgPower! > 0)
           .toList();
       if (powerActivities.isNotEmpty) {
         return ListTileTheme(
@@ -60,7 +59,7 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
                   MyButton.save(
                     child: Text(screenShotButtonText),
                     onPressed: () async {
-                      await ImageUtils.capturePng(widgetKey: widgetKey);
+                      await image_utils.capturePng(widgetKey: widgetKey);
                       screenShotButtonText = 'Image saved';
                       setState(() {});
                     },
@@ -74,14 +73,14 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
                     const SizedBox(width: 20),
                     DropdownButton<String>(
                       items:
-                          sports.map<DropdownMenuItem<String>>((String value) {
+                          sports.map<DropdownMenuItem<String>>((String? value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(value!),
                         );
                       }).toList(),
                       value: selectedSports,
-                      onChanged: (String value) {
+                      onChanged: (String? value) {
                         selectedSports = value;
                         getData();
                       },
@@ -125,7 +124,7 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
     final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()

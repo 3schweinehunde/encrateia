@@ -1,20 +1,19 @@
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import '/models/interval.dart' as encrateia;
+import '/utils/my_color.dart';
 
 class ShowIntervalDetailScreen extends StatefulWidget {
   const ShowIntervalDetailScreen({
-    Key key,
-    @required this.interval,
-    @required this.intervals,
-    @required this.nextWidget,
-    @required this.title,
+    Key? key,
+    required this.interval,
+    required this.intervals,
+    required this.nextWidget,
+    required this.title,
   }) : super(key: key);
 
   final encrateia.Interval interval;
-  final List<encrateia.Interval> intervals;
-  final Widget Function({encrateia.Interval interval}) nextWidget;
+  final List<encrateia.Interval?> intervals;
+  final Widget Function({encrateia.Interval? interval}) nextWidget;
   final String title;
 
   @override
@@ -23,9 +22,9 @@ class ShowIntervalDetailScreen extends StatefulWidget {
 }
 
 class _ShowIntervalDetailScreenState extends State<ShowIntervalDetailScreen> {
-  encrateia.Interval currentInterval;
+  encrateia.Interval? currentInterval;
   double dragAmount = 0;
-  int currentIntervalIndex;
+  late int currentIntervalIndex;
 
   @override
   void initState() {
@@ -48,7 +47,7 @@ class _ShowIntervalDetailScreenState extends State<ShowIntervalDetailScreen> {
         child: GestureDetector(
           child: widget.nextWidget(interval: currentInterval),
           onHorizontalDragUpdate: (DragUpdateDetails details) {
-            dragAmount = dragAmount + details.primaryDelta;
+            dragAmount = dragAmount + details.primaryDelta!;
           },
           onHorizontalDragEnd: (DragEndDetails details) {
             if (dragAmount < -50) {

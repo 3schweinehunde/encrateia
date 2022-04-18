@@ -1,49 +1,45 @@
-import 'package:encrateia/actions/analyse_activities.dart';
-import 'package:encrateia/actions/import_activities_locally.dart';
-import 'package:encrateia/models/strava_token.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:encrateia/widgets/activities_list_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_ftp_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_moving_time_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_pace_vs_distance.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_pace_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_power_vs_distance.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_stryd_cadence_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_tag_group_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_distance_widget.dart';
-import 'package:encrateia/widgets/intervals_feed_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/actions/auto_tagging.dart';
-import 'package:encrateia/actions/delete_athlete.dart';
-import 'package:encrateia/actions/download_demo_data.dart';
-import 'package:encrateia/actions/update_job.dart';
-import 'package:encrateia/widgets/activities_feed_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_power_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_stride_ratio_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_settings_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_power_per_heart_rate_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_speed_per_heart_rate_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_body_weight_widget.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_ecor_widget.dart';
-import 'package:encrateia/screens/show_athlete_detail_screen.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:flushbar/flushbar.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '/actions/analyse_activities.dart';
+import '/actions/auto_tagging.dart';
+import '/actions/delete_athlete.dart';
+import '/actions/download_demo_data.dart';
+import '/actions/import_activities_locally.dart';
+import '/actions/update_job.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/screens/show_athlete_detail_screen.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button_style.dart';
+import '/utils/my_color.dart';
+import '/widgets/activities_feed_widget.dart';
+import '/widgets/activities_list_widget.dart';
+import '/widgets/athlete_widgets/athlete_body_weight_widget.dart';
+import '/widgets/athlete_widgets/athlete_distance_widget.dart';
+import '/widgets/athlete_widgets/athlete_ecor_widget.dart';
+import '/widgets/athlete_widgets/athlete_ftp_widget.dart';
+import '/widgets/athlete_widgets/athlete_heart_rate_widget.dart';
+import '/widgets/athlete_widgets/athlete_heart_rate_zone_schema_widget.dart';
+import '/widgets/athlete_widgets/athlete_moving_time_widget.dart';
+import '/widgets/athlete_widgets/athlete_pace_vs_distance.dart';
+import '/widgets/athlete_widgets/athlete_pace_widget.dart';
+import '/widgets/athlete_widgets/athlete_power_per_heart_rate_widget.dart';
+import '/widgets/athlete_widgets/athlete_power_ratio_widget.dart';
+import '/widgets/athlete_widgets/athlete_power_vs_distance.dart';
+import '/widgets/athlete_widgets/athlete_power_widget.dart';
+import '/widgets/athlete_widgets/athlete_power_zone_schema_widget.dart';
+import '/widgets/athlete_widgets/athlete_settings_widget.dart';
+import '/widgets/athlete_widgets/athlete_speed_per_heart_rate_widget.dart';
+import '/widgets/athlete_widgets/athlete_stride_ratio_widget.dart';
+import '/widgets/athlete_widgets/athlete_stryd_cadence_widget.dart';
+import '/widgets/athlete_widgets/athlete_tag_group_widget.dart';
+import '/widgets/intervals_feed_widget.dart';
 import 'create_activity_screen.dart';
 import 'edit_athlete_screen.dart';
 
 class ShowAthleteScreen extends StatefulWidget {
   const ShowAthleteScreen({
-    Key key,
-    this.athlete,
+    Key? key,
+    required this.athlete,
   }) : super(key: key);
 
   final Athlete athlete;
@@ -53,9 +49,8 @@ class ShowAthleteScreen extends StatefulWidget {
 }
 
 class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
-  Flushbar<Object> flushbar = Flushbar<Object>();
-  Visibility floatingActionButton;
-  bool floatingActionButtonVisible;
+  Visibility? floatingActionButton;
+  late bool floatingActionButtonVisible;
 
   List<Widget> get tiles {
     return <Widget>[
@@ -169,14 +164,11 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.add,
             textColor: MyColor.textColor(backgroundColor: MyColor.add)),
         icon: MyIcon.downloadLocal,
-        label: const Expanded(
-          child: Text('Import .fit from Folder'),
-        ),
+        label: const Text('Import .fit from Folder'),
         onPressed: () async {
           await importActivitiesLocally(
             context: context,
             athlete: widget.athlete,
-            flushbar: flushbar,
           );
         },
       ),
@@ -208,17 +200,13 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         style: MyButtonStyle.raisedButtonStyle(color: MyColor.activity),
         icon: MyIcon.addActivity,
         onPressed: () => goToEditActivityScreen(athlete: widget.athlete),
-        label: const Expanded(
-          child: Text('Create Activity manually'),
-        ),
+        label: const Text('Create Activity manually'),
       ),
       ElevatedButton.icon(
         style: MyButtonStyle.raisedButtonStyle(color: MyColor.settings),
         icon: MyIcon.secrets,
         onPressed: () => goToEditAthleteScreen(athlete: widget.athlete),
-        label: const Expanded(
-          child: Text('Credentials'),
-        ),
+        label: const Text('Credentials'),
       ),
       navigationButton(
         color: MyColor.settings,
@@ -231,13 +219,10 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.danger,
             textColor: MyColor.textColor(backgroundColor: MyColor.danger)),
         icon: MyIcon.delete,
-        label: const Expanded(
-          child: Text('Delete Athlete'),
-        ),
+        label: const Text('Delete Athlete'),
         onPressed: () => deleteAthlete(
           context: context,
           athlete: widget.athlete,
-          flushbar: flushbar,
         ),
       ),
       ElevatedButton.icon(
@@ -245,13 +230,10 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.settings)),
         icon: MyIcon.settings,
-        label: const Expanded(
-          child: Text('Reanalyse Activities'),
-        ),
+        label: const Text('Reanalyse Activities'),
         onPressed: () => analyseActivities(
           context: context,
           athlete: widget.athlete,
-          flushbar: flushbar,
         ),
       ),
       ElevatedButton.icon(
@@ -259,41 +241,21 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             color: MyColor.settings,
             textColor: MyColor.textColor(backgroundColor: MyColor.settings)),
         icon: MyIcon.settings,
-        label: const Expanded(
-          child: Text('Redo Autotagging'),
-        ),
+        label: const Text('Redo Autotagging'),
         onPressed: () => autoTagging(
           context: context,
           athlete: widget.athlete,
-          flushbar: flushbar,
         ),
       ),
       ElevatedButton.icon(
         style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
         icon: MyIcon.download,
-        label: const Expanded(
-          child: Text('Download Demo Data'),
-        ),
+        label: const Text('Download Demo Data'),
         onPressed: () => downloadDemoData(
           context: context,
           athlete: widget.athlete,
-          flushbar: flushbar,
         ),
       ),
-      if (widget.athlete.stravaId != null)
-        ElevatedButton.icon(
-            style: MyButtonStyle.raisedButtonStyle(
-                color: MyColor.settings,
-                textColor:
-                    MyColor.textColor(backgroundColor: MyColor.settings)),
-            icon: MyIcon.settings,
-            label: const Expanded(
-              child: Text('Delete Strava Token'),
-            ),
-            onPressed: () async {
-              await StravaToken.deleteTokenData(athlete: widget.athlete);
-              setState(() {});
-            }),
     ];
   }
 
@@ -322,7 +284,6 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
             updateJob(
               context: context,
               athlete: widget.athlete,
-              flushbar: flushbar,
             );
             setState(() => floatingActionButtonVisible = true);
           },
@@ -331,17 +292,12 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
         ),
       ),
       body: SafeArea(
-        child: StaggeredGridView.count(
-          staggeredTiles: List<StaggeredTile>.filled(
-            tiles.length,
-            const StaggeredTile.fit(1),
-          ),
+        child: GridView.extent(
           crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 5,
           padding: const EdgeInsets.all(10),
-          crossAxisCount:
-              MediaQuery.of(context).orientation == Orientation.portrait
-                  ? 2
-                  : 4,
+          maxCrossAxisExtent: 250,
           children: tiles,
         ),
       ),
@@ -349,20 +305,17 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
   }
 
   Widget navigationButton({
-    @required Widget nextWidget,
-    @required Widget icon,
-    @required String title,
-    @required Color color,
-    Color backgroundColor,
+    required Widget nextWidget,
+    required Widget icon,
+    required String title,
+    required Color color,
+    Color? backgroundColor,
   }) {
     return ElevatedButton.icon(
       style: MyButtonStyle.raisedButtonStyle(
-          color: color ?? MyColor.primary,
-          textColor: MyColor.textColor(backgroundColor: color)),
+          color: color, textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
-      label: Expanded(
-        child: Text(title),
-      ),
+      label: Text(title),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(
@@ -377,7 +330,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     );
   }
 
-  Future<void> goToEditAthleteScreen({@required Athlete athlete}) async {
+  Future<void> goToEditAthleteScreen({required Athlete athlete}) async {
     await athlete.readCredentials();
     await Navigator.push(
       context,
@@ -387,7 +340,7 @@ class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
     );
   }
 
-  Future<void> goToEditActivityScreen({@required Athlete athlete}) async {
+  Future<void> goToEditActivityScreen({required Athlete athlete}) async {
     final Activity activity = Activity.manual(athlete: athlete);
     await Navigator.push(
       context,

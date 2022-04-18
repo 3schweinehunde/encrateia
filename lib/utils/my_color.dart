@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:encrateia/utils/my_color.dart';
+// import '/utils/my_color.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class MyColor {
@@ -70,17 +70,21 @@ class MyColor {
   static Color tag = lavender;
   static Color interval = pinkRose;
 
+  static Color progress = mint;
+
   static Color textColor({
-    @required Color backgroundColor,
+    required Color backgroundColor,
     bool selected = true,
   }) {
     if (selected) {
       if (ThemeData.estimateBrightnessForColor(backgroundColor) ==
-          Brightness.light)
+          Brightness.light) {
         return black;
-      else
+      } else {
         return white;
-    } else
+      }
+    } else {
       return black;
+    }
   }
 }

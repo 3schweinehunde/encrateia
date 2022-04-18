@@ -1,20 +1,21 @@
 import 'dart:math' as math;
-import 'package:encrateia/models/bar_zone.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter/material.dart';
+import '/models/bar_zone.dart';
+import '/models/heart_rate_zone.dart';
+import '/models/power_zone.dart';
 import 'bar_chart_painter.dart';
 
 class MyBarChart extends StatelessWidget {
   MyBarChart({
-    int width,
-    int height,
-    @required num value,
-    num maximum,
-    num minimum,
-    List<PowerZone> powerZones,
-    List<HeartRateZone> heartRateZones,
-    bool showPercentage,
+    Key? key,
+    int? width,
+    int? height,
+    required num value,
+    num? maximum,
+    num? minimum,
+    List<PowerZone>? powerZones,
+    List<HeartRateZone>? heartRateZones,
+    bool? showPercentage,
   })  : _width = width?.toDouble() ?? 200.0,
         _height = height?.toDouble() ?? 30.0,
         _value = value.toDouble(),
@@ -32,17 +33,19 @@ class MyBarChart extends StatelessWidget {
           powerZones: powerZones,
           heartRateZones: heartRateZones,
         ),
-        _showPercentage = showPercentage;
+        _showPercentage = showPercentage,
+        super(key: key);
 
   MyBarChart.visualizeDistributions(
-      {int width, int height, List<BarZone> distributions})
+      {Key? key, int? width, int? height, required List<BarZone> distributions})
       : _width = width?.toDouble() ?? 200.0,
         _height = height?.toDouble() ?? 30.0,
         _minimum = 0,
-        _maximum = distributions.last.upper.toDouble(),
-        _value = distributions.last.upper.toDouble(),
+        _maximum = distributions.last.upper!.toDouble(),
+        _value = distributions.last.upper!.toDouble(),
         _barZones = distributions,
-        _showPercentage = true;
+        _showPercentage = true,
+        super(key: key);
 
   final double _width;
   final double _height;
@@ -50,13 +53,13 @@ class MyBarChart extends StatelessWidget {
   final double _maximum;
   final double _minimum;
   final List<BarZone> _barZones;
-  final bool _showPercentage;
+  final bool? _showPercentage;
 
   @override
   Widget build(BuildContext context) {
-    if (_barZones.isEmpty && _value == null || _value <= 0)
+    if (_barZones.isEmpty && _value <= 0) {
       return const Text('no data');
-    else
+    } else {
       return SizedBox(
         width: _width,
         height: _height,
@@ -72,55 +75,59 @@ class MyBarChart extends StatelessWidget {
           ),
         ),
       );
+    }
   }
 
   static List<BarZone> toBarZones({
-    List<PowerZone> powerZones,
-    List<HeartRateZone> heartRateZones,
+    List<PowerZone>? powerZones,
+    List<HeartRateZone>? heartRateZones,
   }) {
-    if (powerZones != null)
+    if (powerZones != null) {
       return BarZone.fromPowerZones(powerZones);
-    else if (heartRateZones != null)
+    } else if (heartRateZones != null) {
       return BarZone.fromHeartRateZones(heartRateZones);
-    else
+    } else {
       return <BarZone>[];
+    }
   }
 
   static double maxFromZones(
-      {List<PowerZone> powerZones,
-      List<HeartRateZone> heartRateZones,
-      num maximum}) {
-    if (maximum != null)
+      {List<PowerZone>? powerZones,
+      List<HeartRateZone>? heartRateZones,
+      num? maximum}) {
+    if (maximum != null) {
       return maximum.toDouble();
-    else if (powerZones != null)
+    } else if (powerZones != null) {
       return powerZones
-          .map((PowerZone powerZone) => powerZone.upperLimit.toDouble())
+          .map((PowerZone powerZone) => powerZone.upperLimit!.toDouble())
           .reduce(math.max);
-    else if (heartRateZones != null)
+    } else if (heartRateZones != null) {
       return heartRateZones
           .map((HeartRateZone heartRateZone) =>
-              heartRateZone.upperLimit.toDouble())
+              heartRateZone.upperLimit!.toDouble())
           .reduce(math.max);
-    else
+    } else {
       return 100.0;
+    }
   }
 
   static double minFromZones(
-      {List<PowerZone> powerZones,
-      List<HeartRateZone> heartRateZones,
-      num minimum}) {
-    if (minimum != null)
+      {List<PowerZone>? powerZones,
+      List<HeartRateZone>? heartRateZones,
+      num? minimum}) {
+    if (minimum != null) {
       return minimum.toDouble();
-    else if (powerZones != null)
+    } else if (powerZones != null) {
       return powerZones
-          .map((PowerZone powerZone) => powerZone.lowerLimit.toDouble())
+          .map((PowerZone powerZone) => powerZone.lowerLimit!.toDouble())
           .reduce(math.min);
-    else if (heartRateZones != null)
+    } else if (heartRateZones != null) {
       return heartRateZones
           .map((HeartRateZone heartRateZone) =>
-              heartRateZone.lowerLimit.toDouble())
+              heartRateZone.lowerLimit!.toDouble())
           .reduce(math.min);
-    else
+    } else {
       return 0.0;
+    }
   }
 }

@@ -1,19 +1,19 @@
 import 'dart:math';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/widgets/charts/lap_charts/lap_altitude_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import '/models/event.dart';
+import '/models/interval.dart' as encrateia;
+import '/models/record_list.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/utils/pg_text.dart';
+import '/widgets/charts/lap_charts/lap_altitude_chart.dart';
 
 class IntervalAltitudeWidget extends StatefulWidget {
-  const IntervalAltitudeWidget({this.interval});
+  const IntervalAltitudeWidget({Key? key, this.interval}) : super(key: key);
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalAltitudeWidgetState createState() => _IntervalAltitudeWidgetState();
@@ -41,7 +41,7 @@ class _IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> altitudeRecords =
-      records.where((Event value) => value.altitude != null).toList();
+          records.where((Event value) => value.altitude != null).toList();
 
       if (altitudeRecords.isNotEmpty) {
         return ListTileTheme(
@@ -54,11 +54,11 @@ class _IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
                 child: LapAltitudeChart(
                   records: RecordList<Event>(altitudeRecords),
                   minimum: altitudeRecords
-                      .map((Event record) => record.altitude)
+                      .map((Event record) => record.altitude ?? 0)
                       .reduce(min)
                       .toDouble(),
                   maximum: altitudeRecords
-                      .map((Event record) => record.altitude)
+                      .map((Event record) => record.altitude ?? 0)
                       .reduce(max)
                       .toDouble(),
                 ),
@@ -71,7 +71,7 @@ class _IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -99,7 +99,7 @@ class _IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
   }
 
   Future<void> getData() async {
-    final encrateia.Interval interval = widget.interval;
+    final encrateia.Interval interval = widget.interval!;
     records = RecordList<Event>(await interval.records);
 
     setState(() => loading = false);

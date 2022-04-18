@@ -1,19 +1,18 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
+import '/models/athlete.dart';
+import '/models/interval.dart' as encrateia;
+import '/models/weight.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
 
 class IntervalOverviewWidget extends StatefulWidget {
-  const IntervalOverviewWidget({
+  const IntervalOverviewWidget({Key? key,
     this.interval,
     this.athlete,
-  });
+  }) : super(key: key);
 
-  final encrateia.Interval interval;
-  final Athlete athlete;
+  final encrateia.Interval? interval;
+  final Athlete? athlete;
 
   @override
   _IntervalOverviewWidgetState createState() => _IntervalOverviewWidgetState();
@@ -29,67 +28,67 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
   List<Widget> get tiles {
     return <Widget>[
       ListTile(
-        title: PQText(
-            value: widget.interval.distance.toInt(), pq: PQ.distance),
+        title: PQText(value: widget.interval!.distance!.toInt(), pq: PQ.distance),
         subtitle: const Text('distance'),
       ),
       ListTile(
         title: Row(children: <Widget>[
           PQText(
-              value: widget.interval.avgSpeedByDistance, pq: PQ.paceFromSpeed),
+              value: widget.interval!.avgSpeedByDistance, pq: PQ.paceFromSpeed),
           const Text(' / '),
-          PQText(value: widget.interval.maxSpeed, pq: PQ.paceFromSpeed),
+          PQText(value: widget.interval!.maxSpeed, pq: PQ.paceFromSpeed),
         ]),
         subtitle: const Text('avg / max pace'),
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.interval.avgHeartRate, pq: PQ.heartRate),
+          PQText(value: widget.interval!.avgHeartRate, pq: PQ.heartRate),
           const Text(' / '),
-          PQText(value: widget.interval.maxHeartRate, pq: PQ.heartRate),
+          PQText(value: widget.interval!.maxHeartRate, pq: PQ.heartRate),
         ]),
         subtitle: const Text('avg / max heart rate'),
       ),
       ListTile(
-        title: PQText(value: widget.interval.avgPower, pq: PQ.power),
+        title: PQText(value: widget.interval!.avgPower, pq: PQ.power),
         subtitle: const Text('avg power'),
       ),
       ListTile(
         title: PQText(
-            value: widget.interval.avgPowerPerHeartRate,
+            value: widget.interval!.avgPowerPerHeartRate,
             pq: PQ.powerPerHeartRate),
         subtitle: const Text('power / heart rate'),
       ),
       ListTile(
-        title: PQText(value: widget.interval.movingTime, pq: PQ.duration),
+        title: PQText(value: widget.interval!.movingTime, pq: PQ.duration),
         subtitle: const Text('moving time'),
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.interval.totalAscent, pq: PQ.integer),
+          PQText(value: widget.interval!.totalAscent, pq: PQ.integer),
           const Text(' - '),
-          PQText(value: widget.interval.totalDescent, pq: PQ.integer),
+          PQText(value: widget.interval!.totalDescent, pq: PQ.integer),
           const Text(' = '),
-          PQText(value: widget.interval.elevationDifference, pq: PQ.elevation),
+          PQText(value: widget.interval!.elevationDifference, pq: PQ.elevation),
         ]),
         subtitle: const Text('total ascent - descent = total climb'),
       ),
       ListTile(
-        title: PQText(value: widget.interval.timeStamp, pq: PQ.dateTime),
+        title: PQText(value: widget.interval!.timeStamp, pq: PQ.dateTime),
         subtitle: const Text('timestamp'),
       ),
       ListTile(
         title: PQText(
-            value: widget.interval.avgVerticalOscillation,
+            value: widget.interval!.avgVerticalOscillation,
             pq: PQ.verticalOscillation),
         subtitle: const Text('avg vertical oscillation'),
       ),
       ListTile(
         title: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              PQText(value: widget.interval.avgSpeedByDistance, pq: PQ.speed),
-              PQText(value: widget.interval.maxSpeed, pq: PQ.speed),
+              PQText(value: widget.interval!.avgSpeedByDistance, pq: PQ.speed),
+              PQText(value: widget.interval!.maxSpeed, pq: PQ.speed),
             ]),
         subtitle: const Text('avg / max speed'),
       ),
@@ -98,21 +97,20 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.count(
-      staggeredTiles:
-          List<StaggeredTile>.filled(tiles.length, const StaggeredTile.fit(1)),
+    return GridView.extent(
       mainAxisSpacing: 4,
-      crossAxisCount:
-          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      crossAxisSpacing: 4,
+      maxCrossAxisExtent: 600,
+      childAspectRatio: 5,
       children: tiles,
     );
   }
 
   Future<void> getData() async {
-    final Weight weight = await Weight.getBy(
-      athletesId: widget.athlete.id,
-      date: widget.interval.timeStamp,
+    final Weight? weight = await Weight.getBy(
+      athletesId: widget.athlete!.id,
+      date: widget.interval!.timeStamp,
     );
-    setState(() => widget.interval.weight = weight?.value);
+    setState(() => widget.interval!.weight = weight?.value);
   }
 }

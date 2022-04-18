@@ -1,17 +1,17 @@
-import 'package:encrateia/models/power_duration.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
+import '/models/event.dart';
+import '/models/plot_point.dart';
+import '/models/power_duration.dart';
 
 class FtpChart extends StatelessWidget {
-  const FtpChart({this.records});
+   const FtpChart({Key? key, this.records}) : super(key: key);
 
-  final List<Event> records;
+  final List<Event>? records;
 
   @override
   Widget build(BuildContext context) {
-    final PowerDuration powerDuration = PowerDuration(records: records);
+    final PowerDuration powerDuration = PowerDuration(records: records!);
     final PowerDuration ftpCurve = powerDuration.normalize();
 
     final List<Series<DoublePlotPoint, num>> data =
@@ -34,20 +34,20 @@ class FtpChart extends StatelessWidget {
       TickSpec<int>(PowerDuration.scaled(seconds: 3600), label: '1h'),
     ]);
 
-    final List<ChartTitle> chartTitles = <ChartTitle>[
-      ChartTitle(
+    final List<ChartTitle<num>> chartTitles = <ChartTitle<num>>[
+      ChartTitle<num>(
         'normalized FTP Power (W)',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.start,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'Time',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'FTP diagram created with Encrateia https://encreteia.informatom.com',
         titleStyleSpec: const TextStyleSpec(fontSize: 10),
         behaviorPosition: BehaviorPosition.top,

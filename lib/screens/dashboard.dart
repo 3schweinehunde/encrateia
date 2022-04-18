@@ -1,18 +1,17 @@
-import 'package:encrateia/models/log.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_create_user.dart';
-import 'package:encrateia/screens/log_list_screen.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'package:package_info/package_info.dart';
+import '/models/athlete.dart';
+import '/models/log.dart';
+import '/screens/log_list_screen.dart';
+import '/screens/onboarding_screens/onboarding_create_user.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
 import 'onboarding_screens/onboarding_introduction_screen.dart';
 import 'show_athlete_screen.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard();
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
   _DashboardState createState() => _DashboardState();
@@ -21,7 +20,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   List<Athlete> athletes = <Athlete>[];
   List<Log> logs = <Log>[];
-  String version;
+  String? version;
 
   @override
   void initState() {
@@ -31,9 +30,9 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    if (athletes.isEmpty)
+    if (athletes.isEmpty) {
       return Container();
-    else {
+    } else {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: MyColor.primary,
@@ -48,12 +47,11 @@ class _DashboardState extends State<Dashboard> {
                 Card(
                   child: ListTile(
                     leading: athlete.photoPath != null
-                        ? Image.network(athlete.photoPath)
+                        ? Image.network(athlete.photoPath!)
                         : MyIcon.runningBig,
                     title: Text('${athlete.firstName} ${athlete.lastName}'),
                     onTap: () async {
                       await athlete.readCredentials();
-                      await athlete.loadStravaToken();
                       await Navigator.push(
                         context,
                         MaterialPageRoute<BuildContext>(
@@ -61,7 +59,6 @@ class _DashboardState extends State<Dashboard> {
                               ShowAthleteScreen(athlete: athlete),
                         ),
                       );
-                      await athlete.persistStravaToken();
                       await getData();
                     },
                   ),

@@ -1,20 +1,20 @@
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:encrateia/utils/my_color.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import '/models/power_zone.dart';
+import '/models/power_zone_schema.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
+import '/utils/my_button_style.dart';
+import '/utils/my_color.dart';
 import 'add_power_zone_screen.dart';
 
 class AddPowerZoneSchemaScreen extends StatefulWidget {
   const AddPowerZoneSchemaScreen({
-    Key key,
-    this.powerZoneSchema,
-    @required this.numberOfSchemas,
+    Key? key,
+    required this.powerZoneSchema,
+    required this.numberOfSchemas,
   }) : super(key: key);
 
   final PowerZoneSchema powerZoneSchema;
@@ -28,7 +28,7 @@ class AddPowerZoneSchemaScreen extends StatefulWidget {
 class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   List<PowerZone> powerZones = <PowerZone>[];
   int offset = 0;
-  int rows;
+  int? rows;
 
   @override
   void initState() {
@@ -64,7 +64,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
               format: DateFormat('yyyy-MM-dd'),
               initialValue: widget.powerZoneSchema.date,
               resetIcon: null,
-              onShowPicker: (BuildContext context, DateTime currentValue) {
+              onShowPicker: (BuildContext context, DateTime? currentValue) {
                 return showDatePicker(
                   context: context,
                   firstDate: DateTime(1969),
@@ -72,7 +72,7 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                   lastDate: DateTime(2100),
                 );
               },
-              onChanged: (DateTime value) => copyPowerZoneSchema(date: value),
+              onChanged: (DateTime? value) => copyPowerZoneSchema(date: value),
             ),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Name'),
@@ -103,16 +103,16 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
               ],
               rows: powerZones.map((PowerZone powerZone) {
                 return DataRow(
-                  key: ValueKey<int>(powerZone.id),
+                  key: ValueKey<int?>(powerZone.id),
                   cells: <DataCell>[
-                    DataCell(Text(powerZone.name)),
+                    DataCell(Text(powerZone.name!)),
                     DataCell(Text(powerZone.lowerLimit.toString() +
                         ' - ' +
                         powerZone.upperLimit.toString())),
                     DataCell(CircleColor(
                       circleSize: 20,
                       elevation: 0,
-                      color: Color(powerZone.color),
+                      color: Color(powerZone.color!),
                     )),
                     DataCell(
                       MyIcon.edit,
@@ -191,27 +191,30 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     setState(() {});
   }
 
-  Future<void> deletePowerZoneSchema({PowerZoneSchema powerZoneSchema}) async {
+  Future<void> deletePowerZoneSchema(
+      {required PowerZoneSchema powerZoneSchema}) async {
     await powerZoneSchema.delete();
     Navigator.of(context).pop();
   }
 
-  Future<void> updatePowerZoneBase({int base}) {
+  Future<void>? updatePowerZoneBase({int? base}) {
     setState(() {
       widget.powerZoneSchema.base = base;
       for (final PowerZone powerZone in powerZones) {
-        powerZone.lowerLimit = (powerZone.lowerPercentage * base / 100).round();
-        powerZone.upperLimit = (powerZone.upperPercentage * base / 100).round();
+        powerZone.lowerLimit =
+            (powerZone.lowerPercentage! * base! / 100).round();
+        powerZone.upperLimit =
+            (powerZone.upperPercentage! * base / 100).round();
       }
     });
     return null;
   }
 
-  Future<void> copyPowerZoneSchema({DateTime date}) async {
+  Future<void> copyPowerZoneSchema({DateTime? date}) async {
     widget.powerZoneSchema
       ..date = date
       ..id = null;
-    final int powerZoneSchemaId = await widget.powerZoneSchema.save();
+    final int? powerZoneSchemaId = await widget.powerZoneSchema.save();
     for (final PowerZone powerZone in powerZones) {
       powerZone
         ..powerZoneSchemataId = powerZoneSchemaId

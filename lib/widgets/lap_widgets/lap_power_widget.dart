@@ -1,20 +1,20 @@
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/widgets/charts/lap_charts/lap_power_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/models/event.dart';
+import '/models/lap.dart';
+import '/models/power_zone.dart';
+import '/models/power_zone_schema.dart';
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_power_chart.dart';
 
 class LapPowerWidget extends StatefulWidget {
-  const LapPowerWidget({this.lap});
+  const LapPowerWidget({Key? key, this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapPowerWidgetState createState() => _LapPowerWidgetState();
@@ -22,9 +22,9 @@ class LapPowerWidget extends StatefulWidget {
 
 class _LapPowerWidgetState extends State<LapPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-bool loading = true;
-  PowerZoneSchema powerZoneSchema;
-  List<PowerZone> powerZones;
+  bool loading = true;
+  PowerZoneSchema? powerZoneSchema;
+  List<PowerZone>? powerZones;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
 
@@ -44,7 +44,7 @@ bool loading = true;
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -67,7 +67,7 @@ bool loading = true;
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -76,22 +76,22 @@ bool loading = true;
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.lap.avgPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.avgPower, pq: PQ.power),
                 subtitle: const Text('average power'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.lap.minPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.minPower, pq: PQ.power),
                 subtitle: const Text('minimum power'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.lap.maxPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.maxPower, pq: PQ.power),
                 subtitle: const Text('maximum power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.lap.sdevPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.sdevPower, pq: PQ.power),
                 subtitle: const Text('standard deviation power'),
               ),
               ListTile(
@@ -115,12 +115,13 @@ bool loading = true;
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
-    powerZoneSchema = await widget.lap.powerZoneSchema;
-    if (powerZoneSchema != null)
-      powerZones = await powerZoneSchema.powerZones;
-    else
+    records = RecordList<Event>(await widget.lap!.records);
+    powerZoneSchema = await widget.lap!.powerZoneSchema;
+    if (powerZoneSchema != null) {
+      powerZones = await powerZoneSchema!.powerZones;
+    } else {
       powerZones = <PowerZone>[];
+    }
     setState(() => loading = false);
   }
 }

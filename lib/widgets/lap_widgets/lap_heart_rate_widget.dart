@@ -1,20 +1,20 @@
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/heart_rate_zone_schema.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/models/event.dart';
+import '/models/heart_rate_zone.dart';
+import '/models/heart_rate_zone_schema.dart';
+import '/models/lap.dart';
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_heart_rate_chart.dart';
 
 class LapHeartRateWidget extends StatefulWidget {
-  const LapHeartRateWidget({this.lap});
+  const LapHeartRateWidget({Key? key, this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapHeartRateWidgetState createState() => _LapHeartRateWidgetState();
@@ -23,8 +23,8 @@ class LapHeartRateWidget extends StatefulWidget {
 class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
-  HeartRateZoneSchema heartRateZoneSchema;
-  List<HeartRateZone> heartRateZones;
+  HeartRateZoneSchema? heartRateZoneSchema;
+  List<HeartRateZone>? heartRateZones;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
 
@@ -45,7 +45,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
     if (records.isNotEmpty) {
       final List<Event> heartRateRecords = records
           .where(
-              (Event value) => value.heartRate != null && value.heartRate > 0)
+              (Event value) => value.heartRate != null && value.heartRate! > 0)
           .toList();
 
       if (heartRateRecords.isNotEmpty) {
@@ -68,7 +68,7 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -77,22 +77,23 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.lap.avgHeartRate, pq: PQ.heartRate),
+                title: PQText(value: widget.lap!.avgHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('average heart rate'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.lap.minHeartRate, pq: PQ.heartRate),
+                title: PQText(value: widget.lap!.minHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.lap.maxHeartRate, pq: PQ.heartRate),
+                title: PQText(value: widget.lap!.maxHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('maximum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.lap.sdevHeartRate, pq: PQ.heartRate),
+                title:
+                    PQText(value: widget.lap!.sdevHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('standard deviation heart rate'),
               ),
               ListTile(
@@ -116,12 +117,13 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
-    heartRateZoneSchema = await widget.lap.heartRateZoneSchema;
-    if (heartRateZoneSchema != null)
-      heartRateZones = await heartRateZoneSchema.heartRateZones;
-    else
+    records = RecordList<Event>(await widget.lap!.records);
+    heartRateZoneSchema = await widget.lap!.heartRateZoneSchema;
+    if (heartRateZoneSchema != null) {
+      heartRateZones = await heartRateZoneSchema!.heartRateZones;
+    } else {
       heartRateZones = <HeartRateZone>[];
+    }
     setState(() => loading = false);
   }
 }

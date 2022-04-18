@@ -1,7 +1,6 @@
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-// import 'package:encrateia/utils/my_color.dart';
-// import 'package:encrateia/utils/icon_utils.dart';
+import '/utils/my_color.dart';
+// import '/utils/icon_utils.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class MyIcon {

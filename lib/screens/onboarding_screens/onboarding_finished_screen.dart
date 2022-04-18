@@ -1,12 +1,11 @@
-import 'package:encrateia/screens/dashboard.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/screens/dashboard.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button_style.dart';
+import '/utils/my_color.dart';
 
 class OnboardingFinishedScreen extends StatelessWidget {
-  const OnboardingFinishedScreen();
+  const OnboardingFinishedScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +34,8 @@ class OnboardingFinishedScreen extends StatelessWidget {
                   ButtonBar(
                     children: <Widget>[
                       ElevatedButton(
-                        style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
+                        style: MyButtonStyle.raisedButtonStyle(
+                            color: MyColor.primary),
                         child: const Text('Finish'),
                         onPressed: () async {
                           await Navigator.pushAndRemoveUntil(

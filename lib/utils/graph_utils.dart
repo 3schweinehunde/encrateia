@@ -1,13 +1,14 @@
 import 'dart:ui' as ui;
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/lap.dart';
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/power_zone.dart';
 import 'package:flutter/material.dart';
+import '/models/heart_rate_zone.dart';
+import '/models/lap.dart';
+import '/models/power_zone.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class GraphUtils {
-  static List<RangeAnnotationSegment<int>> rangeAnnotations({List<Lap> laps}) {
+  static List<RangeAnnotationSegment<int>> rangeAnnotations(
+      {required List<Lap> laps}) {
     final List<Color> colorArray = <Color>[
       MaterialPalette.white,
       MaterialPalette.gray.shade200,
@@ -18,12 +19,12 @@ class GraphUtils {
         RangeAnnotationSegment<int>(
           laps
                   .sublist(0, index + 1)
-                  .map((Lap lap) => lap.totalDistance)
+                  .map((Lap lap) => lap.totalDistance ?? 0)
                   .reduce((int a, int b) => a + b) -
-              laps[index].totalDistance,
+              laps[index].totalDistance!,
           laps
               .sublist(0, index + 1)
-              .map((Lap lap) => lap.totalDistance)
+              .map((Lap lap) => lap.totalDistance ?? 0)
               .reduce((int a, int b) => a + b),
           RangeAnnotationAxisType.domain,
           color: colorArray[index % 2],
@@ -39,26 +40,26 @@ class GraphUtils {
     bottomMarginSpec: MarginSpec.fixedPixel(40),
   );
 
-  static Container loadingContainer = Container(
+  static SizedBox loadingContainer = const SizedBox(
     height: 100,
-    child: const Center(child: Text('Loading')),
+    child: Center(child: Text('Loading')),
   );
 
-  static List<ChartTitle> axis({String measureTitle}) {
-    return <ChartTitle>[
-      ChartTitle(
+  static List<ChartTitle<num>> axis({required String measureTitle}) {
+    return <ChartTitle<num>>[
+      ChartTitle<num>(
         measureTitle,
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.start,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'Distance (m)',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         '$measureTitle diagram created with Encrateia https://encreteia.informatom.com',
         titleStyleSpec: const TextStyleSpec(fontSize: 10),
         behaviorPosition: BehaviorPosition.top,
@@ -68,7 +69,7 @@ class GraphUtils {
   }
 
   static List<RangeAnnotationSegment<int>> powerZoneAnnotations(
-      {List<PowerZone> powerZones}) {
+      {List<PowerZone>? powerZones}) {
     List<RangeAnnotationSegment<int>> rangeAnnotationSegmentList =
         <RangeAnnotationSegment<int>>[];
 
@@ -76,11 +77,11 @@ class GraphUtils {
       rangeAnnotationSegmentList = <RangeAnnotationSegment<int>>[
         for (PowerZone powerZone in powerZones)
           RangeAnnotationSegment<int>(
-            powerZone.lowerLimit,
-            powerZone.upperLimit,
+            powerZone.lowerLimit ?? 0,
+            powerZone.upperLimit ?? 0,
             RangeAnnotationAxisType.measure,
             startLabel: powerZone.name,
-            color: convertedColor(dbColor: powerZone.color),
+            color: convertedColor(dbColor: powerZone.color!),
           )
       ];
     }
@@ -88,7 +89,7 @@ class GraphUtils {
   }
 
   static List<RangeAnnotationSegment<int>> heartRateZoneAnnotations(
-      {List<HeartRateZone> heartRateZones}) {
+      {List<HeartRateZone>? heartRateZones}) {
     List<RangeAnnotationSegment<int>> rangeAnnotationSegmentList =
         <RangeAnnotationSegment<int>>[];
 
@@ -96,18 +97,18 @@ class GraphUtils {
       rangeAnnotationSegmentList = <RangeAnnotationSegment<int>>[
         for (HeartRateZone heartRateZone in heartRateZones)
           RangeAnnotationSegment<int>(
-            heartRateZone.lowerLimit,
-            heartRateZone.upperLimit,
+            heartRateZone.lowerLimit ?? 0,
+            heartRateZone.upperLimit ?? 0,
             RangeAnnotationAxisType.measure,
             startLabel: heartRateZone.name,
-            color: convertedColor(dbColor: heartRateZone.color),
+            color: convertedColor(dbColor: heartRateZone.color!),
           )
       ];
     }
     return rangeAnnotationSegmentList;
   }
 
-  static Color convertedColor({int dbColor}) {
+  static Color convertedColor({required int dbColor}) {
     return Color(
       r: ui.Color(dbColor).red,
       g: ui.Color(dbColor).green,

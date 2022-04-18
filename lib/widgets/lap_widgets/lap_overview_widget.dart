@@ -1,19 +1,18 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:encrateia/models/lap.dart';
+import '/models/athlete.dart';
+import '/models/lap.dart';
+import '/models/weight.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
 
 class LapOverviewWidget extends StatefulWidget {
-  const LapOverviewWidget({
+  const LapOverviewWidget({Key? key,
     this.lap,
     this.athlete,
-  });
+  }) : super(key: key);
 
-  final Lap lap;
-  final Athlete athlete;
+  final Lap? lap;
+  final Athlete? athlete;
 
   @override
   _LapOverviewWidgetState createState() => _LapOverviewWidgetState();
@@ -30,69 +29,69 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
     return <Widget>[
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.avgSpeed, pq: PQ.paceFromSpeed),
+          PQText(value: widget.lap!.avgSpeed, pq: PQ.paceFromSpeed),
           const Text(' / '),
-          PQText(value: widget.lap.maxSpeed, pq: PQ.paceFromSpeed),
+          PQText(value: widget.lap!.maxSpeed, pq: PQ.paceFromSpeed),
         ]),
         subtitle: const Text('avg / max pace'),
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.avgHeartRate, pq: PQ.heartRate),
+          PQText(value: widget.lap!.avgHeartRate, pq: PQ.heartRate),
           const Text(' / '),
-          PQText(value: widget.lap.maxHeartRate, pq: PQ.heartRate),
+          PQText(value: widget.lap!.maxHeartRate, pq: PQ.heartRate),
         ]),
         subtitle: const Text('avg / max heart rate'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.avgPower, pq: PQ.power),
+        title: PQText(value: widget.lap!.avgPower, pq: PQ.power),
         subtitle: const Text('avg power'),
       ),
       ListTile(
         title: PQText(
-            value: widget.lap.avgPowerPerHeartRate, pq: PQ.powerPerHeartRate),
+            value: widget.lap!.avgPowerPerHeartRate, pq: PQ.powerPerHeartRate),
         subtitle: const Text('power / heart rate'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.startTime, pq: PQ.dateTime),
+        title: PQText(value: widget.lap!.startTime, pq: PQ.dateTime),
         subtitle: const Text('start time'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.movingTime, pq: PQ.duration),
+        title: PQText(value: widget.lap!.movingTime, pq: PQ.duration),
         subtitle: const Text('moving time'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.totalTimerTime, pq: PQ.duration),
+        title: PQText(value: widget.lap!.totalTimerTime, pq: PQ.duration),
         subtitle: const Text('total timer time'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.totalDistance, pq: PQ.distance),
+        title: PQText(value: widget.lap!.totalDistance, pq: PQ.distance),
         subtitle: const Text('distance'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.totalCalories, pq: PQ.calories),
+        title: PQText(value: widget.lap!.totalCalories, pq: PQ.calories),
         subtitle: const Text('total calories'),
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.totalAscent, pq: PQ.integer),
+          PQText(value: widget.lap!.totalAscent, pq: PQ.integer),
           const Text(' - '),
-          PQText(value: widget.lap.totalDescent, pq: PQ.integer),
+          PQText(value: widget.lap!.totalDescent, pq: PQ.integer),
           const Text(' = '),
-          PQText(value: widget.lap.elevationDifference, pq: PQ.elevation),
+          PQText(value: widget.lap!.elevationDifference, pq: PQ.elevation),
         ]),
         subtitle: const Text('total ascent - descent = total climb'),
       ),
       ListTile(
         title: Row(children: <Widget>[
-          PQText(value: widget.lap.avgRunningCadence, pq: PQ.cadence),
+          PQText(value: widget.lap!.avgRunningCadence, pq: PQ.cadence),
           const Text(' / '),
-          PQText(value: widget.lap.maxRunningCadence, pq: PQ.cadence),
+          PQText(value: widget.lap!.maxRunningCadence, pq: PQ.cadence),
         ]),
         subtitle: const Text('avg / max steps per minute'),
       ),
       ListTile(
-        title: PQText(value: widget.lap.totalStrides, pq: PQ.integer),
+        title: PQText(value: widget.lap!.totalStrides, pq: PQ.integer),
         subtitle: const Text('total strides'),
       ),
     ];
@@ -100,21 +99,20 @@ class _LapOverviewWidgetState extends State<LapOverviewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StaggeredGridView.count(
-      staggeredTiles:
-          List<StaggeredTile>.filled(tiles.length, const StaggeredTile.fit(1)),
+    return GridView.extent(
       mainAxisSpacing: 4,
-      crossAxisCount:
-          MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      crossAxisSpacing: 4,
+      maxCrossAxisExtent: 600,
+      childAspectRatio: 5,
       children: tiles,
     );
   }
 
   Future<void> getData() async {
-    final Weight weight = await Weight.getBy(
-      athletesId: widget.athlete.id,
-      date: widget.lap.timeStamp,
+    final Weight? weight = await Weight.getBy(
+      athletesId: widget.athlete!.id,
+      date: widget.lap!.timeStamp,
     );
-    setState(() => widget.lap.weight = weight?.value);
+    setState(() => widget.lap!.weight = weight?.value);
   }
 }

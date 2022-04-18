@@ -1,18 +1,15 @@
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:flutter/material.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '/models/weight.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
 
 class AddWeightScreen extends StatelessWidget {
-  const AddWeightScreen({
-    Key key,
-    this.weight,
-    @required this.numberOfWeights
-  }) : super(key: key);
+  const AddWeightScreen({Key? key, this.weight, required this.numberOfWeights})
+      : super(key: key);
 
-  final Weight weight;
+  final Weight? weight;
   final int numberOfWeights;
 
   @override
@@ -29,8 +26,8 @@ class AddWeightScreen extends StatelessWidget {
             DateTimeField(
               decoration: const InputDecoration(labelText: 'Date'),
               format: DateFormat('yyyy-MM-dd'),
-              initialValue: weight.date,
-              onShowPicker: (BuildContext context, DateTime currentValue) {
+              initialValue: weight!.date,
+              onShowPicker: (BuildContext context, DateTime? currentValue) {
                 return showDatePicker(
                   context: context,
                   firstDate: DateTime(1990),
@@ -38,22 +35,23 @@ class AddWeightScreen extends StatelessWidget {
                   lastDate: DateTime(2100),
                 );
               },
-              onChanged: (DateTime value) => weight.date = value,
+              onChanged: (DateTime? value) => weight!.date = value,
             ),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Weight in kg'),
-              initialValue: weight.value.toString(),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              onChanged: (String value) => weight.value = double.parse(value),
+              initialValue: weight!.value.toString(),
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              onChanged: (String value) => weight!.value = double.parse(value),
             ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 if (numberOfWeights > 1)
-                MyButton.delete(
-                  onPressed: () => deleteWeight(context),
-                ),
+                  MyButton.delete(
+                    onPressed: () => deleteWeight(context),
+                  ),
                 const SizedBox(width: 5),
                 MyButton.cancel(onPressed: () => Navigator.of(context).pop()),
                 const SizedBox(width: 5),
@@ -67,12 +65,12 @@ class AddWeightScreen extends StatelessWidget {
   }
 
   Future<void> saveWeight(BuildContext context) async {
-    await weight.save();
+    await weight!.save();
     Navigator.of(context).pop();
   }
 
   Future<void> deleteWeight(BuildContext context) async {
-    await weight.delete();
+    await weight!.delete();
     Navigator.of(context).pop();
   }
 }

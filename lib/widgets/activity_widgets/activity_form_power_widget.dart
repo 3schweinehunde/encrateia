@@ -1,23 +1,23 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/widgets/charts/activity_charts/activity_form_power_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/activity_charts/activity_form_power_chart.dart';
 
 class ActivityFormPowerWidget extends StatefulWidget {
-  const ActivityFormPowerWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivityFormPowerWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityFormPowerWidgetState createState() =>
@@ -38,14 +38,14 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final Activity activity = widget.activity;
+    final Activity? activity = widget.activity;
 
     if (records.isNotEmpty) {
       final List<Event> formPowerRecords = records
           .where((Event value) =>
               value.formPower != null &&
-              value.formPower > 0 &&
-              value.formPower < 200)
+              value.formPower! > 0 &&
+              value.formPower! < 200)
           .toList();
 
       if (formPowerRecords.isNotEmpty) {
@@ -60,11 +60,11 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
                   records: RecordList<Event>(formPowerRecords),
                   activity: activity,
                   athlete: widget.athlete,
-                  minimum: activity.avgFormPower / 1.25,
-                  maximum: activity.avgFormPower * 1.25,
+                  minimum: activity!.avgFormPower! / 1.25,
+                  maximum: activity.avgFormPower! * 1.25,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   '0 W < form power < 200 W are shown.'),
               Row(children: <Widget>[
@@ -72,7 +72,7 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -110,7 +110,7 @@ class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
+    records = RecordList<Event>(await widget.activity!.records);
     setState(() => loading = false);
   }
 }

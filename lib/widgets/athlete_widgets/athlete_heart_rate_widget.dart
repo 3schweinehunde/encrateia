@@ -1,17 +1,17 @@
-import 'package:encrateia/models/activity_list.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/athlete_time_series_chart.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
-
+import '/models/activity.dart';
+import '/models/activity_list.dart';
+import '/models/athlete.dart';
+import '/models/tag_group.dart';
+import '/utils/athlete_time_series_chart.dart';
+import '/utils/enums.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteHeartRateWidget extends StatefulWidget {
-  const AthleteHeartRateWidget({this.athlete});
+  const AthleteHeartRateWidget({Key? key, required this.athlete})
+      : super(key: key);
 
   final Athlete athlete;
 
@@ -25,8 +25,8 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
   String loadingStatus = 'Loading ...';
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
     if (activities.isNotEmpty) {
       final List<Activity> heartRateActivities = activities
           .where((Activity activity) =>
-              activity.avgHeartRate != null && activity.avgHeartRate > 20)
+              activity.avgHeartRate != null && activity.avgHeartRate! > 20)
           .toList();
 
       if (heartRateActivities.isNotEmpty) {
@@ -62,7 +62,7 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -75,14 +75,15 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items:
+                        sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -127,16 +128,17 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
     final Athlete athlete = widget.athlete;
     final List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()
             .toList();
     activities = await ActivityList<Activity>(selectedSports == 'all'
-        ? unfilteredActivities
-        : unfilteredActivities
-        .where((Activity activity) => activity.sport == selectedSports)
-        .toList()).applyFilter(
+            ? unfilteredActivities
+            : unfilteredActivities
+                .where((Activity activity) => activity.sport == selectedSports)
+                .toList())
+        .applyFilter(
       athlete: athlete,
       tagGroups: tagGroups,
     );

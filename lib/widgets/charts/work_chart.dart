@@ -1,18 +1,18 @@
-import 'package:encrateia/models/critical_power.dart';
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/utils/icon_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
+import '/models/critical_power.dart';
+import '/models/event.dart';
+import '/models/plot_point.dart';
+import '/utils/icon_utils.dart';
 
 class WorkChart extends StatelessWidget {
-  const WorkChart({this.records});
+  const WorkChart({Key? key, this.records}) : super(key: key);
 
-  final List<Event> records;
+  final List<Event>? records;
 
   @override
   Widget build(BuildContext context) {
-    final CriticalPower criticalPower = CriticalPower(records: records);
+    final CriticalPower criticalPower = CriticalPower(records: records!);
     final CriticalPower workCurve = criticalPower.workify();
 
     final List<Series<DoublePlotPoint, num>> data =
@@ -33,20 +33,20 @@ class WorkChart extends StatelessWidget {
       TickSpec<int>(3600, label: '60min'),
     ]);
 
-    final List<ChartTitle> chartTitles = <ChartTitle>[
-      ChartTitle(
+    final List<ChartTitle<num>> chartTitles = <ChartTitle<num>>[
+      ChartTitle<num>(
         'Work (J)',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.start,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'Time',
         titleStyleSpec: const TextStyleSpec(fontSize: 13),
         behaviorPosition: BehaviorPosition.bottom,
         titleOutsideJustification: OutsideJustification.end,
       ),
-      ChartTitle(
+      ChartTitle<num>(
         'Work diagram created with Encrateia https://encreteia.informatom.com',
         titleStyleSpec: const TextStyleSpec(fontSize: 10),
         behaviorPosition: BehaviorPosition.top,
@@ -54,7 +54,8 @@ class WorkChart extends StatelessWidget {
       ),
     ];
 
-    return ListView(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         AspectRatio(
           aspectRatio:

@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart';
-import 'package:encrateia/models/athlete.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+import '/model/model.dart';
+import '/models/athlete.dart';
 
 class Weight {
-  Weight({@required Athlete athlete}) {
+  Weight({required Athlete athlete}) {
     _db = DbWeight()
       ..athletesId = athlete.id
       ..value = 70
@@ -12,22 +11,22 @@ class Weight {
   }
   Weight._fromDb(this._db);
 
-  DbWeight _db;
+  DbWeight? _db;
 
-  int get id => _db?.id;
-  DateTime get date => _db.date;
-  double get value => _db.value;
+  int? get id => _db?.id;
+  DateTime? get date => _db!.date;
+  double? get value => _db!.value;
 
-  set date(DateTime value) => _db.date = value;
-  set value(double value) => _db.value = value;
+  set date(DateTime? value) => _db!.date = value;
+  set value(double? value) => _db!.value = value;
 
   @override
   String toString() => '< Weight | $date | $value >';
 
-  Future<BoolResult> delete() async => await _db.delete();
-  Future<int> save() async => await _db.save();
+  Future<BoolResult> delete() async => await _db!.delete();
+  Future<int?> save() async => await _db!.save();
 
-  static Future<Weight> getBy({int athletesId, DateTime date}) async {
+  static Future<Weight> getBy({int? athletesId, DateTime? date}) async {
     List<DbWeight> dbWeights;
 
     dbWeights = await DbWeight()
@@ -40,9 +39,9 @@ class Weight {
         .orderByDesc('date')
         .top(1)
         .toList();
-    if (dbWeights.isNotEmpty)
+    if (dbWeights.isNotEmpty) {
       return Weight._fromDb(dbWeights.first);
-    else
+    } else {
       dbWeights = await DbWeight()
           .select()
           .athletesId
@@ -50,7 +49,13 @@ class Weight {
           .orderBy('date')
           .top(1)
           .toList();
-    return (dbWeights.isNotEmpty) ? Weight._fromDb(dbWeights.first) : null;
+    }
+    return dbWeights.isNotEmpty
+        ? Weight._fromDb(dbWeights.first)
+        : Weight._fromDb(DbWeight()
+          ..athletesId = athletesId
+          ..value = 70
+          ..date = DateTime.now());
   }
 
   static Weight exDb(DbWeight db) => Weight._fromDb(db);

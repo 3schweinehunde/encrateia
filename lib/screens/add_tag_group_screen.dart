@@ -1,19 +1,19 @@
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/models/tag.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import '/models/tag.dart';
+import '/models/tag_group.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
 import 'add_tag_screen.dart';
 
 class AddTagGroupScreen extends StatefulWidget {
   const AddTagGroupScreen({
-    Key key,
+    Key? key,
     this.tagGroup,
   }) : super(key: key);
 
-  final TagGroup tagGroup;
+  final TagGroup? tagGroup;
 
   @override
   _AddTagGroupScreenState createState() => _AddTagGroupScreenState();
@@ -22,7 +22,7 @@ class AddTagGroupScreen extends StatefulWidget {
 class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
   List<Tag> tags = <Tag>[];
   int offset = 0;
-  int rows;
+  int? rows;
 
   @override
   void initState() {
@@ -46,8 +46,8 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
                 Navigator.of(context).pop();
                 MaterialColorPicker(
                     onColorChange: (Color color) =>
-                        widget.tagGroup.color = color.value,
-                    selectedColor: Color(widget.tagGroup.color));
+                        widget.tagGroup!.color = color.value,
+                    selectedColor: Color(widget.tagGroup!.color!));
               },
             ),
           ],
@@ -59,9 +59,9 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
   Future<void> openColorPicker() async {
     _openDialog(
       MaterialColorPicker(
-        selectedColor: Color(widget.tagGroup.color),
+        selectedColor: Color(widget.tagGroup!.color!),
         onColorChange: (Color color) =>
-            setState(() => widget.tagGroup.color = color.value),
+            setState(() => widget.tagGroup!.color = color.value),
         onBack: () {},
       ),
     );
@@ -80,15 +80,15 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
           children: <Widget>[
             TextFormField(
               decoration: const InputDecoration(labelText: 'Name'),
-              initialValue: widget.tagGroup.name,
-              onChanged: (String value) => widget.tagGroup.name = value,
+              initialValue: widget.tagGroup!.name,
+              onChanged: (String value) => widget.tagGroup!.name = value,
             ),
             const SizedBox(height: 20),
             Row(children: <Widget>[
               const Text('Color'),
               const Spacer(),
               CircleAvatar(
-                backgroundColor: Color(widget.tagGroup.color),
+                backgroundColor: Color(widget.tagGroup!.color!),
                 radius: 20.0,
               ),
               const Spacer(),
@@ -110,13 +110,13 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
               ],
               rows: tags.map((Tag tag) {
                 return DataRow(
-                  key: ValueKey<int>(tag.id),
+                  key: ValueKey<int?>(tag.id),
                   cells: <DataCell>[
-                    DataCell(Text(tag.name)),
+                    DataCell(Text(tag.name!)),
                     DataCell(CircleColor(
                       circleSize: 20,
                       elevation: 0,
-                      color: Color(tag.color),
+                      color: Color(tag.color!),
                     )),
                     DataCell(
                       MyIcon.edit,
@@ -147,7 +147,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
                       context,
                       MaterialPageRoute<BuildContext>(
                         builder: (BuildContext context) => AddTagScreen(
-                          tag: Tag(tagGroup: widget.tagGroup),
+                          tag: Tag(tagGroup: widget.tagGroup!),
                         ),
                       ),
                     );
@@ -162,7 +162,7 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
               children: <Widget>[
                 MyButton.delete(
                   onPressed: () => deleteTagGroup(
-                    tagGroup: widget.tagGroup,
+                    tagGroup: widget.tagGroup!,
                   ),
                 ),
                 const SizedBox(width: 5),
@@ -178,17 +178,17 @@ class _AddTagGroupScreenState extends State<AddTagGroupScreen> {
   }
 
   Future<void> saveTagGroup(BuildContext context) async {
-    await widget.tagGroup.save();
+    await widget.tagGroup!.save();
     await Tag.upsertAll(tags);
     Navigator.of(context).pop();
   }
 
   Future<void> getData() async {
-    tags = await widget.tagGroup.tags;
+    tags = await widget.tagGroup!.tags;
     setState(() {});
   }
 
-  Future<void> deleteTagGroup({TagGroup tagGroup}) async {
+  Future<void> deleteTagGroup({required TagGroup tagGroup}) async {
     await tagGroup.delete();
     Navigator.of(context).pop();
   }

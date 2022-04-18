@@ -1,12 +1,11 @@
-import 'package:encrateia/models/heart_rate_zone.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/model/model.dart'
-    show DbHeartRateZone, DbHeartRateZoneSchema;
-import 'package:encrateia/models/athlete.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
+import '/model/model.dart' show DbHeartRateZone, DbHeartRateZoneSchema;
+import '/models/athlete.dart';
+import '/models/heart_rate_zone.dart';
 
 class HeartRateZoneSchema {
-  HeartRateZoneSchema({@required Athlete athlete}) {
+  HeartRateZoneSchema({required Athlete athlete}) {
     _db = DbHeartRateZoneSchema()
       ..athletesId = athlete.id
       ..base = 180
@@ -15,7 +14,7 @@ class HeartRateZoneSchema {
   }
   HeartRateZoneSchema._fromDb(this._db);
 
-  HeartRateZoneSchema.likeGarmin({Athlete athlete}) {
+  HeartRateZoneSchema.likeGarmin({required Athlete athlete}) {
     _db = DbHeartRateZoneSchema()
       ..athletesId = athlete.id
       ..name = 'max HR based'
@@ -23,7 +22,7 @@ class HeartRateZoneSchema {
       ..base = 180;
   }
 
-  HeartRateZoneSchema.likeStefanDillinger({Athlete athlete}) {
+  HeartRateZoneSchema.likeStefanDillinger({required Athlete athlete}) {
     _db = DbHeartRateZoneSchema()
       ..athletesId = athlete.id
       ..name = 'threshold heart rate based'
@@ -31,21 +30,21 @@ class HeartRateZoneSchema {
       ..base = 165;
   }
 
-  DbHeartRateZoneSchema _db;
+  DbHeartRateZoneSchema? _db;
 
-  int get id => _db?.id;
-  DateTime get date => _db.date;
-  String get name => _db.name;
-  int get base => _db.base;
+  int? get id => _db?.id;
+  DateTime? get date => _db!.date;
+  String? get name => _db!.name;
+  int? get base => _db!.base;
 
-  set id(int value) => _db.id = value;
-  set base(int value) => _db.base = value;
-  set date(DateTime value) => _db.date = value;
-  set name(String value) => _db.name = value;
+  set id(int? value) => _db!.id = value;
+  set base(int? value) => _db!.base = value;
+  set date(DateTime? value) => _db!.date = value;
+  set name(String? value) => _db!.name = value;
 
   Future<List<HeartRateZone>> get heartRateZones async {
     final List<DbHeartRateZone> dbHeartRateZoneList =
-        await _db.getDbHeartRateZones().orderBy('lowerLimit').toList();
+        await _db!.getDbHeartRateZones()!.orderBy('lowerLimit').toList();
     final List<HeartRateZone> heartRateZones =
         dbHeartRateZoneList.map(HeartRateZone.exDb).toList();
     return heartRateZones;
@@ -130,28 +129,27 @@ class HeartRateZoneSchema {
   @override
   String toString() => '< HeartRateZoneSchema | $name | $date >';
 
-  Future<BoolResult> delete() async => await _db.delete();
-  Future<int> save() async => await _db.save();
+  Future<BoolResult> delete() async => await _db!.delete();
+  Future<int?> save() async => await _db!.save();
 
   static Future<HeartRateZoneSchema> getBy({
-    int athletesId,
-    DateTime date,
+    int? athletesId,
+    DateTime? date,
   }) async {
     List<DbHeartRateZoneSchema> dbHeartRateZoneSchemas;
-    dbHeartRateZoneSchemas =
-        await DbHeartRateZoneSchema()
-            .select()
-            .athletesId
-            .equals(athletesId)
-            .and
-            .date
-            .lessThanOrEquals(date)
-            .orderByDesc('date')
-            .top(1)
-            .toList();
-    if (dbHeartRateZoneSchemas.isNotEmpty)
+    dbHeartRateZoneSchemas = await DbHeartRateZoneSchema()
+        .select()
+        .athletesId
+        .equals(athletesId)
+        .and
+        .date
+        .lessThanOrEquals(date)
+        .orderByDesc('date')
+        .top(1)
+        .toList();
+    if (dbHeartRateZoneSchemas.isNotEmpty) {
       return HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first);
-    else
+    } else {
       dbHeartRateZoneSchemas = await DbHeartRateZoneSchema()
           .select()
           .athletesId
@@ -159,9 +157,8 @@ class HeartRateZoneSchema {
           .orderBy('date')
           .top(1)
           .toList();
-    return (dbHeartRateZoneSchemas.isNotEmpty)
-        ? HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first)
-        : null;
+    }
+    return HeartRateZoneSchema._fromDb(dbHeartRateZoneSchemas.first);
   }
 
   static HeartRateZoneSchema exDb(DbHeartRateZoneSchema db) =>

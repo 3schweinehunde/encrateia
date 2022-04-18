@@ -1,24 +1,25 @@
 import 'dart:math';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
-import 'package:encrateia/models/power_duration.dart';
+import '/models/event.dart';
+import '/models/plot_point.dart';
+import '/models/power_duration.dart';
 
 class CriticalPower extends PowerDuration {
-  CriticalPower({List<Event> records}) {PowerDuration(records: records);}
+  CriticalPower({required List<Event> records}) : super(records: records);
 
   List<DoublePlotPoint> asWorkList() {
     final List<DoublePlotPoint> plotPoints = <DoublePlotPoint>[];
 
     powerMap.forEach((int duration, double power) {
-      if (duration > 60 && duration < 1200)
+      if (duration > 60 && duration < 1200) {
         plotPoints.add(DoublePlotPoint(
           domain: duration,
           measure: power,
         ));
+      }
     });
 
-    plotPoints.sort(
-        (DoublePlotPoint a, DoublePlotPoint b) => a.domain.compareTo(b.domain));
+    plotPoints.sort((DoublePlotPoint a, DoublePlotPoint b) =>
+        a.domain.compareTo(b.domain));
     return plotPoints;
   }
 
@@ -75,5 +76,5 @@ class CriticalPower extends PowerDuration {
     return this;
   }
 
-  static int scaled({int seconds}) => (200 * log(seconds)).round();
+  static int scaled({required int seconds}) => (200 * log(seconds)).round();
 }

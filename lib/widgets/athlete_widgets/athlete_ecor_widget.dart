@@ -1,15 +1,14 @@
-import 'package:encrateia/models/activity_list.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/athlete_time_series_chart.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/activity.dart';
-
+import '/models/activity.dart';
+import '/models/activity_list.dart';
+import '/models/athlete.dart';
+import '/models/tag_group.dart';
+import '/utils/athlete_time_series_chart.dart';
+import '/utils/enums.dart';
 import 'athlete_filter_widget.dart';
 
 class AthleteEcorWidget extends StatefulWidget {
-  const AthleteEcorWidget({this.athlete});
+  const AthleteEcorWidget({Key? key, required this.athlete}) : super(key: key);
 
   final Athlete athlete;
 
@@ -21,8 +20,8 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
-  List<String> sports;
-  String selectedSports = 'running';
+  late List<String?> sports;
+  String? selectedSports = 'running';
 
   @override
   void initState() {
@@ -58,10 +57,6 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
         return const Center(
           child: Text('No ecor data available.'),
         );
-      } else if (ecorActivities.first.weight == null) {
-        return const Center(
-          child: Text('Please enter your (historical) weight in the settings.'),
-        );
       } else {
         return ListTileTheme(
           iconColor: Colors.orange,
@@ -80,14 +75,15 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String value) {
+                    items:
+                        sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(value!),
                       );
                     }).toList(),
                     value: selectedSports,
-                    onChanged: (String value) {
+                    onChanged: (String? value) {
                       selectedSports = value;
                       getData();
                     },
@@ -111,7 +107,7 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
     final Athlete athlete = widget.athlete;
     List<Activity> unfilteredActivities = await athlete.validActivities;
     tagGroups = await athlete.tagGroups;
-    sports = <String>['all'] +
+    sports = <String?>['all'] +
         unfilteredActivities
             .map((Activity activity) => activity.sport)
             .toSet()

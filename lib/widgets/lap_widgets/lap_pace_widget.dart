@@ -1,18 +1,18 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/widgets/charts/lap_charts/lap_pace_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/models/event.dart';
+import '/models/lap.dart';
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_pace_chart.dart';
 
 class LapPaceWidget extends StatefulWidget {
-  const LapPaceWidget({this.lap});
+  const LapPaceWidget({Key? key, this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapPaceWidgetState createState() => _LapPaceWidgetState();
@@ -40,7 +40,7 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> paceRecords = records
-          .where((Event value) => value.speed != null && value.speed > 0)
+          .where((Event value) => value.speed != null && value.speed! > 0)
           .toList();
 
       if (paceRecords.isNotEmpty) {
@@ -53,8 +53,10 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
                 key: widgetKey,
                 child: LapPaceChart(
                   records: RecordList<Event>(paceRecords),
-                  minimum: 50 / 3 / widget.lap.avgSpeed - 3 * widget.lap.sdevPace,
-                  maximum: 50 / 3 / widget.lap.avgSpeed + 3 * widget.lap.sdevPace,
+                  minimum:
+                      50 / 3 / widget.lap!.avgSpeed! - 3 * widget.lap!.sdevPace!,
+                  maximum:
+                      50 / 3 / widget.lap!.avgSpeed! + 3 * widget.lap!.sdevPace!,
                 ),
               ),
               const Text('Only records where speed > 0 m/s are shown.'),
@@ -64,7 +66,7 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -73,22 +75,22 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.lap.avgPace, pq: PQ.pace),
+                title: PQText(value: widget.lap!.avgPace, pq: PQ.pace),
                 subtitle: const Text('average pace'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.lap.minSpeed, pq: PQ.paceFromSpeed),
+                title: PQText(value: widget.lap!.minSpeed, pq: PQ.paceFromSpeed),
                 subtitle: const Text('minimum pace'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.lap.maxSpeed, pq: PQ.paceFromSpeed),
+                title: PQText(value: widget.lap!.maxSpeed, pq: PQ.paceFromSpeed),
                 subtitle: const Text('maximum pace'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.lap.sdevPace, pq: PQ.pace),
+                title: PQText(value: widget.lap!.sdevPace, pq: PQ.pace),
                 subtitle: const Text('standard deviation pace'),
               ),
               ListTile(
@@ -112,7 +114,7 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
+    final Lap lap = widget.lap!;
     records = RecordList<Event>(await lap.records);
     setState(() => loading = false);
   }

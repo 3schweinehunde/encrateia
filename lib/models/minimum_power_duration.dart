@@ -1,22 +1,22 @@
 import 'dart:math';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
+import '/models/event.dart';
+import '/models/plot_point.dart';
 
 class MinimumPowerDuration {
-  MinimumPowerDuration({List<Event> records}) {
+  MinimumPowerDuration({required List<Event> records}) {
     for (int index = 0; index < records.length - 1; index++) {
-      final int power = records[index].power;
+      final int power = records[index].power!;
       final DateTime nextLower = records
           .sublist(index + 1, records.length)
-          .firstWhere((Event record) => record.power < power,
+          .firstWhere((Event record) => record.power! < power,
               orElse: () => records.last)
-          .timeStamp;
+          .timeStamp!;
 
       final DateTime recentLower = records
           .sublist(0, index)
-          .lastWhere((Event record) => record.power < power,
+          .lastWhere((Event record) => record.power! < power,
               orElse: () => records.first)
-          .timeStamp;
+          .timeStamp!;
 
       final int persistedFor = nextLower.difference(recentLower).inSeconds;
 
@@ -24,8 +24,9 @@ class MinimumPowerDuration {
         for (int durationIndex = persistedFor;
             durationIndex > 0;
             durationIndex--) {
-          if (power <= (powerMap[durationIndex] ?? 0))
+          if (power <= (powerMap[durationIndex] ?? 0)) {
             break;
+          }
           powerMap[durationIndex] = power;
         }
       }
@@ -49,5 +50,5 @@ class MinimumPowerDuration {
     return plotPoints;
   }
 
-  static int scaled({int seconds}) => (200 * log(seconds)).round();
+  static int scaled({required int seconds}) => (200 * log(seconds)).round();
 }

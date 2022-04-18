@@ -1,24 +1,25 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/widgets/charts/activity_charts/activity_ecor_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/models/weight.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/utils/pg_text.dart';
+import '/widgets/charts/activity_charts/activity_ecor_chart.dart';
 
 class ActivityEcorWidget extends StatefulWidget {
   const ActivityEcorWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+    Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityEcorWidgetState createState() => _ActivityEcorWidgetState();
@@ -26,7 +27,7 @@ class ActivityEcorWidget extends StatefulWidget {
 
 class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
-  Weight weight;
+  Weight? weight;
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
   GlobalKey widgetKey = GlobalKey();
@@ -43,12 +44,12 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
       final List<Event> ecorRecords = records
           .where((Event value) =>
               value.power != null &&
-              value.power > 100 &&
+              value.power! > 100 &&
               value.speed != null &&
-              value.speed >= 1)
+              value.speed! >= 1)
           .toList();
 
-      if (ecorRecords.isNotEmpty && ecorRecords != null) {
+      if (ecorRecords.isNotEmpty) {
         return ListTileTheme(
           iconColor: Colors.deepOrange,
           child: ListView(
@@ -60,10 +61,10 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
                   records: RecordList<Event>(ecorRecords),
                   activity: widget.activity,
                   athlete: widget.athlete,
-                  weight: widget.activity.cachedWeight,
+                  weight: widget.activity!.cachedWeight,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'power > 0 W and speed > 1 m/s are shown.'),
               Row(children: <Widget>[
@@ -71,7 +72,7 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -80,12 +81,13 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
               ]),
               ListTile(
                 leading: MyIcon.power,
-                title: PQText(value: widget.activity.cachedEcor, pq: PQ.ecor),
+                title: PQText(value: widget.activity!.cachedEcor, pq: PQ.ecor),
                 subtitle: const Text('ecor (Energy cost of running)'),
               ),
               ListTile(
                 leading: MyIcon.weight,
-                title: PQText(value: widget.activity.cachedWeight, pq: PQ.weight),
+                title:
+                    PQText(value: widget.activity!.cachedWeight, pq: PQ.weight),
                 subtitle: const Text('weight'),
               ),
               ListTile(
@@ -109,8 +111,8 @@ class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
-    await widget.activity.ecor;
+    records = RecordList<Event>(await widget.activity!.records);
+    await widget.activity!.ecor;
     setState(() => loading = false);
   }
 }

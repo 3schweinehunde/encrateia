@@ -1,21 +1,21 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/screens/select_interval_screen.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/screens/show_interval_screen.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/interval.dart' as encrateia;
+import '/screens/select_interval_screen.dart';
+import '/screens/show_interval_screen.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/my_button.dart';
 
 class IntervalsListWidget extends StatefulWidget {
-  const IntervalsListWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const IntervalsListWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _IntervalsListWidgetState createState() => _IntervalsListWidgetState();
@@ -72,13 +72,14 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                 ],
                 rows: intervals.map((encrateia.Interval interval) {
                   return DataRow(
-                    key: ValueKey<int>(interval.id),
-                    onSelectChanged: (bool selected) async {
-                      if (selected) {
+                    key: ValueKey<int?>(interval.id),
+                    onSelectChanged: (bool? selected) async {
+                      if (selected!) {
                         await Navigator.push(
                           context,
                           MaterialPageRoute<BuildContext>(
-                            builder: (BuildContext context) => ShowIntervalScreen(
+                            builder: (BuildContext context) =>
+                                ShowIntervalScreen(
                               interval: interval,
                               intervals: intervals,
                               athlete: widget.athlete,
@@ -100,7 +101,8 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
                         pq: PQ.paceFromSpeed,
                       )),
                       DataCell(PQText(value: interval.avgPower, pq: PQ.power)),
-                      DataCell(PQText(value: interval.distance, pq: PQ.distance)),
+                      DataCell(
+                          PQText(value: interval.distance, pq: PQ.distance)),
                       DataCell(
                         PQText(
                           value: (interval.totalAscent ?? 0) -
@@ -123,7 +125,7 @@ class _IntervalsListWidgetState extends State<IntervalsListWidget> {
   }
 
   Future<void> getData() async {
-    intervals = await widget.activity.intervals;
+    intervals = await widget.activity!.intervals;
     setState(() => loading = false);
   }
 }

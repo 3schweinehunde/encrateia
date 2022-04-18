@@ -1,35 +1,37 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+import '/models/athlete.dart';
+import '/models/tag.dart';
+import '/models/tag_group.dart';
+import '/utils/my_color.dart';
 
 class AthleteCurrentFilterWidget extends StatelessWidget {
   const AthleteCurrentFilterWidget({
-    @required this.athlete,
-    @required this.tagGroups,
-  });
+    Key? key,
+    required this.athlete,
+    required this.tagGroups,
+  }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
   final List<TagGroup> tagGroups;
 
   @override
   Widget build(BuildContext context) {
     bool empty;
 
-    if (tagGroups != null && athlete.filters.isNotEmpty) {
+    if (athlete!.filters.isNotEmpty) {
       final List<Widget> widgets = <Widget>[];
       widgets.add(const Text('Current Filter: '));
       for (final TagGroup tagGroup in tagGroups) {
         empty = true;
         for (final Tag tag in tagGroup.cachedTags) {
-          if (athlete.filters.contains(tag.id)) {
+          if (athlete!.filters.contains(tag.id)) {
             if (empty == true) {
               widgets.add(const Text('('));
               widgets.add(Text(' ${tagGroup.name}: '));
               empty = false;
-            } else
+            } else {
               widgets.add(const Text('OR'));
+            }
             widgets.add(
               Chip(
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -38,7 +40,7 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(1))),
                 label: Text(
-                  tag.name,
+                  tag.name!,
                   style: TextStyle(
                     color: MyColor.textColor(
                       selected: true,
@@ -55,8 +57,9 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
         if (empty == false) {
           empty = true;
           widgets.add(const Text(')'));
-          if (tagGroup != tagGroups.last)
+          if (tagGroup != tagGroups.last) {
             widgets.add(const Text('AND'));
+          }
         }
       }
 
@@ -65,7 +68,8 @@ class AthleteCurrentFilterWidget extends StatelessWidget {
         runSpacing: 15,
         children: widgets,
       );
-    } else
+    } else {
       return Container();
+    }
   }
 }

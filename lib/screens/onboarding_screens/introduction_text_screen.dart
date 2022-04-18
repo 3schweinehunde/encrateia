@@ -1,9 +1,11 @@
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '/utils/my_color.dart';
 
 class IntroductionTextScreen extends StatelessWidget {
+  const IntroductionTextScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,12 @@ class IntroductionTextScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Markdown(
-          onTapLink: (String url) => launch(url),
+          onTapLink: (
+            String _text,
+            String? url,
+            String _title,
+          ) =>
+              launch(url!),
           data: '''
 ## What is Encrateia?
 

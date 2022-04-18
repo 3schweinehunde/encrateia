@@ -1,19 +1,18 @@
-import 'package:encrateia/models/strava_fit_download.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_power_zone_schema_screen.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/power_zone_schema.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/models/athlete.dart';
+import '/models/power_zone_schema.dart';
+import '/models/strava_fit_download.dart';
+import '/screens/onboarding_screens/onboarding_power_zone_schema_screen.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button.dart';
 
 class EditStravaAthleteWidget extends StatefulWidget {
   const EditStravaAthleteWidget({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _EditStravaAthleteWidgetState createState() =>
@@ -21,8 +20,6 @@ class EditStravaAthleteWidget extends StatefulWidget {
 }
 
 class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
-  Flushbar<Object> flushbar = Flushbar<Object>();
-
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -31,35 +28,34 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
         const Card(
           child: ListTile(
             leading: MyIcon.website,
-            title: Text(
-                'Credentials for .fit-Download from Strava Web Site'),
+            title: Text('Credentials for .fit-Download from Strava Web Site'),
           ),
         ),
         ListTile(
           leading: const Text('First Name'),
-          title: Text(widget.athlete.firstName ?? 't.b.d.'),
+          title: Text(widget.athlete!.firstName ?? 't.b.d.'),
         ),
         ListTile(
           leading: const Text('Last Name'),
-          title: Text(widget.athlete.lastName ?? 't.b.d.'),
+          title: Text(widget.athlete!.lastName ?? 't.b.d.'),
         ),
         ListTile(
           leading: const Text('Strava ID'),
-          title: Text(widget.athlete.stravaId?.toString() ?? 't.b.d.'),
+          title: Text(widget.athlete!.stravaId?.toString() ?? 't.b.d.'),
         ),
         ListTile(
           leading: const Text('Strava Username'),
-          title: Text(widget.athlete.stravaUsername ?? 't.b.d.'),
+          title: Text(widget.athlete!.stravaUsername ?? 't.b.d.'),
         ),
         TextFormField(
           decoration: const InputDecoration(labelText: 'Email'),
-          initialValue: widget.athlete.email,
-          onChanged: (String value) => widget.athlete.email = value,
+          initialValue: widget.athlete!.email,
+          onChanged: (String value) => widget.athlete!.email = value,
         ),
         TextFormField(
           decoration: const InputDecoration(labelText: 'Password'),
-          onChanged: (String value) => widget.athlete.password = value,
-          initialValue: widget.athlete.password,
+          onChanged: (String value) => widget.athlete!.password = value,
+          initialValue: widget.athlete!.password,
           obscureText: true,
         ),
 
@@ -84,19 +80,25 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
   }
 
   Future<void> saveStravaUser(BuildContext context) async {
-    await widget.athlete.save();
-    await widget.athlete.storeCredentials();
-    flushbar = Flushbar<Object>(
-      icon: MyIcon.information,
-      message: 'checking credentials...',
-      duration: const Duration(seconds: 10),
-    )..show(context);
+    await widget.athlete!.save();
+    await widget.athlete!.storeCredentials();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            MyIcon.information,
+            const Text(' checking credentials...'),
+          ],
+        ),
+      ),
+    );
 
-    if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete)) {
+    if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete!)) {
       final List<PowerZoneSchema> powerZoneSchemas =
-          await widget.athlete.powerZoneSchemas;
-      await flushbar.dismiss();
-      if (powerZoneSchemas.isEmpty)
+          await widget.athlete!.powerZoneSchemas;
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      if (powerZoneSchemas.isEmpty) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute<BuildContext>(
@@ -104,15 +106,21 @@ class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
                 OnBoardingPowerZoneSchemaScreen(athlete: widget.athlete),
           ),
         );
-      else
+      } else {
         Navigator.of(context).pop();
+      }
     } else {
-      flushbar = Flushbar<Object>(
-        icon: MyIcon.error,
-        message: 'The credentials provided are invalid!',
-        duration: const Duration(seconds: 5),
-      )
-        ..show(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Row(
+            children: [
+              MyIcon.error,
+              const Text(' The credentials provided are invalid!'),
+            ],
+          ),
+        ),
+      );
     }
   }
 }

@@ -1,18 +1,18 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import '/models/event.dart';
+import '/models/lap.dart';
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_leg_spring_stiffness_chart.dart';
 
 class LapLegSpringStiffnessWidget extends StatefulWidget {
-  const LapLegSpringStiffnessWidget({this.lap});
+  const LapLegSpringStiffnessWidget({Key? key, this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapLegSpringStiffnessWidgetState createState() =>
@@ -43,7 +43,7 @@ class _LapLegSpringStiffnessWidgetState
     if (records.isNotEmpty) {
       final List<Event> legSpringStiffnessRecords = records
           .where((Event value) =>
-              value.legSpringStiffness != null && value.legSpringStiffness > 0)
+              value.legSpringStiffness != null && value.legSpringStiffness! > 0)
           .toList();
 
       if (legSpringStiffnessRecords.isNotEmpty) {
@@ -56,8 +56,8 @@ class _LapLegSpringStiffnessWidgetState
                 key: widgetKey,
                 child: LapLegSpringStiffnessChart(
                   records: RecordList<Event>(legSpringStiffnessRecords),
-                  minimum: widget.lap.avgLegSpringStiffness / 1.20,
-                  maximum: widget.lap.avgLegSpringStiffness * 1.20,
+                  minimum: widget.lap!.avgLegSpringStiffness! / 1.20,
+                  maximum: widget.lap!.avgLegSpringStiffness! * 1.20,
                 ),
               ),
               const Text('Only records where leg spring stiffness > 0 kN/m '
@@ -68,7 +68,7 @@ class _LapLegSpringStiffnessWidgetState
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -78,7 +78,7 @@ class _LapLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.lap.avgLegSpringStiffness,
+                  value: widget.lap!.avgLegSpringStiffness,
                   pq: PQ.legSpringStiffness,
                 ),
                 subtitle: const Text('average leg spring stiffness'),
@@ -86,7 +86,7 @@ class _LapLegSpringStiffnessWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.lap.sdevLegSpringStiffness,
+                  value: widget.lap!.sdevLegSpringStiffness,
                   pq: PQ.legSpringStiffness,
                 ),
                 subtitle: const Text('standard leg spring stiffness'),
@@ -115,7 +115,7 @@ class _LapLegSpringStiffnessWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
+    records = RecordList<Event>(await widget.lap!.records);
     setState(() => loading = false);
   }
 }

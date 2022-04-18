@@ -1,18 +1,18 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/widgets/charts/lap_charts/lap_form_power_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import '/models/event.dart';
+import '/models/lap.dart';
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_form_power_chart.dart';
 
 class LapFormPowerWidget extends StatefulWidget {
-  const LapFormPowerWidget({this.lap});
+  const LapFormPowerWidget({Key? key, this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapFormPowerWidgetState createState() => _LapFormPowerWidgetState();
@@ -41,7 +41,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
     if (records.isNotEmpty) {
       final List<Event> formPowerRecords = records
           .where(
-              (Event value) => value.formPower != null && value.formPower > 0)
+              (Event value) => value.formPower != null && value.formPower! > 0)
           .toList();
 
       if (formPowerRecords.isNotEmpty) {
@@ -54,8 +54,8 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
                 key: widgetKey,
                 child: LapFormPowerChart(
                   records: RecordList<Event>(formPowerRecords),
-                  minimum: widget.lap.avgFormPower / 1.1,
-                  maximum: widget.lap.avgFormPower * 1.25,
+                  minimum: widget.lap!.avgFormPower! / 1.1,
+                  maximum: widget.lap!.avgFormPower! * 1.25,
                 ),
               ),
               const Text(
@@ -66,7 +66,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -75,12 +75,12 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.lap.avgFormPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.avgFormPower, pq: PQ.power),
                 subtitle: const Text('average form power'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.lap.sdevFormPower, pq: PQ.power),
+                title: PQText(value: widget.lap!.sdevFormPower, pq: PQ.power),
                 subtitle: const Text('standard deviation form power'),
               ),
               ListTile(
@@ -104,7 +104,7 @@ class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   }
 
   Future<void> getData() async {
-    final Lap lap = widget.lap;
+    final Lap lap = widget.lap!;
     records = RecordList<Event>(await lap.records);
     setState(() => loading = false);
   }

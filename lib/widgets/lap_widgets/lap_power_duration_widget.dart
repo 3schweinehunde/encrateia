@@ -1,15 +1,15 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/widgets/charts/power_duration_chart.dart';
+import '/models/event.dart';
+import '/models/lap.dart';
+import '/models/record_list.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/power_duration_chart.dart';
 
 class LapPowerDurationWidget extends StatefulWidget {
-  const LapPowerDurationWidget({@required this.lap});
+  const LapPowerDurationWidget({Key? key, required this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapPowerDurationWidgetState createState() => _LapPowerDurationWidgetState();
@@ -37,7 +37,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -54,7 +54,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
               MyButton.save(
                 child: Text(screenShotButtonText),
                 onPressed: () async {
-                  await ImageUtils.capturePng(widgetKey: widgetKey);
+                  await image_utils.capturePng(widgetKey: widgetKey);
                   screenShotButtonText = 'Image saved';
                   setState(() {});
                 },
@@ -76,7 +76,7 @@ class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
+    records = RecordList<Event>(await widget.lap!.records);
     setState(() => loading = false);
   }
 }

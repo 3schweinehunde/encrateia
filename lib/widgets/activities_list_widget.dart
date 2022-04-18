@@ -1,14 +1,15 @@
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/screens/show_activity_screen.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:flushbar/flushbar.dart';
+import '../utils/my_color.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/screens/show_activity_screen.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/pg_text.dart';
 
 class ActivitiesListWidget extends StatefulWidget {
-  const ActivitiesListWidget({Key key, this.athlete}) : super(key: key);
+  const ActivitiesListWidget({Key? key, required this.athlete})
+      : super(key: key);
 
   final Athlete athlete;
 
@@ -18,12 +19,11 @@ class ActivitiesListWidget extends StatefulWidget {
 
 class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   List<Activity> activities = <Activity>[];
-  Flushbar<Object> flushbar;
 
   @override
   void initState() {
     getActivities();
-    WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
@@ -83,7 +83,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     ]);
   }
 
-  Icon sportsIcon({String sport}) {
+  Icon sportsIcon({String? sport}) {
     switch (sport) {
       case 'running':
         return MyIcon.running;
@@ -94,47 +94,68 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     }
   }
 
-  Future<void> delete({Activity activity}) async {
+  Future<void> delete({required Activity activity}) async {
     await activity.delete();
     getActivities();
   }
 
-  Future<void> download({Activity activity}) async {
-    flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${activity.name}«',
-      duration: const Duration(seconds: 10),
-      icon: MyIcon.stravaDownloadWhite,
-    )..show(context);
+  Future<void> download({required Activity activity}) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            MyIcon.stravaDownloadWhite,
+            Text(' Download .fit-File for »${activity.name}«'),
+          ],
+        ),
+      ),
+    );
 
     await activity.download(athlete: widget.athlete);
-
-    flushbar = Flushbar<Object>(
-      message: 'Download finished',
-      duration: const Duration(seconds: 3),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text(' Download finished'),
+          ],
+        ),
+      ),
+    );
 
     setState(() {});
   }
 
-  Future<void> parse({Activity activity}) async {
-    Flushbar<Object> flushbar = Flushbar<Object>(
-      message: '0% of storing »${activity.name}«',
-      duration: const Duration(seconds: 10),
-      animationDuration: const Duration(milliseconds: 1),
-      titleText: const LinearProgressIndicator(value: 0),
-    )..show(context);
+  Future<void> parse({required Activity activity}) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            CircularProgressIndicator(value: 0, color: MyColor.progress),
+            Text(' storing »${activity.name}«'),
+          ],
+        ),
+      ),
+    );
 
     final Stream<int> percentageStream =
         activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
-      await flushbar.dismiss();
-      flushbar = Flushbar<Object>(
-        titleText: LinearProgressIndicator(value: value / 100),
-        message: '$value% of storing »${activity.name}«',
-        duration: const Duration(seconds: 3),
-        animationDuration: const Duration(milliseconds: 1),
-      )..show(context);
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 3),
+          content: Row(
+            children: [
+              CircularProgressIndicator(value: value / 100, color: MyColor.progress),
+              Text(' storing »${activity.name}«'),
+            ],
+          ),
+        ),
+      );
     }
     getActivities();
   }
@@ -147,17 +168,21 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   void showMyFlushbar() {
     if (widget.athlete.stravaId != null) {
       if (widget.athlete.email == null) {
-        flushbar = Flushbar<Object>(
-          message: 'Strava email not provided yet!',
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.yellow[900],
-        )..show(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.yellow,
+            content: Text('Strava email not provided yet!'),
+          ),
+        );
       } else if (widget.athlete.password == null) {
-        flushbar = Flushbar<Object>(
-          message: 'Strava password not provided yet!',
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        )..show(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.red,
+            content: Text('Strava password not provided yet!'),
+          ),
+        );
       }
     }
   }

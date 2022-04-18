@@ -1,18 +1,18 @@
 import 'dart:math';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/screens/show_activity_screen.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:flushbar/flushbar.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/tag.dart';
+import '/models/tag_group.dart';
+import '/screens/show_activity_screen.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_color.dart';
+import '/utils/pg_text.dart';
 
 class ActivitiesFeedWidget extends StatefulWidget {
-  const ActivitiesFeedWidget({Key key, this.athlete}) : super(key: key);
+  const ActivitiesFeedWidget({Key? key, required this.athlete})
+      : super(key: key);
 
   final Athlete athlete;
 
@@ -23,13 +23,12 @@ class ActivitiesFeedWidget extends StatefulWidget {
 class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   List<Activity> activities = <Activity>[];
   List<TagGroup> tagGroups = <TagGroup>[];
-  Flushbar<Object> flushbar;
   bool disposed = false;
 
   @override
   void initState() {
     getData();
-    WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
@@ -54,7 +53,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
       itemCount: activities.length,
       itemBuilder: (BuildContext context, int index) {
         final Activity activity = activities[index];
-        if (activity.nonParsable == true)
+        if (activity.nonParsable == true) {
           return ListTile(
             leading: sportsIcon(sport: activity.sport),
             title: Text(activity.name ?? 'Activity'),
@@ -73,14 +72,16 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
               getData();
             },
           );
-        else
+        } else {
           return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 ListTile(
                   leading: sportsIcon(sport: activity.sport),
                   title: Text(activity.name ?? 'Activity'),
-                  trailing: activity.excluded == true ? MyIcon.excluded : const Text(''),
+                  trailing: activity.excluded == true
+                      ? MyIcon.excluded
+                      : const Text(''),
                   subtitle: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -99,7 +100,8 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                         ]),
                         const SizedBox(width: 20),
                         Column(children: <Widget>[
-                          PQText(pq: PQ.paceFromSpeed, value: activity.avgSpeed),
+                          PQText(
+                              pq: PQ.paceFromSpeed, value: activity.avgSpeed),
                           PQText(
                             pq: PQ.heartRate,
                             value: activity.avgHeartRate,
@@ -143,11 +145,11 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                         Chip(
                           avatar: CircleAvatar(
                               foregroundColor: MyColor.textColor(
-                                  backgroundColor: Color(tagGroup(tag).color)),
-                              backgroundColor: Color(tagGroup(tag).color),
+                                  backgroundColor: Color(tagGroup(tag).color!)),
+                              backgroundColor: Color(tagGroup(tag).color!),
                               child: Text(capitals(tag))),
                           label: Text(
-                            tag.name,
+                            tag.name!,
                             style: TextStyle(
                               color: MyColor.textColor(
                                 selected: true,
@@ -162,11 +164,12 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
                   ),
                 )
               ]);
+        }
       },
     );
   }
 
-  Icon sportsIcon({String sport}) {
+  Icon sportsIcon({String? sport}) {
     switch (sport) {
       case 'running':
         return MyIcon.running;
@@ -184,8 +187,9 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
     for (final Activity activity in activities) {
       await activity.tags;
       await activity.ecor;
-      if (disposed)
+      if (disposed) {
         break;
+      }
       setState(() {});
     }
   }
@@ -193,17 +197,21 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   void showMyFlushbar() {
     if (widget.athlete.stravaId != null) {
       if (widget.athlete.email == null) {
-        flushbar = Flushbar<Object>(
-          message: 'Strava email not provided yet!',
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.yellow[900],
-        )..show(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.yellow,
+            content: Text('Strava email not provided yet!'),
+          ),
+        );
       } else if (widget.athlete.password == null) {
-        flushbar = Flushbar<Object>(
-          message: 'Strava password not provided yet!',
-          duration: const Duration(seconds: 3),
-          backgroundColor: Colors.red,
-        )..show(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.red,
+            content: Text('Strava password not provided yet!'),
+          ),
+        );
       }
     }
   }
@@ -213,7 +221,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
 
   String capitals(Tag tag) {
     final String capitals =
-        tagGroup(tag).name.split(' ').map((String word) => word[0]).join();
+        tagGroup(tag).name!.split(' ').map((String word) => word[0]).join();
     return capitals.substring(0, min(capitals.length, 2));
   }
 }

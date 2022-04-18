@@ -1,12 +1,10 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import '/models/athlete.dart';
+import '/utils/my_button.dart';
 
 Future<void> deleteAthlete({
-  @required BuildContext context,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Athlete? athlete,
 }) {
   return showDialog<void>(
     context: context,
@@ -31,7 +29,7 @@ Future<void> deleteAthlete({
           ),
           MyButton.delete(
             onPressed: () async {
-              await athlete.delete();
+              await athlete!.delete();
               Navigator.of(context)
                   .popUntil((Route<dynamic> route) => route.isFirst);
             },

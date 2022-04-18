@@ -1,10 +1,9 @@
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/model/model.dart' show DbActivityTagging;
-import 'package:flutter/material.dart';
-import 'package:encrateia/utils/enums.dart';
 import 'package:collection/collection.dart';
+import '/model/model.dart' show DbActivityTagging;
+import '/models/activity.dart';
+import '/models/tag.dart';
+import '/models/tag_group.dart';
+import '/utils/enums.dart';
 import 'athlete.dart';
 
 class ActivityList<E> extends DelegatingList<E> {
@@ -15,8 +14,8 @@ class ActivityList<E> extends DelegatingList<E> {
   final List<Activity> _activities;
 
   void enrichGlidingAverage({
-    @required int fullDecay,
-    @required ActivityAttr activityAttr,
+    required int fullDecay,
+    required ActivityAttr activityAttr,
   }) {
     _activities.asMap().forEach((int index, Activity activity) {
       double sumOfAvg =
@@ -42,12 +41,12 @@ class ActivityList<E> extends DelegatingList<E> {
   }
 
   Future<ActivityList<Activity>> applyFilter({
-    Athlete athlete,
-    List<TagGroup> tagGroups,
+    required Athlete athlete,
+    List<TagGroup>? tagGroups,
     bool firstGroupWithData = true,
   }) async {
-    List<int> activityIds = <int>[];
-    List<int> tagIds = <int>[];
+    List<int?> activityIds = <int>[];
+    List<int?> tagIds = <int>[];
 
     if (athlete.filters.isEmpty) {
       return ActivityList<Activity>(_activities);
@@ -57,7 +56,7 @@ class ActivityList<E> extends DelegatingList<E> {
       // get active filters for TagGroup
       for (final TagGroup tagGroup in tagGroups) {
         tagIds = tagGroup.cachedTags.map((Tag tag) => tag.id).toList();
-        tagIds.removeWhere((int tagId) => !athlete.filters.contains(tagId));
+        tagIds.removeWhere((int? tagId) => !athlete.filters.contains(tagId));
 
         // If there are restrictions for this group:
         if (tagIds.isNotEmpty) {
@@ -68,7 +67,7 @@ class ActivityList<E> extends DelegatingList<E> {
               .inValues(tagIds)
               .toList();
           // ... and the Activity's ids
-          final List<int> activityIdsFromThisGroup = dbTaggings
+          final List<int?> activityIdsFromThisGroup = dbTaggings
               .map((DbActivityTagging dbActivityTagging) =>
                   dbActivityTagging.activitiesId)
               .toList();
@@ -79,10 +78,10 @@ class ActivityList<E> extends DelegatingList<E> {
           {
             firstGroupWithData = false;
             activityIds = activityIdsFromThisGroup;
-          } else
-            // For the others: intersect.
+          } else {
             activityIds.removeWhere(
-                (int tagId) => !activityIdsFromThisGroup.contains(tagId));
+                (int? tagId) => !activityIdsFromThisGroup.contains(tagId));
+          }
         }
       }
     }
@@ -94,22 +93,19 @@ class ActivityList<E> extends DelegatingList<E> {
   }
 
   Future<ActivityList<Activity>> filterByTagGroup({
-    @required TagGroup tagGroup,
+    required TagGroup tagGroup,
   }) async {
-    List<int> activityIds = <int>[];
+    List<int?> activityIds = <int>[];
 
     final List<Tag> tags = await tagGroup.tags;
-    final List<int> tagIds = tags.map((Tag tag) => tag.id).toList();
+    final List<int?> tagIds = tags.map((Tag tag) => tag.id).toList();
 
     if (tagIds.isNotEmpty) {
-      final List<DbActivityTagging> dbTaggings = await DbActivityTagging()
-          .select()
-          .tagsId
-          .inValues(tagIds)
-          .toList();
+      final List<DbActivityTagging> dbTaggings =
+          await DbActivityTagging().select().tagsId.inValues(tagIds).toList();
       activityIds = dbTaggings
           .map((DbActivityTagging dbActivityTagging) =>
-      dbActivityTagging.activitiesId)
+              dbActivityTagging.activitiesId)
           .toList();
     }
 

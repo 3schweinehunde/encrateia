@@ -1,19 +1,19 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/screens/show_event_screen.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/graph_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/event.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/screens/show_event_screen.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/graph_utils.dart';
+import '/utils/my_button.dart';
 
 class LapPaceChart extends StatefulWidget {
-  const LapPaceChart({
-    @required this.records,
-    @required this.minimum,
-    @required this.maximum,
-  });
+  const LapPaceChart({Key? key,
+    required this.records,
+    required this.minimum,
+    required this.maximum,
+  }) : super(key: key);
 
   final RecordList<Event> records;
   final double minimum;
@@ -24,27 +24,27 @@ class LapPaceChart extends StatefulWidget {
 }
 
 class _LapPaceChartState extends State<LapPaceChart> {
-  Event selectedEvent;
+  Event? selectedEvent;
 
   void _onSelectionChanged(SelectionModel<num> model) {
     final List<SeriesDatum<dynamic>> selectedDatum = model.selectedDatum;
 
     if (selectedDatum.isNotEmpty) {
-      setState(() => selectedEvent = selectedDatum[0].datum as Event);
+      setState(() => selectedEvent = selectedDatum[0].datum as Event?);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final int offset = widget.records.first.distance.round();
-    final DateTime startingTime = widget.records.first.timeStamp;
+    final int offset = widget.records.first.distance!.round();
+    final DateTime? startingTime = widget.records.first.timeStamp;
 
     final List<Series<Event, int>> data = <Series<Event, int>>[
       Series<Event, int>(
         id: 'Pace',
         colorFn: (_, __) => MaterialPalette.black,
-        domainFn: (Event record, _) => record.distance.round() - offset,
-        measureFn: (Event record, _) => 50 / 3 / record.speed,
+        domainFn: (Event record, _) => record.distance!.round() - offset,
+        measureFn: (Event record, _) => 50 / 3 / record.speed!,
         data: widget.records,
       )
     ];
@@ -87,7 +87,7 @@ class _LapPaceChartState extends State<LapPaceChart> {
             const Text('Selected Record:'),
             ListTile(
               title: PQText(
-                value: selectedEvent.timeStamp,
+                value: selectedEvent!.timeStamp,
                 pq: PQ.dateTime,
                 format: DateTimeFormat.longDateTime,
               ),
@@ -96,14 +96,14 @@ class _LapPaceChartState extends State<LapPaceChart> {
             ListTile(
               title: PQText(
                 value:
-                    selectedEvent.timeStamp.difference(startingTime).inSeconds,
+                    selectedEvent!.timeStamp!.difference(startingTime!).inSeconds,
                 pq: PQ.duration,
               ),
               subtitle: const Text('Time elapsed'),
             ),
             ListTile(
               title: PQText(
-                  value: selectedEvent.distance, pq: PQ.distanceInMeters),
+                  value: selectedEvent!.distance, pq: PQ.distanceInMeters),
               subtitle: const Text('Distance'),
             ),
             MyButton.detail(

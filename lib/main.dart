@@ -1,19 +1,21 @@
-import 'package:encrateia/setup.dart';
-import 'package:encrateia/utils/my_theme.dart';
 import 'package:flutter/material.dart';
 import 'screens/dashboard.dart';
+import 'setup.dart';
+import 'utils/my_theme.dart';
 
 Future<void> main() async {
-  await Setup.init();
-  runApp(MyApp());
+  await setup();
+  runApp(const Encrateia());
 }
 
-class MyApp extends StatelessWidget {
+class Encrateia extends StatelessWidget {
+  const Encrateia({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Encrateia',
-      theme: MyTheme.call(),
+      theme: myTheme(),
       home: const Dashboard(),
     );
   }

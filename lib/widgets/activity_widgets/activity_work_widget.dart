@@ -1,20 +1,20 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/widgets/charts/work_chart.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/work_chart.dart';
 
 class ActivityWorkWidget extends StatefulWidget {
-  const ActivityWorkWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivityWorkWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityWorkWidgetState createState() => _ActivityWorkWidgetState();
@@ -36,21 +36,19 @@ class _ActivityWorkWidgetState extends State<ActivityWorkWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
-        return Column(
+        return ListView(
           children: <Widget>[
-            RepaintBoundary(
-                key: widgetKey,
-                child: WorkChart(records: powerRecords)),
+            WorkChart(records: powerRecords),
             Row(children: <Widget>[
               const Spacer(),
               MyButton.save(
                 child: Text(screenShotButtonText),
                 onPressed: () async {
-                  await ImageUtils.capturePng(widgetKey: widgetKey);
+                  await image_utils.capturePng(widgetKey: widgetKey);
                   screenShotButtonText = 'Image saved';
                   setState(() {});
                 },
@@ -65,7 +63,7 @@ class _ActivityWorkWidgetState extends State<ActivityWorkWidget> {
         );
       }
     } else {
-      return Container(
+      return SizedBox(
         height: 100,
         child: Center(
           child: Text(loading ? 'Loading' : 'No data available'),
@@ -75,7 +73,7 @@ class _ActivityWorkWidgetState extends State<ActivityWorkWidget> {
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
+    records = RecordList<Event>(await widget.activity!.records);
     setState(() => loading = false);
   }
 }

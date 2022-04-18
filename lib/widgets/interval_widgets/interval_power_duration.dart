@@ -1,15 +1,15 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/widgets/charts/power_duration_chart.dart';
+import '/models/event.dart';
+import '/models/interval.dart' as encrateia;
+import '/models/record_list.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/power_duration_chart.dart';
 
 class IntervalPowerDurationWidget extends StatefulWidget {
-  const IntervalPowerDurationWidget({@required this.interval});
+  const IntervalPowerDurationWidget({Key? key, required this.interval}) : super(key: key);
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
   _IntervalPowerDurationWidgetState createState() =>
@@ -39,7 +39,7 @@ class _IntervalPowerDurationWidgetState
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> powerRecords = records
-          .where((Event value) => value.power != null && value.power > 100)
+          .where((Event value) => value.power != null && value.power! > 100)
           .toList();
 
       if (powerRecords.isNotEmpty) {
@@ -56,7 +56,7 @@ class _IntervalPowerDurationWidgetState
               MyButton.save(
                 child: Text(screenShotButtonText),
                 onPressed: () async {
-                  await ImageUtils.capturePng(widgetKey: widgetKey);
+                  await image_utils.capturePng(widgetKey: widgetKey);
                   screenShotButtonText = 'Image saved';
                   setState(() {});
                 },
@@ -78,7 +78,7 @@ class _IntervalPowerDurationWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
+    records = RecordList<Event>(await widget.interval!.records);
     setState(() => loading = false);
   }
 }

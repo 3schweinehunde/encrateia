@@ -1,19 +1,19 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/widgets/charts/activity_charts/activity_intervals_chart.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/utils/my_color.dart';
+import '/widgets/charts/activity_charts/activity_intervals_chart.dart';
 
 class SelectIntervalScreen extends StatefulWidget {
-  const SelectIntervalScreen({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const SelectIntervalScreen({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _SelectIntervalScreenState createState() => _SelectIntervalScreenState();
@@ -32,7 +32,7 @@ class _SelectIntervalScreenState extends State<SelectIntervalScreen> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> paceRecords = records
-          .where((Event value) => value.speed != null && value.speed > 0)
+          .where((Event value) => value.speed != null && value.speed! > 0)
           .toList();
 
       return Scaffold(
@@ -45,12 +45,12 @@ class _SelectIntervalScreenState extends State<SelectIntervalScreen> {
             records: RecordList<Event>(paceRecords),
             activity: widget.activity,
             athlete: widget.athlete,
-            minimum: widget.activity.avgSpeed * 3.6 / 2,
-            maximum: widget.activity.avgSpeed * 3.6 * 2,
+            minimum: widget.activity!.avgSpeed! * 3.6 / 2,
+            maximum: widget.activity!.avgSpeed! * 3.6 * 2,
           ),
         ),
       );
-    } else
+    } else {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: MyColor.settings,
@@ -58,10 +58,11 @@ class _SelectIntervalScreenState extends State<SelectIntervalScreen> {
         ),
         body: const Text('Loading...'),
       );
+    }
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.activity.records);
+    records = RecordList<Event>(await widget.activity!.records);
     setState(() {});
   }
 }

@@ -1,48 +1,45 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/utils/my_button_style.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_bargraph_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_ftp_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_speed_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_metadata_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_overview_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_pace_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_altitude_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_power_ratio_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_event_list_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_speed_per_heart_rate_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_tag_widget.dart';
-import 'package:encrateia/widgets/intervals_list_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_work_widget.dart';
-import 'package:encrateia/widgets/laps_list_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_heart_rate_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_path_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_power_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_ecor_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_power_duration_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_power_per_heart_rate_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_ground_time_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_leg_spring_stiffness_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_form_power_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_stryd_cadence_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_stride_ratio_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/activity_vertical_oscillation_widget.dart';
-import 'package:encrateia/widgets/activity_widgets/edit_activity_widget.dart';
-import 'package:encrateia/screens/show_activity_detail_screen.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flushbar/flushbar.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter/material.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/weight.dart';
+import '/screens/show_activity_detail_screen.dart';
+import '/utils/icon_utils.dart';
+import '/utils/my_button_style.dart';
+import '/utils/my_color.dart';
+import '/widgets/activity_widgets/activity_altitude_widget.dart';
+import '/widgets/activity_widgets/activity_bargraph_widget.dart';
+import '/widgets/activity_widgets/activity_ecor_widget.dart';
+import '/widgets/activity_widgets/activity_event_list_widget.dart';
+import '/widgets/activity_widgets/activity_form_power_widget.dart';
+import '/widgets/activity_widgets/activity_ftp_widget.dart';
+import '/widgets/activity_widgets/activity_ground_time_widget.dart';
+import '/widgets/activity_widgets/activity_heart_rate_widget.dart';
+import '/widgets/activity_widgets/activity_leg_spring_stiffness_widget.dart';
+import '/widgets/activity_widgets/activity_metadata_widget.dart';
+import '/widgets/activity_widgets/activity_overview_widget.dart';
+import '/widgets/activity_widgets/activity_pace_widget.dart';
+import '/widgets/activity_widgets/activity_path_widget.dart';
+import '/widgets/activity_widgets/activity_power_duration_widget.dart';
+import '/widgets/activity_widgets/activity_power_per_heart_rate_widget.dart';
+import '/widgets/activity_widgets/activity_power_ratio_widget.dart';
+import '/widgets/activity_widgets/activity_power_widget.dart';
+import '/widgets/activity_widgets/activity_speed_per_heart_rate_widget.dart';
+import '/widgets/activity_widgets/activity_speed_widget.dart';
+import '/widgets/activity_widgets/activity_stride_ratio_widget.dart';
+import '/widgets/activity_widgets/activity_stryd_cadence_widget.dart';
+import '/widgets/activity_widgets/activity_tag_widget.dart';
+import '/widgets/activity_widgets/activity_vertical_oscillation_widget.dart';
+import '/widgets/activity_widgets/activity_work_widget.dart';
+import '/widgets/activity_widgets/edit_activity_widget.dart';
+import '/widgets/intervals_list_widget.dart';
+import '/widgets/laps_list_widget.dart';
 
 class ShowActivityScreen extends StatefulWidget {
   const ShowActivityScreen({
-    Key key,
-    @required this.activity,
-    @required this.athlete,
+    Key? key,
+    required this.activity,
+    required this.athlete,
   }) : super(key: key);
 
   final Activity activity;
@@ -53,8 +50,7 @@ class ShowActivityScreen extends StatefulWidget {
 }
 
 class _ShowActivityScreenState extends State<ShowActivityScreen> {
-  Flushbar<Object> flushbar = Flushbar<Object>();
-  Weight weight;
+  Weight? weight;
 
   List<Widget> get tiles {
     return <Widget>[
@@ -335,9 +331,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
             color: MyColor.add,
             textColor: MyColor.textColor(backgroundColor: MyColor.add)),
         icon: MyIcon.settings,
-        label: const Expanded(
-          child: Text('Rerun Autotagging'),
-        ),
+        label: const Text('Rerun Autotagging'),
         onPressed: () => autoTagger(),
       ),
       if (<String>['new', 'downloaded', 'persisted']
@@ -347,9 +341,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.add,
               textColor: MyColor.textColor(backgroundColor: MyColor.add)),
           icon: MyIcon.download,
-          label: const Expanded(
-            child: Text('Download fit file'),
-          ),
+          label: const Text('Download fit file'),
           onPressed: () => download(),
         ),
       if (<String>['downloaded', 'persisted'].contains(widget.activity.state))
@@ -358,9 +350,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.add,
               textColor: MyColor.textColor(backgroundColor: MyColor.add)),
           icon: MyIcon.parse,
-          label: const Expanded(
-            child: Text('Parse fit file'),
-          ),
+          label: const Text('Parse fit file'),
           onPressed: () => parse(),
         ),
       if (widget.activity.excluded == true)
@@ -369,9 +359,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.include,
               textColor: MyColor.textColor(backgroundColor: MyColor.include)),
           icon: MyIcon.filter,
-          label: const Expanded(
-            child: Text('Include in Analysis'),
-          ),
+          label: const Text('Include in Analysis'),
           onPressed: () => include(),
         )
       else
@@ -380,9 +368,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.exclude,
               textColor: MyColor.textColor(backgroundColor: MyColor.exclude)),
           icon: MyIcon.filter,
-          label: const Expanded(
-            child: Text('Exclude from Analysis'),
-          ),
+          label: const Text('Exclude from Analysis'),
           onPressed: () => exclude(),
         ),
       navigationButton(
@@ -411,9 +397,7 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
               color: MyColor.delete,
               textColor: MyColor.textColor(backgroundColor: MyColor.delete)),
           icon: MyIcon.delete,
-          label: const Expanded(
-            child: Text('Delete Activity'),
-          ),
+          label: const Text('Delete Activity'),
           onPressed: () => delete(),
         ),
     ];
@@ -436,17 +420,12 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
         ),
       ),
       body: SafeArea(
-        child: StaggeredGridView.count(
-          staggeredTiles: List<StaggeredTile>.filled(
-            tiles.length,
-            const StaggeredTile.fit(1),
-          ),
+        child: GridView.extent(
           crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 5,
           padding: const EdgeInsets.all(10),
-          crossAxisCount:
-              MediaQuery.of(context).orientation == Orientation.portrait
-                  ? 2
-                  : 4,
+          maxCrossAxisExtent: 250,
           children: tiles,
         ),
       ),
@@ -454,20 +433,18 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
   }
 
   Widget navigationButton({
-    @required BuildContext context,
-    @required Widget nextWidget,
-    @required Widget icon,
-    @required String title,
-    @required Color color,
-    Color backgroundColor,
+    required BuildContext context,
+    required Widget nextWidget,
+    required Widget icon,
+    required String title,
+    required Color color,
+    Color? backgroundColor,
   }) {
     return ElevatedButton.icon(
       style: MyButtonStyle.raisedButtonStyle(
           color: color, textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
-      label: Expanded(
-        child: Text(title),
-      ),
+      label: Text(title),
       onPressed: () => Navigator.push(
         context,
         MaterialPageRoute<BuildContext>(
@@ -483,20 +460,32 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
   }
 
   Future<void> autoTagger() async {
-    flushbar = Flushbar<Object>(
-      message: 'Starting Autotagger',
-      duration: const Duration(seconds: 10),
-      icon: MyIcon.stravaDownloadWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            MyIcon.stravaDownloadWhite,
+            const Text(' Starting Autotagger'),
+          ],
+        ),
+      ),
+    );
 
     await widget.activity.autoTagger(athlete: widget.athlete);
 
-    await flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Autotagging finished',
-      duration: const Duration(seconds: 2),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text(' Autotagging finished'),
+          ],
+        ),
+      ),
+    );
     setState(() {});
   }
 
@@ -518,57 +507,82 @@ class _ShowActivityScreenState extends State<ShowActivityScreen> {
   }
 
   Future<void> download() async {
-    flushbar = Flushbar<Object>(
-      message: 'Download .fit-File for »${widget.activity.name}«',
-      duration: const Duration(seconds: 10),
-      icon: MyIcon.stravaDownloadWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            MyIcon.stravaDownloadWhite,
+            Text(' Download .fit-File for »${widget.activity.name}«'),
+          ],
+        ),
+      ),
+    );
 
     await widget.activity.download(athlete: widget.athlete);
 
-    await flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Download finished',
-      duration: const Duration(seconds: 1),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 1),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text(' Download finished'),
+          ],
+        ),
+      ),
+    );
 
     await parse();
-    flushbar = Flushbar<Object>(
-      message: 'Analysis finished for »${widget.activity.name}«',
-      duration: const Duration(seconds: 2),
-      animationDuration: const Duration(milliseconds: 0),
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Text('Analysis finished for »${widget.activity.name}«'),
+      ),
+    );
   }
 
   Future<void> parse() async {
-    Flushbar<Object> flushbar = Flushbar<Object>(
-      message: '0% of storing »${widget.activity.name}«',
-      duration: const Duration(seconds: 10),
-      animationDuration: const Duration(milliseconds: 0),
-      titleText: const LinearProgressIndicator(value: 0),
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 10),
+        content: Row(
+          children: [
+            CircularProgressIndicator(value: 0, color: MyColor.progress),
+            Text(' storing »${widget.activity.name}«'),
+          ],
+        ),
+      ),
+    );
 
     final Stream<int> percentageStream =
         widget.activity.parse(athlete: widget.athlete);
     await for (final int value in percentageStream) {
-      if (value == -2)
-        await flushbar?.dismiss();
-      else if (value == -1) {
-        await flushbar?.dismiss();
-        flushbar = Flushbar<Object>(
-          message: 'Analysing »${widget.activity.name}«',
-          duration: const Duration(seconds: 1),
-          animationDuration: const Duration(milliseconds: 0),
-        )..show(context);
+      if (value == -2) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      } else if (value == -1) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 1),
+            content: Text('Analysing »${widget.activity.name}«'),
+          ),
+        );
       } else {
-        await flushbar.dismiss();
-        flushbar = Flushbar<Object>(
-          titleText: LinearProgressIndicator(value: value / 100),
-          message: '$value% of storing »${widget.activity.name}«',
-          duration: const Duration(seconds: 3),
-          animationDuration: const Duration(milliseconds: 0),
-        )..show(context);
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 3),
+            content: Row(
+              children: [
+                CircularProgressIndicator(
+                    value: value / 100, color: MyColor.progress),
+                Text(' storing »${widget.activity.name}«'),
+              ],
+            ),
+          ),
+        );
       }
     }
     setState(() {});

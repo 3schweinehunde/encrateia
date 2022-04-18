@@ -1,18 +1,18 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import '/models/event.dart';
+import '/models/lap.dart';
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_vertical_oscillation_chart.dart';
 
 class LapVerticalOscillationWidget extends StatefulWidget {
-  const LapVerticalOscillationWidget({this.lap});
+  const LapVerticalOscillationWidget({Key? key, this.lap}) : super(key: key);
 
-  final Lap lap;
+  final Lap? lap;
 
   @override
   _LapVerticalOscillationWidgetState createState() =>
@@ -44,7 +44,7 @@ class _LapVerticalOscillationWidgetState
       final List<Event> verticalOscillationRecords = records
           .where((Event value) =>
               value.verticalOscillation != null &&
-              value.verticalOscillation > 0)
+              value.verticalOscillation! > 0)
           .toList();
 
       if (verticalOscillationRecords.isNotEmpty) {
@@ -57,8 +57,8 @@ class _LapVerticalOscillationWidgetState
                 key: widgetKey,
                 child: LapVerticalOscillationChart(
                   records: RecordList<Event>(verticalOscillationRecords),
-                  minimum: widget.lap.avgVerticalOscillation / 1.25,
-                  maximum: widget.lap.avgVerticalOscillation * 1.25,
+                  minimum: widget.lap!.avgVerticalOscillation! / 1.25,
+                  maximum: widget.lap!.avgVerticalOscillation! * 1.25,
                 ),
               ),
               const Text(
@@ -69,7 +69,7 @@ class _LapVerticalOscillationWidgetState
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -79,7 +79,7 @@ class _LapVerticalOscillationWidgetState
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.lap.avgVerticalOscillation,
+                  value: widget.lap!.avgVerticalOscillation,
                   pq: PQ.verticalOscillation,
                 ),
                 subtitle: const Text('average vertical oscillation'),
@@ -87,7 +87,7 @@ class _LapVerticalOscillationWidgetState
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.lap.sdevVerticalOscillation,
+                  value: widget.lap!.sdevVerticalOscillation,
                   pq: PQ.verticalOscillation,
                 ),
                 subtitle: const Text('standard deviation vertical oscillation'),
@@ -116,7 +116,7 @@ class _LapVerticalOscillationWidgetState
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.lap.records);
+    records = RecordList<Event>(await widget.lap!.records);
     setState(() => loading = false);
   }
 }

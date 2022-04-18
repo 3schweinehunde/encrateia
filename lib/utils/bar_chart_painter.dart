@@ -1,15 +1,15 @@
-import 'package:encrateia/models/bar_zone.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
+import '/models/bar_zone.dart';
+import '/utils/my_color.dart';
 
 class BarChartPainter extends CustomPainter {
   BarChartPainter({
-    @required this.width,
-    @required this.height,
-    @required this.value,
-    @required this.maximum,
-    @required this.minimum,
-    @required this.barZones,
+    required this.width,
+    required this.height,
+    required this.value,
+    required this.maximum,
+    required this.minimum,
+    required this.barZones,
     this.showPercentage,
   });
 
@@ -20,7 +20,7 @@ class BarChartPainter extends CustomPainter {
   final double minimum;
   final double strokeWidth = 0.5;
   final List<BarZone> barZones;
-  bool showPercentage = false;
+  bool? showPercentage = false;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -57,21 +57,22 @@ class BarChartPainter extends CustomPainter {
         double lowerInPixel;
         double upperInPixel;
 
-        if (value < barZone.lower)
+        if (value < barZone.lower!) {
           continue;
-        if (value >= barZone.upper) {
+        }
+        if (value >= barZone.upper!) {
           lowerInPixel = (width - 2 * strokeWidth) /
                   (maximum - minimum) *
-                  (barZone.lower - minimum) +
+                  (barZone.lower! - minimum) +
               strokeWidth;
           upperInPixel = (width - 2 * strokeWidth) /
                   (maximum - minimum) *
-                  (barZone.upper - minimum) +
+                  (barZone.upper! - minimum) +
               strokeWidth;
         } else {
           lowerInPixel = (width - 2 * strokeWidth) /
                   (maximum - minimum) *
-                  (barZone.lower - minimum) +
+                  (barZone.lower! - minimum) +
               strokeWidth;
           upperInPixel = (width - 2 * strokeWidth) /
                   (maximum - minimum) *
@@ -85,13 +86,13 @@ class BarChartPainter extends CustomPainter {
               Offset(upperInPixel, height - strokeWidth),
             ),
             Paint()
-              ..color = Color(barZone.color)
+              ..color = Color(barZone.color!)
               ..strokeWidth = strokeWidth
               ..style = PaintingStyle.fill);
 
         if (showPercentage == true) {
           final int percentage =
-              ((barZone.upper - barZone.lower) / (maximum - minimum) * 100)
+              ((barZone.upper! - barZone.lower!) / (maximum - minimum) * 100)
                   .round();
           String percentageString;
           switch (percentage) {

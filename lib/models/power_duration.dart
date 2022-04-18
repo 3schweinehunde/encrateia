@@ -1,16 +1,16 @@
 import 'dart:math';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/models/plot_point.dart';
+import '/models/event.dart';
+import '/models/plot_point.dart';
 
 class PowerDuration {
-  PowerDuration({List<Event> records}) {
+  PowerDuration({required List<Event> records}) {
     final Map<int, EnergyPoint> powerSum = <int, EnergyPoint>{};
 
     for (int index = 1; index <= records.length - 1; index++) {
-      final int power = records[index].power;
+      final int power = records[index].power!;
       final int duration = records[index]
-          .timeStamp
-          .difference(records[index - 1].timeStamp)
+          .timeStamp!
+          .difference(records[index - 1].timeStamp!)
           .inSeconds;
 
       powerSum.forEach((int start, EnergyPoint energyPoint) {
@@ -27,8 +27,9 @@ class PowerDuration {
           for (int durationIndex = newDuration;
               durationIndex > 0;
               durationIndex--) {
-            if (newPower <= (powerMap[durationIndex] ?? 0))
+            if (newPower <= (powerMap[durationIndex] ?? 0)) {
               break;
+            }
             powerMap[durationIndex] = newPower;
           }
         }
@@ -41,8 +42,9 @@ class PowerDuration {
 
       if (power > (powerMap[duration] ?? 0)) {
         for (int durationIndex = duration; durationIndex > 0; durationIndex--) {
-          if (power <= (powerMap[durationIndex] ?? 0))
+          if (power <= (powerMap[durationIndex] ?? 0)) {
             break;
+          }
           powerMap[durationIndex] = power.toDouble();
         }
       }
@@ -72,5 +74,5 @@ class PowerDuration {
     return this;
   }
 
-  static int scaled({int seconds}) => (200 * log(seconds)).round();
+  static int scaled({required int seconds}) => (200 * log(seconds)).round();
 }

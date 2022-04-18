@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MyButtonStyle extends ButtonStyle {
-  static ButtonStyle raisedButtonStyle({Color color, Color textColor}) {
+  static ButtonStyle raisedButtonStyle({Color? color, Color? textColor}) {
     return ElevatedButton.styleFrom(
       onPrimary: textColor ?? Colors.black,
       primary: color ?? Colors.grey[300],

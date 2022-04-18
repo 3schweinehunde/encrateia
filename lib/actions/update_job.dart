@@ -1,16 +1,14 @@
-import 'package:encrateia/actions/download_activity.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/actions/query_strava.dart';
-import 'package:encrateia/actions/parse_activity.dart';
+import '/actions/download_activity.dart';
+import '/actions/parse_activity.dart';
+import '/actions/query_strava.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/utils/icon_utils.dart';
 
 Future<void> updateJob({
-  @required BuildContext context,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Athlete athlete,
 }) async {
   List<Activity> activities;
 
@@ -18,7 +16,6 @@ Future<void> updateJob({
     await queryStrava(
       context: context,
       athlete: athlete,
-      flushbar: flushbar,
     );
 
     activities = await athlete.activities;
@@ -29,7 +26,6 @@ Future<void> updateJob({
         context: context,
         activity: activity,
         athlete: athlete,
-        flushbar: flushbar,
       );
     }
 
@@ -44,22 +40,33 @@ Future<void> updateJob({
         context: context,
         activity: activity,
         athlete: athlete,
-        flushbar: flushbar,
       );
       await activity.autoTagger(athlete: athlete);
     }
-    await flushbar.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'You are now up to date!',
-      duration: const Duration(seconds: 5),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text(' You are now up to date!'),
+          ],
+        ),
+      ),
+    );
   } else {
-    flushbar = Flushbar<Object>(
-      message:
-          'Please set up Power Zone Schema and Heart Rate Zone Schema first!',
-      duration: const Duration(seconds: 5),
-      icon: MyIcon.finishedWhite,
-    )..show(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text(' Please set up Power Zone Schema and '
+                'Heart Rate Zone Schema first!'),
+          ],
+        ),
+      ),
+    );
   }
 }

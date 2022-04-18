@@ -1,18 +1,18 @@
-import 'package:encrateia/models/weight.dart';
-import 'package:encrateia/screens/onboarding_screens/onboarding_finished_screen.dart';
-import 'package:encrateia/utils/my_button.dart';
-import 'package:encrateia/utils/my_color.dart';
-import 'package:encrateia/widgets/athlete_widgets/athlete_body_weight_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/athlete.dart';
+import '/models/athlete.dart';
+import '/models/weight.dart';
+import '/screens/onboarding_screens/onboarding_finished_screen.dart';
+import '/utils/my_button.dart';
+import '/utils/my_color.dart';
+import '/widgets/athlete_widgets/athlete_body_weight_widget.dart';
 
 class OnBoardingBodyWeightScreen extends StatefulWidget {
   const OnBoardingBodyWeightScreen({
-    Key key,
+    Key? key,
     this.athlete,
   }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
 
   @override
   _OnBoardingBodyWeightScreenState createState() =>
@@ -63,14 +63,14 @@ class _OnBoardingBodyWeightScreenState
   }
 
   Future<void> getData() async {
-    final List<Weight> weights = await widget.athlete.weights;
-    print(weights.length);
+    final List<Weight> weights = await widget.athlete!.weights;
+    debugPrint(weights.length.toString());
     setState(() => weightHasBeenEntered = weights.isNotEmpty);
   }
 
   Future<void> nextButton() async {
-    await widget.athlete.save();
-    print('OK');
+    await widget.athlete!.save();
+    debugPrint('OK');
     Navigator.pushReplacement(
       context,
       MaterialPageRoute<BuildContext>(

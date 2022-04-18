@@ -17,12 +17,12 @@
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">
             <meta-data
-                android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/launch_background" />
-            <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme"
                 />
+            <meta-data
+                android:name="io.flutter.embedding.android.SplashScreenDrawable"
+                android:resource="@drawable/launch_background" />
             <meta-data
                 android:name="flutterEmbedding"
                 android:value="2" />
@@ -35,7 +35,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="stravaflutter" android:host="redirect" />
-                <data android:pathPattern="/.*" />
             </intent-filter>
         </activity>
     </application>

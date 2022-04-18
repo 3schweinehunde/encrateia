@@ -1,29 +1,27 @@
 import 'dart:math';
+import 'package:charts_common/common.dart' as common show Series;
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/heart_rate_zone.dart';
-import 'package:encrateia/models/lap.dart';
-import 'package:encrateia/models/power_zone.dart';
-import 'package:encrateia/utils/graph_utils.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:charts_common/common.dart' as common show Series, ChartBehavior;
+import '/models/heart_rate_zone.dart';
+import '/models/lap.dart';
+import '/models/power_zone.dart';
+import '/utils/graph_utils.dart';
 
 class MyLineChart extends LineChart {
   MyLineChart({
-    @required List<common.Series<dynamic, dynamic>> data,
-    @required double maxDomain,
-    @required List<Lap> laps,
-    List<PowerZone> powerZones,
-    List<HeartRateZone> heartRateZones,
-    @required String domainTitle,
-    String measureTitle,
-    NumericTickProviderSpec measureTickProviderSpec,
-    NumericTickProviderSpec domainTickProviderSpec,
-    double minimum,
-    double maximum,
-    bool flipVerticalAxis,
+    required List<common.Series<dynamic, num?>> data,
+    required double maxDomain,
+    required List<Lap> laps,
+    List<PowerZone>? powerZones,
+    List<HeartRateZone>? heartRateZones,
+    required String domainTitle,
+    String? measureTitle,
+    NumericTickProviderSpec? measureTickProviderSpec,
+    NumericTickProviderSpec? domainTickProviderSpec,
+    double? minimum,
+    double? maximum,
+    bool? flipVerticalAxis,
   }) : super(
-          data,
+          data as List<Series<dynamic, num>>,
           defaultRenderer: LineRendererConfig<num>(
             includeArea: true,
             strokeWidthPx: 1,
@@ -43,9 +41,9 @@ class MyLineChart extends LineChart {
           animate: false,
           flipVerticalAxis: flipVerticalAxis ?? false,
           layoutConfig: GraphUtils.layoutConfig,
-          behaviors: <ChartBehavior<common.ChartBehavior<dynamic>>>[
-            PanAndZoomBehavior(),
-            RangeAnnotation(
+          behaviors: <ChartBehavior<num>>[
+            PanAndZoomBehavior<num>(),
+            RangeAnnotation<num>(
               GraphUtils.rangeAnnotations(laps: laps) +
                   GraphUtils.powerZoneAnnotations(
                     powerZones: powerZones,
@@ -54,19 +52,19 @@ class MyLineChart extends LineChart {
                     heartRateZones: heartRateZones,
                   ),
             ),
-            ChartTitle(
+            ChartTitle<num>(
               domainTitle,
               titleStyleSpec: const TextStyleSpec(fontSize: 13),
               behaviorPosition: BehaviorPosition.start,
               titleOutsideJustification: OutsideJustification.end,
             ),
-            ChartTitle(
+            ChartTitle<num>(
               measureTitle ?? 'Distance (m)',
               titleStyleSpec: const TextStyleSpec(fontSize: 13),
               behaviorPosition: BehaviorPosition.bottom,
               titleOutsideJustification: OutsideJustification.end,
             ),
-            ChartTitle(
+            ChartTitle<num>(
               '$domainTitle Diagram created with Encrateia https://encreteia.informatom.com',
               behaviorPosition: BehaviorPosition.top,
               titleOutsideJustification: OutsideJustification.endDrawArea,
@@ -75,37 +73,38 @@ class MyLineChart extends LineChart {
           ],
         );
 
-  static NumericExtents determineViewport({
-    List<PowerZone> powerZones,
-    List<HeartRateZone> heartRateZones,
-    double minimum,
-    double maximum,
+  static NumericExtents? determineViewport({
+    List<PowerZone>? powerZones,
+    List<HeartRateZone>? heartRateZones,
+    double? minimum,
+    double? maximum,
   }) {
-    if (powerZones != null)
+    if (powerZones != null) {
       return NumericExtents(
           powerZones
-                  .map((PowerZone powerZone) => powerZone.lowerLimit)
+                  .map((PowerZone powerZone) => powerZone.lowerLimit ?? 0)
                   .reduce(min) *
               0.9,
           powerZones
-                  .map((PowerZone powerZone) => powerZone.upperLimit)
+                  .map((PowerZone powerZone) => powerZone.upperLimit ?? 0)
                   .reduce(max) *
               1.1);
-    else if (heartRateZones != null)
+    } else if (heartRateZones != null) {
       return NumericExtents(
           heartRateZones
-                  .map(
-                      (HeartRateZone heartRateZone) => heartRateZone.lowerLimit)
+                  .map((HeartRateZone heartRateZone) =>
+                      heartRateZone.lowerLimit ?? 0)
                   .reduce(min) *
               0.9,
           heartRateZones
-                  .map(
-                      (HeartRateZone heartRateZone) => heartRateZone.upperLimit)
+                  .map((HeartRateZone heartRateZone) =>
+                      heartRateZone.upperLimit ?? 0)
                   .reduce(max) *
               1.1);
-    else if (minimum != null)
-      return NumericExtents(minimum, maximum);
-    else
+    } else if (minimum != null) {
+      return NumericExtents(minimum, maximum!);
+    } else {
       return null;
+    }
   }
 }

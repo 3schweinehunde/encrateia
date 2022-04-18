@@ -1,12 +1,12 @@
 import 'dart:io';
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:html/dom.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:encrateia/models/athlete.dart';
 import 'package:html/parser.dart' show parse;
-import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'athlete.dart';
 
 // ignore: avoid_classes_with_only_static_members
 abstract class StravaFitDownload {
@@ -19,7 +19,7 @@ abstract class StravaFitDownload {
         'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   };
 
-  static Future<int> byId({String id, Athlete athlete}) async {
+  static Future<int?> byId({String? id, Athlete? athlete}) async {
     final String exportUri = baseUri + 'activities/$id/export_original';
     final Directory appDocDir = await getApplicationDocumentsDirectory();
 
@@ -30,10 +30,10 @@ abstract class StravaFitDownload {
     final bool loggedIn = await logInIfNecessary(dio: dio, athlete: athlete);
 
     if (loggedIn == true) {
-      print('Starting download for $exportUri');
+      debugPrint('Starting download for $exportUri');
       final Response<dynamic> downloadResponse =
           await dio.download(exportUri, appDocDir.path + '/$id.fit');
-      print('Download fit file for activity $id completed.');
+      debugPrint('Download fit file for activity $id completed.');
 
       return downloadResponse.statusCode;
     } else {
@@ -42,48 +42,49 @@ abstract class StravaFitDownload {
   }
 
   static Future<bool> logInIfNecessary(
-      {@required Dio dio, @required Athlete athlete}) async {
+      {required Dio dio, required Athlete? athlete}) async {
     Response<dynamic> dashboardResponse = await getDashboard(dio: dio);
     if (dashboardResponse.data.toString().contains('logged-in')) {
-      print('Already logged in to Strava');
+      debugPrint('Already logged in to Strava');
       return true;
     }
 
-    await login(dio: dio, athlete: athlete);
+    await login(dio: dio, athlete: athlete!);
 
     dashboardResponse = await getDashboard(dio: dio);
     if (dashboardResponse.data.toString().contains('logged-in')) {
-      print('Successfully logged in to Strava');
+      debugPrint('Successfully logged in to Strava');
       return true;
     } else {
-      print('Error: Could not log in to Strava');
+      debugPrint('Error: Could not log in to Strava');
       return false;
     }
   }
 
-  static Future<Response<dynamic>> getDashboard({Dio dio}) async {
+  static Future<Response<dynamic>> getDashboard({required Dio dio}) async {
     return await dio.get<dynamic>(
       dashboardUri,
       options: Options(headers: headers, validateStatus: (_) => true),
     );
   }
 
-  static Future<void> login({Dio dio, Athlete athlete}) async {
+  static Future<void> login({required Dio dio, required Athlete athlete}) async {
     final Response<dynamic> homePageResponse = await dio.get<dynamic>(
       loginUri,
       options: Options(headers: headers),
     );
 
     final Document document = parse(homePageResponse.data);
-    final String csrfParam =
-        document.querySelector('meta[name="csrf-param"]').attributes['content'];
-    final String csrfToken =
-        document.querySelector('meta[name="csrf-token"]').attributes['content'];
+
+    final String? csrfParam =
+        document.querySelector('meta[name="csrf-param"]')!.attributes['content'];
+    final String? csrfToken =
+        document.querySelector('meta[name="csrf-token"]')!.attributes['content'];
 
     await dio.post<dynamic>(
       sessionUri,
       options: Options(headers: headers, validateStatus: (_) => true),
-      data: <String, String>{
+      data: <String?, String?>{
         'email': athlete.email,
         'password': athlete.password,
         'remember_me': 'on',
@@ -92,7 +93,7 @@ abstract class StravaFitDownload {
     );
   }
 
-  static Future<bool> credentialsAreValid({@required Athlete athlete}) async {
+  static Future<bool> credentialsAreValid({required Athlete athlete}) async {
     final Dio dio = Dio();
     final CookieJar cookieJar = CookieJar();
     dio.interceptors.add(CookieManager(cookieJar));

@@ -1,29 +1,29 @@
 import 'package:charts_flutter/flutter.dart';
-import 'package:encrateia/models/athlete.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/utils/enums.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/utils/enums.dart';
 
 class AthleteScatterChart extends StatefulWidget {
-  const AthleteScatterChart({
-    @required this.athlete,
-    @required this.activities,
-    @required this.firstAttr,
-    @required this.secondAttr,
-    @required this.chartTitleText,
-    @required this.firstAxesText,
-    @required this.secondAxesText,
+  const AthleteScatterChart({Key? key,
+    required this.athlete,
+    required this.activities,
+    required this.firstAttr,
+    required this.secondAttr,
+    required this.chartTitleText,
+    required this.firstAxesText,
+    required this.secondAxesText,
     this.flipVerticalAxis,
-  });
+  }) : super(key: key);
 
-  final Athlete athlete;
+  final Athlete? athlete;
   final List<Activity> activities;
   final ActivityAttr firstAttr;
   final ActivityAttr secondAttr;
   final String chartTitleText;
   final String firstAxesText;
   final String secondAxesText;
-  final bool flipVerticalAxis;
+  final bool? flipVerticalAxis;
 
   @override
   _AthleteScatterChartState createState() => _AthleteScatterChartState();
@@ -75,20 +75,20 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
               ),
             ),
             flipVerticalAxis: widget.flipVerticalAxis ?? false,
-            behaviors: <ChartTitle>[
-              ChartTitle(
+            behaviors: <ChartTitle<num>>[
+              ChartTitle<num>(
                 widget.firstAxesText,
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.bottom,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<num>(
                 widget.secondAxesText,
                 titleStyleSpec: const TextStyleSpec(fontSize: 13),
                 behaviorPosition: BehaviorPosition.start,
                 titleOutsideJustification: OutsideJustification.end,
               ),
-              ChartTitle(
+              ChartTitle<num>(
                 '${widget.chartTitleText} Diagram created with Encrateia https://encreteia.informatom.com',
                 behaviorPosition: BehaviorPosition.top,
                 titleOutsideJustification: OutsideJustification.endDrawArea,
@@ -102,8 +102,8 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
     );
   }
 
-  int opacity({Activity activity}) {
+  int opacity({required Activity activity}) {
     return 255 -
-        (DateTime.now().difference(activity.timeStamp).inDays / 2).round();
+        (DateTime.now().difference(activity.timeStamp!).inDays / 2).round();
   }
 }

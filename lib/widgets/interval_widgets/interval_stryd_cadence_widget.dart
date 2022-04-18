@@ -1,24 +1,26 @@
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/interval.dart' as encrateia;
-import 'package:encrateia/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
-import 'package:encrateia/models/event.dart';
+import '/models/event.dart';
+import '/models/interval.dart' as encrateia;
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/lap_charts/lap_stryd_cadence_chart.dart';
 
 class IntervalStrydCadenceWidget extends StatefulWidget {
-  const IntervalStrydCadenceWidget({this.interval});
+  const IntervalStrydCadenceWidget({Key? key, this.interval}) : super(key: key);
 
-  final encrateia.Interval interval;
+  final encrateia.Interval? interval;
 
   @override
-  _IntervalStrydCadenceWidgetState createState() => _IntervalStrydCadenceWidgetState();
+  _IntervalStrydCadenceWidgetState createState() =>
+      _IntervalStrydCadenceWidgetState();
 }
 
-class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget> {
+class _IntervalStrydCadenceWidgetState
+    extends State<IntervalStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
@@ -41,7 +43,7 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
     if (records.isNotEmpty) {
       final List<Event> strydCadenceRecords = records
           .where((Event value) =>
-      value.strydCadence != null && value.strydCadence > 0)
+              value.strydCadence != null && value.strydCadence! > 0)
           .toList();
 
       if (strydCadenceRecords.isNotEmpty) {
@@ -54,8 +56,8 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
                 key: widgetKey,
                 child: LapStrydCadenceChart(
                   records: RecordList<Event>(strydCadenceRecords),
-                  minimum: widget.interval.avgStrydCadence * 2 / 1.25,
-                  maximum: widget.interval.avgStrydCadence * 2 * 1.25,
+                  minimum: widget.interval!.avgStrydCadence! * 2 / 1.25,
+                  maximum: widget.interval!.avgStrydCadence! * 2 * 1.25,
                 ),
               ),
               const Text('Only records where cadence > 0 s/min are shown.'),
@@ -65,7 +67,7 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -75,7 +77,7 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.interval.avgStrydCadence,
+                  value: widget.interval!.avgStrydCadence,
                   pq: PQ.cadence,
                 ),
                 subtitle: const Text('average cadence'),
@@ -83,7 +85,7 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
               ListTile(
                 leading: MyIcon.standardDeviation,
                 title: PQText(
-                  value: widget.interval.sdevStrydCadence,
+                  value: widget.interval!.sdevStrydCadence,
                   pq: PQ.cadence,
                 ),
                 subtitle: const Text('standard deviation cadence'),
@@ -91,7 +93,7 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
               ListTile(
                 leading: MyIcon.amount,
                 title:
-                PQText(value: strydCadenceRecords.length, pq: PQ.integer),
+                    PQText(value: strydCadenceRecords.length, pq: PQ.integer),
                 subtitle: const Text('number of measurements'),
               ),
             ],
@@ -110,7 +112,7 @@ class _IntervalStrydCadenceWidgetState extends State<IntervalStrydCadenceWidget>
   }
 
   Future<void> getData() async {
-    records = RecordList<Event>(await widget.interval.records);
+    records = RecordList<Event>(await widget.interval!.records);
     setState(() => loading = false);
   }
 }

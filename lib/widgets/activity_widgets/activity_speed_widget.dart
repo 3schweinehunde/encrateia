@@ -1,23 +1,23 @@
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/record_list.dart';
-import 'package:encrateia/utils/PQText.dart';
-import 'package:encrateia/utils/enums.dart';
-import 'package:encrateia/utils/image_utils.dart';
-import 'package:encrateia/utils/my_button.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/event.dart';
-import 'package:encrateia/widgets/charts/activity_charts/activity_speed_chart.dart';
-import 'package:encrateia/utils/icon_utils.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/event.dart';
+import '/models/record_list.dart';
+import '/utils/pg_text.dart';
+import '/utils/enums.dart';
+import '/utils/icon_utils.dart';
+import '/utils/image_utils.dart' as image_utils;
+import '/utils/my_button.dart';
+import '/widgets/charts/activity_charts/activity_speed_chart.dart';
 
 class ActivitySpeedWidget extends StatefulWidget {
-  const ActivitySpeedWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivitySpeedWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivitySpeedWidgetState createState() => _ActivitySpeedWidgetState();
@@ -39,7 +39,7 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> paceRecords = records
-          .where((Event value) => value.speed != null && value.speed > 0)
+          .where((Event value) => value.speed != null && value.speed! > 0)
           .toList();
 
       if (paceRecords.isNotEmpty) {
@@ -54,15 +54,15 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
                   records: RecordList<Event>(paceRecords),
                   activity: widget.activity,
                   athlete: widget.athlete,
-                  minimum:
-                      (widget.activity.avgSpeed - 3 * widget.activity.sdevSpeed) *
-                          3.6,
-                  maximum:
-                      (widget.activity.avgSpeed + 3 * widget.activity.sdevSpeed) *
-                          3.6,
+                  minimum: (widget.activity!.avgSpeed! -
+                          3 * widget.activity!.sdevSpeed!) *
+                      3.6,
+                  maximum: (widget.activity!.avgSpeed! +
+                          3 * widget.activity!.sdevSpeed!) *
+                      3.6,
                 ),
               ),
-              Text('${widget.athlete.recordAggregationCount} records are '
+              Text('${widget.athlete!.recordAggregationCount} records are '
                   'aggregated into one point in the plot. Only records where '
                   'speed > 0 m/s are shown.'),
               Row(children: <Widget>[
@@ -70,7 +70,7 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
                 MyButton.save(
                   child: Text(screenShotButtonText),
                   onPressed: () async {
-                    await ImageUtils.capturePng(widgetKey: widgetKey);
+                    await image_utils.capturePng(widgetKey: widgetKey);
                     screenShotButtonText = 'Image saved';
                     setState(() {});
                   },
@@ -79,13 +79,13 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.activity.avgSpeed, pq: PQ.speed),
+                title: PQText(value: widget.activity!.avgSpeed, pq: PQ.speed),
                 subtitle: const Text('average speed (as in .fit-file)'),
               ),
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.activity.avgSpeedByMeasurements,
+                  value: widget.activity!.avgSpeedByMeasurements,
                   pq: PQ.speed,
                 ),
                 subtitle: const Text('mean speed'),
@@ -93,7 +93,7 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.activity.avgSpeedBySpeed,
+                  value: widget.activity!.avgSpeedBySpeed,
                   pq: PQ.speed,
                 ),
                 subtitle: const Text('mean speed (time weighted)'),
@@ -101,25 +101,24 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
               ListTile(
                 leading: MyIcon.average,
                 title: PQText(
-                  value: widget.activity.avgSpeedByDistance,
+                  value: widget.activity!.avgSpeedByDistance,
                   pq: PQ.speed,
                 ),
-                subtitle:
-                    const Text('average speed (calculated)'),
+                subtitle: const Text('average speed (calculated)'),
               ),
               ListTile(
                 leading: MyIcon.standardDeviation,
-                title: PQText(value: widget.activity.sdevSpeed, pq: PQ.speed),
+                title: PQText(value: widget.activity!.sdevSpeed, pq: PQ.speed),
                 subtitle: const Text('standard deviation speed'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.activity.minSpeed, pq: PQ.speed),
+                title: PQText(value: widget.activity!.minSpeed, pq: PQ.speed),
                 subtitle: const Text('minimum speed'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.activity.maxSpeed, pq: PQ.speed),
+                title: PQText(value: widget.activity!.maxSpeed, pq: PQ.speed),
                 subtitle: const Text('maximum speed'),
               ),
               ListTile(
@@ -143,7 +142,7 @@ class _ActivitySpeedWidgetState extends State<ActivitySpeedWidget> {
   }
 
   Future<void> getData() async {
-    final Activity activity = widget.activity;
+    final Activity activity = widget.activity!;
     records = RecordList<Event>(await activity.records);
     setState(() => loading = false);
   }

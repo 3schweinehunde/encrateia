@@ -1,59 +1,71 @@
-import 'package:encrateia/models/activity.dart';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/log.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import '../utils/my_color.dart';
+import '/models/activity.dart';
+import '/models/athlete.dart';
+import '/models/log.dart';
 
 Future<void> parseActivity({
-  @required BuildContext context,
-  @required Activity activity,
-  @required Athlete athlete,
-  @required Flushbar<Object> flushbar,
+  required BuildContext context,
+  required Activity activity,
+  required Athlete athlete,
 }) async {
-  await flushbar?.dismiss();
-  flushbar = Flushbar<Object>(
-    message: '0% of storing »${activity.name}«',
-    titleText: const LinearProgressIndicator(value: 0),
-    animationDuration: const Duration(milliseconds: 0),
-  )..show(context);
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Row(
+        children: [
+          CircularProgressIndicator(value: 0, color: MyColor.progress),
+          Text(' storing »${activity.name}«'),
+        ],
+      ),
+    ),
+  );
 
   Stream<int> percentageStream;
 
   try {
     percentageStream = activity.parse(athlete: athlete);
     await for (final int value in percentageStream) {
-      if (value == -2)
-        await flushbar?.dismiss();
-      else if (value == -1) {
-        await flushbar?.dismiss();
-        flushbar = Flushbar<Object>(
-          message: 'Analysing »${activity.name}«',
-          animationDuration: const Duration(milliseconds: 0),
-        )..show(context);
+      if (value == -2) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      } else if (value == -1) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(' Analyzing »${activity.name}«'),
+          ),
+        );
       } else {
-        await flushbar?.dismiss();
-        flushbar = Flushbar<Object>(
-          titleText: LinearProgressIndicator(value: value / 100),
-          message: '$value% of storing »${activity.name}«',
-          animationDuration: const Duration(milliseconds: 0),
-        )..show(context);
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                CircularProgressIndicator(value: value / 100, color: MyColor.progress),
+                Text(' storing »${activity.name}«'),
+              ],
+            ),
+          ),
+        );
       }
     }
-  } catch (exception) {
+  } catch (exception, stacktrace) {
     final Log log = Log(
       message: exception.runtimeType.toString(),
       method: 'parseActivity',
-      stackTrace: exception.stackTrace.toString(),
+      stackTrace: stacktrace.toString(),
       comment: '/lib/actions/parse_activity.25',
     );
     await log.save();
     activity.nonParsable = true;
     await activity.save();
-    await flushbar?.dismiss();
-    flushbar = Flushbar<Object>(
-      message: 'Error, see log on home screen for details',
-      animationDuration: const Duration(milliseconds: 0),
-      duration: const Duration(seconds: 2),
-    )..show(context);
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+          duration: Duration(seconds: 2),
+          content: Text('Error, see log on home screen for details')),
+    );
   }
 }

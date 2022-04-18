@@ -1,5 +1,5 @@
 class IntPlotPoint {
-  IntPlotPoint({this.domain, this.measure});
+  IntPlotPoint({required this.domain, required this.measure});
 
   int domain;
   int measure;
@@ -9,7 +9,7 @@ class IntPlotPoint {
 }
 
 class DoublePlotPoint {
-  DoublePlotPoint({this.domain, this.measure});
+  DoublePlotPoint({required this.domain, required this.measure});
 
   int domain;
   double measure;
@@ -19,7 +19,7 @@ class DoublePlotPoint {
 }
 
 class EnergyPoint {
-  EnergyPoint({this.energy, this.duration});
+  EnergyPoint({required this.energy, required this.duration});
 
   int energy;
   int duration;

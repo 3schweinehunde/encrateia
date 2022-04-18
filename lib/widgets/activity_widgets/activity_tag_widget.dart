@@ -1,28 +1,26 @@
-import 'dart:ui';
-import 'package:encrateia/models/athlete.dart';
-import 'package:encrateia/models/tag.dart';
-import 'package:encrateia/models/activity_tagging.dart';
-import 'package:encrateia/models/tag_group.dart';
-import 'package:encrateia/utils/my_color.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import '/models/activity.dart';
+import '/models/activity_tagging.dart';
+import '/models/athlete.dart';
+import '/models/tag.dart';
+import '/models/tag_group.dart';
+import '/utils/my_color.dart';
 
 class ActivityTagWidget extends StatefulWidget {
-  const ActivityTagWidget({
-    @required this.activity,
-    @required this.athlete,
-  });
+  const ActivityTagWidget({Key? key,
+    required this.activity,
+    required this.athlete,
+  }) : super(key: key);
 
-  final Activity activity;
-  final Athlete athlete;
+  final Activity? activity;
+  final Athlete? athlete;
 
   @override
   _ActivityTagWidgetState createState() => _ActivityTagWidgetState();
 }
 
 class _ActivityTagWidgetState extends State<ActivityTagWidget> {
-  List<TagGroup> tagGroups;
+  List<TagGroup>? tagGroups;
 
   @override
   void initState() {
@@ -32,26 +30,32 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (tagGroups == null)
+    if (tagGroups == null) {
       return const Center(
         child: Text('Loading ...'),
       );
-    else
-      return StaggeredGridView.countBuilder(
-        crossAxisCount:
-            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 3,
-        itemCount: tagGroups.length,
+    } else {
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount:
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 2
+                    : 3,
+            mainAxisSpacing: 3,
+            crossAxisSpacing: 3,
+            childAspectRatio: 3),
+        itemCount: tagGroups!.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups[index].name + '\n'),
+            title: Text(tagGroups![index].name! + '\n'),
             subtitle: Wrap(
               spacing: 15,
               children: <Widget>[
-                for (Tag tag in tagGroups[index].cachedTags)
+                for (Tag tag in tagGroups![index].cachedTags)
                   InputChip(
                     isEnabled: tag.system != true,
                     label: Text(
-                      tag.name,
+                      tag.name!,
                       style: TextStyle(
                         color: MyColor.textColor(
                           selected: tag.selected,
@@ -66,12 +70,12 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
                       setState(() {
                         if (selected) {
                           ActivityTagging.createBy(
-                            activity: widget.activity,
+                            activity: widget.activity!,
                             tag: tag,
                           );
                         } else {
                           ActivityTagging.deleteBy(
-                            activity: widget.activity,
+                            activity: widget.activity!,
                             tag: tag,
                           );
                         }
@@ -88,16 +92,14 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
             ),
           ),
         ),
-        staggeredTileBuilder: (_) => const StaggeredTile.fit(1),
-        mainAxisSpacing: 3,
-        crossAxisSpacing: 3,
       );
+    }
   }
 
   Future<void> getData() async {
     tagGroups = await TagGroup.includingActivityTaggings(
-      athlete: widget.athlete,
-      activity: widget.activity,
+      athlete: widget.athlete!,
+      activity: widget.activity!,
     );
     setState(() {});
   }

@@ -1,12 +1,12 @@
-import 'package:encrateia/utils/my_color.dart';
-import 'package:encrateia/widgets/activity_widgets/edit_activity_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:encrateia/models/activity.dart';
+import '/models/activity.dart';
+import '/utils/my_color.dart';
+import '/widgets/activity_widgets/edit_activity_widget.dart';
 
 class EditActivityScreen extends StatelessWidget {
   const EditActivityScreen({
-    Key key,
-    @required this.activity,
+    Key? key,
+    required this.activity,
   }) : super(key: key);
 
   final Activity activity;
