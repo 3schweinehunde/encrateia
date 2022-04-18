@@ -33,7 +33,7 @@ dependencies:
   # strava_flutter: ^1.2.1+54
   strava_flutter:
     git:
-      url: git://github.com/dreampowder/strava_flutter
+      url: https://github.com/dreampowder/strava_flutter
       ref: abf9a78cc30680fe31e88d473b1089bf88ae9cf5
   url_launcher: ^6.0.17
   uuid: ^3.0.5
