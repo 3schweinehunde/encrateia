@@ -799,7 +799,7 @@ packages:
       path: "."
       ref: abf9a78cc30680fe31e88d473b1089bf88ae9cf5
       resolved-ref: abf9a78cc30680fe31e88d473b1089bf88ae9cf5
-      url: "git://github.com/dreampowder/strava_flutter"
+      url: "https://github.com/dreampowder/strava_flutter"
     source: git
     version: "2.0.0"
   stream_channel:
