@@ -10,7 +10,8 @@ import '/utils/icon_utils.dart';
 import '/utils/my_button.dart';
 
 class ActivityEventListWidget extends StatefulWidget {
-  const ActivityEventListWidget({Key? key,
+  const ActivityEventListWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -67,8 +68,9 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                         format: DateTimeFormat.longDateTime,
                       )),
                       DataCell(PQText(
-                        value:
-                            event.timeStamp!.difference(startingTime!).inSeconds,
+                        value: event.timeStamp!
+                            .difference(startingTime!)
+                            .inSeconds,
                         pq: PQ.duration,
                       )),
                       DataCell(PQText(value: event.eventType, pq: PQ.text)),
@@ -104,22 +106,21 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                 children: <Widget>[
                   const SizedBox(width: 10),
                   MyButton.navigate(
-                      child: const Text('|<'),
                       onPressed: (offset == 0)
                           ? null
-                          : () => setState(() => offset = 0)),
+                          : () => setState(() => offset = 0),
+                      child: const Text('|<')),
                   const SizedBox(width: 10),
                   MyButton.navigate(
-                    child: const Text('<'),
                     onPressed: (offset == 0)
                         ? null
                         : () => setState(() {
                               offset > 8 ? offset = offset - rows : offset = 0;
                             }),
+                    child: const Text('<'),
                   ),
                   const SizedBox(width: 10),
                   MyButton.navigate(
-                    child: const Text('>'),
                     onPressed: (offset + rows == events.length)
                         ? null
                         : () => setState(() {
@@ -127,13 +128,14 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                                   ? offset = offset + rows
                                   : offset = events.length - rows;
                             }),
+                    child: const Text('>'),
                   ),
                   const SizedBox(width: 10),
                   MyButton.navigate(
-                    child: const Text('|>'),
                     onPressed: (offset + rows == events.length)
                         ? null
                         : () => setState(() => offset = events.length - rows),
+                    child: const Text('|>'),
                   ),
                 ],
               ),
@@ -141,7 +143,6 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                 children: <Widget>[
                   const SizedBox(width: 10),
                   MyButton.navigate(
-                    child: const Text('100 <'),
                     onPressed: (offset == 0)
                         ? null
                         : () => setState(() {
@@ -149,10 +150,10 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                                   ? offset = offset - 100 * rows
                                   : offset = 0;
                             }),
+                    child: const Text('100 <'),
                   ),
                   const SizedBox(width: 10),
                   MyButton.navigate(
-                    child: const Text('10 <'),
                     onPressed: (offset == 0)
                         ? null
                         : () => setState(() {
@@ -160,10 +161,10 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                                   ? offset = offset - 10 * rows
                                   : offset = 0;
                             }),
+                    child: const Text('10 <'),
                   ),
                   const SizedBox(width: 10),
                   MyButton.navigate(
-                    child: const Text('10 >'),
                     onPressed: (offset + rows == events.length)
                         ? null
                         : () => setState(() {
@@ -171,10 +172,10 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                                   ? offset = offset + 10 * rows
                                   : offset = events.length - rows;
                             }),
+                    child: const Text('10 >'),
                   ),
                   const SizedBox(width: 10),
                   MyButton.navigate(
-                    child: const Text('100 >'),
                     onPressed: (offset + rows == events.length)
                         ? null
                         : () => setState(() {
@@ -182,6 +183,7 @@ class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
                                   ? offset = offset + 100 * rows
                                   : offset = events.length - rows;
                             }),
+                    child: const Text('100 >'),
                   ),
                 ],
               ),

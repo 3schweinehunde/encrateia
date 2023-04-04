@@ -149,7 +149,6 @@ class _AthleteSpeedPerHeartRateWidgetState
       tagGroups: tagGroups,
     );
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

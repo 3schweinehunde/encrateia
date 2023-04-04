@@ -151,14 +151,8 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                 children: <Widget>[
                   Wrap(children: <Widget>[
                     const SizedBox(width: 20),
-                    Text('Cursor position: ' +
-                        selectedRecord!.distance!.round().toString() +
-                        ' m; ' +
-                        (selectedRecord!.speed! * 3.6).toStringAsPrecision(2) +
-                        ' km/h; ' +
-                        (selectedRecord!.power ?? 0).toString() +
-                        ' W. \n' +
-                        'Use Buttons to move Cursor'),
+                    Text(
+                        'Cursor position: ${selectedRecord!.distance!.round()} m; ${(selectedRecord!.speed! * 3.6).toStringAsPrecision(2)} km/h; ${selectedRecord!.power ?? 0} W. \nUse Buttons to move Cursor'),
                     const Spacer(),
                   ]),
                   if (selectedRecord != null)
@@ -216,9 +210,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                       if (interval.firstRecordId == 0)
                         const Text('No start record selected'),
                       if (interval.firstRecordId! > 0)
-                        Text('Selected: ' +
-                            interval.firstDistance!.round().toString() +
-                            ' m'),
+                        Text('Selected: ${interval.firstDistance!.round()} m'),
                       const Spacer(),
                     ],
                   ),
@@ -240,9 +232,7 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                       if (interval.lastRecordId == 0)
                         const Text('No end record selected'),
                       if (interval.lastRecordId! > 0)
-                        Text('Selected: ' +
-                            interval.lastDistance!.round().toString() +
-                            ' m'),
+                        Text('Selected: ${interval.lastDistance!.round()} m'),
                       const Spacer(),
                     ],
                   ),
@@ -253,8 +243,8 @@ class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
                 children: <Widget>[
                   const Spacer(),
                   MyButton.save(
-                    child: const Text('Save interval'),
                     onPressed: saveInterval,
+                    child: const Text('Save interval'),
                   ),
                   const SizedBox(width: 20),
                 ],

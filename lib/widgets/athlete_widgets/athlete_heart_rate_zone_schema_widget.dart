@@ -113,16 +113,15 @@ class _AthleteHeartRateZoneSchemaWidgetState
                   }),
               const Spacer(),
               MyButton.navigate(
-                child: const Text('<<'),
                 onPressed: (offset == 0)
                     ? null
                     : () => setState(() {
                           offset > 8 ? offset = offset - rows : offset = 0;
                         }),
+                child: const Text('<<'),
               ),
               const Spacer(),
               MyButton.navigate(
-                child: const Text('>>'),
                 onPressed: (offset + rows == heartRateZoneSchemas.length)
                     ? null
                     : () => setState(() {
@@ -130,6 +129,7 @@ class _AthleteHeartRateZoneSchemaWidgetState
                               ? offset = offset + rows
                               : offset = heartRateZoneSchemas.length - rows;
                         }),
+                child: const Text('>>'),
               ),
               const Spacer(),
             ],

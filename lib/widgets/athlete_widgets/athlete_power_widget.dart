@@ -139,7 +139,6 @@ class _AthletePowerWidgetState extends State<AthletePowerWidget> {
       tagGroups: tagGroups,
     );
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

@@ -31,7 +31,7 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
           leading: MyIcon.athlete,
           title: const Text('Name'),
           subtitle: Text(
-            widget.athlete!.firstName! + ' ' + widget.athlete!.lastName!,
+            '${widget.athlete!.firstName!} ${widget.athlete!.lastName!}',
           ),
         ),
         stravaTile(athlete: widget.athlete!),
@@ -140,11 +140,8 @@ class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
       return ListTile(
         leading: MyIcon.stravaDownload,
         title: const Text('Strava ID / Username / Location'),
-        subtitle: Text((athlete.stravaId.toString()) +
-            ' / ' +
-            (athlete.stravaUsername ?? '') +
-            ' / ' +
-            (athlete.geoState ?? '')),
+        subtitle: Text(
+            '${athlete.stravaId} / ${athlete.stravaUsername ?? ''} / ${athlete.geoState ?? ''}'),
       );
     } else {
       return const SizedBox(width: 0, height: 0);

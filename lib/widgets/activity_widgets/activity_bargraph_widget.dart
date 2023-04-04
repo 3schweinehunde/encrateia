@@ -85,7 +85,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[
-                  Text('Lap ' + lap.index.toString()),
+                  Text('Lap ${lap.index}'),
                   MyBarChart(
                     width: 150,
                     height: 20,
@@ -128,7 +128,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[
-                  Text('Lap ' + lap.index.toString()),
+                  Text('Lap ${lap.index}'),
                   MyBarChart.visualizeDistributions(
                     height: 20,
                     distributions: lap.powerDistributions,
@@ -162,7 +162,7 @@ class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
               ]),
               for (Lap lap in _laps)
                 TableRow(children: <Widget>[
-                  Text('Lap ' + lap.index.toString()),
+                  Text('Lap ${lap.index}'),
                   MyBarChart(
                     height: 20,
                     value: lap.avgSpeed!,

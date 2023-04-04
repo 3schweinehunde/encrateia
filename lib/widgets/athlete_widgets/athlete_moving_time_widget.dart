@@ -129,7 +129,6 @@ class _AthleteMovingTimeWidgetState extends State<AthleteMovingTimeWidget> {
       activity.movingTimeSoFar = movingTimeSoFar;
     }
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

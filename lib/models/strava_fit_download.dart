@@ -11,16 +11,16 @@ import 'athlete.dart';
 // ignore: avoid_classes_with_only_static_members
 abstract class StravaFitDownload {
   static String baseUri = 'https://www.strava.com/';
-  static String loginUri = baseUri + 'login';
-  static String sessionUri = baseUri + 'session';
-  static String dashboardUri = baseUri + 'dashboard';
+  static String loginUri = '${baseUri}login';
+  static String sessionUri = '${baseUri}session';
+  static String dashboardUri = '${baseUri}dashboard';
   static Map<String, String> headers = <String, String>{
     Headers.acceptHeader:
         'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   };
 
   static Future<int?> byId({String? id, Athlete? athlete}) async {
-    final String exportUri = baseUri + 'activities/$id/export_original';
+    final String exportUri = '${baseUri}activities/$id/export_original';
     final Directory appDocDir = await getApplicationDocumentsDirectory();
 
     final Dio dio = Dio();
@@ -32,7 +32,7 @@ abstract class StravaFitDownload {
     if (loggedIn == true) {
       debugPrint('Starting download for $exportUri');
       final Response<dynamic> downloadResponse =
-          await dio.download(exportUri, appDocDir.path + '/$id.fit');
+          await dio.download(exportUri, '${appDocDir.path}/$id.fit');
       debugPrint('Download fit file for activity $id completed.');
 
       return downloadResponse.statusCode;
@@ -68,7 +68,8 @@ abstract class StravaFitDownload {
     );
   }
 
-  static Future<void> login({required Dio dio, required Athlete athlete}) async {
+  static Future<void> login(
+      {required Dio dio, required Athlete athlete}) async {
     final Response<dynamic> homePageResponse = await dio.get<dynamic>(
       loginUri,
       options: Options(headers: headers),
@@ -76,10 +77,12 @@ abstract class StravaFitDownload {
 
     final Document document = parse(homePageResponse.data);
 
-    final String? csrfParam =
-        document.querySelector('meta[name="csrf-param"]')!.attributes['content'];
-    final String? csrfToken =
-        document.querySelector('meta[name="csrf-token"]')!.attributes['content'];
+    final String? csrfParam = document
+        .querySelector('meta[name="csrf-param"]')!
+        .attributes['content'];
+    final String? csrfToken = document
+        .querySelector('meta[name="csrf-token"]')!
+        .attributes['content'];
 
     await dio.post<dynamic>(
       sessionUri,

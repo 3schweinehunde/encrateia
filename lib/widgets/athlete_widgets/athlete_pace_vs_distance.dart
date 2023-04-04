@@ -80,7 +80,8 @@ class _AthletePaceVsDistanceWidgetState
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String? value) {
+                    items:
+                        sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value!),
@@ -127,7 +128,6 @@ class _AthletePaceVsDistanceWidgetState
     activities = ActivityList<Activity>(
         activities.sublist(0, min(255, activities.length)));
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

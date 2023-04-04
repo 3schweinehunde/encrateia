@@ -5,7 +5,8 @@ import 'enums.dart';
 
 @immutable
 class PQText extends StatelessWidget {
-  const PQText({Key? key,
+  const PQText({
+    Key? key,
     required this.pq,
     this.value,
     this.format = DateTimeFormat.longDateTime,
@@ -25,11 +26,11 @@ class PQText extends StatelessWidget {
       case PQ.dateTime:
         return Text(DateFormat(formatString).format(value as DateTime));
       case PQ.distance:
-        return Text(((value as int) / 1000).toStringAsFixed(2) + ' km');
+        return Text('${((value as int) / 1000).toStringAsFixed(2)} km');
       case PQ.distanceInMeters:
-        return Text((value as double).toStringAsFixed(2) + ' m');
+        return Text('${(value as double).toStringAsFixed(2)} m');
       case PQ.power:
-        return Text((value as num).toStringAsPrecision(3) + ' W');
+        return Text('${(value as num).toStringAsPrecision(3)} W');
       case PQ.paceFromSpeed:
         final double totalSeconds = 1000 / (value as double);
         final int minutes = (totalSeconds / 60).floor();
@@ -43,17 +44,17 @@ class PQText extends StatelessWidget {
             ((minutes - fullMinutes) * 60).round().toString().padLeft(2, '0');
         return Text('$fullMinutes:$seconds/km');
       case PQ.heartRate:
-        return Text((value as num).toStringAsPrecision(3) + ' bpm');
+        return Text('${(value as num).toStringAsPrecision(3)} bpm');
       case PQ.ecor:
-        return Text((value as num).toStringAsFixed(3) + ' kJ/kg/km');
+        return Text('${(value as num).toStringAsFixed(3)} kJ/kg/km');
       case PQ.powerPerHeartRate:
-        return Text((value as num).toStringAsFixed(2) + ' W/bpm');
+        return Text('${(value as num).toStringAsFixed(2)} W/bpm');
       case PQ.calories:
-        return Text((value as num?).toString() + ' kcal');
+        return Text('${value as num?} kcal');
       case PQ.elevation:
-        return Text((value as num?).toString() + ' m');
+        return Text('${value as num?} m');
       case PQ.cadence:
-        return Text(((value as num) * 2).toStringAsPrecision(3) + ' spm');
+        return Text('${((value as num) * 2).toStringAsPrecision(3)} spm');
       case PQ.duration:
         return Text(Duration(seconds: value as int).asString());
       case PQ.shortDuration:
@@ -63,32 +64,32 @@ class PQText extends StatelessWidget {
       case PQ.text:
         return Text(value as String);
       case PQ.temperature:
-        return Text((value as num?).toString() + '°C');
+        return Text('${value as num?}°C');
       case PQ.verticalOscillation:
-        return Text((value as num).toStringAsFixed(2) + ' cm');
+        return Text('${(value as num).toStringAsFixed(2)} cm');
       case PQ.cycles:
-        return Text((value as num?).toString() + ' cycles');
+        return Text('${value as num?} cycles');
       case PQ.integer:
         return Text((value as num?).toString());
       case PQ.fractionalCadence:
         return Text((value as num).toStringAsFixed(2));
       case PQ.percentage:
-        return Text((value as num).toStringAsFixed(2) + ' %');
+        return Text('${(value as num).toStringAsFixed(2)} %');
       case PQ.stanceTime:
       case PQ.groundTime:
-        return Text((value as num).toStringAsPrecision(4) + ' ms');
+        return Text('${(value as num).toStringAsPrecision(4)} ms');
       case PQ.longitude:
-        return Text((value as double?)!.semicirclesToString() + ' E');
+        return Text('${(value as double?)!.semicirclesToString()} E');
       case PQ.latitude:
-        return Text((value as double?)!.semicirclesToString() + ' N');
+        return Text('${(value as double?)!.semicirclesToString()} N');
       case PQ.speed:
-        return Text(((value as num) * 3.6).toStringAsFixed(2) + ' km/h');
+        return Text('${((value as num) * 3.6).toStringAsFixed(2)} km/h');
       case PQ.speedPerHeartRate:
-        return Text((value as num).toStringAsPrecision(3) + ' m/beat');
+        return Text('${(value as num).toStringAsPrecision(3)} m/beat');
       case PQ.weight:
-        return Text((value as num).toStringAsFixed(1) + ' kg');
+        return Text('${(value as num).toStringAsFixed(1)} kg');
       case PQ.legSpringStiffness:
-        return Text((value as num).toStringAsPrecision(3) + ' kN/m');
+        return Text('${(value as num).toStringAsPrecision(3)} kN/m');
       case PQ.double:
         return Text((value as double).toStringAsPrecision(3));
     }
