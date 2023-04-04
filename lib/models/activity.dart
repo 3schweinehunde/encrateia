@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart';
-import 'package:strava_flutter/domain/model/model_summary_activity.dart';
+import 'package:strava_client/domain/model/model_summary_activity.dart';
 
 import '/model/model.dart'
     show DbActivity, DbEvent, DbHeartRateZone, DbInterval, DbLap, DbPowerZone;
@@ -299,8 +299,7 @@ class Activity {
         final bool isFile = await FileSystemEntity.isFile(entity.path);
         if (isFile == true && entity.path.toLowerCase().endsWith('.fit')) {
           final File sourceFile = File(entity.path);
-          await sourceFile.copy(
-              appDocDir.path + '/' + activity.stravaId.toString() + '.fit');
+          await sourceFile.copy('${appDocDir.path}/${activity.stravaId}.fit');
           sourceFile.delete();
           await activity.setState('downloaded');
         }
@@ -319,8 +318,7 @@ class Activity {
         final bool isFile = await FileSystemEntity.isFile(entity.path);
         if (isFile == true && entity.path.endsWith('.fit')) {
           final File sourceFile = File(entity.path);
-          await sourceFile.rename(
-              appDocDir.path + '/' + activity.stravaId.toString() + '.fit');
+          await sourceFile.rename('${appDocDir.path}/${activity.stravaId}.fit');
           await activity.setState('downloaded');
         }
       }
@@ -424,7 +422,7 @@ class Activity {
 
     final Directory appDocDir = await getApplicationDocumentsDirectory();
     final FitFile fitFile =
-        FitFile(path: appDocDir.path + '/$stravaId.fit').parse();
+        FitFile(path: '${appDocDir.path}/$stravaId.fit').parse();
     debugPrint('Parsing .fit-File for »$name« done.');
 
     // delete left overs from prior runs:
@@ -490,9 +488,8 @@ class Activity {
         case 329:
           break;
         default:
-          debugPrint('Message number ' +
-              dataMessage.definitionMessage!.globalMessageNumber.toString() +
-              ' unknown.');
+          debugPrint(
+              'Message number ${dataMessage.definitionMessage!.globalMessageNumber} unknown.');
           debugger();
       }
     } else {
@@ -573,7 +570,7 @@ class Activity {
 
           if (name == 'new activity') {
             name =
-                'Activity on ' + DateFormat.yMMMMd('en_US').format(startTime);
+                'Activity on ${DateFormat.yMMMMd('en_US').format(startTime)}';
           }
           _db
             ..timeStamp =
@@ -657,9 +654,8 @@ class Activity {
           break;
 
         default:
-          debugPrint('Messages of type ' +
-              dataMessage.definitionMessage!.globalMessageName! +
-              ' are not implemented yet.');
+          debugPrint(
+              'Messages of type ${dataMessage.definitionMessage!.globalMessageName!} are not implemented yet.');
           debugPrint(dataMessage.values
               .map((Value v) => v.fieldName)
               .toList()
@@ -769,8 +765,7 @@ class Activity {
   }
 
   Future<List<BarZone>> powerZoneCounts() async {
-    final PowerZoneSchema powerZoneSchema =
-        await this.powerZoneSchema;
+    final PowerZoneSchema powerZoneSchema = await this.powerZoneSchema;
     final List<Event> records = await this.records;
     final List<Event> powerRecords =
         records.where((Event record) => record.power != null).toList();

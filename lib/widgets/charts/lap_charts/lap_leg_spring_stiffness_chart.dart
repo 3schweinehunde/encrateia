@@ -1,11 +1,12 @@
-import 'package:charts_flutter/flutter.dart';
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
 import '/models/event.dart';
 import '/models/record_list.dart';
 import '/utils/graph_utils.dart';
 
 class LapLegSpringStiffnessChart extends StatelessWidget {
-  const LapLegSpringStiffnessChart({Key? key,
+  const LapLegSpringStiffnessChart({
+    Key? key,
     required this.records,
     required this.minimum,
     required this.maximum,

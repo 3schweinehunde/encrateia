@@ -1,4 +1,4 @@
-import 'package:charts_flutter/flutter.dart';
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
@@ -11,7 +11,8 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class ActivityPaceChart extends StatelessWidget {
-  const ActivityPaceChart({Key? key,
+  const ActivityPaceChart({
+    Key? key,
     this.records,
     required this.activity,
     required this.athlete,

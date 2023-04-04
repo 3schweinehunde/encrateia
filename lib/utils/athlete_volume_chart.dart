@@ -1,4 +1,4 @@
-import 'package:charts_flutter/flutter.dart';
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart' as painting;
 import '/models/activity.dart';
@@ -6,7 +6,8 @@ import '/models/athlete.dart';
 import '/utils/enums.dart';
 
 class AthleteVolumeChart extends StatefulWidget {
-  const AthleteVolumeChart({Key? key,
+  const AthleteVolumeChart({
+    Key? key,
     required this.athlete,
     required this.activities,
     required this.volumeAttr,

@@ -1,4 +1,4 @@
-import 'package:charts_flutter/flutter.dart';
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
 import '/models/event.dart';
 import '/models/record_list.dart';
@@ -9,7 +9,8 @@ import '/utils/graph_utils.dart';
 import '/utils/my_button.dart';
 
 class LapPaceChart extends StatefulWidget {
-  const LapPaceChart({Key? key,
+  const LapPaceChart({
+    Key? key,
     required this.records,
     required this.minimum,
     required this.maximum,
@@ -95,8 +96,9 @@ class _LapPaceChartState extends State<LapPaceChart> {
             ),
             ListTile(
               title: PQText(
-                value:
-                    selectedEvent!.timeStamp!.difference(startingTime!).inSeconds,
+                value: selectedEvent!.timeStamp!
+                    .difference(startingTime!)
+                    .inSeconds,
                 pq: PQ.duration,
               ),
               subtitle: const Text('Time elapsed'),

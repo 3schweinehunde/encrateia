@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqfentity_gen/sqfentity_gen.dart' show BoolResult;
-import 'package:strava_flutter/domain/model/model_detailed_athlete.dart';
-import 'package:strava_flutter/domain/model/model_authentication_scopes.dart';
-import 'package:strava_flutter/domain/model/model_summary_activity.dart';
-import 'package:strava_flutter/strava_client.dart';
+import 'package:strava_client/domain/model/model_detailed_athlete.dart';
+import 'package:strava_client/domain/model/model_authentication_scopes.dart';
+import 'package:strava_client/domain/model/model_summary_activity.dart';
+import 'package:strava_client/strava_client.dart';
 import 'package:uuid/uuid.dart';
 import '/model/model.dart'
     show
@@ -172,8 +172,8 @@ class Athlete {
       await activity.deleteLaps();
 
       // ignore: avoid_slow_async_io
-      if (await File(appDocDir.path + '/$stravaId.fit').exists()) {
-        await File(appDocDir.path + '/$stravaId.fit').delete();
+      if (await File('${appDocDir.path}/$stravaId.fit').exists()) {
+        await File('${appDocDir.path}/$stravaId.fit').delete();
       }
     }
     await _db.getDbActivities()!.delete();
@@ -189,7 +189,8 @@ class Athlete {
   Future<void> queryStrava() async {
     var currentStravaClient = stravaClient;
     if (currentStravaClient == null) {
-      stravaClient = StravaClient(clientId: clientId, secret: secret, applicationName: uuid);
+      stravaClient = StravaClient(
+          clientId: clientId, secret: secret, applicationName: uuid);
       currentStravaClient = stravaClient!;
     }
 

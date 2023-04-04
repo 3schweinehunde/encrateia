@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:charts_flutter/flutter.dart';
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
 import '/models/activity.dart';
 import '/models/activity_list.dart';
@@ -61,8 +61,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Series<Activity, DateTime>> data =
-        <Series<Activity, DateTime>>[
+    final List<Series<Activity, DateTime>> data = <Series<Activity, DateTime>>[
       Series<Activity, DateTime>(
         id: widget.activityAttr.toString(),
         colorFn: (_, __) => MaterialPalette.blue.shadeDefault,

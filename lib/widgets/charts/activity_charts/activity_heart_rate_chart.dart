@@ -1,4 +1,4 @@
-import 'package:charts_flutter/flutter.dart';
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
 import '/models/activity.dart';
 import '/models/athlete.dart';
@@ -12,7 +12,8 @@ import '/utils/graph_utils.dart';
 import '/utils/my_line_chart.dart';
 
 class ActivityHeartRateChart extends StatelessWidget {
-  const ActivityHeartRateChart({Key? key,
+  const ActivityHeartRateChart({
+    Key? key,
     required this.records,
     required this.activity,
     required this.athlete,

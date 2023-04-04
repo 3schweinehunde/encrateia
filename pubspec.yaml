@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   community_charts_flutter: ^1.0.1
+  community_charts_common: ^1.0.1
   collection: ^1.17.0
   csv: ^5.0.1
   cupertino_icons: ^1.0.4

@@ -7,7 +7,8 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class LapTagWidget extends StatefulWidget {
-  const LapTagWidget({Key? key,
+  const LapTagWidget({
+    Key? key,
     required this.lap,
     required this.athlete,
   }) : super(key: key);
@@ -53,7 +54,7 @@ class _LapTagWidgetState extends State<LapTagWidget> {
         itemCount: tagGroups!.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups![index].name! + '\n'),
+            title: Text('${tagGroups![index].name!}\n'),
             subtitle: Wrap(
               spacing: 15,
               children: <Widget>[

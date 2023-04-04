@@ -170,7 +170,7 @@ packages:
     source: hosted
     version: "1.17.0"
   community_charts_common:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: community_charts_common
       sha256: bcda2831d8c3225036102dff007e2a901a2fdfcbba604e10c78db3fe5d9362a5

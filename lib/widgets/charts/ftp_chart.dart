@@ -1,11 +1,11 @@
-import 'package:charts_flutter/flutter.dart';
+import 'package:community_charts_flutter/community_charts_flutter.dart';
 import 'package:flutter/material.dart';
 import '/models/event.dart';
 import '/models/plot_point.dart';
 import '/models/power_duration.dart';
 
 class FtpChart extends StatelessWidget {
-   const FtpChart({Key? key, this.records}) : super(key: key);
+  const FtpChart({Key? key, this.records}) : super(key: key);
 
   final List<Event>? records;
 
