@@ -23,7 +23,7 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   @override
   void initState() {
     getActivities();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => showMyFlushbar());
+    WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
@@ -150,7 +150,8 @@ class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
           duration: const Duration(seconds: 3),
           content: Row(
             children: [
-              CircularProgressIndicator(value: value / 100, color: MyColor.progress),
+              CircularProgressIndicator(
+                  value: value / 100, color: MyColor.progress),
               Text(' storing »${activity.name}«'),
             ],
           ),

@@ -28,7 +28,7 @@ class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   @override
   void initState() {
     getData();
-    WidgetsBinding.instance!.addPostFrameCallback((_) => showMyFlushbar());
+    WidgetsBinding.instance.addPostFrameCallback((_) => showMyFlushbar());
     super.initState();
   }
 
