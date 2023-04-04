@@ -15,11 +15,10 @@ class LapLegSpringStiffnessWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapLegSpringStiffnessWidgetState createState() =>
-      _LapLegSpringStiffnessWidgetState();
+  createState() => LapLegSpringStiffnessWidgetState();
 }
 
-class _LapLegSpringStiffnessWidgetState
+class LapLegSpringStiffnessWidgetState
     extends State<LapLegSpringStiffnessWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;

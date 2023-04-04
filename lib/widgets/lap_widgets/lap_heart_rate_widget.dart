@@ -17,10 +17,10 @@ class LapHeartRateWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapHeartRateWidgetState createState() => _LapHeartRateWidgetState();
+  LapHeartRateWidgetState createState() => LapHeartRateWidgetState();
 }
 
-class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
+class LapHeartRateWidgetState extends State<LapHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   HeartRateZoneSchema? heartRateZoneSchema;
@@ -77,17 +77,20 @@ class _LapHeartRateWidgetState extends State<LapHeartRateWidget> {
               ]),
               ListTile(
                 leading: MyIcon.average,
-                title: PQText(value: widget.lap!.avgHeartRate, pq: PQ.heartRate),
+                title:
+                    PQText(value: widget.lap!.avgHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('average heart rate'),
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.lap!.minHeartRate, pq: PQ.heartRate),
+                title:
+                    PQText(value: widget.lap!.minHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('minimum heart rate'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.lap!.maxHeartRate, pq: PQ.heartRate),
+                title:
+                    PQText(value: widget.lap!.maxHeartRate, pq: PQ.heartRate),
                 subtitle: const Text('maximum heart rate'),
               ),
               ListTile(

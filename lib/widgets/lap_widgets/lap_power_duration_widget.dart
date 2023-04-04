@@ -12,10 +12,10 @@ class LapPowerDurationWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapPowerDurationWidgetState createState() => _LapPowerDurationWidgetState();
+  LapPowerDurationWidgetState createState() => LapPowerDurationWidgetState();
 }
 
-class _LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
+class LapPowerDurationWidgetState extends State<LapPowerDurationWidget> {
   List<Event> records = <Event>[];
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

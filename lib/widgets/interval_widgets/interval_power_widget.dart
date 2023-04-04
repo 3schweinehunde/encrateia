@@ -17,10 +17,10 @@ class IntervalPowerWidget extends StatefulWidget {
   final encrateia.Interval? interval;
 
   @override
-  _IntervalPowerWidgetState createState() => _IntervalPowerWidgetState();
+  IntervalPowerWidgetState createState() => IntervalPowerWidgetState();
 }
 
-class _IntervalPowerWidgetState extends State<IntervalPowerWidget> {
+class IntervalPowerWidgetState extends State<IntervalPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   PowerZoneSchema? powerZoneSchema;

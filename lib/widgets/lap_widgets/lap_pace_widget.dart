@@ -15,10 +15,10 @@ class LapPaceWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapPaceWidgetState createState() => _LapPaceWidgetState();
+  LapPaceWidgetState createState() => LapPaceWidgetState();
 }
 
-class _LapPaceWidgetState extends State<LapPaceWidget> {
+class LapPaceWidgetState extends State<LapPaceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
@@ -53,10 +53,10 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
                 key: widgetKey,
                 child: LapPaceChart(
                   records: RecordList<Event>(paceRecords),
-                  minimum:
-                      50 / 3 / widget.lap!.avgSpeed! - 3 * widget.lap!.sdevPace!,
-                  maximum:
-                      50 / 3 / widget.lap!.avgSpeed! + 3 * widget.lap!.sdevPace!,
+                  minimum: 50 / 3 / widget.lap!.avgSpeed! -
+                      3 * widget.lap!.sdevPace!,
+                  maximum: 50 / 3 / widget.lap!.avgSpeed! +
+                      3 * widget.lap!.sdevPace!,
                 ),
               ),
               const Text('Only records where speed > 0 m/s are shown.'),
@@ -80,12 +80,14 @@ class _LapPaceWidgetState extends State<LapPaceWidget> {
               ),
               ListTile(
                 leading: MyIcon.minimum,
-                title: PQText(value: widget.lap!.minSpeed, pq: PQ.paceFromSpeed),
+                title:
+                    PQText(value: widget.lap!.minSpeed, pq: PQ.paceFromSpeed),
                 subtitle: const Text('minimum pace'),
               ),
               ListTile(
                 leading: MyIcon.maximum,
-                title: PQText(value: widget.lap!.maxSpeed, pq: PQ.paceFromSpeed),
+                title:
+                    PQText(value: widget.lap!.maxSpeed, pq: PQ.paceFromSpeed),
                 subtitle: const Text('maximum pace'),
               ),
               ListTile(

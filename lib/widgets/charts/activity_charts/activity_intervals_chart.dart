@@ -29,10 +29,10 @@ class ActivityIntervalsChart extends StatefulWidget {
   final double maximum;
 
   @override
-  _ActivityIntervalsChartState createState() => _ActivityIntervalsChartState();
+  ActivityIntervalsChartState createState() => ActivityIntervalsChartState();
 }
 
-class _ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
+class ActivityIntervalsChartState extends State<ActivityIntervalsChart> {
   DoublePlotPoint? selectedPlotPoint;
   Event? selectedRecord;
   List<Lap> laps = <Lap>[];

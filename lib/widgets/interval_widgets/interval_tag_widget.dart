@@ -7,7 +7,8 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class IntervalTagWidget extends StatefulWidget {
-  const IntervalTagWidget({Key? key,
+  const IntervalTagWidget({
+    Key? key,
     required this.interval,
     required this.athlete,
   }) : super(key: key);
@@ -16,10 +17,10 @@ class IntervalTagWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _IntervalTagWidgetState createState() => _IntervalTagWidgetState();
+  IntervalTagWidgetState createState() => IntervalTagWidgetState();
 }
 
-class _IntervalTagWidgetState extends State<IntervalTagWidget> {
+class IntervalTagWidgetState extends State<IntervalTagWidget> {
   List<TagGroup>? tagGroups;
 
   @override

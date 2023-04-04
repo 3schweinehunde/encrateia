@@ -17,10 +17,10 @@ class LapTagWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _LapTagWidgetState createState() => _LapTagWidgetState();
+  LapTagWidgetState createState() => LapTagWidgetState();
 }
 
-class _LapTagWidgetState extends State<LapTagWidget> {
+class LapTagWidgetState extends State<LapTagWidget> {
   List<TagGroup>? tagGroups;
 
   @override

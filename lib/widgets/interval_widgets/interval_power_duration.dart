@@ -7,16 +7,17 @@ import '/utils/my_button.dart';
 import '/widgets/charts/power_duration_chart.dart';
 
 class IntervalPowerDurationWidget extends StatefulWidget {
-  const IntervalPowerDurationWidget({Key? key, required this.interval}) : super(key: key);
+  const IntervalPowerDurationWidget({Key? key, required this.interval})
+      : super(key: key);
 
   final encrateia.Interval? interval;
 
   @override
-  _IntervalPowerDurationWidgetState createState() =>
-      _IntervalPowerDurationWidgetState();
+  IntervalPowerDurationWidgetState createState() =>
+      IntervalPowerDurationWidgetState();
 }
 
-class _IntervalPowerDurationWidgetState
+class IntervalPowerDurationWidgetState
     extends State<IntervalPowerDurationWidget> {
   List<Event> records = <Event>[];
   bool loading = true;

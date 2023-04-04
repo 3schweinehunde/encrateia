@@ -15,10 +15,10 @@ class LapGroundTimeWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapGroundTimeWidgetState createState() => _LapGroundTimeWidgetState();
+  LapGroundTimeWidgetState createState() => LapGroundTimeWidgetState();
 }
 
-class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
+class LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
@@ -40,8 +40,8 @@ class _LapGroundTimeWidgetState extends State<LapGroundTimeWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> groundTimeRecords = records
-          .where(
-              (Event value) => value.groundTime != null && value.groundTime! > 0)
+          .where((Event value) =>
+              value.groundTime != null && value.groundTime! > 0)
           .toList();
 
       if (groundTimeRecords.isNotEmpty) {

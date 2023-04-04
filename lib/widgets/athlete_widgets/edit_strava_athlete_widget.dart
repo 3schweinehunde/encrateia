@@ -15,11 +15,10 @@ class EditStravaAthleteWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _EditStravaAthleteWidgetState createState() =>
-      _EditStravaAthleteWidgetState();
+  EditStravaAthleteWidgetState createState() => EditStravaAthleteWidgetState();
 }
 
-class _EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
+class EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView(

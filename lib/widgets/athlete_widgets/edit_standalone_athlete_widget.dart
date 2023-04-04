@@ -14,13 +14,12 @@ class EditStandaloneAthleteWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _EditStandaloneAthleteWidgetState createState() =>
-      _EditStandaloneAthleteWidgetState();
+  EditStandaloneAthleteWidgetState createState() =>
+      EditStandaloneAthleteWidgetState();
 }
 
-class _EditStandaloneAthleteWidgetState
+class EditStandaloneAthleteWidgetState
     extends State<EditStandaloneAthleteWidget> {
-
   @override
   Widget build(BuildContext context) {
     return ListView(

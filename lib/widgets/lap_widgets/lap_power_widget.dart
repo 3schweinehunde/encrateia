@@ -17,10 +17,10 @@ class LapPowerWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapPowerWidgetState createState() => _LapPowerWidgetState();
+  LapPowerWidgetState createState() => LapPowerWidgetState();
 }
 
-class _LapPowerWidgetState extends State<LapPowerWidget> {
+class LapPowerWidgetState extends State<LapPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   PowerZoneSchema? powerZoneSchema;

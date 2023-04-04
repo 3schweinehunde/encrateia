@@ -15,11 +15,11 @@ class IntervalGroundTimeWidget extends StatefulWidget {
   final encrateia.Interval? interval;
 
   @override
-  _IntervalGroundTimeWidgetState createState() =>
-      _IntervalGroundTimeWidgetState();
+  IntervalGroundTimeWidgetState createState() =>
+      IntervalGroundTimeWidgetState();
 }
 
-class _IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {
+class IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
@@ -41,8 +41,8 @@ class _IntervalGroundTimeWidgetState extends State<IntervalGroundTimeWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> groundTimeRecords = records
-          .where(
-              (Event value) => value.groundTime != null && value.groundTime! > 0)
+          .where((Event value) =>
+              value.groundTime != null && value.groundTime! > 0)
           .toList();
 
       if (groundTimeRecords.isNotEmpty) {

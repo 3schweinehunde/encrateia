@@ -15,11 +15,10 @@ class IntervalFormPowerWidget extends StatefulWidget {
   final encrateia.Interval? interval;
 
   @override
-  _IntervalFormPowerWidgetState createState() =>
-      _IntervalFormPowerWidgetState();
+  IntervalFormPowerWidgetState createState() => IntervalFormPowerWidgetState();
 }
 
-class _IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
+class IntervalFormPowerWidgetState extends State<IntervalFormPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

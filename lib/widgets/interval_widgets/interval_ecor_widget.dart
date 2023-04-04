@@ -12,7 +12,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_ecor_chart.dart';
 
 class IntervalEcorWidget extends StatefulWidget {
-  const IntervalEcorWidget({Key? key,
+  const IntervalEcorWidget({
+    Key? key,
     required this.interval,
     required this.athlete,
   }) : super(key: key);
@@ -21,10 +22,10 @@ class IntervalEcorWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _IntervalEcorWidgetState createState() => _IntervalEcorWidgetState();
+  IntervalEcorWidgetState createState() => IntervalEcorWidgetState();
 }
 
-class _IntervalEcorWidgetState extends State<IntervalEcorWidget> {
+class IntervalEcorWidgetState extends State<IntervalEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   Weight? weight;
   bool loading = true;

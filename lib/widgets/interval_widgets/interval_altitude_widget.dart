@@ -16,10 +16,10 @@ class IntervalAltitudeWidget extends StatefulWidget {
   final encrateia.Interval? interval;
 
   @override
-  _IntervalAltitudeWidgetState createState() => _IntervalAltitudeWidgetState();
+  IntervalAltitudeWidgetState createState() => IntervalAltitudeWidgetState();
 }
 
-class _IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
+class IntervalAltitudeWidgetState extends State<IntervalAltitudeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

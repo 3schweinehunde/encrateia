@@ -16,11 +16,11 @@ class AthleteStrydCadenceWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthleteStrydCadenceWidgetState createState() =>
-      _AthleteStrydCadenceWidgetState();
+  AthleteStrydCadenceWidgetState createState() =>
+      AthleteStrydCadenceWidgetState();
 }
 
-class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
+class AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -144,7 +144,6 @@ class _AthleteStrydCadenceWidgetState extends State<AthleteStrydCadenceWidget> {
       tagGroups: tagGroups,
     );
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

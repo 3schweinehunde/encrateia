@@ -6,7 +6,8 @@ import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 
 class LapOverviewWidget extends StatefulWidget {
-  const LapOverviewWidget({Key? key,
+  const LapOverviewWidget({
+    Key? key,
     this.lap,
     this.athlete,
   }) : super(key: key);
@@ -15,10 +16,10 @@ class LapOverviewWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _LapOverviewWidgetState createState() => _LapOverviewWidgetState();
+  LapOverviewWidgetState createState() => LapOverviewWidgetState();
 }
 
-class _LapOverviewWidgetState extends State<LapOverviewWidget> {
+class LapOverviewWidgetState extends State<LapOverviewWidget> {
   @override
   void initState() {
     getData();

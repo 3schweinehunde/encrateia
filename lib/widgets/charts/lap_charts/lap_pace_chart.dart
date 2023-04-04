@@ -21,10 +21,10 @@ class LapPaceChart extends StatefulWidget {
   final double maximum;
 
   @override
-  _LapPaceChartState createState() => _LapPaceChartState();
+  LapPaceChartState createState() => LapPaceChartState();
 }
 
-class _LapPaceChartState extends State<LapPaceChart> {
+class LapPaceChartState extends State<LapPaceChart> {
   Event? selectedEvent;
 
   void _onSelectionChanged(SelectionModel<num> model) {

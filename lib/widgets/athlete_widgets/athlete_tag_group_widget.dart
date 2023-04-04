@@ -13,10 +13,10 @@ class AthleteTagGroupWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _AthleteTagGroupWidgetState createState() => _AthleteTagGroupWidgetState();
+  AthleteTagGroupWidgetState createState() => AthleteTagGroupWidgetState();
 }
 
-class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
+class AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
   List<TagGroup>? tagGroups;
   int offset = 0;
   late int rows;
@@ -103,16 +103,15 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                   }),
               const Spacer(),
               MyButton.navigate(
-                child: const Text('<<'),
                 onPressed: (offset == 0)
                     ? null
                     : () => setState(() {
                           offset > 8 ? offset = offset - rows : offset = 0;
                         }),
+                child: const Text('<<'),
               ),
               const Spacer(),
               MyButton.navigate(
-                child: const Text('>>'),
                 onPressed: (offset + rows == tagGroups!.length)
                     ? null
                     : () => setState(() {
@@ -120,6 +119,7 @@ class _AthleteTagGroupWidgetState extends State<AthleteTagGroupWidget> {
                               ? offset = offset + rows
                               : offset = tagGroups!.length - rows;
                         }),
+                child: const Text('>>'),
               ),
               const Spacer(),
             ],

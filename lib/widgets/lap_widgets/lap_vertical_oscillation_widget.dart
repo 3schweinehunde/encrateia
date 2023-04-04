@@ -15,11 +15,11 @@ class LapVerticalOscillationWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapVerticalOscillationWidgetState createState() =>
-      _LapVerticalOscillationWidgetState();
+  LapVerticalOscillationWidgetState createState() =>
+      LapVerticalOscillationWidgetState();
 }
 
-class _LapVerticalOscillationWidgetState
+class LapVerticalOscillationWidgetState
     extends State<LapVerticalOscillationWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;

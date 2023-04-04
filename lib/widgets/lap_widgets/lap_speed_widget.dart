@@ -15,10 +15,10 @@ class LapSpeedWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapSpeedWidgetState createState() => _LapSpeedWidgetState();
+  LapSpeedWidgetState createState() => LapSpeedWidgetState();
 }
 
-class _LapSpeedWidgetState extends State<LapSpeedWidget> {
+class LapSpeedWidgetState extends State<LapSpeedWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
@@ -54,9 +54,11 @@ class _LapSpeedWidgetState extends State<LapSpeedWidget> {
                 child: LapSpeedChart(
                   records: RecordList<Event>(paceRecords),
                   minimum:
-                      (widget.lap!.avgSpeed! - 3 * widget.lap!.sdevSpeed!) * 3.6,
+                      (widget.lap!.avgSpeed! - 3 * widget.lap!.sdevSpeed!) *
+                          3.6,
                   maximum:
-                      (widget.lap!.avgSpeed! + 3 * widget.lap!.sdevSpeed!) * 3.6,
+                      (widget.lap!.avgSpeed! + 3 * widget.lap!.sdevSpeed!) *
+                          3.6,
                 ),
               ),
               const Text('Only records where speed > 0 m/s are shown.'),

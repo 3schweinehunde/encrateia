@@ -17,11 +17,10 @@ class IntervalHeartRateWidget extends StatefulWidget {
   final encrateia.Interval? interval;
 
   @override
-  _IntervalHeartRateWidgetState createState() =>
-      _IntervalHeartRateWidgetState();
+  IntervalHeartRateWidgetState createState() => IntervalHeartRateWidgetState();
 }
 
-class _IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
+class IntervalHeartRateWidgetState extends State<IntervalHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   HeartRateZoneSchema? heartRateZoneSchema;

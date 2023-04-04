@@ -6,7 +6,8 @@ import '/utils/pg_text.dart';
 import '/utils/enums.dart';
 
 class IntervalOverviewWidget extends StatefulWidget {
-  const IntervalOverviewWidget({Key? key,
+  const IntervalOverviewWidget({
+    Key? key,
     this.interval,
     this.athlete,
   }) : super(key: key);
@@ -15,10 +16,10 @@ class IntervalOverviewWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _IntervalOverviewWidgetState createState() => _IntervalOverviewWidgetState();
+  IntervalOverviewWidgetState createState() => IntervalOverviewWidgetState();
 }
 
-class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
+class IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
   @override
   void initState() {
     getData();
@@ -28,7 +29,8 @@ class _IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
   List<Widget> get tiles {
     return <Widget>[
       ListTile(
-        title: PQText(value: widget.interval!.distance!.toInt(), pq: PQ.distance),
+        title:
+            PQText(value: widget.interval!.distance!.toInt(), pq: PQ.distance),
         subtitle: const Text('distance'),
       ),
       ListTile(
