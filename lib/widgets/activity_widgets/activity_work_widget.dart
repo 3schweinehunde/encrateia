@@ -8,7 +8,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/work_chart.dart';
 
 class ActivityWorkWidget extends StatefulWidget {
-  const ActivityWorkWidget({Key? key,
+  const ActivityWorkWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -17,10 +18,10 @@ class ActivityWorkWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityWorkWidgetState createState() => _ActivityWorkWidgetState();
+  ActivityWorkWidgetState createState() => ActivityWorkWidgetState();
 }
 
-class _ActivityWorkWidgetState extends State<ActivityWorkWidget> {
+class ActivityWorkWidgetState extends State<ActivityWorkWidget> {
   bool loading = true;
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   String screenShotButtonText = 'Save as .png-Image';

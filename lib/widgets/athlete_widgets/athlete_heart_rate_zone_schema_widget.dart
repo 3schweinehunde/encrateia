@@ -18,11 +18,11 @@ class AthleteHeartRateZoneSchemaWidget extends StatefulWidget {
   final Function? callBackFunction;
 
   @override
-  _AthleteHeartRateZoneSchemaWidgetState createState() =>
-      _AthleteHeartRateZoneSchemaWidgetState();
+  AthleteHeartRateZoneSchemaWidgetState createState() =>
+      AthleteHeartRateZoneSchemaWidgetState();
 }
 
-class _AthleteHeartRateZoneSchemaWidgetState
+class AthleteHeartRateZoneSchemaWidgetState
     extends State<AthleteHeartRateZoneSchemaWidget> {
   List<HeartRateZoneSchema> heartRateZoneSchemas = <HeartRateZoneSchema>[];
   int offset = 0;

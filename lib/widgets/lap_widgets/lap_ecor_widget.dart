@@ -12,7 +12,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/lap_charts/lap_ecor_chart.dart';
 
 class LapEcorWidget extends StatefulWidget {
-  const LapEcorWidget({Key? key,
+  const LapEcorWidget({
+    Key? key,
     required this.lap,
     required this.athlete,
   }) : super(key: key);
@@ -21,10 +22,10 @@ class LapEcorWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _LapEcorWidgetState createState() => _LapEcorWidgetState();
+  LapEcorWidgetState createState() => LapEcorWidgetState();
 }
 
-class _LapEcorWidgetState extends State<LapEcorWidget> {
+class LapEcorWidgetState extends State<LapEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   Weight? weight;
   bool loading = true;

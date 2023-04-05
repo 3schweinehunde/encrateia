@@ -13,10 +13,10 @@ class AthleteEcorWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthleteEcorWidgetState createState() => _AthleteEcorWidgetState();
+  AthleteEcorWidgetState createState() => AthleteEcorWidgetState();
 }
 
-class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
+class AthleteEcorWidgetState extends State<AthleteEcorWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -127,7 +127,6 @@ class _AthleteEcorWidgetState extends State<AthleteEcorWidget> {
       tagGroups: tagGroups,
     );
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

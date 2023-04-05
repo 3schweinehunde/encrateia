@@ -15,10 +15,10 @@ class IntervalPaceWidget extends StatefulWidget {
   final encrateia.Interval? interval;
 
   @override
-  _IntervalPaceWidgetState createState() => _IntervalPaceWidgetState();
+  IntervalPaceWidgetState createState() => IntervalPaceWidgetState();
 }
 
-class _IntervalPaceWidgetState extends State<IntervalPaceWidget> {
+class IntervalPaceWidgetState extends State<IntervalPaceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

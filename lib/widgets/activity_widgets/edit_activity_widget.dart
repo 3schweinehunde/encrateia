@@ -14,10 +14,10 @@ class EditActivityWidget extends StatefulWidget {
   final Activity? activity;
 
   @override
-  _EditActivityWidgetState createState() => _EditActivityWidgetState();
+  EditActivityWidgetState createState() => EditActivityWidgetState();
 }
 
-class _EditActivityWidgetState extends State<EditActivityWidget> {
+class EditActivityWidgetState extends State<EditActivityWidget> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -122,7 +122,8 @@ class _EditActivityWidgetState extends State<EditActivityWidget> {
                   DropdownButton<String>(
                     value: widget.activity!.sport ?? 'running',
                     icon: const Icon(Icons.arrow_downward),
-                    onChanged: (String? value) => widget.activity!.sport = value,
+                    onChanged: (String? value) =>
+                        widget.activity!.sport = value,
                     items: <String>['running', 'cycling', 'swimming', 'other']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
@@ -147,7 +148,8 @@ class _EditActivityWidgetState extends State<EditActivityWidget> {
                         helperText: 'hours',
                       ),
                       onChanged: (String value) => widget.activity!.movingTime =
-                          widget.activity!.movingTime!.setHours(int.parse(value)),
+                          widget.activity!.movingTime!
+                              .setHours(int.parse(value)),
                       initialValue: (widget.activity!.movingTime ?? 0)
                           .fullHours
                           .toString(),

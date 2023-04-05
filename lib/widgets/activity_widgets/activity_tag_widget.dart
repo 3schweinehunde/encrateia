@@ -7,7 +7,8 @@ import '/models/tag_group.dart';
 import '/utils/my_color.dart';
 
 class ActivityTagWidget extends StatefulWidget {
-  const ActivityTagWidget({Key? key,
+  const ActivityTagWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -16,10 +17,10 @@ class ActivityTagWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityTagWidgetState createState() => _ActivityTagWidgetState();
+  ActivityTagWidgetState createState() => ActivityTagWidgetState();
 }
 
-class _ActivityTagWidgetState extends State<ActivityTagWidget> {
+class ActivityTagWidgetState extends State<ActivityTagWidget> {
   List<TagGroup>? tagGroups;
 
   @override
@@ -47,7 +48,7 @@ class _ActivityTagWidgetState extends State<ActivityTagWidget> {
         itemCount: tagGroups!.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups![index].name! + '\n'),
+            title: Text('${tagGroups![index].name!}\n'),
             subtitle: Wrap(
               spacing: 15,
               children: <Widget>[

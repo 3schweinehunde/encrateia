@@ -27,10 +27,10 @@ class AthleteScatterChart extends StatefulWidget {
   final bool? flipVerticalAxis;
 
   @override
-  _AthleteScatterChartState createState() => _AthleteScatterChartState();
+  AthleteScatterChartState createState() => AthleteScatterChartState();
 }
 
-class _AthleteScatterChartState extends State<AthleteScatterChart> {
+class AthleteScatterChartState extends State<AthleteScatterChart> {
   @override
   void initState() {
     super.initState();
@@ -40,9 +40,7 @@ class _AthleteScatterChartState extends State<AthleteScatterChart> {
   Widget build(BuildContext context) {
     final List<Series<Activity, double>> data = <Series<Activity, double>>[
       Series<Activity, double>(
-        id: widget.firstAttr.toString() +
-            ' vs. ' +
-            widget.secondAttr.toString(),
+        id: '${widget.firstAttr} vs. ${widget.secondAttr}',
         colorFn: (Activity activity, __) => Color(
             r: activity == widget.activities.first ? 255 : 0,
             g: 0,

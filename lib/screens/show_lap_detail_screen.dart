@@ -17,10 +17,10 @@ class ShowLapDetailScreen extends StatefulWidget {
   final String title;
 
   @override
-  _ShowLapDetailScreenState createState() => _ShowLapDetailScreenState();
+  ShowLapDetailScreenState createState() => ShowLapDetailScreenState();
 }
 
-class _ShowLapDetailScreenState extends State<ShowLapDetailScreen> {
+class ShowLapDetailScreenState extends State<ShowLapDetailScreen> {
   Lap? currentLap;
   double dragAmount = 0;
 

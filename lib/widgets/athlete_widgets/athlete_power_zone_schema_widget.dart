@@ -18,11 +18,11 @@ class AthletePowerZoneSchemaWidget extends StatefulWidget {
   final Function? callBackFunction;
 
   @override
-  _AthletePowerZoneSchemaWidgetState createState() =>
-      _AthletePowerZoneSchemaWidgetState();
+  AthletePowerZoneSchemaWidgetState createState() =>
+      AthletePowerZoneSchemaWidgetState();
 }
 
-class _AthletePowerZoneSchemaWidgetState
+class AthletePowerZoneSchemaWidgetState
     extends State<AthletePowerZoneSchemaWidget> {
   List<PowerZoneSchema> powerZoneSchemas = <PowerZoneSchema>[];
   int offset = 0;
@@ -112,16 +112,15 @@ class _AthletePowerZoneSchemaWidgetState
                   }),
               const Spacer(),
               MyButton.navigate(
-                child: const Text('<<'),
                 onPressed: (offset == 0)
                     ? null
                     : () => setState(() {
                           offset > 8 ? offset = offset - rows : offset = 0;
                         }),
+                child: const Text('<<'),
               ),
               const Spacer(),
               MyButton.navigate(
-                child: const Text('>>'),
                 onPressed: (offset + rows == powerZoneSchemas.length)
                     ? null
                     : () => setState(() {
@@ -129,6 +128,7 @@ class _AthletePowerZoneSchemaWidgetState
                               ? offset = offset + rows
                               : offset = powerZoneSchemas.length - rows;
                         }),
+                child: const Text('>>'),
               ),
               const Spacer(),
             ],

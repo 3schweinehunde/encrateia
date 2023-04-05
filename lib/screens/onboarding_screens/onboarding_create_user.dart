@@ -13,11 +13,11 @@ class OnboardingCreateUserScreen extends StatefulWidget {
   const OnboardingCreateUserScreen({Key? key}) : super(key: key);
 
   @override
-  _OnboardingCreateUserScreenState createState() =>
-      _OnboardingCreateUserScreenState();
+  OnboardingCreateUserScreenState createState() =>
+      OnboardingCreateUserScreenState();
 }
 
-class _OnboardingCreateUserScreenState
+class OnboardingCreateUserScreenState
     extends State<OnboardingCreateUserScreen> {
   Athlete athlete = Athlete();
 
@@ -79,7 +79,7 @@ class _OnboardingCreateUserScreenState
                       subtitle: Text(
                           'Choose this option, if you want to download activities '
                           'from Strava. \n'
-                           'Creating multi users with Strava Accounts will not work.'),
+                          'Creating multi users with Strava Accounts will not work.'),
                     ),
                     ButtonBar(
                       children: <Widget>[

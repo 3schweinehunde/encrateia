@@ -15,11 +15,11 @@ class IntervalStrydCadenceWidget extends StatefulWidget {
   final encrateia.Interval? interval;
 
   @override
-  _IntervalStrydCadenceWidgetState createState() =>
-      _IntervalStrydCadenceWidgetState();
+  IntervalStrydCadenceWidgetState createState() =>
+      IntervalStrydCadenceWidgetState();
 }
 
-class _IntervalStrydCadenceWidgetState
+class IntervalStrydCadenceWidgetState
     extends State<IntervalStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;

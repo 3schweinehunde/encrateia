@@ -14,10 +14,10 @@ class ActivitiesListWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _ActivitiesListWidgetState createState() => _ActivitiesListWidgetState();
+  ActivitiesListWidgetState createState() => ActivitiesListWidgetState();
 }
 
-class _ActivitiesListWidgetState extends State<ActivitiesListWidget> {
+class ActivitiesListWidgetState extends State<ActivitiesListWidget> {
   List<Activity> activities = <Activity>[];
 
   @override

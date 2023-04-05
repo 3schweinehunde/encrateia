@@ -17,11 +17,11 @@ class ShowIntervalDetailScreen extends StatefulWidget {
   final String title;
 
   @override
-  _ShowIntervalDetailScreenState createState() =>
-      _ShowIntervalDetailScreenState();
+  ShowIntervalDetailScreenState createState() =>
+      ShowIntervalDetailScreenState();
 }
 
-class _ShowIntervalDetailScreenState extends State<ShowIntervalDetailScreen> {
+class ShowIntervalDetailScreenState extends State<ShowIntervalDetailScreen> {
   encrateia.Interval? currentInterval;
   double dragAmount = 0;
   late int currentIntervalIndex;

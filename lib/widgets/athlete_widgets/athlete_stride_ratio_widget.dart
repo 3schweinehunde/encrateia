@@ -16,11 +16,11 @@ class AthleteStrideRatioWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthleteStrideRatioWidgetState createState() =>
-      _AthleteStrideRatioWidgetState();
+  AthleteStrideRatioWidgetState createState() =>
+      AthleteStrideRatioWidgetState();
 }
 
-class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
+class AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -144,7 +144,6 @@ class _AthleteStrideRatioWidgetState extends State<AthleteStrideRatioWidget> {
       tagGroups: tagGroups,
     );
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

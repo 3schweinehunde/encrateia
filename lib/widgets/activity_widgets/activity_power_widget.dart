@@ -13,7 +13,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_power_chart.dart';
 
 class ActivityPowerWidget extends StatefulWidget {
-  const ActivityPowerWidget({Key? key,
+  const ActivityPowerWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -22,10 +23,10 @@ class ActivityPowerWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityPowerWidgetState createState() => _ActivityPowerWidgetState();
+  ActivityPowerWidgetState createState() => ActivityPowerWidgetState();
 }
 
-class _ActivityPowerWidgetState extends State<ActivityPowerWidget> {
+class ActivityPowerWidgetState extends State<ActivityPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   PowerZoneSchema? powerZoneSchema;

@@ -16,11 +16,11 @@ class AthletePowerPerHeartRateWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthletePowerPerHeartRateWidgetState createState() =>
-      _AthletePowerPerHeartRateWidgetState();
+  AthletePowerPerHeartRateWidgetState createState() =>
+      AthletePowerPerHeartRateWidgetState();
 }
 
-class _AthletePowerPerHeartRateWidgetState
+class AthletePowerPerHeartRateWidgetState
     extends State<AthletePowerPerHeartRateWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];

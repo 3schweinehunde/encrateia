@@ -9,16 +9,17 @@ import '/utils/image_utils.dart' as image_utils;
 import '/utils/my_button.dart';
 
 class AthletePowerVsDistanceWidget extends StatefulWidget {
-  const AthletePowerVsDistanceWidget({Key? key, this.athlete}) : super(key: key);
+  const AthletePowerVsDistanceWidget({Key? key, this.athlete})
+      : super(key: key);
 
   final Athlete? athlete;
 
   @override
-  _AthletePowerVsDistanceWidgetState createState() =>
-      _AthletePowerVsDistanceWidgetState();
+  AthletePowerVsDistanceWidgetState createState() =>
+      AthletePowerVsDistanceWidgetState();
 }
 
-class _AthletePowerVsDistanceWidgetState
+class AthletePowerVsDistanceWidgetState
     extends State<AthletePowerVsDistanceWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
@@ -78,7 +79,8 @@ class _AthletePowerVsDistanceWidgetState
                   const Text('Select Sport'),
                   const SizedBox(width: 20),
                   DropdownButton<String>(
-                    items: sports.map<DropdownMenuItem<String>>((String? value) {
+                    items:
+                        sports.map<DropdownMenuItem<String>>((String? value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value!),
@@ -123,7 +125,6 @@ class _AthletePowerVsDistanceWidgetState
         .where((Activity activity) => activity.avgPower! > 0)
         .toList());
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

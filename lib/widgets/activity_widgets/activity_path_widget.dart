@@ -18,10 +18,10 @@ class ActivityPathWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityPathWidgetState createState() => _ActivityPathWidgetState();
+  ActivityPathWidgetState createState() => ActivityPathWidgetState();
 }
 
-class _ActivityPathWidgetState extends State<ActivityPathWidget> {
+class ActivityPathWidgetState extends State<ActivityPathWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

@@ -54,7 +54,7 @@ class IntervalTagWidgetState extends State<IntervalTagWidget> {
         itemCount: tagGroups!.length,
         itemBuilder: (BuildContext context, int index) => Card(
           child: ListTile(
-            title: Text(tagGroups![index].name! + '\n'),
+            title: Text('${tagGroups![index].name!}\n'),
             subtitle: Wrap(
               spacing: 15,
               children: <Widget>[

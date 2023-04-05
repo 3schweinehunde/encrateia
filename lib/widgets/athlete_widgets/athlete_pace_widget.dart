@@ -15,10 +15,10 @@ class AthletePaceWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthletePaceWidgetState createState() => _AthletePaceWidgetState();
+  AthletePaceWidgetState createState() => AthletePaceWidgetState();
 }
 
-class _AthletePaceWidgetState extends State<AthletePaceWidget> {
+class AthletePaceWidgetState extends State<AthletePaceWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';

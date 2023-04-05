@@ -12,10 +12,10 @@ class StravaGetUser extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _StravaGetUserState createState() => _StravaGetUserState();
+  StravaGetUserState createState() => StravaGetUserState();
 }
 
-class _StravaGetUserState extends State<StravaGetUser> {
+class StravaGetUserState extends State<StravaGetUser> {
   String get title => 'Strava Login';
 
   @override

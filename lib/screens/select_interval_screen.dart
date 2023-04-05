@@ -7,7 +7,8 @@ import '/utils/my_color.dart';
 import '/widgets/charts/activity_charts/activity_intervals_chart.dart';
 
 class SelectIntervalScreen extends StatefulWidget {
-  const SelectIntervalScreen({Key? key,
+  const SelectIntervalScreen({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -16,10 +17,10 @@ class SelectIntervalScreen extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _SelectIntervalScreenState createState() => _SelectIntervalScreenState();
+  SelectIntervalScreenState createState() => SelectIntervalScreenState();
 }
 
-class _SelectIntervalScreenState extends State<SelectIntervalScreen> {
+class SelectIntervalScreenState extends State<SelectIntervalScreen> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
 
   @override

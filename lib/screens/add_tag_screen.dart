@@ -15,10 +15,10 @@ class AddTagScreen extends StatefulWidget {
   final int? base;
 
   @override
-  _AddTagScreenState createState() => _AddTagScreenState();
+  AddTagScreenState createState() => AddTagScreenState();
 }
 
-class _AddTagScreenState extends State<AddTagScreen> {
+class AddTagScreenState extends State<AddTagScreen> {
   void _openDialog(Widget content) {
     showDialog<BuildContext>(
       context: context,

@@ -15,10 +15,10 @@ class LapStrydCadenceWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapStrydCadenceWidgetState createState() => _LapStrydCadenceWidgetState();
+  LapStrydCadenceWidgetState createState() => LapStrydCadenceWidgetState();
 }
 
-class _LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
+class LapStrydCadenceWidgetState extends State<LapStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

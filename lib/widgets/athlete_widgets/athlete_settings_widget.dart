@@ -10,10 +10,10 @@ class AthleteSettingsWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _AthleteSettingsWidgetState createState() => _AthleteSettingsWidgetState();
+  AthleteSettingsWidgetState createState() => AthleteSettingsWidgetState();
 }
 
-class _AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
+class AthleteSettingsWidgetState extends State<AthleteSettingsWidget> {
   List<Activity> activities = <Activity>[];
   String numberOfActivitiesString = '---';
 

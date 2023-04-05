@@ -16,10 +16,10 @@ class AthleteHeartRateWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthleteHeartRateWidgetState createState() => _AthleteHeartRateWidgetState();
+  AthleteHeartRateWidgetState createState() => AthleteHeartRateWidgetState();
 }
 
-class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
+class AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -143,7 +143,6 @@ class _AthleteHeartRateWidgetState extends State<AthleteHeartRateWidget> {
       tagGroups: tagGroups,
     );
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

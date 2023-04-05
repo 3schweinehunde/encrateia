@@ -11,7 +11,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_ground_time_chart.dart';
 
 class ActivityGroundTimeWidget extends StatefulWidget {
-  const ActivityGroundTimeWidget({Key? key,
+  const ActivityGroundTimeWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -20,11 +21,11 @@ class ActivityGroundTimeWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityGroundTimeWidgetState createState() =>
-      _ActivityGroundTimeWidgetState();
+  ActivityGroundTimeWidgetState createState() =>
+      ActivityGroundTimeWidgetState();
 }
 
-class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
+class ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
@@ -40,8 +41,8 @@ class _ActivityGroundTimeWidgetState extends State<ActivityGroundTimeWidget> {
   Widget build(BuildContext context) {
     if (records.isNotEmpty) {
       final List<Event> groundTimeRecords = records
-          .where(
-              (Event value) => value.groundTime != null && value.groundTime! > 0)
+          .where((Event value) =>
+              value.groundTime != null && value.groundTime! > 0)
           .toList();
 
       if (groundTimeRecords.isNotEmpty) {

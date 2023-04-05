@@ -365,8 +365,8 @@ class Activity {
 
   Future<double?> get ecor async {
     if (cachedEcor == null) {
-      final double? weightValue = await weight;
-      cachedEcor = (powerAvailable && speedAvailable && weightValue != null)
+      final double weightValue = await weight;
+      cachedEcor = (powerAvailable && speedAvailable)
           ? avgPower! / avgSpeed! / weightValue
           : -1;
     }

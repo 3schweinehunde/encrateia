@@ -11,7 +11,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_power_ratio_chart.dart';
 
 class ActivityPowerRatioWidget extends StatefulWidget {
-  const ActivityPowerRatioWidget({Key? key,
+  const ActivityPowerRatioWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -20,11 +21,11 @@ class ActivityPowerRatioWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityPowerRatioWidgetState createState() =>
-      _ActivityPowerRatioWidgetState();
+  ActivityPowerRatioWidgetState createState() =>
+      ActivityPowerRatioWidgetState();
 }
 
-class _ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
+class ActivityPowerRatioWidgetState extends State<ActivityPowerRatioWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

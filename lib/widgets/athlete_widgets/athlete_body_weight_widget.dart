@@ -23,11 +23,10 @@ class AthleteBodyWeightWidget extends StatefulWidget {
   final Function? callBackFunction;
 
   @override
-  _AthleteBodyWeightWidgetState createState() =>
-      _AthleteBodyWeightWidgetState();
+  AthleteBodyWeightWidgetState createState() => AthleteBodyWeightWidgetState();
 }
 
-class _AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
+class AthleteBodyWeightWidgetState extends State<AthleteBodyWeightWidget> {
   List<Weight> weights = <Weight>[];
   int offset = 0;
   int? rows;
@@ -152,7 +151,7 @@ You can change these later.
     } else {
       directory = await getApplicationDocumentsDirectory();
     }
-    final String pathToFile = directory.path + '/weights.csv';
+    final String pathToFile = '${directory.path}/weights.csv';
     // ignore: avoid_slow_async_io
     final bool isFile = await FileSystemEntity.isFile(pathToFile);
     if (isFile == true) {

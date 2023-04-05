@@ -22,10 +22,10 @@ class ActivityEcorWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityEcorWidgetState createState() => _ActivityEcorWidgetState();
+  ActivityEcorWidgetState createState() => ActivityEcorWidgetState();
 }
 
-class _ActivityEcorWidgetState extends State<ActivityEcorWidget> {
+class ActivityEcorWidgetState extends State<ActivityEcorWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   Weight? weight;
   bool loading = true;

@@ -8,7 +8,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/power_duration_chart.dart';
 
 class ActivityPowerDurationWidget extends StatefulWidget {
-  const ActivityPowerDurationWidget({Key? key,
+  const ActivityPowerDurationWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -17,11 +18,11 @@ class ActivityPowerDurationWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityPowerDurationWidgetState createState() =>
-      _ActivityPowerDurationWidgetState();
+  ActivityPowerDurationWidgetState createState() =>
+      ActivityPowerDurationWidgetState();
 }
 
-class _ActivityPowerDurationWidgetState
+class ActivityPowerDurationWidgetState
     extends State<ActivityPowerDurationWidget> {
   bool loading = true;
   RecordList<Event> records = RecordList<Event>(<Event>[]);

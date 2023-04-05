@@ -21,11 +21,11 @@ class AddHeartRateZoneSchemaScreen extends StatefulWidget {
   final int numberOfSchemas;
 
   @override
-  _AddHeartRateZoneSchemaScreenState createState() =>
-      _AddHeartRateZoneSchemaScreenState();
+  AddHeartRateZoneSchemaScreenState createState() =>
+      AddHeartRateZoneSchemaScreenState();
 }
 
-class _AddHeartRateZoneSchemaScreenState
+class AddHeartRateZoneSchemaScreenState
     extends State<AddHeartRateZoneSchemaScreen> {
   List<HeartRateZone> heartRateZones = <HeartRateZone>[];
   int offset = 0;
@@ -111,9 +111,8 @@ class _AddHeartRateZoneSchemaScreenState
                   key: ValueKey<int?>(heartRateZone.id),
                   cells: <DataCell>[
                     DataCell(Text(heartRateZone.name!)),
-                    DataCell(Text(heartRateZone.lowerLimit.toString() +
-                        ' - ' +
-                        heartRateZone.upperLimit.toString())),
+                    DataCell(Text(
+                        '${heartRateZone.lowerLimit} - ${heartRateZone.upperLimit}')),
                     DataCell(CircleColor(
                       circleSize: 20,
                       elevation: 0,

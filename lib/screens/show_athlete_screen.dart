@@ -45,10 +45,10 @@ class ShowAthleteScreen extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _ShowAthleteScreenState createState() => _ShowAthleteScreenState();
+  ShowAthleteScreenState createState() => ShowAthleteScreenState();
 }
 
-class _ShowAthleteScreenState extends State<ShowAthleteScreen> {
+class ShowAthleteScreenState extends State<ShowAthleteScreen> {
   Visibility? floatingActionButton;
   late bool floatingActionButtonVisible;
 

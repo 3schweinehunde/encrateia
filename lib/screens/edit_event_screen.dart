@@ -15,10 +15,10 @@ class EditEventScreen extends StatefulWidget {
   final Event? record;
 
   @override
-  _EditEventScreenState createState() => _EditEventScreenState();
+  EditEventScreenState createState() => EditEventScreenState();
 }
 
-class _EditEventScreenState extends State<EditEventScreen> {
+class EditEventScreenState extends State<EditEventScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
@@ -93,8 +93,9 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       child: TextFormField(
                         decoration: const InputDecoration(
                             labelText: 'Latitude Degrees'),
-                        onChanged: (String value) => widget.record!.positionLat =
-                            widget.record!.positionLat!
+                        onChanged: (String value) =>
+                            widget.record!.positionLat = widget
+                                .record!.positionLat!
                                 .setDegrees(int.parse(value)),
                         initialValue:
                             widget.record!.positionLat!.fullDegrees.toString(),
@@ -105,8 +106,9 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       child: TextFormField(
                         decoration: const InputDecoration(
                             labelText: 'Latitude Minutes'),
-                        onChanged: (String value) => widget.record!.positionLat =
-                            widget.record!.positionLat!
+                        onChanged: (String value) =>
+                            widget.record!.positionLat = widget
+                                .record!.positionLat!
                                 .setMinutes(int.parse(value)),
                         initialValue:
                             widget.record!.positionLat!.fullMinutes.toString(),
@@ -117,8 +119,9 @@ class _EditEventScreenState extends State<EditEventScreen> {
                       child: TextFormField(
                         decoration: const InputDecoration(
                             labelText: 'Latitude Seconds'),
-                        onChanged: (String value) => widget.record!.positionLat =
-                            widget.record!.positionLat!
+                        onChanged: (String value) =>
+                            widget.record!.positionLat = widget
+                                .record!.positionLat!
                                 .setSeconds(double.parse(value)),
                         initialValue:
                             widget.record!.positionLat!.seconds.toString(),
@@ -235,8 +238,8 @@ class _EditEventScreenState extends State<EditEventScreen> {
                   TextFormField(
                     decoration: const InputDecoration(
                         labelText: 'Vertical Oscillation'),
-                    onChanged: (String value) =>
-                        widget.record!.verticalOscillation = double.parse(value),
+                    onChanged: (String value) => widget
+                        .record!.verticalOscillation = double.parse(value),
                     initialValue: widget.record!.verticalOscillation.toString(),
                     keyboardType: TextInputType.number,
                   ),

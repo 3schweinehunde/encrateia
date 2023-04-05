@@ -15,11 +15,11 @@ class OnBoardingHeartRateZoneSchemaScreen extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _OnBoardingHeartRateZoneSchemaScreenState createState() =>
-      _OnBoardingHeartRateZoneSchemaScreenState();
+  OnBoardingHeartRateZoneSchemaScreenState createState() =>
+      OnBoardingHeartRateZoneSchemaScreenState();
 }
 
-class _OnBoardingHeartRateZoneSchemaScreenState
+class OnBoardingHeartRateZoneSchemaScreenState
     extends State<OnBoardingHeartRateZoneSchemaScreen> {
   bool heartRateZoneSchemaHasBeenEntered = false;
 
@@ -54,9 +54,9 @@ class _OnBoardingHeartRateZoneSchemaScreenState
               ),
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
                 MyButton.save(
-                  child: const Text('Next step'),
                   onPressed:
                       heartRateZoneSchemaHasBeenEntered ? nextButton : null,
+                  child: const Text('Next step'),
                 ),
                 const SizedBox(width: 20),
               ]),

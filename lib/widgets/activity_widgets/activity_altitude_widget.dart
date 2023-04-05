@@ -11,7 +11,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_altitude_chart.dart';
 
 class ActivityAltitudeWidget extends StatefulWidget {
-  const ActivityAltitudeWidget({Key? key,
+  const ActivityAltitudeWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -20,10 +21,10 @@ class ActivityAltitudeWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityAltitudeWidgetState createState() => _ActivityAltitudeWidgetState();
+  ActivityAltitudeWidgetState createState() => ActivityAltitudeWidgetState();
 }
 
-class _ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
+class ActivityAltitudeWidgetState extends State<ActivityAltitudeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

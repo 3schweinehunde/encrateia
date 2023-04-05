@@ -13,7 +13,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_heart_rate_chart.dart';
 
 class ActivityHeartRateWidget extends StatefulWidget {
-  const ActivityHeartRateWidget({Key? key,
+  const ActivityHeartRateWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -22,11 +23,10 @@ class ActivityHeartRateWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityHeartRateWidgetState createState() =>
-      _ActivityHeartRateWidgetState();
+  ActivityHeartRateWidgetState createState() => ActivityHeartRateWidgetState();
 }
 
-class _ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
+class ActivityHeartRateWidgetState extends State<ActivityHeartRateWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   HeartRateZoneSchema? heartRateZoneSchema;
   List<HeartRateZone>? heartRateZones;

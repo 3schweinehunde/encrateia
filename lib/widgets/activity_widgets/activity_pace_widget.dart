@@ -11,7 +11,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_pace_chart.dart';
 
 class ActivityPaceWidget extends StatefulWidget {
-  const ActivityPaceWidget({Key? key,
+  const ActivityPaceWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -20,10 +21,10 @@ class ActivityPaceWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityPaceWidgetState createState() => _ActivityPaceWidgetState();
+  ActivityPaceWidgetState createState() => ActivityPaceWidgetState();
 }
 
-class _ActivityPaceWidgetState extends State<ActivityPaceWidget> {
+class ActivityPaceWidgetState extends State<ActivityPaceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

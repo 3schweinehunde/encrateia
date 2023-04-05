@@ -15,10 +15,10 @@ class LapFormPowerWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapFormPowerWidgetState createState() => _LapFormPowerWidgetState();
+  LapFormPowerWidgetState createState() => LapFormPowerWidgetState();
 }
 
-class _LapFormPowerWidgetState extends State<LapFormPowerWidget> {
+class LapFormPowerWidgetState extends State<LapFormPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

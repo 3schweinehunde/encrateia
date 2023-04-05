@@ -14,10 +14,10 @@ class AddHeartRateZoneScreen extends StatefulWidget {
   final int numberOfZones;
 
   @override
-  _AddHeartRateZoneScreenState createState() => _AddHeartRateZoneScreenState();
+  AddHeartRateZoneScreenState createState() => AddHeartRateZoneScreenState();
 }
 
-class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
+class AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
   void _openDialog(Widget content) {
     showDialog<BuildContext>(
       context: context,
@@ -57,10 +57,10 @@ class _AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController lowerLimitController =
-        TextEditingController(text: widget.heartRateZone!.lowerLimit.toString());
-    final TextEditingController upperLimitController =
-        TextEditingController(text: widget.heartRateZone!.upperLimit.toString());
+    final TextEditingController lowerLimitController = TextEditingController(
+        text: widget.heartRateZone!.lowerLimit.toString());
+    final TextEditingController upperLimitController = TextEditingController(
+        text: widget.heartRateZone!.upperLimit.toString());
     final TextEditingController lowerPercentageController =
         TextEditingController(
             text: widget.heartRateZone!.lowerPercentage.toString());

@@ -28,10 +28,10 @@ class AthleteTimeSeriesChart extends StatefulWidget {
   final bool? flipVerticalAxis;
 
   @override
-  _AthleteTimeSeriesChartState createState() => _AthleteTimeSeriesChartState();
+  AthleteTimeSeriesChartState createState() => AthleteTimeSeriesChartState();
 }
 
-class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
+class AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
   Activity? selectedActivity;
   late List<Activity> displayedActivities;
   int pagingOffset = 0;
@@ -71,7 +71,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
         data: displayedActivities,
       ),
       Series<Activity, DateTime>(
-        id: 'gliding_' + widget.activityAttr.toString(),
+        id: 'gliding_${widget.activityAttr}',
         colorFn: (_, __) => MaterialPalette.green.shadeDefault,
         domainFn: (Activity activity, _) => activity.timeCreated,
         measureFn: (Activity activity, _) => activity.glidingMeasureAttribute,
@@ -140,7 +140,6 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
             children: <Widget>[
               const Spacer(),
               MyButton.save(
-                child: const Text('<<'),
                 onPressed:
                     (pagingOffset + amountDisplayed >= numberOfActivities)
                         ? null
@@ -149,10 +148,10 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                                 pagingOffset + (amountDisplayed / 2).round();
                             setScope();
                           },
+                child: const Text('<<'),
               ),
               const Spacer(),
               MyButton.save(
-                child: const Text('>>'),
                 onPressed: (pagingOffset == 0)
                     ? null
                     : () {
@@ -163,6 +162,7 @@ class _AthleteTimeSeriesChartState extends State<AthleteTimeSeriesChart> {
                         }
                         setScope();
                       },
+                child: const Text('>>'),
               ),
               const Spacer(),
             ],

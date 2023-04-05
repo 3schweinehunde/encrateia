@@ -15,11 +15,11 @@ class AthletePaceVsDistanceWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _AthletePaceVsDistanceWidgetState createState() =>
-      _AthletePaceVsDistanceWidgetState();
+  AthletePaceVsDistanceWidgetState createState() =>
+      AthletePaceVsDistanceWidgetState();
 }
 
-class _AthletePaceVsDistanceWidgetState
+class AthletePaceVsDistanceWidgetState
     extends State<AthletePaceVsDistanceWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];

@@ -109,10 +109,10 @@ class IntervalOverviewWidgetState extends State<IntervalOverviewWidget> {
   }
 
   Future<void> getData() async {
-    final Weight? weight = await Weight.getBy(
+    final Weight weight = await Weight.getBy(
       athletesId: widget.athlete!.id,
       date: widget.interval!.timeStamp,
     );
-    setState(() => widget.interval!.weight = weight?.value);
+    setState(() => widget.interval!.weight = weight.value);
   }
 }

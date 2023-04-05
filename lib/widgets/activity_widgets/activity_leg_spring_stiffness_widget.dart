@@ -11,7 +11,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_leg_spring_stiffness_chart.dart';
 
 class ActivityLegSpringStiffnessWidget extends StatefulWidget {
-  const ActivityLegSpringStiffnessWidget({Key? key,
+  const ActivityLegSpringStiffnessWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -20,11 +21,11 @@ class ActivityLegSpringStiffnessWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityLegSpringStiffnessWidgetState createState() =>
-      _ActivityLegSpringStiffnessWidgetState();
+  ActivityLegSpringStiffnessWidgetState createState() =>
+      ActivityLegSpringStiffnessWidgetState();
 }
 
-class _ActivityLegSpringStiffnessWidgetState
+class ActivityLegSpringStiffnessWidgetState
     extends State<ActivityLegSpringStiffnessWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;

@@ -11,10 +11,10 @@ class ShowTagGroupScreen extends StatefulWidget {
   final TagGroup? tagGroup;
 
   @override
-  _AddTagGroupScreenState createState() => _AddTagGroupScreenState();
+  AddTagGroupScreenState createState() => AddTagGroupScreenState();
 }
 
-class _AddTagGroupScreenState extends State<ShowTagGroupScreen> {
+class AddTagGroupScreenState extends State<ShowTagGroupScreen> {
   List<Tag> tags = <Tag>[];
   int offset = 0;
   int? rows;

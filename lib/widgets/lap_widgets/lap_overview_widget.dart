@@ -110,10 +110,10 @@ class LapOverviewWidgetState extends State<LapOverviewWidget> {
   }
 
   Future<void> getData() async {
-    final Weight? weight = await Weight.getBy(
+    final Weight weight = await Weight.getBy(
       athletesId: widget.athlete!.id,
       date: widget.lap!.timeStamp,
     );
-    setState(() => widget.lap!.weight = weight?.value);
+    setState(() => widget.lap!.weight = weight.value);
   }
 }

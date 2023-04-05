@@ -14,10 +14,10 @@ class AthleteDistanceWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _AthleteDistanceWidgetState createState() => _AthleteDistanceWidgetState();
+  AthleteDistanceWidgetState createState() => AthleteDistanceWidgetState();
 }
 
-class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
+class AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -128,7 +128,6 @@ class _AthleteDistanceWidgetState extends State<AthleteDistanceWidget> {
       activity.distanceSoFar = distanceSoFar;
     }
 
-    setState(() =>
-        loadingStatus = activities.length.toString() + ' activities found');
+    setState(() => loadingStatus = '${activities.length} activities found');
   }
 }

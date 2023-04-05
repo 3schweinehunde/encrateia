@@ -23,10 +23,10 @@ class ActivityBarGraphWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityBarGraphWidgetState createState() => _ActivityBarGraphWidgetState();
+  ActivityBarGraphWidgetState createState() => ActivityBarGraphWidgetState();
 }
 
-class _ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
+class ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
   PowerZoneSchema? _powerZoneSchema;
   HeartRateZoneSchema? _heartRateZoneSchema;
   List<PowerZone> _powerZones = <PowerZone>[];

@@ -11,7 +11,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_vertical_oscillation_chart.dart';
 
 class ActivityVerticalOscillationWidget extends StatefulWidget {
-  const ActivityVerticalOscillationWidget({Key? key,
+  const ActivityVerticalOscillationWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -20,11 +21,11 @@ class ActivityVerticalOscillationWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityVerticalOscillationWidgetState createState() =>
-      _ActivityVerticalOscillationWidgetState();
+  ActivityVerticalOscillationWidgetState createState() =>
+      ActivityVerticalOscillationWidgetState();
 }
 
-class _ActivityVerticalOscillationWidgetState
+class ActivityVerticalOscillationWidgetState
     extends State<ActivityVerticalOscillationWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;

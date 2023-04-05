@@ -20,11 +20,10 @@ class ActivityEventListWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityEventListWidgetState createState() =>
-      _ActivityEventListWidgetState();
+  ActivityEventListWidgetState createState() => ActivityEventListWidgetState();
 }
 
-class _ActivityEventListWidgetState extends State<ActivityEventListWidget> {
+class ActivityEventListWidgetState extends State<ActivityEventListWidget> {
   RecordList<Event> events = RecordList<Event>(<Event>[]);
   bool loading = true;
   int offset = 0;

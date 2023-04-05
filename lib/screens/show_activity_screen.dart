@@ -46,10 +46,10 @@ class ShowActivityScreen extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _ShowActivityScreenState createState() => _ShowActivityScreenState();
+  ShowActivityScreenState createState() => ShowActivityScreenState();
 }
 
-class _ShowActivityScreenState extends State<ShowActivityScreen> {
+class ShowActivityScreenState extends State<ShowActivityScreen> {
   Weight? weight;
 
   List<Widget> get tiles {

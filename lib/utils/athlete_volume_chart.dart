@@ -20,10 +20,10 @@ class AthleteVolumeChart extends StatefulWidget {
   final String chartTitleText;
 
   @override
-  _AthleteVolumeChartState createState() => _AthleteVolumeChartState();
+  AthleteVolumeChartState createState() => AthleteVolumeChartState();
 }
 
-class _AthleteVolumeChartState extends State<AthleteVolumeChart> {
+class AthleteVolumeChartState extends State<AthleteVolumeChart> {
   @override
   void initState() {
     super.initState();

@@ -18,10 +18,10 @@ class IntervalsFeedWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _IntervalsFeedWidgetState createState() => _IntervalsFeedWidgetState();
+  IntervalsFeedWidgetState createState() => IntervalsFeedWidgetState();
 }
 
-class _IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
+class IntervalsFeedWidgetState extends State<IntervalsFeedWidget> {
   List<encrateia.Interval> intervals = <encrateia.Interval>[];
   Map<int?, List<encrateia.Interval>> groupedIntervals =
       <int, List<encrateia.Interval>>{};

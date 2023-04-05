@@ -21,11 +21,11 @@ class AddPowerZoneSchemaScreen extends StatefulWidget {
   final int numberOfSchemas;
 
   @override
-  _AddPowerZoneSchemaScreenState createState() =>
-      _AddPowerZoneSchemaScreenState();
+  AddPowerZoneSchemaScreenState createState() =>
+      AddPowerZoneSchemaScreenState();
 }
 
-class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
+class AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   List<PowerZone> powerZones = <PowerZone>[];
   int offset = 0;
   int? rows;
@@ -106,9 +106,8 @@ class _AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
                   key: ValueKey<int?>(powerZone.id),
                   cells: <DataCell>[
                     DataCell(Text(powerZone.name!)),
-                    DataCell(Text(powerZone.lowerLimit.toString() +
-                        ' - ' +
-                        powerZone.upperLimit.toString())),
+                    DataCell(Text(
+                        '${powerZone.lowerLimit} - ${powerZone.upperLimit}')),
                     DataCell(CircleColor(
                       circleSize: 20,
                       elevation: 0,

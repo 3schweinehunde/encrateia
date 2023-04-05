@@ -16,10 +16,10 @@ class AthleteFtpWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _AthleteFtpWidgetState createState() => _AthleteFtpWidgetState();
+  AthleteFtpWidgetState createState() => AthleteFtpWidgetState();
 }
 
-class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
+class AthleteFtpWidgetState extends State<AthleteFtpWidget> {
   ActivityList<Activity> activities = ActivityList<Activity>(<Activity>[]);
   List<TagGroup> tagGroups = <TagGroup>[];
   String loadingStatus = 'Loading ...';
@@ -159,8 +159,8 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
     ftpActivities = activities
         .where((Activity activity) => activity.ftp != null && activity.ftp! > 0)
         .toList();
-    loadingStatus = ftpActivities.length.toString() +
-        ' tagged in Effort Taggroup, deriving backlog...';
+    loadingStatus =
+        '${ftpActivities.length} tagged in Effort Taggroup, deriving backlog...';
     setState(() {});
     checkForBacklog();
   }
@@ -169,9 +169,7 @@ class _AthleteFtpWidgetState extends State<AthleteFtpWidget> {
     final Athlete athlete = widget.athlete;
     backlog = await ftp.deriveBacklog(athlete: athlete);
 
-    setState(() => loadingStatus = ftpActivities.length.toString() +
-        ' tagged in Effort Taggroup, ' +
-        backlog.length.toString() +
-        ' need their ftp to be calculated.');
+    setState(() => loadingStatus =
+        '${ftpActivities.length} tagged in Effort Taggroup, ${backlog.length} need their ftp to be calculated.');
   }
 }

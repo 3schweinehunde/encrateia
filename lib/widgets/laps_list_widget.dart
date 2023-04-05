@@ -11,7 +11,8 @@ import '/utils/enums.dart';
 import '/utils/my_button.dart';
 
 class LapsListWidget extends StatefulWidget {
-  const LapsListWidget({Key? key,
+  const LapsListWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -20,10 +21,10 @@ class LapsListWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _LapsListWidgetState createState() => _LapsListWidgetState();
+  LapsListWidgetState createState() => LapsListWidgetState();
 }
 
-class _LapsListWidgetState extends State<LapsListWidget> {
+class LapsListWidgetState extends State<LapsListWidget> {
   List<Lap> laps = <Lap>[];
   bool loading = true;
 

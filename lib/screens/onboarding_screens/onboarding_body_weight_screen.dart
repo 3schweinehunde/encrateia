@@ -15,11 +15,11 @@ class OnBoardingBodyWeightScreen extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _OnBoardingBodyWeightScreenState createState() =>
-      _OnBoardingBodyWeightScreenState();
+  OnBoardingBodyWeightScreenState createState() =>
+      OnBoardingBodyWeightScreenState();
 }
 
-class _OnBoardingBodyWeightScreenState
+class OnBoardingBodyWeightScreenState
     extends State<OnBoardingBodyWeightScreen> {
   bool weightHasBeenEntered = false;
 
@@ -49,8 +49,8 @@ class _OnBoardingBodyWeightScreenState
               const SizedBox(height: 20),
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
                 MyButton.save(
-                  child: const Text('Next step'),
                   onPressed: weightHasBeenEntered ? nextButton : null,
+                  child: const Text('Next step'),
                 ),
                 const SizedBox(width: 20),
               ]),

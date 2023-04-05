@@ -17,10 +17,10 @@ class ActivitiesFeedWidget extends StatefulWidget {
   final Athlete athlete;
 
   @override
-  _ActivitiesFeedWidgetState createState() => _ActivitiesFeedWidgetState();
+  ActivitiesFeedWidgetState createState() => ActivitiesFeedWidgetState();
 }
 
-class _ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
+class ActivitiesFeedWidgetState extends State<ActivitiesFeedWidget> {
   List<Activity> activities = <Activity>[];
   List<TagGroup> tagGroups = <TagGroup>[];
   bool disposed = false;

@@ -14,10 +14,10 @@ class AddPowerZoneScreen extends StatefulWidget {
   final int numberOfZones;
 
   @override
-  _AddPowerZoneScreenState createState() => _AddPowerZoneScreenState();
+  AddPowerZoneScreenState createState() => AddPowerZoneScreenState();
 }
 
-class _AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
+class AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
   void _openDialog(Widget content) {
     showDialog<BuildContext>(
       context: context,

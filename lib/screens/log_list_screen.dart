@@ -12,10 +12,10 @@ class LogListScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _LogListScreenState createState() => _LogListScreenState();
+  LogListScreenState createState() => LogListScreenState();
 }
 
-class _LogListScreenState extends State<LogListScreen> {
+class LogListScreenState extends State<LogListScreen> {
   List<Log> logs = <Log>[];
 
   @override
@@ -37,7 +37,7 @@ class _LogListScreenState extends State<LogListScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(logs.length.toString() + ' log entries'),
+                Text('${logs.length} log entries'),
                 const SizedBox(width: 20),
                 MyButton.delete(
                   child: const Text('Delete all log entries'),

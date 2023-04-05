@@ -11,7 +11,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/activity_charts/activity_form_power_chart.dart';
 
 class ActivityFormPowerWidget extends StatefulWidget {
-  const ActivityFormPowerWidget({Key? key,
+  const ActivityFormPowerWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -20,11 +21,10 @@ class ActivityFormPowerWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityFormPowerWidgetState createState() =>
-      _ActivityFormPowerWidgetState();
+  ActivityFormPowerWidgetState createState() => ActivityFormPowerWidgetState();
 }
 
-class _ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
+class ActivityFormPowerWidgetState extends State<ActivityFormPowerWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';

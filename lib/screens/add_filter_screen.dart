@@ -14,10 +14,10 @@ class AddFilterScreen extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _AddFilterScreenState createState() => _AddFilterScreenState();
+  AddFilterScreenState createState() => AddFilterScreenState();
 }
 
-class _AddFilterScreenState extends State<AddFilterScreen> {
+class AddFilterScreenState extends State<AddFilterScreen> {
   List<TagGroup>? tagGroups;
 
   @override

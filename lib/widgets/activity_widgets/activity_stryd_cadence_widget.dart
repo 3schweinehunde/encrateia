@@ -21,11 +21,11 @@ class ActivityStrydCadenceWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityStrydCadenceWidgetState createState() =>
-      _ActivityStrydCadenceWidgetState();
+  ActivityStrydCadenceWidgetState createState() =>
+      ActivityStrydCadenceWidgetState();
 }
 
-class _ActivityStrydCadenceWidgetState
+class ActivityStrydCadenceWidgetState
     extends State<ActivityStrydCadenceWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;

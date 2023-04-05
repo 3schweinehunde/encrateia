@@ -15,11 +15,11 @@ class OnBoardingPowerZoneSchemaScreen extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _OnBoardingPowerZoneSchemaScreenState createState() =>
-      _OnBoardingPowerZoneSchemaScreenState();
+  OnBoardingPowerZoneSchemaScreenState createState() =>
+      OnBoardingPowerZoneSchemaScreenState();
 }
 
-class _OnBoardingPowerZoneSchemaScreenState
+class OnBoardingPowerZoneSchemaScreenState
     extends State<OnBoardingPowerZoneSchemaScreen> {
   bool powerZoneSchemaHasBeenEntered = false;
 
@@ -54,8 +54,8 @@ class _OnBoardingPowerZoneSchemaScreenState
               ),
               Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
                 MyButton.save(
-                  child: const Text('Next step'),
                   onPressed: powerZoneSchemaHasBeenEntered ? nextButton : null,
+                  child: const Text('Next step'),
                 ),
                 const SizedBox(width: 20),
               ]),

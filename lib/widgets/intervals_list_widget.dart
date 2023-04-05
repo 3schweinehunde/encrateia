@@ -9,7 +9,8 @@ import '/utils/enums.dart';
 import '/utils/my_button.dart';
 
 class IntervalsListWidget extends StatefulWidget {
-  const IntervalsListWidget({Key? key,
+  const IntervalsListWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -18,10 +19,10 @@ class IntervalsListWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _IntervalsListWidgetState createState() => _IntervalsListWidgetState();
+  IntervalsListWidgetState createState() => IntervalsListWidgetState();
 }
 
-class _IntervalsListWidgetState extends State<IntervalsListWidget> {
+class IntervalsListWidgetState extends State<IntervalsListWidget> {
   List<encrateia.Interval> intervals = <encrateia.Interval>[];
   bool loading = true;
 

@@ -1,5 +1,6 @@
 import 'dart:math';
-import 'package:flutter/material.dart';import '/models/event.dart';
+import 'package:flutter/material.dart';
+import '/models/event.dart';
 import '/models/lap.dart';
 import '/models/record_list.dart';
 import '/utils/enums.dart';
@@ -15,10 +16,10 @@ class LapAltitudeWidget extends StatefulWidget {
   final Lap? lap;
 
   @override
-  _LapAltitudeWidgetState createState() => _LapAltitudeWidgetState();
+  LapAltitudeWidgetState createState() => LapAltitudeWidgetState();
 }
 
-class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
+class LapAltitudeWidgetState extends State<LapAltitudeWidget> {
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   bool loading = true;
   String screenShotButtonText = 'Save as .png-Image';
@@ -99,7 +100,7 @@ class _LapAltitudeWidgetState extends State<LapAltitudeWidget> {
 
   Future<void> getData() async {
     final Lap lap = widget.lap!;
-    records = RecordList<Event> (await lap.records);
+    records = RecordList<Event>(await lap.records);
 
     setState(() => loading = false);
   }

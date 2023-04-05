@@ -8,7 +8,8 @@ import '/utils/my_button.dart';
 import '/widgets/charts/ftp_chart.dart';
 
 class ActivityFtpWidget extends StatefulWidget {
-  const ActivityFtpWidget({Key? key,
+  const ActivityFtpWidget({
+    Key? key,
     required this.activity,
     required this.athlete,
   }) : super(key: key);
@@ -17,10 +18,10 @@ class ActivityFtpWidget extends StatefulWidget {
   final Athlete? athlete;
 
   @override
-  _ActivityFtpWidgetState createState() => _ActivityFtpWidgetState();
+  ActivityFtpWidgetState createState() => ActivityFtpWidgetState();
 }
 
-class _ActivityFtpWidgetState extends State<ActivityFtpWidget> {
+class ActivityFtpWidgetState extends State<ActivityFtpWidget> {
   bool loading = true;
   RecordList<Event> records = RecordList<Event>(<Event>[]);
   String screenShotButtonText = 'Save as .png-Image';
