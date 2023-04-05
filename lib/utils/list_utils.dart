@@ -16,19 +16,10 @@ extension StatisticFunctions on Iterable<dynamic> {
     return math.sqrt(variance);
   }
 
-  num min() {
-    final List<num> values = toList().cast<num>();
-    return values.reduce(math.min);
-  }
-
-  num max() {
-    final List<num> values = toList().cast<num>();
-    return values.reduce(math.max);
-  }
-
   List<num?> nonZeros() {
     final List<num> values = whereType<num>().toList();
-    final Iterable<num?> nonZeroValues = values.where((num value) => value != 0);
+    final Iterable<num?> nonZeroValues =
+        values.where((num value) => value != 0);
     return nonZeroValues.toList();
   }
 }

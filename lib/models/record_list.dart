@@ -63,13 +63,13 @@ class RecordList<E> extends DelegatingList<E> {
   int minPower() {
     final List<int> powers =
         _records.map((Event record) => record.power).nonZeros().cast<int>();
-    return powers.isNotEmpty ? powers.min() as int : 0;
+    return powers.isNotEmpty ? powers.min : 0;
   }
 
   int maxPower() {
     final List<int> powers =
         _records.map((Event record) => record.power).nonZeros().cast<int>();
-    return powers.isNotEmpty ? powers.max() as int : 0;
+    return powers.isNotEmpty ? powers.max : 0;
   }
 
   // Heart Rate
@@ -95,13 +95,13 @@ class RecordList<E> extends DelegatingList<E> {
   int minHeartRate() {
     final List<int> heartRates =
         _records.map((Event record) => record.heartRate).nonZeros().cast<int>();
-    return heartRates.isNotEmpty ? heartRates.min() as int : 0;
+    return heartRates.isNotEmpty ? heartRates.min : 0;
   }
 
   int maxHeartRate() {
     final List<int> heartRates =
         _records.map((Event record) => record.heartRate).nonZeros().cast<int>();
-    return heartRates.isNotEmpty ? heartRates.max() as int : 0;
+    return heartRates.isNotEmpty ? heartRates.max : 0;
   }
 
   // Speed
@@ -139,13 +139,13 @@ class RecordList<E> extends DelegatingList<E> {
   double minSpeed() {
     final List<double> speeds =
         _records.map((Event record) => record.speed).nonZeros().cast<double>();
-    return speeds.isNotEmpty ? speeds.min() as double : 0;
+    return speeds.isNotEmpty ? speeds.min : 0;
   }
 
   double maxSpeed() {
     final List<double> speeds =
         _records.map((Event record) => record.speed).nonZeros().cast<double>();
-    return speeds.isNotEmpty ? speeds.max() as double : 0;
+    return speeds.isNotEmpty ? speeds.max : 0;
   }
 
   // Ground Time
@@ -166,7 +166,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.groundTime)
         .nonZeros()
         .cast<double>();
-    return groundTimes.isNotEmpty ? groundTimes.min() as double : 0;
+    return groundTimes.isNotEmpty ? groundTimes.min : 0;
   }
 
   double maxGroundTime() {
@@ -174,7 +174,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.groundTime)
         .nonZeros()
         .cast<double>();
-    return groundTimes.isNotEmpty ? groundTimes.max() as double : 0;
+    return groundTimes.isNotEmpty ? groundTimes.max : 0;
   }
 
   // Stryd Cadence
@@ -196,7 +196,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.strydCadence)
         .nonZeros()
         .cast<double>();
-    return strydCadences.isNotEmpty ? strydCadences.min() as double : 0;
+    return strydCadences.isNotEmpty ? strydCadences.min : 0;
   }
 
   double maxStrydCadence() {
@@ -204,7 +204,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.strydCadence)
         .nonZeros()
         .cast<double>();
-    return strydCadences.isNotEmpty ? strydCadences.max() as double : 0;
+    return strydCadences.isNotEmpty ? strydCadences.max : 0;
   }
 
   // Cadence
@@ -226,7 +226,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.cadence)
         .nonZeros()
         .cast<double>();
-    return cadences.isNotEmpty ? cadences.min() as double : 0;
+    return cadences.isNotEmpty ? cadences.min : 0;
   }
 
   double maxCadence() {
@@ -234,7 +234,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.cadence)
         .nonZeros()
         .cast<double>();
-    return cadences.isNotEmpty ? cadences.max() as double : 0;
+    return cadences.isNotEmpty ? cadences.max : 0;
   }
 
   // Leg Spring Stiffness
@@ -256,9 +256,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.legSpringStiffness)
         .nonZeros()
         .cast<double>();
-    return legSpringStiffnesses.isNotEmpty
-        ? legSpringStiffnesses.min() as double
-        : 0;
+    return legSpringStiffnesses.isNotEmpty ? legSpringStiffnesses.min : 0;
   }
 
   double maxLegSpringStiffness() {
@@ -266,9 +264,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.legSpringStiffness)
         .nonZeros()
         .cast<double>();
-    return legSpringStiffnesses.isNotEmpty
-        ? legSpringStiffnesses.max() as double
-        : 0;
+    return legSpringStiffnesses.isNotEmpty ? legSpringStiffnesses.max : 0;
   }
 
   // Vertical Oscillation
@@ -290,9 +286,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.verticalOscillation)
         .nonZeros()
         .cast<double>();
-    return verticalOscillations.isNotEmpty
-        ? verticalOscillations.min() as double
-        : 0;
+    return verticalOscillations.isNotEmpty ? verticalOscillations.min : 0;
   }
 
   double maxVerticalOscillation() {
@@ -300,9 +294,7 @@ class RecordList<E> extends DelegatingList<E> {
         .map((Event record) => record.verticalOscillation)
         .nonZeros()
         .cast<double>();
-    return verticalOscillations.isNotEmpty
-        ? verticalOscillations.max() as double
-        : 0;
+    return verticalOscillations.isNotEmpty ? verticalOscillations.max : 0;
   }
 
   // Form Power
@@ -323,13 +315,13 @@ class RecordList<E> extends DelegatingList<E> {
   int minFormPower() {
     final List<int> formPowers =
         _records.map((Event record) => record.formPower).nonZeros().cast<int>();
-    return formPowers.isNotEmpty ? formPowers.min() as int : 0;
+    return formPowers.isNotEmpty ? formPowers.min : 0;
   }
 
   int maxFormPower() {
     final List<int> formPowers =
         _records.map((Event record) => record.formPower).nonZeros().cast<int>();
-    return formPowers.isNotEmpty ? formPowers.max() as int : 0;
+    return formPowers.isNotEmpty ? formPowers.max : 0;
   }
 
   // Power Ratio
@@ -488,7 +480,8 @@ class RecordList<E> extends DelegatingList<E> {
           sum = sum + record.legSpringStiffness!;
           break;
         case LapDoubleAttr.powerRatio:
-          sum = sum + ((record.power! - record.formPower!) / record.power! * 100);
+          sum =
+              sum + ((record.power! - record.formPower!) / record.power! * 100);
           break;
         case LapDoubleAttr.strideRatio:
           sum = sum +
