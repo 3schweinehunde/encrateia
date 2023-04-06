@@ -30,8 +30,10 @@ Future<void> deleteAthlete({
           MyButton.delete(
             onPressed: () async {
               await athlete!.delete();
-              Navigator.of(context)
-                  .popUntil((Route<dynamic> route) => route.isFirst);
+              if (context.mounted) {
+                Navigator.of(context)
+                    .popUntil((Route<dynamic> route) => route.isFirst);
+              }
             },
           ),
         ],

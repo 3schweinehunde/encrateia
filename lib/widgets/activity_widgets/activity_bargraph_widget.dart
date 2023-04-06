@@ -185,9 +185,9 @@ class ActivityBarGraphWidgetState extends State<ActivityBarGraphWidget> {
   Future<void> getData() async {
     final Activity activity = widget.activity!;
     _laps = await activity.laps;
-    for (final Lap _lap in _laps) {
-      _lap.powerDistributions = await _lap.powerZoneCounts();
-      _lap.heartRateDistributions = await _lap.heartRateZoneCounts();
+    for (final Lap lap in _laps) {
+      lap.powerDistributions = await lap.powerZoneCounts();
+      lap.heartRateDistributions = await lap.heartRateZoneCounts();
     }
 
     _powerZoneSchema = await activity.powerZoneSchema;

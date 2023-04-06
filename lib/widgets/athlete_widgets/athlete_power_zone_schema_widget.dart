@@ -44,7 +44,7 @@ class AthletePowerZoneSchemaWidgetState
             child: Text(
               '\nPowerZoneSchemas ${offset + 1} - ${offset + rows} '
               'of ${powerZoneSchemas.length}',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
           DataTable(

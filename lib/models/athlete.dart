@@ -194,12 +194,14 @@ class Athlete {
       currentStravaClient = stravaClient!;
     }
 
-    await currentStravaClient.authentication
-        .authenticate(scopes: <AuthenticationScope>[
-      AuthenticationScope.read_all,
-      AuthenticationScope.profile_read_all,
-      AuthenticationScope.activity_read_all
-    ], redirectUrl: 'stravaflutter://redirect');
+    await currentStravaClient.authentication.authenticate(
+        scopes: <AuthenticationScope>[
+          AuthenticationScope.read_all,
+          AuthenticationScope.profile_read_all,
+          AuthenticationScope.activity_read_all
+        ],
+        redirectUrl: 'stravaflutter://redirect',
+        callbackUrlScheme: 'stravaflutter');
 
     final DateTime now = DateTime.now();
     final DateTime startDate =

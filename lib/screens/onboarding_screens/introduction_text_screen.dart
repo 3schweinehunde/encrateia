@@ -16,11 +16,11 @@ class IntroductionTextScreen extends StatelessWidget {
       body: SafeArea(
         child: Markdown(
           onTapLink: (
-            String _text,
+            String text,
             String? url,
-            String _title,
+            String title,
           ) =>
-              launch(url!),
+              launchUrl(url as Uri),
           data: '''
 ## What is Encrateia?
 

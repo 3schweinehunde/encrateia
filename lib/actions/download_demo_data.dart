@@ -38,8 +38,8 @@ Future<void> downloadDemoData({
 
     for (final String filename in fileNames) {
       final Activity activity = Activity.fromLocalDirectory(athlete: athlete);
-      await dio.download(downloadDir + filename,
-          appDocDir.path + '/' + activity.stravaId.toString() + '.fit');
+      await dio.download(
+          downloadDir + filename, '${appDocDir.path}/${activity.stravaId}.fit');
       await activity.setState('downloaded');
     }
 

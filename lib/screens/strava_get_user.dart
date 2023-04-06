@@ -44,12 +44,14 @@ class StravaGetUserState extends State<StravaGetUser> {
     final StravaClient stravaClient = StravaClient(
         clientId: clientId, secret: secret, applicationName: athlete.uuid);
 
-    await stravaClient.authentication
-        .authenticate(scopes: <AuthenticationScope>[
-      AuthenticationScope.read_all,
-      AuthenticationScope.profile_read_all,
-      AuthenticationScope.activity_read_all
-    ], redirectUrl: 'stravaflutter://redirect');
+    await stravaClient.authentication.authenticate(
+        scopes: <AuthenticationScope>[
+          AuthenticationScope.read_all,
+          AuthenticationScope.profile_read_all,
+          AuthenticationScope.activity_read_all
+        ],
+        redirectUrl: 'stravaflutter://redirect',
+        callbackUrlScheme: 'stravaflutter');
 
     final DetailedAthlete stravaAthlete =
         await stravaClient.athletes.getAuthenticatedAthlete();
