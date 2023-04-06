@@ -757,6 +757,7 @@ class DbEncrateia extends SqfEntityModelProvider {
 
     bundledDatabasePath = encrateia
         .bundledDatabasePath; //'assets/sample.db'; // This value is optional. When bundledDatabasePath is empty then EntityBase creats a new database when initializing the database
+    databasePath = encrateia.databasePath;
   }
   Map<String, dynamic> getControllers() {
     final controllers = <String, dynamic>{};
@@ -1330,7 +1331,6 @@ class DbAthlete extends TableBase {
                       loadParents: false /*, loadedFields:_loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD CHILD
-
     } else {
       obj = null;
     }
@@ -1378,15 +1378,10 @@ class DbAthlete extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbAthlete> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbAthlete> dbathletes) async {
+  static Future<List<dynamic>> saveAll(List<DbAthlete> dbathletes,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -1394,7 +1389,10 @@ class DbAthlete extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbathletes.length; i++) {
         if (dbathletes[i].id == null) {
           dbathletes[i].id = result![i] as int;
@@ -1446,10 +1444,14 @@ class DbAthlete extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbAthlete> dbathletes) async {
+  Future<BoolCommitResult> upsertAll(List<DbAthlete> dbathletes,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbAthlete.rawInsertAll(
         'INSERT OR REPLACE INTO athletes (id, state, firstName, lastName, stravaUsername, photoPath, stravaId, geoState, downloadInterval, recordAggregationCount, uuid)  VALUES (?,?,?,?,?,?,?,?,?,?,?)',
-        dbathletes);
+        dbathletes,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -1562,6 +1564,14 @@ class DbAthlete extends TableBase {
   void _setDefaultValues() {
     state = state ?? 'new';
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -1997,7 +2007,6 @@ class DbAthleteFilterBuilder extends ConjunctionBase {
                       loadParents: false /*, loadedFields:_loadedFields*/);
         }
       } // END RELATIONSHIPS PRELOAD CHILD
-
     } else {
       obj = null;
     }
@@ -3929,7 +3938,6 @@ class DbActivity extends TableBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -3977,15 +3985,10 @@ class DbActivity extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbActivity> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbActivity> dbactivities) async {
+  static Future<List<dynamic>> saveAll(List<DbActivity> dbactivities,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -3993,7 +3996,10 @@ class DbActivity extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbactivities.length; i++) {
         if (dbactivities[i].id == null) {
           dbactivities[i].id = result![i] as int;
@@ -4118,10 +4124,14 @@ class DbActivity extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbActivity> dbactivities) async {
+  Future<BoolCommitResult> upsertAll(List<DbActivity> dbactivities,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbActivity.rawInsertAll(
         'INSERT OR REPLACE INTO activities (id, state, path, stravaId, name, movingTime, type, distance, serialNumber, timeCreated, sportName, sport, subSport, timeStamp, startTime, startPositionLat, startPositionLong, event, eventType, eventGroup, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, maxRunningCadence, trigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgStanceTimePercent, avgStanceTime, avgHeartRate, maxHeartRate, avgRunningCadence, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalTrainingEffect, necLat, necLong, swcLat, swcLong, firstLapIndex, numLaps, numSessions, localTimestamp, avgPower, sdevPower, minPower, maxPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, cp, ftp, nonParsable, excluded, manual, athletesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        dbactivities);
+        dbactivities,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -4209,6 +4219,14 @@ class DbActivity extends TableBase {
     state = state ?? 'new';
     athletesId = athletesId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -5011,7 +5029,6 @@ class DbActivityFilterBuilder extends ConjunctionBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -6380,7 +6397,6 @@ class DbEvent extends TableBase {
               obj.plDbLap ?? await obj.getDbLap(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -6428,15 +6444,10 @@ class DbEvent extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbEvent> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbEvent> dbevents) async {
+  static Future<List<dynamic>> saveAll(List<DbEvent> dbevents,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -6444,7 +6455,10 @@ class DbEvent extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbevents.length; i++) {
         if (dbevents[i].id == null) {
           dbevents[i].id = result![i] as int;
@@ -6508,10 +6522,14 @@ class DbEvent extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbEvent> dbevents) async {
+  Future<BoolCommitResult> upsertAll(List<DbEvent> dbevents,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbEvent.rawInsertAll(
         'INSERT OR REPLACE INTO events (id, event, eventType, eventGroup, timerTrigger, timeStamp, positionLat, positionLong, distance, altitude, speed, heartRate, cadence, fractionalCadence, power, strydCadence, groundTime, verticalOscillation, formPower, legSpringStiffness, data, activitiesId, lapsId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        dbevents);
+        dbevents,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -6581,6 +6599,14 @@ class DbEvent extends TableBase {
     activitiesId = activitiesId ?? 0;
     lapsId = lapsId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -7012,7 +7038,6 @@ class DbEventFilterBuilder extends ConjunctionBase {
               obj.plDbLap ?? await obj.getDbLap(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -8617,7 +8642,6 @@ class DbLap extends TableBase {
               await obj.getDbActivity(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -8665,15 +8689,10 @@ class DbLap extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbLap> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbLap> dblaps) async {
+  static Future<List<dynamic>> saveAll(List<DbLap> dblaps,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -8681,7 +8700,10 @@ class DbLap extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dblaps.length; i++) {
         if (dblaps[i].id == null) {
           dblaps[i].id = result![i] as int;
@@ -8785,10 +8807,14 @@ class DbLap extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbLap> dblaps) async {
+  Future<BoolCommitResult> upsertAll(List<DbLap> dblaps,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbLap.rawInsertAll(
         'INSERT OR REPLACE INTO laps (id, timeStamp, startTime, startPositionLat, startPositionLong, endPositionLat, endPositionLong, avgHeartRate, maxHeartRate, avgRunningCadence, event, eventType, eventGroup, sport, subSport, avgVerticalOscillation, totalElapsedTime, totalTimerTime, totalDistance, totalStrides, totalCalories, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, sdevSpeed, sdevPace, minSpeed, maxSpeed, totalAscent, totalDescent, avgStanceTimePercent, avgStanceTime, maxRunningCadence, intensity, lapTrigger, avgTemperature, maxTemperature, avgFractionalCadence, maxFractionalCadence, totalFractionalCycles, avgPower, minPower, maxPower, sdevPower, minHeartRate, sdevHeartRate, avgGroundTime, sdevGroundTime, avgLegSpringStiffness, sdevLegSpringStiffness, avgFormPower, sdevFormPower, avgStrydCadence, sdevStrydCadence, sdevVerticalOscillation, avgPowerRatio, sdevPowerRatio, avgStrideRatio, sdevStrideRatio, cp, ftp, movingTime, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        dblaps);
+        dblaps,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -8853,6 +8879,14 @@ class DbLap extends TableBase {
   void _setDefaultValues() {
     activitiesId = activitiesId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -9516,7 +9550,6 @@ class DbLapFilterBuilder extends ConjunctionBase {
               await obj.getDbActivity(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -11274,7 +11307,6 @@ class DbInterval extends TableBase {
               await obj.getDbActivity(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -11322,15 +11354,10 @@ class DbInterval extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbInterval> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbInterval> dbintervals) async {
+  static Future<List<dynamic>> saveAll(List<DbInterval> dbintervals,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -11338,7 +11365,10 @@ class DbInterval extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbintervals.length; i++) {
         if (dbintervals[i].id == null) {
           dbintervals[i].id = result![i] as int;
@@ -11432,10 +11462,14 @@ class DbInterval extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbInterval> dbintervals) async {
+  Future<BoolCommitResult> upsertAll(List<DbInterval> dbintervals,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbInterval.rawInsertAll(
         'INSERT OR REPLACE INTO intervals (id, timeStamp, duration, avgPower, minPower, maxPower, sdevPower, avgSpeed, avgSpeedByMeasurements, avgSpeedBySpeed, avgSpeedByDistance, minSpeed, maxSpeed, sdevSpeed, sdevPace, distance, avgHeartRate, minHeartRate, maxHeartRate, sdevHeartRate, avgCadence, minCadence, maxCadence, sdevCadence, avgStrydCadence, minStrydCadence, maxStrydCadence, sdevStrydCadence, avgGroundTime, minGroundTime, maxGroundTime, sdevGroundTime, avgVerticalOscillation, minVerticalOscillation, maxVerticalOscillation, sdevVerticalOscillation, avgFormPower, maxFormPower, minFormPower, sdevFormPower, avgLegSpringStiffness, maxLegSpringStiffness, minLegSpringStiffness, sdevLegSpringStiffness, totalAscent, totalDescent, cp, ftp, movingTime, firstRecordId, lastRecordId, athletesId, activitiesId)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        dbintervals);
+        dbintervals,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -11496,6 +11530,14 @@ class DbInterval extends TableBase {
     athletesId = athletesId ?? 0;
     activitiesId = activitiesId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -12097,7 +12139,6 @@ class DbIntervalFilterBuilder extends ConjunctionBase {
               await obj.getDbActivity(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -12859,7 +12900,6 @@ class DbWeight extends TableBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -12907,15 +12947,10 @@ class DbWeight extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbWeight> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbWeight> dbweights) async {
+  static Future<List<dynamic>> saveAll(List<DbWeight> dbweights,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -12923,7 +12958,10 @@ class DbWeight extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbweights.length; i++) {
         if (dbweights[i].id == null) {
           dbweights[i].id = result![i] as int;
@@ -12968,10 +13006,14 @@ class DbWeight extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbWeight> dbweights) async {
+  Future<BoolCommitResult> upsertAll(List<DbWeight> dbweights,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbWeight.rawInsertAll(
         'INSERT OR REPLACE INTO weights (id, date, value, athletesId)  VALUES (?,?,?,?)',
-        dbweights);
+        dbweights,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -13017,6 +13059,14 @@ class DbWeight extends TableBase {
   void _setDefaultValues() {
     athletesId = athletesId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -13294,7 +13344,6 @@ class DbWeightFilterBuilder extends ConjunctionBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -13829,7 +13878,6 @@ class DbHeartRateZoneSchema extends TableBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -13877,16 +13925,13 @@ class DbHeartRateZoneSchema extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbHeartRateZoneSchema> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(
-      List<DbHeartRateZoneSchema> dbheartratezoneschemas) async {
+      List<DbHeartRateZoneSchema> dbheartratezoneschemas,
+      {bool? exclusive,
+      bool? noResult,
+      bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -13894,7 +13939,10 @@ class DbHeartRateZoneSchema extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbheartratezoneschemas.length; i++) {
         if (dbheartratezoneschemas[i].id == null) {
           dbheartratezoneschemas[i].id = result![i] as int;
@@ -13944,10 +13992,16 @@ class DbHeartRateZoneSchema extends TableBase {
   /// Returns a BoolCommitResult
   @override
   Future<BoolCommitResult> upsertAll(
-      List<DbHeartRateZoneSchema> dbheartratezoneschemas) async {
+      List<DbHeartRateZoneSchema> dbheartratezoneschemas,
+      {bool? exclusive,
+      bool? noResult,
+      bool? continueOnError}) async {
     final results = await _mnDbHeartRateZoneSchema.rawInsertAll(
         'INSERT OR REPLACE INTO heartRateZoneSchemata (id, date, name, base, athletesId)  VALUES (?,?,?,?,?)',
-        dbheartratezoneschemas);
+        dbheartratezoneschemas,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -14005,6 +14059,14 @@ class DbHeartRateZoneSchema extends TableBase {
   void _setDefaultValues() {
     athletesId = athletesId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -14323,7 +14385,6 @@ class DbHeartRateZoneSchemaFilterBuilder extends ConjunctionBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -14850,7 +14911,6 @@ class DbHeartRateZone extends TableBase {
               await obj.getDbHeartRateZoneSchema(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -14898,16 +14958,10 @@ class DbHeartRateZone extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbHeartRateZone> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(
-      List<DbHeartRateZone> dbheartratezones) async {
+  static Future<List<dynamic>> saveAll(List<DbHeartRateZone> dbheartratezones,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -14915,7 +14969,10 @@ class DbHeartRateZone extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbheartratezones.length; i++) {
         if (dbheartratezones[i].id == null) {
           dbheartratezones[i].id = result![i] as int;
@@ -14965,11 +15022,14 @@ class DbHeartRateZone extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(
-      List<DbHeartRateZone> dbheartratezones) async {
+  Future<BoolCommitResult> upsertAll(List<DbHeartRateZone> dbheartratezones,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbHeartRateZone.rawInsertAll(
         'INSERT OR REPLACE INTO heartRateZone (id, name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, heartRateZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',
-        dbheartratezones);
+        dbheartratezones,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -15015,6 +15075,14 @@ class DbHeartRateZone extends TableBase {
   void _setDefaultValues() {
     heartRateZoneSchemataId = heartRateZoneSchemataId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -15318,7 +15386,6 @@ class DbHeartRateZoneFilterBuilder extends ConjunctionBase {
               await obj.getDbHeartRateZoneSchema(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -15883,7 +15950,6 @@ class DbPowerZoneSchema extends TableBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -15931,16 +15997,13 @@ class DbPowerZoneSchema extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbPowerZoneSchema> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(
-      List<DbPowerZoneSchema> dbpowerzoneschemas) async {
+      List<DbPowerZoneSchema> dbpowerzoneschemas,
+      {bool? exclusive,
+      bool? noResult,
+      bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -15948,7 +16011,10 @@ class DbPowerZoneSchema extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbpowerzoneschemas.length; i++) {
         if (dbpowerzoneschemas[i].id == null) {
           dbpowerzoneschemas[i].id = result![i] as int;
@@ -15996,11 +16062,14 @@ class DbPowerZoneSchema extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(
-      List<DbPowerZoneSchema> dbpowerzoneschemas) async {
+  Future<BoolCommitResult> upsertAll(List<DbPowerZoneSchema> dbpowerzoneschemas,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbPowerZoneSchema.rawInsertAll(
         'INSERT OR REPLACE INTO powerZoneSchemata (id, date, name, base, athletesId)  VALUES (?,?,?,?,?)',
-        dbpowerzoneschemas);
+        dbpowerzoneschemas,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -16058,6 +16127,14 @@ class DbPowerZoneSchema extends TableBase {
   void _setDefaultValues() {
     athletesId = athletesId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -16370,7 +16447,6 @@ class DbPowerZoneSchemaFilterBuilder extends ConjunctionBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -16888,7 +16964,6 @@ class DbPowerZone extends TableBase {
               await obj.getDbPowerZoneSchema(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -16936,15 +17011,10 @@ class DbPowerZone extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbPowerZone> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbPowerZone> dbpowerzones) async {
+  static Future<List<dynamic>> saveAll(List<DbPowerZone> dbpowerzones,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -16952,7 +17022,10 @@ class DbPowerZone extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbpowerzones.length; i++) {
         if (dbpowerzones[i].id == null) {
           dbpowerzones[i].id = result![i] as int;
@@ -17001,10 +17074,14 @@ class DbPowerZone extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbPowerZone> dbpowerzones) async {
+  Future<BoolCommitResult> upsertAll(List<DbPowerZone> dbpowerzones,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbPowerZone.rawInsertAll(
         'INSERT OR REPLACE INTO powerZone (id, name, lowerPercentage, upperPercentage, lowerLimit, upperLimit, color, powerZoneSchemataId)  VALUES (?,?,?,?,?,?,?,?)',
-        dbpowerzones);
+        dbpowerzones,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -17050,6 +17127,14 @@ class DbPowerZone extends TableBase {
   void _setDefaultValues() {
     powerZoneSchemataId = powerZoneSchemataId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -17353,7 +17438,6 @@ class DbPowerZoneFilterBuilder extends ConjunctionBase {
               await obj.getDbPowerZoneSchema(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -17987,7 +18071,6 @@ class DbTag extends TableBase {
               await obj.getDbTagGroup(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -18035,15 +18118,10 @@ class DbTag extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbTag> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbTag> dbtags) async {
+  static Future<List<dynamic>> saveAll(List<DbTag> dbtags,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -18051,7 +18129,10 @@ class DbTag extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbtags.length; i++) {
         if (dbtags[i].id == null) {
           dbtags[i].id = result![i] as int;
@@ -18090,10 +18171,14 @@ class DbTag extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbTag> dbtags) async {
+  Future<BoolCommitResult> upsertAll(List<DbTag> dbtags,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbTag.rawInsertAll(
         'INSERT OR REPLACE INTO tags (id, name, color, sortOrder, system, tagGroupsId)  VALUES (?,?,?,?,?,?)',
-        dbtags);
+        dbtags,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -18173,6 +18258,14 @@ class DbTag extends TableBase {
   void _setDefaultValues() {
     tagGroupsId = tagGroupsId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -18527,7 +18620,6 @@ class DbTagFilterBuilder extends ConjunctionBase {
               await obj.getDbTagGroup(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -19045,7 +19137,6 @@ class DbTagGroup extends TableBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -19093,15 +19184,10 @@ class DbTagGroup extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbTagGroup> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbTagGroup> dbtaggroups) async {
+  static Future<List<dynamic>> saveAll(List<DbTagGroup> dbtaggroups,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -19109,7 +19195,10 @@ class DbTagGroup extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbtaggroups.length; i++) {
         if (dbtaggroups[i].id == null) {
           dbtaggroups[i].id = result![i] as int;
@@ -19149,10 +19238,14 @@ class DbTagGroup extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbTagGroup> dbtaggroups) async {
+  Future<BoolCommitResult> upsertAll(List<DbTagGroup> dbtaggroups,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbTagGroup.rawInsertAll(
         'INSERT OR REPLACE INTO tagGroups (id, name, color, system, athletesId)  VALUES (?,?,?,?,?)',
-        dbtaggroups);
+        dbtaggroups,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -19206,6 +19299,14 @@ class DbTagGroup extends TableBase {
   void _setDefaultValues() {
     athletesId = athletesId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -19515,7 +19616,6 @@ class DbTagGroupFilterBuilder extends ConjunctionBase {
               await obj.getDbAthlete(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -19998,7 +20098,6 @@ class DbLapTagging extends TableBase {
               obj.plDbLap ?? await obj.getDbLap(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -20046,15 +20145,10 @@ class DbLapTagging extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbLapTagging> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbLapTagging> dblaptaggings) async {
+  static Future<List<dynamic>> saveAll(List<DbLapTagging> dblaptaggings,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -20062,7 +20156,10 @@ class DbLapTagging extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dblaptaggings.length; i++) {
         if (dblaptaggings[i].id == null) {
           dblaptaggings[i].id = result![i] as int;
@@ -20102,10 +20199,14 @@ class DbLapTagging extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbLapTagging> dblaptaggings) async {
+  Future<BoolCommitResult> upsertAll(List<DbLapTagging> dblaptaggings,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbLapTagging.rawInsertAll(
         'INSERT OR REPLACE INTO lapTaggings (id, system, tagsId, lapsId)  VALUES (?,?,?,?)',
-        dblaptaggings);
+        dblaptaggings,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -20152,6 +20253,14 @@ class DbLapTagging extends TableBase {
     tagsId = tagsId ?? 0;
     lapsId = lapsId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -20438,7 +20547,6 @@ class DbLapTaggingFilterBuilder extends ConjunctionBase {
               obj.plDbLap ?? await obj.getDbLap(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -20921,7 +21029,6 @@ class DbActivityTagging extends TableBase {
               await obj.getDbActivity(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -20969,16 +21076,13 @@ class DbActivityTagging extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbActivityTagging> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(
-      List<DbActivityTagging> dbactivitytaggings) async {
+      List<DbActivityTagging> dbactivitytaggings,
+      {bool? exclusive,
+      bool? noResult,
+      bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -20986,7 +21090,10 @@ class DbActivityTagging extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbactivitytaggings.length; i++) {
         if (dbactivitytaggings[i].id == null) {
           dbactivitytaggings[i].id = result![i] as int;
@@ -21028,11 +21135,14 @@ class DbActivityTagging extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(
-      List<DbActivityTagging> dbactivitytaggings) async {
+  Future<BoolCommitResult> upsertAll(List<DbActivityTagging> dbactivitytaggings,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbActivityTagging.rawInsertAll(
         'INSERT OR REPLACE INTO activityTaggings (id, system, tagsId, activitiesId)  VALUES (?,?,?,?)',
-        dbactivitytaggings);
+        dbactivitytaggings,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -21079,6 +21189,14 @@ class DbActivityTagging extends TableBase {
     tagsId = tagsId ?? 0;
     activitiesId = activitiesId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -21366,7 +21484,6 @@ class DbActivityTaggingFilterBuilder extends ConjunctionBase {
               await obj.getDbActivity(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -21851,7 +21968,6 @@ class DbIntervalTagging extends TableBase {
               await obj.getDbInterval(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -21899,16 +22015,13 @@ class DbIntervalTagging extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbIntervalTagging> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
   static Future<List<dynamic>> saveAll(
-      List<DbIntervalTagging> dbintervaltaggings) async {
+      List<DbIntervalTagging> dbintervaltaggings,
+      {bool? exclusive,
+      bool? noResult,
+      bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -21916,7 +22029,10 @@ class DbIntervalTagging extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dbintervaltaggings.length; i++) {
         if (dbintervaltaggings[i].id == null) {
           dbintervaltaggings[i].id = result![i] as int;
@@ -21958,11 +22074,14 @@ class DbIntervalTagging extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(
-      List<DbIntervalTagging> dbintervaltaggings) async {
+  Future<BoolCommitResult> upsertAll(List<DbIntervalTagging> dbintervaltaggings,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbIntervalTagging.rawInsertAll(
         'INSERT OR REPLACE INTO intervalTaggings (id, system, tagsId, intervalsId)  VALUES (?,?,?,?)',
-        dbintervaltaggings);
+        dbintervaltaggings,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -22009,6 +22128,14 @@ class DbIntervalTagging extends TableBase {
     tagsId = tagsId ?? 0;
     intervalsId = intervalsId ?? 0;
   }
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
@@ -22296,7 +22423,6 @@ class DbIntervalTaggingFilterBuilder extends ConjunctionBase {
               await obj.getDbInterval(loadParents: loadParents);
         }
       } // END RELATIONSHIPS PRELOAD
-
     } else {
       obj = null;
     }
@@ -22784,15 +22910,10 @@ class DbLog extends TableBase {
     return save(ignoreBatch: ignoreBatch);
   }
 
-  void rollbackId() {
-    if (isInsert == true) {
-      id = null;
-    }
-  }
-
   /// saveAll method saves the sent List<DbLog> as a bulk in one transaction
   /// Returns a <List<BoolResult>>
-  static Future<List<dynamic>> saveAll(List<DbLog> dblogs) async {
+  static Future<List<dynamic>> saveAll(List<DbLog> dblogs,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     List<dynamic>? result = [];
     // If there is no open transaction, start one
     final isStartedBatch = await DbEncrateia().batchStart();
@@ -22800,7 +22921,10 @@ class DbLog extends TableBase {
       await obj.save(ignoreBatch: false);
     }
     if (!isStartedBatch) {
-      result = await DbEncrateia().batchCommit();
+      result = await DbEncrateia().batchCommit(
+          exclusive: exclusive,
+          noResult: noResult,
+          continueOnError: continueOnError);
       for (int i = 0; i < dblogs.length; i++) {
         if (dblogs[i].id == null) {
           dblogs[i].id = result![i] as int;
@@ -22846,10 +22970,14 @@ class DbLog extends TableBase {
   /// upsertAll() method is faster then saveAll() method. upsertAll() should be used when you are sure that the primary key is greater than zero
   /// Returns a BoolCommitResult
   @override
-  Future<BoolCommitResult> upsertAll(List<DbLog> dblogs) async {
+  Future<BoolCommitResult> upsertAll(List<DbLog> dblogs,
+      {bool? exclusive, bool? noResult, bool? continueOnError}) async {
     final results = await _mnDbLog.rawInsertAll(
         'INSERT OR REPLACE INTO logs (id, dateTime, message, method, comment, stackTrace)  VALUES (?,?,?,?,?,?)',
-        dblogs);
+        dblogs,
+        exclusive: exclusive,
+        noResult: noResult,
+        continueOnError: continueOnError);
     return results;
   }
 
@@ -22893,6 +23021,14 @@ class DbLog extends TableBase {
   }
 
   void _setDefaultValues() {}
+
+  @override
+  void rollbackPk() {
+    if (isInsert == true) {
+      id = null;
+    }
+  }
+
   // END METHODS
   // BEGIN CUSTOM CODE
   /*
