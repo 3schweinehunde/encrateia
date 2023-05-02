@@ -166,11 +166,15 @@ class AddPowerZoneScreenState extends State<AddPowerZoneScreen> {
 
   Future<void> savePowerZone(BuildContext context) async {
     await widget.powerZone!.save();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> deletePowerZone(BuildContext context) async {
     await widget.powerZone!.delete();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 }

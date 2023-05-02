@@ -24,17 +24,19 @@ Future<void> downloadDemoData({
       'upper_palatinate_winter_challenge_half_marathon.fit',
     ];
 
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            MyIcon.stravaDownloadWhite,
-            const Text(' Downloading Demo data ...'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              MyIcon.stravaDownloadWhite,
+              const Text(' Downloading Demo data ...'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     for (final String filename in fileNames) {
       final Activity activity = Activity.fromLocalDirectory(athlete: athlete);
@@ -52,37 +54,44 @@ Future<void> downloadDemoData({
             activity.excluded != true)
         .toList();
     for (final Activity activity in downloadedActivities) {
-      await parseActivity(
-        context: context,
-        activity: activity,
-        athlete: athlete,
-      );
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      if (context.mounted) {
+        await parseActivity(
+          context: context,
+          activity: activity,
+          athlete: athlete,
+        );
+      }
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(' Tagging »${activity.name}«')),
-      );
-
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(' Tagging »${activity.name}«')),
+        );
+      }
       await activity.autoTagger(athlete: athlete);
     }
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text(' Activities imported!'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text(' Activities imported!'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   } else {
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(' Please set up Power Zone Schema and Heart'
-            ' Rate Zone Schema first!'),
-      ),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(' Please set up Power Zone Schema and Heart'
+              ' Rate Zone Schema first!'),
+        ),
+      );
+    }
   }
 }

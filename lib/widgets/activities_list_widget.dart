@@ -113,17 +113,19 @@ class ActivitiesListWidgetState extends State<ActivitiesListWidget> {
     );
 
     await activity.download(athlete: widget.athlete);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 3),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text(' Download finished'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 3),
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text(' Download finished'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     setState(() {});
   }

@@ -105,11 +105,15 @@ class AddTagScreenState extends State<AddTagScreen> {
 
   Future<void> saveTag(BuildContext context) async {
     await widget.tag!.save();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> deleteTag(BuildContext context) async {
     await widget.tag!.delete();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 }

@@ -60,12 +60,14 @@ Future<void> parseActivity({
     await log.save();
     activity.nonParsable = true;
     await activity.save();
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-          duration: Duration(seconds: 2),
-          content: Text('Error, see log on home screen for details')),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            duration: Duration(seconds: 2),
+            content: Text('Error, see log on home screen for details')),
+      );
+    }
   }
 }

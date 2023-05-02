@@ -55,13 +55,15 @@ class OnboardingCreateUserScreenState
                           child: const Text('Create Demo User'),
                           onPressed: () async {
                             await setupDemoAthlete(context: context);
-                            await Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute<BuildContext>(
-                                builder: (BuildContext _) =>
-                                    const OnboardingFinishedScreen(),
-                              ),
-                            );
+                            if (context.mounted) {
+                              await Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute<BuildContext>(
+                                  builder: (BuildContext _) =>
+                                      const OnboardingFinishedScreen(),
+                                ),
+                              );
+                            }
                           },
                         )
                       ],
@@ -95,14 +97,16 @@ class OnboardingCreateUserScreenState
                                     StravaGetUser(athlete: athlete),
                               ),
                             );
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute<BuildContext>(
-                                builder: (BuildContext _) =>
-                                    OnBoardingStravaCredentialsScreen(
-                                        athlete: athlete),
-                              ),
-                            );
+                            if (context.mounted) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute<BuildContext>(
+                                  builder: (BuildContext _) =>
+                                      OnBoardingStravaCredentialsScreen(
+                                          athlete: athlete),
+                                ),
+                              );
+                            }
                           },
                         )
                       ],

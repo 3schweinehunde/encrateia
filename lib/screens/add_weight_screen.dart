@@ -66,11 +66,15 @@ class AddWeightScreen extends StatelessWidget {
 
   Future<void> saveWeight(BuildContext context) async {
     await weight!.save();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> deleteWeight(BuildContext context) async {
     await weight!.delete();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 }

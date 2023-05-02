@@ -13,44 +13,55 @@ Future<void> analyseActivities({
   int index = 0;
   int percent;
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      duration: const Duration(seconds: 5),
-      content: Row(
-        children: [
-          MyIcon.finishedWhite,
-          const Text(' Calculating...'),
-        ],
-      ),
-    ),
-  );
-
-  for (final Activity activity in activities) {
-    index += 1;
-    await activity.setAverages();
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    percent = 100 * index ~/ activities.length;
+  if (context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Row(children: [
-          CircularProgressIndicator(value: percent / 100, color: MyColor.progress),
-          Text(' recalculating »${activity.name}«')
-        ]),
+        duration: const Duration(seconds: 5),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text(' Calculating...'),
+          ],
+        ),
       ),
     );
   }
 
-  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      duration: const Duration(seconds: 5),
-      content: Row(
-        children: [
-          MyIcon.finishedWhite,
-          const Text(' Averages are now up to date.')
-        ],
+  for (final Activity activity in activities) {
+    index += 1;
+    await activity.setAverages();
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    }
+    percent = 100 * index ~/ activities.length;
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Row(children: [
+            CircularProgressIndicator(
+                value: percent / 100, color: MyColor.progress),
+            Text(' recalculating »${activity.name}«')
+          ]),
+        ),
+      );
+    }
+  }
+
+  if (context.mounted) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+  }
+  if (context.mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 5),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text(' Averages are now up to date.')
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

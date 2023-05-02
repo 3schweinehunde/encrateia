@@ -10,17 +10,19 @@ Future<void> autoTagging({
   required Athlete athlete,
 }) async {
   if (await athlete.checkForSchemas()) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 5),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text('Started cleaning up...'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text('Started cleaning up...'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     List<Activity> activities;
     activities = await athlete.activities;
@@ -28,61 +30,74 @@ Future<void> autoTagging({
     int percent;
 
     await TagGroup.deleteAllAutoTags(athlete: athlete);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text('All existing autotaggings have been deleted.'),
-          ],
-        ),
-      ),
-    );
-
-    for (final Activity activity in activities) {
-      index += 1;
-      await activity.autoTagger(athlete: athlete);
-      ScaffoldMessenger.of(context).removeCurrentSnackBar();
-      percent = 100 * index ~/ activities.length;
-
+    if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           duration: const Duration(seconds: 2),
           content: Row(
             children: [
-              CircularProgressIndicator(value: percent / 100, color: MyColor.progress),
-              Text(' $percent% done (autotagging »${activity.name}« )'),
+              MyIcon.finishedWhite,
+              const Text('All existing autotaggings have been deleted.'),
             ],
           ),
         ),
       );
     }
 
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 5),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text(' Autotaggings are now up to date.'),
-          ],
+    for (final Activity activity in activities) {
+      index += 1;
+      await activity.autoTagger(athlete: athlete);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      }
+      percent = 100 * index ~/ activities.length;
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 2),
+            content: Row(
+              children: [
+                CircularProgressIndicator(
+                    value: percent / 100, color: MyColor.progress),
+                Text(' $percent% done (autotagging »${activity.name}« )'),
+              ],
+            ),
+          ),
+        );
+      }
+    }
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    }
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text(' Autotaggings are now up to date.'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 5),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text(' Please set up Power Zone Schema and '
-                'Heart Rate Zone Schema first!'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text(' Please set up Power Zone Schema and '
+                  'Heart Rate Zone Schema first!'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

@@ -332,12 +332,15 @@ class ShowAthleteScreenState extends State<ShowAthleteScreen> {
 
   Future<void> goToEditAthleteScreen({required Athlete athlete}) async {
     await athlete.readCredentials();
-    await Navigator.push(
-      context,
-      MaterialPageRoute<BuildContext>(
-        builder: (BuildContext context) => EditAthleteScreen(athlete: athlete),
-      ),
-    );
+    if (context.mounted) {
+      await Navigator.push(
+        context,
+        MaterialPageRoute<BuildContext>(
+          builder: (BuildContext context) =>
+              EditAthleteScreen(athlete: athlete),
+        ),
+      );
+    }
   }
 
   Future<void> goToEditActivityScreen({required Athlete athlete}) async {

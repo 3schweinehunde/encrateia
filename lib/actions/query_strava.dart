@@ -19,16 +19,18 @@ Future<void> queryStrava({
   );
 
   await athlete.queryStrava();
-  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      duration: const Duration(seconds: 1),
-      content: Row(
-        children: [
-          MyIcon.finishedWhite,
-          const Text('Download finished'),
-        ],
+  if (context.mounted) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 1),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text('Download finished'),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

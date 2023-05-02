@@ -21,16 +21,18 @@ Future<void> downloadActivity({
 
   await activity.download(athlete: athlete);
 
-  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      duration: const Duration(seconds: 2),
-      content: Row(
-        children: [
-          MyIcon.finishedWhite,
-          const Text(' Download finished'),
-        ],
+  if (context.mounted) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        content: Row(
+          children: [
+            MyIcon.finishedWhite,
+            const Text(' Download finished'),
+          ],
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

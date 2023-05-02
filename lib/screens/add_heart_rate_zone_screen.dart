@@ -169,11 +169,15 @@ class AddHeartRateZoneScreenState extends State<AddHeartRateZoneScreen> {
 
   Future<void> saveHeartRateZone(BuildContext context) async {
     await widget.heartRateZone!.save();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> deleteHeartRateZone(BuildContext context) async {
     await widget.heartRateZone!.delete();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 }

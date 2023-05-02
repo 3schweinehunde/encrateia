@@ -81,21 +81,24 @@ class EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
   Future<void> saveStravaUser(BuildContext context) async {
     await widget.athlete!.save();
     await widget.athlete!.storeCredentials();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 10),
-        content: Row(
-          children: [
-            MyIcon.information,
-            const Text(' checking credentials...'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 10),
+          content: Row(
+            children: [
+              MyIcon.information,
+              const Text(' checking credentials...'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     if (await StravaFitDownload.credentialsAreValid(athlete: widget.athlete!)) {
       final List<PowerZoneSchema> powerZoneSchemas =
           await widget.athlete!.powerZoneSchemas;
+      if (context.mounted) {
       ScaffoldMessenger.of(context).removeCurrentSnackBar();
       if (powerZoneSchemas.isEmpty) {
         Navigator.pushReplacement(
@@ -105,21 +108,24 @@ class EditStravaAthleteWidgetState extends State<EditStravaAthleteWidget> {
                 OnBoardingPowerZoneSchemaScreen(athlete: widget.athlete),
           ),
         );
+      }
       } else {
         Navigator.of(context).pop();
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 5),
-          content: Row(
-            children: [
-              MyIcon.error,
-              const Text(' The credentials provided are invalid!'),
-            ],
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 5),
+            content: Row(
+              children: [
+                MyIcon.error,
+                const Text(' The credentials provided are invalid!'),
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
 }

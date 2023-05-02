@@ -25,10 +25,13 @@ Future<void> setupDemoAthlete({
   weight.date = DateTime(2015);
   await weight.save();
 
-  await downloadDemoData(
-    context: context,
-    athlete: athlete,
-  );
-
-  ScaffoldMessenger.of(context).removeCurrentSnackBar();
+  if (context.mounted) {
+    await downloadDemoData(
+      context: context,
+      athlete: athlete,
+    );
+  }
+  if (context.mounted) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+  }
 }

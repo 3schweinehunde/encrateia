@@ -60,13 +60,17 @@ class EditActivityWidgetState extends State<EditActivityWidget> {
                         firstDate: DateTime(1969),
                         initialDate: currentValue ?? DateTime.now(),
                         lastDate: DateTime(2100));
-                    if (date != null) {
-                      final TimeOfDay? time = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.fromDateTime(
-                            currentValue ?? DateTime.now()),
-                      );
-                      return DateTimeField.combine(date, time);
+                    if (context.mounted) {
+                      if (date != null) {
+                        final TimeOfDay? time = await showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.fromDateTime(
+                              currentValue ?? DateTime.now()),
+                        );
+                        return DateTimeField.combine(date, time);
+                      } else {
+                        return currentValue;
+                      }
                     } else {
                       return currentValue;
                     }
@@ -194,7 +198,9 @@ class EditActivityWidgetState extends State<EditActivityWidget> {
                 child: MyButton.save(
                   onPressed: () async {
                     await widget.activity!.save();
-                    Navigator.of(context).pop();
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                    }
                   },
                 ),
               ),

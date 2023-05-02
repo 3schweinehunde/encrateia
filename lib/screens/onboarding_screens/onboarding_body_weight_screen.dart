@@ -71,11 +71,13 @@ class OnBoardingBodyWeightScreenState
   Future<void> nextButton() async {
     await widget.athlete!.save();
     debugPrint('OK');
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<BuildContext>(
-        builder: (BuildContext _) => const OnboardingFinishedScreen(),
-      ),
-    );
+    if (context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute<BuildContext>(
+          builder: (BuildContext _) => const OnboardingFinishedScreen(),
+        ),
+      );
+    }
   }
 }

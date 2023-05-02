@@ -75,13 +75,16 @@ class OnBoardingPowerZoneSchemaScreenState
 
   Future<void> nextButton() async {
     await widget.athlete!.save();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute<BuildContext>(
-        builder: (BuildContext _) => OnBoardingHeartRateZoneSchemaScreen(
-          athlete: widget.athlete,
+    if (context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute<BuildContext>(
+          builder: (BuildContext _) =>
+              OnBoardingHeartRateZoneSchemaScreen(
+                athlete: widget.athlete,
+              ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

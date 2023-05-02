@@ -180,7 +180,9 @@ class AddTagGroupScreenState extends State<AddTagGroupScreen> {
   Future<void> saveTagGroup(BuildContext context) async {
     await widget.tagGroup!.save();
     await Tag.upsertAll(tags);
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> getData() async {
@@ -190,6 +192,8 @@ class AddTagGroupScreenState extends State<AddTagGroupScreen> {
 
   Future<void> deleteTagGroup({required TagGroup tagGroup}) async {
     await tagGroup.delete();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 }

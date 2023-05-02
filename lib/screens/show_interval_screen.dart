@@ -177,7 +177,9 @@ class ShowIntervalScreen extends StatelessWidget {
         onPressed: () async {
           await interval.delete();
           activity!.cachedIntervals = <encrateia.Interval>[];
-          Navigator.of(context).pop();
+          if (context.mounted) {
+            Navigator.of(context).pop();
+          }
         },
       ),
     ];
@@ -215,8 +217,7 @@ class ShowIntervalScreen extends StatelessWidget {
   }) {
     return ElevatedButton.icon(
       style: MyButtonStyle.raisedButtonStyle(
-          color: color,
-          textColor: MyColor.textColor(backgroundColor: color)),
+          color: color, textColor: MyColor.textColor(backgroundColor: color)),
       icon: icon,
       label: Expanded(
         child: Text(title),

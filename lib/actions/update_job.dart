@@ -13,20 +13,24 @@ Future<void> updateJob({
   List<Activity> activities;
 
   if (await athlete.checkForSchemas()) {
-    await queryStrava(
-      context: context,
-      athlete: athlete,
-    );
+    if (context.mounted) {
+      await queryStrava(
+        context: context,
+        athlete: athlete,
+      );
+    }
 
     activities = await athlete.activities;
     final Iterable<Activity> newActivities =
         activities.where((Activity activity) => activity.state == 'new');
     for (final Activity activity in newActivities) {
-      await downloadActivity(
-        context: context,
-        activity: activity,
-        athlete: athlete,
-      );
+      if (context.mounted) {
+        await downloadActivity(
+          context: context,
+          activity: activity,
+          athlete: athlete,
+        );
+      }
     }
 
     final Iterable<Activity> downloadedActivities = activities.where(
@@ -36,37 +40,44 @@ Future<void> updateJob({
             activity.nonParsable != true &&
             activity.excluded != true);
     for (final Activity activity in downloadedActivities) {
-      await parseActivity(
-        context: context,
-        activity: activity,
-        athlete: athlete,
-      );
+      if (context.mounted) {
+        await parseActivity(
+          context: context,
+          activity: activity,
+          athlete: athlete,
+        );
+      }
       await activity.autoTagger(athlete: athlete);
     }
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 5),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text(' You are now up to date!'),
-          ],
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text(' You are now up to date!'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 5),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text(' Please set up Power Zone Schema and '
-                'Heart Rate Zone Schema first!'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 5),
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text(' Please set up Power Zone Schema and '
+                  'Heart Rate Zone Schema first!'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

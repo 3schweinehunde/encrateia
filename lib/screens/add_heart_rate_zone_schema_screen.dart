@@ -189,7 +189,9 @@ class AddHeartRateZoneSchemaScreenState
   Future<void> saveHeartRateZoneSchema(BuildContext context) async {
     await widget.heartRateZoneSchema.save();
     await HeartRateZone.upsertAll(heartRateZones);
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> getData() async {
@@ -200,7 +202,9 @@ class AddHeartRateZoneSchemaScreenState
   Future<void> deleteHeartRateZoneSchema(
       {required HeartRateZoneSchema heartRateZoneSchema}) async {
     await heartRateZoneSchema.delete();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   void updateHeartRateZoneBase({int? base}) {
@@ -227,21 +231,25 @@ class AddHeartRateZoneSchemaScreenState
     }
     await HeartRateZone.upsertAll(heartRateZones);
     await getData();
-    showDialog<BuildContext>(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Heart Rate Zone Schema has been copied'),
-        content: const Text(
-            'If you only wanted to fix the date you need to delete the old heart'
-            ' rate zone schema manually.'),
-        actions: <Widget>[
-          ElevatedButton(
-            style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
-            child: const Text('OK'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      ),
-    );
+    if (context.mounted) {
+      showDialog<BuildContext>(
+        context: context,
+        builder: (_) =>
+            AlertDialog(
+              title: const Text('Heart Rate Zone Schema has been copied'),
+              content: const Text(
+                  'If you only wanted to fix the date you need to delete the old heart'
+                      ' rate zone schema manually.'),
+              actions: <Widget>[
+                ElevatedButton(
+                  style: MyButtonStyle.raisedButtonStyle(
+                      color: MyColor.primary),
+                  child: const Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+      );
+    }
   }
 }

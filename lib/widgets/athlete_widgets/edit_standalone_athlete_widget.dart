@@ -72,15 +72,19 @@ class EditStandaloneAthleteWidgetState
     final List<PowerZoneSchema> powerZoneSchemas =
         await widget.athlete!.powerZoneSchemas;
     if (powerZoneSchemas.isEmpty) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute<BuildContext>(
-          builder: (BuildContext _) =>
-              OnBoardingPowerZoneSchemaScreen(athlete: widget.athlete),
-        ),
-      );
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute<BuildContext>(
+            builder: (BuildContext _) =>
+                OnBoardingPowerZoneSchemaScreen(athlete: widget.athlete),
+          ),
+        );
+      }
     } else {
-      Navigator.of(context).pop();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
     }
   }
 }

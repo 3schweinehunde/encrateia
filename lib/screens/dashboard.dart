@@ -52,13 +52,15 @@ class DashboardState extends State<Dashboard> {
                     title: Text('${athlete.firstName} ${athlete.lastName}'),
                     onTap: () async {
                       await athlete.readCredentials();
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute<BuildContext>(
-                          builder: (BuildContext context) =>
-                              ShowAthleteScreen(athlete: athlete),
-                        ),
-                      );
+                      if (context.mounted) {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute<BuildContext>(
+                            builder: (BuildContext context) =>
+                                ShowAthleteScreen(athlete: athlete),
+                          ),
+                        );
+                      }
                       await getData();
                     },
                   ),
@@ -107,13 +109,15 @@ class DashboardState extends State<Dashboard> {
     athletes = await Athlete.all();
     logs = await Log.one();
     if (athletes.isEmpty) {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute<BuildContext>(
-          builder: (BuildContext context) =>
-              const OnboardingIntroductionScreen(),
-        ),
-      );
+      if (context.mounted) {
+        await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute<BuildContext>(
+            builder: (BuildContext context) =>
+            const OnboardingIntroductionScreen(),
+          ),
+        );
+      }
     } else {
       final PackageInfo packageInfo = await PackageInfo.fromPlatform();
       version = packageInfo.version;

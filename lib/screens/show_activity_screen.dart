@@ -474,18 +474,20 @@ class ShowActivityScreenState extends State<ShowActivityScreen> {
 
     await widget.activity.autoTagger(athlete: widget.athlete);
 
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text(' Autotagging finished'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text(' Autotagging finished'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
     setState(() {});
   }
 
@@ -503,7 +505,9 @@ class ShowActivityScreenState extends State<ShowActivityScreen> {
 
   Future<void> delete() async {
     await widget.activity.delete();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> download() async {
@@ -521,26 +525,30 @@ class ShowActivityScreenState extends State<ShowActivityScreen> {
 
     await widget.activity.download(athlete: widget.athlete);
 
-    ScaffoldMessenger.of(context).removeCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 1),
-        content: Row(
-          children: [
-            MyIcon.finishedWhite,
-            const Text(' Download finished'),
-          ],
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).removeCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 1),
+          content: Row(
+            children: [
+              MyIcon.finishedWhite,
+              const Text(' Download finished'),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     await parse();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        duration: const Duration(seconds: 2),
-        content: Text('Analysis finished for »${widget.activity.name}«'),
-      ),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: const Duration(seconds: 2),
+          content: Text('Analysis finished for »${widget.activity.name}«'),
+        ),
+      );
+    }
   }
 
   Future<void> parse() async {

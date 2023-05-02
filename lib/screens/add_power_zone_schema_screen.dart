@@ -182,7 +182,9 @@ class AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   Future<void> savePowerZoneSchema(BuildContext context) async {
     await widget.powerZoneSchema.save();
     await PowerZone.upsertAll(powerZones);
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> getData() async {
@@ -193,7 +195,9 @@ class AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
   Future<void> deletePowerZoneSchema(
       {required PowerZoneSchema powerZoneSchema}) async {
     await powerZoneSchema.delete();
-    Navigator.of(context).pop();
+    if (context.mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void>? updatePowerZoneBase({int? base}) {
@@ -221,21 +225,26 @@ class AddPowerZoneSchemaScreenState extends State<AddPowerZoneSchemaScreen> {
     }
     await PowerZone.upsertAll(powerZones);
     await getData();
-    showDialog<BuildContext>(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Power Zone Schema has been copied'),
-        content: const Text(
-            'If you only wanted to fix the date you need to delete the old '
-            'power zone schema manually.'),
-        actions: <Widget>[
-          ElevatedButton(
-            style: MyButtonStyle.raisedButtonStyle(color: MyColor.primary),
-            child: const Text('OK'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ],
-      ),
-    );
+
+    if (context.mounted) {
+      showDialog<BuildContext>(
+        context: context,
+        builder: (_) =>
+            AlertDialog(
+              title: const Text('Power Zone Schema has been copied'),
+              content: const Text(
+                  'If you only wanted to fix the date you need to delete the old '
+                      'power zone schema manually.'),
+              actions: <Widget>[
+                ElevatedButton(
+                  style: MyButtonStyle.raisedButtonStyle(
+                      color: MyColor.primary),
+                  child: const Text('OK'),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+      );
+    }
   }
 }

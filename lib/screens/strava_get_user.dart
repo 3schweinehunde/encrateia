@@ -64,7 +64,9 @@ class StravaGetUserState extends State<StravaGetUser> {
       setState(() {});
     }
     if (widget.athlete.state == 'fromStrava') {
-      Navigator.of(context).pop();
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
     }
   }
 }
